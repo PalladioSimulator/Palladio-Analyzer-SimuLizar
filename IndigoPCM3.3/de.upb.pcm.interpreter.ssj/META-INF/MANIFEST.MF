@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Ssj
+Bundle-SymbolicName: de.upb.pcm.interpreter.ssj
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Require-Bundle: ca.umontreal.iro.lecuyer.ssj,
+ de.uka.ipd.sdq.simucomframework,
+ org.apache.log4j,
+ de.uka.ipd.sdq.scheduler,
+ de.uka.ipd.sdq.scheduler.configuration,
+ org.apache.commons.javaflow;bundle-version="1.0.0",
+ de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
+ de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0"
+Export-Package: de.upb.pcm.interpreter.ssj
+
+
+
