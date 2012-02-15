@@ -42,7 +42,7 @@ public class PCMInterpreterProbeSpecUtil
     * 
     * @param modelHelper the model helper.
     */
-   public PCMInterpreterProbeSpecUtil(final ProbeSpecContext probeSfinal ModelHelper modelHelper)
+   public PCMInterpreterProbeSpecUtil(final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
       super();
       this.modelHelper = modelHelper;
@@ -72,7 +72,6 @@ public class PCMInterpreterProbeSpecUtil
    {
 
       ResponseTimeCalculator responseTimeCalculator = null;
-      final ProbeSpecContext probeSpecContext = ProbeSpecContext.instance();
       final CalculatorRegistry calculatorRegistry = probeSpecContext.getCalculatorRegistry();
       // only register each calculator once
       if (calculatorRegistry.getCalculatorForId(measurementId) == null)
@@ -117,7 +116,7 @@ public class PCMInterpreterProbeSpecUtil
    @SuppressWarnings({ "rawtypes", "unchecked" })
    public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimulatedProcess simProcess)
    {
-      final IProbeStrategy timeStrategy = ProbeSpecContext.instance().getProbeStrategyRegistry()
+      final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry()
             .getProbeStrategy(ProbeType.CURRENT_TIME, null);
 
       final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.modelHelper.getSimuComModel()

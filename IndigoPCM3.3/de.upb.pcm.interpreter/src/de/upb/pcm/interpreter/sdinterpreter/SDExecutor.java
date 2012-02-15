@@ -9,7 +9,18 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.storydriven.modeling.activities.Activity;
+import org.storydriven.modeling.interpreter.adapter.SDMainAdapterFactory;
 
+import de.mdelab.sdm.interpreter.common.MainInterpreterFactory;
+import de.mdelab.sdm.interpreter.common.SDMInterpreter;
+import de.mdelab.sdm.interpreter.common.SDMInterpreterException;
+import de.mdelab.sdm.interpreter.common.adapters.IMainAdapterFactory;
+import de.mdelab.sdm.interpreter.common.expressions.EclipseBasedExpressionInterpreterFactory;
+import de.mdelab.sdm.interpreter.common.expressions.ExpressionInterpreterFactory;
+import de.mdelab.sdm.interpreter.common.tasks.notifying.NotifyingMainInterpreterFactory;
+import de.mdelab.sdm.interpreter.common.tasks.notifying.OutputStreamNotificationReceiver;
+import de.mdelab.sdm.interpreter.common.variables.Parameter;
 import de.uka.ipd.sdq.pcm.allocation.AllocationPackage;
 import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
