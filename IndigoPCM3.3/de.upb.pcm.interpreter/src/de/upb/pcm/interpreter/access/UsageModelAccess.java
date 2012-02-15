@@ -61,7 +61,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess
          }
       };
       // create workload driver by using given factory
-      return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation());
+      return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation(),closedWorkload.getUsageScenario_Workload().getId());
    }
 
 
@@ -93,7 +93,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess
 
       // create workload driver by using given factory
       return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(getModelHelper().getSimuComModel(), userFactory,
-            openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
+            openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(),openWorkload.getUsageScenario_Workload().getId());
    }
 
 

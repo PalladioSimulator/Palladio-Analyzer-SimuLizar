@@ -15,8 +15,8 @@ import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.ResponseTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 import de.upb.pcm.pms.MeasurementSpecification;
 
 
@@ -114,7 +114,7 @@ public class PCMInterpreterProbeSpecUtil
     * @param simProcess the sim process.
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-   public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimulatedProcess simProcess)
+   public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimuComSimProcess simProcess)
    {
       final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry()
             .getProbeStrategy(ProbeType.CURRENT_TIME, null);
@@ -123,7 +123,7 @@ public class PCMInterpreterProbeSpecUtil
             .getSimulationControl());
 
       final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample,
-            simProcess.getRequestContext(), measurementId, ProbeSpecContext.instance().obtainProbeSetId(probeID));
+            simProcess.getRequestContext(), measurementId, probeSpecContext.obtainProbeSetId(probeID));
 
       InterpreterLogger.debug(logger, "Took probe " + probeID + " of " + measurementId);
 

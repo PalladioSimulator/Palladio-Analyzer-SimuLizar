@@ -15,8 +15,8 @@ import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
@@ -44,9 +44,9 @@ public class ModelHelper
 
    protected static final Logger logger = Logger.getLogger(ModelHelper.class.getName());
 
-   private final Map<SimulatedProcess, PCMModels> modelCopies;
+   private final Map<SimuComSimProcess, PCMModels> modelCopies;
 
-   private final Map<SimulatedProcess, Long> sessionIds;
+   private final Map<SimuComSimProcess, Long> sessionIds;
 
    private final MDSDBlackboard blackboard;
 
@@ -72,8 +72,8 @@ public class ModelHelper
    public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel)
    {
       super();
-      this.modelCopies = new HashMap<SimulatedProcess, PCMModels>();
-      this.sessionIds = new HashMap<SimulatedProcess, Long>();
+      this.modelCopies = new HashMap<SimuComSimProcess, PCMModels>();
+      this.sessionIds = new HashMap<SimuComSimProcess, Long>();
       this.blackboard = blackboard;
 
       this.modelReaderFactory = new ModelAccessFactory(this);
@@ -180,19 +180,19 @@ public class ModelHelper
     * created. If simulated user repeats interaction with the system within the sim process, a fresh
     * copy will created.
     * 
-    * @param simProcess the sim process.
+    * @param simuComSimProcess the sim process.
     * @return the local pcm models for the sim process.
     */
-   public PCMModels getLocalPCMModels(final SimulatedProcess simProcess)
+   public PCMModels getLocalPCMModels(final SimuComSimProcess simuComSimProcess)
    {
-      if (getModelCopies().get(simProcess) == null ||
-    		  getSessionIds().get(simProcess) < simProcess.getCurrentSessionId())
+      if (getModelCopies().get(simuComSimProcess) == null ||
+    		  getSessionIds().get(simuComSimProcess) < simuComSimProcess.getCurrentSessionId())
       {
-         getModelCopies().put(simProcess, copyGlobalPCMModels());
-         getSessionIds().put(simProcess, simProcess.getCurrentSessionId());
-         InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simProcess);
+         getModelCopies().put(simuComSimProcess, copyGlobalPCMModels());
+         getSessionIds().put(simuComSimProcess, simuComSimProcess.getCurrentSessionId());
+         InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simuComSimProcess);
       }
-      return this.modelCopies.get(simProcess);
+      return this.modelCopies.get(simuComSimProcess);
    }
 
 
@@ -208,7 +208,7 @@ public class ModelHelper
    /**
     * @return returns the modelCopies.
     */
-   private Map<SimulatedProcess, PCMModels> getModelCopies()
+   private Map<SimuComSimProcess, PCMModels> getModelCopies()
    {
       return this.modelCopies;
    }
@@ -276,7 +276,7 @@ public class ModelHelper
    /**
     * @return returns the sessionIds.
     */
-   private Map<SimulatedProcess, Long> getSessionIds()
+   private Map<SimuComSimProcess, Long> getSessionIds()
    {
       return this.sessionIds;
    }
