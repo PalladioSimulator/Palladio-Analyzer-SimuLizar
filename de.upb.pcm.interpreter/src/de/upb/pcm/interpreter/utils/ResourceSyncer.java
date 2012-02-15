@@ -148,8 +148,10 @@ public class ResourceSyncer
          }
          else
          {
-            simulatedResourceContainer.addActiveResource(typeId, description, processingRate, mttf, mttr, units,
-                  schedulingStrategy, numberOfReplicas);
+            simulatedResourceContainer.addActiveResource(
+            	  typeId, new String[]{}, description, description,  // TODO: Check if this is correct?
+            	  description, processingRate, mttf, mttr, units,
+                  schedulingStrategy, numberOfReplicas, true);
             InterpreterLogger.debug(logger, "Added ActiveResource. TypeID: " + typeId + ", Description: " + description
                   + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr + ", Units: " + units
                   + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: " + numberOfReplicas);

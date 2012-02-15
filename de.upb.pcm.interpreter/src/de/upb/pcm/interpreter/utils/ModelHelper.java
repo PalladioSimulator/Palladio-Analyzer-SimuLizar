@@ -9,6 +9,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.storydriven.modeling.activities.Activity;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.repository.Repository;
@@ -184,18 +185,12 @@ public class ModelHelper
     */
    public PCMModels getLocalPCMModels(final SimulatedProcess simProcess)
    {
-      if (getModelCopies().get(simProcess) == null)
+      if (getModelCopies().get(simProcess) == null ||
+    		  getSessionIds().get(simProcess) < simProcess.getCurrentSessionId())
       {
          getModelCopies().put(simProcess, copyGlobalPCMModels());
          getSessionIds().put(simProcess, simProcess.getCurrentSessionId());
          InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simProcess);
-      }
-      else if (getSessionIds().get(simProcess) < simProcess.getCurrentSessionId())
-      {
-         // but if the session id has changed, the user needs fresh global models
-         getModelCopies().put(simProcess, copyGlobalPCMModels());
-         getSessionIds().put(simProcess, simProcess.getCurrentSessionId());
-         InterpreterLogger.debug(logger, "Created pcm model copy for new run of sim process: " + simProcess);
       }
       return this.modelCopies.get(simProcess);
    }
