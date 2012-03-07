@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.exceptions.PCMModelLoadException;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.RDSeffSwitch;
@@ -29,10 +30,12 @@ public class RDSeffInterpreter extends AbstractSeffInterpreter
     * @param modelHelper the model helper.
     * @param assemblyContext the assembly context of the corresponding component.
     */
-   public RDSeffInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper,
+   public RDSeffInterpreter(final InterpreterDefaultContext context, 
+		 final ProbeSpecContext probeSpecContext,  
+		 final ModelHelper modelHelper,
          final AssemblyContext assemblyContext)
    {
-      super(context, modelHelper, assemblyContext);
+      super(context, probeSpecContext, modelHelper, assemblyContext);
    }
 
 

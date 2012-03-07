@@ -2,6 +2,7 @@ package de.upb.pcm.interpreter.interpreter;
 
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 
@@ -28,10 +29,12 @@ public abstract class AbstractSeffInterpreter extends AbstractRepositoryInterpre
     * @param modelHelper the model helper.
     * @param assemblyContext the assembly context of the corresponding component.
     */
-   public AbstractSeffInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper,
+   public AbstractSeffInterpreter(final InterpreterDefaultContext context, 
+		 final ProbeSpecContext probeSpecContext,
+		 final ModelHelper modelHelper,
          final AssemblyContext assemblyContext)
    {
-      super(context, modelHelper);
+      super(context, probeSpecContext, modelHelper);
       this.assemblyContext = assemblyContext;
    }
 

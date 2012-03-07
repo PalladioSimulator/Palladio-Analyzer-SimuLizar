@@ -117,7 +117,8 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
       // interpret repository
       final IModelAccessFactory modelAccessFactory = getModelInterpreter().getModelHelper().getModelAccessFactory();
       final AbstractPCMModelInterpreter repositoryInterpreter = modelAccessFactory.getPCMModelInterpreter(
-            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null);
+            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null,
+            getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
       // create new stack frame for input parameter
 

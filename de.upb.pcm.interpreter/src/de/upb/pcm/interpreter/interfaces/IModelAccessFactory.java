@@ -2,6 +2,7 @@ package de.upb.pcm.interpreter.interfaces;
 
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.AbstractPMSModelAccess;
 import de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter;
@@ -76,7 +77,7 @@ public interface IModelAccessFactory
     * @return the pcm model interpreter.
     */
    AbstractPCMModelInterpreter getPCMModelInterpreter(int interpreterType, InterpreterDefaultContext context,
-         AssemblyContext assemblyContext);
+         AssemblyContext assemblyContext, ProbeSpecContext probeSpecContext);
 
 
    /**

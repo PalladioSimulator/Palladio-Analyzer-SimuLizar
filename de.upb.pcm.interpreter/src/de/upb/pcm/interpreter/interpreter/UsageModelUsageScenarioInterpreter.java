@@ -7,7 +7,9 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 import de.upb.pcm.interpreter.access.PMSAccess;
@@ -37,9 +39,9 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public UsageModelUsageScenarioInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper)
+   public UsageModelUsageScenarioInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
-      super(context, modelHelper);
+      super(context, probeSpecContext, modelHelper);
    }
 
 
@@ -109,7 +111,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
     * @see de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner#scenarioRunner(de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess)
     */
    @Override
-   public void scenarioRunner(final SimulatedProcess thread)
+   public void scenarioRunner(final SimuComSimProcess thread)
    {
       InterpreterLogger.debug(logger, "Start scenario: " + getModelHelper().getSimuComModel());
       // create context for scenario
