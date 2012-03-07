@@ -57,7 +57,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
 
       // final URI pathToSDM = CommonPlugin.asLocalURI(URI.createPlatformResourceURI(new
       // File("/SDM2/").getPath(), true));
-      if (!path.equals(ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE))
+      if (!path.equals(""))
       {
          File pathFile = new File(path);
          String parent = pathFile.getParent();
