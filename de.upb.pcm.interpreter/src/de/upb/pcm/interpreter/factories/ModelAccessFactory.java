@@ -30,6 +30,7 @@ public class ModelAccessFactory implements IModelAccessFactory
 
 
    private final ModelHelper modelHelper;
+private final ProbeSpecContext probeSpecContext;
 
 
    /**
@@ -37,11 +38,11 @@ public class ModelAccessFactory implements IModelAccessFactory
     * 
     * @param modelHelper the model helper.
     */
-   public ModelAccessFactory(final ModelHelper modelHelper)
+   public ModelAccessFactory(final ModelHelper modelHelper, ProbeSpecContext probeSpecContext)
    {
       super();
       this.modelHelper = modelHelper;
-
+      this.probeSpecContext = probeSpecContext;
 
    }
 
@@ -73,7 +74,7 @@ public class ModelAccessFactory implements IModelAccessFactory
          case ALLOCATION_ACCESS:
             return new AllocationAccess(context, getModelHelper());
          case USAGE_MODEL_ACCESS:
-            return new UsageModelAccess(context, getModelHelper());
+            return new UsageModelAccess(context, getModelHelper(), this.probeSpecContext);
 
          default:
             throw new IllegalArgumentException("No reader for readerType " + modelAccessType + " found");

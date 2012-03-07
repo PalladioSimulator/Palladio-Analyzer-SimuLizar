@@ -79,7 +79,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
       // factories and loaders
       final ModelHelper modelHelper = new ModelHelper(getBlackboard(), simuComModel,
-            PrmFactory.eINSTANCE.createPRMModel());
+            PrmFactory.eINSTANCE.createPRMModel(), probeSpecContext);
 
       // create usage model access
       final UsageModelAccess usageModelAccess = (UsageModelAccess) modelHelper.getModelAccessFactory()
