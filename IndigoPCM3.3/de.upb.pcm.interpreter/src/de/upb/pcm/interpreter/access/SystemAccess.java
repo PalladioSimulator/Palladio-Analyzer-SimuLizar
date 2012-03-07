@@ -2,6 +2,8 @@ package de.upb.pcm.interpreter.access;
 
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector;
+import de.uka.ipd.sdq.pcm.core.composition.CompositionPackage;
+import de.uka.ipd.sdq.pcm.core.composition.Connector;
 import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector;
 import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.RequiredRole;
@@ -39,12 +41,14 @@ public class SystemAccess extends AbstractPCMModelAccess
     */
    public AssemblyConnector getConnectedAssemblyConnector(final RequiredRole requiredRole)
    {
-      for (final AssemblyConnector assemblyConnector : getModel().getAssemblyConnectors_ComposedStructure())
+      for (final Connector connector : getModel().getConnectors__ComposedStructure())
       {
-         if (assemblyConnector.getRequiredRole_AssemblyConnector().equals(requiredRole))
-         {
-            return assemblyConnector;
-         }
+    	 if (connector.eClass() == CompositionPackage.eINSTANCE.getAssemblyConnector()) {
+    		 if (((AssemblyConnector)connector).getRequiredRole_AssemblyConnector().equals(requiredRole))
+    		 {
+    			 return (AssemblyConnector) connector;
+    		 }
+    	 }
       }
       return null;
    }
@@ -58,13 +62,15 @@ public class SystemAccess extends AbstractPCMModelAccess
     */
    public ProvidedDelegationConnector getConnectedProvidedDelegationConnector(final ProvidedRole providedRole)
    {
-      for (final ProvidedDelegationConnector providedDelegationConnector : getModel()
-            .getProvidedDelegationConnectors_ComposedStructure())
+      for (final Connector connector : getModel().getConnectors__ComposedStructure())
       {
-         if (providedDelegationConnector.getOuterProvidedRole_ProvidedDelegationConnector().equals(providedRole))
-         {
-            return providedDelegationConnector;
-         }
+    	 if (connector.eClass() == CompositionPackage.eINSTANCE.getProvidedDelegationConnector()) {      
+    		 
+    		 if (((ProvidedDelegationConnector)connector).getOuterProvidedRole_ProvidedDelegationConnector().equals(providedRole))
+    		 {
+    			 return (ProvidedDelegationConnector) connector;
+    		 }
+    	 }
       }
       return null;
    }
