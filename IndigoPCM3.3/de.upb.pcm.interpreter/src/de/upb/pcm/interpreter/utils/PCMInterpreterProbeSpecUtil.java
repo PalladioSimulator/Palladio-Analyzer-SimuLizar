@@ -130,5 +130,8 @@ public class PCMInterpreterProbeSpecUtil
       getBlackboard().addSample(probeSampleSet);
    }
 
+   public ProbeSpecContext getProbeSpecContext() {
+	   return this.probeSpecContext;
+   }
 
 }

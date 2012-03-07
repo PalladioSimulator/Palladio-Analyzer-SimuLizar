@@ -123,22 +123,23 @@ public class ResourceSyncer
 
          // SchedulingStrategy
          final SchedulingPolicy schedulingPolicy = processingResource.getSchedulingPolicy();
-         SchedulingStrategy schedulingStrategy;
-         switch (schedulingPolicy)
-         {
-            case PROCESSOR_SHARING:
-               schedulingStrategy = SchedulingStrategy.PROCESSOR_SHARING;
-               break;
-            case DELAY:
-               schedulingStrategy = SchedulingStrategy.DELAY;
-               break;
-            case FCFS:
-               schedulingStrategy = SchedulingStrategy.FCFS;
-               break;
-            default:
-               throw new PCMModelLoadException("No equivalent SchedulingStrategy found for StrategyPolicy "
-                     + schedulingPolicy);
-         }
+         // TODO: Check if this works...
+         String schedulingStrategy = schedulingPolicy.getEntityName();
+//         switch (schedulingPolicy)
+//         {
+//            case PROCESSOR_SHARING:
+//               schedulingStrategy = SchedulingStrategy.PROCESSOR_SHARING;
+//               break;
+//            case DELAY:
+//               schedulingStrategy = SchedulingStrategy.DELAY;
+//               break;
+//            case FCFS:
+//               schedulingStrategy = SchedulingStrategy.FCFS;
+//               break;
+//            default:
+//               throw new PCMModelLoadException("No equivalent SchedulingStrategy found for StrategyPolicy "
+//                     + schedulingPolicy);
+//         }
 
          final int numberOfReplicas = processingResource.getNumberOfReplicas();
          final ScheduledResource scheduledResource = resourceAlreadyExist(simulatedResourceContainer, typeId);

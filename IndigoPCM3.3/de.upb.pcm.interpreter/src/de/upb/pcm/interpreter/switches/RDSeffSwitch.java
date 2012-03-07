@@ -141,7 +141,8 @@ public class RDSeffSwitch<T> extends AbstractSeffSwitch<T>
       final IModelAccessFactory modelAccessFactory = getModelInterpreter().getModelHelper().getModelAccessFactory();
       // interpret repository
       final AbstractPCMModelInterpreter repositoryInterpreter = modelAccessFactory.getPCMModelInterpreter(
-            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null);
+            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null,
+            getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
       // create new stack frame for input parameter
 
@@ -435,7 +436,8 @@ public class RDSeffSwitch<T> extends AbstractSeffSwitch<T>
                      .getModelAccessFactory();
 
                final AbstractPCMModelInterpreter seffInterpreter = modelAccessFactory.getPCMModelInterpreter(
-                     IModelAccessFactory.RDSEFF_INTERPRETER, new InterpreterDefaultContext(ctx), getAssemblyContext());
+                     IModelAccessFactory.RDSEFF_INTERPRETER, new InterpreterDefaultContext(ctx), getAssemblyContext(),
+                     getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
                InterpreterLogger.debug(logger, "Created new RDSeff interpreter for "
                      + ((isAsync()) ? "asynced" : "synced") + " forked baviour: " + this);

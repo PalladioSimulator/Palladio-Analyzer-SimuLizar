@@ -2,6 +2,7 @@ package de.upb.pcm.interpreter.factories;
 
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.AbstractPMSModelAccess;
 import de.upb.pcm.interpreter.access.AllocationAccess;
@@ -87,22 +88,24 @@ public class ModelAccessFactory implements IModelAccessFactory
     *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
     *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
     */
+   // TODO: Refactor me!!!
    @Override
    public AbstractPCMModelInterpreter getPCMModelInterpreter(final int interpreterType,
-         final InterpreterDefaultContext context, final AssemblyContext assemblyContext)
+         final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+         final ProbeSpecContext probeSpecContext)
    {
 
       switch (interpreterType)
       {
 
          case USAGEMODEL_USAGESCENARIO_INTERPRETER:
-            return new UsageModelUsageScenarioInterpreter(context, getModelHelper());
+            return new UsageModelUsageScenarioInterpreter(context, probeSpecContext, getModelHelper());
 
          case RDSEFF_INTERPRETER:
-            return new RDSeffInterpreter(context, getModelHelper(), assemblyContext);
+            return new RDSeffInterpreter(context, probeSpecContext, getModelHelper(), assemblyContext);
 
          case REPOSITORY_INTERPRETER:
-            return new RepositoryInterpreter(context, getModelHelper());
+            return new RepositoryInterpreter(context, probeSpecContext, getModelHelper());
 
          default:
             throw new IllegalArgumentException("No interpreter for interpreterType " + interpreterType + " found");
