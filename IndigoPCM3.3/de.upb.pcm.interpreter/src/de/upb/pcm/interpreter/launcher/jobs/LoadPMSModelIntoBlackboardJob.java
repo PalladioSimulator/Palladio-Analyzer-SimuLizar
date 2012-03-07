@@ -59,7 +59,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
       final PMSResourceSetPartition prmPartition = new PMSResourceSetPartition(getPCMResourceSetPartition());
       if (!getPath().equals(""))
       {
-         prmPartition.loadModel(URI.createURI("file:///" + getPath()));
+         prmPartition.loadModel(URI.createURI(getPath()));
 
       }
       getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, prmPartition);
