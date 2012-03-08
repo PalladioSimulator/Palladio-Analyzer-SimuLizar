@@ -136,7 +136,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.info(logger, "Start Interpretation of Usage Scenario: " + getModel());
+      InterpreterLogger.debug(logger, "Start Interpretation of Usage Scenario: " + getModel());
       if (!(startElement instanceof UsageScenario))
       {
          throw new IllegalArgumentException("startElement must be of type UsageScenario");
@@ -165,7 +165,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
       // ############## Measurement END ##############
 
 
-      InterpreterLogger.info(logger, "Finished Interpretation of Usage Scenario: " + getModel());
+      InterpreterLogger.debug(logger, "Finished Interpretation of Usage Scenario: " + getModel());
 
 
    }

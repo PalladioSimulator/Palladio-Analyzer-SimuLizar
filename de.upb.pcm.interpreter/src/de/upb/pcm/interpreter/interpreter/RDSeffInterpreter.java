@@ -56,7 +56,7 @@ public class RDSeffInterpreter extends AbstractSeffInterpreter
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.info(logger, "Start interpretation of RDSeff: " + getModel());
+      InterpreterLogger.debug(logger, "Start interpretation of RDSeff: " + getModel());
       if (!(startElement instanceof ServiceEffectSpecification))
       {
          throw new PCMModelLoadException("startElement must be of type ServiceEffectSpecification.");
@@ -73,7 +73,7 @@ public class RDSeffInterpreter extends AbstractSeffInterpreter
       InterpreterLogger.debug(logger, "Pushed result stack frame on stack: "
             + getModelSwitch().getTemporaryResultStackFrame());
 
-      InterpreterLogger.info(logger, "Finished interpretation of RDSeff: " + getModel());
+      InterpreterLogger.debug(logger, "Finished interpretation of RDSeff: " + getModel());
 
 
    }
