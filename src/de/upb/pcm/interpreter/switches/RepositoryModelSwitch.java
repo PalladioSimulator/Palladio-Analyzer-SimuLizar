@@ -74,7 +74,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
             object.getComponentParameterUsage_ImplementationComponentType(), stack.currentStackFrame());
 
       // create new stack frame for assembly context component parameters
-      stack.createAndPushNewStackFrame(calledAssemblyContext.getConfigParameterUsages_AssemblyContext(),
+      stack.createAndPushNewStackFrame(calledAssemblyContext.getConfigParameterUsages__AssemblyContext(),
             componentParameterStackFrame);
 
       // get seffs for call
@@ -117,7 +117,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
       calledAssemblyContext = connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector();
 
 
-      this.doSwitch(calledAssemblyContext.getEncapsulatedComponent_AssemblyContext());
+      this.doSwitch(calledAssemblyContext.getEncapsulatedComponent__AssemblyContext());
 
       return super.caseProvidedRole(object);
    }
@@ -139,7 +139,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
       calledAssemblyContext = assemblyConnector.getProvidingAssemblyContext_AssemblyConnector();
 
 
-      this.doSwitch(calledAssemblyContext.getEncapsulatedComponent_AssemblyContext());
+      this.doSwitch(calledAssemblyContext.getEncapsulatedComponent__AssemblyContext());
       return super.caseRequiredRole(object);
    }
 
@@ -206,7 +206,8 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
                   .getModelAccessFactory();
 
             final RDSeffInterpreter rdSeffInterpreter = (RDSeffInterpreter) modelAccessFactory.getPCMModelInterpreter(
-                  IModelAccessFactory.RDSEFF_INTERPRETER, getModelInterpreter().getContext(), calledAssemblyContext);
+                  IModelAccessFactory.RDSEFF_INTERPRETER, getModelInterpreter().getContext(), calledAssemblyContext,
+                  getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
 
             // interpret called seff

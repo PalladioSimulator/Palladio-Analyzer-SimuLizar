@@ -10,6 +10,7 @@ import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.simucomframework.DiscardInvalidMeasurementsBlackboardDecorator;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
+import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.SimuComGarbageCollector;
 import de.uka.ipd.sdq.simucomframework.calculator.CalculatorFactory;
 import de.uka.ipd.sdq.simucomframework.calculator.SetupPipesAndFiltersStrategy;
@@ -17,6 +18,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.SimuComProbeStrategyRegistry;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ssj.SSJSimEngineFactory;
 import de.uka.ipd.sdq.workflow.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.exceptions.JobFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.RollbackFailedException;
@@ -24,7 +26,6 @@ import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
 import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
-import de.upb.pcm.interpreter.ssj.SSJSimEngineFactory;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.prm.PrmFactory;
@@ -47,6 +48,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
    private final SimuComWorkflowConfiguration configuration;
 
+   private final ProbeSpecContext probeSpecContext = new ProbeSpecContext();
 
    /**
     * Constructor
@@ -70,14 +72,14 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
 
       InterpreterLogger.info(logger, "Start job: " + this);
-      final SimuComModel simuComModel = new SimuComModel(getConfiguration().getSimuComConfiguration(),
+      final SimuComModel simuComModel = new SimuComModel((SimuComConfig) getConfiguration().getSimulationConfiguration(),
             getSimuComStatus(), new SSJSimEngineFactory(), false);
 
       setupSampleBlackboard(simuComModel);
 
       // factories and loaders
       final ModelHelper modelHelper = new ModelHelper(getBlackboard(), simuComModel,
-            PrmFactory.eINSTANCE.createPRMModel());
+            PrmFactory.eINSTANCE.createPRMModel(), probeSpecContext);
 
       // create usage model access
       final UsageModelAccess usageModelAccess = (UsageModelAccess) modelHelper.getModelAccessFactory()
@@ -94,7 +96,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
       InterpreterLogger.debug(logger, "Finished UsageModel. Interpretation took " + simRealTimeSeconds
             + " real time seconds");
 
-      ProbeSpecContext.instance().finish();
+      probeSpecContext.finish();
       InterpreterLogger.info(logger, "finished job: " + this);
 
 
@@ -178,9 +180,10 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    {
       final ISampleBlackboard sampleBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
             new SampleBlackboard(), simuComModel.getSimulationControl());
-      ProbeSpecContext.instance().configure(sampleBlackboard, new SimuComGarbageCollector(sampleBlackboard),
+
+      probeSpecContext.initialise(sampleBlackboard,
             new SimuComProbeStrategyRegistry(),
-            new CalculatorFactory(sampleBlackboard, simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
+            new CalculatorFactory(simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
    }
 
 

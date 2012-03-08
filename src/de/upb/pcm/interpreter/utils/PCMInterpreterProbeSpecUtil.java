@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.ResponseTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
 import de.uka.ipd.sdq.probespec.framework.utils.ProbeSpecUtils;
-import de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.upb.pcm.pms.MeasurementSpecification;
 
@@ -31,7 +31,8 @@ public class PCMInterpreterProbeSpecUtil
 
    protected static final Logger logger = Logger.getLogger(PCMInterpreterProbeSpecUtil.class.getName());
 
-   final ISampleBlackboard blackboard = ProbeSpecContext.instance().getSampleBlackboard();
+   final ProbeSpecContext probeSpecContext;
+   final ISampleBlackboard blackboard;
 
    private final ModelHelper modelHelper;
 
@@ -41,10 +42,12 @@ public class PCMInterpreterProbeSpecUtil
     * 
     * @param modelHelper the model helper.
     */
-   public PCMInterpreterProbeSpecUtil(final ModelHelper modelHelper)
+   public PCMInterpreterProbeSpecUtil(final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
       super();
       this.modelHelper = modelHelper;
+      this.probeSpecContext = probeSpecContext;
+      this.blackboard = probeSpecContext.getSampleBlackboard();
 
    }
 
@@ -69,7 +72,6 @@ public class PCMInterpreterProbeSpecUtil
    {
 
       ResponseTimeCalculator responseTimeCalculator = null;
-      final ProbeSpecContext probeSpecContext = ProbeSpecContext.instance();
       final CalculatorRegistry calculatorRegistry = probeSpecContext.getCalculatorRegistry();
       // only register each calculator once
       if (calculatorRegistry.getCalculatorForId(measurementId) == null)
@@ -112,21 +114,24 @@ public class PCMInterpreterProbeSpecUtil
     * @param simProcess the sim process.
     */
    @SuppressWarnings({ "rawtypes", "unchecked" })
-   public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimProcess simProcess)
+   public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimuComSimProcess simProcess)
    {
-      final IProbeStrategy timeStrategy = ProbeSpecContext.instance().getProbeStrategyRegistry()
+      final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry()
             .getProbeStrategy(ProbeType.CURRENT_TIME, null);
 
       final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.modelHelper.getSimuComModel()
             .getSimulationControl());
 
       final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample,
-            simProcess.getRequestContext(), measurementId, ProbeSpecContext.instance().obtainProbeSetId(probeID));
+            simProcess.getRequestContext(), measurementId, probeSpecContext.obtainProbeSetId(probeID));
 
       InterpreterLogger.debug(logger, "Took probe " + probeID + " of " + measurementId);
 
       getBlackboard().addSample(probeSampleSet);
    }
 
+   public ProbeSpecContext getProbeSpecContext() {
+	   return this.probeSpecContext;
+   }
 
 }
