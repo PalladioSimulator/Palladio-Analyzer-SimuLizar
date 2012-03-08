@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sdma:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdma="http://ns.storydriven.org/sdm/activities/0.1.0" xmlns:sdme="http://ns.storydriven.org/sdm/expressions/0.1.0" xmlns:sdmp="http://ns.storydriven.org/sdm/patterns/0.1.0" xmlns:sdmpe="http://ns.storydriven.org/sdm/patterns/expressions/0.1.0">
+  <ownedActivityEdge target="//@ownedActivityNode.2" source="//@ownedActivityNode.0"/>
+  <ownedActivityEdge target="//@ownedActivityNode.3" source="//@ownedActivityNode.2" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.4" source="//@ownedActivityNode.3" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.4"/>
+  <ownedActivityNode xsi:type="sdma:StartNode" outgoing="//@ownedActivityEdge.0"/>
+  <ownedActivityNode xsi:type="sdma:StopNode" incoming="//@ownedActivityEdge.3"/>
+  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="pb bound parameter" outgoing="//@ownedActivityEdge.1" incoming="//@ownedActivityEdge.0">
+    <ownedRule>
+      <variable xsi:type="sdmp:ObjectVariable" name="monitoredElement" bindingState="BOUND">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ResourceContainer"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="prmModel" bindingState="BOUND">
+        <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel"/>
+      </variable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="find and check measurements for monitored element" outgoing="//@ownedActivityEdge.2" incoming="//@ownedActivityEdge.1">
+    <ownedRule>
+      <variable xsi:type="sdmp:ObjectVariable" name="prmModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+        <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="resourceContainerMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1 //@ownedActivityNode.3/@ownedRule/@linkVariable.2 //@ownedActivityNode.3/@ownedRule/@linkVariable.3">
+        <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//ResourceContainerMeasurement"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="resourceContainer" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1">
+        <constraint>
+          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
+              <attribute href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/measurementValue"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdme:LiteralExpression" value="1.0">
+              <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+            </rightExpression>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ResourceContainer"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="resourceTypePRM" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.2">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourcetype/ProcessingResourceType"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="measurementSpecification" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.3">
+        <constraint>
+          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.4">
+              <attribute href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification/statisticalCharacterization"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdme:TextualExpression" expressionText="StatisticalCharacterizationEnum::None" language="OCL"/>
+          </constraintExpression>
+        </constraint>
+        <constraint>
+          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.4">
+              <attribute href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification/performanceMetric"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdme:TextualExpression" expressionText="PerformanceMetricEnum::Utilization" language="OCL"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification"/>
+      </variable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
+        <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel/pcmModelElementMeasurements"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.2">
+        <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/pcmModelElement"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.3">
+        <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//ResourceContainerMeasurement/processingResourceType"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.4">
+        <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/measurementSpecification"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="increase resource processing rate" outgoing="//@ownedActivityEdge.3" incoming="//@ownedActivityEdge.2">
+    <ownedRule>
+      <variable xsi:type="sdmp:ObjectVariable" name="resourceContainer" bindingState="BOUND" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ResourceContainer"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="processingResourceSpecification" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1 //@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ProcessingResourceSpecification"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="resourceTypeRepository" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
+              <attribute href="http://sdq.ipd.uka.de/Identifier/1.0#//Identifier/id"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.4/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/Identifier/1.0#//Identifier/id"/>
+            </rightExpression>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourcetype/ProcessingResourceType"/>
+      </variable>
+      <variable xsi:type="sdmp:ObjectVariable" name="pcmRandomVariable" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1">
+        <attributeAssignment>
+          <attribute href="http://sdq.ipd.uka.de/StochasticExpressions/1.0#//RandomVariable/specification"/>
+          <valueExpression xsi:type="sdme:TextualExpression" expressionText="specification.concat('+50')" language="OCL" languageVersion=""/>
+        </attributeAssignment>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//core/PCMRandomVariable"/>
+      </variable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.0" target="//@ownedActivityNode.4/@ownedRule/@variable.1">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ResourceContainer/activeResourceSpecifications_ResourceContainer"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.3">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ProcessingResourceSpecification/processingRate_ProcessingResourceSpecification"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdmp:LinkVariable" name="" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.2">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/4.0#//resourceenvironment/ProcessingResourceSpecification/activeResourceType_ActiveResourceSpecification"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+</sdma:Activity>
