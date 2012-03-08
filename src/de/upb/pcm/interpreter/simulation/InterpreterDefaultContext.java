@@ -6,7 +6,6 @@ import org.apache.log4j.Logger;
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 
 
 /**

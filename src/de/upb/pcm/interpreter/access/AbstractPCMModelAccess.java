@@ -5,7 +5,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 

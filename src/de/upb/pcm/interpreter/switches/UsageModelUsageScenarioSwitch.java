@@ -55,7 +55,7 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
    public UsageModelUsageScenarioSwitch(final AbstractPCMModelInterpreter modelInterpreter)
    {
       this.modelInterpreter = modelInterpreter;
-      transitionDeterminer = new TransitionDeterminer(modelInterpreter.getModelHelper().getSimuComModel().getConfig(),
+      transitionDeterminer = new TransitionDeterminer(modelInterpreter.getModelHelper().getSimuComModel().getConfiguration(),
             modelInterpreter);
 
    }

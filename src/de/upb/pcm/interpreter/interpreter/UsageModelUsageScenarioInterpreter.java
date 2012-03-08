@@ -11,7 +11,6 @@ import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
-import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;

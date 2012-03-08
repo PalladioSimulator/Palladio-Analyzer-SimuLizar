@@ -25,7 +25,6 @@ Require-Bundle: org.eclipse.ui,
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
  org.storydriven.modeling;bundle-version="1.0.0";resolution:=optional,
  de.uka.ipd.sdq.cip.completions;bundle-version="1.0.0",
- de.uka.ipd.sdq.simulation.abstractsimengine.ssj;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
  de.uka.ipd.sdq.cip;bundle-version="2.0.0"
