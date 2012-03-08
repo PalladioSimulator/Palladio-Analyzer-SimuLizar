@@ -71,7 +71,7 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.info(logger, "Start interpretation of Repository: " + getModel());
+      InterpreterLogger.debug(logger, "Start interpretation of Repository: " + getModel());
       if (!(startElement instanceof OperationProvidedRole || startElement instanceof OperationRequiredRole || o[0] instanceof OperationSignature))
       {
          throw new PCMModelLoadException(
@@ -81,7 +81,7 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
       operationSignature = (OperationSignature) o[0];
 
       getModelSwitch().doSwitch(startElement);
-      InterpreterLogger.info(logger, "Finished interpretation of Repository: " + getModel());
+      InterpreterLogger.debug(logger, "Finished interpretation of Repository: " + getModel());
    }
 
 
