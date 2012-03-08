@@ -11,14 +11,14 @@ import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.simucomframework.DiscardInvalidMeasurementsBlackboardDecorator;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
-import de.uka.ipd.sdq.simucomframework.SimuComGarbageCollector;
 import de.uka.ipd.sdq.simucomframework.calculator.CalculatorFactory;
 import de.uka.ipd.sdq.simucomframework.calculator.SetupPipesAndFiltersStrategy;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.SimuComProbeStrategyRegistry;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ssj.SSJSimEngineFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
+import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 import de.uka.ipd.sdq.workflow.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.exceptions.JobFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.RollbackFailedException;
@@ -69,39 +69,47 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    @Override
    public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException
    {
-
-
       InterpreterLogger.info(logger, "Start job: " + this);
-      final SimuComModel simuComModel = new SimuComModel((SimuComConfig) getConfiguration().getSimulationConfiguration(),
-            getSimuComStatus(), new SSJSimEngineFactory(), false);
+      
+      // load factory for the preferred simulation engine
+      ISimEngineFactory factory = SimulationPreferencesHelper.getPreferredSimulationEngine();
+      if (factory == null) {
+          throw new RuntimeException("There is no simulation engine available. Install at least one engine.");
+      }
+      
+      final SimuComModel simuComModel = new SimuComModel(
+    		  (SimuComConfig) getConfiguration().getSimulationConfiguration(),
+    		  getSimuComStatus(), 
+    		  factory,
+    		  false);
 
       setupSampleBlackboard(simuComModel);
 
       // factories and loaders
-      final ModelHelper modelHelper = new ModelHelper(getBlackboard(), simuComModel,
-            PrmFactory.eINSTANCE.createPRMModel(), probeSpecContext);
+      final ModelHelper modelHelper = new ModelHelper(
+    		  getBlackboard(), 
+    		  simuComModel,
+    		  PrmFactory.eINSTANCE.createPRMModel(), 
+    		  probeSpecContext);
 
       // create usage model access
       final UsageModelAccess usageModelAccess = (UsageModelAccess) modelHelper.getModelAccessFactory()
             .getPCMModelAccess(IModelAccessFactory.USAGE_MODEL_ACCESS, null);
 
       getSimuComStatus().setCurrentSimulationTime(0);
-
       modelHelper.getSimuComModel().setUsageScenarios(usageModelAccess.getWorkloadDrivers());
 
       InterpreterLogger.debug(logger, "Start usage scenario for each simulated user");
-      final double simRealTimeNano = ExperimentRunner.run(modelHelper.getSimuComModel(), modelHelper.getSimuComModel()
-            .getConfig().getSimuTime());
+      final double simRealTimeNano = ExperimentRunner.run(
+    		  modelHelper.getSimuComModel(), 
+    		  modelHelper.getSimuComModel().getConfiguration().getSimuTime());
       final double simRealTimeSeconds = simRealTimeNano / Math.pow(10, 9);
       InterpreterLogger.debug(logger, "Finished UsageModel. Interpretation took " + simRealTimeSeconds
             + " real time seconds");
 
       probeSpecContext.finish();
       InterpreterLogger.info(logger, "finished job: " + this);
-
-
    }
-
 
    /**
     * @return returns the blackboard.

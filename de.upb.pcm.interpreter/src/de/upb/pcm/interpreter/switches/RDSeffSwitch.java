@@ -72,7 +72,7 @@ public class RDSeffSwitch<T> extends AbstractSeffSwitch<T>
    public RDSeffSwitch(final AbstractPCMModelInterpreter modelInterpreter, final AssemblyContext assemblyContext)
    {
       super(modelInterpreter, assemblyContext);
-      transitionDeterminer = new TransitionDeterminer(modelInterpreter.getModelHelper().getSimuComModel().getConfig(),
+      transitionDeterminer = new TransitionDeterminer(modelInterpreter.getModelHelper().getSimuComModel().getConfiguration(),
             modelInterpreter);
    }
 
