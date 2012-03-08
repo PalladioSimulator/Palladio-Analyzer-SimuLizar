@@ -6,6 +6,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
@@ -28,16 +29,18 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  */
 public class UsageModelAccess extends AbstractPCMModelAccess
 {
+   private final ProbeSpecContext probSpecContext;
 
-   /**
+/**
     * Constructor
     * 
     * @param context the interpreter default context.
     * @param modelHelper the model helper.
     */
-   public UsageModelAccess(final InterpreterDefaultContext context, final ModelHelper modelHelper)
+   public UsageModelAccess(final InterpreterDefaultContext context, final ModelHelper modelHelper, final ProbeSpecContext probSpecContext)
    {
       super(context, modelHelper);
+      this.probSpecContext = probSpecContext;
    }
 
 
@@ -55,13 +58,14 @@ public class UsageModelAccess extends AbstractPCMModelAccess
          {
             // create scenario interpreter
             final AbstractPCMModelInterpreter scenarioInterpreter = getModelHelper().getModelAccessFactory()
-                  .getPCMModelInterpreter(IModelAccessFactory.USAGEMODEL_USAGESCENARIO_INTERPRETER, null, null);
+                  .getPCMModelInterpreter(IModelAccessFactory.USAGEMODEL_USAGESCENARIO_INTERPRETER, null, null,
+                  probSpecContext);
             return (IScenarioRunner) scenarioInterpreter;
 
          }
       };
       // create workload driver by using given factory
-      return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation());
+      return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation(),closedWorkload.getUsageScenario_Workload().getId());
    }
 
 
@@ -86,14 +90,15 @@ public class UsageModelAccess extends AbstractPCMModelAccess
          public IScenarioRunner createScenarioRunner()
          {
             final AbstractPCMModelInterpreter scenarioInterpreter = getModelHelper().getModelAccessFactory()
-                  .getPCMModelInterpreter(IModelAccessFactory.USAGEMODEL_USAGESCENARIO_INTERPRETER, null, null);
+                  .getPCMModelInterpreter(IModelAccessFactory.USAGEMODEL_USAGESCENARIO_INTERPRETER, null, null,
+                  probSpecContext);
             return (IScenarioRunner) scenarioInterpreter;
          }
       };
 
       // create workload driver by using given factory
       return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(getModelHelper().getSimuComModel(), userFactory,
-            openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
+            openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(),openWorkload.getUsageScenario_Workload().getId());
    }
 
 

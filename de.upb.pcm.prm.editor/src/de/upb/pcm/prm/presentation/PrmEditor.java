@@ -165,8 +165,6 @@ import de.uka.ipd.sdq.pcm.allocation.provider.AllocationItemProviderAdapterFacto
 
 import de.uka.ipd.sdq.pcm.core.composition.provider.CompositionItemProviderAdapterFactory;
 
-import de.uka.ipd.sdq.pcm.core.connectors.provider.ConnectorsItemProviderAdapterFactory;
-
 import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.pcm.core.provider.CoreItemProviderAdapterFactory;
@@ -176,8 +174,6 @@ import de.uka.ipd.sdq.pcm.parameter.provider.ParameterItemProviderAdapterFactory
 import de.uka.ipd.sdq.pcm.protocol.provider.ProtocolItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.pcm.provider.PcmItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.qosannotations.performance.provider.PerformanceItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.pcm.qosannotations.provider.QosannotationsItemProviderAdapterFactory;
 
@@ -826,18 +822,13 @@ public class PrmEditor
       adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new EntityItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
-      adapterFactory.addAdapterFactory(new ConnectorsItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new RepositoryItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
-      adapterFactory.addAdapterFactory(new PerformanceItemProviderAdapterFactory());
-      adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.qosannotations.reliability.provider.ReliabilityItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
-      adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.seff.performance.provider.PerformanceItemProviderAdapterFactory());
-      adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.seff.reliability.provider.ReliabilityItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
       adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());

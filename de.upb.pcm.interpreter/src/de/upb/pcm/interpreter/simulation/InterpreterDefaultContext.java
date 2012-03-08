@@ -4,8 +4,9 @@ package de.upb.pcm.interpreter.simulation;
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.simucomframework.Context;
-import de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.abstractsimengine.processes.SimulatedProcess;
 
 
 /**
@@ -50,7 +51,7 @@ public class InterpreterDefaultContext extends Context
     * @param simProcess the sim process of this context, means the process in which this context is
     *           used
     */
-   public InterpreterDefaultContext(final SimuComModel simuComModel, final SimProcess simProcess)
+   public InterpreterDefaultContext(final SimuComModel simuComModel, final SimuComSimProcess simProcess)
    {
       super(simuComModel);
       stack = new InterpreterSimulatedStack();

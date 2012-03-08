@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.exceptions.PCMModelLoadException;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.RepositoryModelSwitch;
@@ -34,9 +35,9 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public RepositoryInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper)
+   public RepositoryInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
-      super(context, modelHelper);
+      super(context, probeSpecContext, modelHelper);
    }
 
 

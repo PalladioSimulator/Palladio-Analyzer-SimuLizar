@@ -15,7 +15,8 @@ import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
-import de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
@@ -44,9 +45,9 @@ public class ModelHelper
 
    protected static final Logger logger = Logger.getLogger(ModelHelper.class.getName());
 
-   private final Map<SimProcess, PCMModels> modelCopies;
+   private final Map<SimuComSimProcess, PCMModels> modelCopies;
 
-   private final Map<SimProcess, Long> sessionIds;
+   private final Map<SimuComSimProcess, Long> sessionIds;
 
    private final MDSDBlackboard blackboard;
 
@@ -69,14 +70,14 @@ public class ModelHelper
     * @param simuComModel the SimuCom model.
     * @param prmModel the prm model.
     */
-   public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel)
+   public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel, final ProbeSpecContext probeSpecContext)
    {
       super();
-      this.modelCopies = new HashMap<SimProcess, PCMModels>();
-      this.sessionIds = new HashMap<SimProcess, Long>();
+      this.modelCopies = new HashMap<SimuComSimProcess, PCMModels>();
+      this.sessionIds = new HashMap<SimuComSimProcess, Long>();
       this.blackboard = blackboard;
 
-      this.modelReaderFactory = new ModelAccessFactory(this);
+      this.modelReaderFactory = new ModelAccessFactory(this,probeSpecContext);
       this.simuComModel = simuComModel;
       this.resourceSyncer = new ResourceSyncer(simuComModel, this);
 
@@ -180,25 +181,19 @@ public class ModelHelper
     * created. If simulated user repeats interaction with the system within the sim process, a fresh
     * copy will created.
     * 
-    * @param simProcess the sim process.
+    * @param simuComSimProcess the sim process.
     * @return the local pcm models for the sim process.
     */
-   public PCMModels getLocalPCMModels(final SimProcess simProcess)
+   public PCMModels getLocalPCMModels(final SimuComSimProcess simuComSimProcess)
    {
-      if (getModelCopies().get(simProcess) == null)
+      if (getModelCopies().get(simuComSimProcess) == null ||
+    		  getSessionIds().get(simuComSimProcess) < simuComSimProcess.getCurrentSessionId())
       {
-         getModelCopies().put(simProcess, copyGlobalPCMModels());
-         getSessionIds().put(simProcess, simProcess.getCurrentSessionId());
-         InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simProcess);
+         getModelCopies().put(simuComSimProcess, copyGlobalPCMModels());
+         getSessionIds().put(simuComSimProcess, simuComSimProcess.getCurrentSessionId());
+         InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simuComSimProcess);
       }
-      else if (getSessionIds().get(simProcess) < simProcess.getCurrentSessionId())
-      {
-         // but if the session id has changed, the user needs fresh global models
-         getModelCopies().put(simProcess, copyGlobalPCMModels());
-         getSessionIds().put(simProcess, simProcess.getCurrentSessionId());
-         InterpreterLogger.debug(logger, "Created pcm model copy for new run of sim process: " + simProcess);
-      }
-      return this.modelCopies.get(simProcess);
+      return this.modelCopies.get(simuComSimProcess);
    }
 
 
@@ -214,7 +209,7 @@ public class ModelHelper
    /**
     * @return returns the modelCopies.
     */
-   private Map<SimProcess, PCMModels> getModelCopies()
+   private Map<SimuComSimProcess, PCMModels> getModelCopies()
    {
       return this.modelCopies;
    }
@@ -282,7 +277,7 @@ public class ModelHelper
    /**
     * @return returns the sessionIds.
     */
-   private Map<SimProcess, Long> getSessionIds()
+   private Map<SimuComSimProcess, Long> getSessionIds()
    {
       return this.sessionIds;
    }

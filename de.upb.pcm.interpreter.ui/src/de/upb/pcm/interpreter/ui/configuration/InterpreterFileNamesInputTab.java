@@ -5,7 +5,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
 
-import de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab;
+import de.uka.ipd.sdq.workflow.pcm.ConstantsContainer;
+import de.uka.ipd.sdq.workflow.pcm.runconfig.FileNamesInputTab;
 
 
 /**
@@ -43,11 +44,11 @@ public class InterpreterFileNamesInputTab extends FileNamesInputTab
 
       super.initializeFrom(configuration);
       // Clear default values
-      if (eventMiddlewareRepository.getText().equals(FileNamesInputTab.PCM_DEFAULT_EVENT_MIDDLEWARE_FILE_URI))
+      if (eventMiddlewareRepository.getText().equals(ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE))
       {
          eventMiddlewareRepository.setText("");
       }
-      if (mwtextRepository.getText().equals(FileNamesInputTab.PCM_GLASSFISHREPOSITORY_FILE_URI))
+      if (mwtextRepository.getText().equals(ConstantsContainer.MWREPOSITORY_FILE))
       {
          mwtextRepository.setText("");
       }

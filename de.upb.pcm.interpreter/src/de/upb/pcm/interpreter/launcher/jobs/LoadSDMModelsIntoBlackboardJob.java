@@ -14,6 +14,7 @@ import de.uka.ipd.sdq.workflow.exceptions.JobFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.RollbackFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.pcm.ConstantsContainer;
 import de.uka.ipd.sdq.workflow.pcm.configurations.AbstractPCMWorkflowRunConfiguration;
 import de.upb.pcm.interpreter.launcher.partitions.SDMResourceSetPartition;
 
@@ -56,7 +57,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
 
       // final URI pathToSDM = CommonPlugin.asLocalURI(URI.createPlatformResourceURI(new
       // File("/SDM2/").getPath(), true));
-      if (!path.equals(AbstractPCMWorkflowRunConfiguration.PCM_DEFAULT_EVENT_MIDDLEWARE_FILE_URI))
+      if (!path.equals(""))
       {
          File pathFile = new File(path);
          String parent = pathFile.getParent();

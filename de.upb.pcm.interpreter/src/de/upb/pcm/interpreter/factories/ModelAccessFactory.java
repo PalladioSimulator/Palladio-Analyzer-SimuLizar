@@ -2,6 +2,7 @@ package de.upb.pcm.interpreter.factories;
 
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.AbstractPMSModelAccess;
 import de.upb.pcm.interpreter.access.AllocationAccess;
@@ -29,6 +30,7 @@ public class ModelAccessFactory implements IModelAccessFactory
 
 
    private final ModelHelper modelHelper;
+private final ProbeSpecContext probeSpecContext;
 
 
    /**
@@ -36,11 +38,11 @@ public class ModelAccessFactory implements IModelAccessFactory
     * 
     * @param modelHelper the model helper.
     */
-   public ModelAccessFactory(final ModelHelper modelHelper)
+   public ModelAccessFactory(final ModelHelper modelHelper, ProbeSpecContext probeSpecContext)
    {
       super();
       this.modelHelper = modelHelper;
-
+      this.probeSpecContext = probeSpecContext;
 
    }
 
@@ -72,7 +74,7 @@ public class ModelAccessFactory implements IModelAccessFactory
          case ALLOCATION_ACCESS:
             return new AllocationAccess(context, getModelHelper());
          case USAGE_MODEL_ACCESS:
-            return new UsageModelAccess(context, getModelHelper());
+            return new UsageModelAccess(context, getModelHelper(), this.probeSpecContext);
 
          default:
             throw new IllegalArgumentException("No reader for readerType " + modelAccessType + " found");
@@ -87,22 +89,24 @@ public class ModelAccessFactory implements IModelAccessFactory
     *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
     *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
     */
+   // TODO: Refactor me!!!
    @Override
    public AbstractPCMModelInterpreter getPCMModelInterpreter(final int interpreterType,
-         final InterpreterDefaultContext context, final AssemblyContext assemblyContext)
+         final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+         final ProbeSpecContext probeSpecContext)
    {
 
       switch (interpreterType)
       {
 
          case USAGEMODEL_USAGESCENARIO_INTERPRETER:
-            return new UsageModelUsageScenarioInterpreter(context, getModelHelper());
+            return new UsageModelUsageScenarioInterpreter(context, probeSpecContext, getModelHelper());
 
          case RDSEFF_INTERPRETER:
-            return new RDSeffInterpreter(context, getModelHelper(), assemblyContext);
+            return new RDSeffInterpreter(context, probeSpecContext, getModelHelper(), assemblyContext);
 
          case REPOSITORY_INTERPRETER:
-            return new RepositoryInterpreter(context, getModelHelper());
+            return new RepositoryInterpreter(context, probeSpecContext, getModelHelper());
 
          default:
             throw new IllegalArgumentException("No interpreter for interpreterType " + interpreterType + " found");

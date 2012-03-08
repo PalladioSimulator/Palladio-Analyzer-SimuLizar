@@ -10,7 +10,7 @@ import org.eclipse.debug.core.ILaunch;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowLauncher;
 import de.uka.ipd.sdq.workflow.IJob;
-import de.uka.ipd.sdq.workflow.launchconfig.LoggerAppenderStruct;
+import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
 import de.upb.pcm.interpreter.launcher.jobs.PCMInterpreterRootCompositeJob;
 
 

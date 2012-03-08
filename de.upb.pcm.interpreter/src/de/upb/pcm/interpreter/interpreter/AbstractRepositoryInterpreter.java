@@ -5,6 +5,7 @@ package de.upb.pcm.interpreter.interpreter;
 
 
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 
@@ -24,9 +25,9 @@ public abstract class AbstractRepositoryInterpreter extends AbstractPCMModelInte
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public AbstractRepositoryInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper)
+   public AbstractRepositoryInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
-      super(context, modelHelper);
+      super(context, probeSpecContext, modelHelper);
    }
 
 

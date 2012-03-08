@@ -4,6 +4,7 @@ package de.upb.pcm.interpreter.interpreter;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
@@ -21,18 +22,17 @@ public abstract class AbstractPCMModelInterpreter extends AbstractPCMModelAccess
    protected static final Logger logger = Logger.getLogger(AbstractPCMModelInterpreter.class.getName());
 
    private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
-
-
+ 
    /**
     * Constructor
     * 
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public AbstractPCMModelInterpreter(final InterpreterDefaultContext context, final ModelHelper modelHelper)
+   public AbstractPCMModelInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
    {
       super(context, modelHelper);
-      this.pcmInterpreterProbeSpecUtil = new PCMInterpreterProbeSpecUtil(modelHelper);
+      this.pcmInterpreterProbeSpecUtil = new PCMInterpreterProbeSpecUtil(probeSpecContext, modelHelper);
    }
 
 

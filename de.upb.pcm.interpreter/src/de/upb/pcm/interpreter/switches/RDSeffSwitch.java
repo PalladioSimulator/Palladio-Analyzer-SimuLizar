@@ -26,7 +26,7 @@ import de.uka.ipd.sdq.pcm.seff.LoopAction;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
 import de.uka.ipd.sdq.pcm.seff.SetVariableAction;
 import de.uka.ipd.sdq.pcm.seff.StartAction;
-import de.uka.ipd.sdq.pcm.seff.performance.ParametricResourceDemand;
+import de.uka.ipd.sdq.pcm.seff.seff_performance.ParametricResourceDemand;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
@@ -141,7 +141,8 @@ public class RDSeffSwitch<T> extends AbstractSeffSwitch<T>
       final IModelAccessFactory modelAccessFactory = getModelInterpreter().getModelHelper().getModelAccessFactory();
       // interpret repository
       final AbstractPCMModelInterpreter repositoryInterpreter = modelAccessFactory.getPCMModelInterpreter(
-            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null);
+            IModelAccessFactory.REPOSITORY_INTERPRETER, getModelInterpreter().getContext(), null,
+            getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
       // create new stack frame for input parameter
 
@@ -435,7 +436,8 @@ public class RDSeffSwitch<T> extends AbstractSeffSwitch<T>
                      .getModelAccessFactory();
 
                final AbstractPCMModelInterpreter seffInterpreter = modelAccessFactory.getPCMModelInterpreter(
-                     IModelAccessFactory.RDSEFF_INTERPRETER, new InterpreterDefaultContext(ctx), getAssemblyContext());
+                     IModelAccessFactory.RDSEFF_INTERPRETER, new InterpreterDefaultContext(ctx), getAssemblyContext(),
+                     getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
 
                InterpreterLogger.debug(logger, "Created new RDSeff interpreter for "
                      + ((isAsync()) ? "asynced" : "synced") + " forked baviour: " + this);
