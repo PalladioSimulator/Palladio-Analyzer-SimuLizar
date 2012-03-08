@@ -1,6 +1,5 @@
 package de.upb.pcm.interpreter.launcher.jobs;
 
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 
@@ -11,6 +10,7 @@ import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
 import de.uka.ipd.sdq.simucomframework.DiscardInvalidMeasurementsBlackboardDecorator;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.SimuComGarbageCollector;
 import de.uka.ipd.sdq.simucomframework.calculator.CalculatorFactory;
 import de.uka.ipd.sdq.simucomframework.calculator.SetupPipesAndFiltersStrategy;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -30,7 +30,6 @@ import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.prm.PrmFactory;
 
-
 /**
  * Job starting the pcm interpretation.
  * 
@@ -39,7 +38,6 @@ import de.upb.pcm.prm.PrmFactory;
  */
 public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSDBlackboard>
 {
-
    private static final Logger logger = Logger.getLogger(PCMStartInterpretationJob.class.getName());
 
    private MDSDBlackboard blackboard;
@@ -58,10 +56,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    public PCMStartInterpretationJob(final SimuComWorkflowConfiguration configuration)
    {
       this.configuration = configuration;
-
-
    }
-
 
    /**
     * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
@@ -76,12 +71,13 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
       if (factory == null) {
           throw new RuntimeException("There is no simulation engine available. Install at least one engine.");
       }
-      
+            
       final SimuComModel simuComModel = new SimuComModel(
     		  (SimuComConfig) getConfiguration().getSimulationConfiguration(),
     		  getSimuComStatus(), 
     		  factory,
-    		  false);
+    		  false,
+    		  probeSpecContext);
 
       setupSampleBlackboard(simuComModel);
 
@@ -119,7 +115,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
       return this.blackboard;
    }
 
-
    /**
     * @return returns the configuration.
     */
@@ -127,7 +122,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    {
       return this.configuration;
    }
-
 
    /**
     * @see de.uka.ipd.sdq.workflow.IJob#getName()
@@ -137,7 +131,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    {
       return "Perform PCM interpreter";
    }
-
 
    /**
     * Gets the SimuCom status, creates one if none exists.
@@ -156,17 +149,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
       return this.simuComStatus;
    }
 
-
    /**
     * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
     */
    @Override
-   public void rollback(final IProgressMonitor monitor) throws RollbackFailedException
-   {
-
-
-   }
-
+   public void rollback(final IProgressMonitor monitor) throws RollbackFailedException { }
 
    /**
     * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
@@ -175,9 +162,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
    public void setBlackboard(final MDSDBlackboard blackboard)
    {
       this.blackboard = blackboard;
-
    }
-
 
    /**
     * Sets SampleBlackboard instead of concurrency sample blackboard.
@@ -186,13 +171,19 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     */
    private void setupSampleBlackboard(final SimuComModel simuComModel)
    {
-      final ISampleBlackboard sampleBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
-            new SampleBlackboard(), simuComModel.getSimulationControl());
+      final ISampleBlackboard sampleBlackboard = 
+    		  new DiscardInvalidMeasurementsBlackboardDecorator(
+    				  new SampleBlackboard(), 
+    				  simuComModel.getSimulationControl());
 
-      probeSpecContext.initialise(sampleBlackboard,
-            new SimuComProbeStrategyRegistry(),
-            new CalculatorFactory(simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
+      probeSpecContext.initialise(
+    		  sampleBlackboard,
+    		  new SimuComProbeStrategyRegistry(),
+    		  new CalculatorFactory(simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
+     
+      // install a garbage collector which keeps track of the samples stored on the blackboard and
+      // removes samples when they become obsolete
+      SimuComGarbageCollector garbageCollector = new SimuComGarbageCollector(sampleBlackboard);
+      probeSpecContext.setBlackboardGarbageCollector(garbageCollector);
    }
-
-
 }

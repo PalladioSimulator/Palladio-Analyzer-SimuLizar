@@ -87,54 +87,49 @@ public class ResourceStateListener implements IStateListener
       modelHelper.getGlobalPRMModel().getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
    }
 
-
    /**
     * @see de.uka.ipd.sdq.simucomframework.resources.IStateListener#stateChanged(int, int)
     */
    @Override
    public void stateChanged(final int queueLength, final int instanceId)
    {
+		if (this.modelHelper.getSimuComModel().getSimulationControl()
+				.isRunning()) {
+			final double simulationTime = this.modelHelper.getSimuComModel()
+					.getSimulationControl().getCurrentSimulationTime();
+			if (lastTimeNull) {
+				lastTimeNull = false;
+				// calculate time of zero jobs
+				final double idleTime = simulationTime - lastSimulationTime;
+				this.measurements.add(idleTime);
+			}
+			if (simulationTime <= start + timeIntervall) {
+				if (queueLength == 0) {
+					lastTimeNull = true;
+				}
 
-      final double simulationTime = this.modelHelper.getSimuComModel().getSimulationControl()
-            .getCurrentSimulationTime();
-      if (lastTimeNull)
-      {
-         lastTimeNull = false;
-         // calculate time of zero jobs
-         final double idleTime = simulationTime - lastSimulationTime;
-         this.measurements.add(idleTime);
-      }
-      if (simulationTime <= start + timeIntervall)
-      {
-         if (queueLength == 0)
-         {
-            lastTimeNull = true;
-         }
+			} else {
+				start = simulationTime;
+				final double utilization = 1 - (summArray(this.measurements) / timeIntervall);
 
-      }
-      else
-      {
-         start = simulationTime;
-         final double utilization = 1 - (summArray(this.measurements) / timeIntervall);
+				addToPRM(utilization);
+				/*
+				 * Value changed, adapt (start sd interpreter), check first if
+				 * sdm models exists. Reason: SimuLizar only runs in Eclipse
+				 * Indigo without SD Interpreter. No classes form the SD
+				 * Interpreter are allowed to be accesed in Indigo by the PCM
+				 * Interpreter.
+				 */
+				if (this.modelHelper.sdmModelsExists()) {
+					this.modelHelper.getSDExecutor().executeActivities(
+							this.resourceContainer);
+				}
 
-         addToPRM(utilization);
-         /*
-          * Value changed, adapt (start sd interpreter), check first if sdm models exists. Reason:
-          * SimuLizar only runs in Eclipse Indigo without SD Interpreter. No classes form the SD
-          * Interpreter are allowed to be accesed in Indigo by the PCM Interpreter.
-          */
-         if (this.modelHelper.sdmModelsExists())
-         {
-            this.modelHelper.getSDExecutor().executeActivities(this.resourceContainer);
-         }
-
-
-         this.measurements.clear();
-      }
-      this.lastSimulationTime = simulationTime;
-
-   }
-
+				this.measurements.clear();
+			}
+			this.lastSimulationTime = simulationTime;
+		}
+	}
 
    /**
     * Sums double values in the given list.
