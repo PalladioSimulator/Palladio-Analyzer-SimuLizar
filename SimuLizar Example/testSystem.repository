@@ -12,7 +12,7 @@
           <branchBehaviour_BranchTransition id="_dqmatGhOEeGuiei3dZOHpg">
             <steps_Behaviour xsi:type="seff:StartAction" id="_IK410OuUEeCuhfIsXFGDcQ" successor_AbstractAction="_jJKn4OuZEeCuhfIsXFGDcQ"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_IK410euUEeCuhfIsXFGDcQ" predecessor_AbstractAction="_jJKn4OuZEeCuhfIsXFGDcQ"/>
-            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_jJKn4OuZEeCuhfIsXFGDcQ" predecessor_AbstractAction="_IK410OuUEeCuhfIsXFGDcQ" successor_AbstractAction="_IK410euUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_Q4Mx8OuZEeCuhfIsXFGDcQ">
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_jJKn4OuZEeCuhfIsXFGDcQ" entityName="server2.entpacke" predecessor_AbstractAction="_IK410OuUEeCuhfIsXFGDcQ" successor_AbstractAction="_IK410euUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_Q4Mx8OuZEeCuhfIsXFGDcQ">
               <inputVariableUsages__CallAction>
                 <variableCharacterisation_VariableUsage type="BYTESIZE">
                   <specification_VariableCharacterisation specification="datei.BYTESIZE"/>
@@ -26,7 +26,7 @@
           <branchBehaviour_BranchTransition id="_dqnBwWhOEeGuiei3dZOHpg">
             <steps_Behaviour xsi:type="seff:StartAction" id="_ItInQOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_T6NjsOuUEeCuhfIsXFGDcQ"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_ItInQeuUEeCuhfIsXFGDcQ" predecessor_AbstractAction="_T6NjsOuUEeCuhfIsXFGDcQ"/>
-            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_T6NjsOuUEeCuhfIsXFGDcQ" predecessor_AbstractAction="_ItInQOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_ItInQeuUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_6EqiAOuTEeCuhfIsXFGDcQ">
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_T6NjsOuUEeCuhfIsXFGDcQ" entityName="server1.entpacke" predecessor_AbstractAction="_ItInQOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_ItInQeuUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_6EqiAOuTEeCuhfIsXFGDcQ">
               <inputVariableUsages__CallAction>
                 <variableCharacterisation_VariableUsage type="BYTESIZE">
                   <specification_VariableCharacterisation specification="datei.BYTESIZE"/>
