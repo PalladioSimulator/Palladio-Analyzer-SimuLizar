@@ -131,7 +131,7 @@ public class ResourceSyncer {
          final ScheduledResource scheduledResource = resourceAlreadyExist(simulatedResourceContainer, typeId);
          if (scheduledResource != null)
          {
-            // scheduledResource.setProcessingRate(processingRate);
+        	 scheduledResource.setProcessingRate(processingRate);
          }
          else
          {
@@ -184,7 +184,7 @@ public class ResourceSyncer {
 
 		// TODO this is only a draft
 		InterpreterLogger
-				.info(logger,
+				.debug(logger,
 						"Synchronise ResourceContainer and Simulated ResourcesContainer");
 		// add resource container, if not done already
 		for (final ResourceContainer resourceContainer : getModelHelper()
@@ -221,7 +221,7 @@ public class ResourceSyncer {
 			}
 
 		}
-		InterpreterLogger.info(logger, "Synchronisation done");
+		InterpreterLogger.debug(logger, "Synchronisation done");
 		// TODO remove unused
 	}
 
