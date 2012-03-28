@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/4.0" id="_QbOe4OuVEeCuhfIsXFGDcQ" entityName="defaultAllocation">
+<Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="_QbOe4OuVEeCuhfIsXFGDcQ" entityName="defaultAllocation">
   <targetResourceEnvironment_Allocation href="testSystem.resourceenvironment#/"/>
   <system_Allocation href="testSystem.system#_Vl6tAOuTEeCuhfIsXFGDcQ"/>
   <allocationContexts_Allocation id="_TF6jgOuVEeCuhfIsXFGDcQ" entityName="Allocation_Assembly_Lastverteiler &lt;Lastverteiler> &lt;Lastverteiler>">
