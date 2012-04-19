@@ -23,7 +23,7 @@ import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
-import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
+import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.simulation.InterpreterSimulatedStack;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 
@@ -39,26 +39,30 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
 {
 
    /**
-    * 
+    * TODO: WTF???
     */
    private static final int NUMBER_OF_STACKFRAMES = 4;
 
    protected static final Logger logger = Logger.getLogger(RepositoryModelSwitch.class.getName());
 
-   private final RepositoryInterpreter modelInterpreter;
-
    private AssemblyContext calledAssemblyContext;
-
+   private final InterpreterDefaultContext context;
+   private final IModelAccessFactory modelAccessFactory;
+   private final OperationSignature operationSignature;
 
    /**
     * Constructor
     * 
     * @param modelInterpreter the corresponding pcm model interpreter holding this switch..
     */
-   public RepositoryModelSwitch(final RepositoryInterpreter modelInterpreter)
+   public RepositoryModelSwitch(final InterpreterDefaultContext context,
+		   final IModelAccessFactory modelAccessFactory,
+		   OperationSignature operationSignature)
    {
       super();
-      this.modelInterpreter = modelInterpreter;
+      this.context = context;
+      this.modelAccessFactory = modelAccessFactory;
+      this.operationSignature = operationSignature;
    }
 
 
@@ -69,7 +73,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
    public T caseBasicComponent(final BasicComponent object)
    {
       // create new stack frame for component parameters
-      final InterpreterSimulatedStack stack = getModelInterpreter().getContext().getStack();
+      final InterpreterSimulatedStack stack = context.getStack();
       final SimulatedStackframe<Object> componentParameterStackFrame = stack.createAndPushNewStackFrame(
             object.getComponentParameterUsage_ImplementationComponentType(), stack.currentStackFrame());
 
@@ -79,7 +83,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
 
       // get seffs for call
       final List<ServiceEffectSpecification> calledSeffs = getSeffsForCall(
-            object.getServiceEffectSpecifications__BasicComponent(), getModelInterpreter().getOperationSignature());
+            object.getServiceEffectSpecifications__BasicComponent(), this.operationSignature);
 
       interpretSeffs(calledSeffs);
 
@@ -107,8 +111,8 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
    public T caseProvidedRole(final ProvidedRole object)
    {
 
-      final SystemAccess systemReader = (SystemAccess) getModelInterpreter().getModelHelper().getModelAccessFactory()
-            .getPCMModelAccess(IModelAccessFactory.SYSTEM_ACCESS, getModelInterpreter().getContext());
+      final SystemAccess systemReader = this.modelAccessFactory
+            .getSystemAccess(context);
 
       final ProvidedDelegationConnector connectedProvidedDelegationConnector = systemReader
             .getConnectedProvidedDelegationConnector(object);
@@ -130,8 +134,8 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
    public T caseRequiredRole(final RequiredRole object)
    {
 
-      final SystemAccess systemReader = (SystemAccess) getModelInterpreter().getModelHelper().getModelAccessFactory()
-            .getPCMModelAccess(IModelAccessFactory.SYSTEM_ACCESS, getModelInterpreter().getContext());
+      final SystemAccess systemReader = modelAccessFactory
+            .getSystemAccess(context);
 
       final AssemblyConnector assemblyConnector = systemReader.getConnectedAssemblyConnector(object);
 
@@ -142,16 +146,6 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
       this.doSwitch(calledAssemblyContext.getEncapsulatedComponent__AssemblyContext());
       return super.caseRequiredRole(object);
    }
-
-
-   /**
-    * @return Returns the modelInterpreter.
-    */
-   protected RepositoryInterpreter getModelInterpreter()
-   {
-      return this.modelInterpreter;
-   }
-
 
    /**
     * Return the seffs (of different types) from a list of seffs which are affected by the call.
@@ -202,13 +196,8 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
          for (final ServiceEffectSpecification serviceEffectSpecification : calledSeffs)
          {
 
-            final IModelAccessFactory modelAccessFactory = getModelInterpreter().getModelHelper()
-                  .getModelAccessFactory();
-
-            final RDSeffInterpreter rdSeffInterpreter = (RDSeffInterpreter) modelAccessFactory.getPCMModelInterpreter(
-                  IModelAccessFactory.RDSEFF_INTERPRETER, getModelInterpreter().getContext(), calledAssemblyContext,
-                  getModelInterpreter().getPCMInterpreterProbeSpecUtil().getProbeSpecContext());
-
+            final RDSeffInterpreter rdSeffInterpreter = modelAccessFactory.getRDSEFFInterpreter(
+                  context, calledAssemblyContext);
 
             // interpret called seff
             rdSeffInterpreter.interpret(serviceEffectSpecification);

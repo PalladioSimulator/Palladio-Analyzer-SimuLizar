@@ -17,6 +17,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.SimuComProbeStrategyRegistry;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
+import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 import de.uka.ipd.sdq.workflow.IBlackboardInteractingJob;
@@ -25,7 +26,7 @@ import de.uka.ipd.sdq.workflow.exceptions.RollbackFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
-import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
+import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.prm.PrmFactory;
@@ -36,154 +37,166 @@ import de.upb.pcm.prm.PrmFactory;
  * @author Joachim Meyer
  * 
  */
-public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSDBlackboard>
-{
-   private static final Logger logger = Logger.getLogger(PCMStartInterpretationJob.class.getName());
+public class PCMStartInterpretationJob implements
+		IBlackboardInteractingJob<MDSDBlackboard> {
+	private static final Logger logger = Logger
+			.getLogger(PCMStartInterpretationJob.class.getName());
 
-   private MDSDBlackboard blackboard;
+	private MDSDBlackboard blackboard;
 
-   private SimuComStatus simuComStatus;
+	private final SimuComWorkflowConfiguration configuration;
 
-   private final SimuComWorkflowConfiguration configuration;
+	/**
+	 * Constructor
+	 * 
+	 * @param configuration
+	 *            the SimuCom workflow configuration.
+	 */
+	public PCMStartInterpretationJob(
+			final SimuComWorkflowConfiguration configuration) {
+		this.configuration = configuration;
+	}
 
-   private final ProbeSpecContext probeSpecContext = new ProbeSpecContext();
+	/**
+	 * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	@Override
+	public void execute(final IProgressMonitor monitor)
+			throws JobFailedException, UserCanceledException {
+		InterpreterLogger.info(logger, "Start job: " + this);
+		final SimuComModel simuComModel = initialiseSimuComModel();
 
-   /**
-    * Constructor
-    * 
-    * @param configuration the SimuCom workflow configuration.
-    */
-   public PCMStartInterpretationJob(final SimuComWorkflowConfiguration configuration)
-   {
-      this.configuration = configuration;
-   }
+		// factories and loaders
+		final ModelHelper modelHelper = new ModelHelper(this.blackboard,
+				simuComModel, PrmFactory.eINSTANCE.createPRMModel());
 
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
-    */
-   @Override
-   public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException
-   {
-      InterpreterLogger.info(logger, "Start job: " + this);
-      
-      // load factory for the preferred simulation engine
-      ISimEngineFactory factory = SimulationPreferencesHelper.getPreferredSimulationEngine();
-      if (factory == null) {
-          throw new RuntimeException("There is no simulation engine available. Install at least one engine.");
-      }
-            
-      final SimuComModel simuComModel = new SimuComModel(
-    		  (SimuComConfig) getConfiguration().getSimulationConfiguration(),
-    		  getSimuComStatus(), 
-    		  factory,
-    		  false,
-    		  probeSpecContext);
+		// create usage model access
+		final UsageModelAccess usageModelAccess = modelHelper
+				.getModelAccessFactory().getUsageModelAccess(
+						new InterpreterDefaultContext(simuComModel));
 
-      setupSampleBlackboard(simuComModel);
+		simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
+		simuComModel.setUsageScenarios(
+				usageModelAccess.getWorkloadDrivers());
 
-      // factories and loaders
-      final ModelHelper modelHelper = new ModelHelper(
-    		  getBlackboard(), 
-    		  simuComModel,
-    		  PrmFactory.eINSTANCE.createPRMModel(), 
-    		  probeSpecContext);
+		InterpreterLogger.debug(logger,
+				"Start usage scenario for each simulated user");
+		final double simRealTimeNano = ExperimentRunner.run(
+				modelHelper.getSimuComModel(), modelHelper.getSimuComModel()
+						.getConfiguration().getSimuTime());
+		final double simRealTimeSeconds = simRealTimeNano / Math.pow(10, 9);
+		InterpreterLogger.debug(logger,
+				"Finished UsageModel. Interpretation took "
+						+ simRealTimeSeconds + " real time seconds");
 
-      // create usage model access
-      final UsageModelAccess usageModelAccess = (UsageModelAccess) modelHelper.getModelAccessFactory()
-            .getPCMModelAccess(IModelAccessFactory.USAGE_MODEL_ACCESS, null);
+		simuComModel.getProbeSpecContext().finish();
+		InterpreterLogger.info(logger, "finished job: " + this);
+	}
 
-      getSimuComStatus().setCurrentSimulationTime(0);
-      modelHelper.getSimuComModel().setUsageScenarios(usageModelAccess.getWorkloadDrivers());
+	/**
+	 * @see de.uka.ipd.sdq.workflow.IJob#getName()
+	 */
+	@Override
+	public String getName() {
+		return "Perform PCM interpreter";
+	}
 
-      InterpreterLogger.debug(logger, "Start usage scenario for each simulated user");
-      final double simRealTimeNano = ExperimentRunner.run(
-    		  modelHelper.getSimuComModel(), 
-    		  modelHelper.getSimuComModel().getConfiguration().getSimuTime());
-      final double simRealTimeSeconds = simRealTimeNano / Math.pow(10, 9);
-      InterpreterLogger.debug(logger, "Finished UsageModel. Interpretation took " + simRealTimeSeconds
-            + " real time seconds");
+	/**
+	 * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
+	 */
+	@Override
+	public void rollback(final IProgressMonitor monitor)
+			throws RollbackFailedException {
+	}
 
-      probeSpecContext.finish();
-      InterpreterLogger.info(logger, "finished job: " + this);
-   }
+	/**
+	 * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
+	 */
+	@Override
+	public void setBlackboard(final MDSDBlackboard blackboard) {
+		this.blackboard = blackboard;
+	}
 
-   /**
-    * @return returns the blackboard.
-    */
-   private MDSDBlackboard getBlackboard()
-   {
-      return this.blackboard;
-   }
+	private SimuComModel initialiseSimuComModel() {
+		// Configuration options for the simulation engine
+		final AbstractSimulationConfig simulationConfiguration = getConfiguration()
+				.getSimulationConfiguration();
 
-   /**
-    * @return returns the configuration.
-    */
-   private SimuComWorkflowConfiguration getConfiguration()
-   {
-      return this.configuration;
-   }
+		// Status model to store the runtime state of the simulator
+		final SimuComStatus simuComStatus = createSimuComStatus();
 
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#getName()
-    */
-   @Override
-   public String getName()
-   {
-      return "Perform PCM interpreter";
-   }
+		// Factory used to create the simulation engine used in the simulation,
+		// e.g., SSJ engine or Desmo-J engine
+		final ISimEngineFactory simEngineFactory = getSimEngineFactory();
 
-   /**
-    * Gets the SimuCom status, creates one if none exists.
-    * 
-    * @return the SimuCom status.
-    */
-   public SimuComStatus getSimuComStatus()
-   {
-      if (this.simuComStatus == null)
-      {
-         this.simuComStatus = SimucomstatusFactory.eINSTANCE.createSimuComStatus();
-         this.simuComStatus.setProcessStatus(SimucomstatusFactory.eINSTANCE.createSimulatedProcesses());
-         this.simuComStatus.setResourceStatus(SimucomstatusFactory.eINSTANCE.createSimulatedResources());
+		// Probe spec context used to take the measurements of the simulation
+		final ProbeSpecContext probeSpecContext = new ProbeSpecContext();
 
-      }
-      return this.simuComStatus;
-   }
+		final SimuComModel simuComModel = new SimuComModel(
+				(SimuComConfig) simulationConfiguration, simuComStatus,
+				simEngineFactory, false, probeSpecContext);
 
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
-    */
-   @Override
-   public void rollback(final IProgressMonitor monitor) throws RollbackFailedException { }
+		linkSimuComAndProbeSpec(simuComModel, probeSpecContext);
+		
+		return simuComModel;
+	}
 
-   /**
-    * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
-    */
-   @Override
-   public void setBlackboard(final MDSDBlackboard blackboard)
-   {
-      this.blackboard = blackboard;
-   }
+	private ISimEngineFactory getSimEngineFactory() {
+		// load factory for the preferred simulation engine
+		ISimEngineFactory factory = SimulationPreferencesHelper
+				.getPreferredSimulationEngine();
+		if (factory == null) {
+			throw new RuntimeException(
+					"There is no simulation engine available. Install at least one engine.");
+		}
+		return factory;
+	}
 
-   /**
-    * Sets SampleBlackboard instead of concurrency sample blackboard.
-    * 
-    * @param simuComModel the SimuCom model.
-    */
-   private void setupSampleBlackboard(final SimuComModel simuComModel)
-   {
-      final ISampleBlackboard sampleBlackboard = 
-    		  new DiscardInvalidMeasurementsBlackboardDecorator(
-    				  new SampleBlackboard(), 
-    				  simuComModel.getSimulationControl());
+	/**
+	 * @return returns the configuration.
+	 */
+	private SimuComWorkflowConfiguration getConfiguration() {
+		return this.configuration;
+	}
 
-      probeSpecContext.initialise(
-    		  sampleBlackboard,
-    		  new SimuComProbeStrategyRegistry(),
-    		  new CalculatorFactory(simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
-     
-      // install a garbage collector which keeps track of the samples stored on the blackboard and
-      // removes samples when they become obsolete
-      SimuComGarbageCollector garbageCollector = new SimuComGarbageCollector(sampleBlackboard);
-      probeSpecContext.setBlackboardGarbageCollector(garbageCollector);
-   }
+	/**
+	 * Gets the SimuCom status, creates one if none exists.
+	 * 
+	 * @return the SimuCom status.
+	 */
+	private SimuComStatus createSimuComStatus() {
+		final SimuComStatus simuComStatus = SimucomstatusFactory.eINSTANCE
+				.createSimuComStatus();
+
+		simuComStatus.setProcessStatus(SimucomstatusFactory.eINSTANCE
+				.createSimulatedProcesses());
+		simuComStatus.setResourceStatus(SimucomstatusFactory.eINSTANCE
+				.createSimulatedResources());
+
+		return simuComStatus;
+	}
+
+	/**
+	 * Sets SampleBlackboard instead of concurrency sample blackboard.
+	 * 
+	 * @param simuComModel
+	 *            the SimuCom model.
+	 */
+	private void linkSimuComAndProbeSpec(final SimuComModel simuComModel,
+			final ProbeSpecContext probeSpecContext) {
+		final ISampleBlackboard sampleBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
+				new SampleBlackboard(), simuComModel.getSimulationControl());
+
+		probeSpecContext.initialise(sampleBlackboard,
+				new SimuComProbeStrategyRegistry(), new CalculatorFactory(
+						simuComModel, new SetupPipesAndFiltersStrategy(
+								simuComModel)));
+
+		// install a garbage collector which keeps track of the samples stored
+		// on the blackboard and
+		// removes samples when they become obsolete
+		SimuComGarbageCollector garbageCollector = new SimuComGarbageCollector(
+				sampleBlackboard);
+		probeSpecContext.setBlackboardGarbageCollector(garbageCollector);
+	}
 }

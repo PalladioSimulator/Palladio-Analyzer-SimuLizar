@@ -14,7 +14,7 @@ import de.uka.ipd.sdq.pcm.seff.ProbabilisticBranchTransition;
 import de.uka.ipd.sdq.pcm.usagemodel.BranchTransition;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
-import de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter;
+import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 
 
 /**
@@ -26,25 +26,22 @@ import de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter;
  */
 public class TransitionDeterminer
 {
-
    protected static final Logger logger = Logger.getLogger(TransitionDeterminer.class.getName());
 
    private final SimuComConfig config;
-
-   private final AbstractPCMModelInterpreter modelInterpreter;
-
-
+   private final InterpreterDefaultContext context;
+   
    /**
     * Constructor.
     * 
     * @param config the SimuCom config for the random generator.
     * @param modelInterpreter the calling model interpreter.
     */
-   public TransitionDeterminer(final SimuComConfig config, final AbstractPCMModelInterpreter modelInterpreter)
+   public TransitionDeterminer(final InterpreterDefaultContext context)
    {
       super();
-      this.config = config;
-      this.modelInterpreter = modelInterpreter;
+      this.config = context.getModel().getConfiguration();
+      this.context = context;
    }
 
 
@@ -56,7 +53,7 @@ public class TransitionDeterminer
     */
    private boolean conditionHolds(final PCMRandomVariable condition)
    {
-      return StackContext.evaluateStatic(condition.getSpecification(), Boolean.class, modelInterpreter.getContext()
+      return StackContext.evaluateStatic(condition.getSpecification(), Boolean.class, context
             .getStack().currentStackFrame());
    }
 

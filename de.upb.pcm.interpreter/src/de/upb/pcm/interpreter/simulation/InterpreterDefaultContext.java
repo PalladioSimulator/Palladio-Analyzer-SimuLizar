@@ -1,6 +1,5 @@
 package de.upb.pcm.interpreter.simulation;
 
-
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.simucomframework.Context;
@@ -39,9 +38,7 @@ public class InterpreterDefaultContext extends Context
       this.setEvaluationMode(defaultContext.getEvaluationMode());
       this.setSimProcess(defaultContext.getThread());
       stack = new InterpreterSimulatedStack(defaultContext.getStack());
-
    }
-
 
    /**
     * Constrcutor
@@ -57,6 +54,10 @@ public class InterpreterDefaultContext extends Context
       this.setSimProcess(simProcess);
    }
 
+   public InterpreterDefaultContext(SimuComModel simuComModel) {
+	      super(simuComModel);
+	      stack = new InterpreterSimulatedStack();
+   }
 
    /**
     * @see de.uka.ipd.sdq.simucomframework.variables.StackContext#getStack()
@@ -64,20 +65,15 @@ public class InterpreterDefaultContext extends Context
    @Override
    public InterpreterSimulatedStack getStack()
    {
-
       return (InterpreterSimulatedStack) super.getStack();
    }
-
 
    /**
     * @see de.upb.pcm.interpreter.simulation.InterpreterDefaultContext#initialiseAssemblyContextLookup()
     */
    @Override
    protected void initialiseAssemblyContextLookup()
-   {
-
-
+   { 
+	   // Template method which is only needed in generative SimuCom
    }
-
-
 }

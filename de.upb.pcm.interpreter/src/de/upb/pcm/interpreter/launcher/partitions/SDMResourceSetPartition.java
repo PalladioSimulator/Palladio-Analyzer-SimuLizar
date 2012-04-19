@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.storydriven.modeling.activities.ActivitiesPackage;
-import org.storydriven.modeling.activities.Activity;
+import org.storydriven.storydiagrams.activities.ActivitiesPackage;
+import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
