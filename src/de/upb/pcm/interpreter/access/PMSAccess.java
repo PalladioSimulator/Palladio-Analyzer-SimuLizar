@@ -15,7 +15,7 @@ import de.upb.pcm.pms.PerformanceMetricEnum;
  * 
  * @author Joachim Meyer
  */
-public class PMSAccess extends AbstractPMSModelAccess
+public class PMSAccess extends AbstractModelAccess<PMSModel>
 {
 
 
@@ -29,7 +29,6 @@ public class PMSAccess extends AbstractPMSModelAccess
       super(modelHelper);
    }
 
-
    /**
     * @return the pms model.
     */
@@ -38,7 +37,6 @@ public class PMSAccess extends AbstractPMSModelAccess
    {
       return getModelHelper().getGlobalPMSModel();
    }
-
 
    /**
     * Method checks if given element should be monitored with given performance metric. If yes, it

@@ -30,7 +30,6 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher
       return new PCMInterpreterRootCompositeJob(config);
    }
 
-
    @Override
    protected ArrayList<LoggerAppenderStruct> setupLogging(final org.apache.log4j.Level logLevel) throws CoreException
    {
@@ -40,5 +39,4 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher
 
       return result;
    }
-
 }

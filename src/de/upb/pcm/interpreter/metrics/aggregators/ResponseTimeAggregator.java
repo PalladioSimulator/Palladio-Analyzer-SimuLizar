@@ -11,8 +11,8 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
+import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.metrics.PRMRecorder;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.pms.Intervall;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.StatisticalCharacterizationEnum;
@@ -50,12 +50,17 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     * @param pcmModelElementMeasurement the PCMModelElementMeasurement from the prm model.
     * @throws UnsupportedDataTypeException if statistical characterization is not supported.
     */
-   public ResponseTimeAggregator(final MeasurementSpecification measurementSpecification,
-         final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
-         final ModelHelper modelHelper, final PCMModelElementMeasurement pcmModelElementMeasurement)
+   public ResponseTimeAggregator(
+		   final IModelAccessFactory modelAccessFactory,
+		   final MeasurementSpecification measurementSpecification,
+		   final Calculator responseTimeCalculator, 
+		   final String measurementId, 
+		   final EObject monitoredElement,
+           final PCMModelElementMeasurement pcmModelElementMeasurement,
+           double baseSimulationTime)
          throws UnsupportedDataTypeException
    {
-      super(measurementSpecification, modelHelper, pcmModelElementMeasurement);
+      super(modelAccessFactory, measurementSpecification, pcmModelElementMeasurement);
       this.responseTimes = new Vector<Double>();
       if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN)
       {
@@ -69,7 +74,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
       {
          throw new UnsupportedDataTypeException("Only Intervall is currently supported");
       }
-      this.lastSimulationTime = modelHelper.getSimuComModel().getSimulationControl().getCurrentSimulationTime();
+      this.lastSimulationTime = baseSimulationTime;
       this.monitoredElement = monitoredElement;
 
       responseTimeCalculator.addCalculatorListener(this);
@@ -98,10 +103,11 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
              * Reason: SimuLizar only runs in Eclipse Indigo without SD Interpreter. No classes form
              * the SD Interpreter are allowed to be accesed in Indigo by the PCM Interpreter.
              */
-            if (this.getModelHelper().sdmModelsExists())
-            {
-               this.getModelHelper().getSDExecutor().executeActivities(this.getMonitoredPCMModellElement());
-            }
+            // TODO: Refactor this, this should not be here at all!
+            //if (this.getModelHelper().sdmModelsExists())
+            //{
+            //   this.getModelHelper().getSDExecutor().executeActivities(this.getMonitoredPCMModellElement());
+            //}
 
             this.lastSimulationTime = simulationTime;
             this.responseTimes.clear();

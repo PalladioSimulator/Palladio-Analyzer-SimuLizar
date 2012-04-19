@@ -3,7 +3,8 @@ package de.upb.pcm.interpreter.metrics;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.TemporalCharacterization;
 import de.upb.pcm.prm.PCMModelElementMeasurement;
@@ -21,13 +22,11 @@ public abstract class PRMRecorder
 {
    private PCMModelElementMeasurement pcmModelElementMeasurement;
 
-   private final ModelHelper modelHelper;
-
    private final MeasurementSpecification measurementSpecification;
 
-   private final PRMModel prmModel;
-
    private final TemporalCharacterization temporalCharacterization;
+   
+   private final PRMAccess prmAccess;
 
 
    /**
@@ -37,16 +36,16 @@ public abstract class PRMRecorder
     * @param modelHelper the model helper.
     * @param pcmModelElementMeasurement the prm PCMModelElementMeasurement.
     */
-   public PRMRecorder(final MeasurementSpecification measurementSpecification, final ModelHelper modelHelper,
+   public PRMRecorder(final IModelAccessFactory modelAccessFactory,
+		 final MeasurementSpecification measurementSpecification,
          final PCMModelElementMeasurement pcmModelElementMeasurement)
    {
       super();
       this.pcmModelElementMeasurement = getPCMModelElementMeasurement();
-      this.modelHelper = modelHelper;
-      this.prmModel = modelHelper.getGlobalPRMModel();
       this.measurementSpecification = measurementSpecification;
       this.temporalCharacterization = measurementSpecification.getTemporalRestriction();
       this.pcmModelElementMeasurement = pcmModelElementMeasurement;
+      this.prmAccess = modelAccessFactory.getPRMModelAccess();
    }
 
 
@@ -61,10 +60,10 @@ public abstract class PRMRecorder
       {
          this.pcmModelElementMeasurement.setPcmModelElement(getMonitoredPCMModellElement());
       }
-      this.prmModel.getPcmModelElementMeasurements().remove(this.pcmModelElementMeasurement);
+      getPrmModel().getPcmModelElementMeasurements().remove(this.pcmModelElementMeasurement);
       this.pcmModelElementMeasurement.setMeasurementValue(value);
       this.pcmModelElementMeasurement.setMeasurementSpecification(this.measurementSpecification);
-      this.prmModel.getPcmModelElementMeasurements().add(this.pcmModelElementMeasurement);
+      getPrmModel().getPcmModelElementMeasurements().add(this.pcmModelElementMeasurement);
    }
 
 
@@ -75,16 +74,6 @@ public abstract class PRMRecorder
    {
       return this.measurementSpecification;
    }
-
-
-   /**
-    * @return returns the modelHelper.
-    */
-   protected ModelHelper getModelHelper()
-   {
-      return this.modelHelper;
-   }
-
 
    /**
     * Gets the monitored pcm model element.
@@ -108,7 +97,7 @@ public abstract class PRMRecorder
     */
    protected PRMModel getPrmModel()
    {
-      return this.prmModel;
+      return this.prmAccess.getModel();
    }
 
 

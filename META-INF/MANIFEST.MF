@@ -15,19 +15,19 @@ Require-Bundle: org.eclipse.ui,
  de.uka.ipd.sdq.pcm.stochasticexpressions;bundle-version="2.0.0",
  de.uka.ipd.sdq.stoex.analyser;bundle-version="2.0.0",
  de.upb.pcm.pms;bundle-version="1.0.0",
- de.mdelab.sdm.interpreter.common;bundle-version="1.0.0";resolution:=optional,
- org.storydriven.modeling.interpreter.adapter;bundle-version="1.0.0";resolution:=optional,
- de.mdelab.sdm.interpreter.common.eclipse;bundle-version="1.0.0";resolution:=optional,
  de.upb.pcm.prm;bundle-version="1.0.0",
  org.eclipse.debug.ui;bundle-version="3.6.1",
  de.uka.ipd.sdq.probfunction.math;bundle-version="2.0.0",
  de.uka.ipd.sdq.scheduler;bundle-version="1.0.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
- org.storydriven.modeling;bundle-version="1.0.0";resolution:=optional,
  de.uka.ipd.sdq.cip.completions;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
- de.uka.ipd.sdq.cip;bundle-version="2.0.0"
+ de.uka.ipd.sdq.cip;bundle-version="2.0.0",
+ de.mdelab.sdm.interpreter.core;bundle-version="1.0.0",
+ de.mdelab.sdm.interpreter.core.eclipse;bundle-version="1.0.0",
+ de.mdelab.sdm.interpreter.ocl;bundle-version="1.0.0",
+ org.storydriven.storydiagrams.interpreter.eclipse;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.upb.pcm.interpreter.launcher

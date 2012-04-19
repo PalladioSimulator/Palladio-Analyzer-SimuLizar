@@ -28,13 +28,12 @@ import de.upb.pcm.pms.MeasurementSpecification;
  */
 public class PCMInterpreterProbeSpecUtil
 {
-
    protected static final Logger logger = Logger.getLogger(PCMInterpreterProbeSpecUtil.class.getName());
 
    final ProbeSpecContext probeSpecContext;
    final ISampleBlackboard blackboard;
 
-   private final ModelHelper modelHelper;
+   private final SimuComModel simuComModel;
 
 
    /**
@@ -42,15 +41,13 @@ public class PCMInterpreterProbeSpecUtil
     * 
     * @param modelHelper the model helper.
     */
-   public PCMInterpreterProbeSpecUtil(final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
+   public PCMInterpreterProbeSpecUtil(final SimuComModel simuComModel)
    {
       super();
-      this.modelHelper = modelHelper;
-      this.probeSpecContext = probeSpecContext;
+      this.simuComModel = simuComModel;
+      this.probeSpecContext = simuComModel.getProbeSpecContext();
       this.blackboard = probeSpecContext.getSampleBlackboard();
-
    }
-
 
    /**
     * Creates a response time calculator in the probe specification framework.
@@ -119,7 +116,7 @@ public class PCMInterpreterProbeSpecUtil
       final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry()
             .getProbeStrategy(ProbeType.CURRENT_TIME, null);
 
-      final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.modelHelper.getSimuComModel()
+      final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.simuComModel
             .getSimulationControl());
 
       final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample,

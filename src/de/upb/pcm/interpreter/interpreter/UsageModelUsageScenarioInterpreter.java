@@ -7,20 +7,20 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
+import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.PMSAccess;
+import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.UsageModelUsageScenarioSwitch;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PerformanceMetricEnum;
 import de.upb.pcm.prm.PrmFactory;
-
 
 /**
  * Interpreter for usage scenario in usage model. Class implements an IScenarioRunner and can be
@@ -29,8 +29,11 @@ import de.upb.pcm.prm.PrmFactory;
  * @author Joachim Meyer
  * 
  */
-public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpreter implements IScenarioRunner
+public class UsageModelUsageScenarioInterpreter 
+	extends AbstractPCMModelInterpreter<UsageModel> 
+	implements IScenarioRunner
 {
+   private PMSAccess pmsModelAccess;
 
    /**
     * Constructor
@@ -38,25 +41,12 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public UsageModelUsageScenarioInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
+   public UsageModelUsageScenarioInterpreter(final IModelAccessFactory modelAccessFactory,
+		   final InterpreterDefaultContext context)
    {
-      super(context, probeSpecContext, modelHelper);
+      super(modelAccessFactory, context);
+      this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
    }
-
-
-   /**
-    * @see de.upb.pcm.interpreter.access.AbstractPCMModelAccess#getModel()
-    */
-   @Override
-   public UsageModel getModel()
-   {
-      if (this.getSimProcess() != null)
-      {
-         return getModelHelper().getLocalPCMModels(this.getSimProcess()).getUsageModel();
-      }
-      return getModelHelper().getGlobalPCMModels().getUsageModel();
-   }
-
 
    /**
     * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#getModelSwitch()
@@ -64,7 +54,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
    @Override
    protected UsageModelUsageScenarioSwitch<Object> getModelSwitch()
    {
-      return new UsageModelUsageScenarioSwitch<Object>(this);
+      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
    }
 
 
@@ -77,23 +67,22 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
     * @param stopProbeId stop probe id.
     */
    private void initReponseTimeMeasurement(final EObject modelElement, final String calculatorName,
-         final String startProbeId, final String stopProbeId)
+         final String startProbeId, final String stopProbeId, SimuComModel simuComModel)
    {
-      final PMSAccess pmsAccess = (PMSAccess) getModelHelper().getModelAccessFactory().getPMSModelAccess();
       MeasurementSpecification measurementSpecification;
-      if ((measurementSpecification = pmsAccess.isMonitored(modelElement, PerformanceMetricEnum.RESPONSE_TIME)) != null)
+      if ((measurementSpecification = pmsModelAccess.isMonitored(modelElement, PerformanceMetricEnum.RESPONSE_TIME)) != null)
       {
 
-         final Calculator calculator = this.getPCMInterpreterProbeSpecUtil().createResponseTimeCalculator(startProbeId,
+         final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(startProbeId,
                stopProbeId, calculatorName, calculatorName, measurementSpecification, modelElement,
-               getModelHelper().getSimuComModel());
+               simuComModel);
 
          if (calculator != null)
          {
             try
             {
-               new ResponseTimeAggregator(measurementSpecification, calculator, calculatorName, modelElement,
-                     getModelHelper(), PrmFactory.eINSTANCE.createPCMModelElementMeasurement());
+               new ResponseTimeAggregator(this.modelAccessFactory, measurementSpecification, calculator, calculatorName, modelElement,
+                     PrmFactory.eINSTANCE.createPCMModelElementMeasurement(),simuComModel.getSimulationControl().getCurrentSimulationTime());
             }
             catch (final UnsupportedDataTypeException e)
             {
@@ -101,10 +90,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
             }
          }
       }
-
-
    }
-
 
    /**
     * @see de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner#scenarioRunner(de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess)
@@ -112,21 +98,14 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
    @Override
    public void scenarioRunner(final SimuComSimProcess thread)
    {
-      InterpreterLogger.debug(logger, "Start scenario: " + getModelHelper().getSimuComModel());
-      // create context for scenario
-      final InterpreterDefaultContext context = new InterpreterDefaultContext(getModelHelper().getSimuComModel(),
-            thread);
-      this.setContext(context);
-
-      InterpreterLogger.debug(logger, "Created context: " + context);
+      InterpreterLogger.debug(logger, "Start scenario: " + thread.getModel());
+      this.context.setSimProcess(thread);
 
       // interpret usage scenario in local model
-      this.interpret(getModel().getUsageScenario_UsageModel().get(0));
+      this.interpret(getModelAccess().getModel().getUsageScenario_UsageModel().get(0));
 
-      InterpreterLogger.debug(logger, "Scenario finished: " + getModel().getUsageScenario_UsageModel().get(0));
-
+      InterpreterLogger.debug(logger, "Scenario finished: " + getModelAccess().getModel().getUsageScenario_UsageModel().get(0));
    }
-
 
    /**
     * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#startInterpretation(org.eclipse.emf.ecore.EObject,
@@ -135,7 +114,7 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.debug(logger, "Start Interpretation of Usage Scenario: " + getModel());
+      InterpreterLogger.debug(logger, "Start Interpretation of Usage Scenario: " + startElement);
       if (!(startElement instanceof UsageScenario))
       {
          throw new IllegalArgumentException("startElement must be of type UsageScenario");
@@ -150,23 +129,27 @@ public class UsageModelUsageScenarioInterpreter extends AbstractPCMModelInterpre
       final String startProbeId = calculatorName + "_resp1";
       final String stopProbeId = calculatorName + "_resp2";
 
-      initReponseTimeMeasurement(startElement, calculatorName, startProbeId, stopProbeId);
+      initReponseTimeMeasurement(startElement, calculatorName, startProbeId, stopProbeId, getModelAccess().getSimProcess().getModel());
 
       // ############## Measurement START ##############
-      getPCMInterpreterProbeSpecUtil().takeCurrentTimeSample(startProbeId, calculatorName, getSimProcess());
+      this.pcmInterpreterProbeSpecUtil.takeCurrentTimeSample(startProbeId, calculatorName, getModelAccess().getSimProcess());
       // ############## Measurement END ##############
 
       // start visitor for usage scenario
       getModelSwitch().doSwitch(startElement);
 
       // ############## Measurement START ##############
-      getPCMInterpreterProbeSpecUtil().takeCurrentTimeSample(stopProbeId, calculatorName, getSimProcess());
+      this.pcmInterpreterProbeSpecUtil.takeCurrentTimeSample(stopProbeId, calculatorName, getModelAccess().getSimProcess());
       // ############## Measurement END ##############
 
-
-      InterpreterLogger.debug(logger, "Finished Interpretation of Usage Scenario: " + getModel());
-
-
+      InterpreterLogger.debug(logger, "Finished Interpretation of Usage Scenario: " + startElement);
    }
 
+	@Override
+	protected AbstractPCMModelAccess<UsageModel> createModelAccess(
+			IModelAccessFactory modelAccessFactory,
+			InterpreterDefaultContext context) {
+		// TODO Auto-generated method stub
+		return modelAccessFactory.getUsageModelAccess(context);
+	}
 }

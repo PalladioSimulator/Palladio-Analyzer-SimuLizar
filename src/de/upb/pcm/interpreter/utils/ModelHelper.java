@@ -9,13 +9,12 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.storydriven.modeling.activities.Activity;
+import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -51,7 +50,6 @@ public class ModelHelper
 
    private final MDSDBlackboard blackboard;
 
-
    private final IModelAccessFactory modelReaderFactory;
 
    private final SimuComModel simuComModel;
@@ -70,14 +68,14 @@ public class ModelHelper
     * @param simuComModel the SimuCom model.
     * @param prmModel the prm model.
     */
-   public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel, final ProbeSpecContext probeSpecContext)
+   public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel)
    {
       super();
       this.modelCopies = new HashMap<SimuComSimProcess, PCMModels>();
       this.sessionIds = new HashMap<SimuComSimProcess, Long>();
       this.blackboard = blackboard;
 
-      this.modelReaderFactory = new ModelAccessFactory(this,probeSpecContext);
+      this.modelReaderFactory = new ModelAccessFactory(this);
       this.simuComModel = simuComModel;
       this.resourceSyncer = new ResourceSyncer(simuComModel, this);
 
@@ -262,7 +260,6 @@ public class ModelHelper
       final SDMResourceSetPartition sdmResourceSetPartition = getSDMResourceSetPartition();
 
       return sdmResourceSetPartition.getActivities();
-
    }
 
 
@@ -272,7 +269,6 @@ public class ModelHelper
             LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
       return sdmResourceSetPartition;
    }
-
 
    /**
     * @return returns the sessionIds.

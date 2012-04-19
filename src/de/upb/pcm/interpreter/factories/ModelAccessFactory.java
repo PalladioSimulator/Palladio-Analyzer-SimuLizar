@@ -1,23 +1,18 @@
 package de.upb.pcm.interpreter.factories;
 
-
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
-import de.upb.pcm.interpreter.access.AbstractPMSModelAccess;
 import de.upb.pcm.interpreter.access.AllocationAccess;
 import de.upb.pcm.interpreter.access.PMSAccess;
-import de.upb.pcm.interpreter.access.ResourceEnvironmentAccess;
+import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.access.RepositoryAccess;
 import de.upb.pcm.interpreter.access.SystemAccess;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
 import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
-import de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
 import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.ModelHelper;
-
 
 /**
  * Factory for pcm and pms model accesses and pcm model interpreters.
@@ -25,105 +20,94 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  * @author Joachim Meyer
  * 
  */
-public class ModelAccessFactory implements IModelAccessFactory
-{
+public class ModelAccessFactory implements IModelAccessFactory {
+	private final ModelHelper modelHelper;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param modelHelper
+	 *            the model helper.
+	 */
+	public ModelAccessFactory(final ModelHelper modelHelper) {
+		super();
+		this.modelHelper = modelHelper;
+	}
 
-   private final ModelHelper modelHelper;
-private final ProbeSpecContext probeSpecContext;
+	@Override
+	public AllocationAccess getAllocationAccess(
+			final InterpreterDefaultContext context) {
+		return new AllocationAccess(context, getModelHelper());
+	}
 
+	@Override
+	public SystemAccess getSystemAccess(final InterpreterDefaultContext context) {
+		return new SystemAccess(context, getModelHelper());
+	}
 
-   /**
-    * Constructor
-    * 
-    * @param modelHelper the model helper.
-    */
-   public ModelAccessFactory(final ModelHelper modelHelper, ProbeSpecContext probeSpecContext)
-   {
-      super();
-      this.modelHelper = modelHelper;
-      this.probeSpecContext = probeSpecContext;
+	/**
+	 * 
+	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelAccess(int,
+	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext)
+	 */
+	@Override
+	public UsageModelAccess getUsageModelAccess(
+			final InterpreterDefaultContext context) {
+		return new UsageModelAccess(context, getModelHelper());
+	}
 
-   }
+	@Override
+	public RDSeffInterpreter getRDSEFFInterpreter(final InterpreterDefaultContext context, final AssemblyContext assemblyContext) {
+		if (context == null)
+			throw new IllegalArgumentException("Interpreter context must not be null");
+		return new RDSeffInterpreter(this, context, assemblyContext);
+	}
 
+	@Override
+	public RepositoryInterpreter getRepositoryInterpreter(final InterpreterDefaultContext context) {
+		if (context == null)
+			throw new IllegalArgumentException("Interpreter context must not be null");
+		return new RepositoryInterpreter(this, context);
+	}
 
-   /**
-    * @return the modelHelper.
-    */
-   private ModelHelper getModelHelper()
-   {
-      return this.modelHelper;
-   }
+	/**
+	 * 
+	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelInterpreter(int,
+	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
+	 *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
+	 */
+	@Override
+	public UsageModelUsageScenarioInterpreter getUsageModelScenarioInterpreter(final InterpreterDefaultContext context) {
+		if (context == null)
+			throw new IllegalArgumentException("Interpreter context must not be null");
+		return new UsageModelUsageScenarioInterpreter(this,context);
+	}
 
+	/**
+	 * 
+	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPMSModelAccess()
+	 */
+	@Override
+	public PMSAccess getPMSModelAccess() {
+		return new PMSAccess(getModelHelper());
+	}
 
-   /**
-    * 
-    * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelAccess(int,
-    *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext)
-    */
-   @Override
-   public AbstractPCMModelAccess getPCMModelAccess(final int modelAccessType, final InterpreterDefaultContext context)
-   {
+	@Override
+	public PRMAccess getPRMModelAccess() {
+		return new PRMAccess(getModelHelper());
+	}
+	
+	/**
+	 * @return the modelHelper.
+	 */
+	private ModelHelper getModelHelper() {
+		return this.modelHelper;
+	}
 
-      switch (modelAccessType)
-      {
-         case SYSTEM_ACCESS:
-            return new SystemAccess(context, getModelHelper());
-         case RESOURCE_ENVIRONMENT_ACCESS:
-            return new ResourceEnvironmentAccess(context, getModelHelper());
-         case ALLOCATION_ACCESS:
-            return new AllocationAccess(context, getModelHelper());
-         case USAGE_MODEL_ACCESS:
-            return new UsageModelAccess(context, getModelHelper(), this.probeSpecContext);
-
-         default:
-            throw new IllegalArgumentException("No reader for readerType " + modelAccessType + " found");
-
-      }
-   }
-
-
-   /**
-    * 
-    * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelInterpreter(int,
-    *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
-    *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
-    */
-   // TODO: Refactor me!!!
-   @Override
-   public AbstractPCMModelInterpreter getPCMModelInterpreter(final int interpreterType,
-         final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-         final ProbeSpecContext probeSpecContext)
-   {
-
-      switch (interpreterType)
-      {
-
-         case USAGEMODEL_USAGESCENARIO_INTERPRETER:
-            return new UsageModelUsageScenarioInterpreter(context, probeSpecContext, getModelHelper());
-
-         case RDSEFF_INTERPRETER:
-            return new RDSeffInterpreter(context, probeSpecContext, getModelHelper(), assemblyContext);
-
-         case REPOSITORY_INTERPRETER:
-            return new RepositoryInterpreter(context, probeSpecContext, getModelHelper());
-
-         default:
-            throw new IllegalArgumentException("No interpreter for interpreterType " + interpreterType + " found");
-
-      }
-   }
-
-
-   /**
-    * 
-    * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPMSModelAccess()
-    */
-   @Override
-   public AbstractPMSModelAccess getPMSModelAccess()
-   {
-      return new PMSAccess(getModelHelper());
-   }
-
+	@Override
+	public RepositoryAccess getRepositoryAccess(
+			InterpreterDefaultContext context) {
+		return new RepositoryAccess(context, getModelHelper());
+	}
 
 }

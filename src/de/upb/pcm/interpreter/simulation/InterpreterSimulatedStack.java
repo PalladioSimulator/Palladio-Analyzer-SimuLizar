@@ -1,6 +1,5 @@
 package de.upb.pcm.interpreter.simulation;
 
-
 import java.util.EmptyStackException;
 
 import org.apache.log4j.Logger;
@@ -19,7 +18,6 @@ import de.uka.ipd.sdq.stoex.NamespaceReference;
 import de.uka.ipd.sdq.stoex.analyser.visitors.StoExPrettyPrintVisitor;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 
-
 /**
  * A simulated stack for the pcm interpreter with some convenience methods.
  * 
@@ -28,14 +26,12 @@ import de.upb.pcm.interpreter.utils.InterpreterLogger;
  */
 public class InterpreterSimulatedStack extends SimulatedStack<Object>
 {
-
    /**
     * 
     */
    private static final long serialVersionUID = 48089399746219161L;
 
    protected static final Logger logger = Logger.getLogger(InterpreterSimulatedStack.class.getName());
-
 
    /**
     * Constructor
@@ -44,7 +40,6 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
    {
       super();
    }
-
 
    /**
     * Creates an interpreter simulated stack with initial contents of the given simulated stack
@@ -57,7 +52,6 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
       super();
       this.pushStackFrame(simulatedStack.currentStackFrame().copyFrame());
    }
-
 
    /**
     * Adds parameters to given stack frame.
@@ -155,5 +149,4 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
       this.pushStackFrame(stackFrame);
       return stackFrame;
    }
-
 }

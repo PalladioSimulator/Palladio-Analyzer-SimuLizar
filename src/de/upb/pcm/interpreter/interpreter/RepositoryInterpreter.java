@@ -6,12 +6,13 @@ import org.eclipse.emf.ecore.EObject;
 import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.upb.pcm.interpreter.access.RepositoryAccess;
 import de.upb.pcm.interpreter.exceptions.PCMModelLoadException;
+import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.RepositoryModelSwitch;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 
 
 /**
@@ -20,14 +21,13 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  * 
  * @author Joachim Meyer
  */
-public class RepositoryInterpreter extends AbstractRepositoryInterpreter
+public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Repository>
 {
 
    /**
     * the operation signature which is passed by a calling rdseff interpreter.
     */
-   private OperationSignature operationSignature;
-
+   private OperationSignature operationSignature = null;
 
    /**
     * Constructor
@@ -35,9 +35,9 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public RepositoryInterpreter(final InterpreterDefaultContext context, final ProbeSpecContext probeSpecContext, final ModelHelper modelHelper)
+   public RepositoryInterpreter(final IModelAccessFactory modelAccessFactory, final InterpreterDefaultContext context)
    {
-      super(context, probeSpecContext, modelHelper);
+      super(modelAccessFactory, context);
    }
 
 
@@ -47,8 +47,7 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
    @Override
    protected RepositoryModelSwitch<Object> getModelSwitch()
    {
-
-      return new RepositoryModelSwitch<Object>(this);
+      return new RepositoryModelSwitch<Object>(this.context,this.modelAccessFactory,this.operationSignature);
    }
 
 
@@ -71,7 +70,7 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.debug(logger, "Start interpretation of Repository: " + getModel());
+      InterpreterLogger.debug(logger, "Start interpretation of Repository: " + startElement);
       if (!(startElement instanceof OperationProvidedRole || startElement instanceof OperationRequiredRole || o[0] instanceof OperationSignature))
       {
          throw new PCMModelLoadException(
@@ -81,8 +80,15 @@ public class RepositoryInterpreter extends AbstractRepositoryInterpreter
       operationSignature = (OperationSignature) o[0];
 
       getModelSwitch().doSwitch(startElement);
-      InterpreterLogger.debug(logger, "Finished interpretation of Repository: " + getModel());
+      InterpreterLogger.debug(logger, "Finished interpretation of Repository: " + startElement);
    }
 
+
+	@Override
+	protected RepositoryAccess createModelAccess(
+			IModelAccessFactory modelAccessFactory,
+			InterpreterDefaultContext context) {
+		return modelAccessFactory.getRepositoryAccess(context);
+	}
 
 }

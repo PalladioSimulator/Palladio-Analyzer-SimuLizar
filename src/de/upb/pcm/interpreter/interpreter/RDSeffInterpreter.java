@@ -1,17 +1,16 @@
 package de.upb.pcm.interpreter.interpreter;
 
-
 import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
-import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
+import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.exceptions.PCMModelLoadException;
+import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.RDSeffSwitch;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
-import de.upb.pcm.interpreter.utils.ModelHelper;
-
 
 /**
  * 
@@ -19,35 +18,27 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  * 
  * @author Joachim Meyer
  */
-public class RDSeffInterpreter extends AbstractSeffInterpreter
+public class RDSeffInterpreter extends AbstractPCMModelInterpreter<Repository>
 {
-
-
    /**
+	    * The assembly context of the corresponding component.
+	    */
+	private final AssemblyContext assemblyContext;
+
+	/**
     * Constructor
     * 
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     * @param assemblyContext the assembly context of the corresponding component.
     */
-   public RDSeffInterpreter(final InterpreterDefaultContext context, 
-		 final ProbeSpecContext probeSpecContext,  
-		 final ModelHelper modelHelper,
+   public RDSeffInterpreter(final IModelAccessFactory modelAccessFactory,
+		 final InterpreterDefaultContext context,
          final AssemblyContext assemblyContext)
    {
-      super(context, probeSpecContext, modelHelper, assemblyContext);
+      super(modelAccessFactory,context);
+      this.assemblyContext = assemblyContext;
    }
-
-
-   /**
-    * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#getModelSwitch()
-    */
-   @Override
-   protected RDSeffSwitch<Object> getModelSwitch()
-   {
-      return new RDSeffSwitch<Object>(this, getAssemblyContext());
-   }
-
 
    /**
     * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#startInterpretation(org.eclipse.emf.ecore.EObject,
@@ -56,7 +47,7 @@ public class RDSeffInterpreter extends AbstractSeffInterpreter
    @Override
    protected void startInterpretation(final EObject startElement, final Object... o)
    {
-      InterpreterLogger.debug(logger, "Start interpretation of RDSeff: " + getModel());
+      InterpreterLogger.debug(logger, "Start interpretation of RDSeff: " + startElement);
       if (!(startElement instanceof ServiceEffectSpecification))
       {
          throw new PCMModelLoadException("startElement must be of type ServiceEffectSpecification.");
@@ -68,13 +59,30 @@ public class RDSeffInterpreter extends AbstractSeffInterpreter
        * add result stack frame from RDSEFF on current stack, so that it can be used in a calling
        * rdseff interpreter
        */
-      getContext().getStack().pushStackFrame(getModelSwitch().getTemporaryResultStackFrame());
+      getModelAccess().getContext().getStack().pushStackFrame(getModelSwitch().getTemporaryResultStackFrame());
 
       InterpreterLogger.debug(logger, "Pushed result stack frame on stack: "
             + getModelSwitch().getTemporaryResultStackFrame());
 
-      InterpreterLogger.debug(logger, "Finished interpretation of RDSeff: " + getModel());
-
-
+      InterpreterLogger.debug(logger, "Finished interpretation of RDSeff: " + startElement);
    }
+
+	@Override
+	protected AbstractPCMModelAccess<Repository> createModelAccess(
+			IModelAccessFactory modelAccessFactory,
+			InterpreterDefaultContext context) {
+		return modelAccessFactory.getRepositoryAccess(context);
+	}
+
+	@Override
+	protected RDSeffSwitch<Object> getModelSwitch() {
+		return new RDSeffSwitch<Object>(this.context, this.modelAccessFactory, this.getAssemblyContext(), this.pcmInterpreterProbeSpecUtil);
+	}
+
+	/**
+	    * @return the assemblyContext of the corresponding component.
+	    */
+	protected AssemblyContext getAssemblyContext() {
+	      return this.assemblyContext;
+	   }
 }
