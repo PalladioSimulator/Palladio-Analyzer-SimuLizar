@@ -98,16 +98,6 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
             final double statisticalCharacterization = this.aggregator
                   .calculateStatisticalCharaterization(this.responseTimes);
             addToPRM(statisticalCharacterization);
-            /*
-             * Value changed, adapt (start sd interpreter), check first if sdm models exists.
-             * Reason: SimuLizar only runs in Eclipse Indigo without SD Interpreter. No classes form
-             * the SD Interpreter are allowed to be accesed in Indigo by the PCM Interpreter.
-             */
-            // TODO: Refactor this, this should not be here at all!
-            //if (this.getModelHelper().sdmModelsExists())
-            //{
-            //   this.getModelHelper().getSDExecutor().executeActivities(this.getMonitoredPCMModellElement());
-            //}
 
             this.lastSimulationTime = simulationTime;
             this.responseTimes.clear();
