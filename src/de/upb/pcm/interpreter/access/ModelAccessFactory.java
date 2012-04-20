@@ -1,18 +1,11 @@
-package de.upb.pcm.interpreter.factories;
+package de.upb.pcm.interpreter.access;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.upb.pcm.interpreter.access.AllocationAccess;
-import de.upb.pcm.interpreter.access.PMSAccess;
-import de.upb.pcm.interpreter.access.PRMAccess;
-import de.upb.pcm.interpreter.access.RepositoryAccess;
-import de.upb.pcm.interpreter.access.SystemAccess;
-import de.upb.pcm.interpreter.access.UsageModelAccess;
-import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
 import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 
 /**
  * Factory for pcm and pms model accesses and pcm model interpreters.
@@ -20,7 +13,7 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  * @author Joachim Meyer
  * 
  */
-public class ModelAccessFactory implements IModelAccessFactory {
+class ModelAccessFactory implements IModelAccessFactory {
 	private final ModelHelper modelHelper;
 
 	/**
@@ -47,7 +40,7 @@ public class ModelAccessFactory implements IModelAccessFactory {
 
 	/**
 	 * 
-	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelAccess(int,
+	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPCMModelAccess(int,
 	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext)
 	 */
 	@Override
@@ -72,7 +65,7 @@ public class ModelAccessFactory implements IModelAccessFactory {
 
 	/**
 	 * 
-	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPCMModelInterpreter(int,
+	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPCMModelInterpreter(int,
 	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
 	 *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
 	 */
@@ -85,7 +78,7 @@ public class ModelAccessFactory implements IModelAccessFactory {
 
 	/**
 	 * 
-	 * @see de.upb.pcm.interpreter.interfaces.IModelAccessFactory#getPMSModelAccess()
+	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPMSModelAccess()
 	 */
 	@Override
 	public PMSAccess getPMSModelAccess() {
@@ -108,6 +101,16 @@ public class ModelAccessFactory implements IModelAccessFactory {
 	public RepositoryAccess getRepositoryAccess(
 			InterpreterDefaultContext context) {
 		return new RepositoryAccess(context, getModelHelper());
+	}
+
+	@Override
+	public GlobalPCMAccess getGlobalPCMAccess() {
+		return new GlobalPCMAccess(getModelHelper());
+	}
+
+	@Override
+	public SDAccess getSDAccess() {
+		return new SDAccess(getModelHelper());
 	}
 
 }

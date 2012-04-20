@@ -1,15 +1,19 @@
 package de.upb.pcm.interpreter.utils;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourcetype.SchedulingPolicy;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.SchedulingStrategy;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
+import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.metrics.ResourceStateListener;
 import de.upb.pcm.pms.MeasurementSpecification;
@@ -29,8 +33,8 @@ public class ResourceSyncer {
 
 	private final SimuComModel simuComModel;
 
-	private final ModelHelper modelHelper;
-
+	private final IModelAccessFactory modelAccessFactory;
+	
 	/**
 	 * Constructor
 	 * 
@@ -39,18 +43,22 @@ public class ResourceSyncer {
 	 * @param modelHelper
 	 *            the model helper.
 	 */
-	protected ResourceSyncer(final SimuComModel simuComModel,
-			final ModelHelper modelHelper) {
+	public ResourceSyncer(final SimuComModel simuComModel,
+			final IModelAccessFactory modelAccessFactory) {
 		super();
 		this.simuComModel = simuComModel;
-		this.modelHelper = modelHelper;
-	}
+		this.modelAccessFactory = modelAccessFactory;
+		ResourceEnvironment resourceEnvironment = modelAccessFactory.getGlobalPCMAccess().getModel().getResourceEnvironment();
+		resourceEnvironment.eAdapters().add(new EContentAdapter(){
 
-	/**
-	 * @return returns the modelHelper.
-	 */
-	private ModelHelper getModelHelper() {
-		return this.modelHelper;
+			@Override
+			public void notifyChanged(Notification notification) {
+				super.notifyChanged(notification);
+				InterpreterLogger.info(logger, "Resource environment changed by reconfiguration - Resync simulated resources");
+				ResourceSyncer.this.syncResourceEnvironment();
+			}
+			
+		});
 	}
 
 	/**
@@ -145,7 +153,7 @@ public class ResourceSyncer {
 
 
             // is monitored?
-            final PMSAccess pmsAccess = (PMSAccess) getModelHelper().getModelAccessFactory().getPMSModelAccess();
+            final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
             MeasurementSpecification measurementSpecification;
             if ((measurementSpecification = pmsAccess.isMonitored(resourceContainer, PerformanceMetricEnum.UTILIZATION)) != null)
             {
@@ -163,8 +171,8 @@ public class ResourceSyncer {
                   if (abstractScheduledResource.getName().equals(typeId))
                   {
                      new ResourceStateListener(processingResource.getActiveResourceType_ActiveResourceSpecification(),
-                           abstractScheduledResource, modelHelper, measurementSpecification,
-                           resourceContainerMeasurement, resourceContainer, processingResource);
+                           abstractScheduledResource, getSimuComModel(), measurementSpecification,
+                           resourceContainerMeasurement, resourceContainer, processingResource, modelAccessFactory);
                      break;
                   }
 
@@ -180,15 +188,15 @@ public class ResourceSyncer {
 	/**
 	 * Syncs resource environment model with SimuCom.
 	 */
-	protected void syncResourceEnvironment() {
+	public void syncResourceEnvironment() {
 
 		// TODO this is only a draft
 		InterpreterLogger
 				.debug(logger,
 						"Synchronise ResourceContainer and Simulated ResourcesContainer");
 		// add resource container, if not done already
-		for (final ResourceContainer resourceContainer : getModelHelper()
-				.getGlobalPCMModels().getResourceEnvironment()
+		for (final ResourceContainer resourceContainer : this.modelAccessFactory.
+				getGlobalPCMAccess().getModel().getResourceEnvironment()
 				.getResourceContainer_ResourceEnvironment()) {
 			final String resourceContainerId = resourceContainer.getId();
 

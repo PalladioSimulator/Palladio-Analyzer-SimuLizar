@@ -25,11 +25,12 @@ import de.uka.ipd.sdq.workflow.exceptions.JobFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.RollbackFailedException;
 import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.upb.pcm.interpreter.access.AccessFactory;
+import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
-import de.upb.pcm.interpreter.utils.ModelHelper;
-import de.upb.pcm.prm.PrmFactory;
+import de.upb.pcm.interpreter.utils.ResourceSyncer;
 
 /**
  * Job starting the pcm interpretation.
@@ -66,23 +67,27 @@ public class PCMStartInterpretationJob implements
 		InterpreterLogger.info(logger, "Start job: " + this);
 		final SimuComModel simuComModel = initialiseSimuComModel();
 
-		// factories and loaders
-		final ModelHelper modelHelper = new ModelHelper(this.blackboard,
-				simuComModel, PrmFactory.eINSTANCE.createPRMModel());
+		final IModelAccessFactory modelAccessFactory = AccessFactory.createModelAccessFactory(this.blackboard);
 
 		// create usage model access
-		final UsageModelAccess usageModelAccess = modelHelper
-				.getModelAccessFactory().getUsageModelAccess(
+		final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(
 						new InterpreterDefaultContext(simuComModel));
 
 		simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 		simuComModel.setUsageScenarios(
-				usageModelAccess.getWorkloadDrivers());
+				usageModelAccess.getWorkloadDrivers(modelAccessFactory));
 
+	      /*
+	       * Sync Resources from global pcm model with simucom model for the first time, models are
+	       * already loaded into the blackboard by the workflow engine
+	       */
+	    final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccessFactory);
+        resourceSyncer.syncResourceEnvironment();
+		
 		InterpreterLogger.debug(logger,
 				"Start usage scenario for each simulated user");
 		final double simRealTimeNano = ExperimentRunner.run(
-				modelHelper.getSimuComModel(), modelHelper.getSimuComModel()
+				simuComModel, simuComModel
 						.getConfiguration().getSimuTime());
 		final double simRealTimeSeconds = simRealTimeNano / Math.pow(10, 9);
 		InterpreterLogger.debug(logger,

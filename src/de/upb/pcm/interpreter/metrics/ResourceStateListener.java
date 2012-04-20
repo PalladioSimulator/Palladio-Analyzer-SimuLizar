@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.resourcetype.ProcessingResourceType;
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.access.SDAccess;
+import de.upb.pcm.interpreter.sdinterpreter.SDExecutor;
 import de.upb.pcm.pms.Intervall;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.prm.ResourceContainerMeasurement;
@@ -23,7 +27,6 @@ import de.upb.pcm.prm.ResourceContainerMeasurement;
  */
 public class ResourceStateListener implements IStateListener
 {
-
    private double start = 0.0;
 
    private double lastSimulationTime = 0.0;
@@ -31,8 +34,6 @@ public class ResourceStateListener implements IStateListener
    private final ArrayList<Double> measurements = new ArrayList<Double>();
 
    private boolean lastTimeNull = false;
-
-   private final ModelHelper modelHelper;
 
    private final double timeIntervall;
 
@@ -42,13 +43,19 @@ public class ResourceStateListener implements IStateListener
 
    private final ProcessingResourceSpecification processingResource;
 
+   private final SimuComModel simuComModel;
+
+   private final PRMAccess prmAccess;
+
+   private final SDAccess sdAccess;
+
+   private final SDExecutor sdExecutor;
 
    /**
     * Constructor
     * 
     * @param processingResourceType the processing resource type (pcm) of the resource.
     * @param abstractScheduledResource the corresponding SimuCom simulated resource of the resource.
-    * @param modelHelper the model helper.
     * @param measurementSpecification the measurement specification of the resource container of the
     *           resource.
     * @param resourceContainerMeasurement the resource container measurement of the prm.
@@ -56,19 +63,23 @@ public class ResourceStateListener implements IStateListener
     * @param processingResource the pcm processing resource specification of the resource.
     */
    public ResourceStateListener(final ProcessingResourceType processingResourceType,
-         final AbstractScheduledResource abstractScheduledResource, final ModelHelper modelHelper,
+         final AbstractScheduledResource abstractScheduledResource, final SimuComModel simuComModel,
          final MeasurementSpecification measurementSpecification,
          final ResourceContainerMeasurement resourceContainerMeasurement, final ResourceContainer resourceContainer,
-         final ProcessingResourceSpecification processingResource)
+         final ProcessingResourceSpecification processingResource,
+         IModelAccessFactory modelAccessFactory)
    {
       super();
-      this.modelHelper = modelHelper;
       this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
-      lastSimulationTime = modelHelper.getSimuComModel().getSimulationControl().getCurrentSimulationTime();
+      this.simuComModel = simuComModel;
+      lastSimulationTime = simuComModel.getSimulationControl().getCurrentSimulationTime();
       this.resourceContainerMeasurement = resourceContainerMeasurement;
       this.resourceContainer = resourceContainer;
       this.processingResource = processingResource;
       abstractScheduledResource.addStateListener(this, 0);
+      this.prmAccess = modelAccessFactory.getPRMModelAccess();
+      this.sdAccess = modelAccessFactory.getSDAccess();
+      this.sdExecutor = new SDExecutor(modelAccessFactory);
    }
 
 
@@ -80,11 +91,11 @@ public class ResourceStateListener implements IStateListener
     */
    protected void addToPRM(final double value)
    {
-      modelHelper.getGlobalPRMModel().getPcmModelElementMeasurements().remove(this.resourceContainerMeasurement);
+      prmAccess.getModel().getPcmModelElementMeasurements().remove(this.resourceContainerMeasurement);
       this.resourceContainerMeasurement.setMeasurementValue(value);
       this.resourceContainerMeasurement.setProcessingResourceType(processingResource
             .getActiveResourceType_ActiveResourceSpecification());
-      modelHelper.getGlobalPRMModel().getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
+      prmAccess.getModel().getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
    }
 
    /**
@@ -93,9 +104,9 @@ public class ResourceStateListener implements IStateListener
    @Override
    public void stateChanged(final int queueLength, final int instanceId)
    {
-		if (this.modelHelper.getSimuComModel().getSimulationControl()
+		if (this.simuComModel.getSimulationControl()
 				.isRunning()) {
-			final double simulationTime = this.modelHelper.getSimuComModel()
+			final double simulationTime = this.simuComModel
 					.getSimulationControl().getCurrentSimulationTime();
 			if (lastTimeNull) {
 				lastTimeNull = false;
@@ -114,15 +125,10 @@ public class ResourceStateListener implements IStateListener
 
 				addToPRM(utilization);
 				/*
-				 * Value changed, adapt (start sd interpreter), check first if
-				 * sdm models exists. Reason: SimuLizar only runs in Eclipse
-				 * Indigo without SD Interpreter. No classes form the SD
-				 * Interpreter are allowed to be accesed in Indigo by the PCM
-				 * Interpreter.
+				 * Value changed, adapt (start sd interpreter)
 				 */
-				if (this.modelHelper.sdmModelsExists()) {
-					this.modelHelper.getSDExecutor().executeActivities(
-							this.resourceContainer);
+				if (this.sdAccess.sdModelsExist()) {
+					this.sdExecutor.executeActivities(this.resourceContainer);
 				}
 
 				this.measurements.clear();

@@ -27,7 +27,8 @@ Require-Bundle: org.eclipse.ui,
  de.mdelab.sdm.interpreter.core;bundle-version="1.0.0",
  de.mdelab.sdm.interpreter.core.eclipse;bundle-version="1.0.0",
  de.mdelab.sdm.interpreter.ocl;bundle-version="1.0.0",
- org.storydriven.storydiagrams.interpreter.eclipse;bundle-version="1.0.0"
+ org.storydriven.storydiagrams.interpreter.eclipse;bundle-version="1.0.0",
+ org.eclipse.emf.transaction;bundle-version="1.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.upb.pcm.interpreter.launcher

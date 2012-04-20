@@ -18,7 +18,8 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
 import de.uka.ipd.sdq.pcm.system.SystemPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.utils.PCMModels;
 import de.upb.pcm.prm.PrmPackage;
 
 /**
@@ -103,13 +104,13 @@ public class SDExecutor {
     */
 	private static final String USAGE_MODEL = "usageModel";
 
-	private final ModelHelper modelHelper;
-
 	private final List<Variable<EClassifier>> parameters;
 
 	private final List<Activity> activities;
 
 	private StoryDrivenEclipseInterpreter sdmInterpreter;
+
+	private IModelAccessFactory modelAccessFactory;
 
 	/**
 	 * Constructor
@@ -118,14 +119,14 @@ public class SDExecutor {
 	 *            the model helper.
 	 * @throws SDMException
 	 */
-	public SDExecutor(final ModelHelper modelHelper) {
+	public SDExecutor(final IModelAccessFactory modelAccessFactory) {
+		this.modelAccessFactory = modelAccessFactory;
 		sdmInterpreter = null;
 		try {
 			sdmInterpreter = new StoryDrivenEclipseInterpreter(getClass().getClassLoader());
 		} catch (SDMException e) {
 			e.printStackTrace();
 		}
-		this.modelHelper = modelHelper;
 		this.parameters = createParameter();
 		this.activities = createBindingsForActivities();
 	}
@@ -136,7 +137,7 @@ public class SDExecutor {
 	 * @return list of activities with bound parameters.
 	 */
 	private List<Activity> createBindingsForActivities() {
-		final List<Activity> ActivitiesFromModels = modelHelper.getSDMModels();
+		final List<Activity> ActivitiesFromModels = this.modelAccessFactory.getSDAccess().getModel();
 		final List<Activity> vector = new Vector<Activity>();
 
 		for (final Activity activity : ActivitiesFromModels) {
@@ -158,25 +159,22 @@ public class SDExecutor {
 	}
 
 	private List<Variable<EClassifier>> createParameter() {
+		final PCMModels globalPCMModel = modelAccessFactory.getGlobalPCMAccess().getModel();
 		final List<Variable<EClassifier>> parameters = new ArrayList<Variable<EClassifier>>();
 		final Variable<EClassifier> usageModelParameter = new Variable<EClassifier>(
-				USAGE_MODEL, USAGE_MODEL_ECLASS, modelHelper
-						.getGlobalPCMModels().getUsageModel());
+				USAGE_MODEL, USAGE_MODEL_ECLASS, globalPCMModel.getUsageModel());
 		final Variable<EClassifier> systemModelParameter = new Variable<EClassifier>(
-				SYSTEM_MODEL, SYSTEM_MODEL_ECLASS, modelHelper
-						.getGlobalPCMModels().getSystem());
+				SYSTEM_MODEL, SYSTEM_MODEL_ECLASS, globalPCMModel.getSystem());
 		final Variable<EClassifier> repositoryModelParameter = new Variable<EClassifier>(
-				REPOSITORY_MODEL, REPOSITORY_MODEL_ECLASS, modelHelper
-						.getGlobalPCMModels().getRepository());
+				REPOSITORY_MODEL, REPOSITORY_MODEL_ECLASS, globalPCMModel.getRepository());
 		final Variable<EClassifier> allocationModelParameter = new Variable<EClassifier>(
-				ALLOCATION_MODEL, ALLOCATION_MODEL_ECLASS, modelHelper
-						.getGlobalPCMModels().getAllocation());
+				ALLOCATION_MODEL, ALLOCATION_MODEL_ECLASS, globalPCMModel.getAllocation());
 		final Variable<EClassifier> resourceEnvironmentModelParameter = new Variable<EClassifier>(
 				RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
-				modelHelper.getGlobalPCMModels().getResourceEnvironment());
+				globalPCMModel.getResourceEnvironment());
 		final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(
 				PRM_MODEL, PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS,
-				modelHelper.getGlobalPRMModel());
+				modelAccessFactory.getPRMModelAccess().getModel());
 		parameters.add(usageModelParameter);
 		parameters.add(systemModelParameter);
 		parameters.add(repositoryModelParameter);
@@ -213,6 +211,8 @@ public class SDExecutor {
 		// remove parameter again
 		// TODO not nice
 		this.parameters.remove(monitoredElementParameter);
-		modelHelper.syncResourceEnvironment();
+		
+		// TODO: Move to Resource Syncer!
+		// this.resourceSyncer.syncResourceEnvironment();
 	}
 }

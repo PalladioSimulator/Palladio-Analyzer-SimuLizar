@@ -1,7 +1,7 @@
 package de.upb.pcm.interpreter.access;
 
 
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.prm.PRMModel;
 
 

@@ -3,7 +3,7 @@ package de.upb.pcm.interpreter.access;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PMSModel;
 import de.upb.pcm.pms.PerformanceMeasurement;
