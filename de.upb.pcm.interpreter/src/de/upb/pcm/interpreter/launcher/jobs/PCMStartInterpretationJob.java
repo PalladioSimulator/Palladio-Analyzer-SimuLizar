@@ -27,7 +27,9 @@ import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.AccessFactory;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.SDAccess;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
+import de.upb.pcm.interpreter.sdinterpreter.SDReconfigurator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.ResourceSyncer;
@@ -84,6 +86,8 @@ public class PCMStartInterpretationJob implements
 	    final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccessFactory);
         resourceSyncer.syncResourceEnvironment();
 		
+        final SDReconfigurator reconfigurator = new SDReconfigurator(modelAccessFactory);
+        
 		InterpreterLogger.debug(logger,
 				"Start usage scenario for each simulated user");
 		final double simRealTimeNano = ExperimentRunner.run(

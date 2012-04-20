@@ -33,23 +33,17 @@ public class ResourceStateListener implements IStateListener
 
    private final ArrayList<Double> measurements = new ArrayList<Double>();
 
-   private boolean lastTimeNull = false;
+   private boolean lastTimeIdle = true;
 
    private final double timeIntervall;
 
    private final ResourceContainerMeasurement resourceContainerMeasurement;
-
-   private final ResourceContainer resourceContainer;
 
    private final ProcessingResourceSpecification processingResource;
 
    private final SimuComModel simuComModel;
 
    private final PRMAccess prmAccess;
-
-   private final SDAccess sdAccess;
-
-   private final SDExecutor sdExecutor;
 
    /**
     * Constructor
@@ -74,12 +68,9 @@ public class ResourceStateListener implements IStateListener
       this.simuComModel = simuComModel;
       lastSimulationTime = simuComModel.getSimulationControl().getCurrentSimulationTime();
       this.resourceContainerMeasurement = resourceContainerMeasurement;
-      this.resourceContainer = resourceContainer;
       this.processingResource = processingResource;
       abstractScheduledResource.addStateListener(this, 0);
       this.prmAccess = modelAccessFactory.getPRMModelAccess();
-      this.sdAccess = modelAccessFactory.getSDAccess();
-      this.sdExecutor = new SDExecutor(modelAccessFactory);
    }
 
 
@@ -104,32 +95,23 @@ public class ResourceStateListener implements IStateListener
    @Override
    public void stateChanged(final int queueLength, final int instanceId)
    {
-		if (this.simuComModel.getSimulationControl()
-				.isRunning()) {
-			final double simulationTime = this.simuComModel
-					.getSimulationControl().getCurrentSimulationTime();
-			if (lastTimeNull) {
-				lastTimeNull = false;
+		if (this.simuComModel.getSimulationControl().isRunning()) {
+			final double simulationTime = this.simuComModel.getSimulationControl().getCurrentSimulationTime();
+			if (lastTimeIdle) {
+				lastTimeIdle = false;
 				// calculate time of zero jobs
 				final double idleTime = simulationTime - lastSimulationTime;
 				this.measurements.add(idleTime);
 			}
 			if (simulationTime <= start + timeIntervall) {
 				if (queueLength == 0) {
-					lastTimeNull = true;
+					lastTimeIdle = true;
 				}
-
 			} else {
 				start = simulationTime;
 				final double utilization = 1 - (summArray(this.measurements) / timeIntervall);
 
 				addToPRM(utilization);
-				/*
-				 * Value changed, adapt (start sd interpreter)
-				 */
-				if (this.sdAccess.sdModelsExist()) {
-					this.sdExecutor.executeActivities(this.resourceContainer);
-				}
 
 				this.measurements.clear();
 			}

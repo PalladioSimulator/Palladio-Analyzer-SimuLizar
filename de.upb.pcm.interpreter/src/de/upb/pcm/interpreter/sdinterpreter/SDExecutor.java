@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +13,7 @@ import org.storydriven.storydiagrams.activities.Activity;
 import org.storydriven.storydiagrams.interpreter.eclipse.StoryDrivenEclipseInterpreter;
 
 import de.mdelab.sdm.interpreter.core.SDMException;
+import de.mdelab.sdm.interpreter.core.notifications.OutputStreamNotificationReceiver;
 import de.mdelab.sdm.interpreter.core.variables.Variable;
 import de.uka.ipd.sdq.pcm.allocation.AllocationPackage;
 import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
@@ -19,6 +21,7 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
 import de.uka.ipd.sdq.pcm.system.SystemPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMModels;
 import de.upb.pcm.prm.PrmPackage;
 
@@ -27,6 +30,7 @@ import de.upb.pcm.prm.PrmPackage;
  * 
  */
 public class SDExecutor {
+	private final static Logger logger = Logger.getLogger(SDExecutor.class);
 	/**
     * 
     */
@@ -127,6 +131,10 @@ public class SDExecutor {
 		} catch (SDMException e) {
 			e.printStackTrace();
 		}
+		if (logger.isDebugEnabled()) {
+			sdmInterpreter.getNotificationEmitter().addNotificationReceiver(
+					new OutputStreamNotificationReceiver(sdmInterpreter.getFacadeFactory()));
+		}
 		this.parameters = createParameter();
 		this.activities = createBindingsForActivities();
 	}
@@ -184,9 +192,11 @@ public class SDExecutor {
 		return parameters;
 	}
 
-	private void execute(final Activity activity,
+	private boolean execute(final Activity activity,
 			final List<Variable<EClassifier>> parameters) throws SDMException {
 		sdmInterpreter.executeActivity(activity, parameters);
+		// TODO: Get info on activity success
+		return false;
 	}
 
 	/**
@@ -195,24 +205,23 @@ public class SDExecutor {
 	 * @param monitoredElement
 	 *            the pcm model element to be monitored.
 	 */
-	public void executeActivities(final EObject monitoredElement) {
+	public boolean executeActivities(final EObject monitoredElement) {
 		final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(
 				MONITORED_ELEMENT, EOBJECT_ECLASS, monitoredElement);
 		this.parameters.add(monitoredElementParameter);
+		boolean result = false;
 		for (final Activity activity : activities) {
 			try {
 
-				execute(activity, parameters);
+				result  |= execute(activity, parameters);
 
 			} catch (final SDMException e) {
-				e.printStackTrace();
+				InterpreterLogger.info(logger, "SD failed: "+e);
 			}
 		}
 		// remove parameter again
 		// TODO not nice
 		this.parameters.remove(monitoredElementParameter);
-		
-		// TODO: Move to Resource Syncer!
-		// this.resourceSyncer.syncResourceEnvironment();
+		return result;
 	}
 }
