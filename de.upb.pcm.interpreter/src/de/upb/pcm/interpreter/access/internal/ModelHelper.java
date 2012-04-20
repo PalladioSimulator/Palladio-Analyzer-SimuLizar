@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.utils;
+package de.upb.pcm.interpreter.access.internal;
 
 
 import java.util.ArrayList;
@@ -16,19 +16,18 @@ import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
-import de.upb.pcm.interpreter.factories.ModelAccessFactory;
-import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
 import de.upb.pcm.interpreter.launcher.jobs.LoadPMSModelIntoBlackboardJob;
 import de.upb.pcm.interpreter.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import de.upb.pcm.interpreter.launcher.partitions.PMSResourceSetPartition;
 import de.upb.pcm.interpreter.launcher.partitions.SDMResourceSetPartition;
-import de.upb.pcm.interpreter.sdinterpreter.SDExecutor;
+import de.upb.pcm.interpreter.utils.InterpreterLogger;
+import de.upb.pcm.interpreter.utils.PCMModels;
 import de.upb.pcm.pms.PMSModel;
 import de.upb.pcm.prm.PRMModel;
+import de.upb.pcm.prm.PrmFactory;
 
 
 /**
@@ -50,16 +49,7 @@ public class ModelHelper
 
    private final MDSDBlackboard blackboard;
 
-   private final IModelAccessFactory modelReaderFactory;
-
-   private final SimuComModel simuComModel;
-
-   private final ResourceSyncer resourceSyncer;
-
    private final PRMModel prmModel;
-
-   private SDExecutor sdExecutor;
-
 
    /**
     * Constructor
@@ -68,25 +58,13 @@ public class ModelHelper
     * @param simuComModel the SimuCom model.
     * @param prmModel the prm model.
     */
-   public ModelHelper(final MDSDBlackboard blackboard, final SimuComModel simuComModel, final PRMModel prmModel)
+   public ModelHelper(final MDSDBlackboard blackboard)
    {
       super();
       this.modelCopies = new HashMap<SimuComSimProcess, PCMModels>();
       this.sessionIds = new HashMap<SimuComSimProcess, Long>();
       this.blackboard = blackboard;
-
-      this.modelReaderFactory = new ModelAccessFactory(this);
-      this.simuComModel = simuComModel;
-      this.resourceSyncer = new ResourceSyncer(simuComModel, this);
-
-      this.prmModel = prmModel;
-
-
-      /*
-       * Sync Resources from global pcm model with simucom model for the first time, models are
-       * already loaded into the blackboard by the workflow engine
-       */
-      getResourceSyncer().syncResourceEnvironment();
+      this.prmModel = PrmFactory.eINSTANCE.createPRMModel();
    }
 
 
@@ -109,12 +87,12 @@ public class ModelHelper
       final List<EObject> modelCopyCollection = (ArrayList<EObject>) EcoreUtil.copyAll(globalPCMModelsList);
 
       // add to PCMCopy
-      final PCMModels pcmCopy = new PCMModels();
-      pcmCopy.setAllocation((Allocation) modelCopyCollection.get(0));
-      pcmCopy.setRepository((Repository) modelCopyCollection.get(1));
-      pcmCopy.setResourceEnvironment((ResourceEnvironment) modelCopyCollection.get(2));
-      pcmCopy.setSystem((de.uka.ipd.sdq.pcm.system.System) modelCopyCollection.get(3));
-      pcmCopy.setUsageModel((UsageModel) modelCopyCollection.get(4));
+      final PCMModels pcmCopy = new PCMModels(
+    	      (Repository) modelCopyCollection.get(1),
+    	      (de.uka.ipd.sdq.pcm.system.System) modelCopyCollection.get(3),
+    	      (ResourceEnvironment) modelCopyCollection.get(2),
+    	      (Allocation) modelCopyCollection.get(0),
+    	      (UsageModel) modelCopyCollection.get(4));
 
       return pcmCopy;
    }
@@ -136,14 +114,13 @@ public class ModelHelper
    public PCMModels getGlobalPCMModels()
    {
       final PCMResourceSetPartition pcmResourceSetPartition = getPCMResourceSetPartition();
-
+      
       // add to PCMCopy
-      final PCMModels pcmCopy = new PCMModels();
-      pcmCopy.setAllocation(pcmResourceSetPartition.getAllocation());
-      pcmCopy.setRepository(pcmResourceSetPartition.getRepositories().get(1));
-      pcmCopy.setResourceEnvironment(pcmResourceSetPartition.getResourceEnvironment());
-      pcmCopy.setSystem(pcmResourceSetPartition.getSystem());
-      pcmCopy.setUsageModel(pcmResourceSetPartition.getUsageModel());
+      final PCMModels pcmCopy = new PCMModels(
+    		  pcmResourceSetPartition.getRepositories().get(1),
+    		  pcmResourceSetPartition.getSystem(),
+    		  pcmResourceSetPartition.getResourceEnvironment(),
+    		  pcmResourceSetPartition.getAllocation(),pcmResourceSetPartition.getUsageModel());
 
       return pcmCopy;
    }
@@ -158,7 +135,6 @@ public class ModelHelper
       final PMSResourceSetPartition pcmResourceSetPartition = getPMSResourceSetPartition();
 
       return pcmResourceSetPartition.getPMSModel();
-
    }
 
 
@@ -194,16 +170,6 @@ public class ModelHelper
       return this.modelCopies.get(simuComSimProcess);
    }
 
-
-   /**
-    * @return returns the modelReaderFactory.
-    */
-   public IModelAccessFactory getModelAccessFactory()
-   {
-      return this.modelReaderFactory;
-   }
-
-
    /**
     * @return returns the modelCopies.
     */
@@ -227,29 +193,6 @@ public class ModelHelper
             LoadPMSModelIntoBlackboardJob.PMS_MODEL_PARTITION_ID);
       return pmsResourceSetPartition;
    }
-
-
-   /**
-    * @return returns the resourceSyncer.
-    */
-   private ResourceSyncer getResourceSyncer()
-   {
-      return this.resourceSyncer;
-   }
-
-
-   /**
-    * @return returns the sdExecutor.
-    */
-   public SDExecutor getSDExecutor()
-   {
-      if (this.sdExecutor == null)
-      {
-         this.sdExecutor = new SDExecutor(this);
-      }
-      return this.sdExecutor;
-   }
-
 
    /**
     * 
@@ -277,31 +220,6 @@ public class ModelHelper
    {
       return this.sessionIds;
    }
-
-
-   /**
-    * @return returns the simuComModel.
-    */
-   public SimuComModel getSimuComModel()
-   {
-      return this.simuComModel;
-   }
-
-
-   /**
-    * Sync resource environment in SimuCom from global pcm models.
-    * 
-    * @return the global pcm models.
-    */
-   public PCMModels syncResourceEnvironment()
-   {
-      InterpreterLogger.debug(logger, "Refresh global pcm models");
-
-      getResourceSyncer().syncResourceEnvironment();
-
-      return getGlobalPCMModels();
-   }
-
 
    /**
     * Checks whether sdm models exists, without using any classes from sd interpreter.

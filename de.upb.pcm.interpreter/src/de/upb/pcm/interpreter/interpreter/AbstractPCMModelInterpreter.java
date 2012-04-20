@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
-import de.upb.pcm.interpreter.interfaces.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;

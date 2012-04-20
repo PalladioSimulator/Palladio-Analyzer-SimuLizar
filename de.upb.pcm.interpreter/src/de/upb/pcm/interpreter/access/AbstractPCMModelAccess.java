@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
 /**

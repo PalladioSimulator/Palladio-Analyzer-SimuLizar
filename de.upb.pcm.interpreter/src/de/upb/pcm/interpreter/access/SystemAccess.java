@@ -7,8 +7,8 @@ import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector;
 import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.RequiredRole;
 import de.uka.ipd.sdq.pcm.system.System;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
 /**

@@ -4,8 +4,8 @@
 package de.upb.pcm.interpreter.access;
 
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
 /**
@@ -14,7 +14,8 @@ import de.upb.pcm.interpreter.utils.PCMModels;
  * @author Joachim Meyer
  */
 public class RepositoryAccess extends
-		AbstractPCMModelAccess<Repository> {
+		AbstractPCMModelAccess<Repository> 
+{
 	/**
 	 * Constructor
 	 * 
@@ -33,5 +34,4 @@ public class RepositoryAccess extends
 	protected Repository getSpecificModel(PCMModels models) {
 		return models.getRepository();
 	}
-
 }

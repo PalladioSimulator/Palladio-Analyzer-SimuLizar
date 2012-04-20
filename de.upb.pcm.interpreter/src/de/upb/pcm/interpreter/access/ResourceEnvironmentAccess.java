@@ -1,8 +1,8 @@
 package de.upb.pcm.interpreter.access;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.utils.ModelHelper;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
 /**

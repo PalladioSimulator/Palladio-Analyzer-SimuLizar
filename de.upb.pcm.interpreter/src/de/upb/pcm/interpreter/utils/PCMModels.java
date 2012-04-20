@@ -4,6 +4,7 @@ package de.upb.pcm.interpreter.utils;
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.repository.Repository;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
+import de.uka.ipd.sdq.pcm.system.System;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 
 
@@ -15,15 +16,15 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
  */
 public class PCMModels
 {
-   private UsageModel usageModel;
+   private final UsageModel usageModel;
 
-   private de.uka.ipd.sdq.pcm.system.System system;
+   private final de.uka.ipd.sdq.pcm.system.System system;
 
-   private Repository repository;
+   private final Repository repository;
 
-   private Allocation allocation;
+   private final Allocation allocation;
 
-   private ResourceEnvironment resourceEnvironment;
+   private final ResourceEnvironment resourceEnvironment;
 
 
    /**
@@ -70,50 +71,14 @@ public class PCMModels
       return this.usageModel;
    }
 
-
-   /**
-    * @param allocation the allocation model to set.
-    */
-   public void setAllocation(final Allocation allocation)
-   {
-      this.allocation = allocation;
-   }
-
-
-   /**
-    * @param repository the repository model to set.
-    */
-   public void setRepository(final Repository repository)
-   {
-      this.repository = repository;
-   }
-
-
-   /**
-    * @param resourceEnvironment the resource environment model to set.
-    */
-   public void setResourceEnvironment(final ResourceEnvironment resourceEnvironment)
-   {
-      this.resourceEnvironment = resourceEnvironment;
-   }
-
-
-   /**
-    * @param system the system to set.
-    */
-   public void setSystem(final de.uka.ipd.sdq.pcm.system.System system)
-   {
-      this.system = system;
-   }
-
-
-   /**
-    * @param usageModelt the usage model to set.
-    */
-   public void setUsageModel(final UsageModel usageModel)
-   {
-      this.usageModel = usageModel;
-   }
-
-
+	public PCMModels(Repository repository, System system,
+			ResourceEnvironment resourceEnvironment, Allocation allocation,
+			UsageModel usageModel) {
+		super();
+		this.repository = repository;
+		this.system = system;
+		this.resourceEnvironment = resourceEnvironment;
+		this.allocation = allocation;
+		this.usageModel = usageModel;
+	}
 }

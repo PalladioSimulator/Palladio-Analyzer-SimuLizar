@@ -5,9 +5,9 @@ package de.upb.pcm.interpreter.access;
 
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.EObject;
 
-import de.upb.pcm.interpreter.utils.ModelHelper;
+import de.upb.pcm.interpreter.access.internal.ModelHelper;
+
 
 
 /**
@@ -16,7 +16,7 @@ import de.upb.pcm.interpreter.utils.ModelHelper;
  * @author Joachim Meyer, Steffen Becker
  * 
  */
-public abstract class AbstractModelAccess<ModelType extends EObject>
+abstract class AbstractModelAccess<ModelType>
 {
    protected static final Logger logger = Logger.getLogger(AbstractModelAccess.class.getName());
 
