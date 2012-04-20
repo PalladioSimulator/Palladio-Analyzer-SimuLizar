@@ -1,176 +1,177 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<sdma:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdma="http://ns.storydriven.org/sdm/activities/0.1.0" xmlns:sdme="http://ns.storydriven.org/sdm/expressions/0.1.0" xmlns:sdmp="http://ns.storydriven.org/sdm/patterns/0.1.0" xmlns:sdmpe="http://ns.storydriven.org/sdm/patterns/expressions/0.1.0">
+<sda:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:expr="http://www.storydriven.org/core/expressions/0.2.0" xmlns:sda="http://www.storydriven.org/storydiagrams/activities/0.2.0" xmlns:sdp="http://www.storydriven.org/storydiagrams/patterns/0.2.0" xmlns:sdpe="http://www.storydriven.org/storydiagrams/patterns/expressions/0.2.0" name="Balance Reconfiguration">
   <ownedActivityEdge target="//@ownedActivityNode.2" source="//@ownedActivityNode.0"/>
   <ownedActivityEdge target="//@ownedActivityNode.3" source="//@ownedActivityNode.2" guard="SUCCESS"/>
   <ownedActivityEdge target="//@ownedActivityNode.4" source="//@ownedActivityNode.3" guard="SUCCESS"/>
   <ownedActivityEdge target="//@ownedActivityNode.5" source="//@ownedActivityNode.4" guard="SUCCESS"/>
   <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.5"/>
-  <ownedActivityNode xsi:type="sdma:StartNode" outgoing="//@ownedActivityEdge.0"/>
-  <ownedActivityNode xsi:type="sdma:StopNode" incoming="//@ownedActivityEdge.4"/>
-  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="pb bound parameter" outgoing="//@ownedActivityEdge.1" incoming="//@ownedActivityEdge.0">
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.3" guard="FAILURE"/>
+  <ownedActivityNode xsi:type="sda:StartNode" name="StartNode" outgoing="//@ownedActivityEdge.0"/>
+  <ownedActivityNode xsi:type="sda:StopNode" name="StopNode" incoming="//@ownedActivityEdge.4 //@ownedActivityEdge.5"/>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="pb bound parameter" outgoing="//@ownedActivityEdge.1" incoming="//@ownedActivityEdge.0">
     <ownedRule>
-      <variable xsi:type="sdmp:ObjectVariable" name="monitoredElement" bindingState="BOUND">
+      <variable xsi:type="sdp:ObjectVariable" name="monitoredElement" bindingState="BOUND">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel/EntryLevelSystemCall"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="prmModel" bindingState="BOUND">
+      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND">
         <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="repositoryModel" bindingState="BOUND">
+      <variable xsi:type="sdp:ObjectVariable" name="repositoryModel" bindingState="BOUND">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/Repository"/>
       </variable>
     </ownedRule>
   </ownedActivityNode>
-  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="find and check measurement for monitored element" outgoing="//@ownedActivityEdge.2" incoming="//@ownedActivityEdge.1">
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="find and check measurement for monitored element" outgoing="//@ownedActivityEdge.2 //@ownedActivityEdge.5" incoming="//@ownedActivityEdge.1">
     <ownedRule>
-      <variable xsi:type="sdmp:ObjectVariable" name="prmModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
         <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="elementMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1 //@ownedActivityNode.3/@ownedRule/@linkVariable.2">
+      <variable xsi:type="sdp:ObjectVariable" name="elementMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1 //@ownedActivityNode.3/@ownedRule/@linkVariable.2">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="GREATER">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="GREATER">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
               <attribute href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/measurementValue"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:LiteralExpression" value="2.0">
+            <rightExpression xsi:type="expr:LiteralExpression" value="2.0">
               <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="element" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1">
+      <variable xsi:type="sdp:ObjectVariable" name="element" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.2/@ownedRule/@variable.0">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.2/@ownedRule/@variable.0">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </leftExpression>
-            <rightExpression xsi:type="sdmpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.3/@ownedRule/@variable.2">
+            <rightExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.3/@ownedRule/@variable.2">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel/EntryLevelSystemCall"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="measurementSpecification" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.2">
+      <variable xsi:type="sdp:ObjectVariable" name="measurementSpecification" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.2">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
               <attribute href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification/performanceMetric"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:TextualExpression" expressionText="PerformanceMetricEnum::ResponseTime" language="OCL"/>
+            <rightExpression xsi:type="expr:TextualExpression" expressionText="PerformanceMetricEnum::ResponseTime" language="OCL" languageVersion="1.0"/>
           </constraintExpression>
         </constraint>
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
               <attribute href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification/statisticalCharacterization"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:TextualExpression" expressionText="StatisticalCharacterizationEnum::ArithmeticMean" language="OCL"/>
+            <rightExpression xsi:type="expr:TextualExpression" expressionText="StatisticalCharacterizationEnum::ArithmeticMean" language="OCL" languageVersion="1.0"/>
           </constraintExpression>
         </constraint>
         <classifier href="http:///de/upb/pcm/pms/model/pms.ecore#//MeasurementSpecification"/>
       </variable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
+      <linkVariable xsi:type="sdp:LinkVariable" name="a" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
         <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PRMModel/pcmModelElementMeasurements"/>
       </linkVariable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.2">
+      <linkVariable xsi:type="sdp:LinkVariable" name="b" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.2">
         <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/pcmModelElement"/>
       </linkVariable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.3">
+      <linkVariable xsi:type="sdp:LinkVariable" name="c" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.3">
         <targetEnd href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/measurementSpecification"/>
       </linkVariable>
     </ownedRule>
   </ownedActivityNode>
-  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="get BranchAction" outgoing="//@ownedActivityEdge.3" incoming="//@ownedActivityEdge.2">
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="get BranchAction" outgoing="//@ownedActivityEdge.3" incoming="//@ownedActivityEdge.2">
     <ownedRule>
-      <variable xsi:type="sdmp:ObjectVariable" name="repositoryModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0">
+      <variable xsi:type="sdp:ObjectVariable" name="repositoryModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/Repository"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="basicComponent" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1">
+      <variable xsi:type="sdp:ObjectVariable" name="basicComponent" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.1">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.1">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:LiteralExpression" value="lastverteiler">
+            <rightExpression xsi:type="expr:LiteralExpression" value="lastverteiler">
               <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/BasicComponent"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="ressourceDemandingSeff" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+      <variable xsi:type="sdp:ObjectVariable" name="ressourceDemandingSeff" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ResourceDemandingSEFF"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="branchAction" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.3">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.3">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:LiteralExpression" value="balancierer">
+            <rightExpression xsi:type="expr:LiteralExpression" value="balancierer">
               <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction"/>
       </variable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.0" target="//@ownedActivityNode.4/@ownedRule/@variable.1">
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.0" target="//@ownedActivityNode.4/@ownedRule/@variable.1">
         <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/Repository/components__Repository"/>
       </linkVariable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.2">
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.2">
         <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
       </linkVariable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.2" target="//@ownedActivityNode.4/@ownedRule/@variable.3">
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.2" target="//@ownedActivityNode.4/@ownedRule/@variable.3">
         <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
       </linkVariable>
     </ownedRule>
   </ownedActivityNode>
-  <ownedActivityNode xsi:type="sdma:ModifyingStoryNode" name="balance" outgoing="//@ownedActivityEdge.4" incoming="//@ownedActivityEdge.3">
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="balance" outgoing="//@ownedActivityEdge.4" incoming="//@ownedActivityEdge.3">
     <ownedRule>
-      <variable xsi:type="sdmp:ObjectVariable" name="branchAction" bindingState="BOUND" outgoingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0 //@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" bindingState="BOUND" outgoingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0 //@ownedActivityNode.5/@ownedRule/@linkVariable.1">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="branchTransition1" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0">
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition1" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.1">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.1">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:LiteralExpression" value="zweig1">
+            <rightExpression xsi:type="expr:LiteralExpression" value="zweig1">
               <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <attributeAssignment>
           <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
-          <valueExpression xsi:type="sdme:TextualExpression" expressionText="branchProbability - 0.1" language="OCL"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability - 0.1" language="OCL" languageVersion="1.0"/>
         </attributeAssignment>
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition"/>
       </variable>
-      <variable xsi:type="sdmp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.1">
         <constraint>
-          <constraintExpression xsi:type="sdme:ComparisonExpression" operator="EQUAL">
-            <leftExpression xsi:type="sdmpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+          <constraintExpression xsi:type="expr:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
             </leftExpression>
-            <rightExpression xsi:type="sdme:LiteralExpression" value="zweig2">
+            <rightExpression xsi:type="expr:LiteralExpression" value="zweig2">
               <valueType href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
             </rightExpression>
           </constraintExpression>
         </constraint>
         <attributeAssignment>
           <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
-          <valueExpression xsi:type="sdme:TextualExpression" expressionText="branchProbability + 0.1" language="OCL"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability + 0.1" language="OCL" languageVersion="1.0"/>
         </attributeAssignment>
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition"/>
       </variable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.1">
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.1">
         <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction/branches_Branch"/>
       </linkVariable>
-      <linkVariable xsi:type="sdmp:LinkVariable" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.2">
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.2">
         <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction/branches_Branch"/>
       </linkVariable>
     </ownedRule>
   </ownedActivityNode>
-</sdma:Activity>
+</sda:Activity>
