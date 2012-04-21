@@ -27,8 +27,9 @@ import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.AccessFactory;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
-import de.upb.pcm.interpreter.access.SDAccess;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
+import de.upb.pcm.interpreter.sdinterpreter.IReconfigurator;
+import de.upb.pcm.interpreter.sdinterpreter.ReconfigurationListener;
 import de.upb.pcm.interpreter.sdinterpreter.SDReconfigurator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
@@ -40,8 +41,9 @@ import de.upb.pcm.interpreter.utils.ResourceSyncer;
  * @author Joachim Meyer
  * 
  */
-public class PCMStartInterpretationJob implements
-		IBlackboardInteractingJob<MDSDBlackboard> {
+public class PCMStartInterpretationJob 
+implements IBlackboardInteractingJob<MDSDBlackboard> {
+	
 	private static final Logger logger = Logger
 			.getLogger(PCMStartInterpretationJob.class.getName());
 
@@ -55,8 +57,7 @@ public class PCMStartInterpretationJob implements
 	 * @param configuration
 	 *            the SimuCom workflow configuration.
 	 */
-	public PCMStartInterpretationJob(
-			final SimuComWorkflowConfiguration configuration) {
+	public PCMStartInterpretationJob(final SimuComWorkflowConfiguration configuration) {
 		this.configuration = configuration;
 	}
 
@@ -66,38 +67,43 @@ public class PCMStartInterpretationJob implements
 	@Override
 	public void execute(final IProgressMonitor monitor)
 			throws JobFailedException, UserCanceledException {
+		
 		InterpreterLogger.info(logger, "Start job: " + this);
+
+		// 1. Initialise SimuComModel & Simulation Engine
 		final SimuComModel simuComModel = initialiseSimuComModel();
 
+		// 2. Initialise Model Access Factory
 		final IModelAccessFactory modelAccessFactory = AccessFactory.createModelAccessFactory(this.blackboard);
-
-		// create usage model access
+		
+		// 3. Setup interpreters for each usage scenario
 		final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(
 						new InterpreterDefaultContext(simuComModel));
+		simuComModel.setUsageScenarios(usageModelAccess.getWorkloadDrivers(modelAccessFactory));
 
-		simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
-		simuComModel.setUsageScenarios(
-				usageModelAccess.getWorkloadDrivers(modelAccessFactory));
-
-	      /*
-	       * Sync Resources from global pcm model with simucom model for the first time, models are
-	       * already loaded into the blackboard by the workflow engine
-	       */
+	    /*
+	     * 4. Setup Actuators that keep simulated system and model@runtime consistent
+	    * Sync Resources from global pcm model with simucom model for the first time, models are
+	    * already loaded into the blackboard by the workflow engine
+	    */
 	    final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccessFactory);
         resourceSyncer.syncResourceEnvironment();
 		
-        final SDReconfigurator reconfigurator = new SDReconfigurator(modelAccessFactory);
+        // 5. Setup reconfiguration rules and engines
+        final ReconfigurationListener reconfigurator = 
+        		new ReconfigurationListener(
+        				modelAccessFactory, 
+        				new IReconfigurator[]{new SDReconfigurator(modelAccessFactory)});
+        reconfigurator.startListening();
         
+		InterpreterLogger.debug(logger,"Start simulation");
+		final double simRealTimeNano = ExperimentRunner.run(simuComModel);
 		InterpreterLogger.debug(logger,
-				"Start usage scenario for each simulated user");
-		final double simRealTimeNano = ExperimentRunner.run(
-				simuComModel, simuComModel
-						.getConfiguration().getSimuTime());
-		final double simRealTimeSeconds = simRealTimeNano / Math.pow(10, 9);
-		InterpreterLogger.debug(logger,
-				"Finished UsageModel. Interpretation took "
-						+ simRealTimeSeconds + " real time seconds");
+				"Finished Simulation. Simulator took "
+						+ (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
 
+		// 6. Deregister all listeners and execute cleanup code
+		reconfigurator.stopListening();
 		simuComModel.getProbeSpecContext().finish();
 		InterpreterLogger.info(logger, "finished job: " + this);
 	}
@@ -107,7 +113,7 @@ public class PCMStartInterpretationJob implements
 	 */
 	@Override
 	public String getName() {
-		return "Perform PCM interpreter";
+		return "Run SimuLizar";
 	}
 
 	/**
@@ -144,6 +150,8 @@ public class PCMStartInterpretationJob implements
 		final SimuComModel simuComModel = new SimuComModel(
 				(SimuComConfig) simulationConfiguration, simuComStatus,
 				simEngineFactory, false, probeSpecContext);
+
+		simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 
 		linkSimuComAndProbeSpec(simuComModel, probeSpecContext);
 		
@@ -193,19 +201,20 @@ public class PCMStartInterpretationJob implements
 	 */
 	private void linkSimuComAndProbeSpec(final SimuComModel simuComModel,
 			final ProbeSpecContext probeSpecContext) {
-		final ISampleBlackboard sampleBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
+		final ISampleBlackboard discardingBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
 				new SampleBlackboard(), simuComModel.getSimulationControl());
 
-		probeSpecContext.initialise(sampleBlackboard,
-				new SimuComProbeStrategyRegistry(), new CalculatorFactory(
-						simuComModel, new SetupPipesAndFiltersStrategy(
-								simuComModel)));
+		probeSpecContext.initialise(
+				discardingBlackboard,
+				new SimuComProbeStrategyRegistry(), 
+				new CalculatorFactory(
+						simuComModel, 
+						new SetupPipesAndFiltersStrategy(simuComModel)));
 
 		// install a garbage collector which keeps track of the samples stored
 		// on the blackboard and
 		// removes samples when they become obsolete
-		SimuComGarbageCollector garbageCollector = new SimuComGarbageCollector(
-				sampleBlackboard);
-		probeSpecContext.setBlackboardGarbageCollector(garbageCollector);
+		probeSpecContext.setBlackboardGarbageCollector(
+				new SimuComGarbageCollector(discardingBlackboard));
 	}
 }
