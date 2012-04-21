@@ -1,5 +1,4 @@
-package de.upb.pcm.interpreter.access.internal;
-
+package de.upb.pcm.interpreter.access;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +28,6 @@ import de.upb.pcm.pms.PMSModel;
 import de.upb.pcm.prm.PRMModel;
 import de.upb.pcm.prm.PrmFactory;
 
-
 /**
  * 
  * Helper to access the pcm model (global and local), the prm model, the pms model and all sdm
@@ -38,7 +36,7 @@ import de.upb.pcm.prm.PrmFactory;
  * @author Joachim Meyer
  */
 
-public class ModelHelper
+class ModelHelper
 {
 
    protected static final Logger logger = Logger.getLogger(ModelHelper.class.getName());
@@ -117,10 +115,11 @@ public class ModelHelper
       
       // add to PCMCopy
       final PCMModels pcmCopy = new PCMModels(
-    		  pcmResourceSetPartition.getRepositories().get(1),
+    		  pcmResourceSetPartition.getRepositories().get(0),
     		  pcmResourceSetPartition.getSystem(),
     		  pcmResourceSetPartition.getResourceEnvironment(),
-    		  pcmResourceSetPartition.getAllocation(),pcmResourceSetPartition.getUsageModel());
+    		  pcmResourceSetPartition.getAllocation(),
+    		  pcmResourceSetPartition.getUsageModel());
 
       return pcmCopy;
    }
