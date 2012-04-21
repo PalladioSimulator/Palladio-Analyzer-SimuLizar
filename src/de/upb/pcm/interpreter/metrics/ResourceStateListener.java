@@ -11,8 +11,6 @@ import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PRMAccess;
-import de.upb.pcm.interpreter.access.SDAccess;
-import de.upb.pcm.interpreter.sdinterpreter.SDExecutor;
 import de.upb.pcm.pms.Intervall;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.prm.ResourceContainerMeasurement;

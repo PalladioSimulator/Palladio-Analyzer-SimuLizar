@@ -69,7 +69,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
             @Override
             public boolean accept(final File dir, final String name)
             {
-               return name.endsWith(".sdm");
+               return name.endsWith(".storydiagrams");
             }
          });
 

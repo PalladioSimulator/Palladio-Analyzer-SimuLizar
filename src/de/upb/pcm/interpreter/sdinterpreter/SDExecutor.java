@@ -8,9 +8,16 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
+import org.storydriven.storydiagrams.activities.ActivityEdge;
+import org.storydriven.storydiagrams.activities.ActivityNode;
 import org.storydriven.storydiagrams.interpreter.eclipse.StoryDrivenEclipseInterpreter;
+import org.storydriven.storydiagrams.patterns.AbstractLinkVariable;
+import org.storydriven.storydiagrams.patterns.AbstractVariable;
+import org.storydriven.storydiagrams.patterns.StoryPattern;
 
 import de.mdelab.sdm.interpreter.core.SDMException;
 import de.mdelab.sdm.interpreter.core.notifications.OutputStreamNotificationReceiver;
@@ -20,7 +27,10 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
 import de.uka.ipd.sdq.pcm.system.SystemPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
+import de.upb.pcm.interpreter.access.GlobalPCMAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.access.SDAccess;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMModels;
 import de.upb.pcm.prm.PrmPackage;
@@ -108,13 +118,15 @@ public class SDExecutor {
     */
 	private static final String USAGE_MODEL = "usageModel";
 
-	private final List<Variable<EClassifier>> parameters;
+	private final List<Variable<EClassifier>> staticParameters;
 
 	private final List<Activity> activities;
 
-	private StoryDrivenEclipseInterpreter sdmInterpreter;
+	private final StoryDrivenEclipseInterpreter sdmInterpreter;
 
-	private IModelAccessFactory modelAccessFactory;
+	private final SDAccess sdAccess;
+	private final GlobalPCMAccess globalPCMAccess;
+	private final PRMAccess prmAccess;
 
 	/**
 	 * Constructor
@@ -124,18 +136,20 @@ public class SDExecutor {
 	 * @throws SDMException
 	 */
 	public SDExecutor(final IModelAccessFactory modelAccessFactory) {
-		this.modelAccessFactory = modelAccessFactory;
-		sdmInterpreter = null;
+		super();
+		this.sdAccess = modelAccessFactory.getSDAccess();
+		this.globalPCMAccess = modelAccessFactory.getGlobalPCMAccess();
+		this.prmAccess = modelAccessFactory.getPRMModelAccess();
 		try {
 			sdmInterpreter = new StoryDrivenEclipseInterpreter(getClass().getClassLoader());
 		} catch (SDMException e) {
-			e.printStackTrace();
+			throw new RuntimeException("Unable to inialise SD interpreter engine",e);
 		}
 		if (logger.isDebugEnabled()) {
 			sdmInterpreter.getNotificationEmitter().addNotificationReceiver(
-					new OutputStreamNotificationReceiver(sdmInterpreter.getFacadeFactory()));
+					new OutputStreamNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(sdmInterpreter.getFacadeFactory()));
 		}
-		this.parameters = createParameter();
+		this.staticParameters = createParameter();
 		this.activities = createBindingsForActivities();
 	}
 
@@ -145,7 +159,7 @@ public class SDExecutor {
 	 * @return list of activities with bound parameters.
 	 */
 	private List<Activity> createBindingsForActivities() {
-		final List<Activity> ActivitiesFromModels = this.modelAccessFactory.getSDAccess().getModel();
+		final List<Activity> ActivitiesFromModels = this.sdAccess.getModel();
 		final List<Activity> vector = new Vector<Activity>();
 
 		for (final Activity activity : ActivitiesFromModels) {
@@ -167,7 +181,7 @@ public class SDExecutor {
 	}
 
 	private List<Variable<EClassifier>> createParameter() {
-		final PCMModels globalPCMModel = modelAccessFactory.getGlobalPCMAccess().getModel();
+		final PCMModels globalPCMModel = globalPCMAccess.getModel();
 		final List<Variable<EClassifier>> parameters = new ArrayList<Variable<EClassifier>>();
 		final Variable<EClassifier> usageModelParameter = new Variable<EClassifier>(
 				USAGE_MODEL, USAGE_MODEL_ECLASS, globalPCMModel.getUsageModel());
@@ -182,7 +196,7 @@ public class SDExecutor {
 				globalPCMModel.getResourceEnvironment());
 		final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(
 				PRM_MODEL, PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS,
-				modelAccessFactory.getPRMModelAccess().getModel());
+				this.prmAccess.getModel());
 		parameters.add(usageModelParameter);
 		parameters.add(systemModelParameter);
 		parameters.add(repositoryModelParameter);
@@ -195,7 +209,7 @@ public class SDExecutor {
 	private boolean execute(final Activity activity,
 			final List<Variable<EClassifier>> parameters) throws SDMException {
 		sdmInterpreter.executeActivity(activity, parameters);
-		// TODO: Get info on activity success
+		// TODO: Get info on activity success?
 		return false;
 	}
 
@@ -208,20 +222,19 @@ public class SDExecutor {
 	public boolean executeActivities(final EObject monitoredElement) {
 		final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(
 				MONITORED_ELEMENT, EOBJECT_ECLASS, monitoredElement);
-		this.parameters.add(monitoredElementParameter);
+		final List<Variable<EClassifier>> paramterList = new ArrayList<Variable<EClassifier>>();
+		paramterList.addAll(staticParameters);
+		paramterList.add(monitoredElementParameter);
 		boolean result = false;
 		for (final Activity activity : activities) {
 			try {
 
-				result  |= execute(activity, parameters);
+				result  |= execute(activity, paramterList);
 
 			} catch (final SDMException e) {
 				InterpreterLogger.info(logger, "SD failed: "+e);
 			}
 		}
-		// remove parameter again
-		// TODO not nice
-		this.parameters.remove(monitoredElementParameter);
 		return result;
 	}
 }

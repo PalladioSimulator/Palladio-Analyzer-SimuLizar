@@ -54,7 +54,7 @@ public class ResourceSyncer {
 			@Override
 			public void notifyChanged(Notification notification) {
 				super.notifyChanged(notification);
-				InterpreterLogger.info(logger, "Resource environment changed by reconfiguration - Resync simulated resources");
+				InterpreterLogger.info(logger, "Resource environment changed by reconfiguration - Resync simulated resources: "+notification);
 				ResourceSyncer.this.syncResourceEnvironment();
 			}
 			
