@@ -13,7 +13,6 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
-import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;

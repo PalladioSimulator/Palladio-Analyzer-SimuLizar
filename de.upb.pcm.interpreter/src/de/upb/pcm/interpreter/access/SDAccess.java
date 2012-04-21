@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.storydriven.storydiagrams.activities.Activity;
 
-import de.upb.pcm.interpreter.access.internal.ModelHelper;
 
 public class SDAccess extends AbstractModelAccess<List<Activity>> {
 

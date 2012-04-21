@@ -1,7 +1,6 @@
 package de.upb.pcm.interpreter.access;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.upb.pcm.interpreter.access.internal.ModelHelper;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
 import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;

@@ -3,12 +3,7 @@
  */
 package de.upb.pcm.interpreter.access;
 
-
 import org.apache.log4j.Logger;
-
-import de.upb.pcm.interpreter.access.internal.ModelHelper;
-
-
 
 /**
  * Abstract base class for model access classes.
