@@ -36,7 +36,7 @@ public abstract class PRMRecorder
     * @param modelHelper the model helper.
     * @param pcmModelElementMeasurement the prm PCMModelElementMeasurement.
     */
-   public PRMRecorder(final IModelAccessFactory modelAccessFactory,
+   public PRMRecorder(final PRMAccess prmAccess,
 		 final MeasurementSpecification measurementSpecification,
          final PCMModelElementMeasurement pcmModelElementMeasurement)
    {
@@ -45,7 +45,7 @@ public abstract class PRMRecorder
       this.measurementSpecification = measurementSpecification;
       this.temporalCharacterization = measurementSpecification.getTemporalRestriction();
       this.pcmModelElementMeasurement = pcmModelElementMeasurement;
-      this.prmAccess = modelAccessFactory.getPRMModelAccess();
+      this.prmAccess = prmAccess;
    }
 
 

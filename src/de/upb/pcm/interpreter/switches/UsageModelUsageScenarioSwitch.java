@@ -18,7 +18,8 @@ import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
-import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
+import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
@@ -43,8 +44,12 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
 
    private final InterpreterDefaultContext context;
    private final TransitionDeterminer transitionDeterminer;
-   private final IModelAccessFactory modelAccessFactory;
+   private final IInterpreterFactory interpreterFactory;
    private final PCMInterpreterProbeSpecUtil probeSpecUtil;
+
+   private final PMSAccess pmsAccess;
+
+   private final PRMAccess prmAccess;
 
    /**
     * Constructor
@@ -52,11 +57,14 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
     * @param modelInterpreter the corresponding pcm model interpreter holding this switch..
     */
    public UsageModelUsageScenarioSwitch(final InterpreterDefaultContext context,
+		   final IInterpreterFactory interpreterFactory,
 		   final IModelAccessFactory modelAccessFactory,
 		   final PCMInterpreterProbeSpecUtil probeSpecUtil)
    {
 	   this.context = context;
-	   this.modelAccessFactory = modelAccessFactory;
+	   this.interpreterFactory = interpreterFactory;
+	   this.pmsAccess = modelAccessFactory.getPMSModelAccess();
+	   this.prmAccess = modelAccessFactory.getPRMModelAccess();
       transitionDeterminer = new TransitionDeterminer(context);
       this.probeSpecUtil = probeSpecUtil;
    }
@@ -115,7 +123,7 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
    {
       InterpreterLogger.debug(logger, "Interpret EntryLevelSystemCall: " + entryLevelSystemCall);
 
-      final RepositoryInterpreter repositoryInterpreter = modelAccessFactory.getRepositoryInterpreter(
+      final RepositoryInterpreter repositoryInterpreter = interpreterFactory.getRepositoryInterpreter(
             context);
 
       // create new stack frame for input parameter
@@ -257,7 +265,6 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
    private void initReponseTimeMeasurement(final EntryLevelSystemCall entryLevelSystemCall,
          final String calculatorName, final String startProbeId, final String stopProbeId)
    {
-      final PMSAccess pmsAccess = (PMSAccess) modelAccessFactory.getPMSModelAccess();
       MeasurementSpecification measurementSpecification;
       if ((measurementSpecification = pmsAccess.isMonitored(entryLevelSystemCall, PerformanceMetricEnum.RESPONSE_TIME)) != null)
       {
@@ -270,7 +277,7 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
          {
             try
             {
-               new ResponseTimeAggregator(this.modelAccessFactory, measurementSpecification, calculator, calculatorName, entryLevelSystemCall,
+               new ResponseTimeAggregator(prmAccess, measurementSpecification, calculator, calculatorName, entryLevelSystemCall,
                      PrmFactory.eINSTANCE.createPCMModelElementMeasurement(),
                      this.context.getModel().getSimulationControl().getCurrentSimulationTime());
             }

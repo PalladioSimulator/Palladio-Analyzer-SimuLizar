@@ -21,7 +21,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.SystemAccess;
 import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
-import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
+import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.simulation.InterpreterSimulatedStack;
@@ -47,8 +47,9 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
 
    private AssemblyContext calledAssemblyContext;
    private final InterpreterDefaultContext context;
-   private final IModelAccessFactory modelAccessFactory;
+   private final IInterpreterFactory interpreterFactory;
    private final OperationSignature operationSignature;
+   private final SystemAccess systemAccess;
 
    /**
     * Constructor
@@ -56,12 +57,14 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
     * @param modelInterpreter the corresponding pcm model interpreter holding this switch..
     */
    public RepositoryModelSwitch(final InterpreterDefaultContext context,
+		   final IInterpreterFactory interpreterFactory,
 		   final IModelAccessFactory modelAccessFactory,
 		   OperationSignature operationSignature)
    {
       super();
       this.context = context;
-      this.modelAccessFactory = modelAccessFactory;
+      this.interpreterFactory = interpreterFactory;
+      this.systemAccess = modelAccessFactory.getSystemAccess(context);
       this.operationSignature = operationSignature;
    }
 
@@ -110,11 +113,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
    @Override
    public T caseProvidedRole(final ProvidedRole object)
    {
-
-      final SystemAccess systemReader = this.modelAccessFactory
-            .getSystemAccess(context);
-
-      final ProvidedDelegationConnector connectedProvidedDelegationConnector = systemReader
+     final ProvidedDelegationConnector connectedProvidedDelegationConnector = systemAccess
             .getConnectedProvidedDelegationConnector(object);
 
       // determine the called assembly context
@@ -133,11 +132,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
    @Override
    public T caseRequiredRole(final RequiredRole object)
    {
-
-      final SystemAccess systemReader = modelAccessFactory
-            .getSystemAccess(context);
-
-      final AssemblyConnector assemblyConnector = systemReader.getConnectedAssemblyConnector(object);
+      final AssemblyConnector assemblyConnector = systemAccess.getConnectedAssemblyConnector(object);
 
       // determine the called assembly context
       calledAssemblyContext = assemblyConnector.getProvidingAssemblyContext_AssemblyConnector();
@@ -196,7 +191,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
          for (final ServiceEffectSpecification serviceEffectSpecification : calledSeffs)
          {
 
-            final RDSeffInterpreter rdSeffInterpreter = modelAccessFactory.getRDSEFFInterpreter(
+            final RDSeffInterpreter rdSeffInterpreter = interpreterFactory.getRDSEFFInterpreter(
                   context, calledAssemblyContext);
 
             // interpret called seff
