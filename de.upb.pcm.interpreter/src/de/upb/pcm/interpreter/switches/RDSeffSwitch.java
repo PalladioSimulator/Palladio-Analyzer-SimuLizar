@@ -38,7 +38,7 @@ import de.upb.pcm.interpreter.access.AllocationAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.exceptions.SimulatedStackAccessException;
-import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
+import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
 import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
@@ -68,6 +68,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
     private final InterpreterDefaultContext context;
 	private final IModelAccessFactory modelAcccessFactory;
 	private final PCMInterpreterProbeSpecUtil probeSpecUtil;
+	private final IInterpreterFactory interpreterFactory;
 	
 	/**
 	 * Constructor
@@ -78,10 +79,12 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 	 *            the assembly context of the component of the SEFF.
 	 */
 	public RDSeffSwitch(final InterpreterDefaultContext context,
+			IInterpreterFactory interpreterFactory,
 			IModelAccessFactory modelAccessFactory,
 			final AssemblyContext assemblyContext,
 			final PCMInterpreterProbeSpecUtil probeSpecUtil) {
 		super();
+		this.interpreterFactory = interpreterFactory;
 		this.assemblyContext = assemblyContext;
 		this.context = context;
 		this.modelAcccessFactory = modelAccessFactory;
@@ -148,7 +151,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 				+ object);
 
 		// interpret repository
-		final RepositoryInterpreter repositoryInterpreter = this.modelAcccessFactory
+		final RepositoryInterpreter repositoryInterpreter = this.interpreterFactory
 				.getRepositoryInterpreter(context);
 
 		// create new stack frame for input parameter
@@ -448,9 +451,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 					 * InterpreterDefaultContext. Thus we have to copy the
 					 * context including its stack.
 					 */
-					final IModelAccessFactory modelAccessFactory = modelAcccessFactory;
-
-					final RDSeffInterpreter seffInterpreter = modelAccessFactory
+					final RDSeffInterpreter seffInterpreter = interpreterFactory
 							.getRDSEFFInterpreter(
 									new InterpreterDefaultContext(ctx),
 									getAssemblyContext());
@@ -499,7 +500,8 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 
 			if (calculator != null) {
 				try {
-					new ResponseTimeAggregator(this.modelAcccessFactory, measurementSpecification,
+					new ResponseTimeAggregator(this.modelAcccessFactory.getPRMModelAccess(), 
+							measurementSpecification,
 							calculator, calculatorName, object,
 							PrmFactory.eINSTANCE
 									.createPCMModelElementMeasurement(),

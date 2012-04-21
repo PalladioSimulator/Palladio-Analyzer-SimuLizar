@@ -5,8 +5,8 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
-import de.upb.pcm.interpreter.interfaces.IPCMModelSwitch;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.switches.IPCMModelSwitch;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
 
 /**
@@ -22,6 +22,7 @@ public abstract class AbstractPCMModelInterpreter<ModelType extends EObject> {
 	protected final IModelAccessFactory modelAccessFactory;
 	protected final AbstractPCMModelAccess<ModelType> modelAccess;
 	protected final InterpreterDefaultContext context;
+	protected final IInterpreterFactory interpreterFactory;
 
 	/**
 	 * Constructor
@@ -33,9 +34,11 @@ public abstract class AbstractPCMModelInterpreter<ModelType extends EObject> {
 	 *            the model helper.
 	 */
 	public AbstractPCMModelInterpreter(
+			final IInterpreterFactory interpreterFactory,
 			final IModelAccessFactory modelAccessFactory,
 			final InterpreterDefaultContext context) {
 		super();
+		this.interpreterFactory = interpreterFactory;
 		this.context = context;
 		this.modelAccessFactory = modelAccessFactory;
 		this.modelAccess = createModelAccess(modelAccessFactory, context);

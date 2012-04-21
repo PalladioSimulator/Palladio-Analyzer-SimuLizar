@@ -32,11 +32,13 @@ public class RDSeffInterpreter extends AbstractPCMModelInterpreter<Repository>
     * @param modelHelper the model helper.
     * @param assemblyContext the assembly context of the corresponding component.
     */
-   public RDSeffInterpreter(final IModelAccessFactory modelAccessFactory,
+   public RDSeffInterpreter(
+		 final IInterpreterFactory interpreterFactory,
+		 final IModelAccessFactory modelAccessFactory,
 		 final InterpreterDefaultContext context,
          final AssemblyContext assemblyContext)
    {
-      super(modelAccessFactory,context);
+      super(interpreterFactory,modelAccessFactory,context);
       this.assemblyContext = assemblyContext;
    }
 
@@ -76,7 +78,7 @@ public class RDSeffInterpreter extends AbstractPCMModelInterpreter<Repository>
 
 	@Override
 	protected RDSeffSwitch<Object> getModelSwitch() {
-		return new RDSeffSwitch<Object>(this.context, this.modelAccessFactory, this.getAssemblyContext(), this.pcmInterpreterProbeSpecUtil);
+		return new RDSeffSwitch<Object>(this.context, interpreterFactory, this.modelAccessFactory, this.getAssemblyContext(), this.pcmInterpreterProbeSpecUtil);
 	}
 
 	/**

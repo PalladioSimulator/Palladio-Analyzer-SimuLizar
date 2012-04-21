@@ -31,13 +31,14 @@ public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Repositor
 
    /**
     * Constructor
+ * @param interpreterFactory 
     * 
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public RepositoryInterpreter(final IModelAccessFactory modelAccessFactory, final InterpreterDefaultContext context)
+   public RepositoryInterpreter(final InterpreterFactory interpreterFactory, final IModelAccessFactory modelAccessFactory, final InterpreterDefaultContext context)
    {
-      super(modelAccessFactory, context);
+      super(interpreterFactory, modelAccessFactory, context);
    }
 
 
@@ -47,7 +48,7 @@ public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Repositor
    @Override
    protected RepositoryModelSwitch<Object> getModelSwitch()
    {
-      return new RepositoryModelSwitch<Object>(this.context,this.modelAccessFactory,this.operationSignature);
+      return new RepositoryModelSwitch<Object>(this.context,this.interpreterFactory,this.modelAccessFactory,this.operationSignature);
    }
 
 

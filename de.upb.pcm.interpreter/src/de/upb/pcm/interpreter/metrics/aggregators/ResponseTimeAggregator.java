@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
+import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.PRMRecorder;
 import de.upb.pcm.pms.Intervall;
 import de.upb.pcm.pms.MeasurementSpecification;
@@ -51,7 +52,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     * @throws UnsupportedDataTypeException if statistical characterization is not supported.
     */
    public ResponseTimeAggregator(
-		   final IModelAccessFactory modelAccessFactory,
+		   final PRMAccess prmAccess,
 		   final MeasurementSpecification measurementSpecification,
 		   final Calculator responseTimeCalculator, 
 		   final String measurementId, 
@@ -60,7 +61,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
            double baseSimulationTime)
          throws UnsupportedDataTypeException
    {
-      super(modelAccessFactory, measurementSpecification, pcmModelElementMeasurement);
+      super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
       this.responseTimes = new Vector<Double>();
       if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN)
       {

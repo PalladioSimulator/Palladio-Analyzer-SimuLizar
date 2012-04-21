@@ -1,9 +1,5 @@
 package de.upb.pcm.interpreter.access;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
-import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
-import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 
 /**
@@ -14,6 +10,10 @@ import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
  */
 class ModelAccessFactory implements IModelAccessFactory {
 	private final ModelHelper modelHelper;
+	private final PMSAccess pmsAccess;
+	private final PRMAccess prmAccess;
+	private final GlobalPCMAccess globalPCMAccess;
+	private final SDAccess sdAccess;
 
 	/**
 	 * Constructor
@@ -24,6 +24,10 @@ class ModelAccessFactory implements IModelAccessFactory {
 	public ModelAccessFactory(final ModelHelper modelHelper) {
 		super();
 		this.modelHelper = modelHelper;
+		this.pmsAccess = new PMSAccess(modelHelper);
+		this.prmAccess = new PRMAccess(modelHelper);
+		this.globalPCMAccess = new GlobalPCMAccess(modelHelper);
+		this.sdAccess = new SDAccess(modelHelper);
 	}
 
 	@Override
@@ -49,30 +53,9 @@ class ModelAccessFactory implements IModelAccessFactory {
 	}
 
 	@Override
-	public RDSeffInterpreter getRDSEFFInterpreter(final InterpreterDefaultContext context, final AssemblyContext assemblyContext) {
-		if (context == null)
-			throw new IllegalArgumentException("Interpreter context must not be null");
-		return new RDSeffInterpreter(this, context, assemblyContext);
-	}
-
-	@Override
-	public RepositoryInterpreter getRepositoryInterpreter(final InterpreterDefaultContext context) {
-		if (context == null)
-			throw new IllegalArgumentException("Interpreter context must not be null");
-		return new RepositoryInterpreter(this, context);
-	}
-
-	/**
-	 * 
-	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPCMModelInterpreter(int,
-	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext,
-	 *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
-	 */
-	@Override
-	public UsageModelUsageScenarioInterpreter getUsageModelScenarioInterpreter(final InterpreterDefaultContext context) {
-		if (context == null)
-			throw new IllegalArgumentException("Interpreter context must not be null");
-		return new UsageModelUsageScenarioInterpreter(this,context);
+	public RepositoryAccess getRepositoryAccess(
+			InterpreterDefaultContext context) {
+		return new RepositoryAccess(context, getModelHelper());
 	}
 
 	/**
@@ -81,35 +64,29 @@ class ModelAccessFactory implements IModelAccessFactory {
 	 */
 	@Override
 	public PMSAccess getPMSModelAccess() {
-		return new PMSAccess(getModelHelper());
+		return this.pmsAccess;
 	}
 
 	@Override
 	public PRMAccess getPRMModelAccess() {
-		return new PRMAccess(getModelHelper());
+		return this.prmAccess;
 	}
 	
+	@Override
+	public GlobalPCMAccess getGlobalPCMAccess() {
+		return this.globalPCMAccess;
+	}
+
+	@Override
+	public SDAccess getSDAccess() {
+		return this.sdAccess;
+	}
+
 	/**
 	 * @return the modelHelper.
 	 */
 	private ModelHelper getModelHelper() {
 		return this.modelHelper;
-	}
-
-	@Override
-	public RepositoryAccess getRepositoryAccess(
-			InterpreterDefaultContext context) {
-		return new RepositoryAccess(context, getModelHelper());
-	}
-
-	@Override
-	public GlobalPCMAccess getGlobalPCMAccess() {
-		return new GlobalPCMAccess(getModelHelper());
-	}
-
-	@Override
-	public SDAccess getSDAccess() {
-		return new SDAccess(getModelHelper());
 	}
 
 }

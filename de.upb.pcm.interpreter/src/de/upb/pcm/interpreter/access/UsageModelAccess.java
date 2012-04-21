@@ -13,6 +13,7 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
+import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.UsageModelUsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
@@ -45,12 +46,12 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 	 * 
 	 * @return a list of workload drivers
 	 */
-	public IWorkloadDriver[] getWorkloadDrivers(IModelAccessFactory modelAccessFactory) {
+	public IWorkloadDriver[] getWorkloadDrivers(final IInterpreterFactory interpreterFactory) {
 		EList<UsageScenario> usageScenarios = getModel()
 				.getUsageScenario_UsageModel();
 		IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
 		for (int i = 0; i < usageScenarios.size(); i++)
-			workloads[i] = getWorkloadDriver(usageScenarios.get(i),modelAccessFactory);
+			workloads[i] = getWorkloadDriver(usageScenarios.get(i), interpreterFactory);
 		return workloads;
 	}
 
@@ -59,21 +60,21 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 		return models.getUsageModel();
 	}
 
-	private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario, final IModelAccessFactory modelAccessFactory) {
+	private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario, final IInterpreterFactory interpreterFactory) {
 		// get workload of scenario
 		final Workload workload = usageScenario.getWorkload_UsageScenario();
 
 		// determine if workload is open or closed
 		if (workload.eClass().getClassifierID() == UsagemodelPackage.CLOSED_WORKLOAD)
-			return getClosedWorkloadDriver(workload, modelAccessFactory);
+			return getClosedWorkloadDriver(workload, interpreterFactory);
 
 		if (workload.eClass().getClassifierID() == UsagemodelPackage.OPEN_WORKLOAD)
-			return getOpenWorkloadDriver(workload, modelAccessFactory);
+			return getOpenWorkloadDriver(workload, interpreterFactory);
 
 		throw new UnsupportedOperationException("Unsupported Workload Found");
 	}
 
-	private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final IModelAccessFactory modelAccessFactory) {
+	private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final IInterpreterFactory interpreterFactory) {
 		InterpreterLogger.debug(logger,
 				"Create workload driver for ClosedWorkload: " + workload);
 		final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
@@ -84,7 +85,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 			@Override
 			public IScenarioRunner createScenarioRunner() {
 				// create scenario interpreter
-				final UsageModelUsageScenarioInterpreter scenarioInterpreter = modelAccessFactory
+				final UsageModelUsageScenarioInterpreter scenarioInterpreter = interpreterFactory
 						.getUsageModelScenarioInterpreter(new InterpreterDefaultContext(context.getModel()));
 
 				return (IScenarioRunner) scenarioInterpreter;
@@ -97,7 +98,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 						.getUsageScenario_Workload().getId());
 	}
 
-	private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final IModelAccessFactory modelAccessFactory) {
+	private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final IInterpreterFactory interpreterFactory) {
 		InterpreterLogger.debug(logger,
 				"Create workload driver for OpenWorkload: " + workload);
 		final OpenWorkload openWorkload = (OpenWorkload) workload;
@@ -106,7 +107,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 				this.context.getModel()) {
 			@Override
 			public IScenarioRunner createScenarioRunner() {
-				final UsageModelUsageScenarioInterpreter scenarioInterpreter = modelAccessFactory
+				final UsageModelUsageScenarioInterpreter scenarioInterpreter = interpreterFactory
 						.getUsageModelScenarioInterpreter(new InterpreterDefaultContext(context.getModel()));
 				return (IScenarioRunner) scenarioInterpreter;
 			}

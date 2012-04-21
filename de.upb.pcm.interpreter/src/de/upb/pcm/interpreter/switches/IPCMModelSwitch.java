@@ -1,7 +1,7 @@
 /**
  * 
  */
-package de.upb.pcm.interpreter.interfaces;
+package de.upb.pcm.interpreter.switches;
 
 
 import org.eclipse.emf.ecore.EObject;

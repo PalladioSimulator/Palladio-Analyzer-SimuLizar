@@ -14,6 +14,7 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
+import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.switches.UsageModelUsageScenarioSwitch;
@@ -33,7 +34,8 @@ public class UsageModelUsageScenarioInterpreter
 	extends AbstractPCMModelInterpreter<UsageModel> 
 	implements IScenarioRunner
 {
-   private PMSAccess pmsModelAccess;
+   private final PMSAccess pmsModelAccess;
+   private final PRMAccess prmAccess;
 
    /**
     * Constructor
@@ -41,11 +43,14 @@ public class UsageModelUsageScenarioInterpreter
     * @param contex the interpreter default context for the pcm model interpreter, may be null.
     * @param modelHelper the model helper.
     */
-   public UsageModelUsageScenarioInterpreter(final IModelAccessFactory modelAccessFactory,
+   public UsageModelUsageScenarioInterpreter(
+		   final IInterpreterFactory interpreterFactory,
+		   final IModelAccessFactory modelAccessFactory,
 		   final InterpreterDefaultContext context)
    {
-      super(modelAccessFactory, context);
+      super(interpreterFactory,modelAccessFactory, context);
       this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
+      this.prmAccess = modelAccessFactory.getPRMModelAccess();
    }
 
    /**
@@ -54,7 +59,7 @@ public class UsageModelUsageScenarioInterpreter
    @Override
    protected UsageModelUsageScenarioSwitch<Object> getModelSwitch()
    {
-      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
+      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.interpreterFactory,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
    }
 
 
@@ -81,7 +86,7 @@ public class UsageModelUsageScenarioInterpreter
          {
             try
             {
-               new ResponseTimeAggregator(this.modelAccessFactory, measurementSpecification, calculator, calculatorName, modelElement,
+               new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName, modelElement,
                      PrmFactory.eINSTANCE.createPCMModelElementMeasurement(),simuComModel.getSimulationControl().getCurrentSimulationTime());
             }
             catch (final UnsupportedDataTypeException e)
