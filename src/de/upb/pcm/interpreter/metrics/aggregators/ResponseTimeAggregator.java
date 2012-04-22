@@ -11,7 +11,6 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
-import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.PRMRecorder;
 import de.upb.pcm.pms.Intervall;
