@@ -3,7 +3,6 @@ package de.upb.pcm.interpreter.metrics;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.TemporalCharacterization;
