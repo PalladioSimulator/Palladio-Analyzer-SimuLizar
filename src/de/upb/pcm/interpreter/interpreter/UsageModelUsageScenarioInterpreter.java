@@ -8,9 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
@@ -31,8 +29,7 @@ import de.upb.pcm.prm.PrmFactory;
  * 
  */
 public class UsageModelUsageScenarioInterpreter 
-	extends AbstractPCMModelInterpreter<UsageModel> 
-	implements IScenarioRunner
+	extends AbstractPCMModelInterpreter<UsageScenario,UsageModel>
 {
    private final PMSAccess pmsModelAccess;
    private final PRMAccess prmAccess;
@@ -61,7 +58,6 @@ public class UsageModelUsageScenarioInterpreter
    {
       return new UsageModelUsageScenarioSwitch<Object>(this.context,this.interpreterFactory,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
    }
-
 
    /**
     * Initializes response time measurement.
@@ -98,32 +94,13 @@ public class UsageModelUsageScenarioInterpreter
    }
 
    /**
-    * @see de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner#scenarioRunner(de.uka.ipd.sdq.simucomframework.abstractSimEngine.SimProcess)
-    */
-   @Override
-   public void scenarioRunner(final SimuComSimProcess thread)
-   {
-      InterpreterLogger.debug(logger, "Start scenario: " + thread.getModel());
-      this.context.setSimProcess(thread);
-
-      // interpret usage scenario in local model
-      this.interpret(getModelAccess().getModel().getUsageScenario_UsageModel().get(0));
-
-      InterpreterLogger.debug(logger, "Scenario finished: " + getModelAccess().getModel().getUsageScenario_UsageModel().get(0));
-   }
-
-   /**
     * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#startInterpretation(org.eclipse.emf.ecore.EObject,
     *      de.upb.pcm.interpreter.interfaces.IPCMModelSwitch)
     */
    @Override
-   protected void startInterpretation(final EObject startElement, final Object... o)
+   public void interpret(final UsageScenario startElement, final Object... o)
    {
       InterpreterLogger.debug(logger, "Start Interpretation of Usage Scenario: " + startElement);
-      if (!(startElement instanceof UsageScenario))
-      {
-         throw new IllegalArgumentException("startElement must be of type UsageScenario");
-      }
 
       /*
        * Measure Response Time of Usage Scenario Steps: Take time sample at the start and a time
@@ -154,7 +131,6 @@ public class UsageModelUsageScenarioInterpreter
 	protected AbstractPCMModelAccess<UsageModel> createModelAccess(
 			IModelAccessFactory modelAccessFactory,
 			InterpreterDefaultContext context) {
-		// TODO Auto-generated method stub
 		return modelAccessFactory.getUsageModelAccess(context);
 	}
 }

@@ -1,12 +1,11 @@
 package de.upb.pcm.interpreter.interpreter;
 
 
-import org.eclipse.emf.ecore.EObject;
-
 import de.uka.ipd.sdq.pcm.repository.OperationProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.OperationRequiredRole;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.repository.Role;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.RepositoryAccess;
 import de.upb.pcm.interpreter.exceptions.PCMModelLoadException;
@@ -21,7 +20,7 @@ import de.upb.pcm.interpreter.utils.InterpreterLogger;
  * 
  * @author Joachim Meyer
  */
-public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Repository>
+public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Role,Repository>
 {
 
    /**
@@ -69,7 +68,7 @@ public class RepositoryInterpreter extends AbstractPCMModelInterpreter<Repositor
     *      de.upb.pcm.interpreter.interfaces.IPCMModelSwitch)
     */
    @Override
-   protected void startInterpretation(final EObject startElement, final Object... o)
+   public void interpret(final Role startElement, final Object... o)
    {
       InterpreterLogger.debug(logger, "Start interpretation of Repository: " + startElement);
       if (!(startElement instanceof OperationProvidedRole || startElement instanceof OperationRequiredRole || o[0] instanceof OperationSignature))

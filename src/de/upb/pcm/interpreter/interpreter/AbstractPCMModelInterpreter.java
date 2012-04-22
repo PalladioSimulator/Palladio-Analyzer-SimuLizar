@@ -14,7 +14,7 @@ import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
  * 
  * @author Joachim Meyer
  */
-public abstract class AbstractPCMModelInterpreter<ModelType extends EObject> {
+public abstract class AbstractPCMModelInterpreter<InterpretedType extends EObject, ModelType extends EObject> {
 	protected static final Logger logger = Logger
 			.getLogger(AbstractPCMModelInterpreter.class.getName());
 
@@ -46,6 +46,17 @@ public abstract class AbstractPCMModelInterpreter<ModelType extends EObject> {
 				context.getModel());
 	}
 
+	/**
+	 * Start interpretation at given model element.
+	 * 
+	 * @param startElement
+	 *            the model element at which the interpretation should be
+	 *            started.
+	 * @param o
+	 *            arbitrary optional parameters.
+	 */
+	public abstract void interpret(final InterpretedType startElement, final Object... o);
+
 	protected abstract AbstractPCMModelAccess<ModelType> createModelAccess(
 			IModelAccessFactory modelAccessFactory,
 			InterpreterDefaultContext context);
@@ -59,31 +70,6 @@ public abstract class AbstractPCMModelInterpreter<ModelType extends EObject> {
 	 * @return the model switch for this interpreter or null if none exist.
 	 */
 	protected abstract <T> IPCMModelSwitch<T> getModelSwitch();
-
-	/**
-	 * Start interpretation at given model element.
-	 * 
-	 * @param startElement
-	 *            the model element at which the interpretation should be
-	 *            started.
-	 * @param o
-	 *            arbitrary optional parameters.
-	 */
-	public void interpret(final EObject startElement, final Object... o) {
-		this.startInterpretation(startElement, o);
-	}
-
-	/**
-	 * Template method to start interpretation at given model element.
-	 * 
-	 * @param startElement
-	 *            the model element at which the interpretation should be
-	 *            started.
-	 * @param o
-	 *            arbitrary optional parameters.
-	 */
-	protected abstract void startInterpretation(EObject startElement,
-			Object... o);
 
 	protected AbstractPCMModelAccess<ModelType> getModelAccess() {
 		return this.modelAccess;

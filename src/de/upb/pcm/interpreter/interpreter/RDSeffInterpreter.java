@@ -1,9 +1,8 @@
 package de.upb.pcm.interpreter.interpreter;
 
-import org.eclipse.emf.ecore.EObject;
-
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.repository.Repository;
+import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
@@ -18,7 +17,7 @@ import de.upb.pcm.interpreter.utils.InterpreterLogger;
  * 
  * @author Joachim Meyer
  */
-public class RDSeffInterpreter extends AbstractPCMModelInterpreter<Repository>
+public class RDSeffInterpreter extends AbstractPCMModelInterpreter<ResourceDemandingBehaviour,Repository>
 {
    /**
 	    * The assembly context of the corresponding component.
@@ -47,7 +46,7 @@ public class RDSeffInterpreter extends AbstractPCMModelInterpreter<Repository>
     *      de.upb.pcm.interpreter.interfaces.IPCMModelSwitch)
     */
    @Override
-   protected void startInterpretation(final EObject startElement, final Object... o)
+   public void interpret(final ResourceDemandingBehaviour startElement, final Object... o)
    {
       InterpreterLogger.debug(logger, "Start interpretation of RDSeff: " + startElement);
       if (!(startElement instanceof ServiceEffectSpecification))
