@@ -195,7 +195,7 @@ public class RepositoryModelSwitch<T> extends RepositorySwitch<T> implements IPC
                   context, calledAssemblyContext);
 
             // interpret called seff
-            rdSeffInterpreter.interpret(serviceEffectSpecification);
+            rdSeffInterpreter.interpret((ResourceDemandingSEFF)serviceEffectSpecification);
          }
       }
    }
