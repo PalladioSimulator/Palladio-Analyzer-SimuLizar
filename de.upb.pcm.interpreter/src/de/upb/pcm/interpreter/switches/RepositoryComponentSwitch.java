@@ -101,7 +101,7 @@ public class RepositoryComponentSwitch<T> extends CompositionSwitch<T> {
     	if (entity != providedRole.getProvidingEntity_ProvidedRole())
     		throw new PCMModelInterpreterException("Interpret entity of provided role only");
 		final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(providedRole);
-		ProvidedDelegationSwitch<T> composedStructureSwitch = new ProvidedDelegationSwitch<T>(context, interpreterFactory, signature, providedRole);
+		ProvidedDelegationSwitch<T> composedStructureSwitch = new ProvidedDelegationSwitch<T>(context, interpreterFactory, signature);
 		composedStructureSwitch.doSwitch(connectedProvidedDelegationConnector);
     	return super.caseComposedProvidingRequiringEntity(entity);
 	}

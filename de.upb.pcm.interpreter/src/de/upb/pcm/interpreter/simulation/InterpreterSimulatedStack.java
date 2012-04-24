@@ -50,7 +50,9 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
    public InterpreterSimulatedStack(final SimulatedStack<Object> simulatedStack)
    {
       super();
-      this.pushStackFrame(simulatedStack.currentStackFrame().copyFrame());
+      if (simulatedStack.size() > 0) {
+    	  this.pushStackFrame(simulatedStack.currentStackFrame().copyFrame());
+      }
    }
 
    /**
