@@ -20,7 +20,6 @@ import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
-import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
@@ -123,8 +122,13 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
    {
       InterpreterLogger.debug(logger, "Interpret EntryLevelSystemCall: " + entryLevelSystemCall);
 
-      final RepositoryInterpreter repositoryInterpreter = interpreterFactory.getRepositoryInterpreter(
-            context);
+      final RepositoryComponentSwitch<T> providedDelegationSwitch =
+    		  new RepositoryComponentSwitch<T>(
+    				  context, 
+    				  interpreterFactory, 
+    				  RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
+    				  entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), 
+    				  entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
       // create new stack frame for input parameter
       context.getStack()
@@ -147,8 +151,7 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
             context.getThread());
       // ############## Measurement END ##############
 
-      repositoryInterpreter.interpret(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(),
-            entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall());
+      providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
       // ############## Measurement START ##############
      this.probeSpecUtil.takeCurrentTimeSample(stopProbeId, calculatorName,
@@ -199,7 +202,6 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
             this.doSwitch(abstractUserAction);
             break;
          }
-
       }
 
       InterpreterLogger.debug(logger, "Finished ScenarioBehaviour: " + object);
@@ -238,7 +240,6 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T> implem
       if (object.getSuccessor() != null)
       {
          this.doSwitch(object.getSuccessor());
-
       }
       return super.caseAbstractUserAction(object);
    }

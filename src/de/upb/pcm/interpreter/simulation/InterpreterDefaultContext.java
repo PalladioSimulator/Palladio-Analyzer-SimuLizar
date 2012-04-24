@@ -1,7 +1,10 @@
 package de.upb.pcm.interpreter.simulation;
 
+import java.util.Stack;
+
 import org.apache.log4j.Logger;
 
+import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -22,7 +25,8 @@ public class InterpreterDefaultContext extends Context
    private static final long serialVersionUID = -5027373777424401211L;
 
    protected static final Logger logger = Logger.getLogger(InterpreterDefaultContext.class.getName());
-
+   
+   private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
    /**
     * Create interpreter default context from the given default context (model, sim process and
@@ -75,5 +79,10 @@ public class InterpreterDefaultContext extends Context
    protected void initialiseAssemblyContextLookup()
    { 
 	   // Template method which is only needed in generative SimuCom
+   }
+
+   public Stack<AssemblyContext> getAssemblyContextStack()
+   {
+	   return this.assemblyContextStack;
    }
 }

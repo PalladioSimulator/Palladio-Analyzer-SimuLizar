@@ -19,13 +19,6 @@ public class InterpreterFactory implements IInterpreterFactory {
 		return new RDSeffInterpreter(this,modelAccessFactory, context, assemblyContext);
 	}
 
-	@Override
-	public RepositoryInterpreter getRepositoryInterpreter(final InterpreterDefaultContext context) {
-		if (context == null)
-			throw new IllegalArgumentException("Interpreter context must not be null");
-		return new RepositoryInterpreter(this,modelAccessFactory, context);
-	}
-
 	/**
 	 * 
 	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPCMModelInterpreter(int,
@@ -33,9 +26,9 @@ public class InterpreterFactory implements IInterpreterFactory {
 	 *      de.uka.ipd.sdq.pcm.core.composition.AssemblyContext)
 	 */
 	@Override
-	public UsageModelUsageScenarioInterpreter getUsageModelScenarioInterpreter(final InterpreterDefaultContext context) {
+	public UsageScenarioInterpreter getUsageModelScenarioInterpreter(final InterpreterDefaultContext context) {
 		if (context == null)
 			throw new IllegalArgumentException("Interpreter context must not be null");
-		return new UsageModelUsageScenarioInterpreter(this,modelAccessFactory,context);
+		return new UsageScenarioInterpreter(this,modelAccessFactory,context);
 	}
 }

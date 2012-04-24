@@ -38,8 +38,8 @@ public class AllocationAccess extends AbstractPCMModelAccess<Allocation> {
 			final AssemblyContext assemblyContext) {
 		for (final AllocationContext allocationContext : this.getModel()
 				.getAllocationContexts_Allocation()) {
-			if (allocationContext.getAssemblyContext_AllocationContext()
-					.equals(assemblyContext)) {
+			if (allocationContext.getAssemblyContext_AllocationContext().getId()
+					.equals(assemblyContext.getId())) {
 				return allocationContext;
 			}
 		}

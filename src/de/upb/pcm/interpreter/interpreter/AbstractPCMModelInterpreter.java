@@ -55,7 +55,7 @@ public abstract class AbstractPCMModelInterpreter<InterpretedType extends EObjec
 	 * @param o
 	 *            arbitrary optional parameters.
 	 */
-	public abstract void interpret(final InterpretedType startElement, final Object... o);
+	public abstract void interpret(final InterpretedType startElement);
 
 	protected abstract AbstractPCMModelAccess<ModelType> createModelAccess(
 			IModelAccessFactory modelAccessFactory,
