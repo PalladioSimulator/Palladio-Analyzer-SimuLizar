@@ -3,11 +3,9 @@ package de.upb.pcm.interpreter.switches;
 
 import org.apache.log4j.Logger;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector;
 import de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
-import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
 import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 
@@ -27,7 +25,6 @@ public class ProvidedDelegationSwitch<T>
    private final InterpreterDefaultContext context;
    private final IInterpreterFactory interpreterFactory;
    private final OperationSignature operationSignature;
-   private final ProvidedRole providedRole;
    
    /**
     * Constructor
@@ -36,14 +33,12 @@ public class ProvidedDelegationSwitch<T>
     */
    public ProvidedDelegationSwitch(final InterpreterDefaultContext context,
 		   final IInterpreterFactory interpreterFactory,
-		   OperationSignature operationSignature,
-		   ProvidedRole providedRole)
+		   OperationSignature operationSignature)
    {
       super();
       this.context = context;
       this.interpreterFactory = interpreterFactory;
       this.operationSignature = operationSignature;
-      this.providedRole = providedRole;
    }
 
 	@Override

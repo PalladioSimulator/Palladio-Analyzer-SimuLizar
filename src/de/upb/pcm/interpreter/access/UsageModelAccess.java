@@ -122,9 +122,10 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 			
 			@Override
 			public void scenarioRunner(SimuComSimProcess thread) {
-				context.setSimProcess(thread);
+				InterpreterDefaultContext myContext = new InterpreterDefaultContext(context);
+				myContext.setSimProcess(thread);
 				final UsageScenarioInterpreter interpreter = interpreterFactory.
-						getUsageModelScenarioInterpreter(context);
+						getUsageModelScenarioInterpreter(myContext);
 				interpreter.interpret(scenario);
 			}
 		};
