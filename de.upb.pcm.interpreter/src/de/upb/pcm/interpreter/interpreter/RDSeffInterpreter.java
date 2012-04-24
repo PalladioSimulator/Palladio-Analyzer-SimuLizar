@@ -46,7 +46,7 @@ public class RDSeffInterpreter extends AbstractPCMModelInterpreter<ResourceDeman
     *      de.upb.pcm.interpreter.interfaces.IPCMModelSwitch)
     */
    @Override
-   public void interpret(final ResourceDemandingBehaviour startElement, final Object... o)
+   public void interpret(final ResourceDemandingBehaviour startElement)
    {
       InterpreterLogger.debug(logger, "Start interpretation of RDSeff: " + startElement);
       if (!(startElement instanceof ServiceEffectSpecification))

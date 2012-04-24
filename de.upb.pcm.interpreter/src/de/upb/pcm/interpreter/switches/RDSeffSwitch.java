@@ -40,7 +40,6 @@ import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.exceptions.SimulatedStackAccessException;
 import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.RDSeffInterpreter;
-import de.upb.pcm.interpreter.interpreter.RepositoryInterpreter;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.simulation.InterpreterSimulatedStack;
@@ -64,7 +63,6 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 	private final static Logger logger = Logger.getLogger(RDSeffSwitch.class);
 	private final TransitionDeterminer transitionDeterminer;
 	private SimulatedStackframe<Object> temporaryResultStackFrame;
-	private final AssemblyContext assemblyContext;
     private final InterpreterDefaultContext context;
 	private final IModelAccessFactory modelAcccessFactory;
 	private final PCMInterpreterProbeSpecUtil probeSpecUtil;
@@ -85,7 +83,6 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 			final PCMInterpreterProbeSpecUtil probeSpecUtil) {
 		super();
 		this.interpreterFactory = interpreterFactory;
-		this.assemblyContext = assemblyContext;
 		this.context = context;
 		this.modelAcccessFactory = modelAccessFactory;
 		this.probeSpecUtil = probeSpecUtil;
@@ -146,33 +143,31 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 	 * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseExternalCallAction(de.uka.ipd.sdq.pcm.seff.ExternalCallAction)
 	 */
 	@Override
-	public T caseExternalCallAction(final ExternalCallAction object) {
+	public T caseExternalCallAction(final ExternalCallAction externalCall) {
 		InterpreterLogger.debug(logger, "Interpret ExternalCallAction: "
-				+ object);
+				+ externalCall);
 
-		// interpret repository
-		final RepositoryInterpreter repositoryInterpreter = this.interpreterFactory
-				.getRepositoryInterpreter(context);
+		final ComposedStructureInnerSwitch<T> composedStructureSwitch = 
+				new ComposedStructureInnerSwitch<T>(context, interpreterFactory, externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
 		// create new stack frame for input parameter
-
 		context.getStack()
 				.createAndPushNewStackFrame(
-						object.getInputVariableUsages__CallAction());
+						externalCall.getInputVariableUsages__CallAction());
 
 		/*
 		 * Measure Response Time of external calls: Take time sample at the
 		 * start and a time sample at the end of the called RDSEFF
 		 */
 
-		final String calculatorName = "call: " + object.getEntityName()
-				+ " (id: " + object.getId() + "), AssemblyCtx: "
-				+ getAssemblyContext().getEntityName() + "(id: "
-				+ getAssemblyContext().getId() + ")";
+		final String calculatorName = "call: " + externalCall.getEntityName()
+				+ " (id: " + externalCall.getId() + "), AssemblyCtx: "
+				+ this.context.getAssemblyContextStack().peek().getEntityName() + "(id: "
+				+ this.context.getAssemblyContextStack().peek().getId() + ")";
 		final String startProbeId = calculatorName + "_resp1";
 		final String stopProbeId = calculatorName + "_resp2";
 
-		initReponseTimeMeasurement(object, calculatorName, startProbeId,
+		initReponseTimeMeasurement(externalCall, calculatorName, startProbeId,
 				stopProbeId);
 
 		// ############## Measurement START ##############
@@ -181,8 +176,9 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 						context.getThread());
 		// ############## Measurement END ##############
 
-		repositoryInterpreter.interpret(object.getRole_ExternalService(),
-				object.getCalledService_ExternalService());
+		AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
+		composedStructureSwitch.doSwitch(myContext);
+		this.context.getAssemblyContextStack().push(myContext);
 
 		// ############## Measurement START ##############
 		probeSpecUtil
@@ -191,8 +187,8 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 		// ############## Measurement END ##############
 
 		InterpreterLogger.debug(logger, "Finished ExternalCallAction: "
-				+ object);
-		return super.caseExternalCallAction(object);
+				+ externalCall);
+		return super.caseExternalCallAction(externalCall);
 	}
 
 	/**
@@ -249,7 +245,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 						context);
 
 		final AllocationContext allocationContext = allocationReader
-				.getAllocationContext(getAssemblyContext());
+				.getAllocationContext(this.context.getAssemblyContextStack().peek());
 
 		final ResourceContainer resourceContainer = allocationContext
 				.getResourceContainer_AllocationContext();
@@ -440,7 +436,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 
 		for (final ForkedBehaviour forkedBehaviour : forkedBehaviours) {
 
-			syncProcesses.add(new ForkedBehaviourProcess(context, getAssemblyContext().getId(), isAsync) {
+			syncProcesses.add(new ForkedBehaviourProcess(context, context.getAssemblyContextStack().peek().getId(), isAsync) {
 
 				@Override
 				protected void executeBehaviour() {
@@ -454,7 +450,7 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 					final RDSeffInterpreter seffInterpreter = interpreterFactory
 							.getRDSEFFInterpreter(
 									new InterpreterDefaultContext(ctx),
-									getAssemblyContext());
+									context.getAssemblyContextStack().peek());
 
 					InterpreterLogger.debug(logger,
 							"Created new RDSeff interpreter for "
@@ -605,13 +601,6 @@ public class RDSeffSwitch<T> extends SeffSwitch<T> implements
 			InterpreterLogger.debug(logger, "Finished loop number " + i + ": "
 					+ object);
 		}
-	}
-
-	/**
-	 * @return returns the assemblyContext of the component of this SEFF.
-	 */
-	protected AssemblyContext getAssemblyContext() {
-		return this.assemblyContext;
 	}
 
 	/**
