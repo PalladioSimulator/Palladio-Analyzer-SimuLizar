@@ -69,8 +69,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 	@Override
 	public SimulatedStackframe<Object> caseAssemblyContext(AssemblyContext assemblyContext) {
 		Connector connector = getConnectedConnector(assemblyContext, requiredRole);
-		this.doSwitch(connector);
-		return super.caseAssemblyContext(assemblyContext);
+		return this.doSwitch(connector);
 	}
 
 	/**

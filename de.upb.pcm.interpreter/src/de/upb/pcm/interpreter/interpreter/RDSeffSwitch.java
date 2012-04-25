@@ -37,6 +37,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.interpreter.access.AllocationAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
+import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.interpreter.exceptions.SimulatedStackAccessException;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
@@ -146,12 +147,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 		final ComposedStructureInnerSwitch composedStructureSwitch = 
 				new ComposedStructureInnerSwitch(context, modelAccessFactory, externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
-		// create new stack frame for input parameter
-		SimulatedStackHelper
-				.createAndPushNewStackFrame(
-						context.getStack(),
-						externalCall.getInputVariableUsages__CallAction());
-
 		/*
 		 * Measure Response Time of external calls: Take time sample at the
 		 * start and a time sample at the end of the called RDSEFF
@@ -173,9 +168,16 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 						context.getThread());
 		// ############## Measurement END ##############
 
+		// create new stack frame for input parameter
+		SimulatedStackHelper
+				.createAndPushNewStackFrame(
+						context.getStack(),
+						externalCall.getInputVariableUsages__CallAction());
 		AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
 		SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
 		this.context.getAssemblyContextStack().push(myContext);
+		this.context.getStack().removeStackFrame();
+		SimulatedStackHelper.addParameterToStackFrame(outputFrame, externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
 
 		// ############## Measurement START ##############
 		probeSpecUtil
@@ -304,6 +306,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 			final ResourceDemandingBehaviour object) {
 		InterpreterLogger.debug(logger,
 				"Interpret ResourceDemandingBehaviour: " + object);
+		int stacksize = this.context.getStack().size();
 
 		// interpret start action
 		for (final AbstractAction abstractAction : object.getSteps_Behaviour()) {
@@ -315,6 +318,9 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 
 		InterpreterLogger.debug(logger, "Finished ResourceDemandingBehaviour: "
 				+ object);
+		if (this.context.getStack().size() != stacksize)
+			throw new PCMModelInterpreterException(
+					"Interpreter did not pop all pushed stackframes");
 		return this.resultStackFrame;
 	}
 

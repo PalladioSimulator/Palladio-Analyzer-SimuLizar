@@ -34,7 +34,7 @@ public final class SimulatedStackHelper
    public static final void addParameterToStackFrame(
 		   final SimulatedStackframe<Object> contextStackFrame,
 		   final EList<VariableUsage> parameter,
-         final SimulatedStackframe<Object> targetStackFrame)
+		   final SimulatedStackframe<Object> targetStackFrame)
    {
       for (final VariableUsage variableUsage : parameter)
       {
@@ -42,14 +42,14 @@ public final class SimulatedStackHelper
                .getVariableCharacterisation_VariableUsage())
          {
             final StoExPrettyPrintVisitor stoexPrettyPrinter = new PCMStoExPrettyPrintVisitor();
-            final String id = stoexPrettyPrinter.prettyPrint(variableCharacterisation
-                  .getVariableUsage_VariableCharacterisation());
 
             final PCMRandomVariable randomVariable = variableCharacterisation
                   .getSpecification_VariableCharacterisation();
 
             final AbstractNamedReference namedReference = variableCharacterisation
                   .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
+
+            final String id = stoexPrettyPrinter.prettyPrint(namedReference) + "." + variableCharacterisation.getType().getLiteral();
 
             Object value;
 

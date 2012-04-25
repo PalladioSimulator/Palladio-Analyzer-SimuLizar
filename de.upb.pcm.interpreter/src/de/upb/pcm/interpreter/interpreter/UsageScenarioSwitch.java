@@ -19,6 +19,7 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.access.PRMAccess;
+import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
@@ -126,10 +127,6 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
     				  entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), 
     				  entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-      // create new stack frame for input parameter
-      SimulatedStackHelper
-            .createAndPushNewStackFrame(context.getStack(),entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
-
       /*
        * Measure Response Time of external calls: Take time sample at the start and a time sample at
        * the end of the called RDSEFF
@@ -147,13 +144,16 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
             context.getThread());
       // ############## Measurement END ##############
 
+      // create new stack frame for input parameter
+      SimulatedStackHelper
+            .createAndPushNewStackFrame(context.getStack(),entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
       providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
-
+      this.context.getStack().removeStackFrame();
+      
       // ############## Measurement START ##############
       this.probeSpecUtil.takeCurrentTimeSample(stopProbeId, calculatorName,
             context.getThread());
       // ############## Measurement END ##############
-
 
       InterpreterLogger.debug(logger, "Finished EntryLevelSystemCall: " + entryLevelSystemCall);
       return super.caseEntryLevelSystemCall(entryLevelSystemCall);
@@ -241,15 +241,18 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
    }
 
 
-   /**
-    * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseUsageScenario(de.uka.ipd.sdq.pcm.usagemodel.UsageScenario)
-    */
-   @Override
-   public T caseUsageScenario(final UsageScenario object)
-   {
-      this.doSwitch(object.getScenarioBehaviour_UsageScenario());
-      return super.caseUsageScenario(object);
-   }
+	/**
+	 * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseUsageScenario(de.uka.ipd.sdq.pcm.usagemodel.UsageScenario)
+	 */
+	@Override
+	public T caseUsageScenario(final UsageScenario object) {
+		int stacksize = this.context.getStack().size();
+		this.doSwitch(object.getScenarioBehaviour_UsageScenario());
+		if (this.context.getStack().size() != stacksize)
+			throw new PCMModelInterpreterException(
+					"Interpreter did not pop all pushed stackframes");
+		return super.caseUsageScenario(object);
+	}
 
    /**
     * Initializes response time measurement.
