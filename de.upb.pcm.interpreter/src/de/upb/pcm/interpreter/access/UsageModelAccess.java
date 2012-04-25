@@ -14,7 +14,6 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
-import de.upb.pcm.interpreter.interpreter.IInterpreterFactory;
 import de.upb.pcm.interpreter.interpreter.UsageScenarioInterpreter;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
@@ -47,7 +46,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 	 * 
 	 * @return a list of workload drivers
 	 */
-	public IWorkloadDriver[] getWorkloadDrivers(final IInterpreterFactory interpreterFactory) {
+	public IWorkloadDriver[] getWorkloadDrivers(final IModelAccessFactory interpreterFactory) {
 		EList<UsageScenario> usageScenarios = getModel()
 				.getUsageScenario_UsageModel();
 		IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
@@ -61,7 +60,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 		return models.getUsageModel();
 	}
 
-	private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario, final IInterpreterFactory interpreterFactory) {
+	private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario, final IModelAccessFactory interpreterFactory) {
 		// get workload of scenario
 		final Workload workload = usageScenario.getWorkload_UsageScenario();
 
@@ -75,7 +74,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 		throw new UnsupportedOperationException("Unsupported Workload Found");
 	}
 
-	private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final UsageScenario usageScenario, final IInterpreterFactory interpreterFactory) {
+	private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final UsageScenario usageScenario, final IModelAccessFactory interpreterFactory) {
 		InterpreterLogger.debug(logger,
 				"Create workload driver for ClosedWorkload: " + workload);
 		final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
@@ -95,7 +94,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 						.getUsageScenario_Workload().getId());
 	}
 
-	private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final UsageScenario usageScenario, final IInterpreterFactory interpreterFactory) {
+	private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final UsageScenario usageScenario, final IModelAccessFactory interpreterFactory) {
 		InterpreterLogger.debug(logger,
 				"Create workload driver for OpenWorkload: " + workload);
 		final OpenWorkload openWorkload = (OpenWorkload) workload;
@@ -116,7 +115,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 	}
 
 	protected IScenarioRunner getScenarioRunner(
-			final IInterpreterFactory interpreterFactory, 
+			final IModelAccessFactory modelAccessFactory, 
 			final UsageScenario scenario) {
 		return new IScenarioRunner() {
 			
@@ -124,8 +123,8 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 			public void scenarioRunner(SimuComSimProcess thread) {
 				InterpreterDefaultContext myContext = new InterpreterDefaultContext(context);
 				myContext.setSimProcess(thread);
-				final UsageScenarioInterpreter interpreter = interpreterFactory.
-						getUsageModelScenarioInterpreter(myContext);
+				final UsageScenarioInterpreter interpreter = 
+						new UsageScenarioInterpreter(modelAccessFactory, myContext);
 				interpreter.interpret(scenario);
 			}
 		};
