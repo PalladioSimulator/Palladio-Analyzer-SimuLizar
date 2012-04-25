@@ -28,7 +28,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.AccessFactory;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
-import de.upb.pcm.interpreter.interpreter.InterpreterFactory;
 import de.upb.pcm.interpreter.sdinterpreter.IReconfigurator;
 import de.upb.pcm.interpreter.sdinterpreter.ReconfigurationListener;
 import de.upb.pcm.interpreter.sdinterpreter.SDReconfigurator;
@@ -81,7 +80,7 @@ implements IBlackboardInteractingJob<MDSDBlackboard> {
 		final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(
 						new InterpreterDefaultContext(simuComModel));
 		simuComModel.setUsageScenarios(usageModelAccess.getWorkloadDrivers(
-				new InterpreterFactory(modelAccessFactory)));
+				modelAccessFactory));
 
 	    /*
 	     * 4. Setup Actuators that keep simulated system and model@runtime consistent

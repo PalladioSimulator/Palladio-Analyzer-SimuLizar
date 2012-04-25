@@ -15,7 +15,6 @@ import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.switches.UsageModelUsageScenarioSwitch;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PerformanceMetricEnum;
@@ -41,11 +40,10 @@ public class UsageScenarioInterpreter
     * @param modelHelper the model helper.
     */
    public UsageScenarioInterpreter(
-		   final IInterpreterFactory interpreterFactory,
 		   final IModelAccessFactory modelAccessFactory,
 		   final InterpreterDefaultContext context)
    {
-      super(interpreterFactory,modelAccessFactory, context);
+      super(modelAccessFactory, context);
       this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
       this.prmAccess = modelAccessFactory.getPRMModelAccess();
    }
@@ -84,13 +82,9 @@ public class UsageScenarioInterpreter
       InterpreterLogger.debug(logger, "Finished Interpretation of Usage Scenario: " + startElement);
    }
 
-/**
-    * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#getModelSwitch()
-    */
-   @Override
-   protected UsageModelUsageScenarioSwitch<Object> getModelSwitch()
+   private UsageModelUsageScenarioSwitch<Object> getModelSwitch()
    {
-      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.interpreterFactory,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
+      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
    }
 
    @Override

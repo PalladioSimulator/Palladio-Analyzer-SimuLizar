@@ -6,7 +6,6 @@ import org.eclipse.emf.ecore.EObject;
 import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.switches.IPCMModelSwitch;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
 
 /**
@@ -22,7 +21,6 @@ public abstract class AbstractPCMModelInterpreter<InterpretedType extends EObjec
 	protected final IModelAccessFactory modelAccessFactory;
 	protected final AbstractPCMModelAccess<ModelType> modelAccess;
 	protected final InterpreterDefaultContext context;
-	protected final IInterpreterFactory interpreterFactory;
 
 	/**
 	 * Constructor
@@ -34,11 +32,9 @@ public abstract class AbstractPCMModelInterpreter<InterpretedType extends EObjec
 	 *            the model helper.
 	 */
 	public AbstractPCMModelInterpreter(
-			final IInterpreterFactory interpreterFactory,
 			final IModelAccessFactory modelAccessFactory,
 			final InterpreterDefaultContext context) {
 		super();
-		this.interpreterFactory = interpreterFactory;
 		this.context = context;
 		this.modelAccessFactory = modelAccessFactory;
 		this.modelAccess = createModelAccess(modelAccessFactory, context);
@@ -60,16 +56,6 @@ public abstract class AbstractPCMModelInterpreter<InterpretedType extends EObjec
 	protected abstract AbstractPCMModelAccess<ModelType> createModelAccess(
 			IModelAccessFactory modelAccessFactory,
 			InterpreterDefaultContext context);
-
-	/**
-	 * Gets the pcm model switch for the corresponding pcm model of this pcm
-	 * model interpreter.
-	 * 
-	 * @param <T>
-	 *            return type of switch methods.
-	 * @return the model switch for this interpreter or null if none exist.
-	 */
-	protected abstract <T> IPCMModelSwitch<T> getModelSwitch();
 
 	protected AbstractPCMModelAccess<ModelType> getModelAccess() {
 		return this.modelAccess;
