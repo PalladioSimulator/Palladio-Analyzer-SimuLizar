@@ -1,6 +1,6 @@
 package de.upb.pcm.interpreter.access;
 
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
 
 /**
  * Model access factory interface for creating pcm and prm model access, as well

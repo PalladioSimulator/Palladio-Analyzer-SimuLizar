@@ -28,10 +28,10 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.interpreter.access.AccessFactory;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
+import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.sdinterpreter.IReconfigurator;
 import de.upb.pcm.interpreter.sdinterpreter.ReconfigurationListener;
 import de.upb.pcm.interpreter.sdinterpreter.SDReconfigurator;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.ResourceSyncer;
 

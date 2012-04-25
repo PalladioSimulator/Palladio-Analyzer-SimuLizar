@@ -25,18 +25,18 @@ import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
 import de.uka.ipd.sdq.pcm.repository.util.CompositionSwitch;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
+import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.simulation.InterpreterSimulatedStack;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
+import de.upb.pcm.interpreter.utils.SimulatedStackHelper;
 
 /**
  * @author snowball
  *
  */
-public class RepositoryComponentSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
+class RepositoryComponentSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
 
 	public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
 	
@@ -66,15 +66,16 @@ public class RepositoryComponentSwitch extends CompositionSwitch<SimulatedStackf
 	@Override
 	public SimulatedStackframe<Object> caseBasicComponent(BasicComponent basicComponent) {
 		// create new stack frame for component parameters
-		final InterpreterSimulatedStack stack = context.getStack();
-		final SimulatedStackframe<Object> componentParameterStackFrame = stack
+		final SimulatedStack<Object> stack = context.getStack();
+		final SimulatedStackframe<Object> componentParameterStackFrame = SimulatedStackHelper
 				.createAndPushNewStackFrame(
+						stack,
 						basicComponent
 								.getComponentParameterUsage_ImplementationComponentType(),
 						stack.currentStackFrame());
 
 		// create new stack frame for assembly context component parameters
-		stack.createAndPushNewStackFrame(instanceAssemblyContext
+		SimulatedStackHelper.createAndPushNewStackFrame(stack,instanceAssemblyContext
 				.getConfigParameterUsages__AssemblyContext(),
 				componentParameterStackFrame);
 

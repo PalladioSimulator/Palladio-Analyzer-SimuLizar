@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.simulation;
+package de.upb.pcm.interpreter.interpreter;
 
 import java.util.Stack;
 
@@ -8,6 +8,7 @@ import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 
 
 /**
@@ -41,7 +42,10 @@ public class InterpreterDefaultContext extends Context
       super(defaultContext.getModel());
       this.setEvaluationMode(defaultContext.getEvaluationMode());
       this.setSimProcess(defaultContext.getThread());
-      stack = new InterpreterSimulatedStack(defaultContext.getStack());
+      stack = new SimulatedStack<Object>();
+      if (defaultContext.getStack().size() > 0) {
+    	  stack.pushStackFrame(defaultContext.getStack().currentStackFrame().copyFrame());
+      }
    }
 
    /**
@@ -54,26 +58,17 @@ public class InterpreterDefaultContext extends Context
    public InterpreterDefaultContext(final SimuComModel simuComModel, final SimuComSimProcess simProcess)
    {
       super(simuComModel);
-      stack = new InterpreterSimulatedStack();
+      stack = new SimulatedStack<Object>();
       this.setSimProcess(simProcess);
    }
 
    public InterpreterDefaultContext(SimuComModel simuComModel) {
 	      super(simuComModel);
-	      stack = new InterpreterSimulatedStack();
+	      stack = new SimulatedStack<Object>();
    }
 
    /**
-    * @see de.uka.ipd.sdq.simucomframework.variables.StackContext#getStack()
-    */
-   @Override
-   public InterpreterSimulatedStack getStack()
-   {
-      return (InterpreterSimulatedStack) super.getStack();
-   }
-
-   /**
-    * @see de.upb.pcm.interpreter.simulation.InterpreterDefaultContext#initialiseAssemblyContextLookup()
+    * @see de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext#initialiseAssemblyContextLookup()
     */
    @Override
    protected void initialiseAssemblyContextLookup()

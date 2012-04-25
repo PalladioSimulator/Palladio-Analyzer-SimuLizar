@@ -1,6 +1,6 @@
 package de.upb.pcm.interpreter.access;
 
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
 
 /**
  * Factory for pcm and pms model accesses and pcm model interpreters.
@@ -44,7 +44,7 @@ class ModelAccessFactory implements IModelAccessFactory {
 	/**
 	 * 
 	 * @see de.upb.pcm.interpreter.access.IModelAccessFactory#getPCMModelAccess(int,
-	 *      de.upb.pcm.interpreter.simulation.InterpreterDefaultContext)
+	 *      de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext)
 	 */
 	@Override
 	public UsageModelAccess getUsageModelAccess(

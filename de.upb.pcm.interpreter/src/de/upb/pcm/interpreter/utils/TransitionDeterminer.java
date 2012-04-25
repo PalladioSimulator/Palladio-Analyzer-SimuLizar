@@ -14,7 +14,7 @@ import de.uka.ipd.sdq.pcm.seff.ProbabilisticBranchTransition;
 import de.uka.ipd.sdq.pcm.usagemodel.BranchTransition;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
 
 
 /**

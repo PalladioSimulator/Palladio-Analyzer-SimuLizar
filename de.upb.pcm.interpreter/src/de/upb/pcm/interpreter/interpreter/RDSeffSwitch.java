@@ -39,10 +39,9 @@ import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.exceptions.SimulatedStackAccessException;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.simulation.InterpreterSimulatedStack;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
+import de.upb.pcm.interpreter.utils.SimulatedStackHelper;
 import de.upb.pcm.interpreter.utils.TransitionDeterminer;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PerformanceMetricEnum;
@@ -56,7 +55,7 @@ import de.upb.pcm.prm.PrmFactory;
  * @param <T>
  *            return type of switch methods.
  */
-public class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
+class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 	private final static Logger logger = Logger.getLogger(RDSeffSwitch.class);
 	private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
@@ -148,8 +147,9 @@ public class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 				new ComposedStructureInnerSwitch(context, modelAccessFactory, externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
 		// create new stack frame for input parameter
-		context.getStack()
+		SimulatedStackHelper
 				.createAndPushNewStackFrame(
+						context.getStack(),
 						externalCall.getInputVariableUsages__CallAction());
 
 		/*
@@ -325,8 +325,8 @@ public class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 	public SimulatedStackframe<Object> caseSetVariableAction(final SetVariableAction object) {
 		InterpreterLogger.debug(logger, "Interpret SetVariableAction: "
 				+ object);
-		final InterpreterSimulatedStack stack = context.getStack();
-		stack.addParameterToStackFrame(
+		SimulatedStackHelper.addParameterToStackFrame(
+				this.context.getStack().currentStackFrame(),
 				object.getLocalVariableUsages_SetVariableAction(),
 				this.resultStackFrame);
 		/*
