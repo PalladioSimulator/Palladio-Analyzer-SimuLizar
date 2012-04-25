@@ -3,19 +3,18 @@ package de.upb.pcm.interpreter.interpreter;
 
 import javax.activation.UnsupportedDataTypeException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.upb.pcm.interpreter.access.AbstractPCMModelAccess;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
+import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PerformanceMetricEnum;
 import de.upb.pcm.prm.PrmFactory;
@@ -28,10 +27,14 @@ import de.upb.pcm.prm.PrmFactory;
  * 
  */
 public class UsageScenarioInterpreter 
-	extends AbstractPCMModelInterpreter<UsageScenario,UsageModel>
 {
-   private final PMSAccess pmsModelAccess;
-   private final PRMAccess prmAccess;
+	private static final Logger logger = Logger
+			.getLogger(UsageScenarioInterpreter.class);
+	private final PMSAccess pmsModelAccess;
+	private final PRMAccess prmAccess;
+	private final InterpreterDefaultContext context;
+	private final IModelAccessFactory modelAccessFactory;
+	private PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
 
    /**
     * Constructor
@@ -43,16 +46,18 @@ public class UsageScenarioInterpreter
 		   final IModelAccessFactory modelAccessFactory,
 		   final InterpreterDefaultContext context)
    {
-      super(modelAccessFactory, context);
+      super();
+      this.context = context;
+      this.modelAccessFactory = modelAccessFactory;
       this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
       this.prmAccess = modelAccessFactory.getPRMModelAccess();
+      this.pcmInterpreterProbeSpecUtil = new PCMInterpreterProbeSpecUtil(this.context.getModel());
    }
 
    /**
     * @see de.upb.pcm.interpreter.interpreter.AbstractPCMModelInterpreter#startInterpretation(org.eclipse.emf.ecore.EObject,
     *      de.upb.pcm.interpreter.interfaces.IPCMModelSwitch)
     */
-   @Override
    public void interpret(final UsageScenario startElement)
    {
       InterpreterLogger.debug(logger, "Start Interpretation of Usage Scenario: " + startElement);
@@ -82,49 +87,49 @@ public class UsageScenarioInterpreter
       InterpreterLogger.debug(logger, "Finished Interpretation of Usage Scenario: " + startElement);
    }
 
-   private UsageModelUsageScenarioSwitch<Object> getModelSwitch()
+   private UsageScenarioSwitch<Object> getModelSwitch()
    {
-      return new UsageModelUsageScenarioSwitch<Object>(this.context,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
+      return new UsageScenarioSwitch<Object>(this.context,this.modelAccessFactory,this.pcmInterpreterProbeSpecUtil);
    }
 
-   @Override
-	protected AbstractPCMModelAccess<UsageModel> createModelAccess(
-			IModelAccessFactory modelAccessFactory,
-			InterpreterDefaultContext context) {
-		return modelAccessFactory.getUsageModelAccess(context);
-	}
-
 	/**
-	    * Initializes response time measurement.
-	    * 
-	    * @param modelElement the model element to be measured.
-	    * @param calculatorName the name of the response time calculator.
-	    * @param startProbeId start probe id.
-	    * @param stopProbeId stop probe id.
-	    */
-	   private void initReponseTimeMeasurement(final EObject modelElement, final String calculatorName,
-	         final String startProbeId, final String stopProbeId, SimuComModel simuComModel)
-	   {
-	      MeasurementSpecification measurementSpecification;
-	      if ((measurementSpecification = pmsModelAccess.isMonitored(modelElement, PerformanceMetricEnum.RESPONSE_TIME)) != null)
-	      {
-	
-	         final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(startProbeId,
-	               stopProbeId, calculatorName, calculatorName, measurementSpecification, modelElement,
-	               simuComModel);
-	
-	         if (calculator != null)
-	         {
-	            try
-	            {
-	               new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName, modelElement,
-	                     PrmFactory.eINSTANCE.createPCMModelElementMeasurement(),simuComModel.getSimulationControl().getCurrentSimulationTime());
-	            }
-	            catch (final UnsupportedDataTypeException e)
-	            {
-	               e.printStackTrace();
-	            }
-	         }
-	      }
-	   }
+	 * Initializes response time measurement.
+	 * 
+	 * @param modelElement
+	 *            the model element to be measured.
+	 * @param calculatorName
+	 *            the name of the response time calculator.
+	 * @param startProbeId
+	 *            start probe id.
+	 * @param stopProbeId
+	 *            stop probe id.
+	 */
+	private void initReponseTimeMeasurement(final EObject modelElement,
+			final String calculatorName, final String startProbeId,
+			final String stopProbeId, SimuComModel simuComModel) {
+		MeasurementSpecification measurementSpecification;
+		if ((measurementSpecification = pmsModelAccess.isMonitored(
+				modelElement, PerformanceMetricEnum.RESPONSE_TIME)) != null) {
+
+			final Calculator calculator = this.pcmInterpreterProbeSpecUtil
+					.createResponseTimeCalculator(startProbeId, stopProbeId,
+							calculatorName, calculatorName,
+							measurementSpecification, modelElement,
+							simuComModel);
+
+			if (calculator != null) {
+				try {
+					new ResponseTimeAggregator(this.prmAccess,
+							measurementSpecification, calculator,
+							calculatorName, modelElement,
+							PrmFactory.eINSTANCE
+									.createPCMModelElementMeasurement(),
+							simuComModel.getSimulationControl()
+									.getCurrentSimulationTime());
+				} catch (final UnsupportedDataTypeException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
 }

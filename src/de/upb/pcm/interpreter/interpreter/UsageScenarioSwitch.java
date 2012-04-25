@@ -20,9 +20,9 @@ import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.PMSAccess;
 import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
+import de.upb.pcm.interpreter.utils.SimulatedStackHelper;
 import de.upb.pcm.interpreter.utils.TransitionDeterminer;
 import de.upb.pcm.pms.MeasurementSpecification;
 import de.upb.pcm.pms.PerformanceMetricEnum;
@@ -36,9 +36,9 @@ import de.upb.pcm.prm.PrmFactory;
  * @param <T> return type of switch methods.
  */
 
-public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T>
+class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 {
-   protected static final Logger logger = Logger.getLogger(UsageModelUsageScenarioSwitch.class.getName());
+   protected static final Logger logger = Logger.getLogger(UsageScenarioSwitch.class.getName());
 
    private final InterpreterDefaultContext context;
    private final TransitionDeterminer transitionDeterminer;
@@ -55,7 +55,7 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 	 * @param modelInterpreter
 	 *            the corresponding pcm model interpreter holding this switch..
 	 */
-	public UsageModelUsageScenarioSwitch(
+	public UsageScenarioSwitch(
 			final InterpreterDefaultContext context,
 			final IModelAccessFactory modelAccessFactory,
 			final PCMInterpreterProbeSpecUtil probeSpecUtil) {
@@ -127,8 +127,8 @@ public class UsageModelUsageScenarioSwitch<T> extends UsagemodelSwitch<T>
     				  entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
       // create new stack frame for input parameter
-      context.getStack()
-            .createAndPushNewStackFrame(entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
+      SimulatedStackHelper
+            .createAndPushNewStackFrame(context.getStack(),entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
 
       /*
        * Measure Response Time of external calls: Take time sample at the start and a time sample at

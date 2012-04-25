@@ -12,9 +12,8 @@ import de.uka.ipd.sdq.pcm.repository.RequiredRole;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
 
-public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
+class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
 	protected static final Logger logger = Logger
 			.getLogger(ProvidedDelegationSwitch.class.getName());
 

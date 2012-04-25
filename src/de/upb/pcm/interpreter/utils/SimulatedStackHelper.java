@@ -1,6 +1,4 @@
-package de.upb.pcm.interpreter.simulation;
-
-import java.util.EmptyStackException;
+package de.upb.pcm.interpreter.utils;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -16,7 +14,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.stoex.AbstractNamedReference;
 import de.uka.ipd.sdq.stoex.NamespaceReference;
 import de.uka.ipd.sdq.stoex.analyser.visitors.StoExPrettyPrintVisitor;
-import de.upb.pcm.interpreter.utils.InterpreterLogger;
 
 /**
  * A simulated stack for the pcm interpreter with some convenience methods.
@@ -24,45 +21,20 @@ import de.upb.pcm.interpreter.utils.InterpreterLogger;
  * @author Joachim Meyer
  * 
  */
-public class InterpreterSimulatedStack extends SimulatedStack<Object>
+public final class SimulatedStackHelper
 {
-   /**
-    * 
-    */
-   private static final long serialVersionUID = 48089399746219161L;
-
-   protected static final Logger logger = Logger.getLogger(InterpreterSimulatedStack.class.getName());
-
-   /**
-    * Constructor
-    */
-   public InterpreterSimulatedStack()
-   {
-      super();
-   }
-
-   /**
-    * Creates an interpreter simulated stack with initial contents of the given simulated stack
-    * (copies top most stack frame and all of its children)
-    * 
-    * @param simulatedStack the simulated stack from which the new one should be created.
-    */
-   public InterpreterSimulatedStack(final SimulatedStack<Object> simulatedStack)
-   {
-      super();
-      if (simulatedStack.size() > 0) {
-    	  this.pushStackFrame(simulatedStack.currentStackFrame().copyFrame());
-      }
-   }
-
+	private static final Logger logger = Logger.getLogger(SimulatedStackHelper.class);
+	
    /**
     * Adds parameters to given stack frame.
     * 
     * @param parameter the parameter.
-    * @param stackFrame the stack frame.
+    * @param targetStackFrame the stack frame.
     */
-   public void addParameterToStackFrame(final EList<VariableUsage> parameter,
-         final SimulatedStackframe<Object> stackFrame)
+   public static final void addParameterToStackFrame(
+		   final SimulatedStackframe<Object> contextStackFrame,
+		   final EList<VariableUsage> parameter,
+         final SimulatedStackframe<Object> targetStackFrame)
    {
       for (final VariableUsage variableUsage : parameter)
       {
@@ -79,35 +51,21 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
             final AbstractNamedReference namedReference = variableCharacterisation
                   .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-            /*
-             * for the first time the stack is empty, the current stackframe will be the which will
-             * created now. This is a really ugly hack!
-             */
-
-            SimulatedStackframe<Object> currentStackFrame;
             Object value;
-            try
-            {
-               currentStackFrame = this.currentStackFrame();
-            }
-            catch (final EmptyStackException e)
-            {
-               currentStackFrame = stackFrame;
-            }
 
             if (namedReference instanceof NamespaceReference)
             {
                // we assume that this is now an INNER variable!
                // assign top most stack frame as current state
-               value = new EvaluationProxy(randomVariable.getSpecification(), currentStackFrame);
+               value = new EvaluationProxy(randomVariable.getSpecification(), contextStackFrame);
             }
             else
             {
-               value = StackContext.evaluateStatic(randomVariable.getSpecification(), currentStackFrame);
+               value = StackContext.evaluateStatic(randomVariable.getSpecification(), contextStackFrame);
             }
-            stackFrame.addValue(id, value);
+            targetStackFrame.addValue(id, value);
 
-            InterpreterLogger.debug(logger, "Added value " + value + " for id " + id + " to stackframe " + stackFrame);
+            InterpreterLogger.debug(logger, "Added value " + value + " for id " + id + " to stackframe " + targetStackFrame);
          }
       }
    }
@@ -120,9 +78,11 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
     * @param parameter the parameter.
     * @return the created stack frame.
     */
-   public SimulatedStackframe<Object> createAndPushNewStackFrame(final EList<VariableUsage> parameter)
+   public static final SimulatedStackframe<Object> createAndPushNewStackFrame(
+		   final SimulatedStack<Object> stack,
+		   final EList<VariableUsage> parameter)
    {
-      return createAndPushNewStackFrame(parameter, null);
+      return createAndPushNewStackFrame(stack, parameter, null);
    }
 
 
@@ -134,7 +94,9 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
     * @param parent the parent, if null no parent will be set.
     * @return the created stack frame.
     */
-   public SimulatedStackframe<Object> createAndPushNewStackFrame(final EList<VariableUsage> parameter,
+   public static final SimulatedStackframe<Object> createAndPushNewStackFrame(
+		   final SimulatedStack<Object> stack,
+		   final EList<VariableUsage> parameter,
          final SimulatedStackframe<Object> parent)
    {
       SimulatedStackframe<Object> stackFrame;
@@ -147,8 +109,8 @@ public class InterpreterSimulatedStack extends SimulatedStack<Object>
          stackFrame = new SimulatedStackframe<Object>(parent);
       }
       InterpreterLogger.debug(logger, "Added new stack frame: " + stackFrame);
-      addParameterToStackFrame(parameter, stackFrame);
-      this.pushStackFrame(stackFrame);
+      addParameterToStackFrame(stack.size() == 0 ? null : stack.currentStackFrame(), parameter, stackFrame);
+      stack.pushStackFrame(stackFrame);
       return stackFrame;
    }
 }

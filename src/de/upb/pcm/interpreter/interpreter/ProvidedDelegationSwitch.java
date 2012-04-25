@@ -1,6 +1,5 @@
 package de.upb.pcm.interpreter.interpreter;
 
-
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.pcm.core.composition.ProvidedDelegationConnector;
@@ -8,8 +7,6 @@ import de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
-
 
 /**
  * Switch for Repository Model
@@ -18,7 +15,7 @@ import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
  * 
  * @param <T> return type of switch methods.
  */
-public class ProvidedDelegationSwitch
+class ProvidedDelegationSwitch
 	extends CompositionSwitch<SimulatedStackframe<Object>> 
 {
    protected static final Logger logger = Logger.getLogger(ProvidedDelegationSwitch.class.getName());

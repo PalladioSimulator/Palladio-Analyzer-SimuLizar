@@ -3,7 +3,7 @@ package de.upb.pcm.interpreter.access;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
-import de.upb.pcm.interpreter.simulation.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
 /**
