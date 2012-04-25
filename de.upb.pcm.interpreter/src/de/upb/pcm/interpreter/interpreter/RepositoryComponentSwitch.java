@@ -22,7 +22,7 @@ import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
-import de.uka.ipd.sdq.pcm.repository.util.CompositionSwitch;
+import de.uka.ipd.sdq.pcm.repository.util.RepositorySwitch;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
@@ -36,7 +36,7 @@ import de.upb.pcm.interpreter.utils.SimulatedStackHelper;
  * @author snowball
  *
  */
-class RepositoryComponentSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
+class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
 	public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
 	
