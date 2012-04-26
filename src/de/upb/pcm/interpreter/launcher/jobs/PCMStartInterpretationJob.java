@@ -29,6 +29,8 @@ import de.upb.pcm.interpreter.access.AccessFactory;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
 import de.upb.pcm.interpreter.access.UsageModelAccess;
 import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
+import de.upb.pcm.interpreter.interpreter.listener.LogDebugListener;
+import de.upb.pcm.interpreter.interpreter.listener.ProbeSpecListener;
 import de.upb.pcm.interpreter.sdinterpreter.IReconfigurator;
 import de.upb.pcm.interpreter.sdinterpreter.ReconfigurationListener;
 import de.upb.pcm.interpreter.sdinterpreter.SDReconfigurator;
@@ -76,9 +78,13 @@ implements IBlackboardInteractingJob<MDSDBlackboard> {
 		// 2. Initialise Model Access Factory
 		final IModelAccessFactory modelAccessFactory = AccessFactory.createModelAccessFactory(this.blackboard);
 		
+		final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(simuComModel);
+		mainContext.getEventNotificationHelper().addListener(new LogDebugListener());
+		mainContext.getEventNotificationHelper().addListener(new ProbeSpecListener(modelAccessFactory,simuComModel));
+		
 		// 3. Setup interpreters for each usage scenario
 		final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(
-						new InterpreterDefaultContext(simuComModel));
+						mainContext);
 		simuComModel.setUsageScenarios(usageModelAccess.getWorkloadDrivers(
 				modelAccessFactory));
 
@@ -104,6 +110,7 @@ implements IBlackboardInteractingJob<MDSDBlackboard> {
 						+ (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
 
 		// 6. Deregister all listeners and execute cleanup code
+		mainContext.getEventNotificationHelper().removeAllListener();
 		reconfigurator.stopListening();
 		simuComModel.getProbeSpecContext().finish();
 		InterpreterLogger.info(logger, "finished job: " + this);

@@ -1,7 +1,5 @@
 package de.upb.pcm.interpreter.interpreter;
 
-import javax.activation.UnsupportedDataTypeException;
-
 import org.apache.log4j.Logger;
 
 import de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction;
@@ -14,20 +12,14 @@ import de.uka.ipd.sdq.pcm.usagemodel.ScenarioBehaviour;
 import de.uka.ipd.sdq.pcm.usagemodel.Start;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch;
-import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.upb.pcm.interpreter.access.IModelAccessFactory;
-import de.upb.pcm.interpreter.access.PMSAccess;
-import de.upb.pcm.interpreter.access.PRMAccess;
 import de.upb.pcm.interpreter.exceptions.PCMModelInterpreterException;
-import de.upb.pcm.interpreter.metrics.aggregators.ResponseTimeAggregator;
+import de.upb.pcm.interpreter.interpreter.listener.EventType;
+import de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
-import de.upb.pcm.interpreter.utils.PCMInterpreterProbeSpecUtil;
 import de.upb.pcm.interpreter.utils.SimulatedStackHelper;
 import de.upb.pcm.interpreter.utils.TransitionDeterminer;
-import de.upb.pcm.pms.MeasurementSpecification;
-import de.upb.pcm.pms.PerformanceMetricEnum;
-import de.upb.pcm.prm.PrmFactory;
 
 /**
  * Switch for Usage Scenario in Usage Model
@@ -37,20 +29,15 @@ import de.upb.pcm.prm.PrmFactory;
  * @param <T> return type of switch methods.
  */
 
-class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
+public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 {
    protected static final Logger logger = Logger.getLogger(UsageScenarioSwitch.class.getName());
 
    private final InterpreterDefaultContext context;
    private final TransitionDeterminer transitionDeterminer;
-   private final PCMInterpreterProbeSpecUtil probeSpecUtil;
    private final IModelAccessFactory modelAccessFactory;
 
-   private final PMSAccess pmsAccess;
-
-   private final PRMAccess prmAccess;
-
-	/**
+   /**
 	 * Constructor
 	 * 
 	 * @param modelInterpreter
@@ -58,13 +45,9 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 	 */
 	public UsageScenarioSwitch(
 			final InterpreterDefaultContext context,
-			final IModelAccessFactory modelAccessFactory,
-			final PCMInterpreterProbeSpecUtil probeSpecUtil) {
+			final IModelAccessFactory modelAccessFactory) {
 		this.context = context;
-		this.pmsAccess = modelAccessFactory.getPMSModelAccess();
-		this.prmAccess = modelAccessFactory.getPRMModelAccess();
 		transitionDeterminer = new TransitionDeterminer(context);
-		this.probeSpecUtil = probeSpecUtil;
 		this.modelAccessFactory = modelAccessFactory;
 	}
 
@@ -110,54 +93,29 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 		return super.caseDelay(object);
 	}
 
-
    /**
     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseEntryLevelSystemCall(de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall)
     */
    @Override
-   public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall)
-   {
-      InterpreterLogger.debug(logger, "Interpret EntryLevelSystemCall: " + entryLevelSystemCall);
+	public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
+		final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(context, modelAccessFactory,
+				RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT, entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
+				entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-      final RepositoryComponentSwitch providedDelegationSwitch =
-    		  new RepositoryComponentSwitch(
-    				  context, 
-    				  modelAccessFactory, 
-    				  RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
-    				  entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), 
-    				  entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.BEGIN, this.context.getThread()));
 
-      /*
-       * Measure Response Time of external calls: Take time sample at the start and a time sample at
-       * the end of the called RDSEFF
-       */
+		// create new stack frame for input parameter
+		SimulatedStackHelper.createAndPushNewStackFrame(context.getStack(),
+				entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
+		providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
+		this.context.getStack().removeStackFrame();
 
-      final String calculatorName = "entry level call: " + entryLevelSystemCall.getEntityName() + " (id: "
-            + entryLevelSystemCall.getId() + ")";
-      final String startProbeId = calculatorName + "_resp1";
-      final String stopProbeId = calculatorName + "_resp2";
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END, this.context.getThread()));
 
-      initReponseTimeMeasurement(entryLevelSystemCall, calculatorName, startProbeId, stopProbeId);
-
-      // ############## Measurement START ##############
-      this.probeSpecUtil.takeCurrentTimeSample(startProbeId, calculatorName,
-            context.getThread());
-      // ############## Measurement END ##############
-
-      // create new stack frame for input parameter
-      SimulatedStackHelper
-            .createAndPushNewStackFrame(context.getStack(),entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
-      providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
-      this.context.getStack().removeStackFrame();
-      
-      // ############## Measurement START ##############
-      this.probeSpecUtil.takeCurrentTimeSample(stopProbeId, calculatorName,
-            context.getThread());
-      // ############## Measurement END ##############
-
-      InterpreterLogger.debug(logger, "Finished EntryLevelSystemCall: " + entryLevelSystemCall);
-      return super.caseEntryLevelSystemCall(entryLevelSystemCall);
-   }
+		return super.caseEntryLevelSystemCall(entryLevelSystemCall);
+	}
 
 
    /**
@@ -245,47 +203,16 @@ class UsageScenarioSwitch<T> extends UsagemodelSwitch<T>
 	 * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseUsageScenario(de.uka.ipd.sdq.pcm.usagemodel.UsageScenario)
 	 */
 	@Override
-	public T caseUsageScenario(final UsageScenario object) {
+	public T caseUsageScenario(final UsageScenario usageScenario) {
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context.getThread()));
 		int stacksize = this.context.getStack().size();
-		this.doSwitch(object.getScenarioBehaviour_UsageScenario());
+		this.doSwitch(usageScenario.getScenarioBehaviour_UsageScenario());
 		if (this.context.getStack().size() != stacksize)
 			throw new PCMModelInterpreterException(
 					"Interpreter did not pop all pushed stackframes");
-		return super.caseUsageScenario(object);
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context.getThread()));
+		return super.caseUsageScenario(usageScenario);
 	}
-
-   /**
-    * Initializes response time measurement.
-    * 
-    * @param entryLevelSystemCall the entryLevelSystemCall to be measured.
-    * @param calculatorName the name of the response time calculator.
-    * @param startProbeId start probe id.
-    * @param stopProbeId stop probe id.
-    */
-   private void initReponseTimeMeasurement(final EntryLevelSystemCall entryLevelSystemCall,
-         final String calculatorName, final String startProbeId, final String stopProbeId)
-   {
-      MeasurementSpecification measurementSpecification;
-      if ((measurementSpecification = pmsAccess.isMonitored(entryLevelSystemCall, PerformanceMetricEnum.RESPONSE_TIME)) != null)
-      {
-         final Calculator calculator = this.probeSpecUtil
-               .createResponseTimeCalculator(startProbeId, stopProbeId, calculatorName, calculatorName,
-                     measurementSpecification, entryLevelSystemCall,
-                     context.getModel());
-
-         if (calculator != null)
-         {
-            try
-            {
-               new ResponseTimeAggregator(prmAccess, measurementSpecification, calculator, calculatorName, entryLevelSystemCall,
-                     PrmFactory.eINSTANCE.createPCMModelElementMeasurement(),
-                     this.context.getModel().getSimulationControl().getCurrentSimulationTime());
-            }
-            catch (final UnsupportedDataTypeException e)
-            {
-               e.printStackTrace();
-            }
-         }
-      }
-   }
 }

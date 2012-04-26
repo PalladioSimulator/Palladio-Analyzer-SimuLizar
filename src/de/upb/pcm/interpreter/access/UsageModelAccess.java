@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
 import de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext;
-import de.upb.pcm.interpreter.interpreter.UsageScenarioInterpreter;
+import de.upb.pcm.interpreter.interpreter.UsageScenarioSwitch;
 import de.upb.pcm.interpreter.utils.InterpreterLogger;
 import de.upb.pcm.interpreter.utils.PCMModels;
 
@@ -123,9 +123,9 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 			public void scenarioRunner(SimuComSimProcess thread) {
 				InterpreterDefaultContext myContext = new InterpreterDefaultContext(context);
 				myContext.setSimProcess(thread);
-				final UsageScenarioInterpreter interpreter = 
-						new UsageScenarioInterpreter(modelAccessFactory, myContext);
-				interpreter.interpret(scenario);
+				final UsageScenarioSwitch<Object> interpreter = 
+						new UsageScenarioSwitch<Object>(myContext, modelAccessFactory);
+				interpreter.doSwitch(scenario);
 			}
 		};
 	}

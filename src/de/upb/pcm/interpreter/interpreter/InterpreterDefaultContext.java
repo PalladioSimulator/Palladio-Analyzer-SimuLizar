@@ -10,74 +10,80 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 
-
 /**
  * Default context for the pcm interpreter.
  * 
  * @author Joachim Meyer
  * 
  */
-public class InterpreterDefaultContext extends Context
-{
-
-   /**
+public class InterpreterDefaultContext extends Context {
+	/**
     * 
     */
-   private static final long serialVersionUID = -5027373777424401211L;
+	private static final long serialVersionUID = -5027373777424401211L;
 
-   protected static final Logger logger = Logger.getLogger(InterpreterDefaultContext.class.getName());
-   
-   private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
+	protected static final Logger logger = Logger.getLogger(InterpreterDefaultContext.class.getName());
 
-   /**
-    * Create interpreter default context from the given default context (model, sim process and
-    * stack are set according to the given default context). The contents of the stack will be
-    * copied.
-    * 
-    * @param defaultContext the default context from which the new default context should be
-    *           created.
-    */
-   public InterpreterDefaultContext(final Context defaultContext)
-   {
-      super(defaultContext.getModel());
-      this.setEvaluationMode(defaultContext.getEvaluationMode());
-      this.setSimProcess(defaultContext.getThread());
-      stack = new SimulatedStack<Object>();
-      if (defaultContext.getStack().size() > 0) {
-    	  stack.pushStackFrame(defaultContext.getStack().currentStackFrame().copyFrame());
-      }
-   }
+	private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
-   /**
-    * Constrcutor
-    * 
-    * @param simuComModel the SimuCom model.
-    * @param simProcess the sim process of this context, means the process in which this context is
-    *           used
-    */
-   public InterpreterDefaultContext(final SimuComModel simuComModel, final SimuComSimProcess simProcess)
-   {
-      super(simuComModel);
-      stack = new SimulatedStack<Object>();
-      this.setSimProcess(simProcess);
-   }
+	private final EventNotificationHelper eventHelper;
 
-   public InterpreterDefaultContext(SimuComModel simuComModel) {
-	      super(simuComModel);
-	      stack = new SimulatedStack<Object>();
-   }
+	/**
+	 * Create interpreter default context from the given default context (model,
+	 * sim process and stack are set according to the given default context).
+	 * The contents of the stack will be copied.
+	 * 
+	 * @param context
+	 *            the default context from which the new default context should
+	 *            be created.
+	 */
+	public InterpreterDefaultContext(final InterpreterDefaultContext context) {
+		super(context.getModel());
+		this.setEvaluationMode(context.getEvaluationMode());
+		this.setSimProcess(context.getThread());
+		stack = new SimulatedStack<Object>();
+		eventHelper = context.eventHelper;
+		if (context.getStack().size() > 0) {
+			stack.pushStackFrame(context.getStack().currentStackFrame().copyFrame());
+		}
+	}
 
-   /**
-    * @see de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext#initialiseAssemblyContextLookup()
-    */
-   @Override
-   protected void initialiseAssemblyContextLookup()
-   { 
-	   // Template method which is only needed in generative SimuCom
-   }
+	/**
+	 * Constrcutor
+	 * 
+	 * @param simuComModel
+	 *            the SimuCom model.
+	 * @param simProcess
+	 *            the sim process of this context, means the process in which
+	 *            this context is used
+	 */
+	public InterpreterDefaultContext(final SimuComModel simuComModel, final SimuComSimProcess simProcess) {
+		super(simuComModel);
+		stack = new SimulatedStack<Object>();
+		this.setSimProcess(simProcess);
+		this.eventHelper = new EventNotificationHelper();
+	}
 
-   public Stack<AssemblyContext> getAssemblyContextStack()
-   {
-	   return this.assemblyContextStack;
-   }
+	public InterpreterDefaultContext(SimuComModel simuComModel) {
+		super(simuComModel);
+		stack = new SimulatedStack<Object>();
+		this.eventHelper = new EventNotificationHelper();
+	}
+
+	/**
+	 * @see de.upb.pcm.interpreter.interpreter.InterpreterDefaultContext#initialiseAssemblyContextLookup()
+	 */
+	@Override
+	protected void initialiseAssemblyContextLookup() {
+		// Template method which is only needed in generative SimuCom
+	}
+
+	public Stack<AssemblyContext> getAssemblyContextStack() {
+		return this.assemblyContextStack;
+	}
+	
+	public EventNotificationHelper getEventNotificationHelper()
+	{
+		return this.eventHelper;
+	}
 }

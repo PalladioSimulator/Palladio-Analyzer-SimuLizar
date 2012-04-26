@@ -449,7 +449,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 					 * context including its stack.
 					 */
 					final RDSeffSwitch seffInterpreter = new RDSeffSwitch(
-							new InterpreterDefaultContext(ctx), 
+							new InterpreterDefaultContext((InterpreterDefaultContext) ctx), 
 							modelAccessFactory, 
 							context.getAssemblyContextStack().peek(), 
 							probeSpecUtil);
