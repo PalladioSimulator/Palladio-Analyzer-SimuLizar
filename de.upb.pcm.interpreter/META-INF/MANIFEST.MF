@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Interpreter
-Bundle-SymbolicName: de.upb.pcm.interpreter;singleton:=true
+Bundle-Name: PCM Simulizar: PCM Interpreter with self-* features
+Bundle-SymbolicName: de.upb.pcm.simulizar;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.upb.pcm.interpreter.Activator
+Bundle-Activator: de.upb.pcm.simulizar.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
@@ -31,4 +31,5 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.emf.transaction;bundle-version="1.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.upb.pcm.interpreter.launcher
+Export-Package: de.upb.pcm.simulizar.launcher
+Bundle-Vendor: ag-schaefer.upb.de
