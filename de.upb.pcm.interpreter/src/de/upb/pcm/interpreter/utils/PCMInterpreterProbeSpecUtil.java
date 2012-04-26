@@ -1,6 +1,5 @@
 package de.upb.pcm.interpreter.utils;
 
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
@@ -19,116 +18,113 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.upb.pcm.pms.MeasurementSpecification;
 
-
 /**
  * Util for the Probe Specification Framework.
  * 
  * @author Joachim Meyer
  * 
  */
-public class PCMInterpreterProbeSpecUtil
+public class PCMInterpreterProbeSpecUtil 
 {
-   protected static final Logger logger = Logger.getLogger(PCMInterpreterProbeSpecUtil.class.getName());
+	protected static final Logger logger = Logger.getLogger(PCMInterpreterProbeSpecUtil.class.getName());
 
-   final ProbeSpecContext probeSpecContext;
-   final ISampleBlackboard blackboard;
+	final ProbeSpecContext probeSpecContext;
+	final ISampleBlackboard blackboard;
 
-   private final SimuComModel simuComModel;
+	private final SimuComModel simuComModel;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param modelHelper
+	 *            the model helper.
+	 */
+	public PCMInterpreterProbeSpecUtil(final SimuComModel simuComModel) {
+		super();
+		this.simuComModel = simuComModel;
+		this.probeSpecContext = simuComModel.getProbeSpecContext();
+		this.blackboard = probeSpecContext.getSampleBlackboard();
+	}
 
-   /**
-    * Constructor
-    * 
-    * @param modelHelper the model helper.
-    */
-   public PCMInterpreterProbeSpecUtil(final SimuComModel simuComModel)
-   {
-      super();
-      this.simuComModel = simuComModel;
-      this.probeSpecContext = simuComModel.getProbeSpecContext();
-      this.blackboard = probeSpecContext.getSampleBlackboard();
-   }
+	/**
+	 * Creates a response time calculator in the probe specification framework.
+	 * 
+	 * @param startProbeId
+	 *            id of the start probe.
+	 * @param stopProbeId
+	 *            id of the stop probe.
+	 * @param measurementId
+	 *            id of this measurement.
+	 * @param calculatorName
+	 *            name of the response time calculator
+	 * @param measurementSpecification
+	 *            the corresponding measurement specification from the pms
+	 *            model.
+	 * @param pcmElement
+	 *            the pcm element to be measured.
+	 * @param simuComModel
+	 *            the SimuCom model.
+	 * @return the created calculator, null if calculator already exists.
+	 */
+	public Calculator createResponseTimeCalculator(final String startProbeId, final String stopProbeId, final String measurementId,
+			final String calculatorName, final MeasurementSpecification measurementSpecification, final EObject pcmElement,
+			final SimuComModel simuComModel) {
 
-   /**
-    * Creates a response time calculator in the probe specification framework.
-    * 
-    * @param startProbeId id of the start probe.
-    * @param stopProbeId id of the stop probe.
-    * @param measurementId id of this measurement.
-    * @param calculatorName name of the response time calculator
-    * @param measurementSpecification the corresponding measurement specification from the pms
-    *           model.
-    * @param pcmElement the pcm element to be measured.
-    * @param simuComModel the SimuCom model.
-    * @return the created calculator, null if calculator already exists.
-    */
-   public Calculator createResponseTimeCalculator(final String startProbeId, final String stopProbeId,
-         final String measurementId, final String calculatorName,
-         final MeasurementSpecification measurementSpecification, final EObject pcmElement,
-         final SimuComModel simuComModel)
-   {
+		ResponseTimeCalculator responseTimeCalculator = null;
+		final CalculatorRegistry calculatorRegistry = probeSpecContext.getCalculatorRegistry();
+		// only register each calculator once
+		if (calculatorRegistry.getCalculatorForId(measurementId) == null) {
+			final ICalculatorFactory calculatorFactory = probeSpecContext.getCalculatorFactory();
 
-      ResponseTimeCalculator responseTimeCalculator = null;
-      final CalculatorRegistry calculatorRegistry = probeSpecContext.getCalculatorRegistry();
-      // only register each calculator once
-      if (calculatorRegistry.getCalculatorForId(measurementId) == null)
-      {
-         final ICalculatorFactory calculatorFactory = probeSpecContext.getCalculatorFactory();
+			final Calculator responseCalculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,
+					probeSpecContext.obtainProbeSetId(startProbeId), probeSpecContext.obtainProbeSetId(stopProbeId));
 
-         final Calculator responseCalculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,
-               probeSpecContext.obtainProbeSetId(startProbeId), probeSpecContext.obtainProbeSetId(stopProbeId));
+			calculatorRegistry.registerCalculator(measurementId, responseCalculator);
 
-         calculatorRegistry.registerCalculator(measurementId, responseCalculator);
+			InterpreterLogger.debug(logger, "Created Response Time Calculator. StartProbeId: " + startProbeId + ", StopProbeId: "
+					+ stopProbeId);
 
-         InterpreterLogger.debug(logger, "Created Response Time Calculator. StartProbeId: " + startProbeId
-               + ", StopProbeId: " + stopProbeId);
+			// get created calculator
+			responseTimeCalculator = (ResponseTimeCalculator) calculatorRegistry.getCalculatorForId(measurementId);
 
-         // get created calculator
-         responseTimeCalculator = (ResponseTimeCalculator) calculatorRegistry.getCalculatorForId(measurementId);
+			return responseTimeCalculator;
+		}
+		return null;
+	}
 
-         return responseTimeCalculator;
+	/**
+	 * @return returns the blackboard.
+	 */
+	private ISampleBlackboard getBlackboard() {
+		return this.blackboard;
+	}
 
-      }
-      return null;
+	/**
+	 * Takes current time sample.
+	 * 
+	 * @param probeID
+	 *            the start or stop probe id.
+	 * @param measurementId
+	 *            id of the measurement.
+	 * @param simProcess
+	 *            the sim process.
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimuComSimProcess simProcess) {
+		final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry().getProbeStrategy(ProbeType.CURRENT_TIME, null);
 
-   }
+		final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.simuComModel.getSimulationControl());
 
+		final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample, simProcess.getRequestContext(),
+				measurementId, probeSpecContext.obtainProbeSetId(probeID));
 
-   /**
-    * @return returns the blackboard.
-    */
-   private ISampleBlackboard getBlackboard()
-   {
-      return this.blackboard;
-   }
+		InterpreterLogger.debug(logger, "Took probe " + probeID + " of " + measurementId);
 
+		getBlackboard().addSample(probeSampleSet);
+	}
 
-   /**
-    * Takes current time sample.
-    * 
-    * @param probeID the start or stop probe id.
-    * @param measurementId id of the measurement.
-    * @param simProcess the sim process.
-    */
-   @SuppressWarnings({ "rawtypes", "unchecked" })
-   public void takeCurrentTimeSample(final String probeID, final String measurementId, final SimuComSimProcess simProcess)
-   {
-      final IProbeStrategy timeStrategy = probeSpecContext.getProbeStrategyRegistry()
-            .getProbeStrategy(ProbeType.CURRENT_TIME, null);
-
-      final ProbeSample probeSample = timeStrategy.takeSample(probeID, this.simuComModel
-            .getSimulationControl());
-
-      final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample,
-            simProcess.getRequestContext(), measurementId, probeSpecContext.obtainProbeSetId(probeID));
-
-      InterpreterLogger.debug(logger, "Took probe " + probeID + " of " + measurementId);
-
-      getBlackboard().addSample(probeSampleSet);
-   }
-
-   public ProbeSpecContext getProbeSpecContext() {
-	   return this.probeSpecContext;
-   }
+	public ProbeSpecContext getProbeSpecContext() {
+		return this.probeSpecContext;
+	}
 
 }
