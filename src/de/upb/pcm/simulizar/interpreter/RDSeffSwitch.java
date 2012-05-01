@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.activation.UnsupportedDataTypeException;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 
@@ -28,23 +26,18 @@ import de.uka.ipd.sdq.pcm.seff.SetVariableAction;
 import de.uka.ipd.sdq.pcm.seff.StartAction;
 import de.uka.ipd.sdq.pcm.seff.seff_performance.ParametricResourceDemand;
 import de.uka.ipd.sdq.pcm.seff.util.SeffSwitch;
-import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
-import de.upb.pcm.pms.MeasurementSpecification;
-import de.upb.pcm.pms.PerformanceMetricEnum;
-import de.upb.pcm.prm.PrmFactory;
 import de.upb.pcm.simulizar.access.AllocationAccess;
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
-import de.upb.pcm.simulizar.access.PMSAccess;
 import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.simulizar.exceptions.SimulatedStackAccessException;
-import de.upb.pcm.simulizar.metrics.aggregators.ResponseTimeAggregator;
+import de.upb.pcm.simulizar.interpreter.listener.EventType;
+import de.upb.pcm.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import de.upb.pcm.simulizar.utils.InterpreterLogger;
-import de.upb.pcm.simulizar.utils.PCMInterpreterProbeSpecUtil;
 import de.upb.pcm.simulizar.utils.SimulatedStackHelper;
 import de.upb.pcm.simulizar.utils.TransitionDeterminer;
 
@@ -60,7 +53,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 	private final static Logger logger = Logger.getLogger(RDSeffSwitch.class);
 	private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
-	private final PCMInterpreterProbeSpecUtil probeSpecUtil;
 	private final IModelAccessFactory modelAccessFactory;
 	
 	private SimulatedStackframe<Object> resultStackFrame;
@@ -75,12 +67,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 	 */
 	public RDSeffSwitch(final InterpreterDefaultContext context,
 			IModelAccessFactory interpreterFactory,
-			final AssemblyContext assemblyContext,
-			final PCMInterpreterProbeSpecUtil probeSpecUtil) {
+			final AssemblyContext assemblyContext) {
 		super();
 		this.modelAccessFactory = interpreterFactory;
 		this.context = context;
-		this.probeSpecUtil = probeSpecUtil;
 		this.transitionDeterminer = new TransitionDeterminer(context);
 		this.resultStackFrame = new SimulatedStackframe<Object>();
 	}
@@ -141,32 +131,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 	 */
 	@Override
 	public SimulatedStackframe<Object> caseExternalCallAction(final ExternalCallAction externalCall) {
-		InterpreterLogger.debug(logger, "Interpret ExternalCallAction: "
-				+ externalCall);
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new RDSEFFElementPassedEvent<ExternalCallAction>(externalCall, EventType.BEGIN, this.context.getThread(),
+						this.context.getAssemblyContextStack().peek()));
 
 		final ComposedStructureInnerSwitch composedStructureSwitch = 
 				new ComposedStructureInnerSwitch(context, modelAccessFactory, externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
-
-		/*
-		 * Measure Response Time of external calls: Take time sample at the
-		 * start and a time sample at the end of the called RDSEFF
-		 */
-
-		final String calculatorName = "call: " + externalCall.getEntityName()
-				+ " (id: " + externalCall.getId() + "), AssemblyCtx: "
-				+ this.context.getAssemblyContextStack().peek().getEntityName() + "(id: "
-				+ this.context.getAssemblyContextStack().peek().getId() + ")";
-		final String startProbeId = calculatorName + "_resp1";
-		final String stopProbeId = calculatorName + "_resp2";
-
-		initReponseTimeMeasurement(externalCall, calculatorName, startProbeId,
-				stopProbeId);
-
-		// ############## Measurement START ##############
-		probeSpecUtil
-				.takeCurrentTimeSample(startProbeId, calculatorName,
-						context.getThread());
-		// ############## Measurement END ##############
 
 		// create new stack frame for input parameter
 		SimulatedStackHelper
@@ -179,14 +149,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 		this.context.getStack().removeStackFrame();
 		SimulatedStackHelper.addParameterToStackFrame(outputFrame, externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
 
-		// ############## Measurement START ##############
-		probeSpecUtil
-				.takeCurrentTimeSample(stopProbeId, calculatorName,
-						context.getThread());
-		// ############## Measurement END ##############
-
-		InterpreterLogger.debug(logger, "Finished ExternalCallAction: "
-				+ externalCall);
+		this.context.getEventNotificationHelper().firePassedEvent(
+				new RDSEFFElementPassedEvent<ExternalCallAction>(externalCall, EventType.END, this.context.getThread(),
+						this.context.getAssemblyContextStack().peek()));
+		
 		return null;
 	}
 
@@ -451,8 +417,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 					final RDSeffSwitch seffInterpreter = new RDSeffSwitch(
 							new InterpreterDefaultContext((InterpreterDefaultContext) ctx), 
 							modelAccessFactory, 
-							context.getAssemblyContextStack().peek(), 
-							probeSpecUtil);
+							context.getAssemblyContextStack().peek());
 
 					InterpreterLogger.debug(logger,
 							"Created new RDSeff interpreter for "
@@ -464,51 +429,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 			});
 		}
 		return syncProcesses;
-	}
-
-	/**
-	 * Initializes response time measurement.
-	 * 
-	 * @param object
-	 *            the ExternalCallAction to be measured.
-	 * @param calculatorName
-	 *            the name of the response time calculator.
-	 * @param startProbeId
-	 *            start probe id.
-	 * @param stopProbeId
-	 *            stop probe id.
-	 */
-	private void initReponseTimeMeasurement(final ExternalCallAction object,
-			final String calculatorName, final String startProbeId,
-			final String stopProbeId) {
-		final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
-		MeasurementSpecification measurementSpecification;
-		if ((measurementSpecification = pmsAccess.isMonitored(object,
-				PerformanceMetricEnum.RESPONSE_TIME)) != null) {
-
-			final Calculator calculator = probeSpecUtil
-					.createResponseTimeCalculator(
-							startProbeId,
-							stopProbeId,
-							calculatorName,
-							calculatorName,
-							measurementSpecification,
-							object,
-							context.getModel());
-
-			if (calculator != null) {
-				try {
-					new ResponseTimeAggregator(this.modelAccessFactory.getPRMModelAccess(), 
-							measurementSpecification,
-							calculator, calculatorName, object,
-							PrmFactory.eINSTANCE
-									.createPCMModelElementMeasurement(),
-							context.getModel().getSimulationControl().getCurrentSimulationTime());
-				} catch (final UnsupportedDataTypeException e) {
-					e.printStackTrace();
-				}
-			}
-		}
 	}
 
 	/**

@@ -7,7 +7,8 @@ import javax.activation.UnsupportedDataTypeException;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.uka.ipd.sdq.identifier.Identifier;
+import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
@@ -75,6 +76,22 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
 		endMeasurement(event);
 	}
 
+	/* (non-Javadoc)
+	 * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#beginExternalCallInterpretation(de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void beginExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event) {
+		startMeasurement(event);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#endExternalCallInterpretation(de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void endExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event) {
+		endMeasurement(event);
+	}
+
 	/**
 	 * Initializes response time measurement.
 	 * 
@@ -112,8 +129,8 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
 	 * @param <T>
 	 * @param event
 	 */
-	private <T extends Identifier> void startMeasurement(ModelElementPassedEvent<T> event) {
-		final String calculatorName = event.getModelElement().getId();
+	private <T extends Entity> void startMeasurement(ModelElementPassedEvent<T> event) {
+		final String calculatorName = getCalculatorName(event);
 		final String startProbeID = calculatorName + START_PROBE_MARKER;
 		final String stopProbeID = calculatorName + END_PROBE_MARKER;
 	
@@ -125,10 +142,33 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
 	/**
 	 * @param event
 	 */
-	private <T extends Identifier> void endMeasurement(ModelElementPassedEvent<T> event) {
-		final String calculatorName = event.getModelElement().getId();
+	private <T extends Entity> void endMeasurement(ModelElementPassedEvent<T> event) {
+		final String calculatorName = getCalculatorName(event);
 		final String stopProbeID = calculatorName + END_PROBE_MARKER;
 	
 		this.pcmInterpreterProbeSpecUtil.takeCurrentTimeSample(stopProbeID, calculatorName, event.getThread());
+	}
+
+	/**
+	 * @param event
+	 * @return
+	 */
+	private <T extends Entity> String getCalculatorName(ModelElementPassedEvent<T> event) {
+		Entity entity = event.getModelElement();
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(entity.eClass().getName());
+		sb.append(" >");
+		sb.append(entity.getEntityName());
+		sb.append(" (ID: ");
+		sb.append(entity.getId());
+		if (event instanceof RDSEFFElementPassedEvent) {
+			RDSEFFElementPassedEvent<T> rdseffEvent = (RDSEFFElementPassedEvent<T>) event;
+			sb.append(", AssCtx: ");
+			sb.append(rdseffEvent.getAssemblyContext().getId());
+		}
+		sb.append(" )<");
+		
+		return sb.toString();
 	}
 }

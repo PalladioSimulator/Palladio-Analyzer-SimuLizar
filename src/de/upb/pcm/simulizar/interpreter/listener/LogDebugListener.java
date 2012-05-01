@@ -6,6 +6,7 @@ package de.upb.pcm.simulizar.interpreter.listener;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 
@@ -53,6 +54,22 @@ public class LogDebugListener extends AbstractInterpreterListener {
 	 */
 	@Override
 	public void endEntryLevelSystemCallInterpretation(ModelElementPassedEvent<EntryLevelSystemCall> event) {
+		logEvent(event);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#beginExternalCallInterpretation(de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void beginExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event) {
+		logEvent(event);
+	}
+
+	/* (non-Javadoc)
+	 * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#endExternalCallInterpretation(de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void endExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event) {
 		logEvent(event);
 	}
 

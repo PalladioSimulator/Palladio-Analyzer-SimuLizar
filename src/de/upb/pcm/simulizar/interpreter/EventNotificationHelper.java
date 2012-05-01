@@ -8,6 +8,8 @@ import java.util.Collection;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
+import de.uka.ipd.sdq.pcm.seff.SeffPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
@@ -15,6 +17,7 @@ import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.simulizar.interpreter.listener.EventType;
 import de.upb.pcm.simulizar.interpreter.listener.IInterpreterListener;
 import de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent;
+import de.upb.pcm.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 
 /**
  * @author snowball
@@ -52,6 +55,12 @@ public class EventNotificationHelper {
 					singleListener.beginEntryLevelSystemCallInterpretation((ModelElementPassedEvent<EntryLevelSystemCall>) event);
 				else
 					singleListener.endEntryLevelSystemCallInterpretation((ModelElementPassedEvent<EntryLevelSystemCall>) event);
+				break;
+			case SeffPackage.EXTERNAL_CALL_ACTION:
+				if (event.getEventType() == EventType.BEGIN)
+					singleListener.beginExternalCallInterpretation((RDSEFFElementPassedEvent<ExternalCallAction>) event);
+				else
+					singleListener.endExternalCallInterpretation((RDSEFFElementPassedEvent<ExternalCallAction>) event);
 				break;
 			default:
 				throw new PCMModelInterpreterException("Tried to fire unknown event");

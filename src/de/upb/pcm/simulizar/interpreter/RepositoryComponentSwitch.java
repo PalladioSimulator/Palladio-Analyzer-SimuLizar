@@ -29,7 +29,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
-import de.upb.pcm.simulizar.utils.PCMInterpreterProbeSpecUtil;
 import de.upb.pcm.simulizar.utils.SimulatedStackHelper;
 
 /**
@@ -102,8 +101,13 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     	if (entity != providedRole.getProvidingEntity_ProvidedRole())
     		throw new PCMModelInterpreterException("Interpret entity of provided role only");
 		final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(providedRole);
-		ProvidedDelegationSwitch composedStructureSwitch = new ProvidedDelegationSwitch(context, modelAccessFactory, signature);
-		return composedStructureSwitch.doSwitch(connectedProvidedDelegationConnector);
+		final RepositoryComponentSwitch repositoryComponentSwitch = 
+				new RepositoryComponentSwitch(context, 
+						modelAccessFactory, 
+						connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), 
+						this.signature, 
+						connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
+		return repositoryComponentSwitch.doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
 	}
 
 	/**
@@ -168,9 +172,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 			final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(
 					context, 
 					modelAccessFactory,
-					instanceAssemblyContext, 
-					new PCMInterpreterProbeSpecUtil(
-							context.getModel()));
+					instanceAssemblyContext);
 
 			// interpret called seff
 			return rdSeffInterpreter
