@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
-           delegate="de.upb.pcm.interpreter.launcher.PCMInterpreterLauncher"
+           delegate="de.upb.pcm.simulizar.launcher.PCMInterpreterLauncher"
            id="de.upb.pcm.interpreter.SimuLizarLaunching"
            modes="run, debug"
            name="SimuLizar"

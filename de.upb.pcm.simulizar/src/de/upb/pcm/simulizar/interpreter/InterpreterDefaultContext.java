@@ -58,10 +58,8 @@ public class InterpreterDefaultContext extends Context {
 	 *            this context is used
 	 */
 	public InterpreterDefaultContext(final SimuComModel simuComModel, final SimuComSimProcess simProcess) {
-		super(simuComModel);
-		stack = new SimulatedStack<Object>();
+		this(simuComModel);
 		this.setSimProcess(simProcess);
-		this.eventHelper = new EventNotificationHelper();
 	}
 
 	public InterpreterDefaultContext(SimuComModel simuComModel) {
