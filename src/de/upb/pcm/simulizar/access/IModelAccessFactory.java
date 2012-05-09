@@ -3,31 +3,31 @@ package de.upb.pcm.simulizar.access;
 import de.upb.pcm.simulizar.interpreter.InterpreterDefaultContext;
 
 /**
- * Model access factory interface for creating pcm and prm model access, as well
- * as pcm model interpreter.
+ * Model access factory interface for creating pcm and prm model access, as well as pcm model
+ * interpreter.
  * 
  * @author Steffen Becker, Joachim Meyer
  * 
  */
 public interface IModelAccessFactory {
-	UsageModelAccess getUsageModelAccess(InterpreterDefaultContext context);
+    UsageModelAccess getUsageModelAccess(InterpreterDefaultContext context);
 
-	AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
+    AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
 
-	SystemAccess getSystemAccess(InterpreterDefaultContext context);
+    SystemAccess getSystemAccess(InterpreterDefaultContext context);
 
-	RepositoryAccess getRepositoryAccess(InterpreterDefaultContext context);
+    RepositoryAccess getRepositoryAccess(InterpreterDefaultContext context);
 
-	GlobalPCMAccess getGlobalPCMAccess();
+    GlobalPCMAccess getGlobalPCMAccess();
 
-	/**
-	 * Gets PMS model access.
-	 * 
-	 * @return the pms model access.
-	 */
-	PMSAccess getPMSModelAccess();
+    /**
+     * Gets PMS model access.
+     * 
+     * @return the pms model access.
+     */
+    PMSAccess getPMSModelAccess();
 
-	PRMAccess getPRMModelAccess();
+    PRMAccess getPRMModelAccess();
 
-	SDAccess getSDAccess();
+    SDAccess getSDAccess();
 }

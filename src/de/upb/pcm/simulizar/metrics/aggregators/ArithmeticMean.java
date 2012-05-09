@@ -1,8 +1,6 @@
 package de.upb.pcm.simulizar.metrics.aggregators;
 
-
 import java.util.Vector;
-
 
 /**
  * The statistical characterization "Arithmetic Mean"
@@ -10,24 +8,22 @@ import java.util.Vector;
  * @author Joachim Meyer
  * 
  */
-public class ArithmeticMean implements IStatisticalCharacterization
-{
+public class ArithmeticMean implements IStatisticalCharacterization {
 
-   /**
-    * Calculates the arithmetic mean of the given measurements.
-    * 
-    * @param measurements a vector of double measurements
-    * @return the statistical characterization.
-    */
-   @Override
-   public Double calculateStatisticalCharaterization(final Vector<Double> measurements)
-   {
-      double sum = 0.0;
-      for (final Double measurement : measurements)
-      {
-         sum += measurement;
-      }
-      return sum / measurements.size();
-   }
+    /**
+     * Calculates the arithmetic mean of the given measurements.
+     * 
+     * @param measurements
+     *            a vector of double measurements
+     * @return the statistical characterization.
+     */
+    @Override
+    public Double calculateStatisticalCharaterization(final Vector<Double> measurements) {
+        double sum = 0.0;
+        for (final Double measurement : measurements) {
+            sum += measurement;
+        }
+        return sum / measurements.size();
+    }
 
 }

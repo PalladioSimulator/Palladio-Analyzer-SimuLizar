@@ -1,11 +1,9 @@
 package de.upb.pcm.simulizar.launcher.jobs;
 
-
 import de.uka.ipd.sdq.workflow.OrderPreservingBlackboardCompositeJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.configurations.AbstractPCMWorkflowRunConfiguration;
 import de.uka.ipd.sdq.workflow.pcm.jobs.PreparePCMBlackboardPartionJob;
-
 
 /**
  * Composite Job for preparing Blackboard and loading PCM Models into it.
@@ -13,19 +11,15 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.PreparePCMBlackboardPartionJob;
  * @author Joachim Meyer
  * 
  */
-public class LoadPCMModelsIntoBlackboardInterpreterJob extends OrderPreservingBlackboardCompositeJob<MDSDBlackboard>
-{
+public class LoadPCMModelsIntoBlackboardInterpreterJob extends OrderPreservingBlackboardCompositeJob<MDSDBlackboard> {
 
+    /**
+     * @param config
+     */
+    public LoadPCMModelsIntoBlackboardInterpreterJob(final AbstractPCMWorkflowRunConfiguration config) {
 
-   /**
-    * @param config
-    */
-   public LoadPCMModelsIntoBlackboardInterpreterJob(final AbstractPCMWorkflowRunConfiguration config)
-   {
-
-      this.add(new PreparePCMBlackboardPartionJob());
-      this.add(new LoadPCMModelsInterpreterJob(config));
-   }
-
+        this.add(new PreparePCMBlackboardPartionJob());
+        this.add(new LoadPCMModelsInterpreterJob(config));
+    }
 
 }

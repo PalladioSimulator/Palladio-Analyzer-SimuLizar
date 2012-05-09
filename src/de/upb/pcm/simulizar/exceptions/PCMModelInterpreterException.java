@@ -1,29 +1,25 @@
 package de.upb.pcm.simulizar.exceptions;
 
-
 /**
  * Class for exceptions while interpreting a pcm model.
  * 
  * @author Joachim Meyer
  * 
  */
-public class PCMModelInterpreterException extends PCMModelAccessException
-{
+public class PCMModelInterpreterException extends PCMModelAccessException {
 
-   /**
+    /**
     * 
     */
-   private static final long serialVersionUID = 8959342145045102098L;
+    private static final long serialVersionUID = 8959342145045102098L;
 
+    /**
+     * @param exception
+     *            the exception message.
+     */
+    public PCMModelInterpreterException(final String message) {
+        super(message);
 
-   /**
-    * @param exception the exception message.
-    */
-   public PCMModelInterpreterException(final String message)
-   {
-      super(message);
-
-   }
-
+    }
 
 }

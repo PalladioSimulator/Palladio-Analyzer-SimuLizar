@@ -1,6 +1,5 @@
 package de.upb.pcm.simulizar.launcher.partitions;
 
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -17,7 +16,6 @@ import de.upb.pcm.pms.PMSModel;
 import de.upb.pcm.pms.PmsPackage;
 import de.upb.pcm.simulizar.exceptions.PMSModelLoadException;
 
-
 /**
  * Special ResourceSetPartition for the PMS, with the functionality to resolve cross references from
  * the PRM to PCM.
@@ -25,96 +23,79 @@ import de.upb.pcm.simulizar.exceptions.PMSModelLoadException;
  * @author Joachim Meyer
  * 
  */
-public class PMSResourceSetPartition extends ResourceSetPartition
-{
+public class PMSResourceSetPartition extends ResourceSetPartition {
 
-   private final PCMResourceSetPartition pcmResourceSetPartition;
+    private final PCMResourceSetPartition pcmResourceSetPartition;
 
+    /**
+     * Constructor
+     * 
+     * @param pcmResourceSetPartition
+     *            the pcm resource set partition to resolve cross references from prm to pcm.
+     */
+    public PMSResourceSetPartition(final PCMResourceSetPartition pcmResourceSetPartition) {
+        super();
+        this.pcmResourceSetPartition = pcmResourceSetPartition;
+    }
 
-   /**
-    * Constructor
-    * 
-    * @param pcmResourceSetPartition the pcm resource set partition to resolve cross references from
-    *           prm to pcm.
-    */
-   public PMSResourceSetPartition(final PCMResourceSetPartition pcmResourceSetPartition)
-   {
-      super();
-      this.pcmResourceSetPartition = pcmResourceSetPartition;
-   }
+    /**
+     * @return return the PMSModel element
+     */
+    public PMSModel getPMSModel() {
+        return this.getRootElement();
+    }
 
+    /**
+     * @return Returns the pcmResourceSetPartition.
+     */
+    private PCMResourceSetPartition getPcmResourceSetPartition() {
+        return this.pcmResourceSetPartition;
+    }
 
-   /**
-    * @return return the PMSModel element
-    */
-   public PMSModel getPMSModel()
-   {
-      return getRootElement();
-   }
-
-
-   /**
-    * @return Returns the pcmResourceSetPartition.
-    */
-   private PCMResourceSetPartition getPcmResourceSetPartition()
-   {
-      return this.pcmResourceSetPartition;
-   }
-
-
-   /**
-    * Gets the root element of the PMS, the PMSModel
-    * 
-    * @return the PMSModel
-    */
-   private PMSModel getRootElement()
-   {
-      for (final Resource resource : this.rs.getResources())
-      {
-         if (resource != null && resource.getContents().size() > 0
-               && resource.getContents().get(0).eClass() == PmsPackage.eINSTANCE.getPMSModel())
-         {
-            return (PMSModel) resource.getContents().get(0);
-         }
-      }
-
-      throw new RuntimeException("Failed to retrieve PMS model element " + PmsPackage.eINSTANCE.getPMSModel().getName());
-
-   }
-
-
-   /**
-    * Resolves all cross references from PMS to PCM
-    */
-   public void resolveAllProxiesToPCM()
-   {
-      /*
-       * Note: the prm resource set should only have one resource, but maybe we need more in the
-       * future
-       */
-
-      for (final Resource resource : this.rs.getResources())
-      {
-         final Map<EObject, Collection<Setting>> proxiesToBeResolved = ProxyCrossReferencer.find(resource);
-         for (final EObject element : proxiesToBeResolved.keySet())
-         {
-            // resolve
-            final EObject resolved = EcoreUtil.resolve(element, getPcmResourceSetPartition().getResourceSet());
-            if (resolved.eIsProxy())
-            {
-               throw new PMSModelLoadException("Unable to resolve proxy " + resolved);
+    /**
+     * Gets the root element of the PMS, the PMSModel
+     * 
+     * @return the PMSModel
+     */
+    private PMSModel getRootElement() {
+        for (final Resource resource : this.rs.getResources()) {
+            if (resource != null && resource.getContents().size() > 0
+                    && resource.getContents().get(0).eClass() == PmsPackage.eINSTANCE.getPMSModel()) {
+                return (PMSModel) resource.getContents().get(0);
             }
-            // now proxy is resolved, replace proxy in prm model (for each setting)
-            final ArrayList<Setting> settings = (ArrayList<Setting>) proxiesToBeResolved.get(element);
-            for (final Setting setting : settings)
-            {
-               EcoreUtil.replace(setting, element, resolved);
+        }
+
+        throw new RuntimeException("Failed to retrieve PMS model element "
+                + PmsPackage.eINSTANCE.getPMSModel().getName());
+
+    }
+
+    /**
+     * Resolves all cross references from PMS to PCM
+     */
+    public void resolveAllProxiesToPCM() {
+        /*
+         * Note: the prm resource set should only have one resource, but maybe we need more in the
+         * future
+         */
+
+        for (final Resource resource : this.rs.getResources()) {
+            final Map<EObject, Collection<Setting>> proxiesToBeResolved = ProxyCrossReferencer.find(resource);
+            for (final EObject element : proxiesToBeResolved.keySet()) {
+                // resolve
+                final EObject resolved = EcoreUtil.resolve(element, this.getPcmResourceSetPartition().getResourceSet());
+                if (resolved.eIsProxy()) {
+                    throw new PMSModelLoadException("Unable to resolve proxy " + resolved);
+                }
+                // now proxy is resolved, replace proxy in prm model (for each setting)
+                final ArrayList<Setting> settings = (ArrayList<Setting>) proxiesToBeResolved.get(element);
+                for (final Setting setting : settings) {
+                    EcoreUtil.replace(setting, element, resolved);
+                }
+
             }
+        }
 
-         }
-      }
-
-   }
-
+    }
 
 }
