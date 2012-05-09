@@ -7,18 +7,19 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
 public class RDSEFFElementPassedEvent<T extends EObject> extends ModelElementPassedEvent<T> {
 
-	private final AssemblyContext assemblyContext;
+    private final AssemblyContext assemblyContext;
 
-	public RDSEFFElementPassedEvent(T modelElement, EventType eventType, SimuComSimProcess thread, AssemblyContext assemblyContext) {
-		super(modelElement, eventType, thread);
-		this.assemblyContext = assemblyContext;
-	}
+    public RDSEFFElementPassedEvent(final T modelElement, final EventType eventType, final SimuComSimProcess thread,
+            final AssemblyContext assemblyContext) {
+        super(modelElement, eventType, thread);
+        this.assemblyContext = assemblyContext;
+    }
 
-	/**
-	 * @return the assemblyContext
-	 */
-	public AssemblyContext getAssemblyContext() {
-		return assemblyContext;
-	}
-	
+    /**
+     * @return the assemblyContext
+     */
+    public AssemblyContext getAssemblyContext() {
+        return this.assemblyContext;
+    }
+
 }

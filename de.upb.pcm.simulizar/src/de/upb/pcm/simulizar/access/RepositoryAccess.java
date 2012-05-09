@@ -12,25 +12,21 @@ import de.upb.pcm.simulizar.utils.PCMModels;
  * 
  * @author Joachim Meyer
  */
-public class RepositoryAccess extends
-		AbstractPCMModelAccess<Repository> 
-{
-	/**
-	 * Constructor
-	 * 
-	 * @param contex
-	 *            the interpreter default context for the pcm model interpreter,
-	 *            may be null.
-	 * @param modelHelper
-	 *            the model helper.
-	 */
-	public RepositoryAccess(final InterpreterDefaultContext context,
-			final ModelHelper modelHelper) {
-		super(context, modelHelper);
-	}
+public class RepositoryAccess extends AbstractPCMModelAccess<Repository> {
+    /**
+     * Constructor
+     * 
+     * @param contex
+     *            the interpreter default context for the pcm model interpreter, may be null.
+     * @param modelHelper
+     *            the model helper.
+     */
+    public RepositoryAccess(final InterpreterDefaultContext context, final ModelHelper modelHelper) {
+        super(context, modelHelper);
+    }
 
-	@Override
-	protected Repository getSpecificModel(PCMModels models) {
-		return models.getRepository();
-	}
+    @Override
+    protected Repository getSpecificModel(final PCMModels models) {
+        return models.getRepository();
+    }
 }

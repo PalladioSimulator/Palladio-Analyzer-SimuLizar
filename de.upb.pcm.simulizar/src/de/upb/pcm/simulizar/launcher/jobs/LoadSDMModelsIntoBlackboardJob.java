@@ -1,6 +1,5 @@
 package de.upb.pcm.simulizar.launcher.jobs;
 
-
 import java.io.File;
 import java.io.FilenameFilter;
 
@@ -16,115 +15,94 @@ import de.uka.ipd.sdq.workflow.exceptions.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.upb.pcm.simulizar.launcher.partitions.SDMResourceSetPartition;
 
-
 /**
  * Job for loading all sdm models in a specific folder into the blackboard.
  * 
  * @author Joachim Meyer
  * 
  */
-public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard>
-{
+public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-   public static final String SDM_MODEL_PARTITION_ID = "de.upb.pcm.sdm";
+    public static final String SDM_MODEL_PARTITION_ID = "de.upb.pcm.sdm";
 
-   private MDSDBlackboard blackboard;
+    private MDSDBlackboard blackboard;
 
-   private final String path;
+    private final String path;
 
+    /**
+     * Constructor
+     * 
+     * @param configuration
+     *            the SimuCom workflow configuration.
+     */
+    public LoadSDMModelsIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
+        this.path = configuration.getEventMiddlewareFile();
+    }
 
-   /**
-    * Constructor
-    * 
-    * @param configuration the SimuCom workflow configuration.
-    */
-   public LoadSDMModelsIntoBlackboardJob(final SimuComWorkflowConfiguration configuration)
-   {
-      path = configuration.getEventMiddlewareFile();
-   }
+    /**
+     * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 
+        final SDMResourceSetPartition sdmPartition = new SDMResourceSetPartition();
 
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
-    */
-   @Override
-   public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException
-   {
+        // final URI pathToSDM = CommonPlugin.asLocalURI(URI.createPlatformResourceURI(new
+        // File("/SDM2/").getPath(), true));
+        if (!this.path.equals("")) {
+            final File pathFile = new File(this.path);
+            final String parent = pathFile.getParent();
 
-      final SDMResourceSetPartition sdmPartition = new SDMResourceSetPartition();
+            final URI pathToSDM = URI.createURI("file:///" + parent);
+            final File folder = new File(pathToSDM.toFileString());
 
-      // final URI pathToSDM = CommonPlugin.asLocalURI(URI.createPlatformResourceURI(new
-      // File("/SDM2/").getPath(), true));
-      if (!path.equals(""))
-      {
-         File pathFile = new File(path);
-         String parent = pathFile.getParent();
+            final File[] files = folder.listFiles(new FilenameFilter() {
 
-         final URI pathToSDM = URI.createURI("file:///" + parent);
-         final File folder = new File(pathToSDM.toFileString());
+                @Override
+                public boolean accept(final File dir, final String name) {
+                    return name.endsWith(".storydiagrams");
+                }
+            });
 
-         final File[] files = folder.listFiles(new FilenameFilter()
-         {
-
-            @Override
-            public boolean accept(final File dir, final String name)
-            {
-               return name.endsWith(".storydiagrams");
+            for (final File file : files) {
+                sdmPartition.loadModel(URI.createFileURI(file.getPath()));
             }
-         });
+        }
 
-         for (int i = 0; i < files.length; i++)
-         {
-            final File file = files[i];
-            sdmPartition.loadModel(URI.createFileURI(file.getPath()));
-         }
-      }
+        this.getBlackboard().addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
 
+    }
 
-      getBlackboard().addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
+    /**
+     * @return returns the blackboard.
+     */
+    private MDSDBlackboard getBlackboard() {
+        return this.blackboard;
+    }
 
+    /**
+     * @see de.uka.ipd.sdq.workflow.IJob#getName()
+     */
+    @Override
+    public String getName() {
+        return "Perform SDM Models Load";
+    }
 
-   }
+    /**
+     * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
+     */
+    @Override
+    public void rollback(final IProgressMonitor monitor) throws RollbackFailedException {
 
+    }
 
-   /**
-    * @return returns the blackboard.
-    */
-   private MDSDBlackboard getBlackboard()
-   {
-      return this.blackboard;
-   }
+    /**
+     * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
+     */
+    @Override
+    public void setBlackboard(final MDSDBlackboard blackboard) {
+        this.blackboard = blackboard;
 
-
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#getName()
-    */
-   @Override
-   public String getName()
-   {
-      return "Perform SDM Models Load";
-   }
-
-
-   /**
-    * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
-    */
-   @Override
-   public void rollback(final IProgressMonitor monitor) throws RollbackFailedException
-   {
-
-   }
-
-
-   /**
-    * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
-    */
-   @Override
-   public void setBlackboard(final MDSDBlackboard blackboard)
-   {
-      this.blackboard = blackboard;
-
-   }
-
+    }
 
 }

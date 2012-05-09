@@ -12,49 +12,47 @@ import de.upb.pcm.simulizar.utils.PCMModels;
  * @author Joachim Meyer
  * 
  */
-public abstract class AbstractPCMModelAccess<ModelType extends EObject> extends
-		AbstractModelAccess<ModelType> {
-	protected static final Logger logger = Logger
-			.getLogger(AbstractPCMModelAccess.class.getName());
+public abstract class AbstractPCMModelAccess<ModelType extends EObject> extends AbstractModelAccess<ModelType> {
+    protected static final Logger logger = Logger.getLogger(AbstractPCMModelAccess.class.getName());
 
-	protected final InterpreterDefaultContext context;
+    protected final InterpreterDefaultContext context;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param context
-	 *            the interpreter default context for this model access class
-	 * @param modelHelper
-	 *            the model helper
-	 */
-	public AbstractPCMModelAccess(final InterpreterDefaultContext context,
-			final ModelHelper modelHelper) {
-		super(modelHelper);
-		if (context == null)
-			throw new IllegalArgumentException("Context must be set!");
-		this.context = context;
-	}
+    /**
+     * Constructor
+     * 
+     * @param context
+     *            the interpreter default context for this model access class
+     * @param modelHelper
+     *            the model helper
+     */
+    public AbstractPCMModelAccess(final InterpreterDefaultContext context, final ModelHelper modelHelper) {
+        super(modelHelper);
+        if (context == null) {
+            throw new IllegalArgumentException("Context must be set!");
+        }
+        this.context = context;
+    }
 
-	/**
-	 * @return returns the context
-	 */
-	public InterpreterDefaultContext getContext() {
-		return this.context;
-	}
+    /**
+     * @return returns the context
+     */
+    public InterpreterDefaultContext getContext() {
+        return this.context;
+    }
 
-	/**
-	 * @see de.upb.pcm.simulizar.access.AbstractPCMModelAccess#getModel()
-	 */
-	@Override
-	public final ModelType getModel() {
-		PCMModels models;
-		if (this.context.getThread() != null) {
-			models = getModelHelper().getLocalPCMModels(this.context.getThread());
-		} else {
-			models = getModelHelper().getGlobalPCMModels();
-		}
-		return getSpecificModel(models);
-	}
+    /**
+     * @see de.upb.pcm.simulizar.access.AbstractPCMModelAccess#getModel()
+     */
+    @Override
+    public final ModelType getModel() {
+        PCMModels models;
+        if (this.context.getThread() != null) {
+            models = this.getModelHelper().getLocalPCMModels(this.context.getThread());
+        } else {
+            models = this.getModelHelper().getGlobalPCMModels();
+        }
+        return this.getSpecificModel(models);
+    }
 
-	protected abstract ModelType getSpecificModel(PCMModels models);
+    protected abstract ModelType getSpecificModel(PCMModels models);
 }
