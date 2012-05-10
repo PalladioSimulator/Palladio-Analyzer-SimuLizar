@@ -1,4 +1,4 @@
-package de.upb.pcm.simulizar.sdinterpreter;
+package de.upb.pcm.simulizar.reconfiguration;
 
 import org.eclipse.emf.ecore.EObject;
 
