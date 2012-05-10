@@ -59,8 +59,10 @@ public final class SimulatedStackHelper {
                 }
                 targetStackFrame.addValue(id, value);
 
-                InterpreterLogger.debug(logger, "Added value " + value + " for id " + id + " to stackframe "
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Added value " + value + " for id " + id + " to stackframe "
                         + targetStackFrame);
+                }
             }
         }
     }
@@ -96,7 +98,9 @@ public final class SimulatedStackHelper {
         } else {
             stackFrame = new SimulatedStackframe<Object>(parent);
         }
-        InterpreterLogger.debug(logger, "Added new stack frame: " + stackFrame);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Added new stack frame: " + stackFrame);
+        }
         addParameterToStackFrame(stack.size() == 0 ? null : stack.currentStackFrame(), parameter, stackFrame);
         stack.pushStackFrame(stackFrame);
         return stackFrame;

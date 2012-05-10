@@ -1,5 +1,7 @@
 package de.upb.pcm.simulizar.exceptions;
 
+import de.mdelab.sdm.interpreter.core.SDMException;
+
 /**
  * Class for exceptions while interpreting a pcm model.
  * 
@@ -20,6 +22,10 @@ public class PCMModelInterpreterException extends PCMModelAccessException {
     public PCMModelInterpreterException(final String message) {
         super(message);
 
+    }
+
+    public PCMModelInterpreterException(String msg, SDMException e) {
+        super(msg,e);
     }
 
 }

@@ -16,7 +16,6 @@ import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
 import de.upb.pcm.simulizar.interpreter.InterpreterDefaultContext;
 import de.upb.pcm.simulizar.interpreter.UsageScenarioSwitch;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.PCMModels;
 
 /**
@@ -29,7 +28,7 @@ import de.upb.pcm.simulizar.utils.PCMModels;
  */
 public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param context
      *            the interpreter default context.
@@ -78,7 +77,9 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 
     private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final UsageScenario usageScenario,
             final IModelAccessFactory interpreterFactory) {
-        InterpreterLogger.debug(logger, "Create workload driver for ClosedWorkload: " + workload);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Create workload driver for ClosedWorkload: " + workload);
+        }
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
         final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.context.getModel(), closedWorkload
@@ -96,7 +97,9 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 
     private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final UsageScenario usageScenario,
             final IModelAccessFactory interpreterFactory) {
-        InterpreterLogger.debug(logger, "Create workload driver for OpenWorkload: " + workload);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Create workload driver for OpenWorkload: " + workload);
+        }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
         final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel()) {

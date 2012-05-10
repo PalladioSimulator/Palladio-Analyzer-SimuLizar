@@ -17,6 +17,6 @@ public interface IStatisticalCharacterization {
      *            a vector of double measurements
      * @return the statistical characterization.
      */
-    Double calculateStatisticalCharaterization(Vector<Double> measurements);
+    double calculateStatisticalCharaterization(Vector<Double> measurements);
 
 }

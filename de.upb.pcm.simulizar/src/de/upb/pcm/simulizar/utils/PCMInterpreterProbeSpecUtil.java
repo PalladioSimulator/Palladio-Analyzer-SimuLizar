@@ -81,9 +81,11 @@ public class PCMInterpreterProbeSpecUtil {
 
             calculatorRegistry.registerCalculator(measurementId, responseCalculator);
 
-            InterpreterLogger.debug(logger, "Created Response Time Calculator. StartProbeId: " + startProbeId
+            if (logger.isDebugEnabled()) {
+                logger.debug("Created Response Time Calculator. StartProbeId: " + startProbeId
                     + ", StopProbeId: " + stopProbeId);
-
+            }
+            
             // get created calculator
             responseTimeCalculator = (ResponseTimeCalculator) calculatorRegistry.getCalculatorForId(measurementId);
 
@@ -120,7 +122,9 @@ public class PCMInterpreterProbeSpecUtil {
         final ProbeSetSample probeSampleSet = ProbeSpecUtils.buildProbeSetSample(probeSample,
                 simProcess.getRequestContext(), measurementId, this.probeSpecContext.obtainProbeSetId(probeID));
 
-        InterpreterLogger.debug(logger, "Took probe " + probeID + " of " + measurementId);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Took probe " + probeID + " of " + measurementId);
+        }
 
         this.getBlackboard().addSample(probeSampleSet);
     }

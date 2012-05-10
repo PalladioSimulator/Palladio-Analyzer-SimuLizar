@@ -5,16 +5,35 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.access.SDAccess;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 
+/**
+ * A reconfigurator implementation which relies on story diagrams to do the reconfiguration. The
+ * story diagrams both check their reconfiguration precondition and perform the actual reconfiguration.
+ * 
+ * @author snowball
+ *
+ */
 public class SDReconfigurator implements IReconfigurator {
 
-    final static Logger logger = Logger.getLogger(SDReconfigurator.class);
+    /**
+     * This class' internal logger. 
+     */
+    private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
 
+    /**
+     * Access interface to access all loaded SDs.
+     */
     private final SDAccess sdAccess;
 
+    /**
+     * SD Interpreter used internally to interpret the SDs. 
+     */
     private final SDExecutor sdExecutor;
 
+    /**
+     * SD Reconfigurator constructor.
+     * @param modelAccessFactory Model access factory used to access the SDs.
+     */
     public SDReconfigurator(final IModelAccessFactory modelAccessFactory) {
         super();
         this.sdAccess = modelAccessFactory.getSDAccess();
@@ -24,9 +43,9 @@ public class SDReconfigurator implements IReconfigurator {
     @Override
     public void runReconfiguration(final EObject monitoredElement) {
         if (this.sdAccess.sdModelsExist()) {
-            InterpreterLogger.debug(logger, "Checking reconfiguration rules due to PRM change");
+            LOGGER.debug("Checking reconfiguration rules due to PRM change");
             final boolean result = this.sdExecutor.executeActivities(monitoredElement);
-            InterpreterLogger.debug(logger, result ? "Reconfigured system by a matching rule"
+            LOGGER.debug(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");
         }
     }

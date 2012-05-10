@@ -25,7 +25,6 @@ import de.upb.pcm.simulizar.launcher.jobs.LoadPMSModelIntoBlackboardJob;
 import de.upb.pcm.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import de.upb.pcm.simulizar.launcher.partitions.PMSResourceSetPartition;
 import de.upb.pcm.simulizar.launcher.partitions.SDMResourceSetPartition;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.PCMModels;
 
 /**
@@ -148,7 +147,9 @@ class ModelHelper {
                 || this.getSessionIds().get(simuComSimProcess) < simuComSimProcess.getCurrentSessionId()) {
             this.getModelCopies().put(simuComSimProcess, this.copyGlobalPCMModels());
             this.getSessionIds().put(simuComSimProcess, simuComSimProcess.getCurrentSessionId());
-            InterpreterLogger.debug(logger, "Created pcm model copy for sim process: " + simuComSimProcess);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Created pcm model copy for sim process: " + simuComSimProcess);
+            }
         }
         return this.modelCopies.get(simuComSimProcess);
     }
