@@ -37,17 +37,14 @@ import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.simulizar.exceptions.SimulatedStackAccessException;
 import de.upb.pcm.simulizar.interpreter.listener.EventType;
 import de.upb.pcm.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.SimulatedStackHelper;
 import de.upb.pcm.simulizar.utils.TransitionDeterminer;
 
 /**
- * Switch for RFSEFFs
+ * Switch for RFSEFFs. This visitor is responsible for traversing RDSEFF behaviours.
  * 
- * @author Joachim Meyer
+ * @author Joachim Meyer, Steffen Becker
  * 
- * @param <T>
- *            return type of switch methods.
  */
 class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     private final static Logger logger = Logger.getLogger(RDSeffSwitch.class);
@@ -58,7 +55,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     private final SimulatedStackframe<Object> resultStackFrame;
 
     /**
-     * Constructor
+     * Constructor.
      * 
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch.
@@ -79,8 +76,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseBranchAction(final BranchAction object) {
-        InterpreterLogger.debug(logger, "Interpret BranchAction: " + object);
-
         final EList<AbstractBranchTransition> abstractBranchTransitions = object.getBranches_Branch();
         if (abstractBranchTransitions.isEmpty()) {
             return super.caseBranchAction(object);
@@ -95,12 +90,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
          */
 
         if (branchTransition == null) {
-            InterpreterLogger.debug(logger, "No branch's condition evaluated to true, no branch selected: " + object);
+            logger.error("No branch's condition evaluated to true, no branch selected: " + object);
+            throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
             this.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
 
-        InterpreterLogger.debug(logger, "Finished BranchAction: " + object);
         return null;
     }
 
@@ -109,11 +104,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseCollectionIteratorAction(final CollectionIteratorAction object) {
-        InterpreterLogger.debug(logger, "Interpret CollectionIteratorAction: " + object);
-
         this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
-
-        InterpreterLogger.debug(logger, "Finished CollectionIteratorAction: " + object);
 
         return null;
     }
@@ -153,8 +144,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseForkAction(final ForkAction object) {
-        InterpreterLogger.debug(logger, "Interpret ForkAction: " + object);
-
         /*
          * Component developers can use a SynchronisationPoint to join synchronously
          * ForkedBehaviours and specify a result of the computations with its attached
@@ -181,9 +170,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         final ForkExecutor forkExecutor = new ForkExecutor(this.context.getThread(),
                 combinedProcesses.toArray(new ForkedBehaviourProcess[0]));
 
-        InterpreterLogger.debug(logger, "Run fork executor: " + object);
         forkExecutor.run();
-        InterpreterLogger.debug(logger, "Finished ForkAction: " + object);
 
         return null;
     }
@@ -193,8 +180,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseInternalAction(final InternalAction object) {
-        InterpreterLogger.debug(logger, "Interpret InternalAction: " + object);
-
         final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
 
         final AllocationContext allocationContext = allocationReader.getAllocationContext(this.context
@@ -216,9 +201,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                     this.context.getThread(), idParametricResourceDemand, value);
 
         }
-
-        InterpreterLogger.debug(logger, "Finished InternalAction: " + object);
-
         return null;
     }
 
@@ -227,7 +209,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseLoopAction(final LoopAction object) {
-        InterpreterLogger.debug(logger, "Interpret LoopAction: " + object);
         final PCMRandomVariable iterationCount = object.getIterationCount_LoopAction();
         final String stoex = iterationCount.getSpecification();
 
@@ -235,12 +216,13 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         final int numberOfLoops = StackContext.evaluateStatic(stoex, Integer.class, this.context.getStack()
                 .currentStackFrame());
 
-        InterpreterLogger.debug(logger, "Determined number of loops: " + numberOfLoops + " " + object);
-
+        if (logger.isDebugEnabled()) {
+            logger.debug("Determined number of loops: " + numberOfLoops + " " + object);
+        }
+        
         // interpret behavior the given number of times
         this.interpretLoop(object, numberOfLoops);
 
-        InterpreterLogger.debug(logger, "Finished LoopAction: " + object);
         return null;
     }
 
@@ -249,7 +231,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
-        InterpreterLogger.debug(logger, "Interpret ResourceDemandingBehaviour: " + object);
         final int stacksize = this.context.getStack().size();
 
         // interpret start action
@@ -260,10 +241,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             }
         }
 
-        InterpreterLogger.debug(logger, "Finished ResourceDemandingBehaviour: " + object);
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
+
         return this.resultStackFrame;
     }
 
@@ -272,7 +253,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     @Override
     public SimulatedStackframe<Object> caseSetVariableAction(final SetVariableAction object) {
-        InterpreterLogger.debug(logger, "Interpret SetVariableAction: " + object);
         SimulatedStackHelper.addParameterToStackFrame(this.context.getStack().currentStackFrame(),
                 object.getLocalVariableUsages_SetVariableAction(), this.resultStackFrame);
         /*
@@ -282,7 +262,6 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
          * 
          * Why?
          */
-        InterpreterLogger.debug(logger, "Finished SetVariableAction: " + object);
         return null;
     }
 
@@ -311,10 +290,19 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
      */
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
+     */
     @Override
     public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
         if (object.getSuccessor_AbstractAction() != null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Interpret "+object.getSuccessor_AbstractAction().eClass().getName()+": " + object);
+            }
             this.doSwitch(object.getSuccessor_AbstractAction());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Interpret "+object.getSuccessor_AbstractAction().eClass().getName()+": " + object);
+            }
         }
         return null;
     }
@@ -385,8 +373,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                             (InterpreterDefaultContext) this.ctx), RDSeffSwitch.this.modelAccessFactory,
                             RDSeffSwitch.this.context.getAssemblyContextStack().peek());
 
-                    InterpreterLogger.debug(logger, "Created new RDSeff interpreter for "
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Created new RDSeff interpreter for "
                             + ((this.isAsync()) ? "asynced" : "synced") + " forked baviour: " + this);
+                    }
                     seffInterpreter.doSwitch(forkedBehaviour);
                 }
 
@@ -405,9 +395,13 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     private void interpretLoop(final LoopAction object, final int numberOfLoops) {
         for (int i = 0; i < numberOfLoops; i++) {
-            InterpreterLogger.debug(logger, "Interpret loop number " + i + ": " + object);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Interpret loop number " + i + ": " + object);
+            }
             this.doSwitch(object.getBodyBehaviour_Loop());
-            InterpreterLogger.debug(logger, "Finished loop number " + i + ": " + object);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Finished loop number " + i + ": " + object);
+            }
         }
     }
 
@@ -428,9 +422,13 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         final int numberOfLoops = StackContext.evaluateStatic(idNumberOfLoops, Integer.class, this.context.getStack()
                 .currentStackFrame());
 
-        InterpreterLogger.debug(logger, "Determined number of loops: " + numberOfLoops + " " + object);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Determined number of loops: " + numberOfLoops + " " + object);
+        }
         for (int i = 0; i < numberOfLoops; i++) {
-            InterpreterLogger.debug(logger, "Interpret loop number " + i + ": " + object);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Interpret loop number " + i + ": " + object);
+            }
 
             // create new stack frame for value characterizations of inner
             // collection variable
@@ -445,8 +443,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             // TODO the point is not nice
             this.context.evaluateInner(innerVariableStackFrame, parameter.getParameterName() + ".");
 
-            InterpreterLogger.debug(logger, "Created new stackframe with evaluated inner collection variables: "
+            if (logger.isDebugEnabled()) {
+                logger.debug("Created new stackframe with evaluated inner collection variables: "
                     + innerVariableStackFrame);
+            }
 
             /*
              * now further access on inner variables are caught in the current top most frame. In
@@ -465,10 +465,13 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                         "Inner value characterisations of inner collection variable expected");
             }
 
-            InterpreterLogger.debug(logger, "Remove stack frame: " + innerVariableStackFrame);
+            if (logger.isDebugEnabled()) {
+                logger.debug("Remove stack frame: " + innerVariableStackFrame);
+            }
             this.context.getStack().removeStackFrame();
-
-            InterpreterLogger.debug(logger, "Finished loop number " + i + ": " + object);
+            if (logger.isDebugEnabled()) { 
+                logger.debug("Finished loop number " + i + ": " + object);
+            }
         }
     }
 }

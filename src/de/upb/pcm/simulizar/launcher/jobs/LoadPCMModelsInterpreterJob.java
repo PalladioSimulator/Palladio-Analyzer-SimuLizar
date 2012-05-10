@@ -10,24 +10,33 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.configurations.AbstractPCMWorkflowRunConfiguration;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 
 /**
  * Job for loading PCM Models into Blackboard. Extends LoadPCMModelsJob from SimuCom. Overwrites
  * execute method to avoid loading of middleware and event middleware models. Because fields in
  * configuration UI are used for SDM models and PSM Model.
+ * TODO: StB: Remove this ugly hack again and introduce proper config fields for this. Remove this class.
  * 
  */
 public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
 
-    private static final Logger logger = Logger.getLogger(LoadPCMModelsJob.class);
+    /**
+     * Static logger of this class.
+     */
+    private static final Logger LOGGER = Logger.getLogger(LoadPCMModelsJob.class);
 
+    /**
+     * SDQ Workflow engine blackboard which should contain the PCM models to be loaded. 
+     */
     private MDSDBlackboard blackboard;
 
+    /**
+     * PCM Workflow configuration. 
+     */
     private final AbstractPCMWorkflowRunConfiguration configuration;
 
     /**
-     * @param configuration
+     * @param configuration The configuration object for this job.
      */
     public LoadPCMModelsInterpreterJob(final AbstractPCMWorkflowRunConfiguration configuration) {
         super(configuration);
@@ -37,6 +46,9 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     /**
      * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
+     */
     @SuppressWarnings("deprecation")
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
@@ -44,7 +56,7 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
                 .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
         // Load the PCM model and its middleware completions
-        InterpreterLogger.info(logger, "Loading PCM Model Files");
+        LOGGER.info("Loading PCM Model Files");
         for (final String modelFile : this.configuration.getPCMModelFiles()) {
             pcmPartition.loadModel(modelFile);
         }
@@ -66,6 +78,9 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
 
     /**
      * @see de.uka.ipd.sdq.workflow.OrderPreservingBlackboardCompositeJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
+     */
+    /* (non-Javadoc)
+     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard)
      */
     @Override
     public void setBlackboard(final MDSDBlackboard blackboard) {

@@ -32,7 +32,7 @@ import de.upb.pcm.simulizar.access.GlobalPCMAccess;
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.access.PRMAccess;
 import de.upb.pcm.simulizar.access.SDAccess;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
+import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.simulizar.utils.PCMModels;
 
 /**
@@ -221,7 +221,8 @@ public class SDExecutor {
                 result |= this.execute(activity, paramterList);
 
             } catch (final SDMException e) {
-                InterpreterLogger.info(logger, "SD failed: " + e);
+                logger.error("SD failed: " + e);
+                throw new PCMModelInterpreterException("SD interpretation failed",e);
             }
         }
         return result;

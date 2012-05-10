@@ -17,7 +17,6 @@ import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.exceptions.PCMModelInterpreterException;
 import de.upb.pcm.simulizar.interpreter.listener.EventType;
 import de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.SimulatedStackHelper;
 import de.upb.pcm.simulizar.utils.TransitionDeterminer;
 
@@ -54,8 +53,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseBranch(final Branch object) {
-        InterpreterLogger.debug(logger, "Interpret Branch: " + object);
-
         // determine branch transition
         final BranchTransition branchTransition = this.transitionDeterminer.determineBranchTransition(object
                 .getBranchTransitions_Branch());
@@ -63,7 +60,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         // interpret scenario behaviour of branch transition
         this.doSwitch(branchTransition.getBranchedBehaviour_BranchTransition());
 
-        InterpreterLogger.debug(logger, "Finished Branch: " + object);
         return super.caseBranch(object);
     }
 
@@ -72,17 +68,19 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseDelay(final Delay object) {
-        InterpreterLogger.debug(logger, "Interpret Delay: " + object);
         // determine delay
         final double delay = StackContext.evaluateStatic(object.getTimeSpecification_Delay().getSpecification(),
                 Double.class);
-        InterpreterLogger.debug(logger, "Start delay " + delay + " @ simulation time "
+        if (logger.isDebugEnabled()) {
+            logger.debug("Start delay " + delay + " @ simulation time "
                 + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
+        }
         // hold simulation process
         this.context.getThread().hold(delay);
-        InterpreterLogger.debug(logger, "Continue user @ simulation time "
+        if (logger.isDebugEnabled()) {
+            logger.debug("Continue user @ simulation time "
                 + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
-        InterpreterLogger.debug(logger, "Finished Delay: " + object);
+        }
         return super.caseDelay(object);
     }
 
@@ -118,17 +116,15 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseLoop(final Loop object) {
-        InterpreterLogger.debug(logger, "Interpret Loop: " + object);
         // determine number of loops
         final int numberOfLoops = StackContext.evaluateStatic(object.getLoopIteration_Loop().getSpecification(),
                 Integer.class);
         for (int i = 0; i < numberOfLoops; i++) {
-            InterpreterLogger.debug(logger, "Interpret loop number " + i);
+            logger.debug("Interpret loop number " + i);
             this.doSwitch(object.getBodyBehaviour_Loop());
-            InterpreterLogger.debug(logger, "Finished loop number " + i);
+            logger.debug("Finished loop number " + i);
 
         }
-        InterpreterLogger.debug(logger, "Finished Loop: " + object);
         return super.caseLoop(object);
     }
 
@@ -137,8 +133,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseScenarioBehaviour(final ScenarioBehaviour object) {
-        InterpreterLogger.debug(logger, "Interpret ScenarioBehaviour: " + object);
-
         // interpret start user action
         for (final AbstractUserAction abstractUserAction : object.getActions_ScenarioBehaviour()) {
             if (abstractUserAction instanceof Start) {
@@ -147,7 +141,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
             }
         }
 
-        InterpreterLogger.debug(logger, "Finished ScenarioBehaviour: " + object);
         return super.caseScenarioBehaviour(object);
     }
 
@@ -179,7 +172,13 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     @Override
     public T caseAbstractUserAction(final AbstractUserAction object) {
         if (object.getSuccessor() != null) {
+            if (logger.isDebugEnabled()) {
+                logger.debug("Interpret "+object.getSuccessor().eClass().getName()+": "+object);
+            }
             this.doSwitch(object.getSuccessor());
+            if (logger.isDebugEnabled()) {
+                logger.debug("Finished Interpretation of "+object.getSuccessor().eClass().getName()+": " + object);
+            }        
         }
         return super.caseAbstractUserAction(object);
     }

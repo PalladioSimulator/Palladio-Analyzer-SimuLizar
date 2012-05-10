@@ -90,7 +90,9 @@ public class TransitionDeterminer {
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
         final BranchTransition branchTransition = branchTransitions.get(transitionIndex);
-        InterpreterLogger.debug(logger, "Chosen branch transition " + transitionIndex + " " + branchTransition);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
+        }
         return branchTransition;
     }
 
@@ -123,7 +125,9 @@ public class TransitionDeterminer {
 
             if (this.conditionHolds(condition)) {
                 branchTransition = (GuardedBranchTransition) guardedBranchTransitions.get(i);
-                InterpreterLogger.debug(logger, "Conditions holds for branch transition " + i + " " + branchTransition);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Conditions holds for branch transition " + i + " " + branchTransition);
+                }
                 break;
             }
             i++;
@@ -147,9 +151,11 @@ public class TransitionDeterminer {
 
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
-        final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) probabilisticBranchTransitions
-                .get(transitionIndex);
-        InterpreterLogger.debug(logger, "Chosen branch transition " + transitionIndex + " " + branchTransition);
+        final ProbabilisticBranchTransition branchTransition = 
+                (ProbabilisticBranchTransition) probabilisticBranchTransitions.get(transitionIndex);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
+        }
         return branchTransition;
     }
 
@@ -161,17 +167,18 @@ public class TransitionDeterminer {
      *            the list with branch transitions.
      * @return the determined AbstractBranchTransition.
      */
-    public AbstractBranchTransition determineTransition(final EList<AbstractBranchTransition> abstractBranchTransitions) {
+    public AbstractBranchTransition determineTransition(
+            final EList<AbstractBranchTransition> abstractBranchTransitions) {
         /*
          * Mixed types with branch is not allowed, so the following is sufficient
          */
         AbstractBranchTransition branchTransition = null;
         if (abstractBranchTransitions.get(0) instanceof ProbabilisticBranchTransition) {
-            InterpreterLogger.debug(logger, "Found ProbabilisticBranchTransitions");
+            logger.debug("Found ProbabilisticBranchTransitions");
             branchTransition = this.determineProbabilisticBranchTransition(abstractBranchTransitions);
 
         } else {
-            InterpreterLogger.debug(logger, "Found GuardedBranchTransitions");
+            logger.debug("Found GuardedBranchTransitions");
             branchTransition = this.determineGuardedBranchTransition(abstractBranchTransitions);
         }
         return branchTransition;

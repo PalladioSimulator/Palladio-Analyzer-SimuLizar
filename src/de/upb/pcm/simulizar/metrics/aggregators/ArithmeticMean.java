@@ -18,7 +18,7 @@ public class ArithmeticMean implements IStatisticalCharacterization {
      * @return the statistical characterization.
      */
     @Override
-    public Double calculateStatisticalCharaterization(final Vector<Double> measurements) {
+    public double calculateStatisticalCharaterization(final Vector<Double> measurements) {
         double sum = 0.0;
         for (final Double measurement : measurements) {
             sum += measurement;

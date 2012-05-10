@@ -34,7 +34,6 @@ import de.upb.pcm.simulizar.interpreter.listener.ProbeSpecListener;
 import de.upb.pcm.simulizar.sdinterpreter.IReconfigurator;
 import de.upb.pcm.simulizar.sdinterpreter.ReconfigurationListener;
 import de.upb.pcm.simulizar.sdinterpreter.SDReconfigurator;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.ResourceSyncer;
 
 /**
@@ -67,7 +66,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 
-        InterpreterLogger.info(logger, "Start job: " + this);
+        logger.info("Start job: " + this);
 
         // 1. Initialise SimuComModel & Simulation Engine
         final SimuComModel simuComModel = this.initialiseSimuComModel();
@@ -96,16 +95,16 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
                 new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
         reconfigurator.startListening();
 
-        InterpreterLogger.debug(logger, "Start simulation");
+        logger.debug("Start simulation");
         final double simRealTimeNano = ExperimentRunner.run(simuComModel);
-        InterpreterLogger.debug(logger, "Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
+        logger.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
                 + " real time seconds");
 
         // 6. Deregister all listeners and execute cleanup code
         mainContext.getEventNotificationHelper().removeAllListener();
         reconfigurator.stopListening();
         simuComModel.getProbeSpecContext().finish();
-        InterpreterLogger.info(logger, "finished job: " + this);
+        logger.info("finished job: " + this);
     }
 
     /**

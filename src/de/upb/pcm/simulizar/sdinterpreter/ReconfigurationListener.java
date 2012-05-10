@@ -12,12 +12,24 @@ import de.upb.pcm.prm.util.PrmSwitch;
 import de.upb.pcm.simulizar.access.GlobalPCMAccess;
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.access.PRMAccess;
-import de.upb.pcm.simulizar.utils.InterpreterLogger;
 import de.upb.pcm.simulizar.utils.PCMModels;
 
+/**
+ * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations respectively.
+ * 
+ * @author snowball
+ *
+ */
 public class ReconfigurationListener {
 
-    private static final Logger logger = Logger.getLogger(ReconfigurationListener.class);
+    /**
+     * This class' internal logger. 
+     */
+    private static final Logger LOGGER = Logger.getLogger(ReconfigurationListener.class);
+    
+    /**
+     * Change listener, which will convert selected changes in the PRM instance into reconfiguration checks.
+     */
     private final Adapter prmListener = new EContentAdapter() {
 
         @Override
@@ -27,17 +39,33 @@ public class ReconfigurationListener {
         }
 
     };
+    
+    /**
+     * A log listener which logs all changes in the PRM. 
+     */
     private final Adapter loggerAdapter = new EContentAdapter() {
 
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            InterpreterLogger.info(logger, notification.toString());
+            LOGGER.info(notification.toString());
         }
 
     };
+    
+    /**
+     * Access interface to the global PCM@Runtime model. 
+     */
     private final GlobalPCMAccess pcmAccess;
+    
+    /**
+     * Access interface to the PRM runtime model. 
+     */
     private final PRMAccess prmAccess;
+    
+    /**
+     * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime. 
+     */
     private final IReconfigurator[] reconfigurators;
 
     public ReconfigurationListener(final IModelAccessFactory modelAccessFactory, final IReconfigurator[] reconfigurators) {
@@ -48,10 +76,10 @@ public class ReconfigurationListener {
     }
 
     /**
-	 * 
+	 * Setup all listeners to listen for their respective model changes.
 	 */
     public void startListening() {
-        if (logger.isInfoEnabled()) {
+        if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
             pcmModels.getRepository().eAdapters().add(this.loggerAdapter);
             pcmModels.getResourceEnvironment().eAdapters().add(this.loggerAdapter);
@@ -62,9 +90,12 @@ public class ReconfigurationListener {
         this.prmAccess.getModel().eAdapters().add(this.prmListener);
     }
 
+    /**
+     * Detach all model listners. 
+     */
     public void stopListening() {
         this.prmAccess.getModel().eAdapters().add(this.prmListener);
-        if (logger.isInfoEnabled()) {
+        if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
             pcmModels.getRepository().eAdapters().remove(this.loggerAdapter);
             pcmModels.getResourceEnvironment().eAdapters().remove(this.loggerAdapter);
@@ -74,6 +105,11 @@ public class ReconfigurationListener {
         }
     }
 
+    /**
+     * Method which is called on a change in the PRM. All reconfigurators are informed and can check for
+     * potential reconfigurations.
+     * @param notification The notification event, which describes a change in the PRM.
+     */
     protected void triggerReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
         /*
@@ -86,6 +122,11 @@ public class ReconfigurationListener {
         }
     }
 
+    /**
+     * Retrieve the monitored PCM element from the PRM change event.
+     * @param notification The PRM change event.
+     * @return The PCM element whose monitoring triggered the change event.
+     */
     protected EObject getMonitoredElement(final Notification notification) {
         switch (notification.getEventType()) {
         case Notification.ADD:
@@ -107,7 +148,7 @@ public class ReconfigurationListener {
         case Notification.REMOVING_ADAPTER:
             return null;
         default:
-            InterpreterLogger.info(logger, "Unsupported PRM Notification: " + notification);
+            LOGGER.warn("Unsupported PRM Notification: " + notification);
             return null;
         }
     }

@@ -53,8 +53,8 @@ public class ResourceSyncer {
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                InterpreterLogger
-                        .info(logger, "Resource environment changed by reconfiguration - Resync simulated resources: "
+                logger
+                        .info("Resource environment changed by reconfiguration - Resync simulated resources: "
                                 + notification);
                 ResourceSyncer.this.syncResourceEnvironment();
             }
@@ -148,16 +148,18 @@ public class ResourceSyncer {
                                                                                                                 // is
                                                                                                                 // correct?
                         description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
-                InterpreterLogger.debug(logger, "Added ActiveResource. TypeID: " + typeId + ", Description: "
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
                         + description + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr
                         + ", Units: " + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: "
                         + numberOfReplicas);
+                }
 
                 // is monitored?
                 final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
-                MeasurementSpecification measurementSpecification;
-                if ((measurementSpecification = pmsAccess.isMonitored(resourceContainer,
-                        PerformanceMetricEnum.UTILIZATION)) != null) {
+                MeasurementSpecification measurementSpecification = pmsAccess.isMonitored(resourceContainer,
+                        PerformanceMetricEnum.UTILIZATION);
+                if (measurementSpecification != null) {
                     final ResourceContainerMeasurement resourceContainerMeasurement = PrmFactory.eINSTANCE
                             .createResourceContainerMeasurement();
                     resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
@@ -191,7 +193,9 @@ public class ResourceSyncer {
     public void syncResourceEnvironment() {
 
         // TODO this is only a draft
-        InterpreterLogger.debug(logger, "Synchronise ResourceContainer and Simulated ResourcesContainer");
+        if (logger.isDebugEnabled()) {
+            logger.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
+        }
         // add resource container, if not done already
         for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMAccess().getModel()
                 .getResourceEnvironment().getResourceContainer_ResourceEnvironment()) {
@@ -201,16 +205,17 @@ public class ResourceSyncer {
             if (this.getSimuComModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
                 simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
-                InterpreterLogger.debug(logger, "SimulatedResourceContainer already exists: "
+                if (logger.isDebugEnabled()) {
+                    logger.debug("SimulatedResourceContainer already exists: "
                         + simulatedResourceContainer);
-
+                }
                 // now sync active resources
                 this.syncActiveResources(resourceContainer, simulatedResourceContainer);
             } else {
                 // create
                 simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
                         .createResourceContainer(resourceContainerId);
-                InterpreterLogger.debug(logger, "Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
+                logger.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
                         + simulatedResourceContainer);
 
                 // now sync active resources
@@ -218,7 +223,8 @@ public class ResourceSyncer {
             }
 
         }
-        InterpreterLogger.debug(logger, "Synchronisation done");
+        
+        logger.debug("Synchronisation done");
         // TODO remove unused
     }
 
