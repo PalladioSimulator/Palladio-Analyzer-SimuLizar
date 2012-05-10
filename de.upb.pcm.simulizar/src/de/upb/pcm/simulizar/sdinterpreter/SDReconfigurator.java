@@ -5,6 +5,7 @@ import org.eclipse.emf.ecore.EObject;
 
 import de.upb.pcm.simulizar.access.IModelAccessFactory;
 import de.upb.pcm.simulizar.access.SDAccess;
+import de.upb.pcm.simulizar.reconfiguration.IReconfigurator;
 
 /**
  * A reconfigurator implementation which relies on story diagrams to do the reconfiguration. The
