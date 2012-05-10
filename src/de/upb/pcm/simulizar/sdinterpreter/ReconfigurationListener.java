@@ -68,7 +68,14 @@ public class ReconfigurationListener {
      */
     private final IReconfigurator[] reconfigurators;
 
-    public ReconfigurationListener(final IModelAccessFactory modelAccessFactory, final IReconfigurator[] reconfigurators) {
+    /**
+     * Constructor.
+     * @param modelAccessFactory Access factory for model access interfaces.
+     * @param reconfigurators Set of reconfigurators which will be triggered as soon as new, interesting monitoring data
+     * arrives.
+     */
+    public ReconfigurationListener(final IModelAccessFactory modelAccessFactory, 
+            final IReconfigurator[] reconfigurators) {
         super();
         this.pcmAccess = modelAccessFactory.getGlobalPCMAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
@@ -91,7 +98,7 @@ public class ReconfigurationListener {
     }
 
     /**
-     * Detach all model listners. 
+     * Detach all model listeners. 
      */
     public void stopListening() {
         this.prmAccess.getModel().eAdapters().add(this.prmListener);
@@ -123,6 +130,24 @@ public class ReconfigurationListener {
     }
 
     /**
+     * Visitor singleton which is used to query the monitored PCM object from a PRM notification
+     * (which is a change in a {@link PCMModelElementMeasurement}).
+     */
+    private static final PrmSwitch<EObject> MONITORED_ELEMENT_RETRIEVER = new PrmSwitch<EObject>() {
+
+        @Override
+        public EObject casePCMModelElementMeasurement(final PCMModelElementMeasurement object) {
+            return object.getPcmModelElement();
+        }
+
+        @Override
+        public EObject caseResourceContainerMeasurement(final ResourceContainerMeasurement object) {
+            return object.getPcmModelElement();
+        }
+
+    };
+    
+    /**
      * Retrieve the monitored PCM element from the PRM change event.
      * @param notification The PRM change event.
      * @return The PCM element whose monitoring triggered the change event.
@@ -130,19 +155,7 @@ public class ReconfigurationListener {
     protected EObject getMonitoredElement(final Notification notification) {
         switch (notification.getEventType()) {
         case Notification.ADD:
-            return new PrmSwitch<EObject>() {
-
-                @Override
-                public EObject casePCMModelElementMeasurement(final PCMModelElementMeasurement object) {
-                    return object.getPcmModelElement();
-                }
-
-                @Override
-                public EObject caseResourceContainerMeasurement(final ResourceContainerMeasurement object) {
-                    return object.getPcmModelElement();
-                }
-
-            }.doSwitch((EObject) notification.getNewValue());
+            return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNewValue());
         case Notification.REMOVE:
             return null;
         case Notification.REMOVING_ADAPTER:
