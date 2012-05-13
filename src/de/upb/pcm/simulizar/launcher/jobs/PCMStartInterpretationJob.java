@@ -33,7 +33,7 @@ import de.upb.pcm.simulizar.interpreter.listener.LogDebugListener;
 import de.upb.pcm.simulizar.interpreter.listener.ProbeSpecListener;
 import de.upb.pcm.simulizar.reconfiguration.IReconfigurator;
 import de.upb.pcm.simulizar.reconfiguration.ReconfigurationListener;
-import de.upb.pcm.simulizar.sdinterpreter.SDReconfigurator;
+import de.upb.pcm.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import de.upb.pcm.simulizar.utils.ResourceSyncer;
 
 /**
