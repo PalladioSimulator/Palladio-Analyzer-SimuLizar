@@ -1,6 +1,7 @@
 package de.upb.pcm.simulizar.interpreter;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -179,7 +180,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseInternalAction(de.uka.ipd.sdq.pcm.seff.InternalAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseInternalAction(final InternalAction object) {
+    public SimulatedStackframe<Object> caseInternalAction(final InternalAction internalAction) {
         final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
 
         final AllocationContext allocationContext = allocationReader.getAllocationContext(this.context
@@ -187,10 +188,10 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 
         final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
 
-        for (final ParametricResourceDemand parametricResourceDemand : object.getResourceDemand_Action()) {
+        for (final ParametricResourceDemand parametricResourceDemand : internalAction.getResourceDemand_Action()) {
 
             final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
-            final String idParametricResourceDemand = parametricResourceDemand
+            final String idRequiredResourceType = parametricResourceDemand
                     .getRequiredResource_ParametricResourceDemand().getId();
             final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
                     .getSpecification();
@@ -198,7 +199,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
             resourceRegistry.getResourceContainer(resourceContainer.getId()).loadActiveResource(
-                    this.context.getThread(), idParametricResourceDemand, value);
+                    this.context.getThread(), idRequiredResourceType, value);
 
         }
         return null;
@@ -352,7 +353,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     private List<ForkedBehaviourProcess> getProcesses(final List<ForkedBehaviour> forkedBehaviours,
             final boolean isAsync) {
-        final List<ForkedBehaviourProcess> syncProcesses = new Vector<ForkedBehaviourProcess>();
+        final List<ForkedBehaviourProcess> syncProcesses = new LinkedList<ForkedBehaviourProcess>();
 
         // for each create process, and add to array of processes
 

@@ -88,19 +88,20 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
          * into the blackboard by the workflow engine
          */
         final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccessFactory);
-        resourceSyncer.syncResourceEnvironment();
+        resourceSyncer.initialiseResourceEnvironment();
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurator = new ReconfigurationListener(modelAccessFactory,
                 new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
         reconfigurator.startListening();
 
+        // 6. Run Simulation
         logger.debug("Start simulation");
         final double simRealTimeNano = ExperimentRunner.run(simuComModel);
         logger.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
                 + " real time seconds");
 
-        // 6. Deregister all listeners and execute cleanup code
+        // 7. Deregister all listeners and execute cleanup code
         mainContext.getEventNotificationHelper().removeAllListener();
         reconfigurator.stopListening();
         simuComModel.getProbeSpecContext().finish();

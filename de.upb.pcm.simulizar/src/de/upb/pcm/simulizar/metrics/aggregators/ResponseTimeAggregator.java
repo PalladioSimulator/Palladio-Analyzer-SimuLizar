@@ -50,6 +50,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
      *            the PCMModelElementMeasurement from the prm model.
      * @throws UnsupportedDataTypeException
      *             if statistical characterization is not supported.
+     * TODO: This class should not know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
     public ResponseTimeAggregator(final PRMAccess prmAccess, final MeasurementSpecification measurementSpecification,
             final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,

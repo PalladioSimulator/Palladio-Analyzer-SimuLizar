@@ -5,6 +5,7 @@ package de.upb.pcm.simulizar.interpreter.listener;
 
 import javax.activation.UnsupportedDataTypeException;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
@@ -33,6 +34,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final PMSAccess pmsModelAccess;
     private final PRMAccess prmAccess;
     private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
+    private final static Logger logger = Logger.getLogger(ProbeSpecListener.class);
 
     /**
 	 * 
@@ -137,16 +139,25 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
             final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(startProbeId,
                     stopProbeId, calculatorName, calculatorName, measurementSpecification, modelElement, simuComModel);
 
-            if (calculator != null) {
+            if (calculatorWasCreated(calculator)) {
                 try {
                     new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
                             modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
                                     .getSimulationControl().getCurrentSimulationTime());
                 } catch (final UnsupportedDataTypeException e) {
-                    e.printStackTrace();
+                    logger.error(e);
+                    throw new RuntimeException(e);
                 }
             }
         }
+    }
+
+    /**
+     * @param calculator
+     * @return
+     */
+    private boolean calculatorWasCreated(final Calculator calculator) {
+        return calculator != null;
     }
 
     /**

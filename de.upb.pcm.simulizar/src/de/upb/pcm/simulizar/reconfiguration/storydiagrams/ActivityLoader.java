@@ -19,12 +19,6 @@ import org.storydriven.storydiagrams.activities.OperationExtension;
  */
 public final class ActivityLoader {
 
-    public static final ActivityLoader INSTANCE = new ActivityLoader();
-
-    private ActivityLoader() {
-
-    }
-
     /**
      * Binds parameters to given activity.
      * 
@@ -36,13 +30,13 @@ public final class ActivityLoader {
      *            the parameter types.
      * @return the activity with bounded parameters.
      */
-    public Activity createBindings(final Activity activity, final String[] parameterName,
+    public static Activity createBindings(final Activity activity, final String[] parameterName,
             final EClassifier[] parameterTypes) {
 
         final EClass clazz = EcoreFactory.eINSTANCE.createEClass();
         clazz.setName("ReconfigurationStrategy");
 
-        final EOperation eOperation = this.createOperation(activity, "test", parameterName, parameterTypes);
+        final EOperation eOperation = createOperation(activity, "test", parameterName, parameterTypes);
 
         clazz.getEOperations().add(eOperation);
 
@@ -52,18 +46,18 @@ public final class ActivityLoader {
 
     }
 
-    private EOperation createOperation(final Activity a, final String methodName, final String[] paramNames,
+    private static EOperation createOperation(final Activity a, final String methodName, final String[] paramNames,
             final EClassifier[] paramTypes) {
 
         final EOperation method = EcoreFactory.eINSTANCE.createEOperation();
         method.setName(methodName);
-        this.createParameters(method, paramNames, paramTypes);
-        this.createOperationExtension(a, method);
+        createParameters(method, paramNames, paramTypes);
+        createOperationExtension(a, method);
         // createParameterExpressions(method, paramNames);
         return method;
     }
 
-    private void createOperationExtension(final Activity activity, final EOperation method) {
+    private static void createOperationExtension(final Activity activity, final EOperation method) {
         final OperationExtension operation = ActivitiesFactory.eINSTANCE.createOperationExtension();
         operation.setOwnedActivity(EcoreUtil.copy(activity));
         operation.setOperation(method);
@@ -102,7 +96,7 @@ public final class ActivityLoader {
     // }
     // }
 
-    private void createParameters(final EOperation method, final String[] paramNames, final EClassifier[] paramTypes) {
+    private static void createParameters(final EOperation method, final String[] paramNames, final EClassifier[] paramTypes) {
         for (int i = 0; i < paramNames.length; i++) {
             final EParameter parameter = EcoreFactory.eINSTANCE.createEParameter();
             parameter.setName(paramNames[i]);

@@ -16,6 +16,6 @@ public interface IReconfigurator {
      * 
      * @param monitoredElement PCM model element for which a new sensor measurement arrived. 
      */
-    public abstract void runReconfiguration(EObject monitoredElement);
+    public abstract void checkAndExecute(EObject monitoredElement);
 
 }

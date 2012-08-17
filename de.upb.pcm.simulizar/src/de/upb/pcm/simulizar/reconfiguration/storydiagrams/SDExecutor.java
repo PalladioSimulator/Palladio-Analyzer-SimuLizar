@@ -1,6 +1,7 @@
 package de.upb.pcm.simulizar.reconfiguration.storydiagrams;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -161,19 +162,19 @@ public class SDExecutor {
      */
     private List<Activity> createBindingsForActivities() {
         final List<Activity> ActivitiesFromModels = this.sdAccess.getModel();
-        final List<Activity> vector = new Vector<Activity>();
+        final List<Activity> result = new LinkedList<Activity>();
 
         for (final Activity activity : ActivitiesFromModels) {
-            final Activity activityWithBindings = ActivityLoader.INSTANCE.createBindings(activity, new String[] {
+            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] {
                     USAGE_MODEL, SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL,
                     PRM_MODEL, MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
                     REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
                     PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS });
 
-            vector.add(activityWithBindings);
+            result.add(activityWithBindings);
         }
 
-        return vector;
+        return result;
     }
 
     private List<Variable<EClassifier>> createParameter() {
@@ -227,7 +228,7 @@ public class SDExecutor {
                 result |= this.execute(activity, paramterList);
 
             } catch (final SDMException e) {
-                LOGGER.error("SD failed: " + e);
+                LOGGER.error("SD failed", e);
                 throw new PCMModelInterpreterException("SD interpretation failed", e);
             }
         }

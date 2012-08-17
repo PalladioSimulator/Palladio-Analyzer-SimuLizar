@@ -4,9 +4,7 @@ Bundle-Name: PCM Simulizar: PCM Interpreter with self-* features
 Bundle-SymbolicName: de.upb.pcm.simulizar;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.upb.pcm.simulizar.Activator
-Require-Bundle: org.eclipse.ui,
- org.eclipse.core.runtime,
- de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
+Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.simucomstatus;bundle-version="1.0.0",
  de.uka.ipd.sdq.workflow.pcm;bundle-version="1.0.0",
@@ -16,19 +14,14 @@ Require-Bundle: org.eclipse.ui,
  de.uka.ipd.sdq.stoex.analyser;bundle-version="2.0.0",
  de.upb.pcm.pms;bundle-version="1.0.0",
  de.upb.pcm.prm;bundle-version="1.0.0",
- org.eclipse.debug.ui;bundle-version="3.6.1",
- de.uka.ipd.sdq.probfunction.math;bundle-version="2.0.0",
- de.uka.ipd.sdq.scheduler;bundle-version="1.0.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
- de.uka.ipd.sdq.cip.completions;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
- de.uka.ipd.sdq.cip;bundle-version="2.0.0",
- de.mdelab.sdm.interpreter.core;bundle-version="1.0.0",
- de.mdelab.sdm.interpreter.core.eclipse;bundle-version="1.0.0",
  de.mdelab.sdm.interpreter.ocl;bundle-version="1.0.0",
  org.storydriven.storydiagrams.interpreter.eclipse;bundle-version="1.0.0",
- org.eclipse.emf.transaction;bundle-version="1.4.0"
+ org.eclipse.emf.transaction;bundle-version="1.4.0",
+ de.uka.ipd.sdq.probfunction.math;bundle-version="2.0.0",
+ de.uka.ipd.sdq.scheduler;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: de.upb.pcm.simulizar.launcher

@@ -106,11 +106,9 @@ class ModelHelper {
         final PCMResourceSetPartition pcmResourceSetPartition = this.getPCMResourceSetPartition();
 
         // add to PCMCopy
-        final PCMModels pcmCopy = new PCMModels(pcmResourceSetPartition.getRepositories().get(0),
+        return new PCMModels(pcmResourceSetPartition.getRepositories().get(0),
                 pcmResourceSetPartition.getSystem(), pcmResourceSetPartition.getResourceEnvironment(),
                 pcmResourceSetPartition.getAllocation(), pcmResourceSetPartition.getUsageModel());
-
-        return pcmCopy;
     }
 
     /**

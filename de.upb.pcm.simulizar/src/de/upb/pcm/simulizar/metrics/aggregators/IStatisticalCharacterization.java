@@ -1,5 +1,6 @@
 package de.upb.pcm.simulizar.metrics.aggregators;
 
+import java.util.Collection;
 import java.util.Vector;
 
 /**
@@ -17,6 +18,6 @@ public interface IStatisticalCharacterization {
      *            a vector of double measurements
      * @return the statistical characterization.
      */
-    double calculateStatisticalCharaterization(Vector<Double> measurements);
+    double calculateStatisticalCharaterization(Collection<Double> measurements);
 
 }
