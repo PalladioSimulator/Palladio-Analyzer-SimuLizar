@@ -137,60 +137,100 @@ public class ResourceSyncer {
 
             final int numberOfReplicas = processingResource.getNumberOfReplicas();
             final ScheduledResource scheduledResource = this.resourceAlreadyExist(simulatedResourceContainer, typeId);
-            if (scheduledResource != null) {
+            if (existsResource(scheduledResource)) {
                 scheduledResource.setProcessingRate(processingRate);
             } else {
-                simulatedResourceContainer.addActiveResource(typeId, new String[] {}, resourceContainer.getId(),
-                        processingResource.getActiveResourceType_ActiveResourceSpecification().getEntityName(), // TODO:
-                                                                                                                // Check
-                                                                                                                // if
-                                                                                                                // this
-                                                                                                                // is
-                                                                                                                // correct?
-                        description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
-                        + description + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr
-                        + ", Units: " + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: "
-                        + numberOfReplicas);
-                }
-
-                // is monitored?
-                final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
-                MeasurementSpecification measurementSpecification = pmsAccess.isMonitored(resourceContainer,
-                        PerformanceMetricEnum.UTILIZATION);
-                if (measurementSpecification != null) {
-                    final ResourceContainerMeasurement resourceContainerMeasurement = PrmFactory.eINSTANCE
-                            .createResourceContainerMeasurement();
-                    resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
-                    resourceContainerMeasurement.setPcmModelElement(resourceContainer);
-                    resourceContainerMeasurement.setProcessingResourceType(processingResource
-                            .getActiveResourceType_ActiveResourceSpecification());
-
-                    // get created active resource
-                    for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
-                            .getActiveResources()) {
-                        if (abstractScheduledResource.getName().equals(typeId)) {
-                            new ResourceStateListener(
-                                    processingResource.getActiveResourceType_ActiveResourceSpecification(),
-                                    abstractScheduledResource, this.getSimuComModel(), measurementSpecification,
-                                    resourceContainerMeasurement, resourceContainer, processingResource,
-                                    this.modelAccessFactory);
-                            break;
-                        }
-
-                    }
-                }
-
+                createSimulatedActiveResource(resourceContainer, simulatedResourceContainer, processingResource,
+                        typeId, description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas);
             }
-
         }
     }
 
     /**
+     * @param scheduledResource
+     * @return
+     */
+    private boolean existsResource(final ScheduledResource scheduledResource) {
+        return scheduledResource != null;
+    }
+
+    /**
+     * @param resourceContainer
+     * @param simulatedResourceContainer
+     * @param processingResource
+     * @param typeId
+     * @param description
+     * @param processingRate
+     * @param mttf
+     * @param mttr
+     * @param units
+     * @param schedulingStrategy
+     * @param numberOfReplicas
+     */
+    private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
+            final SimulatedResourceContainer simulatedResourceContainer,
+            final ProcessingResourceSpecification processingResource, final String typeId, final String description,
+            final String processingRate, final double mttf, final double mttr, final String units,
+            String schedulingStrategy, final int numberOfReplicas) {
+        simulatedResourceContainer.addActiveResource(typeId, new String[] {}, resourceContainer.getId(),
+                processingResource.getActiveResourceType_ActiveResourceSpecification().getEntityName(), // TODO:
+                                                                                                        // Check
+                                                                                                        // if
+                                                                                                        // this
+                                                                                                        // is
+                                                                                                        // correct?
+                description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
+        if (logger.isDebugEnabled()) {
+            logger.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
+                + description + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr
+                + ", Units: " + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: "
+                + numberOfReplicas);
+        }
+
+        // is monitored?
+        final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
+        MeasurementSpecification measurementSpecification = pmsAccess.isMonitored(resourceContainer,
+                PerformanceMetricEnum.UTILIZATION);
+        if (isMonitored(measurementSpecification)) {
+            final ResourceContainerMeasurement resourceContainerMeasurement = PrmFactory.eINSTANCE
+                    .createResourceContainerMeasurement();
+            resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
+            resourceContainerMeasurement.setPcmModelElement(resourceContainer);
+            resourceContainerMeasurement.setProcessingResourceType(processingResource
+                    .getActiveResourceType_ActiveResourceSpecification());
+
+            // get created active resource
+            for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
+                    .getActiveResources()) {
+                if (abstractScheduledResource.getName().equals(typeId)) {
+                    new ResourceStateListener(
+                            processingResource.getActiveResourceType_ActiveResourceSpecification(),
+                            abstractScheduledResource, this.getSimuComModel(), measurementSpecification,
+                            resourceContainerMeasurement, resourceContainer, processingResource,
+                            this.modelAccessFactory);
+                    break;
+                }
+
+            }
+        }
+    }
+
+    /**
+     * @param measurementSpecification
+     * @return
+     */
+    private boolean isMonitored(MeasurementSpecification measurementSpecification) {
+        return measurementSpecification != null;
+    }
+
+    public void initialiseResourceEnvironment() {
+        syncResourceEnvironment();
+    }
+    
+    /**
      * Syncs resource environment model with SimuCom.
      */
-    public void syncResourceEnvironment() {
+    private void syncResourceEnvironment() {
 
         // TODO this is only a draft
         if (logger.isDebugEnabled()) {

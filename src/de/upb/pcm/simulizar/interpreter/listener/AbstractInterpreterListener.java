@@ -73,8 +73,6 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
      */
     @Override
     public void beginExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
-        // TODO Auto-generated method stub
-
     }
 
     /*
@@ -86,8 +84,6 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
      */
     @Override
     public void endExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
-        // TODO Auto-generated method stub
-
     }
 
 }

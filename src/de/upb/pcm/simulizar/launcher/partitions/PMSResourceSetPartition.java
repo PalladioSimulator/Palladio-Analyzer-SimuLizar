@@ -88,8 +88,7 @@ public class PMSResourceSetPartition extends ResourceSetPartition {
                     throw new PMSModelLoadException("Unable to resolve proxy " + resolved);
                 }
                 // now proxy is resolved, replace proxy in prm model (for each setting)
-                final ArrayList<Setting> settings = (ArrayList<Setting>) proxiesToBeResolved.get(element);
-                for (final Setting setting : settings) {
+                for (final Setting setting : proxiesToBeResolved.get(element)) {
                     EcoreUtil.replace(setting, element, resolved);
                 }
 

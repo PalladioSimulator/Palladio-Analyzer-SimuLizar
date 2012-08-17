@@ -75,6 +75,6 @@ public class EventNotificationHelper {
     }
 
     public void removeAllListener() {
-        this.listener.removeAll(new ArrayList<IInterpreterListener>(this.listener));
+        this.listener.clear();
     }
 }

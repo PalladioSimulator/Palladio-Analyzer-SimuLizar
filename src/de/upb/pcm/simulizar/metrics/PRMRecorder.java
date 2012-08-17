@@ -13,7 +13,7 @@ import de.upb.pcm.simulizar.access.PRMAccess;
  * model. Can be used as base class for aggregators or performance metrics.
  * 
  * @author Joachim Meyer
- * 
+ * TODO: Should be a _Real_ Recorder, i.e., Recorder from ProbeSpec
  */
 public abstract class PRMRecorder {
     private PCMModelElementMeasurement pcmModelElementMeasurement;

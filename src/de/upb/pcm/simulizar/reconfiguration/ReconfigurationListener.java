@@ -35,7 +35,7 @@ public class ReconfigurationListener {
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            ReconfigurationListener.this.triggerReconfigurations(notification);
+            ReconfigurationListener.this.checkAndExecuteReconfigurations(notification);
         }
 
     };
@@ -101,7 +101,7 @@ public class ReconfigurationListener {
      * Detach all model listeners. 
      */
     public void stopListening() {
-        this.prmAccess.getModel().eAdapters().add(this.prmListener);
+        this.prmAccess.getModel().eAdapters().remove(this.prmListener);
         if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
             pcmModels.getRepository().eAdapters().remove(this.loggerAdapter);
@@ -117,16 +117,24 @@ public class ReconfigurationListener {
      * potential reconfigurations.
      * @param notification The notification event, which describes a change in the PRM.
      */
-    protected void triggerReconfigurations(final Notification notification) {
+    protected void checkAndExecuteReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
         /*
          * Value changed, adapt (start sd interpreter)
          */
-        if (monitoredElement != null) {
+        if (isNotificationNewMeasurement(monitoredElement)) {
             for (final IReconfigurator reconfigurator : this.reconfigurators) {
-                reconfigurator.runReconfiguration(monitoredElement);
+                reconfigurator.checkAndExecute(monitoredElement);
             }
         }
+    }
+
+    /**
+     * @param monitoredElement
+     * @return
+     */
+    private boolean isNotificationNewMeasurement(final EObject monitoredElement) {
+        return monitoredElement != null;
     }
 
     /**

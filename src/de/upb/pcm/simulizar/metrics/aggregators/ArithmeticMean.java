@@ -1,5 +1,6 @@
 package de.upb.pcm.simulizar.metrics.aggregators;
 
+import java.util.Collection;
 import java.util.Vector;
 
 /**
@@ -18,7 +19,7 @@ public class ArithmeticMean implements IStatisticalCharacterization {
      * @return the statistical characterization.
      */
     @Override
-    public double calculateStatisticalCharaterization(final Vector<Double> measurements) {
+    public double calculateStatisticalCharaterization(final Collection<Double> measurements) {
         double sum = 0.0;
         for (final Double measurement : measurements) {
             sum += measurement;

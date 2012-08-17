@@ -42,7 +42,7 @@ public class SDReconfigurator implements IReconfigurator {
     }
 
     @Override
-    public void runReconfiguration(final EObject monitoredElement) {
+    public void checkAndExecute(final EObject monitoredElement) {
         if (this.sdAccess.sdModelsExist()) {
             LOGGER.debug("Checking reconfiguration rules due to PRM change");
             final boolean result = this.sdExecutor.executeActivities(monitoredElement);
