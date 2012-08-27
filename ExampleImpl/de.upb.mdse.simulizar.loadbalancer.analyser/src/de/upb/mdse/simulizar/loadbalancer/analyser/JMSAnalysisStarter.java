@@ -1,5 +1,6 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser;
 
+import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ComputeResponseTimeFilter;
 import kieker.analysis.AnalysisController;
 import kieker.analysis.exception.AnalysisConfigurationException;
 import kieker.analysis.plugin.filter.forward.TeeFilter;
@@ -34,12 +35,17 @@ public final class JMSAnalysisStarter {
 		final JMSReader logReader = new JMSReader(logReaderConfiguration);
 		analysisInstance.registerReader(logReader);
 
+		Configuration conf = new Configuration();
+		final ComputeResponseTimeFilter rtFilter = new ComputeResponseTimeFilter(conf);
+		
 		/* Create and register a simple output writer. */
-		final TeeFilter teeFilter = new TeeFilter(new Configuration());
+		final TeeFilter teeFilter = new TeeFilter(conf);
+		analysisInstance.registerFilter(rtFilter);
 		analysisInstance.registerFilter(teeFilter);
 
 		try {
-			analysisInstance.connect(logReader, JMSReader.OUTPUT_PORT_NAME_RECORDS, teeFilter, TeeFilter.INPUT_PORT_NAME_EVENTS);
+			analysisInstance.connect(logReader, JMSReader.OUTPUT_PORT_NAME_RECORDS, rtFilter, ComputeResponseTimeFilter.INPUT_PORT_NAME_EVENTS);
+			analysisInstance.connect(rtFilter, ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, teeFilter, TeeFilter.INPUT_PORT_NAME_EVENTS);
 			analysisInstance.run();
 		} catch (final AnalysisConfigurationException e) {
 			e.printStackTrace();
