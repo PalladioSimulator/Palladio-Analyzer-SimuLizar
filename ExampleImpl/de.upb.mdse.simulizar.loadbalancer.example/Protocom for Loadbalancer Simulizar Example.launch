@@ -7,7 +7,7 @@
 <listEntry value="1"/>
 </listAttribute>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="Main"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-d data -n LoadBalancer -s calib -m 10 -u 10"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-d data -n LoadBalancer -s calib -m 100 -u 10"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="de.upb.mdse.simulizer.loadbalancer.example"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:lib/kieker-1.5_aspectj.jar"/>
 </launchConfiguration>

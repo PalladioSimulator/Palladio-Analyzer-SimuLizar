@@ -4,23 +4,19 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.jscience.physics.amount.Amount;
-
-import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
-
 import kieker.analysis.plugin.annotation.InputPort;
 import kieker.analysis.plugin.annotation.OutputPort;
 import kieker.analysis.plugin.annotation.Plugin;
 import kieker.analysis.plugin.filter.AbstractFilterPlugin;
-import kieker.analysis.plugin.filter.forward.TeeFilter;
 import kieker.common.configuration.Configuration;
 import kieker.common.logging.Log;
 import kieker.common.logging.LogFactory;
 import kieker.common.record.controlflow.OperationExecutionRecord;
+import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 
 @Plugin(outputPorts = @OutputPort(name = ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, 
 	description = "Provides response times of operation execution times as stream", 
-	eventTypes = { Measure.class }))
+	eventTypes = { ResponseTimeMeasurement.class }))
 public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 
 	public static final String OUTPUT_PORT_RESPONSE_TIMES = "outputResponseTimes";
@@ -49,8 +45,8 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 		OperationExecutionRecord record = (OperationExecutionRecord) inEvent;
 		long diff = record.getTout() - record.getTin();
 		Measure<Long, Duration> result = Measure.valueOf(diff, SI.NANO(SI.SECOND));
-		LOG.info(MeasureHelper.formatDuration(result));
-		super.deliver(OUTPUT_PORT_RESPONSE_TIMES, result);
+		LOG.debug(MeasureHelper.formatDuration(result));
+		super.deliver(OUTPUT_PORT_RESPONSE_TIMES, new ResponseTimeMeasurement(record.getOperationSignature(), record.getHostname(), result, record.getLoggingTimestamp()));
 	}
 
 }
