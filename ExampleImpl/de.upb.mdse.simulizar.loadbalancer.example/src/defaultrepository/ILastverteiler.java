@@ -22,5 +22,7 @@
  )
  throws java.rmi.RemoteException
 ;
+
+      void reconfigure(double delta) throws java.rmi.RemoteException;
       }
    

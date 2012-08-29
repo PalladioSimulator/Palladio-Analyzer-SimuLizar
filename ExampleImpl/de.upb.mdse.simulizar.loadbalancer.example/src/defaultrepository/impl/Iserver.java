@@ -40,6 +40,7 @@ public defaultrepository.IServer getPortAngeboten_IServer_Server ();
 	   				
 	
 public void setComponentFrame(de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe<Object> myComponentStackFrame);
+public void reconfigure();
 
 
 	   			

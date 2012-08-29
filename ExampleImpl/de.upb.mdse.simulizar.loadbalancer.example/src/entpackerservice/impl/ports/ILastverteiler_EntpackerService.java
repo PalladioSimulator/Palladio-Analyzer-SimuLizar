@@ -1,5 +1,7 @@
 
 	  package entpackerservice.impl.ports;
+
+import java.rmi.RemoteException;
       
    
    /*
@@ -68,7 +70,13 @@
 	return result;
 
 
-   }   
+   }
+
+@Override
+public void reconfigure(double delta) throws RemoteException {
+	myInnerPort.reconfigure(delta);
+	
+}   
 
 	  }
 

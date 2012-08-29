@@ -268,6 +268,14 @@ public class server
 		new defaultrepository.impl.server("");
 	}
 
+
+
+
+	@Override
+	public void reconfigure() {
+		System.out.println("Help! I am reconfigured right now!");
+	}
+
 	
 
 	   }

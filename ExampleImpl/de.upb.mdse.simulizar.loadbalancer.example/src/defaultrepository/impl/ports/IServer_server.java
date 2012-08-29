@@ -41,6 +41,10 @@ import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
 
 
    }   
+   
+   public void reconfigure() {
+	   myComponent.reconfigure();
+   }
 
 	  }
 

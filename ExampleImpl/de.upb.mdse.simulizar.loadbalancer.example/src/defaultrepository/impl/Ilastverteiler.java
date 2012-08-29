@@ -43,6 +43,6 @@ public void setComponentFrame(de.uka.ipd.sdq.simucomframework.variables.stackfra
 
 
 	   			
-            
+public void reconfigure(double delta);            
 	    }
 	

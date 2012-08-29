@@ -29,3 +29,10 @@ Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: bin/,
  .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Export-Package: defaultrepository,
+ defaultrepository.impl,
+ defaultrepository.impl.contexts,
+ defaultrepository.impl.ports,
+ entpackerservice.impl,
+ entpackerservice.impl.contexts,
+ entpackerservice.impl.ports

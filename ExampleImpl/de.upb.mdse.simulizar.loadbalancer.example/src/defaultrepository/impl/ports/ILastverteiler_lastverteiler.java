@@ -1,5 +1,7 @@
 
 	  package defaultrepository.impl.ports;
+
+import java.rmi.RemoteException;
       
    
 	  /** 
@@ -38,7 +40,16 @@
 );
 
 
-   }   
+   }
+
+
+
+
+
+@Override
+public void reconfigure(double delta) throws RemoteException {
+	myComponent.reconfigure(delta);
+}   
 
 	  }
 
