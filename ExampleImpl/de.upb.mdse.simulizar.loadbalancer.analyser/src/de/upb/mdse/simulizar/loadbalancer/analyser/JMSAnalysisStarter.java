@@ -3,6 +3,7 @@ package de.upb.mdse.simulizar.loadbalancer.analyser;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.BatchFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ComputeResponseTimeFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.MeanFilter;
+import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ReconfigurationExecutorFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ThresholdFilter;
 import kieker.analysis.AnalysisController;
 import kieker.analysis.exception.AnalysisConfigurationException;
@@ -43,18 +44,21 @@ public final class JMSAnalysisStarter {
 		final MeanFilter meanFilter = new MeanFilter(new Configuration());
 		final TeeFilter teeFilter = new TeeFilter(new Configuration());
 		final ThresholdFilter thresholdFilter = new ThresholdFilter(new Configuration());
+		final ReconfigurationExecutorFilter reconfFilter = new ReconfigurationExecutorFilter(new Configuration());
 		
 		analysisInstance.registerFilter(rtFilter);
 		analysisInstance.registerFilter(batchFilter);
 		analysisInstance.registerFilter(meanFilter);
 		analysisInstance.registerFilter(teeFilter);
 		analysisInstance.registerFilter(thresholdFilter);
+		analysisInstance.registerFilter(reconfFilter);
 		
 		try {
 			analysisInstance.connect(logReader, JMSReader.OUTPUT_PORT_NAME_RECORDS, rtFilter, ComputeResponseTimeFilter.INPUT_PORT_NAME_EVENTS);
 			analysisInstance.connect(rtFilter, ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, batchFilter, BatchFilter.INPUT_RESPONSE_TIME_MEASUREMENTS);
 			analysisInstance.connect(batchFilter, BatchFilter.OUTPUT_BATCH_MAP, meanFilter, MeanFilter.INPUT_BATCH_MAP);
 			analysisInstance.connect(meanFilter, MeanFilter.OUTPUT_MEAN_MAP, thresholdFilter, ThresholdFilter.INPUT_MEAN_RT_MAP);
+			analysisInstance.connect(thresholdFilter, ThresholdFilter.OUTPUT_THRESHOLD_VIOLATED_IDS, reconfFilter, ReconfigurationExecutorFilter.INPUT_VIOLATED_IDS);
 			analysisInstance.connect(thresholdFilter, ThresholdFilter.OUTPUT_THRESHOLD_VIOLATED_IDS, teeFilter, TeeFilter.INPUT_PORT_NAME_EVENTS);
 			analysisInstance.run();
 		} catch (final AnalysisConfigurationException e) {

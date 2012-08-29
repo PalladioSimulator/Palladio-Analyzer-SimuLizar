@@ -59,7 +59,7 @@ public class ThresholdFilter extends AbstractFilterPlugin {
 		}
 		Amount<Duration> timeToCheck = means.get(methodID);
 		if (LOG.isDebugEnabled()) {
-			LOG.info(MeasureHelper.formatDuration(timeToCheck) + " < " + MeasureHelper.formatDuration(THRESHOLD) + "? "+timeToCheck.isGreaterThan(THRESHOLD));
+			LOG.debug(MeasureHelper.formatDuration(timeToCheck) + " < " + MeasureHelper.formatDuration(THRESHOLD) + "? "+timeToCheck.isGreaterThan(THRESHOLD));
 		}
 		if (timeToCheck.isGreaterThan(THRESHOLD)) {
 			super.deliver(OUTPUT_THRESHOLD_VIOLATED_IDS, methodID);

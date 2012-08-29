@@ -6,6 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.upb.mdse.simulizar.loadbalancer.analyser.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.jscience;bundle-version="4.1.3"
+ org.jscience;bundle-version="4.1.3",
+ de.upb.mdse.simulizer.loadbalancer.example;bundle-version="1.0.0",
+ de.uka.ipd.sdq.prototype.framework;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
