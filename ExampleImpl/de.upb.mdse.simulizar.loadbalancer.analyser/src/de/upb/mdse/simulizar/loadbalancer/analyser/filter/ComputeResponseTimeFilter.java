@@ -1,6 +1,5 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
-import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
@@ -12,6 +11,9 @@ import kieker.common.configuration.Configuration;
 import kieker.common.logging.Log;
 import kieker.common.logging.LogFactory;
 import kieker.common.record.controlflow.OperationExecutionRecord;
+
+import org.jscience.physics.amount.Amount;
+
 import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 
 @Plugin(outputPorts = @OutputPort(name = ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, 
@@ -44,7 +46,7 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 	public final void inputEvent(final Object inEvent) {
 		OperationExecutionRecord record = (OperationExecutionRecord) inEvent;
 		long diff = record.getTout() - record.getTin();
-		Measure<Long, Duration> result = Measure.valueOf(diff, SI.NANO(SI.SECOND));
+		Amount<Duration> result = Amount.valueOf(diff, SI.NANO(SI.SECOND));
 		LOG.debug(MeasureHelper.formatDuration(result));
 		super.deliver(OUTPUT_PORT_RESPONSE_TIMES, new ResponseTimeMeasurement(record.getOperationSignature(), record.getHostname(), result, record.getLoggingTimestamp()));
 	}

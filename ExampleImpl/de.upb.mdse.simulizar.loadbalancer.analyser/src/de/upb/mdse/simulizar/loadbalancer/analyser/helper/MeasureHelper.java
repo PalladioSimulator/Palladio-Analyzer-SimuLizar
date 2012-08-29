@@ -1,6 +1,6 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.helper;
 
-import javax.measure.Measure;
+import javax.measure.Measurable;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
@@ -9,7 +9,7 @@ import javax.measure.unit.Unit;
 public class MeasureHelper {
 
 	@SuppressWarnings("unchecked")
-	public static String formatDuration(Measure<?, Duration> result) {
+	public static String formatDuration(Measurable<Duration> result) {
 		if (result == null)
 			return "null";
 		

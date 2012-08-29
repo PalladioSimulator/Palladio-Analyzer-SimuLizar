@@ -1,7 +1,8 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
-import javax.measure.Measure;
 import javax.measure.quantity.Duration;
+
+import org.jscience.physics.amount.Amount;
 
 import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 
@@ -9,7 +10,7 @@ import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
  * @author snowball
  *
  */
-public class ResponseTimeMeasurement implements Measurement<Long,Duration> {
+public class ResponseTimeMeasurement implements Measurement<Duration> {
 
 	public class MethodID implements Identifiable {
 		
@@ -89,7 +90,7 @@ public class ResponseTimeMeasurement implements Measurement<Long,Duration> {
 	
 	private final long timestamp;
 	private final MethodID methodID;
-	private final Measure<Long, Duration> responseTime;
+	private final Amount<Duration> responseTime;
 	
 	/**
 	 * @param method
@@ -98,7 +99,7 @@ public class ResponseTimeMeasurement implements Measurement<Long,Duration> {
 	 * @param timestamp 
 	 */
 	public ResponseTimeMeasurement(String method, String host,
-			Measure<Long, Duration> responseTime, long timestamp) {
+			Amount<Duration> responseTime, long timestamp) {
 		super();
 		this.methodID = new MethodID(method, host);
 		this.responseTime = responseTime;
@@ -122,7 +123,7 @@ public class ResponseTimeMeasurement implements Measurement<Long,Duration> {
 	/**
 	 * @return the responseTime
 	 */
-	public final Measure<Long, Duration> getResponseTime() {
+	public final Amount<Duration> getResponseTime() {
 		return responseTime;
 	}
 
@@ -135,7 +136,7 @@ public class ResponseTimeMeasurement implements Measurement<Long,Duration> {
 	}
 
 	@Override
-	public Measure<Long, Duration> getMeasurement() {
+	public Amount<Duration> getMeasurement() {
 		return getResponseTime();
 	}
 	

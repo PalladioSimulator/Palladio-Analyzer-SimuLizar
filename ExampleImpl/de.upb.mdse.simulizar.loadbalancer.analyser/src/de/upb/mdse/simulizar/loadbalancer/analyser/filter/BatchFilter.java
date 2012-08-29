@@ -26,8 +26,7 @@ public class BatchFilter extends AbstractFilterPlugin {
 	public static final String OUTPUT_BATCH_MAP = "batchMap";
 	public static final String INPUT_RESPONSE_TIME_MEASUREMENTS = "rtMeasurements";
 
-	private Amount<Duration> lowerBatchIntervalBound = null;
-	private Amount<Duration> upperBatchIntervalBound = null;
+	private TimeIntervall intervall = null;
 	
 	private Map<Identifiable,Set<ResponseTimeMeasurement>> mappedValues = new HashMap<Identifiable, Set<ResponseTimeMeasurement>>();
 	
@@ -54,13 +53,14 @@ public class BatchFilter extends AbstractFilterPlugin {
 			initialiseBounds(rtMeasurement);
 		} else {
 			Amount<Duration> timestamp = Amount.valueOf(rtMeasurement.getTimestamp(), SI.NANO(SI.SECOND));
-			if (timestamp.isLessThan(lowerBatchIntervalBound)) {
+			if (intervall.isTimestampBefore(timestamp)) {
 				// Old measurement, drop it
 				return;
 			}
-			if (timestamp.isGreaterThan(upperBatchIntervalBound)) {
-				lowerBatchIntervalBound = upperBatchIntervalBound;
-				upperBatchIntervalBound = lowerBatchIntervalBound.plus(DEFAULT_BATCH_SIZE);
+			if (intervall.isTimestampAfter(timestamp)) {
+				while (!intervall.isIn(timestamp)) {
+					intervall = intervall.shift(DEFAULT_BATCH_SIZE);				
+				}
 				super.deliver(OUTPUT_BATCH_MAP, mappedValues);
 				mappedValues = new HashMap<Identifiable, Set<ResponseTimeMeasurement>>();
 			}
@@ -72,11 +72,12 @@ public class BatchFilter extends AbstractFilterPlugin {
 	}
 
 	private void initialiseBounds(ResponseTimeMeasurement rtMeasurement) {
-		lowerBatchIntervalBound = Amount.valueOf(rtMeasurement.getTimestamp(), SI.NANO(SI.SECOND));
-		upperBatchIntervalBound = lowerBatchIntervalBound.plus(DEFAULT_BATCH_SIZE);
+		Amount<Duration> lowerBatchIntervalBound = Amount.valueOf(rtMeasurement.getTimestamp(), SI.NANO(SI.SECOND));
+		Amount<Duration> upperBatchIntervalBound = lowerBatchIntervalBound.plus(DEFAULT_BATCH_SIZE);
+		intervall = new TimeIntervall(lowerBatchIntervalBound, upperBatchIntervalBound);
 	}
 
 	private boolean isFirstMeasurement() {
-		return lowerBatchIntervalBound == null;
+		return intervall == null;
 	}
 }

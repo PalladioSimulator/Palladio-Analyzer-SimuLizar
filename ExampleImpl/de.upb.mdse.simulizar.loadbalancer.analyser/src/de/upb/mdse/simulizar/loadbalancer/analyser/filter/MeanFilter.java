@@ -41,13 +41,13 @@ public class MeanFilter extends AbstractFilterPlugin {
 	@SuppressWarnings("unchecked")
 	@InputPort(name = INPUT_BATCH_MAP, description = "Receives incoming batches", eventTypes = { Map.class })
 	public final void inputEvent(final Object inEvent) {
-		Map<Identifiable,Set<Measurement<?,?>>> map = (Map<Identifiable, Set<Measurement<?, ?>>>) inEvent;
+		Map<Identifiable,Set<Measurement<?>>> map = (Map<Identifiable, Set<Measurement<?>>>) inEvent;
 		Map<Identifiable,Amount<?>> result = new HashMap<Identifiable, Amount<?>>();
-		for (Map.Entry<Identifiable, Set<Measurement<?, ?>>> entry : map.entrySet()) {
+		for (Map.Entry<Identifiable, Set<Measurement<?>>> entry : map.entrySet()) {
 			@SuppressWarnings("rawtypes")
 			Unit unit = entry.getValue().iterator().next().getMeasurement().getUnit();
 			Amount<?> mean = Amount.valueOf(0, unit);
-			for (Measurement<?,?> measurement : entry.getValue()) {
+			for (Measurement<?> measurement : entry.getValue()) {
 				mean = mean.plus(Amount.valueOf(measurement.getMeasurement().longValue(unit), unit));
 			}
 			mean = mean.divide(entry.getValue().size());
