@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import javax.measure.unit.Unit;
+import javax.measure.unit.SI;
 
 import kieker.analysis.plugin.annotation.InputPort;
 import kieker.analysis.plugin.annotation.OutputPort;
@@ -44,11 +44,9 @@ public class MeanFilter extends AbstractFilterPlugin {
 		Map<Identifiable,Set<Measurement<?>>> map = (Map<Identifiable, Set<Measurement<?>>>) inEvent;
 		Map<Identifiable,Amount<?>> result = new HashMap<Identifiable, Amount<?>>();
 		for (Map.Entry<Identifiable, Set<Measurement<?>>> entry : map.entrySet()) {
-			@SuppressWarnings("rawtypes")
-			Unit unit = entry.getValue().iterator().next().getMeasurement().getUnit();
-			Amount<?> mean = Amount.valueOf(0, unit);
+			Amount<?> mean = Amount.valueOf(0, SI.SECOND);
 			for (Measurement<?> measurement : entry.getValue()) {
-				mean = mean.plus(Amount.valueOf(measurement.getMeasurement().longValue(unit), unit));
+				mean = mean.plus(measurement.getMeasurement());
 			}
 			mean = mean.divide(entry.getValue().size());
 			result.put(entry.getKey(), mean);
