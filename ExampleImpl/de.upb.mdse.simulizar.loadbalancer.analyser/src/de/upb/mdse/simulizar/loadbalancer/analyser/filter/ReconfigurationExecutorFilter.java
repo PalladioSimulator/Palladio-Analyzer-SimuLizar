@@ -2,15 +2,14 @@ package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
 import java.rmi.RemoteException;
 
-import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
-import defaultrepository.ILastverteiler;
-import defaultrepository.IServer;
 import kieker.analysis.plugin.annotation.InputPort;
 import kieker.analysis.plugin.annotation.Plugin;
 import kieker.analysis.plugin.filter.AbstractFilterPlugin;
 import kieker.common.configuration.Configuration;
 import kieker.common.logging.Log;
 import kieker.common.logging.LogFactory;
+import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
+import defaultrepository.ILastverteiler;
 
 @Plugin()
 public class ReconfigurationExecutorFilter extends AbstractFilterPlugin {
@@ -22,7 +21,7 @@ public class ReconfigurationExecutorFilter extends AbstractFilterPlugin {
 	public ReconfigurationExecutorFilter(Configuration configuration) {
 		super(configuration);
 		RmiRegistry.setRemoteAddress("localhost");
-		server_port = (ILastverteiler) RmiRegistry.lookup("ILastverteiler_lastverteiler");
+		server_port = (ILastverteiler) RmiRegistry.lookup("ILastverteiler_lastverteiler__bIrK8OuTEeCuhfIsXFGDcQ");
 	}
 
 	@Override

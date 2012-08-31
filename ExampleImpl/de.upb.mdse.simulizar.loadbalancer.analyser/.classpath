@@ -10,5 +10,7 @@
 	<classpathentry kind="lib" path="lib/jnp-client.jar"/>
 	<classpathentry kind="lib" path="lib/netty.jar"/>
 	<classpathentry kind="lib" path="lib/kieker-1.5_emf.jar" sourcepath="/Volumes/Macintosh HD/Users/snowball/Downloads/kieker-1.5-src/src"/>
+	<classpathentry kind="lib" path="lib/jcommon-1.0.17.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart-1.0.14.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
