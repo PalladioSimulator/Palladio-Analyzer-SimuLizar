@@ -42,18 +42,12 @@
   <components__Repository xsi:type="repository:BasicComponent" id="_oCImIOuSEeCuhfIsXFGDcQ" entityName="server">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_vHm0AOuSEeCuhfIsXFGDcQ" entityName="Angeboten_IServer_Server" providedInterface__OperationProvidedRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_vHnbEOuSEeCuhfIsXFGDcQ" describedService__SEFF="_rpIiAOuSEeCuhfIsXFGDcQ">
-      <steps_Behaviour xsi:type="seff:StartAction" id="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_06E3AOuUEeCuhfIsXFGDcQ"/>
+      <steps_Behaviour xsi:type="seff:StartAction" id="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_vHnbEuuSEeCuhfIsXFGDcQ" predecessor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ"/>
-      <steps_Behaviour xsi:type="seff:InternalAction" id="_06E3AOuUEeCuhfIsXFGDcQ" entityName="entpacken" predecessor_AbstractAction="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ">
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_7NbrcOuUEeCuhfIsXFGDcQ" entityName="speichern" predecessor_AbstractAction="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_vHnbEuuSEeCuhfIsXFGDcQ">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="datei.BYTESIZE*2"/>
+          <specification_ParametericResourceDemand specification="310"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-        </resourceDemand_Action>
-      </steps_Behaviour>
-      <steps_Behaviour xsi:type="seff:InternalAction" id="_7NbrcOuUEeCuhfIsXFGDcQ" entityName="speichern" predecessor_AbstractAction="_06E3AOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_vHnbEuuSEeCuhfIsXFGDcQ">
-        <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="datei.BYTESIZE + IntPMF[(20;0.5)(10;0.5)]"/>
-          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
