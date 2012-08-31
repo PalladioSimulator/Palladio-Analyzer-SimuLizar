@@ -9,20 +9,21 @@ implements defaultrepository.impl.Ilastverteiler, java.io.Serializable {
 	
 	private double probSecond = 0.0;
 
-	public lastverteiler(String assemblyContextParentStructure) {
+	public lastverteiler(String assemblyContext) {
 
-		m_portAngeboten_ILastverteiler_Lastverteiler = init_Angeboten_ILastverteiler_Lastverteiler(assemblyContextParentStructure);
+		m_portAngeboten_ILastverteiler_Lastverteiler = init_Angeboten_ILastverteiler_Lastverteiler(assemblyContext);
 
 	}
 
 	protected defaultrepository.ILastverteiler m_portAngeboten_ILastverteiler_Lastverteiler = null;
 
 	private defaultrepository.impl.ports.ILastverteiler_lastverteiler init_Angeboten_ILastverteiler_Lastverteiler(
-			String assemblyContextParentStructure) {
+			String assemblyContext) {
 		try {
 			return new defaultrepository.impl.ports.ILastverteiler_lastverteiler(
-					this, assemblyContextParentStructure);
+					this, assemblyContext);
 		} catch (java.rmi.RemoteException e) {
+			logger.error("Failed to initialise port defaultrepository.impl.ports.ILastverteiler_lastverteiler");
 		}
 		return null;
 	}
@@ -177,13 +178,19 @@ implements defaultrepository.impl.Ilastverteiler, java.io.Serializable {
 		this.probSecond += delta;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String... args) {
+		logger.info("Main method of basic component lastverteiler called");
+
 		String ip = de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry
 				.getIpFromArguments(args);
+		String assemblyContext = de.uka.ipd.sdq.prototype.framework.AbstractMain
+				.getAssemblyContextFromArguments(args);
+
 		de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry
 				.setRemoteAddress(ip);
 
-		new defaultrepository.impl.lastverteiler("");
+		new defaultrepository.impl.lastverteiler(assemblyContext);
 	}
+
 
 }

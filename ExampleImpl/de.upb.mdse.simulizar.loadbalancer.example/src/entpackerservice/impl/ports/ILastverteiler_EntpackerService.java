@@ -16,11 +16,11 @@ import java.rmi.RemoteException;
 	  
 		protected defaultrepository.ILastverteiler myInnerPort = null;
 	     
-		public ILastverteiler_EntpackerService(defaultrepository.ILastverteiler myInnerPort, entpackerservice.impl.IEntpackerService myCompositeComponent) throws java.rmi.RemoteException {
+		public ILastverteiler_EntpackerService(defaultrepository.ILastverteiler myInnerPort, entpackerservice.impl.IEntpackerService myCompositeComponent, String assemblyContext) throws java.rmi.RemoteException {
 			this.myInnerPort = myInnerPort;
 			this.myCompositeComponent = myCompositeComponent;
 		        	        
-			de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "ILastverteiler_EntpackerService");
+			de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "ILastverteiler_EntpackerService_" + assemblyContext);
 			logger.info("Instantiation of port ILastverteiler_EntpackerService completed");	        
 		}	     
 	     	 	

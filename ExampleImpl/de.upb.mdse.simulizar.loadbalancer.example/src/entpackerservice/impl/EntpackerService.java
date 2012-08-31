@@ -16,7 +16,7 @@
     
 	
 	
-   public EntpackerService() {
+   public EntpackerService(String assemblyContext) {
 
 
 		
@@ -24,17 +24,6 @@
 		logger.info("Creating composed structure EntpackerService");
 		
 		
-	
-	if (de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.LOCALHOST.equals(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress())) 
-	{
-		
-	defaultrepository.impl.lastverteiler.main(null);
-
-	defaultrepository.impl.server.main(null);
-
-	defaultrepository.impl.server.main(null);
-
-	}
 	
 
 	    
@@ -51,11 +40,11 @@
 			
 				mylastverteilerAK.getComponent().getPortAngeboten_ILastverteiler_Lastverteiler()
 			
-		, this
+		, this, assemblyContext
 		);
 
-			}catch(java.rmi.RemoteException e){
-			  e.printStackTrace();
+			} catch(java.rmi.RemoteException e){
+			  logger.error("Failed to initialise port for EntpackerService");
 			}
 			
 			
@@ -100,28 +89,30 @@
       private void initInnerComponents() {
 
 		 try {
-	    	 
-	    	 	 
+			
+				
 	
-		mylastverteilerAK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.lastverteiler>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("ILastverteiler_lastverteiler");
+		mylastverteilerAK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.lastverteiler>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("ILastverteiler_lastverteiler__bIrK8OuTEeCuhfIsXFGDcQ");
+
 	
 
 	
-		myserver1AK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.server>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("IServer_server");
-	
+		myserver1AK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.server>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("IServer_server__gBXYMOuTEeCuhfIsXFGDcQ");
 
 	
-		myserver2AK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.server>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("IServer_server");
+
+	
+		myserver2AK = (de.uka.ipd.sdq.prototype.framework.port.IPort<defaultrepository.impl.server>) de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.lookup("IServer_server__g7v80OuTEeCuhfIsXFGDcQ");
+
 	
 
-	    	 
+			
 
-		   
-
+			 
 			  /* First, initialise composite child structures */
 			  
-			  /* Then initialise basic components */
 			  
+			  /* Then initialise basic components */
 			  
 				  initlastverteilerAK();
 			  
@@ -129,9 +120,9 @@
 			  
 				  initserver2AK();
 			  
-			  } 
 			  
     	  
+    	  }
 			catch (java.rmi.RemoteException e) {
 				e.printStackTrace();
 			}
@@ -277,11 +268,15 @@
 
 	
 	
-	public static void main(String[] args) {
+	public static void main(String... args) {
+		logger.info("Main method of composed structure EntpackerService called");
+
 		String ip = de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getIpFromArguments(args);
+		String assemblyContext = de.uka.ipd.sdq.prototype.framework.AbstractMain.getAssemblyContextFromArguments(args);
+		
 		de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.setRemoteAddress(ip);
 		
-		new entpackerservice.impl.EntpackerService();
+		new entpackerservice.impl.EntpackerService(assemblyContext);
 	}
 
 

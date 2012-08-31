@@ -12,9 +12,9 @@ import java.rmi.RemoteException;
 		  protected static org.apache.log4j.Logger logger = 
 			org.apache.log4j.Logger.getLogger(ILastverteiler_lastverteiler.class.getName());
 				
-		  public ILastverteiler_lastverteiler(defaultrepository.impl.Ilastverteiler myComponent, String assemblyContextParentStructure) throws java.rmi.RemoteException {
+		  public ILastverteiler_lastverteiler(defaultrepository.impl.Ilastverteiler myComponent, String assemblyContext) throws java.rmi.RemoteException {
 		  		this.myComponent = myComponent;
-				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, assemblyContextParentStructure + "ILastverteiler_lastverteiler");
+				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "ILastverteiler_lastverteiler_" + assemblyContext);
 		  }
 		    
 	      

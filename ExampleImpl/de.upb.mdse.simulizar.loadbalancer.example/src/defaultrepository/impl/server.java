@@ -24,14 +24,14 @@ public class server
 	
 	
 	
-	public server(String assemblyContextParentStructure) {
+	public server(String assemblyContext) {
 
 		
 		
 		
 		
 		
-			m_portAngeboten_IServer_Server = init_Angeboten_IServer_Server(assemblyContextParentStructure);
+			m_portAngeboten_IServer_Server = init_Angeboten_IServer_Server(assemblyContext);
 		
 		
 		
@@ -47,10 +47,11 @@ public class server
 	
     protected defaultrepository.IServer m_portAngeboten_IServer_Server = null;
 
-	private defaultrepository.impl.ports.IServer_server init_Angeboten_IServer_Server(String assemblyContextParentStructure) {
+	private defaultrepository.impl.ports.IServer_server init_Angeboten_IServer_Server(String assemblyContext) {
 		try {
-			return new defaultrepository.impl.ports.IServer_server(this, assemblyContextParentStructure);
+			return new defaultrepository.impl.ports.IServer_server(this, assemblyContext);
 		} catch (java.rmi.RemoteException e) {
+			logger.error("Failed to initialise port defaultrepository.impl.ports.IServer_server");
 		}
 		return null;
 	}
@@ -261,19 +262,15 @@ public class server
 	
 	
 		
-	public static void main(String[] args) {
+	public static void main(String... args) {
+		logger.info("Main method of basic component server called");
+
 		String ip = de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getIpFromArguments(args);
+		String assemblyContext = de.uka.ipd.sdq.prototype.framework.AbstractMain.getAssemblyContextFromArguments(args);
+		
 		de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.setRemoteAddress(ip);
 		
-		new defaultrepository.impl.server("");
-	}
-
-
-
-
-	@Override
-	public void reconfigure() {
-		System.out.println("Help! I am reconfigured right now!");
+		new defaultrepository.impl.server(assemblyContext);
 	}
 
 	

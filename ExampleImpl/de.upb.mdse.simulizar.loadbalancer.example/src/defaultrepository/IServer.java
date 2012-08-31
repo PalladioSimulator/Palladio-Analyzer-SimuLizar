@@ -22,7 +22,5 @@
  )
  throws java.rmi.RemoteException
 ;
-
-void reconfigure() throws java.rmi.RemoteException;
       }
    

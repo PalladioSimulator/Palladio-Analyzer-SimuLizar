@@ -8,22 +8,26 @@
 				String container;
 				String containerId;
 				Class<?> component;
+				String assemblyContext;
 			
 				
 					containerId = "_yc6fwOuOEeCuhfIsXFGDcQ";
 					container = "lvk";
 					component = defaultrepository.impl.lastverteiler.class;
-					saveContainerComponent(containerId, container, component);
+					assemblyContext = "_bIrK8OuTEeCuhfIsXFGDcQ";
+					saveContainerComponent(containerId, container, component, assemblyContext);
 				
 					containerId = "_1enWMOuOEeCuhfIsXFGDcQ";
 					container = "sk1";
 					component = defaultrepository.impl.server.class;
-					saveContainerComponent(containerId, container, component);
+					assemblyContext = "_gBXYMOuTEeCuhfIsXFGDcQ";
+					saveContainerComponent(containerId, container, component, assemblyContext);
 				
 					containerId = "_yHnvwOuPEeCuhfIsXFGDcQ";
 					container = "sk2";
 					component = defaultrepository.impl.server.class;
-					saveContainerComponent(containerId, container, component);
+					assemblyContext = "_g7v80OuTEeCuhfIsXFGDcQ";
+					saveContainerComponent(containerId, container, component, assemblyContext);
 				
 			}
 		}

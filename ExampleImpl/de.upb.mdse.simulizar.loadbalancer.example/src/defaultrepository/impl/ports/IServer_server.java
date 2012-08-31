@@ -12,9 +12,9 @@ import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
 		  protected static org.apache.log4j.Logger logger = 
 			org.apache.log4j.Logger.getLogger(IServer_server.class.getName());
 				
-		  public IServer_server(defaultrepository.impl.Iserver myComponent, String assemblyContextParentStructure) throws java.rmi.RemoteException {
+		  public IServer_server(defaultrepository.impl.Iserver myComponent, String assemblyContext) throws java.rmi.RemoteException {
 		  		this.myComponent = myComponent;
-				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, assemblyContextParentStructure + "IServer_server");
+				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "IServer_server_" + assemblyContext);
 		  }
 		    
 	      
@@ -41,10 +41,6 @@ import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
 
 
    }   
-   
-   public void reconfigure() {
-	   myComponent.reconfigure();
-   }
 
 	  }
 
