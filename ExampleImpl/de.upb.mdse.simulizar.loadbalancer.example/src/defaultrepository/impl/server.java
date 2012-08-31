@@ -154,7 +154,7 @@ public class server
 	
 	
    {
-      double demand = ctx.evaluate("datei.BYTESIZE*2", Double.class);
+      double demand = ctx.evaluate("310", Double.class);
 
 
 	
@@ -175,33 +175,6 @@ public class server
    
       
    
-/* InternalAction - START */
-    // software failures:
-	
-	
-
-	// direct resource demands:
-	
-	
-	
-   {
-      double demand = ctx.evaluate("datei.BYTESIZE + IntPMF[(20;0.5)(10;0.5)]", Double.class);
-
-
-	
-		de.uka.ipd.sdq.prototype.framework.strategies.DemandConsumerStrategiesRegistry.singleton()
-	    	.getStrategyFor(de.uka.ipd.sdq.measurement.strategies.activeresource.ResourceTypeEnum.HDD).consume(demand);
-	
-		
-
-   }
-
-
-	
-
-	// infrastructure calls:
-    
-/* InternalAction - END */
 
    
       

@@ -8,7 +8,7 @@ class NutzungsszenarioThread extends de.uka.ipd.sdq.prototype.framework.usage.Ab
 			de.uka.ipd.sdq.sensorframework.entities.ExperimentRun expRun,
 			de.uka.ipd.sdq.prototype.framework.utils.RunProperties runProps)
 	{
-		super(exp, expRun, "Response Time of Nutzungsszenario",runProps,"0.29");
+		super(exp, expRun, "Response Time of Nutzungsszenario",runProps,"Exp(3)");
 	}
 
 	@Override
