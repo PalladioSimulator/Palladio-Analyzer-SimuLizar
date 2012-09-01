@@ -14,7 +14,7 @@
 <booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
 <intAttribute key="datasourceID" value="0"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
-<stringAttribute key="eventMiddlewareRepositoryFile" value="/Users/snowball/Documents/runtime-EclipseApplication/Simulizar Example/test.sdm"/>
+<stringAttribute key="eventMiddlewareRepositoryFile" value="/Users/snowball/Documents/runtime-EclipseApplication/Simulizar Example/"/>
 <stringAttribute key="experimentRun" value="MyRun"/>
 <stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
 <stringAttribute key="fixedSeed0" value="0"/>
@@ -24,12 +24,12 @@
 <stringAttribute key="fixedSeed4" value="4"/>
 <stringAttribute key="fixedSeed5" value="5"/>
 <stringAttribute key="maximum" value=""/>
-<stringAttribute key="maximumMeasurementCount" value="-1"/>
+<stringAttribute key="maximumMeasurementCount" value="1000"/>
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="mwRepositoryFile" value="platform:/resource/Simulizar Example/EvaluationSpecification.pms"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
-<stringAttribute key="simTime" value="100"/>
+<stringAttribute key="simTime" value="-1"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>
 <booleanAttribute key="simulateFailures" value="false"/>
 <booleanAttribute key="simulateLinkingResources" value="false"/>
