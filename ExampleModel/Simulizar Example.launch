@@ -14,7 +14,7 @@
 <booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
 <intAttribute key="datasourceID" value="0"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
-<stringAttribute key="eventMiddlewareRepositoryFile" value="/Users/snowball/Documents/runtime-EclipseApplication/Simulizar Example/"/>
+<stringAttribute key="eventMiddlewareRepositoryFile" value="/Volumes/Macintosh HD/Users/snowball/Documents/runtime-EclipseApplication/Simulizar Example/balanceReconfigurationStrategy.storydiagrams"/>
 <stringAttribute key="experimentRun" value="MyRun"/>
 <stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
 <stringAttribute key="fixedSeed0" value="0"/>
