@@ -29,7 +29,7 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
     @Override
     protected ArrayList<LoggerAppenderStruct> setupLogging(final org.apache.log4j.Level logLevel) throws CoreException {
         final ArrayList<LoggerAppenderStruct> result = super.setupLogging(logLevel);
-        result.add(this.setupLogger("de.upb.pcm.simulizer", logLevel, Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN
+        result.add(this.setupLogger("de.upb.pcm.simulizar", logLevel, Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN
                 : SHORT_LOG_PATTERN));
 
         return result;

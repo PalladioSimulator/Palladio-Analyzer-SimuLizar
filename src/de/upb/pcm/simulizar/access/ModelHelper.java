@@ -106,9 +106,18 @@ class ModelHelper {
         final PCMResourceSetPartition pcmResourceSetPartition = this.getPCMResourceSetPartition();
 
         // add to PCMCopy
-        return new PCMModels(pcmResourceSetPartition.getRepositories().get(0),
+        return new PCMModels(findRepository(pcmResourceSetPartition.getRepositories()),
                 pcmResourceSetPartition.getSystem(), pcmResourceSetPartition.getResourceEnvironment(),
                 pcmResourceSetPartition.getAllocation(), pcmResourceSetPartition.getUsageModel());
+    }
+
+    private Repository findRepository(List<Repository> repositories) {
+        for (Repository r : repositories) {
+            if (r.getComponents__Repository().size() != 0) {
+                return r;
+            }
+        }
+        throw new RuntimeException("No valid repository found");
     }
 
     /**
