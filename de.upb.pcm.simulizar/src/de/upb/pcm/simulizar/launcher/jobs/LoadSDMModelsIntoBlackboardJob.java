@@ -3,6 +3,7 @@ package de.upb.pcm.simulizar.launcher.jobs;
 import java.io.File;
 import java.io.FilenameFilter;
 
+import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 
@@ -28,6 +29,8 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
     private MDSDBlackboard blackboard;
 
     private final String path;
+    
+    private static final Logger logger = Logger.getLogger(LoadSDMModelsIntoBlackboardJob.class);
 
     /**
      * Constructor
@@ -63,9 +66,12 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
                     return name.endsWith(".storydiagrams");
                 }
             });
-
-            for (final File file : files) {
-                sdmPartition.loadModel(URI.createFileURI(file.getPath()));
+            if (files != null && files.length > 0) {
+                for (final File file : files) {
+                    sdmPartition.loadModel(URI.createFileURI(file.getPath()));
+                }
+            } else {
+                logger.warn ("No SDM models found, SD reconfigurations disabled.");
             }
         }
 

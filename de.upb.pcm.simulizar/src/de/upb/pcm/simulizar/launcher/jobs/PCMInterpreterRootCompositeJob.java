@@ -12,8 +12,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Joachim Meyer
  * 
  */
-public class PCMInterpreterRootCompositeJob extends OrderPreservingBlackboardCompositeJob<MDSDBlackboard> implements
-        IBlackboardInteractingJob<MDSDBlackboard> {
+public class PCMInterpreterRootCompositeJob 
+    extends OrderPreservingBlackboardCompositeJob<MDSDBlackboard> 
+    implements IBlackboardInteractingJob<MDSDBlackboard> {
 
     /**
      * Constructor
