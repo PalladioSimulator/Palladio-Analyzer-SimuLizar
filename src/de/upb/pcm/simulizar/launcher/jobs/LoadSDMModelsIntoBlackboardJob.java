@@ -24,6 +24,8 @@ import de.upb.pcm.simulizar.launcher.partitions.SDMResourceSetPartition;
  */
 public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
+    private static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
+
     public static final String SDM_MODEL_PARTITION_ID = "de.upb.pcm.sdm";
 
     private MDSDBlackboard blackboard;
@@ -63,7 +65,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
 
                 @Override
                 public boolean accept(final File dir, final String name) {
-                    return name.endsWith(".storydiagrams");
+                    return name.endsWith(STORYDIAGRAMS_FILE_EXTENSION);
                 }
             });
             if (files != null && files.length > 0) {
