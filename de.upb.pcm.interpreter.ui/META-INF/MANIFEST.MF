@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ui
-Bundle-SymbolicName: de.upb.pcm.interpreter.ui;singleton:=true
+Bundle-SymbolicName: de.upb.pcm.simulizar.ui;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: de.upb.pcm.interpreter.ui.Activator
 Require-Bundle: org.eclipse.ui,
