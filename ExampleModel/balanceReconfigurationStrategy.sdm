@@ -3,9 +3,9 @@
     xmi:version="2.0"
     xmlns:xmi="http://www.omg.org/XMI"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:expr="http://www.storydriven.org/core/expressions/0.2.0"
+    xmlns:expr="http://www.storydriven.org/core/expressions/0.3.1"
     xmlns:sda="http://www.storydriven.org/storydiagrams/activities/0.2.1"
-    xmlns:sdcec="http://www.storydriven.org/core/expressions/common/0.2.0"
+    xmlns:sdcec="http://www.storydriven.org/core/expressions/common/0.3.1"
     xmlns:sdp="http://www.storydriven.org/storydiagrams/patterns/0.2.1"
     xmlns:sdpe="http://www.storydriven.org/storydiagrams/patterns/expressions/0.2.1"
     name="Balance Reconfiguration">
