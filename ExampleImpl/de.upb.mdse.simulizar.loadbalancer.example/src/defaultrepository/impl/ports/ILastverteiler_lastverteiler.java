@@ -2,6 +2,8 @@
 	  package defaultrepository.impl.ports;
 
 import java.rmi.RemoteException;
+
+import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
       
    
 	  /** 
@@ -14,7 +16,8 @@ import java.rmi.RemoteException;
 				
 		  public ILastverteiler_lastverteiler(defaultrepository.impl.Ilastverteiler myComponent, String assemblyContext) throws java.rmi.RemoteException {
 		  		this.myComponent = myComponent;
-				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "ILastverteiler_lastverteiler_" + assemblyContext);
+				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), 
+						RmiRegistry.getRegistryPort(), this, "ILastverteiler_lastverteiler_" + assemblyContext);
 		  }
 		    
 	      

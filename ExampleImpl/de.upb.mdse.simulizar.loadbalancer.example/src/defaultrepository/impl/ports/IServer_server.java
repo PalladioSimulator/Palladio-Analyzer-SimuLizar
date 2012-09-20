@@ -1,6 +1,7 @@
 
 	  package defaultrepository.impl.ports;
 
+import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
 import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
       
    
@@ -14,7 +15,8 @@ import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
 				
 		  public IServer_server(defaultrepository.impl.Iserver myComponent, String assemblyContext) throws java.rmi.RemoteException {
 		  		this.myComponent = myComponent;
-				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "IServer_server_" + assemblyContext);
+				de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), 
+						RmiRegistry.getRegistryPort(), this, "IServer_server_" + assemblyContext);
 		  }
 		    
 	      

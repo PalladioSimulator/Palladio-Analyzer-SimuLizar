@@ -2,6 +2,8 @@
 	  package entpackerservice.impl.ports;
 
 import java.rmi.RemoteException;
+
+import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
       
    
    /*
@@ -20,7 +22,8 @@ import java.rmi.RemoteException;
 			this.myInnerPort = myInnerPort;
 			this.myCompositeComponent = myCompositeComponent;
 		        	        
-			de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), this, "ILastverteiler_EntpackerService_" + assemblyContext);
+			de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.registerPort(de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry.getRemoteAddress(), 
+					RmiRegistry.getRegistryPort(), this, "ILastverteiler_EntpackerService_" + assemblyContext);
 			logger.info("Instantiation of port ILastverteiler_EntpackerService completed");	        
 		}	     
 	     	 	
