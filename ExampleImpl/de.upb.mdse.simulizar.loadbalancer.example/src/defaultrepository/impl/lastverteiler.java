@@ -175,7 +175,8 @@ implements defaultrepository.impl.Ilastverteiler, java.io.Serializable {
 	public void reconfigure(double delta) {
 		if (this.probSecond+delta < 0.0 && this.probSecond+delta>1.0)
 			throw new RuntimeException("Could not reconfigure!");
-		this.probSecond += delta;
+		if (this.probSecond+delta <= 0.5)
+			this.probSecond += delta;
 	}
 
 	public static void main(String... args) {

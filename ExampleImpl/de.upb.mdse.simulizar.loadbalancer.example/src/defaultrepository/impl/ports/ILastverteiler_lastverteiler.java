@@ -3,6 +3,8 @@
 
 import java.rmi.RemoteException;
 
+import kieker.monitoring.annotation.OperationExecutionMonitoringProbe;
+
 import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
       
    
@@ -24,6 +26,7 @@ import de.uka.ipd.sdq.prototype.framework.registry.RmiRegistry;
 
 
 	      
+   @OperationExecutionMonitoringProbe	      
    public 
 	
    

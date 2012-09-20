@@ -14,6 +14,7 @@ import kieker.common.record.controlflow.OperationExecutionRecord;
 
 import org.jscience.physics.amount.Amount;
 
+import de.upb.mdse.simulizar.loadbalancer.analyser.chart.JFreeChartObserver;
 import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 
 @Plugin(outputPorts = @OutputPort(name = ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, 
@@ -25,9 +26,14 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 	public static final String INPUT_PORT_NAME_EVENTS = "inputExecutionRecords";
 	
 	private static final Log LOG = LogFactory.getLog(ComputeResponseTimeFilter.class);
+	
+	private final JFreeChartObserver display = new JFreeChartObserver("Measurements");
 
 	public ComputeResponseTimeFilter(Configuration configuration) {
 		super(configuration);
+		
+		display.showObserver();
+		//display.generateTestData();
 	}
 
 	@Override
@@ -48,6 +54,9 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 		long diff = record.getTout() - record.getTin();
 		Amount<Duration> result = Amount.valueOf(diff, SI.NANO(SI.SECOND));
 		LOG.debug(MeasureHelper.formatDuration(result));
+		
+		this.display.displayMeasurement(record.getLoggingTimestamp(), diff);
+		
 		super.deliver(OUTPUT_PORT_RESPONSE_TIMES, new ResponseTimeMeasurement(record.getOperationSignature(), record.getHostname(), result, record.getLoggingTimestamp()));
 	}
 

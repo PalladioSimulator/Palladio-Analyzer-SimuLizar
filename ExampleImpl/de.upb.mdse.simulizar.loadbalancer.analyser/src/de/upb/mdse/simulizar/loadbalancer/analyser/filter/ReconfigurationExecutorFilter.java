@@ -14,6 +14,7 @@ import defaultrepository.ILastverteiler;
 @Plugin()
 public class ReconfigurationExecutorFilter extends AbstractFilterPlugin {
 
+	private static final double DELTA = 0.1;
 	public static final String INPUT_VIOLATED_IDS = "violatedIDs";
 	private static final Log LOG = LogFactory.getLog(ReconfigurationExecutorFilter.class);
 	private ILastverteiler server_port;
@@ -40,7 +41,7 @@ public class ReconfigurationExecutorFilter extends AbstractFilterPlugin {
 	public final void inputEvent(final Object inEvent) {
 		LOG.info("Should reconfigure now!");
 		try {
-			server_port.reconfigure(0.1);
+			server_port.reconfigure(DELTA);
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

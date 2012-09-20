@@ -24,7 +24,7 @@ import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 public class ThresholdFilter extends AbstractFilterPlugin {
 
 	private static final String HOSTID = "LOADBALANCER";
-	private static final String METHOD = "public de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe defaultrepository.impl.ports.IServer_server.entpacke0(de.uka.ipd.sdq.simucomframework.variables.StackContext)";
+	private static final String METHOD = "public de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe defaultrepository.impl.ports.ILastverteiler_lastverteiler.entpacke0(de.uka.ipd.sdq.simucomframework.variables.StackContext)";
 
 	private static final Log LOG = LogFactory.getLog(JMSReader.class);
 	
@@ -34,7 +34,7 @@ public class ThresholdFilter extends AbstractFilterPlugin {
 
 	public static final String OUTPUT_THRESHOLD_VIOLATED_IDS = "violatedIDs";
 	public static final String INPUT_MEAN_RT_MAP = "mean_Rt_Measurements";
-	private static final Amount<Duration> THRESHOLD = Amount.valueOf(1,SI.SECOND);
+	private static final Amount<Duration> THRESHOLD = Amount.valueOf(0.8,SI.SECOND);
 
 	@Override
 	public Configuration getCurrentConfiguration() {

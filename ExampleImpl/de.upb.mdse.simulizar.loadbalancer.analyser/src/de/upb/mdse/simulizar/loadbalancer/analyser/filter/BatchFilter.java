@@ -21,7 +21,7 @@ import org.jscience.physics.amount.Amount;
 		eventTypes = { Map.class }))
 public class BatchFilter extends AbstractFilterPlugin {
 
-	private static final Amount<Duration> DEFAULT_BATCH_SIZE = Amount.valueOf(5, SI.SECOND);
+	private static final Amount<Duration> DEFAULT_BATCH_SIZE = Amount.valueOf(20, SI.SECOND);
 	
 	public static final String OUTPUT_BATCH_MAP = "batchMap";
 	public static final String INPUT_RESPONSE_TIME_MEASUREMENTS = "rtMeasurements";

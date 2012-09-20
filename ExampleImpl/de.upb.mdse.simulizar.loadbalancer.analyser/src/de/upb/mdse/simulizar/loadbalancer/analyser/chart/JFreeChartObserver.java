@@ -1,5 +1,7 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.chart;
 
+import java.awt.Color;
+import java.awt.Shape;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -10,9 +12,12 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.ui.RefineryUtilities;
+import org.jfree.util.ShapeUtilities;
 
 public class JFreeChartObserver extends JFrame {
 
@@ -25,28 +30,52 @@ public class JFreeChartObserver extends JFrame {
 
 	public JFreeChartObserver(final String title) {
 		super(title);
-		final JFreeChart chart = ChartFactory.createXYLineChart(
-				"XY Series Demo", "X", "Y", data, PlotOrientation.VERTICAL,
-				true, true, false);
-		final XYSeries series = new XYSeries("Random Data");
+		
+		final XYSeries series = new XYSeries("Response Times");
+		
+        final JFreeChart chart = ChartFactory.createScatterPlot(
+                "ProtoDyn",		// title
+                "Request",		// x-axis label
+                "Response Time [sec]",	// y-axis label
+                data,			// data
+                PlotOrientation.VERTICAL,
+                true,			// create a legend?
+                true,			// generate tooltips?
+                false			// generate URLs?
+         );
+        
+        Shape cross = ShapeUtilities.createDiagonalCross(3, 1);
+        XYPlot xyPlot = (XYPlot) chart.getPlot();
+        xyPlot.setDomainCrosshairVisible(true);
+        xyPlot.setRangeCrosshairVisible(true);
+        XYItemRenderer renderer = xyPlot.getRenderer();
+        renderer.setSeriesShape(0, cross);
+        renderer.setSeriesPaint(0, Color.red);
+		
 		data.addSeries(series);
+        
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 470));
 		setContentPane(chartPanel);
 	}
 
 	public void generateTestData() {
-		for (int i = 35; i < 60; i += 5) {
-			((XYSeries) data.getSeries().get(0)).add(i, i * 6);
+		for (int i = 35; i < 600; i += 5) {
+			double val = (Math.random() * (10 - 1) + 1);
+			((XYSeries) data.getSeries().get(0)).add(i, val);
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 	}
-
+	
+	public void displayMeasurement(long timestamp, long value) {
+		((XYSeries) data.getSeries().get(0)).add(timestamp, value);
+	}
+	
 	public void showObserver() {
 		SwingUtilities.invokeLater(new Runnable() {
 
