@@ -27,12 +27,12 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 	
 	private static final Log LOG = LogFactory.getLog(ComputeResponseTimeFilter.class);
 	
-	private final JFreeChartObserver display = new JFreeChartObserver("Measurements");
+	//private final JFreeChartObserver display = new JFreeChartObserver("Measurements");
 
 	public ComputeResponseTimeFilter(Configuration configuration) {
 		super(configuration);
 		
-		display.showObserver();
+		//display.showObserver();
 		//display.generateTestData();
 	}
 
@@ -55,7 +55,7 @@ public class ComputeResponseTimeFilter extends AbstractFilterPlugin {
 		Amount<Duration> result = Amount.valueOf(diff, SI.NANO(SI.SECOND));
 		LOG.debug(MeasureHelper.formatDuration(result));
 		
-		this.display.displayMeasurement(record.getLoggingTimestamp(), diff);
+		//this.display.displayMeasurement(record.getLoggingTimestamp(), diff);
 		
 		super.deliver(OUTPUT_PORT_RESPONSE_TIMES, new ResponseTimeMeasurement(record.getOperationSignature(), record.getHostname(), result, record.getLoggingTimestamp()));
 	}

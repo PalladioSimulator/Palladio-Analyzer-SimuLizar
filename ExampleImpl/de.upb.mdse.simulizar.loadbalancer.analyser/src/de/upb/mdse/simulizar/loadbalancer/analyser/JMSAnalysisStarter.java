@@ -2,6 +2,7 @@ package de.upb.mdse.simulizar.loadbalancer.analyser;
 
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.BatchFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ComputeResponseTimeFilter;
+import de.upb.mdse.simulizar.loadbalancer.analyser.filter.JFreeChartFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.MeanFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.MeasurementsFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ReconfigurationExecutorFilter;
@@ -49,6 +50,7 @@ public final class JMSAnalysisStarter {
 		final ReconfigurationExecutorFilter reconfFilter = new ReconfigurationExecutorFilter(new Configuration());
 		final SensorFrameWorkWriterFilter sensorWriterFilter = new SensorFrameWorkWriterFilter(new Configuration());
 		final MeasurementsFilter measurementsFilter = new MeasurementsFilter(new Configuration());
+		final JFreeChartFilter jFreeChartFilter = new JFreeChartFilter(new Configuration());
 		
 		analysisInstance.registerFilter(rtFilter);
 		analysisInstance.registerFilter(batchFilter);
@@ -58,11 +60,13 @@ public final class JMSAnalysisStarter {
 		analysisInstance.registerFilter(reconfFilter);
 		analysisInstance.registerFilter(measurementsFilter);
 		analysisInstance.registerFilter(sensorWriterFilter);
+		analysisInstance.registerFilter(jFreeChartFilter);
 		
 		try {
 			analysisInstance.connect(logReader, JMSReader.OUTPUT_PORT_NAME_RECORDS, rtFilter, ComputeResponseTimeFilter.INPUT_PORT_NAME_EVENTS);
 			analysisInstance.connect(rtFilter, ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, measurementsFilter, MeasurementsFilter.INPUT_RESPONSE_TIME_MEASUREMENTS);
 			analysisInstance.connect(rtFilter, ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, sensorWriterFilter, SensorFrameWorkWriterFilter.INPUT_RESPONSE_TIME_MEASUREMENTS);
+			analysisInstance.connect(rtFilter, ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, jFreeChartFilter, JFreeChartFilter.INPUT_RESPONSE_TIME_MEASUREMENTS);
 			analysisInstance.connect(measurementsFilter, MeasurementsFilter.OUTPUT_MEASUREMENTS, batchFilter, BatchFilter.INPUT_RESPONSE_TIME_MEASUREMENTS);
 			analysisInstance.connect(batchFilter, BatchFilter.OUTPUT_BATCH_MAP, meanFilter, MeanFilter.INPUT_BATCH_MAP);
 			analysisInstance.connect(meanFilter, MeanFilter.OUTPUT_MEAN_MAP, thresholdFilter, ThresholdFilter.INPUT_MEAN_RT_MAP);

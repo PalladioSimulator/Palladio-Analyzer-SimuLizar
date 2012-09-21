@@ -31,8 +31,6 @@ public class JFreeChartObserver extends JFrame {
 	public JFreeChartObserver(final String title) {
 		super(title);
 		
-		final XYSeries series = new XYSeries("Response Times");
-		
         final JFreeChart chart = ChartFactory.createScatterPlot(
                 "ProtoDyn",		// title
                 "Request",		// x-axis label
@@ -51,29 +49,16 @@ public class JFreeChartObserver extends JFrame {
         XYItemRenderer renderer = xyPlot.getRenderer();
         renderer.setSeriesShape(0, cross);
         renderer.setSeriesPaint(0, Color.red);
-		
-		data.addSeries(series);
-        
+        renderer.setSeriesPaint(1, Color.blue);
+        renderer.setSeriesPaint(2, Color.green);
+
 		final ChartPanel chartPanel = new ChartPanel(chart);
 		chartPanel.setPreferredSize(new java.awt.Dimension(1000, 470));
 		setContentPane(chartPanel);
 	}
-
-	public void generateTestData() {
-		for (int i = 35; i < 600; i += 5) {
-			double val = (Math.random() * (10 - 1) + 1);
-			((XYSeries) data.getSeries().get(0)).add(i, val);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
 	
-	public void displayMeasurement(long timestamp, long value) {
-		((XYSeries) data.getSeries().get(0)).add(timestamp, value);
+	public void addSeries(XYSeries series) {
+		data.addSeries(series);
 	}
 	
 	public void showObserver() {
