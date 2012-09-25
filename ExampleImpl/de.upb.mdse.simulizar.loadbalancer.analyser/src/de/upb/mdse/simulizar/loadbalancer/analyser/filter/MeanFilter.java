@@ -14,8 +14,6 @@ import kieker.common.configuration.Configuration;
 
 import org.jscience.physics.amount.Amount;
 
-import de.upb.mdse.simulizar.loadbalancer.analyser.chart.JFreeChartObserver;
-
 @Plugin(outputPorts = @OutputPort(name = MeanFilter.OUTPUT_MEAN_MAP, 
 		description = "Provides batched mean values as map", 
 		eventTypes = { Map.class }))

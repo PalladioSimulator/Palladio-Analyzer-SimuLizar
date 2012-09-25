@@ -14,7 +14,6 @@ import kieker.common.record.controlflow.OperationExecutionRecord;
 
 import org.jscience.physics.amount.Amount;
 
-import de.upb.mdse.simulizar.loadbalancer.analyser.chart.JFreeChartObserver;
 import de.upb.mdse.simulizar.loadbalancer.analyser.helper.MeasureHelper;
 
 @Plugin(outputPorts = @OutputPort(name = ComputeResponseTimeFilter.OUTPUT_PORT_RESPONSE_TIMES, 

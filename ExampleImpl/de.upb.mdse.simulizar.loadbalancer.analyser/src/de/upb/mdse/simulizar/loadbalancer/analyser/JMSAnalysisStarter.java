@@ -1,5 +1,10 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser;
 
+import kieker.analysis.AnalysisController;
+import kieker.analysis.exception.AnalysisConfigurationException;
+import kieker.analysis.plugin.filter.forward.TeeFilter;
+import kieker.analysis.plugin.reader.jms.JMSReader;
+import kieker.common.configuration.Configuration;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.BatchFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ComputeResponseTimeFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.JFreeChartFilter;
@@ -8,11 +13,6 @@ import de.upb.mdse.simulizar.loadbalancer.analyser.filter.MeasurementsFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ReconfigurationExecutorFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.SensorFrameWorkWriterFilter;
 import de.upb.mdse.simulizar.loadbalancer.analyser.filter.ThresholdFilter;
-import kieker.analysis.AnalysisController;
-import kieker.analysis.exception.AnalysisConfigurationException;
-import kieker.analysis.plugin.filter.forward.TeeFilter;
-import kieker.analysis.plugin.reader.jms.JMSReader;
-import kieker.common.configuration.Configuration;
 
 public final class JMSAnalysisStarter {
 

@@ -1,24 +1,19 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
-import java.beans.Expression;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.measure.unit.SI;
 
-import de.uka.ipd.sdq.sensorframework.SensorFrameworkDataset;
-import de.uka.ipd.sdq.sensorframework.dao.file.FileDAOFactory;
-import de.uka.ipd.sdq.sensorframework.entities.Experiment;
-import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
-import de.uka.ipd.sdq.sensorframework.entities.State;
-import de.uka.ipd.sdq.sensorframework.entities.StateSensor;
-import de.uka.ipd.sdq.sensorframework.entities.TimeSpanSensor;
-import de.uka.ipd.sdq.sensorframework.entities.dao.IDAOFactory;
 import kieker.analysis.plugin.annotation.InputPort;
 import kieker.analysis.plugin.annotation.Plugin;
 import kieker.analysis.plugin.filter.AbstractFilterPlugin;
 import kieker.common.configuration.Configuration;
+import de.uka.ipd.sdq.sensorframework.dao.file.FileDAOFactory;
+import de.uka.ipd.sdq.sensorframework.entities.Experiment;
+import de.uka.ipd.sdq.sensorframework.entities.ExperimentRun;
+import de.uka.ipd.sdq.sensorframework.entities.TimeSpanSensor;
 
 @Plugin()
 public class SensorFrameWorkWriterFilter extends AbstractFilterPlugin {
