@@ -13,6 +13,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 import de.upb.pcm.simulizar.exceptions.PMSModelLoadException;
+import de.upb.pcm.simulizar.launcher.SimulizarConstants;
 import de.upb.pcm.simulizar.launcher.partitions.PMSResourceSetPartition;
 
 /**
@@ -36,7 +37,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
      *            the SimuCom workflow configuration.
      */
     public LoadPMSModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
-        this.path = configuration.getMiddlewareFile();
+        this.path = (String) configuration.getAttributes().get(SimulizarConstants.PMS_FILE);
     }
 
     /**
@@ -47,11 +48,17 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
         if (this.getPCMResourceSetPartition() == null) {
             throw new PMSModelLoadException("The PCM models must be loaded first");
         }
-        // TODO this is only a hack
-        // TODO Platform path
+       
         final PMSResourceSetPartition prmPartition = new PMSResourceSetPartition(this.getPCMResourceSetPartition());
         if (!this.getPath().equals("")) {
-            prmPartition.loadModel(URI.createURI(this.getPath()));
+        	
+        	//add file protocol if necessary
+        	String filePath = getPath();
+        	if (!getPath().startsWith("platform:")) {
+        		filePath = "file:///" + filePath;
+        	}
+        	
+            prmPartition.loadModel(URI.createURI(filePath));
 
         }
         this.getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, prmPartition);
