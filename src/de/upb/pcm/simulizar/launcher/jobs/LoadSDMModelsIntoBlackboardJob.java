@@ -4,13 +4,9 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.internal.resources.Folder;
-import org.eclipse.core.resources.IFolder;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.resource.impl.ExtensibleURIConverterImpl;
-import org.eclipse.emf.ecore.resource.impl.URIConverterImpl;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.IBlackboardInteractingJob;
@@ -58,25 +54,22 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
 
         final SDMResourceSetPartition sdmPartition = new SDMResourceSetPartition();
 
-        // final URI pathToSDM = CommonPlugin.asLocalURI(URI.createPlatformResourceURI(new
-        // File("/SDM2/").getPath(), true));
         if (!this.path.equals("")) {
-            final File pathFile = new File(this.path);
-//            final String parent = pathFile.getParent();
-
+       
         	//add file protocol only if necessary
         	String filePath = path;
+        	File folder = null;
         	if (!path.startsWith("platform:")) {
         		filePath = "file:///" + filePath;
+        		
+        		URI pathToSDM = URI.createURI(filePath);
+                folder = new File(pathToSDM.toFileString());
         	}
         	else {
-        		//TODO
-        		
+        		File workspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
+            	folder = new File(workspace + filePath.replaceFirst("platform:/resource", ""));
         	}
-        	
-            URI pathToSDM = URI.createURI(filePath);
-            final File folder = new File(pathToSDM.toFileString());
-            
+             
             final File[] files = folder.listFiles(new FilenameFilter() {
 
                 @Override
