@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update label="SimuLizar Update Site" url="http://homepages.uni-paderborn.de/matzeb/de.upb.pcm.simulizar.repository.composite/de.upb.pcm.simulizar.repository"/>
+      <update label="SimuLizar Update Site" url="http://dsd-serv.uni-paderborn.de/svn/updatesites/trunk/de.upb.pcm.simulizar.updatesite/"/>
    </url>
 
    <requires>
