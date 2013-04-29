@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.upb.pcm.simulizar"
+      label="SimuLizar"
+      version="1.0.0.qualifier"
+      provider-name="University of Paderborn">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <copyright url="http://www.example.com/copyright">
+      [Enter Copyright Description here.]
+   </copyright>
+
+   <license url="http://www.example.com/license">
+      [Enter License Description here.]
+   </license>
+
+   <url>
+      <update label="SimuLizar Update Site" url="http://homepages.uni-paderborn.de/matzeb/de.upb.pcm.simulizar.repository.composite/de.upb.pcm.simulizar.repository"/>
+   </url>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.eclipse.emf.ecore"/>
+      <import plugin="org.eclipse.emf.ecore.xmi"/>
+      <import plugin="de.uka.ipd.sdq.identifier"/>
+      <import plugin="de.uka.ipd.sdq.pcm"/>
+      <import plugin="de.uka.ipd.sdq.probfunction"/>
+      <import plugin="de.uka.ipd.sdq.stoex"/>
+      <import plugin="de.uka.ipd.sdq.units"/>
+      <import plugin="org.eclipse.emf.edit"/>
+      <import plugin="org.eclipse.emf.ecore.edit"/>
+      <import plugin="org.eclipse.core.resources"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.ui.ide"/>
+      <import plugin="de.uka.ipd.sdq.pcm" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="de.upb.pcm.pms" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.identifier.edit"/>
+      <import plugin="de.uka.ipd.sdq.pcm.edit"/>
+      <import plugin="de.uka.ipd.sdq.probfunction.edit"/>
+      <import plugin="de.uka.ipd.sdq.stoex.edit"/>
+      <import plugin="de.uka.ipd.sdq.units.edit"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.workflow.pcm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.probespec.framework" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.pcm.stochasticexpressions" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.stoex.analyser" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="de.upb.pcm.prm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.simulation" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.simulation.abstractsimengine" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.mdelab.sdm.interpreter.ocl" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.storydriven.storydiagrams.interpreter.eclipse" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.transaction" version="1.4.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.probfunction.math" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.scheduler" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.mdelab.sdm.interpreter.sde.eclipse" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.workflow.logging.console"/>
+      <import plugin="org.eclipse.ui"/>
+      <import plugin="org.eclipse.debug.ui" version="3.6.1" match="greaterOrEqual"/>
+      <import plugin="de.upb.pcm.simulizar" version="1.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="de.upb.pcm.pms"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.pms.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.pms.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.prm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.prm.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.prm.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.simulizar"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.upb.pcm.simulizar.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.mdelab.sdm.interpreter.ocl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
