@@ -12,10 +12,10 @@
 <stringAttribute key="confidenceModelElementName" value=""/>
 <stringAttribute key="confidenceModelElementURI" value=""/>
 <booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
-<intAttribute key="datasourceID" value="0"/>
+<intAttribute key="datasourceID" value="1"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
-<stringAttribute key="eventMiddlewareRepositoryFile" value="/Volumes/Macintosh HD/Users/snowball/Documents/runtime-EclipseApplication/Simulizar Example/balanceReconfigurationStrategy.sdm"/>
-<stringAttribute key="experimentRun" value="MyRun"/>
+<stringAttribute key="eventMiddlewareRepositoryFile" value="C:\Users\Matthias\Eclipse-Workspaces\runtime-EclipseApplication\Simulizar Example\balanceReconfigurationStrategy.sdm"/>
+<stringAttribute key="experimentRun" value="LoadBalancer_SimuLizar"/>
 <stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
 <stringAttribute key="fixedSeed0" value="0"/>
 <stringAttribute key="fixedSeed1" value="1"/>
@@ -29,6 +29,8 @@
 <stringAttribute key="mwRepositoryFile" value="platform:/resource/Simulizar Example/EvaluationSpecification.pms"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
+<stringAttribute key="pmsFile" value="platform:/resource/Simulizar Example/EvaluationSpecification.pms"/>
+<stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>
 <stringAttribute key="simTime" value="-1"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>
 <booleanAttribute key="simulateFailures" value="false"/>

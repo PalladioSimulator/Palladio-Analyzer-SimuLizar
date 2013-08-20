@@ -54,7 +54,7 @@
             <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
               <attribute href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement/measurementValue"/>
             </leftExpression>
-            <rightExpression xsi:type="sdcec:LiteralExpression" value="0.8"/>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="2.0"/>
           </constraintExpression>
         </constraint>
         <classifier href="http:///de/upb/pcm/prm/model/prm.ecore#//PCMModelElementMeasurement"/>
@@ -138,7 +138,7 @@
             <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
               <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
             </leftExpression>
-            <rightExpression xsi:type="sdcec:LiteralExpression" value="0.5"/>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="1.0"/>
           </constraintExpression>
         </constraint>
         <constraint>
