@@ -46,7 +46,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_vHnbEuuSEeCuhfIsXFGDcQ" predecessor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_7NbrcOuUEeCuhfIsXFGDcQ" entityName="speichern" predecessor_AbstractAction="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_vHnbEuuSEeCuhfIsXFGDcQ">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="310"/>
+          <specification_ParametericResourceDemand specification="300"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
