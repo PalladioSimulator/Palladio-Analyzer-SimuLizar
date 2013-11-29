@@ -1,7 +1,6 @@
 package de.upb.pcm.simulizar.metrics.aggregators;
 
 import java.util.Collection;
-import java.util.Vector;
 
 /**
  * Interface for a statistical characterization

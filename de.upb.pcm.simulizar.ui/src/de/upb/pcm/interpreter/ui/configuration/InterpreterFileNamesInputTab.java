@@ -7,7 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import de.uka.ipd.sdq.workflow.launchconfig.RunConfigPlugin;
+import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 import de.upb.pcm.simulizar.launcher.SimulizarConstants;
@@ -54,14 +54,14 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 			pmsFile.setText(configuration.getAttribute(
 					SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE));
 		} catch (CoreException e) {
-			RunConfigPlugin.errorLogger(getName(),"PMS File", e.getMessage());
+			LaunchConfigPlugin.errorLogger(getName(),"PMS File", e.getMessage());
 		}
 
 		try {
 			sdmFolder.setText(configuration.getAttribute(
 					SimulizarConstants.SDM_FOLDER, SimulizarConstants.DEFAULT_SDM_FOLDER));
 		} catch (CoreException e) {
-			RunConfigPlugin.errorLogger(getName(),"SDM Folder", e.getMessage());
+			LaunchConfigPlugin.errorLogger(getName(),"SDM Folder", e.getMessage());
 		}
 
 	}

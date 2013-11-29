@@ -1,8 +1,8 @@
 package de.upb.pcm.simulizar.launcher.jobs;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
-import de.uka.ipd.sdq.workflow.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.OrderPreservingBlackboardCompositeJob;
+import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
@@ -13,7 +13,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * 
  */
 public class PCMInterpreterRootCompositeJob 
-    extends OrderPreservingBlackboardCompositeJob<MDSDBlackboard> 
+    extends SequentialBlackboardInteractingJob<MDSDBlackboard> 
     implements IBlackboardInteractingJob<MDSDBlackboard> {
 
     /**

@@ -1,6 +1,5 @@
 package de.upb.pcm.simulizar.launcher.partitions;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 
