@@ -3,7 +3,6 @@ package de.upb.pcm.simulizar.reconfiguration.storydiagrams;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
