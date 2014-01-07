@@ -37,7 +37,6 @@ public final class SimulatedStackHelper {
         for (final VariableUsage variableUsage : parameter) {
             for (final VariableCharacterisation variableCharacterisation : variableUsage
                     .getVariableCharacterisation_VariableUsage()) {
-                final StoExPrettyPrintVisitor stoexPrettyPrinter = new PCMStoExPrettyPrintVisitor();
 
                 final PCMRandomVariable randomVariable = variableCharacterisation
                         .getSpecification_VariableCharacterisation();
@@ -45,7 +44,7 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-                final String id = stoexPrettyPrinter.prettyPrint(namedReference) + "."
+                final String id = new PCMStoExPrettyPrintVisitor().prettyPrint(namedReference) + "."
                         + variableCharacterisation.getType().getLiteral();
 
                 Object value;
