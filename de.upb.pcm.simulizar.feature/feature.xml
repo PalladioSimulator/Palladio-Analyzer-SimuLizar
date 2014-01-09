@@ -30,15 +30,15 @@
       <import plugin="de.uka.ipd.sdq.probfunction"/>
       <import plugin="de.uka.ipd.sdq.stoex"/>
       <import plugin="de.uka.ipd.sdq.units"/>
-      <import plugin="de.upb.pcm.pms" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.upb.pcm.pms"/>
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.emf.ecore.edit"/>
       <import plugin="org.eclipse.core.resources"/>
       <import plugin="de.upb.pcm.pms.edit"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
-      <import plugin="de.uka.ipd.sdq.pcm" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="de.upb.pcm.prm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.pcm" version="3.2.0" match="greaterOrEqual"/>
+      <import plugin="de.upb.pcm.prm"/>
       <import plugin="de.uka.ipd.sdq.identifier.edit"/>
       <import plugin="de.uka.ipd.sdq.pcm.edit"/>
       <import plugin="de.uka.ipd.sdq.probfunction.edit"/>
@@ -56,18 +56,13 @@
       <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simulation" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simulation.abstractsimengine" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.mdelab.sdm.interpreter.ocl" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.storydriven.storydiagrams.interpreter.eclipse" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.transaction" version="1.4.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction.math" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.scheduler" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.workflow.logging.console"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.debug.ui" version="3.6.1" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.core.runtime" version="3.6.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore.xmi" version="2.5.0" match="compatible"/>
-      <import plugin="org.eclipse.uml2.codegen.ecore" version="1.6.0" match="compatible"/>
-      <import plugin="org.eclipse.ocl" version="3.0.0" match="compatible"/>
-      <import plugin="org.eclipse.ocl.ecore" version="3.0.0" match="compatible"/>
-      <import plugin="org.storydriven.storydiagrams" version="1.0.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -124,69 +119,6 @@
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.mdelab.sdm.interpreter.ocl"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.mdelab.sdm.interpreter.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.mdelab.sdm.interpreter.sde.eclipse"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.mdelab.sdm.interpreter.core.eclipse"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.hpi.sam.storyDiagramEcore"
-         download-size="0"
-         install-size="0"
-         version="2.3.3.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="de.mdelab.sdm.interpreter.sde"
-         download-size="0"
-         install-size="0"
-         version="1.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.storydriven.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.1.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.storydriven.storydiagrams.interpreter.core"
-         download-size="0"
-         install-size="0"
-         version="1.0.1.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.storydriven.storydiagrams.interpreter.eclipse"
-         download-size="0"
-         install-size="0"
-         version="1.0.1.qualifier"
          unpack="false"/>
 
 </feature>
