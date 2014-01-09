@@ -23,7 +23,7 @@ public class PCMInterpreterRootCompositeJob
      *            the SimuCom workflow configuration.
      */
     public PCMInterpreterRootCompositeJob(final SimuComWorkflowConfiguration configuration) {
-        super();
+        super(false);
 
         this.addJob(new LoadPCMModelsIntoBlackboardInterpreterJob(configuration));
 
