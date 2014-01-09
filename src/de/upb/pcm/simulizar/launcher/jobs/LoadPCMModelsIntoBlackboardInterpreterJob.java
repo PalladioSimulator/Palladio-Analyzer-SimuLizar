@@ -17,7 +17,8 @@ public class LoadPCMModelsIntoBlackboardInterpreterJob extends SequentialBlackbo
      * @param config
      */
     public LoadPCMModelsIntoBlackboardInterpreterJob(final AbstractPCMWorkflowRunConfiguration config) {
-
+        super(false);
+        
         this.add(new PreparePCMBlackboardPartionJob());
         this.add(new LoadPCMModelsInterpreterJob(config));
     }
