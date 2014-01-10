@@ -16,6 +16,7 @@
   <rm:locator searchPathRef="kepler" failOnError="true" pattern="^org\.eclipse\..*" />
   <rm:locator searchPathRef="localresources" failOnError="false"/>
   <rm:locator searchPathRef="simulizarsvn" failOnError="false" pattern="^de\.upb\.pcm\..*" />
+  <rm:locator searchPathRef="orbit" failOnError="false" />
   <rm:locator searchPathRef="pcm" failOnError="true" />
   
   <rm:searchPath name="SDQ_Commons">
@@ -53,6 +54,15 @@
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/workflowengine/releases/2.0.2/"/>
     </rm:provider>
   </rm:searchPath>
+  
+  <rm:searchPath name="pcm">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
+    </rm:provider>
+  </rm:searchPath>
+
   
   <rm:searchPath name="pcm">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
