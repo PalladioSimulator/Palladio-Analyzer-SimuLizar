@@ -13,7 +13,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.stoex.AbstractNamedReference;
 import de.uka.ipd.sdq.stoex.NamespaceReference;
-import de.uka.ipd.sdq.stoex.analyser.visitors.StoExPrettyPrintVisitor;
 
 /**
  * A simulated stack for the pcm interpreter with some convenience methods.
