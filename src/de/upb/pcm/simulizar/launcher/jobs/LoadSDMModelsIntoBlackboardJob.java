@@ -2,9 +2,11 @@ package de.upb.pcm.simulizar.launcher.jobs;
 
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.net.URL;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 
@@ -53,6 +55,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 
         final SDMResourceSetPartition sdmPartition = new SDMResourceSetPartition();
+        this.getBlackboard().addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
 
         if (!this.path.equals("")) {
        
@@ -66,10 +69,20 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
                 folder = new File(pathToSDM.toFileString());
         	}
         	else {
-        		File workspace = ResourcesPlugin.getWorkspace().getRoot().getLocation().toFile();
-            	folder = new File(workspace + filePath.replaceFirst("platform:/resource", ""));
+        	    try {
+                    URL pathURL = FileLocator.resolve(new URL(this.path));
+                    String folderString = pathURL.toExternalForm().replace("file:", "");
+                    folder = new File(folderString);
+                } catch (IOException e) {
+                    logger.warn ("No SDM models found, SD reconfigurations disabled.", e);
+                    return;
+                }
         	}
-             
+            
+        	if (!folder.exists()) {
+        	    logger.warn("Folder "+folder+" does not exist. No reconfiguration rules will be loaded.");
+        	    return;
+        	}
             final File[] files = folder.listFiles(new FilenameFilter() {
 
                 @Override
@@ -85,8 +98,6 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
                 logger.warn ("No SDM models found, SD reconfigurations disabled.");
             }
         }
-
-        this.getBlackboard().addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
 
     }
 
