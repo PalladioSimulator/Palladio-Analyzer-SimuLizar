@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.ui.configuration;
+package org.palladiosimulator.simulizar.ui.configuration;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -9,11 +9,11 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
-import de.upb.pcm.simulizar.launcher.SimulizarConstants;
 
 public class SimuInterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 	// input fields

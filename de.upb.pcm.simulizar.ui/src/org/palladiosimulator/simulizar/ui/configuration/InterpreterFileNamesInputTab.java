@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.ui.configuration;
+package org.palladiosimulator.simulizar.ui.configuration;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -6,11 +6,11 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
-import de.upb.pcm.simulizar.launcher.SimulizarConstants;
 
 /**
  * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input

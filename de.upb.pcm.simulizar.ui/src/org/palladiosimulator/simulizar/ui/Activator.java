@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.ui;
+package org.palladiosimulator.simulizar.ui;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

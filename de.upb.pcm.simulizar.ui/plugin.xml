@@ -3,7 +3,7 @@
 <plugin>
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
-           delegate="de.upb.pcm.simulizar.launcher.PCMInterpreterLauncher"
+           delegate="org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher"
            id="de.upb.pcm.interpreter.SimuLizarLaunching"
            modes="run, debug"
            name="SimuLizar"
@@ -20,7 +20,7 @@
 	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
 	    <launchConfigurationTabGroup
 	        type="de.upb.pcm.interpreter.SimuLizarLaunching"
-	        class="de.upb.pcm.interpreter.ui.configuration.InterpreterConfigurationTab"
+	        class="org.palladiosimulator.simulizar.ui.configuration.InterpreterConfigurationTab"
 	        id="de.upb.pcm.interpreter.launchConfigurationTabGroup">
 	    </launchConfigurationTabGroup>
 	</extension>

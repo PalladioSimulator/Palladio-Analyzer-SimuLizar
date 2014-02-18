@@ -1,4 +1,4 @@
-package de.upb.pcm.interpreter.ui.configuration;
+package org.palladiosimulator.simulizar.ui.configuration;
 
 
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
