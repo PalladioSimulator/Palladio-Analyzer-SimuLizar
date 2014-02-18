@@ -15,7 +15,7 @@
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="WorkflowEngine" failOnError="false"/>
   <rm:locator searchPathRef="kepler" failOnError="true" pattern="^org\.eclipse\..*" />
   <rm:locator searchPathRef="localresources" failOnError="false"/>
-  <rm:locator searchPathRef="simulizarsvn" failOnError="false" pattern="^org\.palladiosimulator\.simulizar\..*" />
+  <rm:locator searchPathRef="simulizarsvn" failOnError="false" pattern="^org\.palladiosimulator\.simulizar.*" />
   <rm:locator searchPathRef="orbit" failOnError="false" />
   <rm:locator searchPathRef="pcm" failOnError="true" />
   
