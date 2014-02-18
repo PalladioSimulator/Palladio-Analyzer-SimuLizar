@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM Simulizar: PCM Interpreter with self-* features
-Bundle-SymbolicName: de.upb.pcm.simulizar;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: de.upb.pcm.simulizar.Activator
+Bundle-Activator: org.palladiosimulator.simulizar.Activator
 Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.simucomstatus;bundle-version="1.0.0",
@@ -12,8 +12,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
  org.jscience;bundle-version="4.1.3",
  de.uka.ipd.sdq.pcm.stochasticexpressions;bundle-version="2.0.0",
  de.uka.ipd.sdq.stoex.analyser;bundle-version="2.0.0",
- de.upb.pcm.pms;bundle-version="1.0.0",
- de.upb.pcm.prm;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.pms;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.prm;bundle-version="1.0.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
@@ -24,5 +24,5 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
  de.uka.ipd.sdq.scheduler;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: de.upb.pcm.simulizar.launcher
+Export-Package: org.palladiosimulator.simulizar.launcher
 Bundle-Vendor: ag-schaefer.upb.de
