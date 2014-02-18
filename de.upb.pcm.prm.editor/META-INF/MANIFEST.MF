@@ -1,24 +1,24 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: de.upb.pcm.prm.editor;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.simulizar.prm.editor;singleton:=true
 Bundle-Version: 1.0.0
 Bundle-ClassPath: .
-Bundle-Activator: de.upb.pcm.prm.presentation.PrmEditorPlugin$Implementation
+Bundle-Activator: org.palladiosimulator.simulizar.prm.presentation.PrmEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: de.upb.pcm.prm.presentation
+Export-Package: org.palladiosimulator.simulizar.prm.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
- de.upb.pcm.prm.edit;visibility:=reexport,
+ org.palladiosimulator.simulizar.prm.edit;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  de.uka.ipd.sdq.identifier.edit;visibility:=reexport,
  de.uka.ipd.sdq.pcm.edit;visibility:=reexport,
- de.upb.pcm.pms.edit;visibility:=reexport,
+ org.palladiosimulator.simulizar.pms.edit;visibility:=reexport,
  de.uka.ipd.sdq.probfunction.edit;visibility:=reexport,
  de.uka.ipd.sdq.stoex.edit;visibility:=reexport,
  de.uka.ipd.sdq.units.edit;visibility:=reexport

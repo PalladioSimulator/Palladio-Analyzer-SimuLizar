@@ -43,7 +43,7 @@ public interface PmsPackage extends EPackage
     * <!-- end-user-doc -->
      * @generated
      */
-   String eNS_URI = "http://org.palladiosimulator.simulizar.pms/PalladioMonitoringSpecification/1.0";
+   String eNS_URI = "http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0";
 
    /**
      * The package namespace name.

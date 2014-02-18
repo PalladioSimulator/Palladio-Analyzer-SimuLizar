@@ -13,7 +13,7 @@
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
       <factory
             uri="http:///de/upb/pcm/prm/model/prm.ecore"
-            class="de.upb.pcm.prm.provider.PrmItemProviderAdapterFactory"
+            class="org.palladiosimulator.simulizar.prm.provider.PrmItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider

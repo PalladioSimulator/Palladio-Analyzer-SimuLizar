@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ecore:EPackage xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="prm"
-    nsURI="http:///de/upb/pcm/prm/model/prm.ecore" nsPrefix="prm">
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="prm" nsURI="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0"
+    nsPrefix="prm">
   <eClassifiers xsi:type="ecore:EClass" name="PRMModel" eSuperTypes="#//UniqueElement">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class representing the prm model."/>
@@ -16,7 +15,7 @@
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pcmModelElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="measurementSpecification"
-        eType="ecore:EClass ../../de.upb.pcm.pms/model/pms.ecore#//MeasurementSpecification"/>
+        eType="ecore:EClass ../../org.palladiosimulator.simulizar.pms/model/pms.ecore#//MeasurementSpecification"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="measurementValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
         defaultValueLiteral="0.0"/>
   </eClassifiers>
