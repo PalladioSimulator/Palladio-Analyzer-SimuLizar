@@ -21,11 +21,27 @@
          version="0.0.0"/>
 
    <includes
+         id="org.storydriven.core.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="org.storydriven.storydiagrams.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="de.mdelab.sdm.interpreter.common.feature"
+         version="0.0.0"/>
+
+   <includes
+         id="de.mdelab.sdm.interpreter.core.feature"
+         version="0.0.0"/>
+
+   <includes
          id="org.storydriven.storydiagrams.buckminster"
          version="0.0.0"/>
 
    <includes
-         id="org.storydriven.storydiagrams.interpreter.buckminster"
+         id="org.storydriven.storydiagrams.interpreter.feature"
          version="0.0.0"/>
 
 </feature>
