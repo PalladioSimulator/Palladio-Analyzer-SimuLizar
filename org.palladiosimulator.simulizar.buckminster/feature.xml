@@ -37,10 +37,6 @@
          version="0.0.0"/>
 
    <includes
-         id="org.storydriven.storydiagrams.buckminster"
-         version="0.0.0"/>
-
-   <includes
          id="org.storydriven.storydiagrams.interpreter.feature"
          version="0.0.0"/>
 
