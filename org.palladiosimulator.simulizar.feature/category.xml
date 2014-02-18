@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<site>
-   <category-def name="org.palladiosimulator.simulizar.category" label="SimuLizar Editor and Analysis Tools">
-      <description>
-         All deliverable SimuLizar features.
-      </description>
-   </category-def>
-</site>
