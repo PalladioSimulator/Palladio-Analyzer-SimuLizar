@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="de.upb.pcm.simulizar.feature"
+      id="org.palladiosimulator.simulizar.feature"
       label="SimuLizar"
       version="1.0.0.qualifier"
       provider-name="University of Paderborn">
@@ -18,7 +18,7 @@
    </license>
 
    <url>
-      <update label="SimuLizar Update Site" url="http://dsd-serv.uni-paderborn.de/svn/updatesites/trunk/de.upb.pcm.simulizar.updatesite/"/>
+      <update label="SimuLizar Update Site" url="http://dsd-serv.uni-paderborn.de/svn/updatesites/trunk/org.palladiosimulator.simulizar.updatesite/"/>
    </url>
 
    <requires>
@@ -30,21 +30,21 @@
       <import plugin="de.uka.ipd.sdq.probfunction"/>
       <import plugin="de.uka.ipd.sdq.stoex"/>
       <import plugin="de.uka.ipd.sdq.units"/>
-      <import plugin="de.upb.pcm.pms"/>
+      <import plugin="org.palladiosimulator.simulizar.pms"/>
       <import plugin="org.eclipse.emf.edit"/>
       <import plugin="org.eclipse.emf.ecore.edit"/>
       <import plugin="org.eclipse.core.resources"/>
-      <import plugin="de.upb.pcm.pms.edit"/>
+      <import plugin="org.palladiosimulator.simulizar.pms.edit"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
       <import plugin="org.eclipse.ui.ide"/>
       <import plugin="de.uka.ipd.sdq.pcm" version="3.2.0" match="greaterOrEqual"/>
-      <import plugin="de.upb.pcm.prm"/>
+      <import plugin="org.palladiosimulator.simulizar.prm"/>
       <import plugin="de.uka.ipd.sdq.identifier.edit"/>
       <import plugin="de.uka.ipd.sdq.pcm.edit"/>
       <import plugin="de.uka.ipd.sdq.probfunction.edit"/>
       <import plugin="de.uka.ipd.sdq.stoex.edit"/>
       <import plugin="de.uka.ipd.sdq.units.edit"/>
-      <import plugin="de.upb.pcm.prm.edit"/>
+      <import plugin="org.palladiosimulator.simulizar.prm.edit"/>
       <import plugin="de.uka.ipd.sdq.simucomframework" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
@@ -66,56 +66,56 @@
    </requires>
 
    <plugin
-         id="de.upb.pcm.pms"
+         id="org.palladiosimulator.simulizar.pms"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.pms.edit"
+         id="org.palladiosimulator.simulizar.pms.edit"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.pms.editor"
+         id="org.palladiosimulator.simulizar.pms.editor"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.prm"
+         id="org.palladiosimulator.simulizar.prm"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.prm.edit"
+         id="org.palladiosimulator.simulizar.prm.edit"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.prm.editor"
+         id="org.palladiosimulator.simulizar.prm.editor"
          download-size="0"
          install-size="0"
          version="1.0.0"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.simulizar"
+         id="org.palladiosimulator.simulizar"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
-         id="de.upb.pcm.simulizar.ui"
+         id="org.palladiosimulator.simulizar.ui"
          download-size="0"
          install-size="0"
          version="1.0.0.qualifier"
