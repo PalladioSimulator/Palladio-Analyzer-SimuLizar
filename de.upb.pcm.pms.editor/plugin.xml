@@ -15,9 +15,9 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="de.upb.pcm.pms.presentation.PmsModelWizardID"
+            id="org.palladiosimulator.simulizar.pms.presentation.PmsModelWizardID"
             name="%_UI_PmsModelWizard_label"
-            class="de.upb.pcm.pms.presentation.PmsModelWizard"
+            class="org.palladiosimulator.simulizar.pms.presentation.PmsModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
             icon="icons/full/obj16/PmsModelFile.gif">
          <description>%_UI_PmsModelWizard_description</description>
@@ -27,12 +27,12 @@
 
    <extension point="org.eclipse.ui.editors">
       <editor
-            id="de.upb.pcm.pms.presentation.PmsEditorID"
+            id="org.palladiosimulator.simulizar.pms.presentation.PmsEditorID"
             name="%_UI_PmsEditor_label"
             icon="icons/full/obj16/PmsModelFile.gif"
             extensions="pms"
-            class="de.upb.pcm.pms.presentation.PmsEditor"
-            contributorClass="de.upb.pcm.pms.presentation.PmsActionBarContributor">
+            class="org.palladiosimulator.simulizar.pms.presentation.PmsEditor"
+            contributorClass="org.palladiosimulator.simulizar.pms.presentation.PmsActionBarContributor">
       </editor>
    </extension>
 
