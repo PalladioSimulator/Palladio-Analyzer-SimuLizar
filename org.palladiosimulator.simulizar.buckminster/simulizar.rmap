@@ -4,6 +4,7 @@
   <rm:locator searchPathRef="sdmsvn_features" failOnError="false" pattern="^org\.storydriven\..*" />
   <rm:locator searchPathRef="sdmsvn_features" failOnError="false" pattern="^de\.mdelab\..*" />
   <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^org\.storydriven\..*" />
+  <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^de\.upb\.swt\.core.*" />
   <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^de\.mdelab\..*" />
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="SDQ_Commons" failOnError="false"/>
   <rm:locator pattern="^edu\.kit\.ipd\.sdq\..*" searchPathRef="SDQ_Commons" failOnError="false"/>
