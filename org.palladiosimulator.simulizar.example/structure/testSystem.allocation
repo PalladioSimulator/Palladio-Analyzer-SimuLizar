@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="_QbOe4OuVEeCuhfIsXFGDcQ" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="testSystem.resourceenvironment#/"/>
+  <system_Allocation href="testSystem.system#_Vl6tAOuTEeCuhfIsXFGDcQ"/>
+  <allocationContexts_Allocation id="_TF6jgOuVEeCuhfIsXFGDcQ" entityName="Allocation_Assembly_Lastverteiler &lt;Lastverteiler> &lt;Lastverteiler>">
+    <resourceContainer_AllocationContext href="testSystem.resourceenvironment#_yc6fwOuOEeCuhfIsXFGDcQ"/>
+    <assemblyContext_AllocationContext href="testSystem.system#_bIrK8OuTEeCuhfIsXFGDcQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_x0gF0OuXEeCuhfIsXFGDcQ" entityName="Allocation_Assembly_Server &lt;Server1> &lt;Server>">
+    <resourceContainer_AllocationContext href="testSystem.resourceenvironment#_1enWMOuOEeCuhfIsXFGDcQ"/>
+    <assemblyContext_AllocationContext href="testSystem.system#_gBXYMOuTEeCuhfIsXFGDcQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_y9ixgOuXEeCuhfIsXFGDcQ" entityName="Allocation_Assembly_Server &lt;Server2> &lt;Server>">
+    <resourceContainer_AllocationContext href="testSystem.resourceenvironment#_yHnvwOuPEeCuhfIsXFGDcQ"/>
+    <assemblyContext_AllocationContext href="testSystem.system#_g7v80OuTEeCuhfIsXFGDcQ"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

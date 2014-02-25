@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:system="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" id="_Vl6tAOuTEeCuhfIsXFGDcQ" entityName="EntpackerService">
+  <assemblyContexts__ComposedStructure id="_bIrK8OuTEeCuhfIsXFGDcQ" entityName="lastverteilerAK">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="testSystem.repository#_V-N_oOuQEeCuhfIsXFGDcQ"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_gBXYMOuTEeCuhfIsXFGDcQ" entityName="server1AK">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="testSystem.repository#_oCImIOuSEeCuhfIsXFGDcQ"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_g7v80OuTEeCuhfIsXFGDcQ" entityName="server2AK">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="testSystem.repository#_oCImIOuSEeCuhfIsXFGDcQ"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_WCGrAOuZEeCuhfIsXFGDcQ" entityName="Connector Assembly_Lastverteiler &lt;Lastverteiler> -> Assembly_Server &lt;Server1>" requiringAssemblyContext_AssemblyConnector="_bIrK8OuTEeCuhfIsXFGDcQ" providingAssemblyContext_AssemblyConnector="_gBXYMOuTEeCuhfIsXFGDcQ">
+    <providedRole_AssemblyConnector href="testSystem.repository#_vHm0AOuSEeCuhfIsXFGDcQ"/>
+    <requiredRole_AssemblyConnector href="testSystem.repository#_6EqiAOuTEeCuhfIsXFGDcQ"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_WjdroOuZEeCuhfIsXFGDcQ" entityName="Connector Assembly_Lastverteiler &lt;Lastverteiler> -> Assembly_Server &lt;Server2>" requiringAssemblyContext_AssemblyConnector="_bIrK8OuTEeCuhfIsXFGDcQ" providingAssemblyContext_AssemblyConnector="_g7v80OuTEeCuhfIsXFGDcQ">
+    <providedRole_AssemblyConnector href="testSystem.repository#_vHm0AOuSEeCuhfIsXFGDcQ"/>
+    <requiredRole_AssemblyConnector href="testSystem.repository#_Q4Mx8OuZEeCuhfIsXFGDcQ"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_v2nZoOuTEeCuhfIsXFGDcQ" entityName="ProvDelegation Provided_ILastverteiler -> Provided_ILastverteiler_lv" outerProvidedRole_ProvidedDelegationConnector="_uMJb4OuTEeCuhfIsXFGDcQ" assemblyContext_ProvidedDelegationConnector="_bIrK8OuTEeCuhfIsXFGDcQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="testSystem.repository#_h7jCYOuSEeCuhfIsXFGDcQ"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_uMJb4OuTEeCuhfIsXFGDcQ" entityName="Angeboten_ILastverteiler">
+    <providedInterface__OperationProvidedRole href="testSystem.repository#_lBFscOuREeCuhfIsXFGDcQ"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

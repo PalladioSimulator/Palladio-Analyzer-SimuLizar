@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pms="http:///de/upb/pcm/pms/model/pms.ecore" guid="_SsLAEReCEeGXD6tuzVTL1A">
+  <performanceMeasurements guid="_SsLAEheCEeGXD6tuzVTL1A">
+    <measurementSpecification guid="_SsLAExeCEeGXD6tuzVTL1A" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_qYeZIBeJEeGF3ul3Z8lrRg" intervall="10.0"/>
+    </measurementSpecification>
+    <pcmElementClassifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel/EntryLevelSystemCall"/>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_SsLAFReCEeGXD6tuzVTL1A">
+    <measurementSpecification guid="_SsLAFheCEeGXD6tuzVTL1A" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_SsLAFxeCEeGXD6tuzVTL1A" intervall="10.0"/>
+    </measurementSpecification>
+    <pcmElementClassifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ExternalCallAction"/>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_SsLAGBeCEeGXD6tuzVTL1A">
+    <measurementSpecification guid="_SsLAGReCEeGXD6tuzVTL1A" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_SsLAGheCEeGXD6tuzVTL1A" intervall="10.0"/>
+    </measurementSpecification>
+    <pcmElementClassifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel/UsageScenario"/>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_0IcwQBq8EeGh2IWkMnZfAQ">
+    <measurementSpecification guid="_1y9xUBq8EeGh2IWkMnZfAQ" performanceMetric="Utilization">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_2zR-0Bq8EeGh2IWkMnZfAQ" intervall="10.0"/>
+    </measurementSpecification>
+    <pcmElementClassifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//resourceenvironment/ResourceContainer"/>
+  </performanceMeasurements>
+</pms:PMSModel>

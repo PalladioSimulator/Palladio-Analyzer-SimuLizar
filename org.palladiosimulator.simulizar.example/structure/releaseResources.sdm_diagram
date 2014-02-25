@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:sda="http://www.storydriven.org/storydiagrams/activities/0.2.1" xsi:schemaLocation="http://www.storydriven.org/storydiagrams/activities/0.2.1 http://www.storydriven.org/storydiagrams/0.2.1#//activities" xmi:id="_NISjYOlmEeKf1PnrcHFTNA" type="Storydiagrams" measurementUnit="Pixel">
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_NISjYelmEeKf1PnrcHFTNA"/>
+  <element xmi:type="sda:Activity" href="releaseResources.sdm#/"/>
+</notation:Diagram>
