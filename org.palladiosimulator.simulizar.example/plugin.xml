@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="customplugin.category.wizards"
+            name="SimuLizar Example">
+      </category>
+      <wizard
+            category="customplugin.category.wizards"
+            class="org.palladiosimulator.simulizar.example.wizards.CustomProjectNewWizard"
+            finalPerspective="org.palladiosimulator.simulizar.example.perspective"
+            icon="icons/perspective.png"
+            id="customplugin.wizard.new.custom"
+            name="Example Model">
+      </wizard>
+   </extension>
+   <extension
+         id="org.palladiosimulator.simulizar.example.simulizarNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.palladiosimulator.simulizar.example.natures.SimulizarNature">
+         </run>
+      </runtime>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="org.palladiosimulator.simulizar.example.perspectives.SimulizarPerspective"
+            icon="icons/perspective.png"
+            id="org.palladiosimulator.simulizar.example.perspective"
+            name="SimuLizar Perspective">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.palladiosimulator.simulizar.example.perspective">
+         <view
+               id="customnavigator.navigator"
+               minimized="false"
+               ratio="0.25"
+               relationship="left"
+               relative="org.eclipse.ui.editorss"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.palladiosimulator.simulizar.example.perspective">
+         <actionSet
+               id="org.eclipse.debug.ui.launchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+   </extension>
+
+</plugin>

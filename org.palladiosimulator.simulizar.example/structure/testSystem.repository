@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/1.0" id="_6vCRgOuPEeCuhfIsXFGDcQ" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_V-N_oOuQEeCuhfIsXFGDcQ" entityName="lastverteiler">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_h7jCYOuSEeCuhfIsXFGDcQ" entityName="Angeboten_ILastverteiler_Lastverteiler" providedInterface__OperationProvidedRole="_lBFscOuREeCuhfIsXFGDcQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_6EqiAOuTEeCuhfIsXFGDcQ" entityName="Benoetigt_IServer1_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Q4Mx8OuZEeCuhfIsXFGDcQ" entityName="Benoetigt_IServer2_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_h7k3kOuSEeCuhfIsXFGDcQ" describedService__SEFF="_olfnUOuREeCuhfIsXFGDcQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_h7leoOuSEeCuhfIsXFGDcQ" successor_AbstractAction="_BP7O0OuUEeCuhfIsXFGDcQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_h7leoeuSEeCuhfIsXFGDcQ" predecessor_AbstractAction="_BP7O0OuUEeCuhfIsXFGDcQ"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_BP7O0OuUEeCuhfIsXFGDcQ" entityName="balancierer" predecessor_AbstractAction="_h7leoOuSEeCuhfIsXFGDcQ" successor_AbstractAction="_h7leoeuSEeCuhfIsXFGDcQ">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_IK4OwOuUEeCuhfIsXFGDcQ" entityName="zweig2">
+          <branchBehaviour_BranchTransition id="_dqmatGhOEeGuiei3dZOHpg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_IK410OuUEeCuhfIsXFGDcQ" successor_AbstractAction="_jJKn4OuZEeCuhfIsXFGDcQ"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_IK410euUEeCuhfIsXFGDcQ" predecessor_AbstractAction="_jJKn4OuZEeCuhfIsXFGDcQ"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_jJKn4OuZEeCuhfIsXFGDcQ" entityName="server2.entpacke" predecessor_AbstractAction="_IK410OuUEeCuhfIsXFGDcQ" successor_AbstractAction="_IK410euUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_Q4Mx8OuZEeCuhfIsXFGDcQ">
+              <inputVariableUsages__CallAction>
+                <variableCharacterisation_VariableUsage type="BYTESIZE">
+                  <specification_VariableCharacterisation specification="datei.BYTESIZE"/>
+                </variableCharacterisation_VariableUsage>
+                <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="datei"/>
+              </inputVariableUsages__CallAction>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_ItIAMOuUEeCuhfIsXFGDcQ" entityName="zweig1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_dqnBwWhOEeGuiei3dZOHpg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_ItInQOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_T6NjsOuUEeCuhfIsXFGDcQ"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_ItInQeuUEeCuhfIsXFGDcQ" predecessor_AbstractAction="_T6NjsOuUEeCuhfIsXFGDcQ"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_T6NjsOuUEeCuhfIsXFGDcQ" entityName="server1.entpacke" predecessor_AbstractAction="_ItInQOuUEeCuhfIsXFGDcQ" successor_AbstractAction="_ItInQeuUEeCuhfIsXFGDcQ" calledService_ExternalService="_rpIiAOuSEeCuhfIsXFGDcQ" role_ExternalService="_6EqiAOuTEeCuhfIsXFGDcQ">
+              <inputVariableUsages__CallAction>
+                <variableCharacterisation_VariableUsage type="BYTESIZE">
+                  <specification_VariableCharacterisation specification="datei.BYTESIZE"/>
+                </variableCharacterisation_VariableUsage>
+                <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="datei"/>
+              </inputVariableUsages__CallAction>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_oCImIOuSEeCuhfIsXFGDcQ" entityName="server">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_vHm0AOuSEeCuhfIsXFGDcQ" entityName="Angeboten_IServer_Server" providedInterface__OperationProvidedRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_vHnbEOuSEeCuhfIsXFGDcQ" describedService__SEFF="_rpIiAOuSEeCuhfIsXFGDcQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_vHnbEuuSEeCuhfIsXFGDcQ" predecessor_AbstractAction="_7NbrcOuUEeCuhfIsXFGDcQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_7NbrcOuUEeCuhfIsXFGDcQ" entityName="speichern" predecessor_AbstractAction="_vHnbEeuSEeCuhfIsXFGDcQ" successor_AbstractAction="_vHnbEuuSEeCuhfIsXFGDcQ">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="300"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lBFscOuREeCuhfIsXFGDcQ" entityName="ILastverteiler">
+    <signatures__OperationInterface id="_olfnUOuREeCuhfIsXFGDcQ" entityName="entpacke">
+      <parameters__OperationSignature parameterName="datei">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_qaVMkOuSEeCuhfIsXFGDcQ" entityName="IServer">
+    <signatures__OperationInterface id="_rpIiAOuSEeCuhfIsXFGDcQ" entityName="entpacke">
+      <parameters__OperationSignature parameterName="datei">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+</repository:Repository>
