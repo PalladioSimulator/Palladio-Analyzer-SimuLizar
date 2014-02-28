@@ -4,15 +4,15 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="customplugin.category.wizards"
+            id="org.palladiosimulator.simulizar.example.category.wizards"
             name="SimuLizar Example">
       </category>
       <wizard
-            category="customplugin.category.wizards"
+            category="org.palladiosimulator.simulizar.example.category.wizards"
             class="org.palladiosimulator.simulizar.example.wizards.CustomProjectNewWizard"
             finalPerspective="org.palladiosimulator.simulizar.example.perspective"
             icon="icons/perspective.png"
-            id="customplugin.wizard.new.custom"
+            id="org.palladiosimulator.simulizar.example.wizard.new.custom"
             name="Example Model">
       </wizard>
    </extension>
@@ -39,7 +39,7 @@
       <perspectiveExtension
             targetID="org.palladiosimulator.simulizar.example.perspective">
          <view
-               id="customnavigator.navigator"
+               id="org.palladiosimulator.simulizar.example.navigator.navigator"
                minimized="false"
                ratio="0.25"
                relationship="left"
