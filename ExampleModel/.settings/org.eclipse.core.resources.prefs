@@ -1,13 +1,11 @@
-<<<<<<< .mine
+=\=\=\=\=\=\=
+<<<<<<<=.mine
+>>>>>>>=.r19212
 eclipse.preferences.version=1
-encoding/acquireResources.sdm_diagram=UTF-8
-encoding/releaseResources.sdm_diagram=UTF-8
+encoding//rules_all/acquireResources.sdm_diagram=UTF-8
+encoding//rules_all/releaseResources.sdm_diagram=UTF-8
+encoding/balanceReconfigurationStrategy.sdm_diagram=UTF-8
 encoding/server.entpacke.seff_diagram=UTF-8
 encoding/testSystem.allocation_diagram=UTF-8
 encoding/testSystem.resourceenvironment_diagram=UTF-8
-=======
-eclipse.preferences.version=1
-encoding/balanceReconfigurationStrategy.sdm_diagram=UTF-8
-encoding/server.entpacke.seff_diagram=UTF-8
 encoding/testSystem.usagemodel_diagram=UTF-8
->>>>>>> .r19212
