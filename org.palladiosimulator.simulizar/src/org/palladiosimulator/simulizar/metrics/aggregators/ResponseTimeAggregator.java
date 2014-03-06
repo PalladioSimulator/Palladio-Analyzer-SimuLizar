@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
-import java.util.Vector;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.activation.UnsupportedDataTypeException;
 import javax.measure.Measure;
@@ -25,7 +26,7 @@ import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
  */
 public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorListener {
 
-    private final Vector<Double> responseTimes;
+    private final List<Double> responseTimes;
 
     private final IStatisticalCharacterization aggregator;
 
@@ -57,7 +58,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
             final PCMModelElementMeasurement pcmModelElementMeasurement, final double baseSimulationTime)
             throws UnsupportedDataTypeException {
         super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
-        this.responseTimes = new Vector<Double>();
+        this.responseTimes = new LinkedList<Double>();
         if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN) {
             this.aggregator = new ArithmeticMean();
         } else {
@@ -76,7 +77,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
      * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener#calculated(java.util.Vector)
      */
     @Override
-    public void calculated(final Vector<Measure<?, ? extends Quantity>> resultTuple) {
+    public void calculated(final List<Measure<?, ? extends Quantity>> resultTuple) {
 
         final double simulationTime = (Double) resultTuple.get(1).getValue();
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
