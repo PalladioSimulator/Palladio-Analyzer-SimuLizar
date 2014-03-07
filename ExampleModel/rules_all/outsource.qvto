@@ -39,7 +39,7 @@ transformation outsource(	in prm : PRM,
 							
 							
 	// Define Threshold and Scale Out
-	property threshold : Real = 3.0;
+	property threshold : Real = 2.0;
 	property outsourceFactor : Real = 0.1;
 
 	/**
@@ -48,50 +48,60 @@ transformation outsource(	in prm : PRM,
 	 */
 	main() {
 	
-
 		log('SimuLizar ScaleUp Rule Transformation started');
 		
-		var runtimeMeasurements = prm.rootObjects()[PRMModel].pcmModelElementMeasurements;
-		
-		// Scale up processing speed for all Resources
-		pcmRepository.rootObjects()[Repository]->forAll(
-			repository : Repository | 
-			outSourceProcessing(repository, runtimeMeasurements)
+		assert fatal(prm.rootObjects()[PRMModel]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+		prm.rootObjects()[PRMModel]->forAll(
+			measurements : PRMModel |
+			checkCondition(measurements.pcmModelElementMeasurements)
 		);
 
 	}
 	
-	helper checkCondition(runtimeMeasurements : Bag(PCMModelElementMeasurement)) : Boolean {
-		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
-			if (pcmModelElementsMeasurement.measurementValue > threshold) {
+	helper checkCondition(runtimeMeasurements : OrderedSet(PCMModelElementMeasurement)) : Boolean {
+	
+		runtimeMeasurements->forEach(measurement) {
+		log('Measured value is ' + measurement.measurementValue.toString());
+		
+			if (measurement.measurementValue > threshold) {
+		
+				log('Threshold is exceeded');
+				pcmRepository.rootObjects()[Repository]->forAll(
+					repository : Repository | 
+					outSourceProcessing(repository)
+				);
 				return true;
-			} endif
+			};
 		};
+		
+		log('No measurements match the condition. Number of measurements is ' + runtimeMeasurements->size().toString());
 		return false;
 	}
 	
 	/**
 	 * outsource Processing.
 	 */
-	helper outSourceProcessing(repository : Repository, runtimeMeasurements : Bag(PCMModelElementMeasurement)) : Boolean {
-		if (checkCondition(runtimeMeasurements)) then {
-			repository.components__Repository->forEach(component) {
-				if(component.oclIsTypeOf(BasicComponent) and component.entityName = "lastverteiler") {
-					component.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
-						if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
-							var branch : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig2");
-							if(branch.branchProbability < 1.0) {
-								branch.branchProbability := branch.branchProbability + outsourceFactor
-							}
+	helper outSourceProcessing(repository : Repository) : Boolean {
+	
+	log('Number of components is ' + repository->size().toString());
+		repository.components__Repository->forEach(component) {
+			if(component.oclIsTypeOf(BasicComponent) and component.entityName = "lastverteiler") {
+				component.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						var branch : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig2");
+						if(branch.branchProbability < 1.0) {
+							branch.branchProbability := branch.branchProbability + outsourceFactor
 						}
 					}
-				};
-				//scaleUpProcessingResourcesRecursively(resourceContainer);
+				}
 			};
-		
-			return true;
-		} endif;
-		return false;
+		};
+		return true;
 	}
 	
 }
