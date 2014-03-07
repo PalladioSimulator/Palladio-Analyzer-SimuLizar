@@ -50,6 +50,12 @@ transformation ScaleDown(	in prm : PRM,
 
 		log('SimuLizar ScaleUp Rule Transformation started');
 		
+		assert fatal(prm.rootObjects()[PRMModel]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		
 		var runtimeMeasurements = prm.rootObjects()[PRMModel].pcmModelElementMeasurements;
 		// Scale up processing speed for all Resources
 		pcmAllocation.rootObjects()[Allocation]->forAll(
