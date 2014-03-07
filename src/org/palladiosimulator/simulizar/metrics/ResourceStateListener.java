@@ -91,7 +91,7 @@ public class ResourceStateListener implements IStateListener {
      * @see de.uka.ipd.sdq.simucomframework.resources.IStateListener#stateChanged(int, int)
      */
     @Override
-    public void stateChanged(final int queueLength, final int instanceId) {
+    public void stateChanged(final long queueLength, final int instanceId) {
         if (this.simuComModel.getSimulationControl().isRunning()) {
             final double simulationTime = this.simuComModel.getSimulationControl().getCurrentSimulationTime();
             if (this.lastTimeIdle) {
