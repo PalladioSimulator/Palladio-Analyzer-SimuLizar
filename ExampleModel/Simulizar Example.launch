@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
-<stringAttribute key="allocationFile" value="platform:/resource/Simulizar Example/testSystem.allocation"/>
+<stringAttribute key="allocationFile" value="platform:/resource/SimulizarExtendedExample/testSystem.allocation"/>
 <booleanAttribute key="clear" value="true"/>
 <listAttribute key="completion.config"/>
 <booleanAttribute key="completion.qvt.verbose.logging" value="false"/>
@@ -12,7 +12,7 @@
 <stringAttribute key="confidenceModelElementName" value=""/>
 <stringAttribute key="confidenceModelElementURI" value=""/>
 <booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
-<intAttribute key="datasourceID" value="1"/>
+<intAttribute key="datasourceID" value="0"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
 <stringAttribute key="eventMiddlewareRepositoryFile" value="C:\Users\Matthias\Eclipse-Workspaces\runtime-EclipseApplication\Simulizar Example\balanceReconfigurationStrategy.sdm"/>
 <stringAttribute key="experimentRun" value="LoadBalancer_SimuLizar"/>
@@ -29,7 +29,8 @@
 <stringAttribute key="mwRepositoryFile" value="platform:/resource/Simulizar Example/EvaluationSpecification.pms"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
-<stringAttribute key="pmsFile" value="platform:/resource/Simulizar Example/EvaluationSpecification.pms"/>
+<stringAttribute key="pmsFile" value="platform:/resource/SimulizarExtendedExample/monitors/EvaluationSpecification.pms"/>
+<stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/SimulizarExtendedExample/rules_active"/>
 <stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>
 <stringAttribute key="simTime" value="-1"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>
@@ -37,9 +38,9 @@
 <booleanAttribute key="simulateLinkingResources" value="false"/>
 <stringAttribute key="simulatorId" value="de.uka.ipd.sdq.codegen.simucontroller.simucom"/>
 <stringAttribute key="stepwidth" value=""/>
-<stringAttribute key="usageFile" value="platform:/resource/Simulizar Example/testSystem.usagemodel"/>
+<stringAttribute key="usageFile" value="platform:/resource/SimulizarExtendedExample/testSystem.usagemodel"/>
 <booleanAttribute key="useConfidenceStopCondition" value="false"/>
-<booleanAttribute key="useFixedSeed" value="false"/>
+<booleanAttribute key="useFixedSeed" value="true"/>
 <stringAttribute key="variable" value=""/>
 <booleanAttribute key="verboseLogging" value="false"/>
 </launchConfiguration>
