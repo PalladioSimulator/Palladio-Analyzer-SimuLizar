@@ -195,7 +195,7 @@ class ModelHelper {
                 .getPartition(LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
         return sdmResourceSetPartition;
     }
-
+    
     /**
      * @return returns the sessionIds.
      */

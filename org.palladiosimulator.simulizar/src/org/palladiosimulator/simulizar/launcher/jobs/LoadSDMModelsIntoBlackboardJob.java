@@ -30,7 +30,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
 
     private static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
 
-    public static final String SDM_MODEL_PARTITION_ID = "de.upb.pcm.sdm";
+    public static final String SDM_MODEL_PARTITION_ID = "org.palladiosimulator.simulizar.reconfiguration.sdm";
 
     private MDSDBlackboard blackboard;
 
@@ -45,7 +45,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
      *            the SimuCom workflow configuration.
      */
     public LoadSDMModelsIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.SDM_FOLDER);
+        this.path = (String) configuration.getAttributes().get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER);
     }
 
     /**
