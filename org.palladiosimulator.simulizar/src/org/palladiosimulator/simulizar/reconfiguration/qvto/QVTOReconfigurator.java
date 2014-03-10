@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * @author Matthias
@@ -31,9 +32,9 @@ public class QVTOReconfigurator implements IReconfigurator {
      * SD Reconfigurator constructor.
      * @param modelAccessFactory Model access factory used to access the SDs.
      */
-    public QVTOReconfigurator(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration) {
+    public QVTOReconfigurator(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard) {
         super();
-        this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration);
+        this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration, blackboard);
     }
 
 

@@ -93,7 +93,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration) });
+                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard) });
         reconfigurator.startListening();
 
         // 6. Run Simulation
