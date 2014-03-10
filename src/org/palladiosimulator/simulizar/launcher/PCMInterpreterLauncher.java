@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
 /**
  * Factory for the job for launching the pcm interpreter.
  * 
- * @author Joachim Meyer
+ * @author Joachim Meyer, Matthias Becker
  * 
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
@@ -29,7 +29,7 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
     @Override
     protected ArrayList<LoggerAppenderStruct> setupLogging(final org.apache.log4j.Level logLevel) throws CoreException {
         final ArrayList<LoggerAppenderStruct> result = super.setupLogging(logLevel);
-        result.add(this.setupLogger("de.upb.pcm.simulizar", logLevel, Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN
+        result.add(this.setupLogger("org.palladiosimulator.simulizar", logLevel, Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN
                 : SHORT_LOG_PATTERN));
 
         return result;

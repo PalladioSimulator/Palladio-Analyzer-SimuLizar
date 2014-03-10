@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeSpecListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
@@ -92,7 +93,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
+                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration) });
         reconfigurator.startListening();
 
         // 6. Run Simulation

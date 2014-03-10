@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.emf.common.util.URI;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
@@ -49,7 +50,6 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     /* (non-Javadoc)
      * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
-    @SuppressWarnings("deprecation")
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
         final ResourceSetPartition pcmPartition = this.blackboard
@@ -58,22 +58,9 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
         // Load the PCM model and its middleware completions
         LOGGER.info("Loading PCM Model Files");
         for (final String modelFile : this.configuration.getPCMModelFiles()) {
-            pcmPartition.loadModel(modelFile);
+            pcmPartition.loadModel(URI.createURI(modelFile));
         }
         pcmPartition.resolveAllProxies();
-        // if (!configuration.getMiddlewareFile().equals(""))
-        // {
-        // middlewarePartition.loadModel(configuration.getMiddlewareFile());
-        // middlewarePartition.resolveAllProxies();
-        // }
-        //
-        // if (!configuration.getEventMiddlewareFile().equals(
-        // AbstractPCMWorkflowRunConfiguration.PCM_DEFAULT_EVENT_MIDDLEWARE_FILE_URI))
-        // {
-        // // load the event middleware repository
-        // eventMiddlewarePartition.loadModel(configuration.getEventMiddlewareFile());
-        // eventMiddlewarePartition.resolveAllProxies();
-        // }
     }
 
     /**
