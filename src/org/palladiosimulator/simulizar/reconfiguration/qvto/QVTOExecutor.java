@@ -5,7 +5,6 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,13 +14,8 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
@@ -32,17 +26,12 @@ import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
-import org.palladiosimulator.simulizar.prm.PrmPackage;
-import org.palladiosimulator.simulizar.utils.PCMModels;
 
-import de.mdelab.sdm.interpreter.core.variables.Variable;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
-import de.uka.ipd.sdq.pcm.allocation.AllocationPackage;
-import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
-import de.uka.ipd.sdq.pcm.system.SystemPackage;
-import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ModelLocation;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
+import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 public class QVTOExecutor {
 
@@ -52,14 +41,16 @@ public class QVTOExecutor {
 	private static final String QVTO_FILE_EXTENSION = ".qvto";
 	private static final Logger logger = Logger.getLogger(QVTOExecutor.class);
 	private List<TransformationExecutor> qvtoRuleSet;
+	private MDSDBlackboard blackboard;
 
 	
-	public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration) {
+	public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard) {
 	     super();
 	     this.globalPCMAccess = modelAccessFactory.getGlobalPCMAccess();
 	     this.prmAccess = modelAccessFactory.getPRMModelAccess();
 	     this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
 	     this.loadQvtoRules(configuration);
+	     this.blackboard = blackboard;
 	}
 	
 	void loadQvtoRules(SimuComWorkflowConfiguration configuration) {
@@ -114,10 +105,10 @@ public class QVTOExecutor {
 	
 	
 	/**
-	 * Executes all activities for the given monitored element.
+	 * Executes all QVTo rules for the given monitored element.
 	 * 
 	 * @param monitoredElement
-	 *            the pcm model element to be monitored.
+	 *         the pcm model element to be monitored.
 	 * @return true if at least one reconfiguration's check was positive and it
 	 *         reconfigured the model.
 	 */
@@ -126,20 +117,20 @@ public class QVTOExecutor {
 		boolean result = false;
 		// iterate over all rules and execute them
 		for(final TransformationExecutor rule : this.qvtoRuleSet){
-			result |= execute(rule);
+			result |= execute(rule, monitoredElement);
 		}
 		
 		return result;
 	}
 
-	private boolean execute(TransformationExecutor executor) {
-
+	private boolean execute(TransformationExecutor executor, final EObject monitoredElement) {
+		
 		// define the transformation input and outputs
-		EList<EObject> runtimeModel = this.prmAccess.getModel().eContents();
-		EList<EObject> pcmAllocation = this.globalPCMAccess.getModel().getAllocation().eContents();
-		EList<EObject> pcmSystem = this.globalPCMAccess.getModel().getSystem().eContents();
-		EList<EObject> pcmResources = this.globalPCMAccess.getModel().getResourceEnvironment().eContents();
-		EList<EObject> pcmRepository = this.globalPCMAccess.getModel().getRepository().eContents();
+		EList<PCMModelElementMeasurement> runtimeModel = this.prmAccess.getModel().getPcmModelElementMeasurements();
+		EList<EObject> pcmAllocation = getRequiredModels("allocation").getContents();
+		EList<EObject> pcmSystem = getRequiredModels("system").getContents();
+		EList<EObject> pcmResources = getRequiredModels("resourcetype").getContents();
+		EList<EObject> pcmRepository = getRequiredModels("repository").getContents();
 		
 		// create the input and inout extents with its initial contents
 		ModelExtent input = new BasicModelExtent(runtimeModel);
@@ -167,5 +158,29 @@ public class QVTOExecutor {
 			return false;
 		}
 	}
+	
+	  /**
+     * Build the location objects out of the blackboards PCM model partition.
+     * 
+     * @param blackboard The blackboard to work with.
+     * @return The prepared model locations for the PCM models.
+     */
+    private Resource getRequiredModels(String model) {
+    	       
+        // find the models in the blackboard
+        String pcmModelPartitionId = LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID;
+        ResourceSetPartition partition = this.blackboard.getPartition(pcmModelPartitionId);
+        partition.resolveAllProxies();
+        for (Resource r : partition.getResourceSet().getResources()) {
+            URI modelURI = r.getURI();
+            String fileExtension = modelURI.fileExtension();
+            
+            if(fileExtension.equals(model)){
+            	return r;
+            }
+        }
+        
+        return null;
+    }
 
 }
