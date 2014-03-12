@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0">
+  <linkingResources__ResourceEnvironment id="_c_x6wKnoEeO_FKTWaHXFBg" entityName="FibreChannel" connectedResourceContainers_LinkingResource="_VremsKnoEeO_FKTWaHXFBg _XNdW0KnoEeO_FKTWaHXFBg _YlCNwKnoEeO_FKTWaHXFBg _bIY7UKnoEeO_FKTWaHXFBg">
+    <communicationLinkResourceSpecifications_LinkingResource id="_c_7rwKnoEeO_FKTWaHXFBg">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="0.001"/>
+      <throughput_CommunicationLinkResourceSpecification specification="100000"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <linkingResources__ResourceEnvironment id="_nC3JQKnoEeO_FKTWaHXFBg" entityName="GigaLAN" connectedResourceContainers_LinkingResource="_Q4BewKnoEeO_FKTWaHXFBg _VremsKnoEeO_FKTWaHXFBg">
+    <communicationLinkResourceSpecifications_LinkingResource id="_nC4-cKnoEeO_FKTWaHXFBg">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="0.001"/>
+      <throughput_CommunicationLinkResourceSpecification specification="100000"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_Q4BewKnoEeO_FKTWaHXFBg" entityName="WebServer"/>
+  <resourceContainer_ResourceEnvironment id="_VremsKnoEeO_FKTWaHXFBg" entityName="LoadBalancer"/>
+  <resourceContainer_ResourceEnvironment id="_XNdW0KnoEeO_FKTWaHXFBg" entityName="ApplicationServer1"/>
+  <resourceContainer_ResourceEnvironment id="_YlCNwKnoEeO_FKTWaHXFBg" entityName="ApplicationServer2"/>
+  <resourceContainer_ResourceEnvironment id="_bIY7UKnoEeO_FKTWaHXFBg" entityName="ApplicationServer3"/>
+</resourceenvironment:ResourceEnvironment>
