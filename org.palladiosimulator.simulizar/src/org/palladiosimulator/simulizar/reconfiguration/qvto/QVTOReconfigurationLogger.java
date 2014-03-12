@@ -4,11 +4,20 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.m2m.qvt.oml.util.Log;
 
+/**
+ * 
+ * @author Matthias
+ *
+ */
 public class QVTOReconfigurationLogger implements Log {
 	
 	private static Logger logger;
 	
-	public QVTOReconfigurationLogger(Class clazz) {
+	/**
+	 * 
+	 * @param clazz class for the logger
+	 */
+	public QVTOReconfigurationLogger(Class<?> clazz) {
 		QVTOReconfigurationLogger.logger = Logger.getLogger(clazz);
 	}
 
