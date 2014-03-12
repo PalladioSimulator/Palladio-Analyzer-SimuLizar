@@ -15,7 +15,7 @@
 <intAttribute key="datasourceID" value="0"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
 <stringAttribute key="eventMiddlewareRepositoryFile" value="C:\Users\Matthias\Eclipse-Workspaces\runtime-EclipseApplication\Simulizar Example\balanceReconfigurationStrategy.sdm"/>
-<stringAttribute key="experimentRun" value="LoadBalancer_SimuLizar"/>
+<stringAttribute key="experimentRun" value="SimuLizar_ZNNCOM"/>
 <stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
 <stringAttribute key="fixedSeed0" value="0"/>
 <stringAttribute key="fixedSeed1" value="1"/>

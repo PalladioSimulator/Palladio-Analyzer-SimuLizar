@@ -39,8 +39,8 @@ transformation ScaleUp(		in prm : PRM,
 							
 							
 	// Define Threshold and Scale Up
-	property threshold : Real = 3.0;
-	property scaleUp : Real = 200.0;
+	property threshold : Real = 2.0;
+	property scaleUp : Real = 100.0;
 
 	/**
 	 * The main transformation.
@@ -51,50 +51,42 @@ transformation ScaleUp(		in prm : PRM,
 
 		log('SimuLizar ScaleUp Rule Transformation started');
 		
-		assert fatal(prm.rootObjects()[PRMModel]->size() > 0)
+		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		
-		//var runtimeMeasurements = prm.rootObjects()[PRMModel].pcmModelElementMeasurements;
-		prm.rootObjects()[PRMModel]->forAll(
-			measurements : PRMModel |
-			checkCondition(measurements.pcmModelElementMeasurements)
+		var runtimeMeasurements = prm.rootObjects()[PCMModelElementMeasurement];
+		// Scale up processing speed for all Resources
+		pcmAllocation.rootObjects()[Allocation]->forAll(
+			allocation : Allocation | 
+			scaleUpProcessingResources(allocation.targetResourceEnvironment_Allocation, runtimeMeasurements)
 		);
 
 	}
 	
-	helper checkCondition(runtimeMeasurements : OrderedSet(PCMModelElementMeasurement)) : Boolean {
-	
-		runtimeMeasurements->forEach(measurement) {
-		log('Measured value is ' + measurement.measurementValue.toString());
-		
-			if (measurement.measurementValue > threshold) {
-		
-				log('Threshold is exceeded');
-				pcmAllocation.rootObjects()[Allocation]->forAll(
-					allocation : Allocation | 
-					scaleUpProcessingResources(allocation.targetResourceEnvironment_Allocation)
-				);
+	helper checkCondition(runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
+		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
+			if (pcmModelElementsMeasurement.measurementValue > threshold) {
 				return true;
-			};
+			} endif
 		};
-		
-		log('No measurements match the condition. Number of measurements is ' + runtimeMeasurements->size().toString());
 		return false;
 	}
 	
 	/**
 	 * Scale up ProcessingResources.
 	 */
-	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment) : Boolean {
-
+	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
+		if (checkCondition(runtimeMeasurements)) then {
 			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
 				scaleUpProcessingResourcesRecursively(resourceContainer);
 			};
 		
 			return true;
+		} endif;
+		return false;
 	}
 	
 	/**
