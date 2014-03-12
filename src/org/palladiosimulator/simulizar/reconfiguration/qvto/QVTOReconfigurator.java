@@ -13,7 +13,10 @@ import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfigurat
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * @author Matthias
+ * A reconfigurator implementation which relies on QVTo to do the reconfiguration. The
+ * QVTo rules both check their reconfiguration precondition and perform the actual reconfiguration.
+ * 
+ * @author Matthias Becker
  *
  */
 public class QVTOReconfigurator implements IReconfigurator {
@@ -21,16 +24,18 @@ public class QVTOReconfigurator implements IReconfigurator {
     /**
      * This class' internal logger. 
      */
-    private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
+    private static final Logger LOG = Logger.getLogger(SDReconfigurator.class);
 	
     /**
-     * SD Interpreter used internally to interpret the SDs. 
+     * QVTO Interpreter used internally to interpret the SDs. 
      */
     private final QVTOExecutor qvtoExecutor;
     
     /**
-     * SD Reconfigurator constructor.
-     * @param modelAccessFactory Model access factory used to access the SDs.
+     * QVTO Reconfigurator constructor.
+     * @param modelAccessFactory ModelAccessFactory giving access to PCM and PRM models
+     * @param configuration Simulation configuration
+     * @param blackboard MDSDBlackboard storing the PCM models
      */
     public QVTOReconfigurator(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard) {
         super();
@@ -43,9 +48,9 @@ public class QVTOReconfigurator implements IReconfigurator {
 	 */
 	@Override
 	public void checkAndExecute(EObject monitoredElement) {
-        LOGGER.debug("Checking reconfiguration rules due to PRM change");
+        LOG.debug("Checking reconfiguration rules due to PRM change");
         final boolean result = this.qvtoExecutor.executeRules(monitoredElement);
-        LOGGER.debug(result ? "Reconfigured system by a matching rule"
+        LOG.debug(result ? "Reconfigured system by a matching rule"
                 : "No reconfiguration rule was executed, all conditions were false");
 	}
 
