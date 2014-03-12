@@ -5,8 +5,10 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -33,26 +35,39 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ModelLocation;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
+/**
+ * QVTo executor helper class that supports executing QVTo reconfiguration rules.
+ * @author Matthias Becker
+ *
+ */
 public class QVTOExecutor {
 
-    private final GlobalPCMAccess globalPCMAccess;
     private final PRMAccess prmAccess;
 	
 	private static final String QVTO_FILE_EXTENSION = ".qvto";
-	private static final Logger logger = Logger.getLogger(QVTOExecutor.class);
+	private static final Logger LOG = Logger.getLogger(QVTOExecutor.class);
 	private List<TransformationExecutor> qvtoRuleSet;
-	private MDSDBlackboard blackboard;
+	private Map<String, Resource> pcmModelMap;
 
-	
+	/**
+	 * Constructor of the QVTOExecutor
+	 * 
+	 * @param modelAccessFactory ModelAccessFactory giving access to PCM and PRM models
+	 * @param configuration Simulation configuration
+	 * @param blackboard MDSDBlackboard storing the PCM models
+	 */
 	public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard) {
 	     super();
-	     this.globalPCMAccess = modelAccessFactory.getGlobalPCMAccess();
 	     this.prmAccess = modelAccessFactory.getPRMModelAccess();
 	     this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
 	     this.loadQvtoRules(configuration);
-	     this.blackboard = blackboard;
+	     this.pcmModelMap = getRequiredModels(blackboard);
 	}
 	
+	/**
+	 * 
+	 * @param configuration Simulation configuration
+	 */
 	void loadQvtoRules(SimuComWorkflowConfiguration configuration) {
 		
 		String path = (String) configuration.getAttributes().get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER);
@@ -67,20 +82,19 @@ public class QVTOExecutor {
 	        		
 	        		URI pathToQvtoRules = URI.createURI(filePath);
 	                folder = new File(pathToQvtoRules.toFileString());
-	        	}
-	        	else {
+	            } else {
 	        	    try {
 	                    URL pathURL = FileLocator.resolve(new URL(path));
 	                    String folderString = pathURL.toExternalForm().replace("file:", "");
 	                    folder = new File(folderString);
 	                } catch (IOException e) {
-	                    logger.warn ("No QVTo rules found, QVTo reconfigurations disabled.", e);
+	                    LOG.warn("No QVTo rules found, QVTo reconfigurations disabled.", e);
 	                    return;
 	                }
 	        	}
 	            
 	        	if (!folder.exists()) {
-	        	    logger.warn("Folder "+folder+" does not exist. No reconfiguration rules will be loaded.");
+	        	    LOG.warn("Folder " + folder + " does not exist. No reconfiguration rules will be loaded.");
 	        	    return;
 	        	}
 	            final File[] files = folder.listFiles(new FilenameFilter() {
@@ -92,45 +106,51 @@ public class QVTOExecutor {
 	            });
 	            if (files != null && files.length > 0) {
 	                for (final File file : files) {
-	                	logger.info("Found reconfiguration rule" + file.getPath());
+	                	LOG.info("Found reconfiguration rule" + file.getPath());
 	                	URI transformationURI = URI.createFileURI(file.getPath());
 	                	TransformationExecutor transformationExecutor = new TransformationExecutor(transformationURI);
 	                    this.qvtoRuleSet.add(transformationExecutor);
 	                }
 	            } else {
-	                logger.warn ("No QVTo rules found, QVTo reconfigurations disabled.");
+	                LOG.warn("No QVTo rules found, QVTo reconfigurations disabled.");
 	            }
 	        }
 	}
 	
 	
 	/**
-	 * Executes all QVTo rules for the given monitored element.
+	 * Executes all QVTo rules found in the configured reconfiguration rule folder.
 	 * 
 	 * @param monitoredElement
-	 *         the pcm model element to be monitored.
-	 * @return true if at least one reconfiguration's check was positive and it
-	 *         reconfigured the model.
+	 *         the monitored PCM model element.
+	 * @return true if at least one reconfiguration was executed successfully
 	 */
 	public boolean executeRules(final EObject monitoredElement) {
 
 		boolean result = false;
 		// iterate over all rules and execute them
-		for(final TransformationExecutor rule : this.qvtoRuleSet){
-			result |= execute(rule, monitoredElement);
+		for (final TransformationExecutor rule : this.qvtoRuleSet) {
+			result |= execute(rule);
 		}
 		
 		return result;
 	}
 
-	private boolean execute(TransformationExecutor executor, final EObject monitoredElement) {
+	/**
+	 *  Executes the QVTo rule given as a parameter
+	 *  
+	 *  @param executor
+	 *             the QVTo rule TransformationExecutor
+	 *  @return true if transformation was executed successfully
+	 */
+	private boolean execute(TransformationExecutor executor) {
 		
 		// define the transformation input and outputs
 		EList<PCMModelElementMeasurement> runtimeModel = this.prmAccess.getModel().getPcmModelElementMeasurements();
-		EList<EObject> pcmAllocation = getRequiredModels("allocation").getContents();
-		EList<EObject> pcmSystem = getRequiredModels("system").getContents();
-		EList<EObject> pcmResources = getRequiredModels("resourcetype").getContents();
-		EList<EObject> pcmRepository = getRequiredModels("repository").getContents();
+		EList<EObject> pcmAllocation = this.pcmModelMap.get("allocation").getContents();
+		EList<EObject> pcmSystem = this.pcmModelMap.get("system").getContents();
+		EList<EObject> pcmResources = this.pcmModelMap.get("resourcetype").getContents();
+		EList<EObject> pcmRepository = this.pcmModelMap.get("repository").getContents();
 		
 		// create the input and inout extents with its initial contents
 		ModelExtent input = new BasicModelExtent(runtimeModel);
@@ -151,36 +171,38 @@ public class QVTOExecutor {
 		
 		// check the result for success
 		if (result.getSeverity() == Diagnostic.OK) {
-			logger.log(Level.INFO, "Rule application successfull with message: " + result.getMessage() );			
+			LOG.log(Level.INFO, "Rule application successfull with message: " + result.getMessage());			
 			return true;
 		} else {
-			logger.log(Level.WARN, "Rule application failed with message: " + result.getMessage());
+			LOG.log(Level.WARN, "Rule application failed with message: " + result.getMessage());
 			return false;
 		}
 	}
 	
-	  /**
-     * Build the location objects out of the blackboards PCM model partition.
+	/**
+     * Get the required PCM models from the blackboard.
      * 
-     * @param blackboard The blackboard to work with.
-     * @return The prepared model locations for the PCM models.
+     * @param blackboard MDSDBlackboard where PCM models are stored
+     * @return Map of PCM models with file extension as key.
      */
-    private Resource getRequiredModels(String model) {
+    private Map<String, Resource> getRequiredModels(MDSDBlackboard blackboard) {
+        
+        Map<String, Resource> modelsMap = new HashMap<String, Resource>();
     	       
         // find the models in the blackboard
         String pcmModelPartitionId = LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID;
-        ResourceSetPartition partition = this.blackboard.getPartition(pcmModelPartitionId);
+        ResourceSetPartition partition = blackboard.getPartition(pcmModelPartitionId);
         partition.resolveAllProxies();
         for (Resource r : partition.getResourceSet().getResources()) {
             URI modelURI = r.getURI();
             String fileExtension = modelURI.fileExtension();
             
-            if(fileExtension.equals(model)){
-            	return r;
+            if (!modelsMap.containsKey(fileExtension)) {
+            	modelsMap.put(fileExtension, r);
             }
         }
         
-        return null;
+        return modelsMap;
     }
 
 }
