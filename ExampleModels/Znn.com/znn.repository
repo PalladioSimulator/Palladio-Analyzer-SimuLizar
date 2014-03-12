@@ -5,7 +5,12 @@
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_Ie9XgannEeO_FKTWaHXFBg" describedService__SEFF="_16dhkKnmEeO_FKTWaHXFBg">
       <steps_Behaviour xsi:type="seff:StartAction" id="_Ie9-kKnnEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_NUobEKnpEeO_FKTWaHXFBg"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_Ie9-kannEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_NUobEKnpEeO_FKTWaHXFBg"/>
-      <steps_Behaviour xsi:type="seff:InternalAction" id="_NUobEKnpEeO_FKTWaHXFBg" entityName="deliverTextualNews" predecessor_AbstractAction="_Ie9-kKnnEeO_FKTWaHXFBg" successor_AbstractAction="_Ie9-kannEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_NUobEKnpEeO_FKTWaHXFBg" entityName="deliverTextualNews" predecessor_AbstractAction="_Ie9-kKnnEeO_FKTWaHXFBg" successor_AbstractAction="_Ie9-kannEeO_FKTWaHXFBg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="100"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <components__Repository xsi:type="repository:BasicComponent" id="_pO2KkKnmEeO_FKTWaHXFBg" entityName="MutlimediaNewsService">
@@ -13,7 +18,12 @@
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_H3rVEKnnEeO_FKTWaHXFBg" describedService__SEFF="_16dhkKnmEeO_FKTWaHXFBg">
       <steps_Behaviour xsi:type="seff:StartAction" id="_H3rVEannEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_QwJfsKnpEeO_FKTWaHXFBg"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_H3r8IKnnEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_QwJfsKnpEeO_FKTWaHXFBg"/>
-      <steps_Behaviour xsi:type="seff:InternalAction" id="_QwJfsKnpEeO_FKTWaHXFBg" entityName="deliverMultimediaNews" predecessor_AbstractAction="_H3rVEannEeO_FKTWaHXFBg" successor_AbstractAction="_H3r8IKnnEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_QwJfsKnpEeO_FKTWaHXFBg" entityName="deliverMultimediaNews" predecessor_AbstractAction="_H3rVEannEeO_FKTWaHXFBg" successor_AbstractAction="_H3r8IKnnEeO_FKTWaHXFBg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="300"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <components__Repository xsi:type="repository:BasicComponent" id="_v3bBEKnmEeO_FKTWaHXFBg" entityName="SelfAdaptiveNewsService">

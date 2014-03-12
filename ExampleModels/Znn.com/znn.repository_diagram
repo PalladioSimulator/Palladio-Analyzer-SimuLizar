@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff">
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:seff_performance="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/SEFF_Performance/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/SEFF_Performance/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/seff_performance">
   <notation:Diagram xmi:id="_ULKVYKnmEeO_FKTWaHXFBg" type="PCM Repository Model" name="znn.repository_diagram" measurementUnit="Pixel">
     <children xmi:type="notation:Shape" xmi:id="_Xrx8cKnmEeO_FKTWaHXFBg" type="2107" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_XryjgKnmEeO_FKTWaHXFBg" type="5108"/>
@@ -260,6 +260,10 @@
     <children xmi:type="notation:Shape" xmi:id="_NUq3UKnpEeO_FKTWaHXFBg" type="2006" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_NUq3UqnpEeO_FKTWaHXFBg" type="5012"/>
       <children xmi:type="notation:BasicCompartment" xmi:id="_NUq3U6npEeO_FKTWaHXFBg" type="7012">
+        <children xmi:type="notation:Node" xmi:id="_MFl0EKn0EeO_FKTWaHXFBg" type="3051">
+          <element xmi:type="seff_performance:ParametricResourceDemand" href="znn.repository#//@components__Repository.0/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@resourceDemand_Action.0"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_MFl0Ean0EeO_FKTWaHXFBg"/>
+        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_NUq3VKnpEeO_FKTWaHXFBg" showTitle="true"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_NUq3VanpEeO_FKTWaHXFBg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_NUq3VqnpEeO_FKTWaHXFBg"/>
@@ -307,6 +311,10 @@
     <children xmi:type="notation:Shape" xmi:id="_QwNKEKnpEeO_FKTWaHXFBg" type="2006" fontName="Segoe UI">
       <children xmi:type="notation:DecorationNode" xmi:id="_QwNKEqnpEeO_FKTWaHXFBg" type="5012"/>
       <children xmi:type="notation:BasicCompartment" xmi:id="_QwNKE6npEeO_FKTWaHXFBg" type="7012">
+        <children xmi:type="notation:Node" xmi:id="_HzdQgKn0EeO_FKTWaHXFBg" type="3051">
+          <element xmi:type="seff_performance:ParametricResourceDemand" href="znn.repository#//@components__Repository.1/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@resourceDemand_Action.0"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_HzdQgan0EeO_FKTWaHXFBg"/>
+        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_QwNKFKnpEeO_FKTWaHXFBg" showTitle="true"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_QwNKFanpEeO_FKTWaHXFBg"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_QwNKFqnpEeO_FKTWaHXFBg"/>
