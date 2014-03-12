@@ -176,6 +176,11 @@ public class SDExecutor {
         return result;
     }
 
+    /**
+     * Created the parameters used within the StoryDiagrams
+     * 
+     * @return List<Variable<EClassifier>> list of variables and their according EClassifiers
+     */
     private List<Variable<EClassifier>> createParameter() {
         final PCMModels globalPCMModel = this.globalPCMAccess.getModel();
         final List<Variable<EClassifier>> parameters = new ArrayList<Variable<EClassifier>>();
@@ -200,6 +205,14 @@ public class SDExecutor {
         return parameters;
     }
 
+    /**
+     * Executes one activities for the given monitored element.
+     * 
+     * @param activity Activities in the StoryDiagram
+     * @param parameters Parameters for the StoryDiagram execution
+     * @return always returns false
+     * @throws SDMException in case the SD Activity could not be executed
+     */
     private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
         this.sdmInterpreter.executeActivity(activity, parameters);
         // TODO: Get info on activity success?
