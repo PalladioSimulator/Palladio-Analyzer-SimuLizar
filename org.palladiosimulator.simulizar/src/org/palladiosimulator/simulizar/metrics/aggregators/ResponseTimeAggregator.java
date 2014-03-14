@@ -70,7 +70,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
         this.lastSimulationTime = baseSimulationTime;
         this.monitoredElement = monitoredElement;
 
-        responseTimeCalculator.addCalculatorListener(this);
+        responseTimeCalculator.registerCalculatorListener(this);
     }
 
     /**
