@@ -10,7 +10,6 @@ import de.uka.ipd.sdq.probespec.framework.ProbeSetSample;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
 import de.uka.ipd.sdq.probespec.framework.ProbeType;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
-import de.uka.ipd.sdq.probespec.framework.calculator.CalculatorRegistry;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.calculator.ResponseTimeCalculator;
 import de.uka.ipd.sdq.probespec.framework.probes.IProbeStrategy;
@@ -70,24 +69,23 @@ public class PCMInterpreterProbeSpecUtil {
             final SimuComModel simuComModel) {
 
         ResponseTimeCalculator responseTimeCalculator = null;
-        final CalculatorRegistry calculatorRegistry = this.probeSpecContext.getCalculatorRegistry();
         // only register each calculator once
-        if (calculatorRegistry.getCalculatorForId(measurementId) == null) {
+        if (this.probeSpecContext.getCalculatorForId(measurementId) == null) {
             final ICalculatorFactory calculatorFactory = this.probeSpecContext.getCalculatorFactory();
 
             final Calculator responseCalculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,
                     this.probeSpecContext.obtainProbeSetId(startProbeId),
                     this.probeSpecContext.obtainProbeSetId(stopProbeId));
 
-            calculatorRegistry.registerCalculator(measurementId, responseCalculator);
+            this.probeSpecContext.registerCalculator(measurementId, responseCalculator);
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Created Response Time Calculator. StartProbeId: " + startProbeId
-                    + ", StopProbeId: " + stopProbeId);
+                        + ", StopProbeId: " + stopProbeId);
             }
-            
+
             // get created calculator
-            responseTimeCalculator = (ResponseTimeCalculator) calculatorRegistry.getCalculatorForId(measurementId);
+            responseTimeCalculator = (ResponseTimeCalculator) this.probeSpecContext.getCalculatorForId(measurementId);
 
             return responseTimeCalculator;
         }

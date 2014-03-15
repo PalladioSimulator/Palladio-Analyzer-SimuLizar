@@ -56,7 +56,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     public ResponseTimeAggregator(final PRMAccess prmAccess, final MeasurementSpecification measurementSpecification,
             final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
             final PCMModelElementMeasurement pcmModelElementMeasurement, final double baseSimulationTime)
-            throws UnsupportedDataTypeException {
+                    throws UnsupportedDataTypeException {
         super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
         this.responseTimes = new LinkedList<Double>();
         if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN) {
@@ -104,6 +104,12 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     @Override
     protected EObject getMonitoredPCMModellElement() {
         return this.monitoredElement;
+    }
+
+    @Override
+    public void preUnregister() {
+        // TODO Auto-generated method stub
+
     }
 
 }
