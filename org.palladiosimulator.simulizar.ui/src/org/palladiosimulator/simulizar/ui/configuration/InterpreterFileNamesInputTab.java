@@ -35,13 +35,13 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 		 * Create PMS file section
 		 */
 		pmsFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-		TabHelper.createFileInputSection(container, modifyListener, "Optional: Palladio Monitoring Specification Model (PMS) File", SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, pmsFile, "Select PMS File", getShell(), SimulizarConstants.DEFAULT_PMS_FILE);
+		TabHelper.createFileInputSection(container, modifyListener, "Optional: Palladio Monitoring Specification Model (PMS) File", SimulizarConstants.PMS_EXTENSION, pmsFile, "Select PMS File", getShell(), SimulizarConstants.DEFAULT_PMS_FILE);
 
 		/**
 		 * Create reconfiguration rules folder section
 		 */
 		reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
-		TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration rules folder ", reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(), SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+		TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration rules folder ", reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(), SimulizarConstants.DEFAULT_SDM_FOLDER);
 		
 	}
 
@@ -60,7 +60,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
 		try {
 			reconfigurationRulesFolder.setText(configuration.getAttribute(
-					SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER));
+					SimulizarConstants.SDM_FOLDER, SimulizarConstants.DEFAULT_SDM_FOLDER));
 		} catch (CoreException e) {
 			LaunchConfigPlugin.errorLogger(getName(),"Reconfiguration Rules Folder", e.getMessage());
 		}
@@ -74,7 +74,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 		super.performApply(configuration);
 		configuration.setAttribute(SimulizarConstants.PMS_FILE,
 				pmsFile.getText());
-		configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+		configuration.setAttribute(SimulizarConstants.SDM_FOLDER,
 				reconfigurationRulesFolder.getText());
 	}	
 	
@@ -84,7 +84,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 		super.setDefaults(configuration);
 		configuration.setAttribute(SimulizarConstants.PMS_FILE,	SimulizarConstants.DEFAULT_PMS_FILE);
-		configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+		configuration.setAttribute(SimulizarConstants.SDM_FOLDER, SimulizarConstants.DEFAULT_SDM_FOLDER);
 	}
 	
 	/**
