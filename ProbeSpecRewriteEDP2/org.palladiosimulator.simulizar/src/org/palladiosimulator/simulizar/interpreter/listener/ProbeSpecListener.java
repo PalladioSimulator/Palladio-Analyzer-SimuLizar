@@ -7,14 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.activation.UnsupportedDataTypeException;
-import javax.measure.quantity.Duration;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PMSAccess;
 import org.palladiosimulator.simulizar.access.PRMAccess;
-import org.palladiosimulator.simulizar.interpreter.probes.ResponseTimeProbe;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
@@ -26,11 +24,9 @@ import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
-import de.uka.ipd.sdq.probespec.framework.probes.BasicProbe;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
-import de.uka.ipd.sdq.probespec.framework.requestcontext.RequestContext;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
 /**
  * @author snowball
@@ -43,8 +39,8 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final PMSAccess pmsModelAccess;
     private final PRMAccess prmAccess;
     private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
-    private ResponseTimeProbe startProbe;
-    private ResponseTimeProbe stopProbe;
+    private TakeCurrentSimulationTimeProbe startProbe;
+    private TakeCurrentSimulationTimeProbe stopProbe;
     private final static Logger LOG = Logger.getLogger(ProbeSpecListener.class);
     
     /**
@@ -146,8 +142,9 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
             
             final List<Probe> probeList = new LinkedList<Probe>();
             
-            this.startProbe = new ResponseTimeProbe(simuComModel);
-            this.stopProbe = new ResponseTimeProbe(simuComModel);
+            //FIXME: Is this the right place to create probes?
+            this.startProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
+            this.stopProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
             
             probeList.add(this.startProbe);
             probeList.add(this.stopProbe);

@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
+import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 /**
  * @author Matthias
@@ -45,13 +46,13 @@ public class ReconfigurationAggregator extends PRMRecorder implements ICalculato
     }
 
     @Override
-    public void calculated(List<Measure<?, ? extends Quantity>> arg0) {
+    public void preUnregister() {
         // TODO Auto-generated method stub
-
+        
     }
 
     @Override
-    public void preUnregister() {
+    public void measurementTaken(Measurement measurement) {
         // TODO Auto-generated method stub
         
     }
