@@ -4,9 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.activation.UnsupportedDataTypeException;
-import javax.measure.Measure;
 import javax.measure.quantity.Duration;
-import javax.measure.quantity.Quantity;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.PRMAccess;
@@ -20,6 +18,7 @@ import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
 import de.uka.ipd.sdq.probespec.framework.measurements.BasicMeasurement;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
+import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 
 /**
  * The aggregator "Response time".
@@ -81,11 +80,11 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
      */
     @Override
     public void measurementTaken(final Measurement measurement) {
-        
-        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) measurement;
+        final MeasurementSet measurementSet = (MeasurementSet) measurement;
+        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) measurementSet.getSubsumedMeasurements().get(1);
 
         final double simulationTime = basicMeasurement.getMeasure().getValue();
-                //.get(1).getValue();
+
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
             final Intervall intervall = (Intervall) this.getMeasurementSpecification().getTemporalRestriction();
             if (simulationTime - this.lastSimulationTime >= intervall.getIntervall()) {

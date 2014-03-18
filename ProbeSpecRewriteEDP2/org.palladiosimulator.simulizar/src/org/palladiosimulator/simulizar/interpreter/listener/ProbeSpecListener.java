@@ -37,7 +37,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final PMSAccess pmsModelAccess;
     private final PRMAccess prmAccess;
     private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
-    private final Map<EObject,List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
+    private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
     private static final Logger LOG = Logger.getLogger(ProbeSpecListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
@@ -142,7 +142,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
             final List<Probe> probeList = new ArrayList<Probe>(2);
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            currentTimeProbes.put(modelElement,Collections.unmodifiableList(probeList));
+            currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
 
             final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(probeList,
                     calculatorName, modelElement);
@@ -175,7 +175,8 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
         this.initReponseTimeMeasurement(event);
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
-            this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX).takeMeasurement(event.getThread().getRequestContext());
+            this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
+            .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
@@ -184,7 +185,8 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
      */
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
-            this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX).takeMeasurement(event.getThread().getRequestContext());
+            this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
+            .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
