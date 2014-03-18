@@ -23,7 +23,7 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
  * 
  */
 public class TransitionDeterminer {
-    protected static final Logger logger = Logger.getLogger(TransitionDeterminer.class.getName());
+    protected static final Logger LOG = Logger.getLogger(TransitionDeterminer.class.getName());
 
     private final SimuComConfig config;
     private final InterpreterDefaultContext context;

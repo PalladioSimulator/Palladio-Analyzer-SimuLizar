@@ -23,7 +23,7 @@ public class QVTOReconfigurationLogger implements Log {
 
 	@Override
 	public void log(String message) {
-		LOG.log(Level.INFO, message);
+		logger.log(Level.INFO, message);
 
 	}
 

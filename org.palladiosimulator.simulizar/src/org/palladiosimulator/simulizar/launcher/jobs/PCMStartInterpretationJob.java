@@ -11,21 +11,14 @@ import org.palladiosimulator.simulizar.interpreter.listener.ProbeSpecListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
-import de.uka.ipd.sdq.probespec.framework.ISampleBlackboard;
 import de.uka.ipd.sdq.probespec.framework.ProbeSpecContext;
-import de.uka.ipd.sdq.probespec.framework.SampleBlackboard;
-import de.uka.ipd.sdq.simucomframework.DiscardInvalidMeasurementsBlackboardDecorator;
+import de.uka.ipd.sdq.probespec.framework.calculator.DefaultCalculatorFactory;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
-import de.uka.ipd.sdq.simucomframework.SimuComGarbageCollector;
-import de.uka.ipd.sdq.simucomframework.calculator.CalculatorFactory;
-import de.uka.ipd.sdq.simucomframework.calculator.SetupPipesAndFiltersStrategy;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.probes.SimuComProbeStrategyRegistry;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
 import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
@@ -144,7 +137,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         final ISimEngineFactory simEngineFactory = this.getSimEngineFactory();
 
         // Probe spec context used to take the measurements of the simulation
-        final ProbeSpecContext probeSpecContext = new ProbeSpecContext();
+        final ProbeSpecContext probeSpecContext = new ProbeSpecContext(new DefaultCalculatorFactory());
 
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
                 simEngineFactory, false, probeSpecContext);
@@ -193,15 +186,15 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      *            the SimuCom model.
      */
     private void linkSimuComAndProbeSpec(final SimuComModel simuComModel, final ProbeSpecContext probeSpecContext) {
-        final ISampleBlackboard discardingBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
-                new SampleBlackboard(), simuComModel.getSimulationControl());
+        //final ISampleBlackboard discardingBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
+         //       new SampleBlackboard(), simuComModel.getSimulationControl());
 
-        probeSpecContext.initialise(discardingBlackboard, new SimuComProbeStrategyRegistry(), new CalculatorFactory(
-                simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
+        //probeSpecContext.initialise(discardingBlackboard, new SimuComProbeStrategyRegistry(), new CalculatorFactory(
+        //        simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
 
         // install a garbage collector which keeps track of the samples stored
         // on the blackboard and
         // removes samples when they become obsolete
-        probeSpecContext.setBlackboardGarbageCollector(new SimuComGarbageCollector(discardingBlackboard));
+        //probeSpecContext.setBlackboardGarbageCollector(new SimuComGarbageCollector(discardingBlackboard));
     }
 }
