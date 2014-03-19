@@ -17,13 +17,13 @@ import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregato
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
-import org.palladiosimulator.simulizar.utils.PCMInterpreterProbeSpecUtil;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
+import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
@@ -34,13 +34,15 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  */
 public class ProbeSpecListener extends AbstractInterpreterListener {
 
-    private final PMSAccess pmsModelAccess;
-    private final PRMAccess prmAccess;
-    private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
-    private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
     private static final Logger LOG = Logger.getLogger(ProbeSpecListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
+
+    private final PMSAccess pmsModelAccess;
+    private final PRMAccess prmAccess;
+    private final ICalculatorFactory calculatorFactory;
+
+    private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
 
     /**
      * 
@@ -49,7 +51,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
         super();
         this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
-        this.pcmInterpreterProbeSpecUtil = new PCMInterpreterProbeSpecUtil(simuComModel);
+        this.calculatorFactory = simuComModel.getProbeSpecContext().getCalculatorFactory();
     }
 
     /*
@@ -144,8 +146,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
             currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
 
-            final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(probeList,
-                    calculatorName, modelElement);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
 
             try {
                 new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
