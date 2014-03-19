@@ -135,7 +135,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
 
         final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
                 PerformanceMetricEnum.RESPONSE_TIME);
-        if (measurementSpecification != null) {
+        if (measurementSpecification != null && !entityIsAlreadyInstrumented(modelElement)) {
 
             final String calculatorName = this.getCalculatorName(event);
 
@@ -147,25 +147,23 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
             final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(probeList,
                     calculatorName, modelElement);
 
-            if (calculatorWasCreated(calculator)) {
-                try {
-                    new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
-                            modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                            .getSimulationControl().getCurrentSimulationTime());
-                } catch (final UnsupportedDataTypeException e) {
-                    LOG.error(e);
-                    throw new RuntimeException(e);
-                }
+            try {
+                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
+                        modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
+                        .getSimulationControl().getCurrentSimulationTime());
+            } catch (final UnsupportedDataTypeException e) {
+                LOG.error(e);
+                throw new RuntimeException(e);
             }
         }
     }
 
     /**
-     * @param calculator
+     * @param modelElement
      * @return
      */
-    private boolean calculatorWasCreated(final Calculator calculator) {
-        return calculator != null;
+    protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
+        return this.currentTimeProbes.containsKey(modelElement);
     }
 
     /**
