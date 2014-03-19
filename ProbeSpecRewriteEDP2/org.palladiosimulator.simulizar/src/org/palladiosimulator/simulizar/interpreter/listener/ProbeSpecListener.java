@@ -29,6 +29,9 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
 /**
+ * Class for listening to interpreter events in order to store collected data
+ * using the ProbeSpecFramework
+ * 
  * @author snowball
  * 
  */
@@ -45,7 +48,8 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
 
     /**
-     * 
+     * @param modelAccessFactory Provides access to simulated models
+     * @param simuComModel Provides access to the central simulation
      */
     public ProbeSpecListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
         super();
@@ -137,15 +141,10 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
 
         final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
                 PerformanceMetricEnum.RESPONSE_TIME);
-        if (measurementSpecification != null && !entityIsAlreadyInstrumented(modelElement)) {
+        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
+            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
 
             final String calculatorName = this.getCalculatorName(event);
-
-            final List<Probe> probeList = new ArrayList<Probe>(2);
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
-
             final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
 
             try {
@@ -157,6 +156,27 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    /**
+     * @param modelElement
+     * @param simuComModel
+     * @return
+     */
+    protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
+        final List<Probe> probeList = new ArrayList<Probe>(2);
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
+        return probeList;
+    }
+
+    /**
+     * @param measurementSpecification
+     * @return
+     */
+    protected boolean elementShouldBeMonitored(final MeasurementSpecification measurementSpecification) {
+        return measurementSpecification != null;
     }
 
     /**
