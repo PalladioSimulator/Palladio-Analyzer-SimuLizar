@@ -4,7 +4,9 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.activation.UnsupportedDataTypeException;
+import javax.measure.Measure;
 import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.PRMAccess;
@@ -16,9 +18,8 @@ import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
-import de.uka.ipd.sdq.probespec.framework.measurements.BasicMeasurement;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
 import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
-import de.uka.ipd.sdq.probespec.framework.measurements.MeasurementSet;
 
 /**
  * The aggregator "Response time".
@@ -80,10 +81,9 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
      */
     @Override
     public void measurementTaken(final Measurement measurement) {
-        final MeasurementSet measurementSet = (MeasurementSet) measurement;
-        final BasicMeasurement<Double, Duration> basicMeasurement = (BasicMeasurement<Double, Duration>) measurementSet.getSubsumedMeasurements().get(1);
-
-        final double simulationTime = basicMeasurement.getMeasure().getValue();
+        final Measure<Double,Duration> currentSimulationTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double,Duration> responseTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
+        final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
 
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
             final Intervall intervall = (Intervall) this.getMeasurementSpecification().getTemporalRestriction();
@@ -98,9 +98,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
 
             }
         }
-
-        this.responseTimes.add(basicMeasurement.getMeasure().getValue());
-
+        this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
     }
 
     /**
