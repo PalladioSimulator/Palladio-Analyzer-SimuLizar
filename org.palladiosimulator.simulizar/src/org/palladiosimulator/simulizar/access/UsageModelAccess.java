@@ -110,8 +110,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
 
         // create workload driver by using given factory
         return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.context.getModel(), userFactory,
-                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), openWorkload
-                .getUsageScenario_Workload().getId());
+                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
     }
 
     protected IScenarioRunner getScenarioRunner(final IModelAccessFactory modelAccessFactory,
