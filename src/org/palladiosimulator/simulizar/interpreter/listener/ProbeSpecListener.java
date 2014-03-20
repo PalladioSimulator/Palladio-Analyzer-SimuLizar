@@ -1,7 +1,10 @@
-/**
- * 
- */
 package org.palladiosimulator.simulizar.interpreter.listener;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.activation.UnsupportedDataTypeException;
 
@@ -14,36 +17,45 @@ import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregato
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
-import org.palladiosimulator.simulizar.utils.PCMInterpreterProbeSpecUtil;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
+import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
+import de.uka.ipd.sdq.probespec.framework.probes.Probe;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
 /**
+ * Class for listening to interpreter events in order to store collected data
+ * using the ProbeSpecFramework
+ * 
  * @author snowball
  * 
  */
 public class ProbeSpecListener extends AbstractInterpreterListener {
 
-    private static final String END_PROBE_MARKER = "_resp2";
-    private static final String START_PROBE_MARKER = "_resp1";
+    private static final Logger LOG = Logger.getLogger(ProbeSpecListener.class);
+    private static final int START_PROBE_INDEX = 0;
+    private static final int STOP_PROBE_INDEX = 1;
+
     private final PMSAccess pmsModelAccess;
     private final PRMAccess prmAccess;
-    private final PCMInterpreterProbeSpecUtil pcmInterpreterProbeSpecUtil;
-    private final static Logger logger = Logger.getLogger(ProbeSpecListener.class);
+    private final ICalculatorFactory calculatorFactory;
+
+    private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
 
     /**
-	 * 
-	 */
+     * @param modelAccessFactory Provides access to simulated models
+     * @param simuComModel Provides access to the central simulation
+     */
     public ProbeSpecListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
         super();
         this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
-        this.pcmInterpreterProbeSpecUtil = new PCMInterpreterProbeSpecUtil(simuComModel);
+        this.calculatorFactory = simuComModel.getProbeSpecContext().getCalculatorFactory();
     }
 
     /*
@@ -121,43 +133,58 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     /**
      * Initializes response time measurement.
      * 
-     * @param modelElement
-     *            the model element to be measured.
-     * @param calculatorName
-     *            the name of the response time calculator.
-     * @param startProbeId
-     *            start probe id.
-     * @param stopProbeId
-     *            stop probe id.
      */
-    private void initReponseTimeMeasurement(final EObject modelElement, final String calculatorName,
-            final String startProbeId, final String stopProbeId, final SimuComModel simuComModel) {
+    private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
+
+        final EObject modelElement = event.getModelElement();
+        final SimuComModel simuComModel = event.getThread().getModel();
+
         final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
                 PerformanceMetricEnum.RESPONSE_TIME);
-        if (measurementSpecification != null) {
+        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
+            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
 
-            final Calculator calculator = this.pcmInterpreterProbeSpecUtil.createResponseTimeCalculator(startProbeId,
-                    stopProbeId, calculatorName, calculatorName, measurementSpecification, modelElement, simuComModel);
+            final String calculatorName = this.getCalculatorName(event);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
 
-            if (calculatorWasCreated(calculator)) {
-                try {
-                    new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
-                            modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                                    .getSimulationControl().getCurrentSimulationTime());
-                } catch (final UnsupportedDataTypeException e) {
-                    logger.error(e);
-                    throw new RuntimeException(e);
-                }
+            try {
+                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
+                        modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
+                        .getSimulationControl().getCurrentSimulationTime());
+            } catch (final UnsupportedDataTypeException e) {
+                LOG.error(e);
+                throw new RuntimeException(e);
             }
         }
     }
 
     /**
-     * @param calculator
+     * @param modelElement
+     * @param simuComModel
      * @return
      */
-    private boolean calculatorWasCreated(final Calculator calculator) {
-        return calculator != null;
+    protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
+        final List<Probe> probeList = new ArrayList<Probe>(2);
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
+        return probeList;
+    }
+
+    /**
+     * @param measurementSpecification
+     * @return
+     */
+    protected boolean elementShouldBeMonitored(final MeasurementSpecification measurementSpecification) {
+        return measurementSpecification != null;
+    }
+
+    /**
+     * @param modelElement
+     * @return
+     */
+    protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
+        return this.currentTimeProbes.containsKey(modelElement);
     }
 
     /**
@@ -165,24 +192,21 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
-        final String calculatorName = this.getCalculatorName(event);
-        final String startProbeID = calculatorName + START_PROBE_MARKER;
-        final String stopProbeID = calculatorName + END_PROBE_MARKER;
-
-        this.initReponseTimeMeasurement(event.getModelElement(), calculatorName, startProbeID, stopProbeID, event
-                .getThread().getModel());
-
-        this.pcmInterpreterProbeSpecUtil.takeCurrentTimeSample(startProbeID, calculatorName, event.getThread());
+        this.initReponseTimeMeasurement(event);
+        if (this.currentTimeProbes.containsKey(event.getModelElement())) {
+            this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
+            .takeMeasurement(event.getThread().getRequestContext());
+        }
     }
 
     /**
      * @param event
      */
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
-        final String calculatorName = this.getCalculatorName(event);
-        final String stopProbeID = calculatorName + END_PROBE_MARKER;
-
-        this.pcmInterpreterProbeSpecUtil.takeCurrentTimeSample(stopProbeID, calculatorName, event.getThread());
+        if (this.currentTimeProbes.containsKey(event.getModelElement())) {
+            this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
+            .takeMeasurement(event.getThread().getRequestContext());
+        }
     }
 
     /**

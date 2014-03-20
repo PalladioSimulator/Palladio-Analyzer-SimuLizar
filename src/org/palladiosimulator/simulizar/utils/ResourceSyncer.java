@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
  * 
  */
 public class ResourceSyncer {
-    protected static final Logger logger = Logger.getLogger(ResourceSyncer.class.getName());
+    protected static final Logger LOG = Logger.getLogger(ResourceSyncer.class.getName());
 
     private final SimuComModel simuComModel;
 
@@ -39,8 +39,8 @@ public class ResourceSyncer {
      * 
      * @param simuComModel
      *            the SimuCom model.
-     * @param modelHelper
-     *            the model helper.
+     * @param modelAccessFactory
+     *            the modelAccessFactory.
      */
     public ResourceSyncer(final SimuComModel simuComModel, final IModelAccessFactory modelAccessFactory) {
         super();
@@ -53,7 +53,7 @@ public class ResourceSyncer {
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                logger
+                LOG
                         .info("Resource environment changed by reconfiguration - Resync simulated resources: "
                                 + notification);
                 ResourceSyncer.this.syncResourceEnvironment();
@@ -147,8 +147,8 @@ public class ResourceSyncer {
     }
 
     /**
-     * @param scheduledResource
-     * @return
+     * @param scheduledResource Resource which existence shall be checked
+     * @return true if resource exists
      */
     private boolean existsResource(final ScheduledResource scheduledResource) {
         return scheduledResource != null;
@@ -180,8 +180,8 @@ public class ResourceSyncer {
                                                                                                         // is
                                                                                                         // correct?
                 description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
-        if (logger.isDebugEnabled()) {
-            logger.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
                 + description + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr
                 + ", Units: " + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: "
                 + numberOfReplicas);
@@ -233,8 +233,8 @@ public class ResourceSyncer {
     private void syncResourceEnvironment() {
 
         // TODO this is only a draft
-        if (logger.isDebugEnabled()) {
-            logger.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
         }
         // add resource container, if not done already
         for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMAccess().getModel()
@@ -245,8 +245,8 @@ public class ResourceSyncer {
             if (this.getSimuComModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
                 simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
-                if (logger.isDebugEnabled()) {
-                    logger.debug("SimulatedResourceContainer already exists: "
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("SimulatedResourceContainer already exists: "
                         + simulatedResourceContainer);
                 }
                 // now sync active resources
@@ -255,7 +255,7 @@ public class ResourceSyncer {
                 // create
                 simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
                         .createResourceContainer(resourceContainerId);
-                logger.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
+                LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
                         + simulatedResourceContainer);
 
                 // now sync active resources
@@ -264,7 +264,7 @@ public class ResourceSyncer {
 
         }
         
-        logger.debug("Synchronisation done");
+        LOG.debug("Synchronisation done");
         // TODO remove unused
     }
 

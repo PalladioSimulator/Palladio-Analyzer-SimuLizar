@@ -5,7 +5,8 @@ import java.util.List;
 
 import javax.activation.UnsupportedDataTypeException;
 import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.PRMAccess;
@@ -17,6 +18,8 @@ import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
+import de.uka.ipd.sdq.probespec.framework.constants.MetricDescriptionConstants;
+import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 /**
  * The aggregator "Response time".
@@ -74,12 +77,14 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     }
 
     /**
-     * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener#calculated(java.util.Vector)
+     * @see de.uka.ipd.sdq.probespec.framework.calculator.IMeasurementSourceListener#measurementTaken(Measurement)
      */
     @Override
-    public void calculated(final List<Measure<?, ? extends Quantity>> resultTuple) {
+    public void measurementTaken(final Measurement measurement) {
+        final Measure<Double,Duration> currentSimulationTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double,Duration> responseTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
+        final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
 
-        final double simulationTime = (Double) resultTuple.get(1).getValue();
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
             final Intervall intervall = (Intervall) this.getMeasurementSpecification().getTemporalRestriction();
             if (simulationTime - this.lastSimulationTime >= intervall.getIntervall()) {
@@ -93,9 +98,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
 
             }
         }
-
-        this.responseTimes.add((Double) resultTuple.get(0).getValue());
-
+        this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
     }
 
     /**
@@ -111,5 +114,4 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
         // TODO Auto-generated method stub
 
     }
-
 }
