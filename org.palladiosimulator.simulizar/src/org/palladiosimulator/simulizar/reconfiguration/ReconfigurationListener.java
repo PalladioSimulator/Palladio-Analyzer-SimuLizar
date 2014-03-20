@@ -118,9 +118,8 @@ public class ReconfigurationListener {
      */
     protected void checkAndExecuteReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
-        /*
-         * Value changed, adapt (start sd interpreter)
-         */
+        
+        // Value changed, reconfigure!
         if (isNotificationNewMeasurement(monitoredElement)) {
             for (final IReconfigurator reconfigurator : this.reconfigurators) {
                 reconfigurator.checkAndExecute(monitoredElement);
