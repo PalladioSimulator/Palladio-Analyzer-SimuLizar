@@ -83,7 +83,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
         final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.context.getModel(), closedWorkload
-                .getThinkTime_ClosedWorkload().getSpecification()) {
+                .getThinkTime_ClosedWorkload().getSpecification(), closedWorkload.getUsageScenario_Workload().getId()) {
             @Override
             public IScenarioRunner createScenarioRunner() {
                 return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
@@ -91,8 +91,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         };
 
         // create workload driver by using given factory
-        return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation(),
-                closedWorkload.getUsageScenario_Workload().getId());
+        return new de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload(userFactory, closedWorkload.getPopulation());
     }
 
     private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final UsageScenario usageScenario,
@@ -102,7 +101,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel()) {
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(), usageScenario.getId()) {
             @Override
             public IScenarioRunner createScenarioRunner() {
                 return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
@@ -112,7 +111,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         // create workload driver by using given factory
         return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.context.getModel(), userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), openWorkload
-                        .getUsageScenario_Workload().getId());
+                .getUsageScenario_Workload().getId());
     }
 
     protected IScenarioRunner getScenarioRunner(final IModelAccessFactory modelAccessFactory,
