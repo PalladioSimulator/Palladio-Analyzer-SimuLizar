@@ -15,12 +15,20 @@
   <rm:locator pattern="^org\.jscience*" searchPathRef="ProbeSpec" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="FeatureModel" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="WorkflowEngine" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
   <rm:locator searchPathRef="kepler" failOnError="true" pattern="^org\.eclipse\..*" />
   <rm:locator searchPathRef="localresources" failOnError="false"/>
   <rm:locator searchPathRef="simulizarsvn" failOnError="false" pattern="^org\.palladiosimulator\.simulizar.*" />
   <rm:locator searchPathRef="orbit" failOnError="false" />
   <rm:locator searchPathRef="pcm" failOnError="true" />
   
+  <rm:searchPath name="edp2">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
   <rm:searchPath name="SDQ_Commons">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
@@ -39,7 +47,7 @@
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/probespec/releases/1.2/"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/probespec/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="FeatureModel">
