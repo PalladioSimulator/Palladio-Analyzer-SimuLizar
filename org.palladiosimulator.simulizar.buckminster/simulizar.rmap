@@ -7,6 +7,7 @@
   <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^org\.storydriven\..*" />
   <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^de\.upb\.swt\.core.*" />
   <rm:locator searchPathRef="sdmsvn_plugins" failOnError="false" pattern="^de\.mdelab\..*" />
+  <rm:locator searchPathRef="simulizarsvn" failOnError="true" pattern="^org\.palladiosimulator\.simulizar.*" />
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="SDQ_Commons" failOnError="false"/>
   <rm:locator pattern="^edu\.kit\.ipd\.sdq\..*" searchPathRef="SDQ_Commons" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="SensorFramework" failOnError="false"/>
@@ -17,10 +18,8 @@
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="WorkflowEngine" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
   <rm:locator searchPathRef="kepler" failOnError="true" pattern="^org\.eclipse\..*" />
-  <rm:locator searchPathRef="localresources" failOnError="false"/>
-  <rm:locator searchPathRef="simulizarsvn" failOnError="false" pattern="^org\.palladiosimulator\.simulizar.*" />
   <rm:locator searchPathRef="orbit" failOnError="false" />
-  <rm:locator searchPathRef="pcm" failOnError="true" />
+  <rm:locator searchPathRef="pcm" failOnError="false" />
   
   <rm:searchPath name="edp2">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
