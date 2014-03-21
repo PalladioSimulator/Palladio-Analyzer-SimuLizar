@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="SimuLizar Core Feature"
-      version="1.0.0.qualifier"
+      version="2.0.0.qualifier"
       provider-name="University of Paderborn">
 
    <description url="http://www.example.com/description">
@@ -69,49 +69,49 @@
          id="org.palladiosimulator.simulizar.pms"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.pms.edit"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.pms.editor"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.prm"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.prm.edit"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.ui"
          download-size="0"
          install-size="0"
-         version="1.0.0.qualifier"
+         version="2.0.0.qualifier"
          unpack="false"/>
 
 </feature>
