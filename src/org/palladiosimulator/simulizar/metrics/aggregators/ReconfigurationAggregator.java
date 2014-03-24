@@ -52,7 +52,7 @@ public class ReconfigurationAggregator extends PRMRecorder implements ICalculato
     }
 
     @Override
-    public void measurementTaken(Measurement measurement) {
+    public void newMeasurementAvailable(Measurement measurement) {
         // TODO Auto-generated method stub
         
     }
