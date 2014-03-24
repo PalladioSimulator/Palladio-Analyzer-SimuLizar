@@ -73,14 +73,14 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
         this.lastSimulationTime = baseSimulationTime;
         this.monitoredElement = monitoredElement;
 
-        responseTimeCalculator.registerCalculatorListener(this);
+        responseTimeCalculator.registerMeasurementSourceListener(this);
     }
 
     /**
-     * @see de.uka.ipd.sdq.probespec.framework.calculator.IMeasurementSourceListener#measurementTaken(Measurement)
+     * @see de.uka.ipd.sdq.probespec.framework.calculator.IMeasurementSourceListener#newMeasurementAvailable(Measurement)
      */
     @Override
-    public void measurementTaken(final Measurement measurement) {
+    public void newMeasurementAvailable(final Measurement measurement) {
         final Measure<Double,Duration> currentSimulationTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         final Measure<Double,Duration> responseTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
