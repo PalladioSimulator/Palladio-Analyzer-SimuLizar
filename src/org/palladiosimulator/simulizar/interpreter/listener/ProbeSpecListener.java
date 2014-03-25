@@ -25,6 +25,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
 import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorFactory;
 import de.uka.ipd.sdq.probespec.framework.probes.Probe;
+import de.uka.ipd.sdq.probespec.framework.probes.TriggeredProbe;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
@@ -45,7 +46,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final PRMAccess prmAccess;
     private final ICalculatorFactory calculatorFactory;
 
-    private final Map<EObject, List<Probe>> currentTimeProbes = new HashMap<EObject, List<Probe>>();
+    private final Map<EObject, List<TriggeredProbe>> currentTimeProbes = new HashMap<EObject, List<TriggeredProbe>>();
 
     /**
      * @param modelAccessFactory Provides access to simulated models
@@ -163,8 +164,9 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
      * @param simuComModel
      * @return
      */
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
-        final List<Probe> probeList = new ArrayList<Probe>(2);
+        final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
