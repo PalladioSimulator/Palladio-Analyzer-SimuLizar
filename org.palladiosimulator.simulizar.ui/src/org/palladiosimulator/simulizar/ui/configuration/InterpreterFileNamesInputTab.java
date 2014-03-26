@@ -10,13 +10,13 @@ import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
-import de.uka.ipd.sdq.workflow.pcm.runconfig.FileNamesInputTab;
+import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 
 /**
  * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input
  * fields for PMS models and SDM models.
  */
-public class InterpreterFileNamesInputTab extends FileNamesInputTab {
+public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
     // input fields
     /** Text field for path to pms file. */
