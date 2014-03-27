@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pms="http:///de/upb/pcm/pms/model/pms.ecore" guid="_SsLAEReCEeGXD6tuzVTL1A">
+<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pms="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0" guid="_SsLAEReCEeGXD6tuzVTL1A">
   <performanceMeasurements guid="_SsLAEheCEeGXD6tuzVTL1A">
     <measurementSpecification guid="_SsLAExeCEeGXD6tuzVTL1A" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="pms:Intervall" guid="_qYeZIBeJEeGF3ul3Z8lrRg" intervall="10.0"/>
