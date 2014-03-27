@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ProbeSpecListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
@@ -86,9 +87,13 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         resourceSyncer.initialiseResourceEnvironment();
 
         // 5. Setup reconfiguration rules and engines
-        final ReconfigurationListener reconfigurator = new ReconfigurationListener(modelAccessFactory,
+        final ReconfigurationListener sdReconfigurator = new ReconfigurationListener(modelAccessFactory,
+                new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
+        sdReconfigurator.startListening();
+        
+        final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccessFactory,
                 new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard) });
-        reconfigurator.startListening();
+        qvtoReconfigurator.startListening();
 
         // 6. Run Simulation
         LOG.debug("Start simulation");
@@ -98,7 +103,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         // 7. Deregister all listeners and execute cleanup code
         mainContext.getEventNotificationHelper().removeAllListener();
-        reconfigurator.stopListening();
+        sdReconfigurator.stopListening();
+        qvtoReconfigurator.stopListening();
         simuComModel.getProbeSpecContext().finish();
         LOG.info("finished job: " + this);
     }
