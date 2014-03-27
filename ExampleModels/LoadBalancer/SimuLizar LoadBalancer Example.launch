@@ -16,7 +16,7 @@
 <intAttribute key="datasourceID" value="2"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
 <stringAttribute key="eventMiddlewareRepositoryFile" value="pathmap://PCM_MODELS/default_event_middleware.repository"/>
-<stringAttribute key="experimentRun" value="SimuLizar_ZNNCOM"/>
+<stringAttribute key="experimentRun" value="SimuLizar_LOADBALANCER"/>
 <stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
 <stringAttribute key="fixedSeed0" value="0"/>
 <stringAttribute key="fixedSeed1" value="1"/>
