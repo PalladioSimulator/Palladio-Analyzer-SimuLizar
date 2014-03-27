@@ -31,16 +31,16 @@ modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/1.0';
  * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
  * type and namespace notation are used in operational QVT (: and :: respectively).
  */
-transformation ScaleUp(		in prm : PRM,
-							in pcmRepository : PCM_REP,
+transformation scaleIn(	in prm : PRM,
+							inout pcmRepository : PCM_REP,
 							in pcmSystem : PCM_SYS,
 							in pcmAllocation : PCM_ALLOC,
-							inout pcmResources : PCM_RES_ENV ) {
+							in pcmResources : PCM_RES_ENV ) {
 							
 							
-	// Define Threshold and Scale Up
+	// Define Threshold and Scale Out
 	property threshold : Real = 1.0;
-	property scaleUp : Real = 50.0;
+	property outsourceFactor : Real = 0.1;
 
 	/**
 	 * The main transformation.
@@ -48,62 +48,69 @@ transformation ScaleUp(		in prm : PRM,
 	 */
 	main() {
 	
-
-		log('SimuLizar ScaleUp Rule Transformation started');
+		log('SimuLizar Outsource Rule Transformation started');
 		
 		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
-		
-		var runtimeMeasurements = prm.rootObjects()[PCMModelElementMeasurement];
-		// Scale up processing speed for all Resources
-		pcmAllocation.rootObjects()[Allocation]->forAll(
-			allocation : Allocation | 
-			scaleUpProcessingResources(allocation.targetResourceEnvironment_Allocation, runtimeMeasurements)
-		);
+			
+		prm.rootObjects()[PCMModelElementMeasurement]->checkCondition();	
 
 	}
 	
-	helper checkCondition(runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
-		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
-			if (pcmModelElementsMeasurement.measurementValue < threshold) {
-				return true;
-			} endif
-		};
-		return false;
-	}
+	helper Set(PCMModelElementMeasurement) :: checkCondition() : Boolean {
 	
-	/**
-	 * Scale up ProcessingResources.
-	 */
-	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
-		if (checkCondition(runtimeMeasurements)) then {
-			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
-				scaleUpProcessingResourcesRecursively(resourceContainer);
-			};
+		self->forEach(measurement) {
+		log('Measured value is ' + measurement.measurementValue.toString());
 		
-			return true;
-		} endif;
+			if (measurement.measurementValue > threshold) {
+		
+				log('Threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation : Allocation | 
+					outSourceProcessing(allocation.allocationContexts_Allocation)
+				);
+				return true;
+			};
+		};
+		
+		log('No measurements match the condition. Number of measurements is ' + self->size().toString());
 		return false;
 	}
 	
 	/**
-	 * Recursively scale up ProcessingResources.
+	 * outsource Processing.
 	 */
-	helper scaleUpProcessingResourcesRecursively(resourceContainer : ResourceContainer) {
+	helper outSourceProcessing(allocationContexts : Set(AllocationContext)) : Boolean {
 	
-		// increase processing rate by scaleUp
-		resourceContainer.activeResourceSpecifications_ResourceContainer->forEach(processingResourceSpecification){
-			var currentProcessingRate : String := processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification;
-	    	var newProcessingRate : Real := currentProcessingRate.toReal() - scaleUp;
-	    	processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification := newProcessingRate.toString();
-	    };
-	    
-	    // recursive call
-		resourceContainer.nestedResourceContainers__ResourceContainer->forEach(nestedResourceContainer){
-			scaleUpProcessingResourcesRecursively(nestedResourceContainer);
-		};		
+	log('Found ' +  allocationContexts->size().toString() + 'AllocationContexts');
+	
+		allocationContexts->forEach(allocation){
+
+			if( allocation.assemblyContext_AllocationContext.entityName = "lastverteilerAK" ) {
+			log('Lastverteiler gefunden');
+				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig2");
+						if(branch2.branchProbability > 0.0) {
+							branch2.branchProbability := branch2.branchProbability - outsourceFactor;
+							log('Set branchProbability to ' + branch2.branchProbability.toString());
+							return true;
+						};
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig1");
+						if(branch1.branchProbability < 1.0) {
+							branch1.branchProbability := branch1.branchProbability + outsourceFactor;
+							log('Set branchProbability to ' + branch1.branchProbability.toString());
+							return true;
+						}
+					}
+				}
+			}
+		};
+		
+		return false;
 	}
+	
 }

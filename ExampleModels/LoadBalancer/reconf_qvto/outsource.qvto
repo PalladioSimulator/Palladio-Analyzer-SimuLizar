@@ -33,9 +33,9 @@ modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/1.0';
  */
 transformation outsource(	in prm : PRM,
 							inout pcmRepository : PCM_REP,
-							inout pcmSystem : PCM_SYS,
-							inout pcmAllocation : PCM_ALLOC,
-							inout pcmResources : PCM_RES_ENV ) {
+							in pcmSystem : PCM_SYS,
+							in pcmAllocation : PCM_ALLOC,
+							in pcmResources : PCM_RES_ENV ) {
 							
 							
 	// Define Threshold and Scale Out
