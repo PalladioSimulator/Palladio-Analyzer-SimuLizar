@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.category.wizards"
+            name="SimuLizar Examples"
+            parentCategory="org.eclipse.ui.Examples">
+      </category>
+      <wizard
+            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizard.loadbalancer.category.wizards"
+            class="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.wizards.CustomProjectNewWizard"
+            finalPerspective="org.palladiosimulator.simulizar.ui.perspective"
+            icon="icons/simulizar.png"
+            id="org.palladiosimulator.simulizar.ui.wizard.new.custom"
+            name="Load Balancer"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         id="org.palladiosimulator.simulizar.simulizarNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.natures.SimulizarNature">
+         </run>
+      </runtime>
+   </extension>
+
+</plugin>
