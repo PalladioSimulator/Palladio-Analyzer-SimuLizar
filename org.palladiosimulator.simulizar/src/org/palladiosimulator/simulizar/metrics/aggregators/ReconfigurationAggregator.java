@@ -10,14 +10,13 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.probespec.framework.calculator.Calculator;
+import org.palladiosimulator.probespec.framework.calculator.ICalculatorListener;
+import org.palladiosimulator.probespec.framework.measurements.Measurement;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
-
-import de.uka.ipd.sdq.probespec.framework.calculator.Calculator;
-import de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener;
-import de.uka.ipd.sdq.probespec.framework.measurements.Measurement;
 
 /**
  * @author Matthias
