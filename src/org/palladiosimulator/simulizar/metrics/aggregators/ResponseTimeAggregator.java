@@ -9,10 +9,10 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.measurementspec.Measurement;
+import org.palladiosimulator.metricspec.MetricDescriptionConstants;
 import org.palladiosimulator.probespec.framework.calculator.Calculator;
 import org.palladiosimulator.probespec.framework.calculator.ICalculatorListener;
-import org.palladiosimulator.probespec.framework.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.Intervall;
@@ -76,7 +76,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements ICalculatorLi
     }
 
     /**
-     * @see org.palladiosimulator.probespec.framework.calculator.IMeasurementSourceListener#newMeasurementAvailable(Measurement)
+     * @see org.palladiosimulator.measurementspec.IMeasurementSourceListener#newMeasurementAvailable(Measurement)
      */
     @Override
     public void newMeasurementAvailable(final Measurement measurement) {
