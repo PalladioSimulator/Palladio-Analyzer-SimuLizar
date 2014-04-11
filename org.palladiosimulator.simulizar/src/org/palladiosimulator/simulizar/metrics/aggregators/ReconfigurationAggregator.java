@@ -10,9 +10,9 @@ import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.probespec.framework.calculator.Calculator;
 import org.palladiosimulator.probespec.framework.calculator.ICalculatorListener;
-import org.palladiosimulator.probespec.framework.measurements.Measurement;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
