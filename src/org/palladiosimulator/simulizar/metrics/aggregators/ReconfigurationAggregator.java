@@ -3,16 +3,12 @@
  */
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
-import java.util.List;
-
 import javax.activation.UnsupportedDataTypeException;
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.probespec.framework.calculator.Calculator;
-import org.palladiosimulator.probespec.framework.calculator.ICalculatorListener;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
@@ -22,7 +18,7 @@ import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
  * @author Matthias
  * 
  */
-public class ReconfigurationAggregator extends PRMRecorder implements ICalculatorListener {
+public class ReconfigurationAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
     public ReconfigurationAggregator(final PRMAccess prmAccess,
             final MeasurementSpecification measurementSpecification, final Calculator responseTimeCalculator,
