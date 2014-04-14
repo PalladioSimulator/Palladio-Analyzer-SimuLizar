@@ -33,7 +33,7 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  * Class for listening to interpreter events in order to store collected data
  * using the ProbeSpecFramework
  * 
- * @author Steffen Becker, Sebastian Lehrig
+ * @author snowball
  * 
  */
 public class ProbeSpecListener extends AbstractInterpreterListener {
@@ -47,6 +47,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     private final ICalculatorFactory calculatorFactory;
 
     private final Map<EObject, List<TriggeredProbe>> currentTimeProbes = new HashMap<EObject, List<TriggeredProbe>>();
+    private final TriggeredProbe reconfTimeProbe;
 
     /**
      * @param modelAccessFactory Provides access to simulated models
@@ -57,6 +58,7 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
         this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
         this.calculatorFactory = simuComModel.getProbeSpecContext().getCalculatorFactory();
+        this.reconfTimeProbe = null;
     }
 
     /*
@@ -132,6 +134,48 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     }
 
     /**
+     * Initializes response time measurement.
+     * 
+     */
+    private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
+
+        final EObject modelElement = event.getModelElement();
+        final SimuComModel simuComModel = event.getThread().getModel();
+
+        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
+                PerformanceMetricEnum.RESPONSE_TIME);
+        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
+            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
+            
+            final String calculatorName = this.getCalculatorName(event);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
+
+            try {
+                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
+                        modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
+                        .getSimulationControl().getCurrentSimulationTime());
+            } catch (final UnsupportedDataTypeException e) {
+                LOG.error(e);
+                throw new RuntimeException(e);
+            }
+        }
+    }
+    
+    /**
+     * Initializes response time measurement.
+     * 
+     */
+    private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
+
+        final SimuComModel simuComModel = event.getModel();
+
+        final Probe probe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
+        
+        final String calculatorName = "Reconfiguration";
+        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(calculatorName,probe);
+    }
+
+    /**
      * @param modelElement
      * @param simuComModel
      * @return
@@ -174,34 +218,6 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initializes response time measurement.
-     * 
-     */
-    private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
-
-        final EObject modelElement = event.getModelElement();
-        final SimuComModel simuComModel = event.getThread().getModel();
-
-        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
-                PerformanceMetricEnum.RESPONSE_TIME);
-        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
-            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-
-            final String calculatorName = this.getCalculatorName(event);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
-
-            try {
-                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
-                        modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                        .getSimulationControl().getCurrentSimulationTime());
-            } catch (final UnsupportedDataTypeException e) {
-                LOG.error(e);
-                throw new RuntimeException(e);
-            }
-        }
-    }
-    
-    /**
      * @param event
      */
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
@@ -232,5 +248,14 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
         sb.append(" )<");
 
         return sb.toString();
+    }
+
+    @Override
+    public void reconfigurationInterpretation(ReconfigurationEvent event) {
+        if(this.reconfTimeProbe == null) {
+            initReconfTimeMeasurement(event);
+        } else {
+            this.reconfTimeProbe.takeMeasurement();
+        }
     }
 }
