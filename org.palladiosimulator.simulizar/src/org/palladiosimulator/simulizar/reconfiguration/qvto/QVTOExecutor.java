@@ -24,6 +24,9 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PRMAccess;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
@@ -43,8 +46,9 @@ public class QVTOExecutor {
 	
 	private static final String QVTO_FILE_EXTENSION = ".qvto";
 	private static final Logger LOG = Logger.getLogger(QVTOExecutor.class);
-	private List<TransformationExecutor> qvtoRuleSet;
-	private Map<String, Resource> pcmModelMap;
+	private final List<TransformationExecutor> qvtoRuleSet;
+	private final Map<String, Resource> pcmModelMap;
+	private final InterpreterDefaultContext context;
 
 	/**
 	 * Constructor of the QVTOExecutor
@@ -53,12 +57,13 @@ public class QVTOExecutor {
 	 * @param configuration Simulation configuration
 	 * @param blackboard MDSDBlackboard storing the PCM models
 	 */
-	public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard) {
+	public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration, MDSDBlackboard blackboard, InterpreterDefaultContext context) {
 	     super();
 	     this.prmAccess = modelAccessFactory.getPRMModelAccess();
 	     this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
 	     this.loadQvtoRules(configuration);
 	     this.pcmModelMap = getRequiredModels(blackboard);
+	     this.context = context;
 	}
 	
 	/**
@@ -158,17 +163,21 @@ public class QVTOExecutor {
 		
 		// setup the execution environment details ->
 		// configuration properties, logger, monitor object etc.
-		ExecutionContextImpl context = new ExecutionContextImpl();
+		ExecutionContextImpl exContext = new ExecutionContextImpl();
 		//context.setConfigProperty("keepModeling", true);
-		context.setLog(new QVTOReconfigurationLogger(QVTOExecutor.class));
+		exContext.setLog(new QVTOReconfigurationLogger(QVTOExecutor.class));
 
 		// run the transformation assigned to the executor with the given
 		// input and output and execution context
-		ExecutionDiagnostic result = executor.execute(context, input, inoutRepository, inoutSystem, inoutAllocation, inoutResources);
+		ExecutionDiagnostic result = executor.execute(exContext, input, inoutRepository, inoutSystem, inoutAllocation, inoutResources);
 		
 		// check the result for success
 		if (result.getSeverity() == Diagnostic.OK) {
-			LOG.log(Level.INFO, "Rule application successfull with message: " + result.getMessage());			
+		    double passageTime = this.context.getModel().getSimulationControl().getCurrentSimulationTime();
+		    LOG.log(Level.INFO, "Rule application successfull at time " + passageTime + " with message: " + result.getMessage());
+			
+			this.context.getEventNotificationHelper().fireReconfigurationEvent(new ReconfigurationEvent(EventType.RECONFIGURATION, this.context.getModel()));
+			
 			return true;
 		} else {
 			LOG.log(Level.WARN, "Rule application failed with message: " + result.getMessage());

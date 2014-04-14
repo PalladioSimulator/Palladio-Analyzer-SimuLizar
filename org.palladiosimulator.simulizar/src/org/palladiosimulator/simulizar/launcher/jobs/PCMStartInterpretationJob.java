@@ -92,12 +92,12 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         sdReconfigurator.startListening();
         
         final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard) });
+               new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard, mainContext) });
         qvtoReconfigurator.startListening();
 
         // 6. Run Simulation
         LOG.debug("Start simulation");
-        final double simRealTimeNano = ExperimentRunner.run(simuComModel);
+        final double simRealTimeNano = ExperimentRunner.run(simuComModel);         
         LOG.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
                 + " real time seconds");
 

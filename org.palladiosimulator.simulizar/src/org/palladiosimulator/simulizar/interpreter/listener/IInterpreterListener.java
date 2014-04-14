@@ -16,4 +16,6 @@ public interface IInterpreterListener {
     public void beginExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event);
 
     public void endExternalCallInterpretation(RDSEFFElementPassedEvent<ExternalCallAction> event);
+    
+    public void reconfigurationInterpretation(ReconfigurationEvent event);
 }

@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
  * 
  */
 public class LogDebugListener extends AbstractInterpreterListener {
-    private final static Logger logger = Logger.getLogger(LogDebugListener.class);
+    private static final Logger LOG = Logger.getLogger(LogDebugListener.class);
 
     /**
 	 * 
@@ -97,7 +97,7 @@ public class LogDebugListener extends AbstractInterpreterListener {
     }
 
     private <T extends EObject> void logEvent(final ModelElementPassedEvent<T> event) {
-        if (logger.isDebugEnabled()) {
+        if (LOG.isDebugEnabled()) {
             final StringBuilder msgBuilder = new StringBuilder();
             switch (event.getEventType()) {
             case BEGIN:
@@ -105,14 +105,26 @@ public class LogDebugListener extends AbstractInterpreterListener {
                 break;
             case END:
                 msgBuilder.append("Finished interpreting ");
+            default:
+                msgBuilder.append("Unknown event ");
+                break;
             }
             msgBuilder.append(event.getModelElement().eClass().getName());
             msgBuilder.append(" in Simuation Thread \"");
             msgBuilder.append(event.getThread().getId());
             msgBuilder.append("\" at simulation time ");
             msgBuilder.append(event.getPassageTime());
-            logger.debug(msgBuilder.toString());
+            LOG.debug(msgBuilder.toString());
         }
+    }
+
+    @Override
+    public void reconfigurationInterpretation(ReconfigurationEvent event) {
+        final StringBuilder msgBuilder = new StringBuilder();
+        msgBuilder.append("Reconfiguration ");
+        msgBuilder.append(" at simulation time ");
+        msgBuilder.append(event.getPassageTime());
+        LOG.debug(msgBuilder.toString());
     }
 
 }

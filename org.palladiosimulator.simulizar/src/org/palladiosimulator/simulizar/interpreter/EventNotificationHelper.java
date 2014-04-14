@@ -12,6 +12,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.seff.SeffPackage;
@@ -69,6 +70,16 @@ public class EventNotificationHelper {
                 }
                 break;
             default:
+                throw new PCMModelInterpreterException("Tried to fire unknown event");
+            }
+        }
+    }
+    
+    public void fireReconfigurationEvent(final ReconfigurationEvent event) {
+        for (final IInterpreterListener singleListener : this.listener) {
+            if (event.getEventType() == EventType.RECONFIGURATION) {
+                singleListener.reconfigurationInterpretation(event);
+            } else {
                 throw new PCMModelInterpreterException("Tried to fire unknown event");
             }
         }
