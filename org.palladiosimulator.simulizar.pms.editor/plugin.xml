@@ -12,18 +12,19 @@
 
    <extension point="org.eclipse.ui.newWizards">
       <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
+            id="org.palladiosimulator.simulizar.ui.wizard.category.project"
+            name=" SimuLizar"/>
       <wizard
             id="org.palladiosimulator.simulizar.pms.presentation.PmsModelWizardID"
             name="%_UI_PmsModelWizard_label"
             class="org.palladiosimulator.simulizar.pms.presentation.PmsModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            category="org.palladiosimulator.simulizar.ui.wizard.category.project"
             icon="icons/full/obj16/PmsModelFile.gif">
          <description>%_UI_PmsModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
    </extension>
+
 
    <extension point="org.eclipse.ui.editors">
       <editor
