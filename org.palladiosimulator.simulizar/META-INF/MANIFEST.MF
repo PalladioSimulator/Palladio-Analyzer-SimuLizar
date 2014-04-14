@@ -28,9 +28,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar.launcher
 Bundle-Vendor: ag-schaefer.upb.de
-Import-Package: de.uka.ipd.sdq.probespec.framework.calculator,
- org.eclipse.m2m.qvt.oml,
- org.eclipse.m2m.qvt.oml.util,
- org.palladiosimulator.edp2.models.ExperimentData,
- org.palladiosimulator.probespec.framework,
- org.palladiosimulator.probespec.framework.calculator
+Import-Package: org.eclipse.m2m.qvt.oml,
+ org.eclipse.m2m.qvt.oml.util
