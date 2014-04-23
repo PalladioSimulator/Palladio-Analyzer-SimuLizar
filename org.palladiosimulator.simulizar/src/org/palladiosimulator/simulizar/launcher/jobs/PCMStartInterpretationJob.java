@@ -2,14 +2,14 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.palladiosimulator.probespec.framework.ProbeSpecContext;
-import org.palladiosimulator.probespec.framework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.simulizar.access.AccessFactory;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.UsageModelAccess;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeSpecListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
@@ -72,7 +72,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(simuComModel);
         mainContext.getEventNotificationHelper().addListener(new LogDebugListener());
-        mainContext.getEventNotificationHelper().addListener(new ProbeSpecListener(modelAccessFactory, simuComModel));
+        mainContext.getEventNotificationHelper().addListener(new ProbeFrameworkListener(modelAccessFactory, simuComModel));
 
         // 3. Setup interpreters for each usage scenario
         final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(mainContext);
@@ -105,7 +105,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         mainContext.getEventNotificationHelper().removeAllListener();
         sdReconfigurator.stopListening();
         qvtoReconfigurator.stopListening();
-        simuComModel.getProbeSpecContext().finish();
+        simuComModel.getProbeFrameworkContext().finish();
         LOG.info("finished job: " + this);
     }
 
@@ -143,16 +143,16 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // e.g., SSJ engine or Desmo-J engine
         final ISimEngineFactory simEngineFactory = this.getSimEngineFactory();
 
-        // Probe spec context used to take the measurements of the simulation
-        final ProbeSpecContext probeSpecContext = new ProbeSpecContext(
+        // ProbeFramework context used to take the measurements of the simulation
+        final ProbeFrameworkContext probeFrameworkContext = new ProbeFrameworkContext(
                 new RecorderAttachingCalculatorFactoryDecorator(new DefaultCalculatorFactory(), (SimuComConfig)simulationConfiguration));
 
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
-                simEngineFactory, false, probeSpecContext);
+                simEngineFactory, false, probeFrameworkContext);
 
         simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 
-        this.linkSimuComAndProbeSpec(simuComModel, probeSpecContext);
+        this.linkSimuComAndProbeFramework(simuComModel, probeFrameworkContext);
 
         return simuComModel;
     }
@@ -193,16 +193,16 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      * @param simuComModel
      *            the SimuCom model.
      */
-    private void linkSimuComAndProbeSpec(final SimuComModel simuComModel, final ProbeSpecContext probeSpecContext) {
+    private void linkSimuComAndProbeFramework(final SimuComModel simuComModel, final ProbeFrameworkContext probeFrameworkContext) {
         //final ISampleBlackboard discardingBlackboard = new DiscardInvalidMeasurementsBlackboardDecorator(
         //       new SampleBlackboard(), simuComModel.getSimulationControl());
 
-        //probeSpecContext.initialise(discardingBlackboard, new SimuComProbeStrategyRegistry(), new CalculatorFactory(
+        //probeFrameworkContext.initialise(discardingBlackboard, new SimuComProbeStrategyRegistry(), new CalculatorFactory(
         //        simuComModel, new SetupPipesAndFiltersStrategy(simuComModel)));
 
         // install a garbage collector which keeps track of the samples stored
         // on the blackboard and
         // removes samples when they become obsolete
-        //probeSpecContext.setBlackboardGarbageCollector(new SimuComGarbageCollector(discardingBlackboard));
+        //probeFrameworkContext.setBlackboardGarbageCollector(new SimuComGarbageCollector(discardingBlackboard));
     }
 }

@@ -49,7 +49,7 @@
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.workflow.pcm" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.probespec.framework" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probeframework" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.pcm.stochasticexpressions" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex.analyser" version="2.0.0" match="greaterOrEqual"/>

@@ -10,10 +10,10 @@ import javax.activation.UnsupportedDataTypeException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.probespec.framework.calculator.Calculator;
-import org.palladiosimulator.probespec.framework.calculator.ICalculatorFactory;
-import org.palladiosimulator.probespec.framework.probes.Probe;
-import org.palladiosimulator.probespec.framework.probes.TriggeredProbe;
+import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
+import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PMSAccess;
 import org.palladiosimulator.simulizar.access.PRMAccess;
@@ -31,14 +31,14 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
 /**
  * Class for listening to interpreter events in order to store collected data
- * using the ProbeSpecFramework
+ * using the ProbeFramework
  * 
  * @author snowball
  * 
  */
-public class ProbeSpecListener extends AbstractInterpreterListener {
+public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
-    private static final Logger LOG = Logger.getLogger(ProbeSpecListener.class);
+    private static final Logger LOG = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
@@ -53,11 +53,11 @@ public class ProbeSpecListener extends AbstractInterpreterListener {
      * @param modelAccessFactory Provides access to simulated models
      * @param simuComModel Provides access to the central simulation
      */
-    public ProbeSpecListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
+    public ProbeFrameworkListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
         super();
         this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
-        this.calculatorFactory = simuComModel.getProbeSpecContext().getCalculatorFactory();
+        this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.reconfTimeProbe = null;
     }
 
