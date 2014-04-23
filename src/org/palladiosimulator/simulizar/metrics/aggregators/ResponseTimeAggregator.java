@@ -12,7 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.measurementspec.IMeasurementSourceListener;
 import org.palladiosimulator.measurementspec.Measurement;
 import org.palladiosimulator.metricspec.MetricDescriptionConstants;
-import org.palladiosimulator.probespec.framework.calculator.Calculator;
+import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.Intervall;
@@ -42,7 +42,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * @param measurementSpecification
      *            the measurement specification.
      * @param responseTimeCalculator
-     *            the response time calculator of the probe specification framework.
+     *            the response time calculator of ProbeFramework.
      * @param measurementId
      *            id of the measurement.
      * @param monitoredElement

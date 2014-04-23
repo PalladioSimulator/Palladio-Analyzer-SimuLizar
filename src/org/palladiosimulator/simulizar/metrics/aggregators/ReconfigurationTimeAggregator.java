@@ -29,7 +29,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
     }
 
     /* (non-Javadoc)
-     * @see de.uka.ipd.sdq.probespec.framework.measurements.IMeasurementSourceListener#newMeasurementAvailable(de.uka.ipd.sdq.probespec.framework.measurements.Measurement)
+     * @see org.palladiosimulator.measurementspec.IMeasurementSourceListener#newMeasurementAvailable(org.palladiosimulator.measurementspec.Measurement)
      */
     @Override
     public void newMeasurementAvailable(Measurement measurement) {
@@ -40,7 +40,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
     }
 
     /* (non-Javadoc)
-     * @see de.uka.ipd.sdq.probespec.framework.calculator.ICalculatorListener#preUnregister()
+     * @see org.palladiosimulator.measurementspec.IMeasurementSourceListener#preUnregister()
      */
     @Override
     public void preUnregister() {
