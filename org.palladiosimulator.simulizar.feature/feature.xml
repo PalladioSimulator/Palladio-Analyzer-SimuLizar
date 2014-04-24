@@ -15,7 +15,7 @@ the Palladio Research Group, University of Karlsruhe.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/epl-v10.html">
-            Eclipse Public License - v 1.0
+      Eclipse Public License - v 1.0
 THE ACCOMPANYING PROGRAM IS PROVIDED UNDER THE TERMS OF THIS
 ECLIPSE PUBLIC LICENSE (&quot;AGREEMENT&quot;). ANY USE, REPRODUCTION OR
 DISTRIBUTION OF THE PROGRAM CONSTITUTES RECIPIENT&apos;S ACCEPTANCE
@@ -251,12 +251,10 @@ litigation.
       <import plugin="de.uka.ipd.sdq.probfunction.edit"/>
       <import plugin="de.uka.ipd.sdq.stoex.edit"/>
       <import plugin="de.uka.ipd.sdq.units.edit"/>
-      <import plugin="org.palladiosimulator.simulizar.prm.edit"/>
       <import plugin="de.uka.ipd.sdq.simucomframework" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.workflow.pcm" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.probeframework" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.pcm.stochasticexpressions" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex.analyser" version="2.0.0" match="greaterOrEqual"/>
@@ -270,6 +268,13 @@ litigation.
       <import plugin="de.uka.ipd.sdq.scheduler" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui"/>
       <import plugin="org.eclipse.debug.ui" version="3.6.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.probeframework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.measurementspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml"/>
+      <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0.201404240913"/>
+      <import feature="org.eclipse.m2m.qvt.oml" version="3.4.0.v20140311-0437"/>
+      <import feature="org.eclipse.m2m.qvt.oml.runtime" version="3.4.0.v20140311-0437"/>
    </requires>
 
    <plugin
