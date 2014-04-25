@@ -18,6 +18,7 @@
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="FeatureModel" failOnError="false"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="WorkflowEngine" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.edp2.*" searchPathRef="edp2" failOnError="false"/>
+  <rm:locator pattern="^org\.eclipse\.m2m\.qvt.*" searchPathRef="qvto" failOnError="false"/>
   <rm:locator searchPathRef="kepler" failOnError="true" pattern="^org\.eclipse\..*" />
   <rm:locator searchPathRef="orbit" failOnError="false" />
   <rm:locator searchPathRef="pcm" failOnError="false" />
@@ -101,6 +102,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://download.eclipse.org/releases/kepler/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="qvto">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/mmt/qvto/updates/milestones/3.4.0"/>
     </rm:provider>
   </rm:searchPath>
   
