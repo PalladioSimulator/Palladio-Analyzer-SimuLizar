@@ -45,10 +45,6 @@
          version="0.0.0"/>
 
    <includes
-         id="de.mdelab.sdm.interpreter.common.feature"
-         version="0.0.0"/>
-
-   <includes
          id="org.storydriven.storydiagrams.interpreter.feature"
          version="0.0.0"/>
 
@@ -70,6 +66,10 @@
 
    <includes
          id="org.eclipse.m2m.qvt.oml.runtime"
+         version="0.0.0"/>
+
+   <includes
+         id="de.mdelab.sdm.interpreter.core.feature"
          version="0.0.0"/>
 
    <plugin
