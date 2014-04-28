@@ -262,8 +262,6 @@ litigation.
       <import plugin="org.palladiosimulator.measurementspec" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.qvt.oml"/>
       <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.m2m.qvt.oml" version="3.4.0" match="greaterOrEqual"/>
-      <import feature="org.eclipse.m2m.qvt.oml.runtime" version="3.4.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
