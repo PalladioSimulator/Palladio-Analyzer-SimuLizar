@@ -63,8 +63,10 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         this.responseTimes = new LinkedList<Double>();
         if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN) {
             this.aggregator = new ArithmeticMean();
+        } else if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.MEDIAN){
+        	this.aggregator = new Median();
         } else {
-            throw new UnsupportedDataTypeException("Only Arithmetic Mean is currently supported");
+            throw new UnsupportedDataTypeException("Only Arithmetic Mean and Median are currently supported");
         }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
             throw new UnsupportedDataTypeException("Only Intervall is currently supported");
