@@ -61,16 +61,21 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
                     throws UnsupportedDataTypeException {
         super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
         this.responseTimes = new LinkedList<Double>();
-        if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.ARITHMETIC_MEAN) {
-            this.aggregator = new ArithmeticMean();
-        } else if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.MEDIAN){
+        switch(measurementSpecification.getStatisticalCharacterization()){
+        case ARITHMETIC_MEAN:
+        	this.aggregator = new ArithmeticMean();
+        	break;
+        case MEDIAN:
         	this.aggregator = new Median();
-        } else if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.GEOMETRIC_MEAN){
+        	break;
+        case GEOMETRIC_MEAN:
         	this.aggregator = new GeometricMean();
-        } else if (measurementSpecification.getStatisticalCharacterization() == StatisticalCharacterizationEnum.HARMONIC_MEAN){
+        	break;
+        case HARMONIC_MEAN:
         	this.aggregator = new HarmonicMean();
-        } else {
-            throw new UnsupportedDataTypeException("This aggregator is currently not supported");
+        	break;
+        default:
+        	throw new UnsupportedDataTypeException("This aggregator is currently not supported");
         }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
             throw new UnsupportedDataTypeException("Only Intervall is currently supported");
