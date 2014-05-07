@@ -69,7 +69,7 @@
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/featuremodel/releases/1.3/"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/featuremodel/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="WorkflowEngine">
