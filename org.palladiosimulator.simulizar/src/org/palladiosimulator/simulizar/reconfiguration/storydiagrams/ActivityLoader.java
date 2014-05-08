@@ -96,7 +96,8 @@ public final class ActivityLoader {
     // }
     // }
 
-    private static void createParameters(final EOperation method, final String[] paramNames, final EClassifier[] paramTypes) {
+    private static void createParameters(final EOperation method, final String[] paramNames,
+            final EClassifier[] paramTypes) {
         for (int i = 0; i < paramNames.length; i++) {
             final EParameter parameter = EcoreFactory.eINSTANCE.createEParameter();
             parameter.setName(paramNames[i]);

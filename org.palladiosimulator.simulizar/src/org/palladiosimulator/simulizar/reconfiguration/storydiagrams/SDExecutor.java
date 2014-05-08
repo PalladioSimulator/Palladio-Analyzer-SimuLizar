@@ -40,12 +40,12 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
  * 
  */
 public class SDExecutor {
-    
+
     /**
-     * This class' internal logger. 
+     * This class' internal logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SDExecutor.class);
-    
+
     /**
     * 
     */
@@ -164,9 +164,9 @@ public class SDExecutor {
         final List<Activity> result = new LinkedList<Activity>();
 
         for (final Activity activity : ActivitiesFromModels) {
-            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] {
-                    USAGE_MODEL, SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL,
-                    PRM_MODEL, MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
+            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] { USAGE_MODEL,
+                    SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL, PRM_MODEL,
+                    MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
                     REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
                     PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS });
 
@@ -208,10 +208,13 @@ public class SDExecutor {
     /**
      * Executes one activities for the given monitored element.
      * 
-     * @param activity Activities in the StoryDiagram
-     * @param parameters Parameters for the StoryDiagram execution
+     * @param activity
+     *            Activities in the StoryDiagram
+     * @param parameters
+     *            Parameters for the StoryDiagram execution
      * @return always returns false
-     * @throws SDMException in case the SD Activity could not be executed
+     * @throws SDMException
+     *             in case the SD Activity could not be executed
      */
     private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
         this.sdmInterpreter.executeActivity(activity, parameters);
@@ -224,8 +227,8 @@ public class SDExecutor {
      * 
      * @param monitoredElement
      *            the pcm model element to be monitored.
-     * @return true if at least one reconfiguration's check was positive and it 
-     *              reconfigured the model.
+     * @return true if at least one reconfiguration's check was positive and it reconfigured the
+     *         model.
      */
     public boolean executeActivities(final EObject monitoredElement) {
         final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(MONITORED_ELEMENT,

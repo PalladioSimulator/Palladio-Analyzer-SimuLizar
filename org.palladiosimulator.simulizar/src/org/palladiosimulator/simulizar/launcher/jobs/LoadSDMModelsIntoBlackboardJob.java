@@ -35,7 +35,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
     private MDSDBlackboard blackboard;
 
     private final String path;
-    
+
     private static final Logger logger = Logger.getLogger(LoadSDMModelsIntoBlackboardJob.class);
 
     /**
@@ -58,31 +58,30 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
         this.getBlackboard().addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
 
         if (!this.path.equals("")) {
-       
-        	//add file protocol only if necessary
-        	String filePath = path;
-        	File folder = null;
-        	if (!path.startsWith("platform:")) {
-        		filePath = "file:///" + filePath;
-        		
-        		URI pathToSDM = URI.createURI(filePath);
+
+            // add file protocol only if necessary
+            String filePath = path;
+            File folder = null;
+            if (!path.startsWith("platform:")) {
+                filePath = "file:///" + filePath;
+
+                URI pathToSDM = URI.createURI(filePath);
                 folder = new File(pathToSDM.toFileString());
-        	}
-        	else {
-        	    try {
+            } else {
+                try {
                     URL pathURL = FileLocator.resolve(new URL(this.path));
                     String folderString = pathURL.toExternalForm().replace("file:", "");
                     folder = new File(folderString);
                 } catch (IOException e) {
-                    logger.warn ("No SDM models found, SD reconfigurations disabled.", e);
+                    logger.warn("No SDM models found, SD reconfigurations disabled.", e);
                     return;
                 }
-        	}
-            
-        	if (!folder.exists()) {
-        	    logger.warn("Folder "+folder+" does not exist. No reconfiguration rules will be loaded.");
-        	    return;
-        	}
+            }
+
+            if (!folder.exists()) {
+                logger.warn("Folder " + folder + " does not exist. No reconfiguration rules will be loaded.");
+                return;
+            }
             final File[] files = folder.listFiles(new FilenameFilter() {
 
                 @Override
@@ -95,7 +94,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
                     sdmPartition.loadModel(URI.createFileURI(file.getPath()));
                 }
             } else {
-                logger.warn ("No SDM models found, SD reconfigurations disabled.");
+                logger.warn("No SDM models found, SD reconfigurations disabled.");
             }
         }
 

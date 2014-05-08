@@ -220,7 +220,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         if (logger.isDebugEnabled()) {
             logger.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
-        
+
         // interpret behavior the given number of times
         this.interpretLoop(object, numberOfLoops);
 
@@ -291,18 +291,22 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
      */
-    /* (non-Javadoc)
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction
+     * )
      */
     @Override
     public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
         if (object.getSuccessor_AbstractAction() != null) {
             if (logger.isDebugEnabled()) {
-                logger.debug("Interpret "+object.getSuccessor_AbstractAction().eClass().getName()+": " + object);
+                logger.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
             }
             this.doSwitch(object.getSuccessor_AbstractAction());
             if (logger.isDebugEnabled()) {
-                logger.debug("Interpret "+object.getSuccessor_AbstractAction().eClass().getName()+": " + object);
+                logger.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
             }
         }
         return null;
@@ -375,8 +379,8 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                             RDSeffSwitch.this.context.getAssemblyContextStack().peek());
 
                     if (logger.isDebugEnabled()) {
-                        logger.debug("Created new RDSeff interpreter for "
-                            + ((this.isAsync()) ? "asynced" : "synced") + " forked baviour: " + this);
+                        logger.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
+                                + " forked baviour: " + this);
                     }
                     seffInterpreter.doSwitch(forkedBehaviour);
                 }
@@ -446,7 +450,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 
             if (logger.isDebugEnabled()) {
                 logger.debug("Created new stackframe with evaluated inner collection variables: "
-                    + innerVariableStackFrame);
+                        + innerVariableStackFrame);
             }
 
             /*
@@ -470,7 +474,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                 logger.debug("Remove stack frame: " + innerVariableStackFrame);
             }
             this.context.getStack().removeStackFrame();
-            if (logger.isDebugEnabled()) { 
+            if (logger.isDebugEnabled()) {
                 logger.debug("Finished loop number " + i + ": " + object);
             }
         }

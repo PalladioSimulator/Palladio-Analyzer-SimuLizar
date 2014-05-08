@@ -13,8 +13,8 @@ import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 
 /**
- * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input
- * fields for PMS models and SDM models.
+ * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input fields for PMS
+ * models and SDM models.
  */
 public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
@@ -35,13 +35,18 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
          * Create PMS file section
          */
         pmsFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Palladio Monitoring Specification Model (PMS) File", SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, pmsFile, "Select PMS File", getShell(), SimulizarConstants.DEFAULT_PMS_FILE);
+        TabHelper.createFileInputSection(container, modifyListener,
+                "Optional: Palladio Monitoring Specification Model (PMS) File",
+                SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, pmsFile, "Select PMS File", getShell(),
+                SimulizarConstants.DEFAULT_PMS_FILE);
 
         /**
          * Create reconfiguration rules folder section
          */
         reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration rules folder ", reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(), SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration rules folder ",
+                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
+                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
 
     }
 
@@ -52,41 +57,48 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     public void initializeFrom(final ILaunchConfiguration configuration) {
         super.initializeFrom(configuration);
         try {
-            pmsFile.setText(configuration.getAttribute(
-                    SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE));
+            pmsFile.setText(configuration
+                    .getAttribute(SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE));
         } catch (final CoreException e) {
-            LaunchConfigPlugin.errorLogger(getName(),"PMS File", e.getMessage());
+            LaunchConfigPlugin.errorLogger(getName(), "PMS File", e.getMessage());
         }
 
         try {
             reconfigurationRulesFolder.setText(configuration.getAttribute(
-                    SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER));
+                    SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+                    SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER));
         } catch (final CoreException e) {
-            LaunchConfigPlugin.errorLogger(getName(),"Reconfiguration Rules Folder", e.getMessage());
+            LaunchConfigPlugin.errorLogger(getName(), "Reconfiguration Rules Folder", e.getMessage());
         }
 
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#performApply(org.eclipse.debug.core.
+     * ILaunchConfigurationWorkingCopy)
      */
     @Override
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         super.performApply(configuration);
-        configuration.setAttribute(SimulizarConstants.PMS_FILE,
-                pmsFile.getText());
+        configuration.setAttribute(SimulizarConstants.PMS_FILE, pmsFile.getText());
         configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 reconfigurationRulesFolder.getText());
     }
 
-    /* (non-Javadoc)
-     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.ILaunchConfigurationWorkingCopy)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see org.eclipse.debug.ui.ILaunchConfigurationTab#setDefaults(org.eclipse.debug.core.
+     * ILaunchConfigurationWorkingCopy)
      */
     @Override
     public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
         super.setDefaults(configuration);
-        configuration.setAttribute(SimulizarConstants.PMS_FILE,	SimulizarConstants.DEFAULT_PMS_FILE);
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        configuration.setAttribute(SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE);
+        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
     }
 
     /**

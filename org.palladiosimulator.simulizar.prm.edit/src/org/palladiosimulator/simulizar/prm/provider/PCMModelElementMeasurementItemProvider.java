@@ -6,7 +6,6 @@
  */
 package org.palladiosimulator.simulizar.prm.provider;
 
-
 import java.util.Collection;
 import java.util.List;
 
@@ -25,40 +24,33 @@ import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
 
 /**
- * This is the item provider adapter for a {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement} object.
- * <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * This is the item provider adapter for a
+ * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
+ * 
  * @generated
  */
-public class PCMModelElementMeasurementItemProvider
-   extends UniqueElementItemProvider
-   implements
-      IEditingDomainItemProvider,
-      IStructuredItemContentProvider,
-      ITreeItemContentProvider,
-      IItemLabelProvider,
-      IItemPropertySource
-{
-   /**
-     * This constructs an instance from a factory and a notifier.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+public class PCMModelElementMeasurementItemProvider extends UniqueElementItemProvider implements
+        IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider,
+        IItemPropertySource {
+    /**
+     * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     * 
      * @generated
      */
-   public PCMModelElementMeasurementItemProvider(AdapterFactory adapterFactory)
-   {
+    public PCMModelElementMeasurementItemProvider(AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
-   /**
-     * This returns the property descriptors for the adapted class.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     * 
      * @generated
      */
-   @Override
-   public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object)
-   {
+    @Override
+    public List<IItemPropertyDescriptor> getPropertyDescriptors(Object object) {
         if (itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
@@ -69,132 +61,111 @@ public class PCMModelElementMeasurementItemProvider
         return itemPropertyDescriptors;
     }
 
-   /**
-     * This adds a property descriptor for the Pcm Model Element feature.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This adds a property descriptor for the Pcm Model Element feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @generated
      */
-   protected void addPcmModelElementPropertyDescriptor(Object object)
-   {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_PCMModelElementMeasurement_pcmModelElement_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_PCMModelElementMeasurement_pcmModelElement_feature", "_UI_PCMModelElementMeasurement_type"),
-                 PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT,
-                 true,
-                 false,
-                 true,
-                 null,
-                 null,
-                 null));
+    protected void addPcmModelElementPropertyDescriptor(Object object) {
+        itemPropertyDescriptors
+                .add(createItemPropertyDescriptor(
+                        ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+                        getResourceLocator(),
+                        getString("_UI_PCMModelElementMeasurement_pcmModelElement_feature"),
+                        getString("_UI_PropertyDescriptor_description",
+                                "_UI_PCMModelElementMeasurement_pcmModelElement_feature",
+                                "_UI_PCMModelElementMeasurement_type"),
+                        PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT, true, false, true, null,
+                        null, null));
     }
 
-   /**
-     * This adds a property descriptor for the Measurement Specification feature.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This adds a property descriptor for the Measurement Specification feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   protected void addMeasurementSpecificationPropertyDescriptor(Object object)
-   {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_PCMModelElementMeasurement_measurementSpecification_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_PCMModelElementMeasurement_measurementSpecification_feature", "_UI_PCMModelElementMeasurement_type"),
-                 PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION,
-                 true,
-                 false,
-                 true,
-                 null,
-                 null,
-                 null));
+    protected void addMeasurementSpecificationPropertyDescriptor(Object object) {
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+                getResourceLocator(),
+                getString("_UI_PCMModelElementMeasurement_measurementSpecification_feature"),
+                getString("_UI_PropertyDescriptor_description",
+                        "_UI_PCMModelElementMeasurement_measurementSpecification_feature",
+                        "_UI_PCMModelElementMeasurement_type"),
+                PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION, true, false, true, null,
+                null, null));
     }
 
-   /**
-     * This adds a property descriptor for the Measurement Value feature.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This adds a property descriptor for the Measurement Value feature. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * 
      * @generated
      */
-   protected void addMeasurementValuePropertyDescriptor(Object object)
-   {
-        itemPropertyDescriptors.add
-            (createItemPropertyDescriptor
-                (((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-                 getResourceLocator(),
-                 getString("_UI_PCMModelElementMeasurement_measurementValue_feature"),
-                 getString("_UI_PropertyDescriptor_description", "_UI_PCMModelElementMeasurement_measurementValue_feature", "_UI_PCMModelElementMeasurement_type"),
-                 PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE,
-                 true,
-                 false,
-                 false,
-                 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-                 null,
-                 null));
+    protected void addMeasurementValuePropertyDescriptor(Object object) {
+        itemPropertyDescriptors.add(createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) adapterFactory).getRootAdapterFactory(),
+                getResourceLocator(),
+                getString("_UI_PCMModelElementMeasurement_measurementValue_feature"),
+                getString("_UI_PropertyDescriptor_description",
+                        "_UI_PCMModelElementMeasurement_measurementValue_feature",
+                        "_UI_PCMModelElementMeasurement_type"),
+                PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE, true, false, false,
+                ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
     }
 
-   /**
-     * This returns PCMModelElementMeasurement.gif.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This returns PCMModelElementMeasurement.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   @Override
-   public Object getImage(Object object)
-   {
+    @Override
+    public Object getImage(Object object) {
         return overlayImage(object, getResourceLocator().getImage("full/obj16/PCMModelElementMeasurement"));
     }
 
-   /**
-     * This returns the label text for the adapted class.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
+     * -->
+     * 
      * @generated
      */
-   @Override
-   public String getText(Object object)
-   {
-        String label = ((PCMModelElementMeasurement)object).getGuid();
-        return label == null || label.length() == 0 ?
-            getString("_UI_PCMModelElementMeasurement_type") :
-            getString("_UI_PCMModelElementMeasurement_type") + " " + label;
+    @Override
+    public String getText(Object object) {
+        String label = ((PCMModelElementMeasurement) object).getGuid();
+        return label == null || label.length() == 0 ? getString("_UI_PCMModelElementMeasurement_type")
+                : getString("_UI_PCMModelElementMeasurement_type") + " " + label;
     }
 
-   /**
+    /**
      * This handles model notifications by calling {@link #updateChildren} to update any cached
-     * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+     * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
+     * . <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   @Override
-   public void notifyChanged(Notification notification)
-   {
+    @Override
+    public void notifyChanged(Notification notification) {
         updateChildren(notification);
 
         switch (notification.getFeatureID(PCMModelElementMeasurement.class)) {
-            case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
-                fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-                return;
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
+            fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
         }
         super.notifyChanged(notification);
     }
 
-   /**
-     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children
-     * that can be created under this object.
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that
+     * can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   @Override
-   protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object)
-   {
+    @Override
+    protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
     }
 

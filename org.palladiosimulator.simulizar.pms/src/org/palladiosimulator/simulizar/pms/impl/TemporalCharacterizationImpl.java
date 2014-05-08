@@ -11,35 +11,31 @@ import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Temporal Characterization</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Temporal Characterization</b></em>'. <!-- end-user-doc -->
  * <p>
  * </p>
- *
+ * 
  * @generated
  */
-public abstract class TemporalCharacterizationImpl extends UniqueElementImpl implements TemporalCharacterization
-{
-   /**
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+public abstract class TemporalCharacterizationImpl extends UniqueElementImpl implements TemporalCharacterization {
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   protected TemporalCharacterizationImpl()
-   {
+    protected TemporalCharacterizationImpl() {
         super();
     }
 
-   /**
-     * <!-- begin-user-doc -->
-    * <!-- end-user-doc -->
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
-   @Override
-   protected EClass eStaticClass()
-   {
+    @Override
+    protected EClass eStaticClass() {
         return PmsPackage.Literals.TEMPORAL_CHARACTERIZATION;
     }
 
-} //TemporalCharacterizationImpl
+} // TemporalCharacterizationImpl

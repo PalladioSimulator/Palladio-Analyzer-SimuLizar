@@ -73,13 +73,13 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 Double.class);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Start delay " + delay + " @ simulation time "
-                + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
+                    + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
         }
         // hold simulation process
         this.context.getThread().hold(delay);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Continue user @ simulation time "
-                + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
+                    + this.context.getModel().getSimulationControl().getCurrentSimulationTime());
         }
         return super.caseDelay(object);
     }
@@ -173,12 +173,12 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     public T caseAbstractUserAction(final AbstractUserAction object) {
         if (object.getSuccessor() != null) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Interpret "+object.getSuccessor().eClass().getName()+": "+object);
+                LOGGER.debug("Interpret " + object.getSuccessor().eClass().getName() + ": " + object);
             }
             this.doSwitch(object.getSuccessor());
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Finished Interpretation of "+object.getSuccessor().eClass().getName()+": " + object);
-            }        
+                LOGGER.debug("Finished Interpretation of " + object.getSuccessor().eClass().getName() + ": " + object);
+            }
         }
         return super.caseAbstractUserAction(object);
     }

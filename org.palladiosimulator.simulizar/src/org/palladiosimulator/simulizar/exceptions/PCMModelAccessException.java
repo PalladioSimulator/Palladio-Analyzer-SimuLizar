@@ -25,7 +25,7 @@ public class PCMModelAccessException extends RuntimeException {
     }
 
     public PCMModelAccessException(String msg, SDMException e) {
-        super(msg,e);
+        super(msg, e);
     }
 
 }

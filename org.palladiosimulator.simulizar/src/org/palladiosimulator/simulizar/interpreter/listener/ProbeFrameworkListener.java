@@ -30,8 +30,8 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
 /**
- * Class for listening to interpreter events in order to store collected data
- * using the ProbeFramework
+ * Class for listening to interpreter events in order to store collected data using the
+ * ProbeFramework
  * 
  * @author snowball
  * 
@@ -50,8 +50,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private final TriggeredProbe reconfTimeProbe;
 
     /**
-     * @param modelAccessFactory Provides access to simulated models
-     * @param simuComModel Provides access to the central simulation
+     * @param modelAccessFactory
+     *            Provides access to simulated models
+     * @param simuComModel
+     *            Provides access to the central simulation
      */
     public ProbeFrameworkListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
         super();
@@ -146,21 +148,21 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 PerformanceMetricEnum.RESPONSE_TIME);
         if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
             final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-            
+
             final String calculatorName = this.getCalculatorName(event);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName,probeList);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName, probeList);
 
             try {
                 new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
                         modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                        .getSimulationControl().getCurrentSimulationTime());
+                                .getSimulationControl().getCurrentSimulationTime());
             } catch (final UnsupportedDataTypeException e) {
                 LOG.error(e);
                 throw new RuntimeException(e);
             }
         }
     }
-    
+
     /**
      * Initializes response time measurement.
      * 
@@ -170,9 +172,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         final SimuComModel simuComModel = event.getModel();
 
         final Probe probe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
-        
+
         final String calculatorName = "Reconfiguration";
-        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(calculatorName,probe);
+        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(calculatorName, probe);
     }
 
     /**
@@ -213,7 +215,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         this.initReponseTimeMeasurement(event);
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
-            .takeMeasurement(event.getThread().getRequestContext());
+                    .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
@@ -223,7 +225,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
-            .takeMeasurement(event.getThread().getRequestContext());
+                    .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
@@ -252,7 +254,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     @Override
     public void reconfigurationInterpretation(ReconfigurationEvent event) {
-        if(this.reconfTimeProbe == null) {
+        if (this.reconfTimeProbe == null) {
             initReconfTimeMeasurement(event);
         } else {
             this.reconfTimeProbe.takeMeasurement();

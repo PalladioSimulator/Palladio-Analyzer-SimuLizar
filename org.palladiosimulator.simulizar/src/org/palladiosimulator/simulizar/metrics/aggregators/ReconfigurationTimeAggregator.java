@@ -16,11 +16,12 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
 /**
  * @author Matthias
- *
+ * 
  */
 public class ReconfigurationTimeAggregator implements IMeasurementSourceListener {
 
     private final List<Double> reconfigurationTimes;
+
     /**
      * 
      */
@@ -28,18 +29,25 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
         this.reconfigurationTimes = new LinkedList<Double>();
     }
 
-    /* (non-Javadoc)
-     * @see org.palladiosimulator.measurementspec.IMeasurementSourceListener#newMeasurementAvailable(org.palladiosimulator.measurementspec.Measurement)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * org.palladiosimulator.measurementspec.IMeasurementSourceListener#newMeasurementAvailable(
+     * org.palladiosimulator.measurementspec.Measurement)
      */
     @Override
     public void newMeasurementAvailable(Measurement measurement) {
-        final Measure<Double,Duration> currentSimulationTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> currentSimulationTimeMeasure = measurement
+                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
 
         this.reconfigurationTimes.add(currentSimulationTimeMeasure.doubleValue(SI.SECOND));
     }
 
-    /* (non-Javadoc)
+    /*
+     * (non-Javadoc)
+     * 
      * @see org.palladiosimulator.measurementspec.IMeasurementSourceListener#preUnregister()
      */
     @Override

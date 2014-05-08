@@ -58,8 +58,7 @@ public final class SimulatedStackHelper {
                 targetStackFrame.addValue(id, value);
 
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("Added value " + value + " for id " + id + " to stackframe "
-                        + targetStackFrame);
+                    LOG.debug("Added value " + value + " for id " + id + " to stackframe " + targetStackFrame);
                 }
             }
         }

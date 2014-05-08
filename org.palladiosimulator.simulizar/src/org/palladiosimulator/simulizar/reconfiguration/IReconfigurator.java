@@ -11,10 +11,11 @@ import org.eclipse.emf.ecore.EObject;
 public interface IReconfigurator {
 
     /**
-     * Trigger a reconfiguration of the model@runtime. Clients should both check whether they
-     * should reconfigure and do the reconfiguration if the check is positive.
+     * Trigger a reconfiguration of the model@runtime. Clients should both check whether they should
+     * reconfigure and do the reconfiguration if the check is positive.
      * 
-     * @param monitoredElement PCM model element for which a new sensor measurement arrived. 
+     * @param monitoredElement
+     *            PCM model element for which a new sensor measurement arrived.
      */
     public abstract void checkAndExecute(EObject monitoredElement);
 
