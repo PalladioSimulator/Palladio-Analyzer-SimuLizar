@@ -52,30 +52,30 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * @param pcmModelElementMeasurement
      *            the PCMModelElementMeasurement from the prm model.
      * @throws UnsupportedDataTypeException
-     *             if statistical characterization is not supported.
-     * TODO: This class should not know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
+     *             if statistical characterization is not supported. TODO: This class should not
+     *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
     public ResponseTimeAggregator(final PRMAccess prmAccess, final MeasurementSpecification measurementSpecification,
             final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
             final PCMModelElementMeasurement pcmModelElementMeasurement, final double baseSimulationTime)
-                    throws UnsupportedDataTypeException {
+            throws UnsupportedDataTypeException {
         super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
         this.responseTimes = new LinkedList<Double>();
-        switch(measurementSpecification.getStatisticalCharacterization()){
+        switch (measurementSpecification.getStatisticalCharacterization()) {
         case ARITHMETIC_MEAN:
-        	this.aggregator = new ArithmeticMean();
-        	break;
+            this.aggregator = new ArithmeticMean();
+            break;
         case MEDIAN:
-        	this.aggregator = new Median();
-        	break;
+            this.aggregator = new Median();
+            break;
         case GEOMETRIC_MEAN:
-        	this.aggregator = new GeometricMean();
-        	break;
+            this.aggregator = new GeometricMean();
+            break;
         case HARMONIC_MEAN:
-        	this.aggregator = new HarmonicMean();
-        	break;
+            this.aggregator = new HarmonicMean();
+            break;
         default:
-        	throw new UnsupportedDataTypeException("This aggregator is currently not supported");
+            throw new UnsupportedDataTypeException("This aggregator is currently not supported");
         }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
             throw new UnsupportedDataTypeException("Only Intervall is currently supported");
@@ -91,8 +91,10 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      */
     @Override
     public void newMeasurementAvailable(final Measurement measurement) {
-        final Measure<Double,Duration> currentSimulationTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final Measure<Double,Duration> responseTimeMeasure = measurement.getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
+        final Measure<Double, Duration> currentSimulationTimeMeasure = measurement
+                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+        final Measure<Double, Duration> responseTimeMeasure = measurement
+                .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
 
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {

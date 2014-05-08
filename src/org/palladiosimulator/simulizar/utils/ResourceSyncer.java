@@ -53,9 +53,8 @@ public class ResourceSyncer {
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                LOG
-                        .info("Resource environment changed by reconfiguration - Resync simulated resources: "
-                                + notification);
+                LOG.info("Resource environment changed by reconfiguration - Resync simulated resources: "
+                        + notification);
                 ResourceSyncer.this.syncResourceEnvironment();
             }
 
@@ -147,7 +146,8 @@ public class ResourceSyncer {
     }
 
     /**
-     * @param scheduledResource Resource which existence shall be checked
+     * @param scheduledResource
+     *            Resource which existence shall be checked
      * @return true if resource exists
      */
     private boolean existsResource(final ScheduledResource scheduledResource) {
@@ -181,10 +181,9 @@ public class ResourceSyncer {
                                                                                                         // correct?
                 description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Added ActiveResource. TypeID: " + typeId + ", Description: "
-                + description + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr
-                + ", Units: " + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: "
-                + numberOfReplicas);
+            LOG.debug("Added ActiveResource. TypeID: " + typeId + ", Description: " + description
+                    + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr + ", Units: "
+                    + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: " + numberOfReplicas);
         }
 
         // is monitored?
@@ -203,8 +202,7 @@ public class ResourceSyncer {
             for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
                     .getActiveResources()) {
                 if (abstractScheduledResource.getName().equals(typeId)) {
-                    new ResourceStateListener(
-                            processingResource.getActiveResourceType_ActiveResourceSpecification(),
+                    new ResourceStateListener(processingResource.getActiveResourceType_ActiveResourceSpecification(),
                             abstractScheduledResource, this.getSimuComModel(), measurementSpecification,
                             resourceContainerMeasurement, resourceContainer, processingResource,
                             this.modelAccessFactory);
@@ -226,7 +224,7 @@ public class ResourceSyncer {
     public void initialiseResourceEnvironment() {
         syncResourceEnvironment();
     }
-    
+
     /**
      * Syncs resource environment model with SimuCom.
      */
@@ -246,8 +244,7 @@ public class ResourceSyncer {
                 simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug("SimulatedResourceContainer already exists: "
-                        + simulatedResourceContainer);
+                    LOG.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
                 }
                 // now sync active resources
                 this.syncActiveResources(resourceContainer, simulatedResourceContainer);
@@ -263,7 +260,7 @@ public class ResourceSyncer {
             }
 
         }
-        
+
         LOG.debug("Synchronisation done");
         // TODO remove unused
     }

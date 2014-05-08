@@ -151,8 +151,8 @@ public class TransitionDeterminer {
 
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
-        final ProbabilisticBranchTransition branchTransition = 
-                (ProbabilisticBranchTransition) probabilisticBranchTransitions.get(transitionIndex);
+        final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) probabilisticBranchTransitions
+                .get(transitionIndex);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
         }
@@ -167,8 +167,7 @@ public class TransitionDeterminer {
      *            the list with branch transitions.
      * @return the determined AbstractBranchTransition.
      */
-    public AbstractBranchTransition determineTransition(
-            final EList<AbstractBranchTransition> abstractBranchTransitions) {
+    public AbstractBranchTransition determineTransition(final EList<AbstractBranchTransition> abstractBranchTransitions) {
         /*
          * Mixed types with branch is not allowed, so the following is sufficient
          */

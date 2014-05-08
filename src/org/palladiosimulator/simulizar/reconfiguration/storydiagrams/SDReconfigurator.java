@@ -8,15 +8,16 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 
 /**
  * A reconfigurator implementation which relies on story diagrams to do the reconfiguration. The
- * story diagrams both check their reconfiguration precondition and perform the actual reconfiguration.
+ * story diagrams both check their reconfiguration precondition and perform the actual
+ * reconfiguration.
  * 
  * @author snowball
- *
+ * 
  */
 public class SDReconfigurator implements IReconfigurator {
 
     /**
-     * This class' internal logger. 
+     * This class' internal logger.
      */
     private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
 
@@ -26,13 +27,15 @@ public class SDReconfigurator implements IReconfigurator {
     private final SDAccess sdAccess;
 
     /**
-     * SD Interpreter used internally to interpret the SDs. 
+     * SD Interpreter used internally to interpret the SDs.
      */
     private final SDExecutor sdExecutor;
 
     /**
      * SD Reconfigurator constructor.
-     * @param modelAccessFactory Model access factory used to access the SDs.
+     * 
+     * @param modelAccessFactory
+     *            Model access factory used to access the SDs.
      */
     public SDReconfigurator(final IModelAccessFactory modelAccessFactory) {
         super();

@@ -34,27 +34,25 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
     @Override
     protected ArrayList<LoggerAppenderStruct> setupLogging(final org.apache.log4j.Level logLevel) throws CoreException {
         final ArrayList<LoggerAppenderStruct> result = super.setupLogging(logLevel);
-        result.add(this.setupLogger("org.palladiosimulator.simulizar", logLevel, Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN
-                : SHORT_LOG_PATTERN));
+        result.add(this.setupLogger("org.palladiosimulator.simulizar", logLevel,
+                Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN : SHORT_LOG_PATTERN));
 
         return result;
     }
-    
+
     @Override
-	protected SimuLizarWorkflowConfiguration deriveConfiguration(
-			ILaunchConfiguration configuration, String mode)
-			throws CoreException {
-		SimuLizarWorkflowConfiguration config = new SimuLizarWorkflowConfiguration(configuration.getAttributes());
+    protected SimuLizarWorkflowConfiguration deriveConfiguration(ILaunchConfiguration configuration, String mode)
+            throws CoreException {
+        SimuLizarWorkflowConfiguration config = new SimuLizarWorkflowConfiguration(configuration.getAttributes());
 
-		AbstractWorkflowConfigurationBuilder builder;
-		builder = new PCMWorkflowConfigurationBuilder(configuration, mode);
-		builder.fillConfiguration(config);
+        AbstractWorkflowConfigurationBuilder builder;
+        builder = new PCMWorkflowConfigurationBuilder(configuration, mode);
+        builder.fillConfiguration(config);
 
-		builder = new SimuLizarLaunchConfigurationBasedConfigBuilder(
-				configuration, mode);
-		builder.fillConfiguration(config);
+        builder = new SimuLizarLaunchConfigurationBasedConfigBuilder(configuration, mode);
+        builder.fillConfiguration(config);
 
-		return config;
-	}
-    
+        return config;
+    }
+
 }

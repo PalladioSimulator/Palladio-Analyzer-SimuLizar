@@ -25,7 +25,7 @@ public class PCMModelInterpreterException extends PCMModelAccessException {
     }
 
     public PCMModelInterpreterException(String msg, SDMException e) {
-        super(msg,e);
+        super(msg, e);
     }
 
 }

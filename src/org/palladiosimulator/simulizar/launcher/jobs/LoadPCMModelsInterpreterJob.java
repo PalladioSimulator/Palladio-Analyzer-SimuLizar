@@ -15,8 +15,8 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob;
 /**
  * Job for loading PCM Models into Blackboard. Extends LoadPCMModelsJob from SimuCom. Overwrites
  * execute method to avoid loading of middleware and event middleware models. Because fields in
- * configuration UI are used for SDM models and PSM Model.
- * TODO: StB: Remove this ugly hack again and introduce proper config fields for this. Remove this class.
+ * configuration UI are used for SDM models and PSM Model. TODO: StB: Remove this ugly hack again
+ * and introduce proper config fields for this. Remove this class.
  * 
  */
 public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
@@ -27,17 +27,18 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     private static final Logger LOGGER = Logger.getLogger(LoadPCMModelsJob.class);
 
     /**
-     * SDQ Workflow engine blackboard which should contain the PCM models to be loaded. 
+     * SDQ Workflow engine blackboard which should contain the PCM models to be loaded.
      */
     private MDSDBlackboard blackboard;
 
     /**
-     * PCM Workflow configuration. 
+     * PCM Workflow configuration.
      */
     private final AbstractPCMWorkflowRunConfiguration configuration;
 
     /**
-     * @param configuration The configuration object for this job.
+     * @param configuration
+     *            The configuration object for this job.
      */
     public LoadPCMModelsInterpreterJob(final AbstractPCMWorkflowRunConfiguration configuration) {
         super(configuration);
@@ -47,8 +48,11 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     /**
      * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
-    /* (non-Javadoc)
-     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.
+     * IProgressMonitor)
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
@@ -66,8 +70,12 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     /**
      * @see de.uka.ipd.sdq.workflow.OrderPreservingBlackboardCompositeJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
      */
-    /* (non-Javadoc)
-     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard)
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd
+     * .blackboard.MDSDBlackboard)
      */
     @Override
     public void setBlackboard(final MDSDBlackboard blackboard) {

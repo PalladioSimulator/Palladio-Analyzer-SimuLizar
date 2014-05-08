@@ -74,7 +74,7 @@ public class EventNotificationHelper {
             }
         }
     }
-    
+
     public void fireReconfigurationEvent(final ReconfigurationEvent event) {
         for (final IInterpreterListener singleListener : this.listener) {
             if (event.getEventType() == EventType.RECONFIGURATION) {

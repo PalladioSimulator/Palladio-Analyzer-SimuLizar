@@ -43,13 +43,13 @@ public class ReconfigurationAggregator extends PRMRecorder implements IMeasureme
     @Override
     public void preUnregister() {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void newMeasurementAvailable(Measurement measurement) {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

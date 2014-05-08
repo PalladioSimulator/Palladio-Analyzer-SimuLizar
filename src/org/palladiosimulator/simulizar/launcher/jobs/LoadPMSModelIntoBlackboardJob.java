@@ -48,16 +48,16 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
         if (this.getPCMResourceSetPartition() == null) {
             throw new PMSModelLoadException("The PCM models must be loaded first");
         }
-       
+
         final PMSResourceSetPartition prmPartition = new PMSResourceSetPartition(this.getPCMResourceSetPartition());
         if (!this.getPath().equals("")) {
-        	
-        	//add file protocol if necessary
-        	String filePath = getPath();
-        	if (!getPath().startsWith("platform:")) {
-        		filePath = "file:///" + filePath;
-        	}
-        	
+
+            // add file protocol if necessary
+            String filePath = getPath();
+            if (!getPath().startsWith("platform:")) {
+                filePath = "file:///" + filePath;
+            }
+
             prmPartition.loadModel(URI.createURI(filePath));
 
         }
