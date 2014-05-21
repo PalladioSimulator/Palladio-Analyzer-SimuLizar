@@ -10,6 +10,12 @@ import javax.activation.UnsupportedDataTypeException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.impl.MeasuringPointUtility;
+import org.palladiosimulator.edp2.models.measuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
+import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -23,6 +29,7 @@ import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -33,8 +40,7 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  * Class for listening to interpreter events in order to store collected data using the
  * ProbeFramework
  * 
- * @author snowball
- * 
+ * @author Steffen Becker, Sebastian Lehrig
  */
 public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
@@ -48,6 +54,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     private final Map<EObject, List<TriggeredProbe>> currentTimeProbes = new HashMap<EObject, List<TriggeredProbe>>();
     private final TriggeredProbe reconfTimeProbe;
+
+    /** Default EMF factory for measuring points. */
+    private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
 
     /**
      * @param modelAccessFactory
@@ -149,13 +158,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
             final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
 
-            final String calculatorName = this.getCalculatorName(event);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(calculatorName, probeList);
+            final MeasuringPoint measuringPoint = createMeasuringPoint(event);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
 
             try {
-                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator, calculatorName,
-                        modelElement, PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                                .getSimulationControl().getCurrentSimulationTime());
+                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
+                        MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
+                        PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
+                                .getCurrentSimulationTime());
             } catch (final UnsupportedDataTypeException e) {
                 LOG.error(e);
                 throw new RuntimeException(e);
@@ -163,9 +173,74 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
+    private <T extends Entity> MeasuringPoint createMeasuringPoint(final ModelElementPassedEvent<T> event) {
+        MeasuringPoint result;
+        if (event == null) {
+            throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
+        } else if (event instanceof ResourceContainer) {
+            ResourceContainer resourceContainer = (ResourceContainer) event;
+
+            // FIXME Always takes the first active resource of a given container. That should be
+            // more flexible. [Lehrig]
+            ActiveResourceMeasuringPoint mp = this.measuringpointFactory.createActiveResourceMeasuringPoint();
+            mp.setActiveResource(resourceContainer.getActiveResourceSpecifications_ResourceContainer().get(0));
+            mp.setReplicaID(0);
+            result = mp;
+        } else if (event instanceof ExternalCallAction) {
+            ExternalCallAction externalCallAction = (ExternalCallAction) event;
+
+            final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
+            mp.setMeasuringPoint("UNKOWN ASSEMBLY " + "Role: "
+                    + externalCallAction.getCalledService_ExternalService().getEntityName() + "Operation: "
+                    + externalCallAction.getRole_ExternalService().getEntityName());
+
+            // FIXME Do not use StringMeasuringPoint but implement some nice solution using
+            // AssemblyOperationMeasuringPoint. The current problem is that an event does not
+            // provide the assembly as shown below. [Lehrig]
+
+            // AssemblyOperationMeasuringPoint mp =
+            // this.measuringpointFactory.createAssemblyOperationMeasuringPoint();
+            // mp.setAssembly(???);
+            // mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
+            // mp.setRole(externalCallAction.getRole_ExternalService());
+            result = mp;
+        } else if (event instanceof EntryLevelSystemCall) {
+            EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) event;
+
+            final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
+            mp.setMeasuringPoint("UNKOWN SYSTEM " + "Role: "
+                    + entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getEntityName() + "Operation: "
+                    + entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getEntityName());
+
+            // FIXME same issue as for ExternalCallAction [Lehrig]
+
+            // SystemOperationMeasuringPoint mp =
+            // this.measuringpointFactory.createSystemOperationMeasuringPoint();
+            // mp.setSystem(???);
+            // mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
+            // mp.setRole(externalCallAction.getProvidedRole_EntryLevelSystemCall());
+            result = mp;
+        } else if (event instanceof UsageScenario) {
+            UsageScenario usageScenario = (UsageScenario) event;
+
+            UsageScenarioMeasuringPoint mp = this.measuringpointFactory.createUsageScenarioMeasuringPoint();
+            mp.setUsageScenario(usageScenario);
+            result = mp;
+        } else {
+            throw new IllegalArgumentException("Unknown event type");
+        }
+        return result;
+    }
+
     /**
-     * Initializes response time measurement.
+     * Initializes reconfiguration time measurement.
      * 
+     * FIXME I would bet that too many StringMeasuringPoints are created here, potentially leading
+     * to Exceptions [Lehrig]
+     * 
+     * TODO StringMeasuringPoint should not be used by SimuLizar. Create something better! I could
+     * imagine an EDP2 extension that introduces dedicated reconfiguration measuring points.
+     * [Lehrig]
      */
     private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
 
@@ -173,8 +248,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final Probe probe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
 
-        final String calculatorName = "Reconfiguration";
-        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(calculatorName, probe);
+        final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
+        measuringPoint.setMeasuringPoint("Reconfiguration");
+        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(measuringPoint, probe);
     }
 
     /**
@@ -227,29 +303,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
-    }
-
-    /**
-     * @param event
-     * @return
-     */
-    private <T extends Entity> String getCalculatorName(final ModelElementPassedEvent<T> event) {
-        final Entity entity = event.getModelElement();
-        final StringBuilder sb = new StringBuilder();
-
-        sb.append(entity.eClass().getName());
-        sb.append(" >");
-        sb.append(entity.getEntityName());
-        sb.append(" (ID: ");
-        sb.append(entity.getId());
-        if (event instanceof RDSEFFElementPassedEvent) {
-            final RDSEFFElementPassedEvent<T> rdseffEvent = (RDSEFFElementPassedEvent<T>) event;
-            sb.append(", AssCtx: ");
-            sb.append(rdseffEvent.getAssemblyContext().getId());
-        }
-        sb.append(" )<");
-
-        return sb.toString();
     }
 
     @Override

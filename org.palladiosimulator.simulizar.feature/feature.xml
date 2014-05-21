@@ -259,7 +259,7 @@ litigation.
       <import plugin="org.eclipse.debug.ui" version="3.6.1" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.probeframework" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.measurementspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.measurementframework" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.m2m.qvt.oml"/>
       <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0" match="greaterOrEqual"/>
    </requires>

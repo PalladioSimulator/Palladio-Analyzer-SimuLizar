@@ -15,6 +15,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.edit.ui;visibility:=reexport,
  org.eclipse.ui.ide;visibility:=reexport,
- org.eclipse.emf.ecore.edit;visibility:=reexport
+ org.eclipse.emf.ecore.edit;visibility:=reexport,
+ de.uka.ipd.sdq.identifier.edit;visibility:=reexport,
+ org.palladiosimulator.metricspec.edit;visibility:=reexport,
+ de.uka.ipd.sdq.pcm.edit;visibility:=reexport,
+ de.uka.ipd.sdq.probfunction.edit;visibility:=reexport,
+ de.uka.ipd.sdq.stoex.edit;visibility:=reexport,
+ de.uka.ipd.sdq.units.edit;visibility:=reexport,
+ org.palladiosimulator.edp2.edit;visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.emf.ecore.provider

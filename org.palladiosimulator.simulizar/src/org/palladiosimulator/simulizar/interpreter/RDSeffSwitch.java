@@ -272,11 +272,11 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     // @Override
     // public T caseStartAction(final StartAction object)
     // {
-    // InterpreterLogger.debug(logger, "Interpret StartAction: " + object);
+    // InterpreterLogger.debug(LOGGER, "Interpret StartAction: " + object);
     //
     // AbstractAction currentAction = object;
     //
-    // InterpreterLogger.debug(logger, "Follow action chain");
+    // InterpreterLogger.debug(LOGGER, "Follow action chain");
     // // follow action chain, beginning with start action
     // while ((currentAction = currentAction.getSuccessor_AbstractAction()) !=
     // null)
@@ -284,7 +284,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     // this.doSwitch(currentAction);
     // }
     //
-    // InterpreterLogger.debug(logger, "Finished StartAction: " + object);
+    // InterpreterLogger.debug(LOGGER, "Finished StartAction: " + object);
     // return super.caseStartAction(object);
     // }
 

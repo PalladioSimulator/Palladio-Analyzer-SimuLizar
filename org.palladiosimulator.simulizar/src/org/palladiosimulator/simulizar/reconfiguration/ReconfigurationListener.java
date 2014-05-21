@@ -14,22 +14,20 @@ import org.palladiosimulator.simulizar.prm.util.PrmSwitch;
 import org.palladiosimulator.simulizar.utils.PCMModels;
 
 /**
- * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations
- * respectively.
+ * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations respectively.
  * 
  * @author snowball
- * 
+ *
  */
 public class ReconfigurationListener {
 
     /**
-     * This class' internal logger.
+     * This class' internal LOGGER. 
      */
     private static final Logger LOGGER = Logger.getLogger(ReconfigurationListener.class);
-
+    
     /**
-     * Change listener, which will convert selected changes in the PRM instance into reconfiguration
-     * checks.
+     * Change listener, which will convert selected changes in the PRM instance into reconfiguration checks.
      */
     private final Adapter prmListener = new EContentAdapter() {
 
@@ -40,9 +38,9 @@ public class ReconfigurationListener {
         }
 
     };
-
+    
     /**
-     * A log listener which logs all changes in the PRM.
+     * A log listener which logs all changes in the PRM. 
      */
     private final Adapter loggerAdapter = new EContentAdapter() {
 
@@ -53,32 +51,30 @@ public class ReconfigurationListener {
         }
 
     };
-
+    
     /**
-     * Access interface to the global PCM@Runtime model.
+     * Access interface to the global PCM@Runtime model. 
      */
     private final GlobalPCMAccess pcmAccess;
-
+    
     /**
-     * Access interface to the PRM runtime model.
+     * Access interface to the PRM runtime model. 
      */
     private final PRMAccess prmAccess;
-
+    
     /**
-     * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
+     * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime. 
      */
     private final IReconfigurator[] reconfigurators;
 
     /**
      * Constructor.
-     * 
-     * @param modelAccessFactory
-     *            Access factory for model access interfaces.
-     * @param reconfigurators
-     *            Set of reconfigurators which will be triggered as soon as new, interesting
-     *            monitoring data arrives.
+     * @param modelAccessFactory Access factory for model access interfaces.
+     * @param reconfigurators Set of reconfigurators which will be triggered as soon as new, interesting monitoring data
+     * arrives.
      */
-    public ReconfigurationListener(final IModelAccessFactory modelAccessFactory, final IReconfigurator[] reconfigurators) {
+    public ReconfigurationListener(final IModelAccessFactory modelAccessFactory, 
+            final IReconfigurator[] reconfigurators) {
         super();
         this.pcmAccess = modelAccessFactory.getGlobalPCMAccess();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
@@ -86,8 +82,8 @@ public class ReconfigurationListener {
     }
 
     /**
-     * Setup all listeners to listen for their respective model changes.
-     */
+	 * Setup all listeners to listen for their respective model changes.
+	 */
     public void startListening() {
         if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
@@ -101,7 +97,7 @@ public class ReconfigurationListener {
     }
 
     /**
-     * Detach all model listeners.
+     * Detach all model listeners. 
      */
     public void stopListening() {
         this.prmAccess.getModel().eAdapters().remove(this.prmListener);
@@ -116,15 +112,13 @@ public class ReconfigurationListener {
     }
 
     /**
-     * Method which is called on a change in the PRM. All reconfigurators are informed and can check
-     * for potential reconfigurations.
-     * 
-     * @param notification
-     *            The notification event, which describes a change in the PRM.
+     * Method which is called on a change in the PRM. All reconfigurators are informed and can check for
+     * potential reconfigurations.
+     * @param notification The notification event, which describes a change in the PRM.
      */
     protected void checkAndExecuteReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
-
+        
         // Value changed, reconfigure!
         if (isNotificationNewMeasurement(monitoredElement)) {
             for (final IReconfigurator reconfigurator : this.reconfigurators) {
@@ -158,12 +152,10 @@ public class ReconfigurationListener {
         }
 
     };
-
+    
     /**
      * Retrieve the monitored PCM element from the PRM change event.
-     * 
-     * @param notification
-     *            The PRM change event.
+     * @param notification The PRM change event.
      * @return The PCM element whose monitoring triggered the change event.
      */
     protected EObject getMonitoredElement(final Notification notification) {

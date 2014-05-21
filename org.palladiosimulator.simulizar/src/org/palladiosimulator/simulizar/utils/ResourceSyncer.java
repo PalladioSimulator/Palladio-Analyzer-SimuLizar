@@ -24,8 +24,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 /**
  * Class to sync resource environment model with SimuCom. UGLY DRAFT!
  * 
- * @author Joachim Meyer
- * 
+ * @author Joachim Meyer, Sebastian Lehrig
  */
 public class ResourceSyncer {
     protected static final Logger LOG = Logger.getLogger(ResourceSyncer.class.getName());
@@ -107,20 +106,11 @@ public class ResourceSyncer {
         // add resources
         for (final ProcessingResourceSpecification processingResource : resourceContainer
                 .getActiveResourceSpecifications_ResourceContainer()) {
-            final String resourceContainerName = resourceContainer.getEntityName();
             final String typeId = processingResource.getActiveResourceType_ActiveResourceSpecification().getId();
-
-            final String description = resourceContainerName + " - "
-                    + processingResource.getActiveResourceType_ActiveResourceSpecification().getEntityName();
             final String processingRate = processingResource.getProcessingRate_ProcessingResourceSpecification()
                     .getSpecification();
             // processingRate does not need to be evaluated, will be done in
-            // simulatedResourceContainer
-            final double mttf = processingResource.getMTTF();
-            final double mttr = processingResource.getMTTR();
-            // units not used in simulatedResourceContainer
-            final String units = processingResource.getProcessingRate_ProcessingResourceSpecification()
-                    .getSpecification();
+            // simulatedResourceContainers
 
             // SchedulingStrategy
             final SchedulingPolicy schedulingPolicy = processingResource.getSchedulingPolicy();
@@ -134,13 +124,12 @@ public class ResourceSyncer {
                 schedulingStrategy = SchedulingStrategy.DELAY;
             }
 
-            final int numberOfReplicas = processingResource.getNumberOfReplicas();
             final ScheduledResource scheduledResource = this.resourceAlreadyExist(simulatedResourceContainer, typeId);
             if (existsResource(scheduledResource)) {
                 scheduledResource.setProcessingRate(processingRate);
             } else {
                 createSimulatedActiveResource(resourceContainer, simulatedResourceContainer, processingResource,
-                        typeId, description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas);
+                        schedulingStrategy);
             }
         }
     }
@@ -155,35 +144,20 @@ public class ResourceSyncer {
     }
 
     /**
+     * 
      * @param resourceContainer
      * @param simulatedResourceContainer
      * @param processingResource
-     * @param typeId
-     * @param description
-     * @param processingRate
-     * @param mttf
-     * @param mttr
-     * @param units
      * @param schedulingStrategy
-     * @param numberOfReplicas
      */
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final SimulatedResourceContainer simulatedResourceContainer,
-            final ProcessingResourceSpecification processingResource, final String typeId, final String description,
-            final String processingRate, final double mttf, final double mttr, final String units,
-            String schedulingStrategy, final int numberOfReplicas) {
-        simulatedResourceContainer.addActiveResource(typeId, new String[] {}, resourceContainer.getId(),
-                processingResource.getActiveResourceType_ActiveResourceSpecification().getEntityName(), // TODO:
-                                                                                                        // Check
-                                                                                                        // if
-                                                                                                        // this
-                                                                                                        // is
-                                                                                                        // correct?
-                description, processingRate, mttf, mttr, units, schedulingStrategy, numberOfReplicas, true);
+            final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
+        simulatedResourceContainer.addActiveResource(processingResource, new String[] {}, resourceContainer.getId(),
+                schedulingStrategy);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Added ActiveResource. TypeID: " + typeId + ", Description: " + description
-                    + ", ProcessingRate: " + processingRate + ", MTTF: " + mttf + ", MTTR: " + mttr + ", Units: "
-                    + units + ", SchedulingStrategy: " + schedulingStrategy + ", NumberOfReplicas: " + numberOfReplicas);
+            LOG.debug("Added ActiveResource. TypeID: " + processingResource.getActiveResourceType_ActiveResourceSpecification().getId() + ", Description: "
+                    + ", SchedulingStrategy: " + schedulingStrategy);
         }
 
         // is monitored?
@@ -201,7 +175,7 @@ public class ResourceSyncer {
             // get created active resource
             for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
                     .getActiveResources()) {
-                if (abstractScheduledResource.getName().equals(typeId)) {
+                if (abstractScheduledResource.getName().equals(processingResource.getId())) {
                     new ResourceStateListener(processingResource.getActiveResourceType_ActiveResourceSpecification(),
                             abstractScheduledResource, this.getSimuComModel(), measurementSpecification,
                             resourceContainerMeasurement, resourceContainer, processingResource,

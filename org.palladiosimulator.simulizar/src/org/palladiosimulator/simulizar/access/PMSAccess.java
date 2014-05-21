@@ -1,15 +1,29 @@
 package org.palladiosimulator.simulizar.access;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.AssemblyOperationMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.AssemblyPassiveResourceMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.SubSystemOperationMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.SystemOperationMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 
+import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
+import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
+import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
+import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+
 /**
  * Access class for pms model.
  * 
- * @author Joachim Meyer
+ * @author Joachim Meyer, Sebastian Lehrig
  */
 public class PMSAccess extends AbstractModelAccess<PMSModel> {
 
@@ -45,19 +59,88 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
     public MeasurementSpecification isMonitored(final EObject element, final PerformanceMetricEnum performanceMetric) {
         if (this.getModelHelper().pmsModelExists()) {
             for (final PerformanceMeasurement performanceMeasurement : this.getModel().getPerformanceMeasurements()) {
-                if (performanceMeasurement.getPcmElementClassifier().getClassifierID() == element.eClass()
-                        .getClassifierID()) {
+                if (elementConformingToMeasuringPoint(element, performanceMeasurement.getMeasuringPoint())) {
                     for (final MeasurementSpecification measurementSpecification : performanceMeasurement
                             .getMeasurementSpecification()) {
                         if (measurementSpecification.getPerformanceMetric() == performanceMetric) {
                             return measurementSpecification;
                         }
                     }
-
                 }
             }
         }
-
         return null;
+    }
+
+    /**
+     * TODO Really ugly, hacked code ;) Refactor into measuring point objects' class? [Lehrig]
+     */
+    private Boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
+        if (measuringPoint == null) {
+            throw new IllegalArgumentException("Measuring point cannot be null");
+        } else if (measuringPoint instanceof StringMeasuringPoint) {
+            throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
+        } else if (measuringPoint instanceof ActiveResourceMeasuringPoint) {
+            ProcessingResourceSpecification activeResource = ((ActiveResourceMeasuringPoint) measuringPoint)
+                    .getActiveResource();
+            if (element instanceof ResourceContainer) {
+                ResourceContainer resourceContainer = (ResourceContainer) element;
+                if (resourceContainer.getId().equals(
+                        activeResource.getResourceContainer_ProcessingResourceSpecification().getId())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                throw new IllegalArgumentException(
+                        "ResourceContainer is the only supported ActiveResourceMeasuringPoint");
+            }
+        } else if (measuringPoint instanceof AssemblyOperationMeasuringPoint) {
+            AssemblyOperationMeasuringPoint mP = (AssemblyOperationMeasuringPoint) measuringPoint;
+            if (element instanceof ExternalCallAction) {
+                ExternalCallAction externalCallAction = (ExternalCallAction) element;
+                if (externalCallAction.getCalledService_ExternalService().getId()
+                        .equals(mP.getOperationSignature().getId())
+                        && externalCallAction.getRole_ExternalService().getId().equals(mP.getRole().getId())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported element for a AssemblyOperationMeasuringPoint");
+            }
+        } else if (measuringPoint instanceof AssemblyPassiveResourceMeasuringPoint) {
+            throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
+        } else if (measuringPoint instanceof SubSystemOperationMeasuringPoint) {
+            throw new IllegalArgumentException("Subsystems are currently unsupported by SimuLizar");
+        } else if (measuringPoint instanceof SystemOperationMeasuringPoint) {
+            SystemOperationMeasuringPoint mP = (SystemOperationMeasuringPoint) measuringPoint;
+            if (element instanceof EntryLevelSystemCall) {
+                EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) element;
+                if (entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
+                        .equals(mP.getOperationSignature().getId())
+                        && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
+                                .equals(mP.getRole().getId())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                throw new IllegalArgumentException("Unsupported element for a SystemOperationMeasuringPoint");
+            }
+        } else if (measuringPoint instanceof UsageScenarioMeasuringPoint) {
+            UsageScenarioMeasuringPoint mP = (UsageScenarioMeasuringPoint) measuringPoint;
+            if (element instanceof UsageScenario) {
+                UsageScenario usageScenario = (UsageScenario) element;
+                if (usageScenario.getId().equals(mP.getUsageScenario().getId())) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        } else {
+            throw new IllegalArgumentException("Unknown measuring point type");
+        }
+        return false;
     }
 }

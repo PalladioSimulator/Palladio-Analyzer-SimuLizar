@@ -151,18 +151,18 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     // @Override
     // public T caseStart(final Start object)
     // {
-    // InterpreterLogger.debug(logger, "Interpret Start: " + object);
+    // InterpreterLogger.debug(LOGGER, "Interpret Start: " + object);
     //
     // AbstractUserAction currentAction = object;
     //
-    // InterpreterLogger.debug(logger, "Follow action chain");
+    // InterpreterLogger.debug(LOGGER, "Follow action chain");
     // // follow action chain, beginning with start action
     // while ((currentAction = currentAction.getSuccessor()) != null)
     // {
     // this.doSwitch(currentAction);
     // }
     //
-    // InterpreterLogger.debug(logger, "Finished start: " + object);
+    // InterpreterLogger.debug(LOGGER, "Finished start: " + object);
     // return super.caseStart(object);
     // }
 
