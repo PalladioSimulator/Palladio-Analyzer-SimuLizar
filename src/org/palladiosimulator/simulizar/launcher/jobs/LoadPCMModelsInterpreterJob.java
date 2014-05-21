@@ -22,7 +22,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob;
 public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
 
     /**
-     * Static logger of this class.
+     * Static LOGGER of this class.
      */
     private static final Logger LOGGER = Logger.getLogger(LoadPCMModelsJob.class);
 

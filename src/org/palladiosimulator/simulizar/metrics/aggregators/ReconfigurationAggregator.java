@@ -6,8 +6,8 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 import javax.activation.UnsupportedDataTypeException;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.measurementspec.Measurement;
-import org.palladiosimulator.measurementspec.listener.IMeasurementSourceListener;
+import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
