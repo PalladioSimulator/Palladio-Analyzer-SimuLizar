@@ -250,7 +250,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
-        final Calculator calculator = this.calculatorFactory.buildIdentityCalculator(measuringPoint, probe);
+        final Calculator calculator = this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe);
     }
 
     /**
