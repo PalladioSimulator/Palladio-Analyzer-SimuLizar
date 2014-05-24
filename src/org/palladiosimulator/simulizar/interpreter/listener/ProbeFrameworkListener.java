@@ -10,12 +10,12 @@ import javax.activation.UnsupportedDataTypeException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.edp2.impl.MeasuringPointUtility;
 import org.palladiosimulator.edp2.models.measuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.UsageScenarioMeasuringPoint;
+import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
