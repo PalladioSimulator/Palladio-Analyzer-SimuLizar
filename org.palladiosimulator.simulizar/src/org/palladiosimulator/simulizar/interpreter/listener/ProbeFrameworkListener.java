@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.pcm.edp2.measuringpoint.util.MeasuringPointUtility;
+import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
