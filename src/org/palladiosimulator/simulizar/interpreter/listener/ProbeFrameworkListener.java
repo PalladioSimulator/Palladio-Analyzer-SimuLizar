@@ -10,12 +10,13 @@ import javax.activation.UnsupportedDataTypeException;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.edp2.models.measuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.UsageScenarioMeasuringPoint;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
+import org.palladiosimulator.pcm.edp2.measuringpoint.util.MeasuringPointUtility;
+import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -57,6 +58,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     /** Default EMF factory for measuring points. */
     private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
+    private final PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
     /**
      * @param modelAccessFactory
@@ -165,7 +167,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
                         MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
                         PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
-                                .getCurrentSimulationTime());
+                        .getCurrentSimulationTime());
             } catch (final UnsupportedDataTypeException e) {
                 LOG.error(e);
                 throw new RuntimeException(e);
@@ -178,16 +180,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         if (event == null) {
             throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
         } else if (event instanceof ResourceContainer) {
-            ResourceContainer resourceContainer = (ResourceContainer) event;
+            final ResourceContainer resourceContainer = (ResourceContainer) event;
 
             // FIXME Always takes the first active resource of a given container. That should be
             // more flexible. [Lehrig]
-            ActiveResourceMeasuringPoint mp = this.measuringpointFactory.createActiveResourceMeasuringPoint();
+            final ActiveResourceMeasuringPoint mp = this.pcmMeasuringpointFactory.createActiveResourceMeasuringPoint();
             mp.setActiveResource(resourceContainer.getActiveResourceSpecifications_ResourceContainer().get(0));
             mp.setReplicaID(0);
             result = mp;
         } else if (event instanceof ExternalCallAction) {
-            ExternalCallAction externalCallAction = (ExternalCallAction) event;
+            final ExternalCallAction externalCallAction = (ExternalCallAction) event;
 
             final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
             mp.setMeasuringPoint("UNKOWN ASSEMBLY " + "Role: "
@@ -205,7 +207,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             // mp.setRole(externalCallAction.getRole_ExternalService());
             result = mp;
         } else if (event instanceof EntryLevelSystemCall) {
-            EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) event;
+            final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) event;
 
             final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
             mp.setMeasuringPoint("UNKOWN SYSTEM " + "Role: "
@@ -221,9 +223,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             // mp.setRole(externalCallAction.getProvidedRole_EntryLevelSystemCall());
             result = mp;
         } else if (event instanceof UsageScenario) {
-            UsageScenario usageScenario = (UsageScenario) event;
+            final UsageScenario usageScenario = (UsageScenario) event;
 
-            UsageScenarioMeasuringPoint mp = this.measuringpointFactory.createUsageScenarioMeasuringPoint();
+            final UsageScenarioMeasuringPoint mp = this.pcmMeasuringpointFactory.createUsageScenarioMeasuringPoint();
             mp.setUsageScenario(usageScenario);
             result = mp;
         } else {
@@ -291,7 +293,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         this.initReponseTimeMeasurement(event);
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+            .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
@@ -301,12 +303,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+            .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
     @Override
-    public void reconfigurationInterpretation(ReconfigurationEvent event) {
+    public void reconfigurationInterpretation(final ReconfigurationEvent event) {
         if (this.reconfTimeProbe == null) {
             initReconfTimeMeasurement(event);
         } else {
