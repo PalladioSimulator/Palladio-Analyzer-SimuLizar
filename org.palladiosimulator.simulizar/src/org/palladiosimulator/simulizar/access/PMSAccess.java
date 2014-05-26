@@ -1,14 +1,14 @@
 package org.palladiosimulator.simulizar.access;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.edp2.models.measuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.AssemblyOperationMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.AssemblyPassiveResourceMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.SubSystemOperationMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.SystemOperationMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.UsageScenarioMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
