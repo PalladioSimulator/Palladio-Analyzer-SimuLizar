@@ -157,17 +157,18 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
                 PerformanceMetricEnum.RESPONSE_TIME);
+
+        final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
+
+        final MeasuringPoint measuringPoint = createMeasuringPoint(event);
+        final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+
         if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
-            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-
-            final MeasuringPoint measuringPoint = createMeasuringPoint(event);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
-
             try {
                 new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
                         MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
                         PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
-                        .getCurrentSimulationTime());
+                                .getCurrentSimulationTime());
             } catch (final UnsupportedDataTypeException e) {
                 LOG.error(e);
                 throw new RuntimeException(e);
@@ -252,7 +253,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
-        final Calculator calculator = this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe);
+        final Calculator calculator = this.calculatorFactory
+                .buildStateOfActiveResourceCalculator(measuringPoint, probe);
     }
 
     /**
@@ -293,7 +295,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         this.initReponseTimeMeasurement(event);
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
-            .takeMeasurement(event.getThread().getRequestContext());
+                    .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
@@ -303,7 +305,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(event.getModelElement())) {
             this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
-            .takeMeasurement(event.getThread().getRequestContext());
+                    .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
