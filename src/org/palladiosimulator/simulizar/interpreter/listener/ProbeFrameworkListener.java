@@ -154,24 +154,25 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
         final EObject modelElement = event.getModelElement();
-        final SimuComModel simuComModel = event.getThread().getModel();
-
-        // FIXME only create calculator if it hasn't been created yet for this model element. [Lehrig]
-        final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
-        final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-        final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
-
-        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
-                PerformanceMetricEnum.RESPONSE_TIME);
-        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
-            try {
-                new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
-                        MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
-                        PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
-                                .getCurrentSimulationTime());
-            } catch (final UnsupportedDataTypeException e) {
-                LOG.error(e);
-                throw new RuntimeException(e);
+        
+        if(!entityIsAlreadyInstrumented(modelElement)) {
+            final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
+            final SimuComModel simuComModel = event.getThread().getModel();
+            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+    
+            final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
+                    PerformanceMetricEnum.RESPONSE_TIME);
+            if (elementShouldBeMonitored(measurementSpecification)) {
+                try {
+                    new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
+                            MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
+                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
+                                    .getCurrentSimulationTime());
+                } catch (final UnsupportedDataTypeException e) {
+                    LOG.error(e);
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
