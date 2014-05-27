@@ -156,6 +156,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         final EObject modelElement = event.getModelElement();
         final SimuComModel simuComModel = event.getThread().getModel();
 
+        // FIXME only create calculator if it hasn't been created yet for this model element. [Lehrig]
         final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
         final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
         final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
