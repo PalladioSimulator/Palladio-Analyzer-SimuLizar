@@ -16,6 +16,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
@@ -30,6 +31,7 @@ import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
@@ -151,18 +153,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
     private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
-
         final EObject modelElement = event.getModelElement();
         final SimuComModel simuComModel = event.getThread().getModel();
 
-        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
-                PerformanceMetricEnum.RESPONSE_TIME);
-
+        final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
         final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-
-        final MeasuringPoint measuringPoint = createMeasuringPoint(event);
         final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
 
+        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
+                PerformanceMetricEnum.RESPONSE_TIME);
         if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
             try {
                 new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
@@ -176,12 +175,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
-    private <T extends Entity> MeasuringPoint createMeasuringPoint(final ModelElementPassedEvent<T> event) {
+    private <T extends Entity> MeasuringPoint createMeasuringPoint(final EObject modelElement) {
         MeasuringPoint result;
-        if (event == null) {
+        if (modelElement == null) {
             throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
-        } else if (event instanceof ResourceContainer) {
-            final ResourceContainer resourceContainer = (ResourceContainer) event;
+        } else if (modelElement instanceof ResourceContainer) {
+            final ResourceContainer resourceContainer = (ResourceContainer) modelElement;
 
             // FIXME Always takes the first active resource of a given container. That should be
             // more flexible. [Lehrig]
@@ -189,8 +188,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             mp.setActiveResource(resourceContainer.getActiveResourceSpecifications_ResourceContainer().get(0));
             mp.setReplicaID(0);
             result = mp;
-        } else if (event instanceof ExternalCallAction) {
-            final ExternalCallAction externalCallAction = (ExternalCallAction) event;
+        } else if (modelElement instanceof ExternalCallAction) {
+            final ExternalCallAction externalCallAction = (ExternalCallAction) modelElement;
 
             final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
             mp.setMeasuringPoint("UNKOWN ASSEMBLY " + "Role: "
@@ -202,35 +201,43 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             // provide the assembly as shown below. [Lehrig]
 
             // AssemblyOperationMeasuringPoint mp =
-            // this.measuringpointFactory.createAssemblyOperationMeasuringPoint();
+            // this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
             // mp.setAssembly(???);
             // mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
             // mp.setRole(externalCallAction.getRole_ExternalService());
             result = mp;
-        } else if (event instanceof EntryLevelSystemCall) {
-            final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) event;
+        } else if (modelElement instanceof EntryLevelSystemCall) {
+            final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) modelElement;
 
-            final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
-            mp.setMeasuringPoint("UNKOWN SYSTEM " + "Role: "
-                    + entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getEntityName() + "Operation: "
-                    + entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getEntityName());
+            // final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
+            // mp.setMeasuringPoint("UNKOWN SYSTEM " + "Role: "
+            // + entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getEntityName() +
+            // "Operation: "
+            // +
+            // entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getEntityName());
 
-            // FIXME same issue as for ExternalCallAction [Lehrig]
-
-            // SystemOperationMeasuringPoint mp =
-            // this.measuringpointFactory.createSystemOperationMeasuringPoint();
-            // mp.setSystem(???);
-            // mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
-            // mp.setRole(externalCallAction.getProvidedRole_EntryLevelSystemCall());
+            final SystemOperationMeasuringPoint mp = this.pcmMeasuringpointFactory
+                    .createSystemOperationMeasuringPoint();
+            final InterfaceProvidingEntity providingEntity = entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall()
+                    .getProvidingEntity_ProvidedRole();
+            if (providingEntity instanceof de.uka.ipd.sdq.pcm.system.System) {
+                de.uka.ipd.sdq.pcm.system.System system = (de.uka.ipd.sdq.pcm.system.System) providingEntity;
+                mp.setSystem(system);
+            } else {
+                throw new IllegalArgumentException("EntryLevelSystemCall \"" + entryLevelSystemCall.getEntityName()
+                        + "\" does not reference a system.");
+            }
+            mp.setOperationSignature(entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall());
+            mp.setRole(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
             result = mp;
-        } else if (event instanceof UsageScenario) {
-            final UsageScenario usageScenario = (UsageScenario) event;
+        } else if (modelElement instanceof UsageScenario) {
+            final UsageScenario usageScenario = (UsageScenario) modelElement;
 
             final UsageScenarioMeasuringPoint mp = this.pcmMeasuringpointFactory.createUsageScenarioMeasuringPoint();
             mp.setUsageScenario(usageScenario);
             result = mp;
         } else {
-            throw new IllegalArgumentException("Unknown event type");
+            throw new IllegalArgumentException("Unknown model element  (" + modelElement.toString() + ")");
         }
         return result;
     }
