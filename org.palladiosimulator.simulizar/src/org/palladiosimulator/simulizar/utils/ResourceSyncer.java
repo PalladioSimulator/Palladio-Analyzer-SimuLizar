@@ -153,11 +153,12 @@ public class ResourceSyncer {
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final SimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        simulatedResourceContainer.addActiveResource(processingResource, new String[] {}, resourceContainer.getId(),
-                schedulingStrategy);
+        simulatedResourceContainer.addActiveResource(processingResource.eResource().getURI().toString(),
+                new String[] {}, resourceContainer.getId(), schedulingStrategy);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Added ActiveResource. TypeID: " + processingResource.getActiveResourceType_ActiveResourceSpecification().getId() + ", Description: "
-                    + ", SchedulingStrategy: " + schedulingStrategy);
+            LOG.debug("Added ActiveResource. TypeID: "
+                    + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
+                    + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }
 
         // is monitored?
