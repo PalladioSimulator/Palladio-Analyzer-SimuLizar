@@ -26,7 +26,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
  org.palladiosimulator.measurementframework;bundle-version="1.0.0",
  org.palladiosimulator.edp2.util;bundle-version="1.0.0",
  org.palladiosimulator.recorderframework,
- org.palladiosimulator.pcm.edp2.measuringpoint;bundle-version="1.0.0"
+ org.palladiosimulator.pcm.edp2.measuringpoint;bundle-version="1.0.0",
+ edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar.launcher
