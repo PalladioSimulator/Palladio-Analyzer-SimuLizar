@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.pms;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction;visibility:=reexport,
  de.uka.ipd.sdq.stoex;visibility:=reexport,
- de.uka.ipd.sdq.units;visibility:=reexport
+ de.uka.ipd.sdq.units;visibility:=reexport,
+ edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Import-Package: de.uka.ipd.sdq.pcm.core.entity,
  org.palladiosimulator.simulizar.pms
