@@ -31,16 +31,16 @@ modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/1.0';
  * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
  * type and namespace notation are used in operational QVT (: and :: respectively).
  */
-transformation ScaleUp(		in prm : PRM,
+transformation ScaleDown(		in prm : PRM,
 							in pcmRepository : PCM_REP,
 							in pcmSystem : PCM_SYS,
 							in pcmAllocation : PCM_ALLOC,
 							inout pcmResources : PCM_RES_ENV ) {
 							
 							
-	// Define Threshold and Scale Up
+	// Define Threshold and Scale Down
 	property threshold : Real = 1.0;
-	property scaleUp : Real = 50.0;
+	property scaleDown : Real = 50.0;
 
 	/**
 	 * The main transformation.
@@ -49,7 +49,7 @@ transformation ScaleUp(		in prm : PRM,
 	main() {
 	
 
-		log('SimuLizar ScaleUp Rule Transformation started');
+		log('SimuLizar ScaleDown Rule Transformation started');
 		
 		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
 			with log ("No Measurements found!");
@@ -58,10 +58,10 @@ transformation ScaleUp(		in prm : PRM,
 			with log ("Allocation Model is empty!");
 		
 		var runtimeMeasurements = prm.rootObjects()[PCMModelElementMeasurement];
-		// Scale up processing speed for all Resources
+		// Scale down processing speed for all Resources
 		pcmAllocation.rootObjects()[Allocation]->forAll(
 			allocation : Allocation | 
-			scaleUpProcessingResources(allocation.targetResourceEnvironment_Allocation, runtimeMeasurements)
+			scaleDownProcessingResources(allocation.targetResourceEnvironment_Allocation, runtimeMeasurements)
 		);
 
 	}
@@ -76,12 +76,12 @@ transformation ScaleUp(		in prm : PRM,
 	}
 	
 	/**
-	 * Scale up ProcessingResources.
+	 * Scale down ProcessingResources.
 	 */
-	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
+	helper scaleDownProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
 		if (checkCondition(runtimeMeasurements)) then {
 			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
-				scaleUpProcessingResourcesRecursively(resourceContainer);
+				scaleDownProcessingResourcesRecursively(resourceContainer);
 			};
 		
 			return true;
@@ -90,20 +90,20 @@ transformation ScaleUp(		in prm : PRM,
 	}
 	
 	/**
-	 * Recursively scale up ProcessingResources.
+	 * Recursively scale down ProcessingResources.
 	 */
-	helper scaleUpProcessingResourcesRecursively(resourceContainer : ResourceContainer) {
+	helper scaleDownProcessingResourcesRecursively(resourceContainer : ResourceContainer) {
 	
-		// increase processing rate by scaleUp
+		// decrease processing rate by scaleDown
 		resourceContainer.activeResourceSpecifications_ResourceContainer->forEach(processingResourceSpecification){
 			var currentProcessingRate : String := processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification;
-	    	var newProcessingRate : Real := currentProcessingRate.toReal() - scaleUp;
+	    	var newProcessingRate : Real := currentProcessingRate.toReal() - scaleDown;
 	    	processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification := newProcessingRate.toString();
 	    };
 	    
 	    // recursive call
 		resourceContainer.nestedResourceContainers__ResourceContainer->forEach(nestedResourceContainer){
-			scaleUpProcessingResourcesRecursively(nestedResourceContainer);
+			scaleDownProcessingResourcesRecursively(nestedResourceContainer);
 		};		
 	}
 }
