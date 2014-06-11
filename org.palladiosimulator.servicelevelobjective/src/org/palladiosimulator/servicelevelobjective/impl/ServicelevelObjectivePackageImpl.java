@@ -4,6 +4,7 @@ package org.palladiosimulator.servicelevelobjective.impl;
 
 import de.uka.ipd.sdq.identifier.IdentifierPackage;
 import javax.measure.Measure;
+import javax.measure.quantity.Quantity;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EDataType;
@@ -12,6 +13,10 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.ETypeParameter;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
+import org.palladiosimulator.edp2.models.Repository.RepositoryPackage;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
+import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.servicelevelobjective.HardThreshold;
 import org.palladiosimulator.servicelevelobjective.LinearFuzzyThreshold;
 import org.palladiosimulator.servicelevelobjective.NamedElement;
@@ -131,7 +136,9 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
         isInited = true;
 
         // Initialize simple dependencies
-        IdentifierPackage.eINSTANCE.eClass();
+        ExperimentDataPackage.eINSTANCE.eClass();
+        RepositoryPackage.eINSTANCE.eClass();
+        MeasuringpointPackage.eINSTANCE.eClass();
 
         // Create package meta-data objects
         theServicelevelObjectivePackage.createPackageContents();
@@ -200,6 +207,24 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
      */
     public EReference getServiceLevelObjective_UpperThreshold() {
         return (EReference)serviceLevelObjectiveEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getServiceLevelObjective_MeasuringPoint() {
+        return (EReference)serviceLevelObjectiveEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public EReference getServiceLevelObjective_MetricDescription() {
+        return (EReference)serviceLevelObjectiveEClass.getEStructuralFeatures().get(4);
     }
 
     /**
@@ -318,6 +343,8 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
         createEAttribute(serviceLevelObjectiveEClass, SERVICE_LEVEL_OBJECTIVE__DESCRIPTION);
         createEReference(serviceLevelObjectiveEClass, SERVICE_LEVEL_OBJECTIVE__LOWER_THRESHOLD);
         createEReference(serviceLevelObjectiveEClass, SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD);
+        createEReference(serviceLevelObjectiveEClass, SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT);
+        createEReference(serviceLevelObjectiveEClass, SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION);
 
         thresholdEClass = createEClass(THRESHOLD);
         createEAttribute(thresholdEClass, THRESHOLD__THRESHOLD_LIMIT);
@@ -359,6 +386,8 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
         setNsURI(eNS_URI);
 
         // Obtain other dependent packages
+        MeasuringpointPackage theMeasuringpointPackage = (MeasuringpointPackage)EPackage.Registry.INSTANCE.getEPackage(MeasuringpointPackage.eNS_URI);
+        MetricSpecPackage theMetricSpecPackage = (MetricSpecPackage)EPackage.Registry.INSTANCE.getEPackage(MetricSpecPackage.eNS_URI);
         IdentifierPackage theIdentifierPackage = (IdentifierPackage)EPackage.Registry.INSTANCE.getEPackage(IdentifierPackage.eNS_URI);
 
         // Create type parameters
@@ -384,6 +413,8 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
         initEAttribute(getServiceLevelObjective_Description(), ecorePackage.getEString(), "description", null, 0, 1, ServiceLevelObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getServiceLevelObjective_LowerThreshold(), this.getThreshold(), null, "lowerThreshold", null, 0, 1, ServiceLevelObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEReference(getServiceLevelObjective_UpperThreshold(), this.getThreshold(), null, "upperThreshold", null, 0, 1, ServiceLevelObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getServiceLevelObjective_MeasuringPoint(), theMeasuringpointPackage.getMeasuringPoint(), null, "measuringPoint", null, 1, 1, ServiceLevelObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        initEReference(getServiceLevelObjective_MetricDescription(), theMetricSpecPackage.getMetricDescription(), null, "metricDescription", null, 1, 1, ServiceLevelObjective.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(thresholdEClass, Threshold.class, "Threshold", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getThreshold_ThresholdLimit(), this.getJSMeasure(), "thresholdLimit", null, 0, 1, Threshold.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
@@ -398,7 +429,7 @@ public class ServicelevelObjectivePackageImpl extends EPackageImpl implements Se
 
         // Initialize data types
         initEDataType(jsMeasureEDataType, Measure.class, "JSMeasure", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
-        initEDataType(jsQuantityEDataType, javax.measure.quantity.Quantity.class, "JSQuantity", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
+        initEDataType(jsQuantityEDataType, Quantity.class, "JSQuantity", IS_SERIALIZABLE, !IS_GENERATED_INSTANCE_CLASS);
 
         // Create resource
         createResource(eNS_URI);

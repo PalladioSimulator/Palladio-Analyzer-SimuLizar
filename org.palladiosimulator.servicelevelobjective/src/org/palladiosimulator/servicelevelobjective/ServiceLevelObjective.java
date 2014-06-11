@@ -2,6 +2,9 @@
  */
 package org.palladiosimulator.servicelevelobjective;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
+
 
 /**
  * <!-- begin-user-doc -->
@@ -14,6 +17,8 @@ package org.palladiosimulator.servicelevelobjective;
  *   <li>{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getDescription <em>Description</em>}</li>
  *   <li>{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getLowerThreshold <em>Lower Threshold</em>}</li>
  *   <li>{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getUpperThreshold <em>Upper Threshold</em>}</li>
+ *   <li>{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMeasuringPoint <em>Measuring Point</em>}</li>
+ *   <li>{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMetricDescription <em>Metric Description</em>}</li>
  * </ul>
  * </p>
  *
@@ -99,5 +104,57 @@ public interface ServiceLevelObjective extends NamedElement {
      * @generated
      */
     void setUpperThreshold(Threshold value);
+
+    /**
+     * Returns the value of the '<em><b>Measuring Point</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Measuring Point</em>' containment reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Measuring Point</em>' containment reference.
+     * @see #setMeasuringPoint(MeasuringPoint)
+     * @see org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage#getServiceLevelObjective_MeasuringPoint()
+     * @model containment="true" required="true"
+     * @generated
+     */
+    MeasuringPoint getMeasuringPoint();
+
+    /**
+     * Sets the value of the '{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMeasuringPoint <em>Measuring Point</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Measuring Point</em>' containment reference.
+     * @see #getMeasuringPoint()
+     * @generated
+     */
+    void setMeasuringPoint(MeasuringPoint value);
+
+    /**
+     * Returns the value of the '<em><b>Metric Description</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Metric Description</em>' reference isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     * @return the value of the '<em>Metric Description</em>' reference.
+     * @see #setMetricDescription(MetricDescription)
+     * @see org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage#getServiceLevelObjective_MetricDescription()
+     * @model required="true"
+     * @generated
+     */
+    MetricDescription getMetricDescription();
+
+    /**
+     * Sets the value of the '{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMetricDescription <em>Metric Description</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @param value the new value of the '<em>Metric Description</em>' reference.
+     * @see #getMetricDescription()
+     * @generated
+     */
+    void setMetricDescription(MetricDescription value);
 
 } // ServiceLevelObjective

@@ -198,13 +198,31 @@ public interface ServicelevelObjectivePackage extends EPackage {
     int SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD = NAMED_ELEMENT_FEATURE_COUNT + 2;
 
     /**
+     * The feature id for the '<em><b>Measuring Point</b></em>' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT = NAMED_ELEMENT_FEATURE_COUNT + 3;
+
+    /**
+     * The feature id for the '<em><b>Metric Description</b></em>' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     * @ordered
+     */
+    int SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION = NAMED_ELEMENT_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Service Level Objective</em>' class.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * @generated
      * @ordered
      */
-    int SERVICE_LEVEL_OBJECTIVE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 3;
+    int SERVICE_LEVEL_OBJECTIVE_FEATURE_COUNT = NAMED_ELEMENT_FEATURE_COUNT + 5;
 
     /**
      * The number of operations of the '<em>Service Level Objective</em>' class.
@@ -448,6 +466,28 @@ public interface ServicelevelObjectivePackage extends EPackage {
     EReference getServiceLevelObjective_UpperThreshold();
 
     /**
+     * Returns the meta object for the containment reference '{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMeasuringPoint <em>Measuring Point</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the containment reference '<em>Measuring Point</em>'.
+     * @see org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMeasuringPoint()
+     * @see #getServiceLevelObjective()
+     * @generated
+     */
+    EReference getServiceLevelObjective_MeasuringPoint();
+
+    /**
+     * Returns the meta object for the reference '{@link org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMetricDescription <em>Metric Description</em>}'.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @return the meta object for the reference '<em>Metric Description</em>'.
+     * @see org.palladiosimulator.servicelevelobjective.ServiceLevelObjective#getMetricDescription()
+     * @see #getServiceLevelObjective()
+     * @generated
+     */
+    EReference getServiceLevelObjective_MetricDescription();
+
+    /**
      * Returns the meta object for class '{@link org.palladiosimulator.servicelevelobjective.Threshold <em>Threshold</em>}'.
      * <!-- begin-user-doc -->
      * <!-- end-user-doc -->
@@ -616,6 +656,22 @@ public interface ServicelevelObjectivePackage extends EPackage {
          * @generated
          */
         EReference SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD = eINSTANCE.getServiceLevelObjective_UpperThreshold();
+
+        /**
+         * The meta object literal for the '<em><b>Measuring Point</b></em>' containment reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT = eINSTANCE.getServiceLevelObjective_MeasuringPoint();
+
+        /**
+         * The meta object literal for the '<em><b>Metric Description</b></em>' reference feature.
+         * <!-- begin-user-doc -->
+         * <!-- end-user-doc -->
+         * @generated
+         */
+        EReference SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION = eINSTANCE.getServiceLevelObjective_MetricDescription();
 
         /**
          * The meta object literal for the '{@link org.palladiosimulator.servicelevelobjective.impl.ThresholdImpl <em>Threshold</em>}' class.

@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.palladiosimulator.servicelevelobjective.Threshold;
@@ -24,6 +26,8 @@ import org.palladiosimulator.servicelevelobjective.Threshold;
  *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveImpl#getLowerThreshold <em>Lower Threshold</em>}</li>
  *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveImpl#getUpperThreshold <em>Upper Threshold</em>}</li>
+ *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveImpl#getMeasuringPoint <em>Measuring Point</em>}</li>
+ *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveImpl#getMetricDescription <em>Metric Description</em>}</li>
  * </ul>
  * </p>
  *
@@ -69,6 +73,26 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
      * @ordered
      */
     protected Threshold upperThreshold;
+
+    /**
+     * The cached value of the '{@link #getMeasuringPoint() <em>Measuring Point</em>}' containment reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMeasuringPoint()
+     * @generated
+     * @ordered
+     */
+    protected MeasuringPoint measuringPoint;
+
+    /**
+     * The cached value of the '{@link #getMetricDescription() <em>Metric Description</em>}' reference.
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @see #getMetricDescription()
+     * @generated
+     * @ordered
+     */
+    protected MetricDescription metricDescription;
 
     /**
      * <!-- begin-user-doc -->
@@ -201,6 +225,87 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
      * <!-- end-user-doc -->
      * @generated
      */
+    public MeasuringPoint getMeasuringPoint() {
+        return measuringPoint;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public NotificationChain basicSetMeasuringPoint(MeasuringPoint newMeasuringPoint, NotificationChain msgs) {
+        MeasuringPoint oldMeasuringPoint = measuringPoint;
+        measuringPoint = newMeasuringPoint;
+        if (eNotificationRequired()) {
+            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT, oldMeasuringPoint, newMeasuringPoint);
+            if (msgs == null) msgs = notification; else msgs.add(notification);
+        }
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMeasuringPoint(MeasuringPoint newMeasuringPoint) {
+        if (newMeasuringPoint != measuringPoint) {
+            NotificationChain msgs = null;
+            if (measuringPoint != null)
+                msgs = ((InternalEObject)measuringPoint).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT, null, msgs);
+            if (newMeasuringPoint != null)
+                msgs = ((InternalEObject)newMeasuringPoint).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT, null, msgs);
+            msgs = basicSetMeasuringPoint(newMeasuringPoint, msgs);
+            if (msgs != null) msgs.dispatch();
+        }
+        else if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT, newMeasuringPoint, newMeasuringPoint));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public MetricDescription getMetricDescription() {
+        if (metricDescription != null && metricDescription.eIsProxy()) {
+            InternalEObject oldMetricDescription = (InternalEObject)metricDescription;
+            metricDescription = (MetricDescription)eResolveProxy(oldMetricDescription);
+            if (metricDescription != oldMetricDescription) {
+                if (eNotificationRequired())
+                    eNotify(new ENotificationImpl(this, Notification.RESOLVE, ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION, oldMetricDescription, metricDescription));
+            }
+        }
+        return metricDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public MetricDescription basicGetMetricDescription() {
+        return metricDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
+    public void setMetricDescription(MetricDescription newMetricDescription) {
+        MetricDescription oldMetricDescription = metricDescription;
+        metricDescription = newMetricDescription;
+        if (eNotificationRequired())
+            eNotify(new ENotificationImpl(this, Notification.SET, ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION, oldMetricDescription, metricDescription));
+    }
+
+    /**
+     * <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     * @generated
+     */
     @Override
     public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -208,6 +313,8 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
                 return basicSetLowerThreshold(null, msgs);
             case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD:
                 return basicSetUpperThreshold(null, msgs);
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT:
+                return basicSetMeasuringPoint(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -226,6 +333,11 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
                 return getLowerThreshold();
             case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD:
                 return getUpperThreshold();
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT:
+                return getMeasuringPoint();
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION:
+                if (resolve) return getMetricDescription();
+                return basicGetMetricDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -246,6 +358,12 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
                 return;
             case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD:
                 setUpperThreshold((Threshold)newValue);
+                return;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT:
+                setMeasuringPoint((MeasuringPoint)newValue);
+                return;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION:
+                setMetricDescription((MetricDescription)newValue);
                 return;
         }
         super.eSet(featureID, newValue);
@@ -268,6 +386,12 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
             case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD:
                 setUpperThreshold((Threshold)null);
                 return;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT:
+                setMeasuringPoint((MeasuringPoint)null);
+                return;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION:
+                setMetricDescription((MetricDescription)null);
+                return;
         }
         super.eUnset(featureID);
     }
@@ -286,6 +410,10 @@ public class ServiceLevelObjectiveImpl extends NamedElementImpl implements Servi
                 return lowerThreshold != null;
             case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__UPPER_THRESHOLD:
                 return upperThreshold != null;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__MEASURING_POINT:
+                return measuringPoint != null;
+            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE__METRIC_DESCRIPTION:
+                return metricDescription != null;
         }
         return super.eIsSet(featureID);
     }

@@ -3,11 +3,16 @@
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.palladiosimulator.servicelevelobjective/src"
     modelPluginID="org.palladiosimulator.servicelevelobjective" modelName="Servicelevelobjective"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" usedGenPackages="../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier"
+    complianceLevel="7.0" copyrightFields="false" usedGenPackages="../../org.palladiosimulator.edp2/model/EDP2.genmodel#//models ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.metricspec/model/metricspec.genmodel#//metricspec"
     operationReflection="true" importOrganizing="true">
   <foreignModel>servicelevelobjective.ecore</foreignModel>
   <genPackages prefix="ServicelevelObjective" basePackage="org.palladiosimulator"
       disposableProviderFactory="true" fileExtensions="slo" ecorePackage="servicelevelobjective.ecore#/">
+    <genDataTypes ecoreDataType="servicelevelobjective.ecore#//JSMeasure">
+      <genTypeParameters ecoreTypeParameter="servicelevelobjective.ecore#//JSMeasure/V"/>
+      <genTypeParameters ecoreTypeParameter="servicelevelobjective.ecore#//JSMeasure/Q"/>
+    </genDataTypes>
+    <genDataTypes ecoreDataType="servicelevelobjective.ecore#//JSQuantity"/>
     <genClasses ecoreClass="servicelevelobjective.ecore#//ServiceLevelObjectiveRepository">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference servicelevelobjective.ecore#//ServiceLevelObjectiveRepository/servicelevelobjectives"/>
     </genClasses>
@@ -15,10 +20,16 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute servicelevelobjective.ecore#//ServiceLevelObjective/description"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference servicelevelobjective.ecore#//ServiceLevelObjective/lowerThreshold"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference servicelevelobjective.ecore#//ServiceLevelObjective/upperThreshold"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference servicelevelobjective.ecore#//ServiceLevelObjective/measuringPoint"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference servicelevelobjective.ecore#//ServiceLevelObjective/metricDescription"/>
     </genClasses>
-    <genClasses ecoreClass="servicelevelobjective.ecore#//Threshold"/>
+    <genClasses ecoreClass="servicelevelobjective.ecore#//Threshold">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute servicelevelobjective.ecore#//Threshold/thresholdLimit"/>
+    </genClasses>
     <genClasses ecoreClass="servicelevelobjective.ecore#//HardThreshold"/>
-    <genClasses ecoreClass="servicelevelobjective.ecore#//LinearFuzzyThreshold"/>
+    <genClasses ecoreClass="servicelevelobjective.ecore#//LinearFuzzyThreshold">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute servicelevelobjective.ecore#//LinearFuzzyThreshold/softLimit"/>
+    </genClasses>
     <genClasses ecoreClass="servicelevelobjective.ecore#//NamedElement">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute servicelevelobjective.ecore#//NamedElement/name"/>
     </genClasses>
