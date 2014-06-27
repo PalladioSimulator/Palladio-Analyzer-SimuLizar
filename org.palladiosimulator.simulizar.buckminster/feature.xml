@@ -26,9 +26,9 @@
       <discovery label="EDP2" url="http://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
       <discovery label="Metric Specification Framework" url="http://sdqweb.ipd.kit.edu/eclipse/metricspec/nightly/"/>
       <discovery label="Measurement Framework Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/measurementframework/nightly/"/>
-      <discovery label="Eclipse Release" url="http://download.eclipse.org/releases/kepler/"/>
+      <discovery label="Eclipse Release" url="http://download.eclipse.org/releases/luna/"/>
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
-      <discovery label="Eclipse Kepler" url="http://download.eclipse.org/releases/kepler"/>
+      <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/milestones/3.4.0"/>
    </url>
 
