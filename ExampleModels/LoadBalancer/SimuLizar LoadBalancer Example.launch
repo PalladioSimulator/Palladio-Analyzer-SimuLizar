@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
-<stringAttribute key="EDP2RepositoryID" value=""/>
+<stringAttribute key="EDP2RepositoryID" value="_KZn38L_hEeO5v6SmDsiZug"/>
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
-<stringAttribute key="allocationFile" value="platform:/resource/LoadBalancerExample/testSystem.allocation"/>
+<stringAttribute key="allocationFile" value="platform:/resource/LoadBalancerExample/loadbalancer_on_iaas.allocation"/>
 <booleanAttribute key="clear" value="true"/>
 <listAttribute key="completion.config"/>
 <booleanAttribute key="completion.qvt.verbose.logging" value="false"/>
@@ -13,7 +13,7 @@
 <stringAttribute key="confidenceModelElementName" value=""/>
 <stringAttribute key="confidenceModelElementURI" value=""/>
 <booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
-<intAttribute key="datasourceID" value="2"/>
+<intAttribute key="datasourceID" value="0"/>
 <intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
 <stringAttribute key="eventMiddlewareRepositoryFile" value="pathmap://PCM_MODELS/default_event_middleware.repository"/>
 <stringAttribute key="experimentRun" value="SimuLizar_LOADBALANCER"/>
@@ -30,7 +30,7 @@
 <stringAttribute key="mwRepositoryFile" value="pathmap://PCM_MODELS/Glassfish.repository"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
-<stringAttribute key="pmsFile" value="platform:/resource/LoadBalancerExample/monitors/EvaluationSpecification.pms"/>
+<stringAttribute key="pmsFile" value="platform:/resource/LoadBalancerExample/monitors/monitoring.pms"/>
 <stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/LoadBalancerExample/rules_active"/>
 <stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>
 <stringAttribute key="simTime" value="-1"/>
@@ -39,7 +39,7 @@
 <booleanAttribute key="simulateLinkingResources" value="false"/>
 <stringAttribute key="simulatorId" value="de.uka.ipd.sdq.codegen.simucontroller.simucom"/>
 <stringAttribute key="stepwidth" value=""/>
-<stringAttribute key="usageFile" value="platform:/resource/LoadBalancerExample/testSystem.usagemodel"/>
+<stringAttribute key="usageFile" value="platform:/resource/LoadBalancerExample/overload.usagemodel"/>
 <booleanAttribute key="useConfidenceStopCondition" value="false"/>
 <booleanAttribute key="useFixedSeed" value="true"/>
 <stringAttribute key="variable" value=""/>
