@@ -24,7 +24,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
     /**
      * Logger of this class
      */
-    protected static final Logger logger = Logger.getLogger(ComposedStructureInnerSwitch.class.getName());
+    protected static final Logger LOG = Logger.getLogger(ComposedStructureInnerSwitch.class.getName());
 
     /**
      * Context of the simulated thread which resolves an external call

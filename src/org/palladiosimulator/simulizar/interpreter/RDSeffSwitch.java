@@ -48,7 +48,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * 
  */
 class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
-    private final static Logger logger = Logger.getLogger(RDSeffSwitch.class);
+    private final static Logger LOG = Logger.getLogger(RDSeffSwitch.class);
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
     private final IModelAccessFactory modelAccessFactory;
@@ -91,7 +91,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
          */
 
         if (branchTransition == null) {
-            logger.error("No branch's condition evaluated to true, no branch selected: " + object);
+            LOG.error("No branch's condition evaluated to true, no branch selected: " + object);
             throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
             this.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
@@ -217,8 +217,8 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         final int numberOfLoops = StackContext.evaluateStatic(stoex, Integer.class, this.context.getStack()
                 .currentStackFrame());
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Determined number of loops: " + numberOfLoops + " " + object);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
 
         // interpret behavior the given number of times
@@ -301,12 +301,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     @Override
     public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
         if (object.getSuccessor_AbstractAction() != null) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
             }
             this.doSwitch(object.getSuccessor_AbstractAction());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
             }
         }
         return null;
@@ -378,8 +378,8 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                             (InterpreterDefaultContext) this.ctx), RDSeffSwitch.this.modelAccessFactory,
                             RDSeffSwitch.this.context.getAssemblyContextStack().peek());
 
-                    if (logger.isDebugEnabled()) {
-                        logger.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
+                    if (LOG.isDebugEnabled()) {
+                        LOG.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
                                 + " forked baviour: " + this);
                     }
                     seffInterpreter.doSwitch(forkedBehaviour);
@@ -400,12 +400,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     private void interpretLoop(final LoopAction object, final int numberOfLoops) {
         for (int i = 0; i < numberOfLoops; i++) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Interpret loop number " + i + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Interpret loop number " + i + ": " + object);
             }
             this.doSwitch(object.getBodyBehaviour_Loop());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Finished loop number " + i + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Finished loop number " + i + ": " + object);
             }
         }
     }
@@ -427,12 +427,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         final int numberOfLoops = StackContext.evaluateStatic(idNumberOfLoops, Integer.class, this.context.getStack()
                 .currentStackFrame());
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Determined number of loops: " + numberOfLoops + " " + object);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
         for (int i = 0; i < numberOfLoops; i++) {
-            if (logger.isDebugEnabled()) {
-                logger.debug("Interpret loop number " + i + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Interpret loop number " + i + ": " + object);
             }
 
             // create new stack frame for value characterizations of inner
@@ -448,8 +448,8 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             // TODO the point is not nice
             this.context.evaluateInner(innerVariableStackFrame, parameter.getParameterName() + ".");
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("Created new stackframe with evaluated inner collection variables: "
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Created new stackframe with evaluated inner collection variables: "
                         + innerVariableStackFrame);
             }
 
@@ -470,12 +470,12 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                         "Inner value characterisations of inner collection variable expected");
             }
 
-            if (logger.isDebugEnabled()) {
-                logger.debug("Remove stack frame: " + innerVariableStackFrame);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Remove stack frame: " + innerVariableStackFrame);
             }
             this.context.getStack().removeStackFrame();
-            if (logger.isDebugEnabled()) {
-                logger.debug("Finished loop number " + i + ": " + object);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Finished loop number " + i + ": " + object);
             }
         }
     }

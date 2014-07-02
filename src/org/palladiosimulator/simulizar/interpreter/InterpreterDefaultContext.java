@@ -22,7 +22,7 @@ public class InterpreterDefaultContext extends Context {
     */
     private static final long serialVersionUID = -5027373777424401211L;
 
-    protected static final Logger logger = Logger.getLogger(InterpreterDefaultContext.class.getName());
+    protected static final Logger LOG = Logger.getLogger(InterpreterDefaultContext.class.getName());
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
