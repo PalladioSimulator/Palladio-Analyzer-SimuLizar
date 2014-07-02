@@ -85,12 +85,8 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
                     .getActiveResource();
             if (element instanceof ResourceContainer) {
                 ResourceContainer resourceContainer = (ResourceContainer) element;
-                if (resourceContainer.getId().equals(
-                        activeResource.getResourceContainer_ProcessingResourceSpecification().getId())) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return resourceContainer.getId().equals(
+                        activeResource.getResourceContainer_ProcessingResourceSpecification().getId());
             } else {
                 throw new IllegalArgumentException(
                         "ResourceContainer is the only supported ActiveResourceMeasuringPoint");
@@ -99,13 +95,9 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
             AssemblyOperationMeasuringPoint mP = (AssemblyOperationMeasuringPoint) measuringPoint;
             if (element instanceof ExternalCallAction) {
                 ExternalCallAction externalCallAction = (ExternalCallAction) element;
-                if (externalCallAction.getCalledService_ExternalService().getId()
+                return externalCallAction.getCalledService_ExternalService().getId()
                         .equals(mP.getOperationSignature().getId())
-                        && externalCallAction.getRole_ExternalService().getId().equals(mP.getRole().getId())) {
-                    return true;
-                } else {
-                    return false;
-                }
+                        && externalCallAction.getRole_ExternalService().getId().equals(mP.getRole().getId());
             } else {
                 throw new IllegalArgumentException("Unsupported element for a AssemblyOperationMeasuringPoint");
             }
@@ -117,14 +109,10 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
             SystemOperationMeasuringPoint mP = (SystemOperationMeasuringPoint) measuringPoint;
             if (element instanceof EntryLevelSystemCall) {
                 EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) element;
-                if (entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
+                return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
                         .equals(mP.getOperationSignature().getId())
                         && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
-                                .equals(mP.getRole().getId())) {
-                    return true;
-                } else {
-                    return false;
-                }
+                                .equals(mP.getRole().getId());
             } else {
                 throw new IllegalArgumentException("Unsupported element for a SystemOperationMeasuringPoint");
             }
@@ -132,11 +120,7 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
             UsageScenarioMeasuringPoint mP = (UsageScenarioMeasuringPoint) measuringPoint;
             if (element instanceof UsageScenario) {
                 UsageScenario usageScenario = (UsageScenario) element;
-                if (usageScenario.getId().equals(mP.getUsageScenario().getId())) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return usageScenario.getId().equals(mP.getUsageScenario().getId());
             }
         } else {
             throw new IllegalArgumentException("Unknown measuring point type");

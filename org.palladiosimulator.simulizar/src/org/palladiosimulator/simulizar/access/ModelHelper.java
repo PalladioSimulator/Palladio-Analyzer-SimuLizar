@@ -37,7 +37,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 class ModelHelper {
 
-    protected static final Logger logger = Logger.getLogger(ModelHelper.class.getName());
+    protected static final Logger LOG = Logger.getLogger(ModelHelper.class.getName());
 
     private final Map<SimuComSimProcess, PCMModels> modelCopies;
 
@@ -154,8 +154,8 @@ class ModelHelper {
                 || this.getSessionIds().get(simuComSimProcess) < simuComSimProcess.getCurrentSessionId()) {
             this.getModelCopies().put(simuComSimProcess, this.copyGlobalPCMModels());
             this.getSessionIds().put(simuComSimProcess, simuComSimProcess.getCurrentSessionId());
-            if (logger.isDebugEnabled()) {
-                logger.debug("Created pcm model copy for sim process: " + simuComSimProcess);
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Created pcm model copy for sim process: " + simuComSimProcess);
             }
         }
         return this.modelCopies.get(simuComSimProcess);

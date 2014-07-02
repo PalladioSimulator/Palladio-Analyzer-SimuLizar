@@ -151,24 +151,28 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     /**
      * Initializes response time measurement.
      * 
+     * @param event
+     *            which was fired
+     * @param <T>
+     *            extends Entity
      */
     private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
         final EObject modelElement = event.getModelElement();
-        
-        if(!entityIsAlreadyInstrumented(modelElement)) {
+
+        if (!entityIsAlreadyInstrumented(modelElement)) {
             final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
             final SimuComModel simuComModel = event.getThread().getModel();
             final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
             final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
-    
+
             final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
                     PerformanceMetricEnum.RESPONSE_TIME);
             if (elementShouldBeMonitored(measurementSpecification)) {
                 try {
                     new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
                             MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
-                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel.getSimulationControl()
-                                    .getCurrentSimulationTime());
+                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
+                                    .getSimulationControl().getCurrentSimulationTime());
                 } catch (final UnsupportedDataTypeException e) {
                     LOG.error(e);
                     throw new RuntimeException(e);
@@ -177,6 +181,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
+    /**
+     * 
+     * @param modelElement
+     *            for which a MeasuringPoint shall be created
+     * @param <T>
+     *            extends Entity
+     * @return MeasuringPoint for modelElement
+     */
     private <T extends Entity> MeasuringPoint createMeasuringPoint(final EObject modelElement) {
         MeasuringPoint result;
         if (modelElement == null) {
@@ -220,8 +232,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
             final SystemOperationMeasuringPoint mp = this.pcmMeasuringpointFactory
                     .createSystemOperationMeasuringPoint();
-            final InterfaceProvidingEntity providingEntity = entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall()
-                    .getProvidingEntity_ProvidedRole();
+            final InterfaceProvidingEntity providingEntity = entryLevelSystemCall
+                    .getProvidedRole_EntryLevelSystemCall().getProvidingEntity_ProvidedRole();
             if (providingEntity instanceof de.uka.ipd.sdq.pcm.system.System) {
                 de.uka.ipd.sdq.pcm.system.System system = (de.uka.ipd.sdq.pcm.system.System) providingEntity;
                 mp.setSystem(system);
@@ -253,6 +265,11 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * TODO StringMeasuringPoint should not be used by SimuLizar. Create something better! I could
      * imagine an EDP2 extension that introduces dedicated reconfiguration measuring points.
      * [Lehrig]
+     * 
+     * @param event
+     *            which was fired
+     * @param <T>
+     *            extends Entity
      */
     private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
 
@@ -262,14 +279,13 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
-        final Calculator calculator = this.calculatorFactory
-                .buildStateOfActiveResourceCalculator(measuringPoint, probe);
+        this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe);
     }
 
     /**
      * @param modelElement
      * @param simuComModel
-     * @return
+     * @return list with start and stop probe
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {

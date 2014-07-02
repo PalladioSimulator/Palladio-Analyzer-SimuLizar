@@ -12,7 +12,7 @@ import org.palladiosimulator.simulizar.utils.PCMModels;
  * 
  */
 public abstract class AbstractPCMModelAccess<ModelType extends EObject> extends AbstractModelAccess<ModelType> {
-    protected static final Logger logger = Logger.getLogger(AbstractPCMModelAccess.class.getName());
+    protected static final Logger LOG = Logger.getLogger(AbstractPCMModelAccess.class.getName());
 
     protected final InterpreterDefaultContext context;
 
