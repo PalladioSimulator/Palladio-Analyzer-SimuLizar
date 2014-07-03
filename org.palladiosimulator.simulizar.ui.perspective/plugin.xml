@@ -6,7 +6,7 @@
       <view
             category="org.palladiosimulator.simulizar.example.navigator.category"
             class="org.eclipse.ui.navigator.CommonNavigator"
-            icon="platform:/plugin/org.palladiosimulator.simulizar.ui/icon/simulizar_icon.ico"
+            icon="platform:/plugin/org.palladiosimulator.simulizar.ui/icon/icon_16.png"
             id="org.palladiosimulator.simulizar.example.navigator.navigator"
             name="SimuLizar Navigator">
       </view>
@@ -78,7 +78,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="org.palladiosimulator.simulizar.ui.perspective.perspectives.SimulizarPerspective"
-            icon="platform:/plugin/org.palladiosimulator.simulizar.ui/icon/simulizar_icon.ico"
+            icon="platform:/plugin/org.palladiosimulator.simulizar.ui/icon/icon_16.png"
             id="org.palladiosimulator.simulizar.ui.perspective"
             name="SimuLizar Perspective">
       </perspective>
