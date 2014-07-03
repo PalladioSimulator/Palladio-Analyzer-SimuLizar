@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.ui.wizard.znncom.projects;
 
 import java.io.InputStream;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
