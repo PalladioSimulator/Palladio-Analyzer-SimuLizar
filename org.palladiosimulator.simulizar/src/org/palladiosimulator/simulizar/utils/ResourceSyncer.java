@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.utils;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PMSAccess;
@@ -153,8 +154,10 @@ public class ResourceSyncer {
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final SimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        simulatedResourceContainer.addActiveResource(processingResource.eResource().getURI().toString(),
-                new String[] {}, resourceContainer.getId(), schedulingStrategy);
+        URI pR = processingResource.eResource().getURI();
+        pR.appendFragment(processingResource.getId());
+        simulatedResourceContainer.addActiveResource(pR.toString(), new String[] {}, resourceContainer.getId(),
+                schedulingStrategy);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
