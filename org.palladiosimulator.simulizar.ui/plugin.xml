@@ -12,7 +12,7 @@
 	</extension>
 	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
 	    <launchConfigurationTypeImage
-	        icon="./icon/simulizar_icon.ico"
+	        icon="./icon/play_16.png"
 	        configTypeID="de.upb.pcm.interpreter.SimuLizarLaunching"
 	        id="de.upb.pcm.interpreter.launchConfigurationTypeImage">
 	    </launchConfigurationTypeImage>
