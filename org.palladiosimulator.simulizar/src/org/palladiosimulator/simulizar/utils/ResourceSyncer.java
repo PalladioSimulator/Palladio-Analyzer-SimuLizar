@@ -83,7 +83,7 @@ public class ResourceSyncer {
         // Resource already exists?
         for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
                 .getActiveResources()) {
-            if (abstractScheduledResource.getName().equals(typeId)) {
+            if (abstractScheduledResource.getResourceTypeId().equals(typeId)) {
 
                 return (ScheduledResource) abstractScheduledResource;
 
