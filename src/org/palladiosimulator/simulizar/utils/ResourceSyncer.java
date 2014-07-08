@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.utils;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PMSAccess;
@@ -16,6 +15,7 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourcetype.SchedulingPolicy;
+import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
@@ -154,10 +154,8 @@ public class ResourceSyncer {
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final SimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        URI pR = processingResource.eResource().getURI();
-        pR.appendFragment(processingResource.getId());
-        simulatedResourceContainer.addActiveResource(pR.toString(), new String[] {}, resourceContainer.getId(),
-                schedulingStrategy);
+        simulatedResourceContainer.addActiveResource(ModelsAtRuntime.getResourceURI(processingResource),
+                new String[] {}, resourceContainer.getId(), schedulingStrategy);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()

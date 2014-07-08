@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.access;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.utils.PCMModels;
@@ -12,6 +11,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
+import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
@@ -103,21 +103,17 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final Resource usageScenarioResource = usageScenario.eResource();
-        if (!(usageScenarioResource == null)) {
-            final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(), usageScenarioResource
-                    .getURI().toString()) {
-                @Override
-                public IScenarioRunner createScenarioRunner() {
-                    return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
-                }
-            };
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(),
+                ModelsAtRuntime.getResourceURI(usageScenario)) {
+            @Override
+            public IScenarioRunner createScenarioRunner() {
+                return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
+            }
+        };
 
-            // create workload driver by using given factory
-            return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.context.getModel(), userFactory,
-                    openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
-        }
-        return null;
+        // create workload driver by using given factory
+        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.context.getModel(), userFactory,
+                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
     }
 
     protected IScenarioRunner getScenarioRunner(final IModelAccessFactory modelAccessFactory,
