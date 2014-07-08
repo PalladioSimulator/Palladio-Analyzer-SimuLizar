@@ -275,6 +275,10 @@
                   <children xmi:type="notation:Node" xmi:id="_OugxoAEpEeS7FKokKTKFow" type="3042">
                     <children xmi:type="notation:DecorationNode" xmi:id="_OuhYsAEpEeS7FKokKTKFow" type="5040"/>
                     <children xmi:type="notation:BasicCompartment" xmi:id="_OuhYsQEpEeS7FKokKTKFow" type="7037">
+                      <children xmi:type="notation:Node" xmi:id="_AG0BoAZ9EeSEWpF6kCN3ag" type="3033">
+                        <element xmi:type="parameter:VariableCharacterisation" href="loadbalancer.repository#//@components__Repository.0/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@branches_Branch.0/@branchBehaviour_BranchTransition/@steps_Behaviour.2/@inputVariableUsages__CallAction.0/@variableCharacterisation_VariableUsage.0"/>
+                        <layoutConstraint xmi:type="notation:Location" xmi:id="_AG0BoQZ9EeSEWpF6kCN3ag"/>
+                      </children>
                       <styles xmi:type="notation:TitleStyle" xmi:id="_OuhYsgEpEeS7FKokKTKFow" showTitle="true"/>
                       <styles xmi:type="notation:SortingStyle" xmi:id="_OuhYswEpEeS7FKokKTKFow"/>
                       <styles xmi:type="notation:FilteringStyle" xmi:id="_OuhYtAEpEeS7FKokKTKFow"/>
@@ -326,6 +330,10 @@
                   <children xmi:type="notation:Node" xmi:id="_P9YYgAEpEeS7FKokKTKFow" type="3042">
                     <children xmi:type="notation:DecorationNode" xmi:id="_P9YYhQEpEeS7FKokKTKFow" type="5040"/>
                     <children xmi:type="notation:BasicCompartment" xmi:id="_P9YYhgEpEeS7FKokKTKFow" type="7037">
+                      <children xmi:type="notation:Node" xmi:id="_EXho4AZ9EeSEWpF6kCN3ag" type="3033">
+                        <element xmi:type="parameter:VariableCharacterisation" href="loadbalancer.repository#//@components__Repository.0/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@branches_Branch.1/@branchBehaviour_BranchTransition/@steps_Behaviour.2/@inputVariableUsages__CallAction.0/@variableCharacterisation_VariableUsage.0"/>
+                        <layoutConstraint xmi:type="notation:Location" xmi:id="_EXho4QZ9EeSEWpF6kCN3ag"/>
+                      </children>
                       <styles xmi:type="notation:TitleStyle" xmi:id="_P9YYhwEpEeS7FKokKTKFow" showTitle="true"/>
                       <styles xmi:type="notation:SortingStyle" xmi:id="_P9YYiAEpEeS7FKokKTKFow"/>
                       <styles xmi:type="notation:FilteringStyle" xmi:id="_P9YYiQEpEeS7FKokKTKFow"/>

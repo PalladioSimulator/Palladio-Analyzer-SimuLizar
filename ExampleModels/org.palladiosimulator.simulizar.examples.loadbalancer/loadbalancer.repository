@@ -14,6 +14,9 @@
             <steps_Behaviour xsi:type="seff:StopAction" id="_riehsgEoEeS7FKokKTKFow" predecessor_AbstractAction="_8nlBcAEoEeS7FKokKTKFow"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_8nlBcAEoEeS7FKokKTKFow" predecessor_AbstractAction="_riehsQEoEeS7FKokKTKFow" successor_AbstractAction="_riehsgEoEeS7FKokKTKFow" calledService_ExternalService="_f0xPUAEmEeS7FKokKTKFow" role_ExternalService="_WDUjYAEmEeS7FKokKTKFow">
               <inputVariableUsages__CallAction>
+                <variableCharacterisation_VariableUsage type="BYTESIZE">
+                  <specification_VariableCharacterisation specification="payload.BYTESIZE"/>
+                </variableCharacterisation_VariableUsage>
                 <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="payload"/>
               </inputVariableUsages__CallAction>
             </steps_Behaviour>
@@ -25,6 +28,9 @@
             <steps_Behaviour xsi:type="seff:StopAction" id="_tjFukwEoEeS7FKokKTKFow" predecessor_AbstractAction="_-fSxAAEoEeS7FKokKTKFow"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_-fSxAAEoEeS7FKokKTKFow" predecessor_AbstractAction="_tjFukgEoEeS7FKokKTKFow" successor_AbstractAction="_tjFukwEoEeS7FKokKTKFow" calledService_ExternalService="_f0xPUAEmEeS7FKokKTKFow" role_ExternalService="_VOiQcAEmEeS7FKokKTKFow">
               <inputVariableUsages__CallAction>
+                <variableCharacterisation_VariableUsage type="BYTESIZE">
+                  <specification_VariableCharacterisation specification="payload.BYTESIZE"/>
+                </variableCharacterisation_VariableUsage>
                 <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="payload"/>
               </inputVariableUsages__CallAction>
             </steps_Behaviour>
