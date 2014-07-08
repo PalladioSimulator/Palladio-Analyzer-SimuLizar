@@ -56,7 +56,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private final ICalculatorFactory calculatorFactory;
 
     private final Map<EObject, List<TriggeredProbe>> currentTimeProbes = new HashMap<EObject, List<TriggeredProbe>>();
-    private final TriggeredProbe reconfTimeProbe;
+    private TriggeredProbe reconfTimeProbe;
 
     /** Default EMF factory for measuring points. */
     private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
@@ -275,11 +275,11 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final SimuComModel simuComModel = event.getModel();
 
-        final Probe probe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
+        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
-        this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, probe);
+        this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, this.reconfTimeProbe);
     }
 
     /**
