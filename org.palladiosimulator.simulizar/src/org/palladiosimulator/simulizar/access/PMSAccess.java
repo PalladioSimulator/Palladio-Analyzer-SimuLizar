@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.access;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
@@ -19,6 +20,7 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 
 /**
  * Access class for pms model.
@@ -78,6 +80,9 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
     private Boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
+        } else if (measuringPoint instanceof ResourceURIMeasuringPoint) {
+            final String resourceUri = ((ResourceURIMeasuringPoint) measuringPoint).getResourceURI();
+            return ModelsAtRuntime.getResourceURI(element).equals(resourceUri);
         } else if (measuringPoint instanceof StringMeasuringPoint) {
             throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
         } else if (measuringPoint instanceof ActiveResourceMeasuringPoint) {
