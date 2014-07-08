@@ -84,8 +84,8 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
         final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.context.getModel(), closedWorkload
-                .getThinkTime_ClosedWorkload().getSpecification(), closedWorkload.getUsageScenario_Workload()
-                .eResource().getURI().toString()) {
+                .getThinkTime_ClosedWorkload().getSpecification(), ModelsAtRuntime.getResourceURI(closedWorkload
+                .getUsageScenario_Workload())) {
             @Override
             public IScenarioRunner createScenarioRunner() {
                 return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
