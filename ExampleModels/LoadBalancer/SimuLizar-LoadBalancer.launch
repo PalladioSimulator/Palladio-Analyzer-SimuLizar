@@ -2,7 +2,7 @@
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
 <stringAttribute key="EDP2RepositoryID" value="_KZn38L_hEeO5v6SmDsiZug"/>
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
-<stringAttribute key="allocationFile" value="platform:/resource/LoadBalancerExample/loadbalancer_on_iaas.allocation"/>
+<stringAttribute key="allocationFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer_on_iaas.allocation"/>
 <booleanAttribute key="clear" value="true"/>
 <listAttribute key="completion.config"/>
 <booleanAttribute key="completion.qvt.verbose.logging" value="false"/>
@@ -30,8 +30,8 @@
 <stringAttribute key="mwRepositoryFile" value="pathmap://PCM_MODELS/Glassfish.repository"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
-<stringAttribute key="pmsFile" value="platform:/resource/LoadBalancerExample/monitors/monitoring.pms"/>
-<stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/LoadBalancerExample/rules_active"/>
+<stringAttribute key="pmsFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/monitors/monitoring.pms"/>
+<stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/rules_active"/>
 <stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>
 <stringAttribute key="simTime" value="-1"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>
@@ -39,7 +39,7 @@
 <booleanAttribute key="simulateLinkingResources" value="false"/>
 <stringAttribute key="simulatorId" value="de.uka.ipd.sdq.codegen.simucontroller.simucom"/>
 <stringAttribute key="stepwidth" value=""/>
-<stringAttribute key="usageFile" value="platform:/resource/LoadBalancerExample/overload.usagemodel"/>
+<stringAttribute key="usageFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/overload.usagemodel"/>
 <booleanAttribute key="useConfidenceStopCondition" value="false"/>
 <booleanAttribute key="useFixedSeed" value="true"/>
 <stringAttribute key="variable" value=""/>
