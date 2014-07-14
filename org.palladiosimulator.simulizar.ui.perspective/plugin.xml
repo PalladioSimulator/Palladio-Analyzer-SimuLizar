@@ -18,7 +18,7 @@
    <extension
          point="org.eclipse.ui.navigator.viewer">
       <viewerActionBinding
-            viewerId="org.palladiosimulator.simulizar.example.navigator.navigator">
+            viewerId="org.palladiosimulator.simulizar.ui.perspective.navigator">
          <includes>
             <actionExtension
                   pattern="org.eclipse.ui.navigator.resources.*">
@@ -26,7 +26,7 @@
          </includes>
       </viewerActionBinding>
       <viewerContentBinding
-            viewerId="org.palladiosimulator.simulizar.example.navigator.navigator">
+            viewerId="org.palladiosimulator.simulizar.ui.perspective.navigator">
          <includes>
             <contentExtension
                   pattern="org.eclipse.ui.navigator.resourceContent">
@@ -48,7 +48,7 @@
       <perspectiveExtension
             targetID="org.palladiosimulator.simulizar.ui.perspective">
          <view
-               id="org.palladiosimulator.simulizar.example.navigator.navigator"
+               id="org.palladiosimulator.simulizar.ui.perspective.navigator"
                minimized="false"
                ratio="0.25"
                relationship="left"
