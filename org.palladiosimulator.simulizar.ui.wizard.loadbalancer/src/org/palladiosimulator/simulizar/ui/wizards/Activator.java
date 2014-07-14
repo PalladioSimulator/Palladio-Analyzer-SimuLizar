@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.wizard.loadbalancer;
+package org.palladiosimulator.simulizar.ui.wizards;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

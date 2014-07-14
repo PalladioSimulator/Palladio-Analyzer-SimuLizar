@@ -4,17 +4,26 @@
    <extension
          point="org.eclipse.ui.newWizards">
       <category
-            id="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.category.wizards"
+            id="org.palladiosimulator.simulizar.ui.wizards.category"
             name="SimuLizar Examples"
             parentCategory="org.eclipse.ui.Examples">
       </category>
       <wizard
-            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizard.loadbalancer.category.wizards"
-            class="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.wizards.CustomProjectNewWizard"
+            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizards.category"
+            class="org.palladiosimulator.simulizar.ui.wizards.ExampleWizardLoadBalancer"
             finalPerspective="org.palladiosimulator.simulizar.ui.perspective"
             icon="icons/simulizar.png"
-            id="org.palladiosimulator.simulizar.ui.wizard.new.custom"
+            id="org.palladiosimulator.simulizar.ui.wizards.example.loadbalancer"
             name="Load Balancer"
+            project="true">
+      </wizard>
+      <wizard
+            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizards.category"
+            class="org.palladiosimulator.simulizar.ui.wizards.ExampleWizardZnnCom"
+            finalPerspective="org.palladiosimulator.simulizar.ui.perspective"
+            icon="icons/simulizar.png"
+            id="org.palladiosimulator.simulizar.ui.wizards.example.znncom"
+            name="Znn.com"
             project="true">
       </wizard>
    </extension>
@@ -23,7 +32,7 @@
          point="org.eclipse.core.resources.natures">
       <runtime>
          <run
-               class="org.palladiosimulator.simulizar.ui.wizard.loadbalancer.natures.SimulizarNature">
+               class="org.palladiosimulator.simulizar.ui.wizards.nature.SimulizarNature">
          </run>
       </runtime>
    </extension>

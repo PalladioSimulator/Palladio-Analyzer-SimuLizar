@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.ui.wizard.loadbalancer.natures;
+package org.palladiosimulator.simulizar.ui.wizards.nature;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IProjectNature;
