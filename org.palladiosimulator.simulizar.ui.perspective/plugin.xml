@@ -4,14 +4,14 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            category="org.palladiosimulator.simulizar.example.navigator.category"
+            category="org.palladiosimulator.simulizar.ui.perspective.category"
             class="org.eclipse.ui.navigator.CommonNavigator"
             icon="platform:/plugin/org.palladiosimulator.simulizar.ui/icon/icon_16.png"
-            id="org.palladiosimulator.simulizar.example.navigator.navigator"
+            id="org.palladiosimulator.simulizar.ui.perspective.navigator"
             name="SimuLizar Navigator">
       </view>
       <category
-            id="org.palladiosimulator.simulizar.example.navigator.category"
+            id="org.palladiosimulator.simulizar.ui.perspective.category"
             name="SimuLizar">
       </category>
    </extension>
