@@ -46,7 +46,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_xwxh4QEmEeS7FKokKTKFow" entityName="stop" predecessor_AbstractAction="_7FXSsAEmEeS7FKokKTKFow"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_7FXSsAEmEeS7FKokKTKFow" entityName="processData" predecessor_AbstractAction="_xwxh4AEmEeS7FKokKTKFow" successor_AbstractAction="_xwxh4QEmEeS7FKokKTKFow">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="300.0*payload.BYTESIZE"/>
+          <specification_ParametericResourceDemand specification="10.0*payload.BYTESIZE"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>

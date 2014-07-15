@@ -25,11 +25,11 @@
 <stringAttribute key="fixedSeed4" value="4"/>
 <stringAttribute key="fixedSeed5" value="5"/>
 <stringAttribute key="maximum" value=""/>
-<stringAttribute key="maximumMeasurementCount" value="1000"/>
+<stringAttribute key="maximumMeasurementCount" value="100000"/>
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="mwRepositoryFile" value="pathmap://PCM_MODELS/Glassfish.repository"/>
 <stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
-<stringAttribute key="persistenceFramework" value="Experiment Data Persistency &amp; Presentation (EDP2)"/>
+<stringAttribute key="persistenceFramework" value="SensorFramework"/>
 <stringAttribute key="pmsFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/monitors/monitoring.pms"/>
 <stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/rules_active"/>
 <stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>

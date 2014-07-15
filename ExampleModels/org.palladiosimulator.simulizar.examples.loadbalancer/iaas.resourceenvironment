@@ -11,14 +11,14 @@
     <activeResourceSpecifications_ResourceContainer id="_EKwpkAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-      <processingRate_ProcessingResourceSpecification specification="1000"/>
+      <processingRate_ProcessingResourceSpecification specification="10000"/>
     </activeResourceSpecifications_ResourceContainer>
   </resourceContainer_ResourceEnvironment>
   <resourceContainer_ResourceEnvironment id="_yaTfsAEpEeS7FKokKTKFow" entityName="ServerNode1">
     <activeResourceSpecifications_ResourceContainer id="_GAVEEAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-      <processingRate_ProcessingResourceSpecification specification="1000"/>
+      <processingRate_ProcessingResourceSpecification specification="10000"/>
     </activeResourceSpecifications_ResourceContainer>
     <activeResourceSpecifications_ResourceContainer id="_HwZ6kAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
@@ -30,7 +30,7 @@
     <activeResourceSpecifications_ResourceContainer id="_JPnqkAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-      <processingRate_ProcessingResourceSpecification specification="1000"/>
+      <processingRate_ProcessingResourceSpecification specification="10000"/>
     </activeResourceSpecifications_ResourceContainer>
     <activeResourceSpecifications_ResourceContainer id="_K2xOkAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
