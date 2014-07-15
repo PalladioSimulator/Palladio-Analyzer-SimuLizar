@@ -236,7 +236,7 @@
               <styles xmi:type="notation:FilteringStyle" xmi:id="_H-wNOPWDEeGFxO_nWR6Nkg"/>
             </children>
             <element xmi:type="sdp:ObjectVariable" href="acquireResources.sdm#//@ownedActivityNode.4/@ownedRule/@variable.4"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H-u_EfWDEeGFxO_nWR6Nkg" x="355" y="400"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_H-u_EfWDEeGFxO_nWR6Nkg" x="363" y="253"/>
           </children>
         </children>
         <children xmi:type="notation:DecorationNode" xmi:id="_DanbAPWAEeGabqA4905uGw" type="7003">
@@ -248,7 +248,7 @@
       </children>
     </children>
     <element xmi:type="sda:ModifyingStoryNode" href="acquireResources.sdm#//@ownedActivityNode.4"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DXCikfWAEeGabqA4905uGw" x="32" y="836" width="649" height="575"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DXCikfWAEeGabqA4905uGw" x="32" y="836" width="724" height="575"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_DXDJofWAEeGabqA4905uGw" type="2003" fontName="Lucida Grande">
     <children xmi:type="notation:DecorationNode" xmi:id="_DXDwsPWAEeGabqA4905uGw" type="5011"/>
