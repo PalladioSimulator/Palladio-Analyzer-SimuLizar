@@ -63,8 +63,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      * @param assemblyContext
      *            the assembly context of the component of the SEFF.
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccessFactory interpreterFactory,
-            final AssemblyContext assemblyContext) {
+    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccessFactory interpreterFactory) {
         super();
         this.modelAccessFactory = interpreterFactory;
         this.context = context;
@@ -357,14 +356,13 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
      */
     private List<ForkedBehaviourProcess> getProcesses(final List<ForkedBehaviour> forkedBehaviours,
             final boolean isAsync) {
-        final List<ForkedBehaviourProcess> syncProcesses = new LinkedList<ForkedBehaviourProcess>();
+        final List<ForkedBehaviourProcess> processes = new LinkedList<ForkedBehaviourProcess>();
 
         // for each create process, and add to array of processes
 
         for (final ForkedBehaviour forkedBehaviour : forkedBehaviours) {
-
-            syncProcesses.add(new ForkedBehaviourProcess(this.context, this.context.getAssemblyContextStack().peek()
-                    .getId(), isAsync) {
+            final AssemblyContext parentAssemblyContext = this.context.getAssemblyContextStack().peek();
+            processes.add(new ForkedBehaviourProcess(this.context, parentAssemblyContext.getId(), isAsync) {
 
                 @Override
                 protected void executeBehaviour() {
@@ -374,9 +372,11 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
                      * reasons we need an InterpreterDefaultContext. Thus we have to copy the
                      * context including its stack.
                      */
-                    final RDSeffSwitch seffInterpreter = new RDSeffSwitch(new InterpreterDefaultContext(
-                            (InterpreterDefaultContext) this.ctx), RDSeffSwitch.this.modelAccessFactory,
-                            RDSeffSwitch.this.context.getAssemblyContextStack().peek());
+                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
+                            RDSeffSwitch.this.context.getEventNotificationHelper(), false);
+                    seffContext.getAssemblyContextStack().push(parentAssemblyContext);
+                    final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
+                            RDSeffSwitch.this.modelAccessFactory);
 
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
@@ -387,7 +387,7 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 
             });
         }
-        return syncProcesses;
+        return processes;
     }
 
     /**
@@ -479,4 +479,5 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             }
         }
     }
+
 }
