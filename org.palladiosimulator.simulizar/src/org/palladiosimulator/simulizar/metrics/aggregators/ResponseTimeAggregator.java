@@ -100,14 +100,14 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
             final Intervall intervall = (Intervall) this.getMeasurementSpecification().getTemporalRestriction();
             if (simulationTime - this.lastSimulationTime >= intervall.getIntervall()) {
-                // calculate StatisticalCharacterization
-                final double statisticalCharacterization = this.aggregator
-                        .calculateStatisticalCharaterization(this.responseTimes);
-                this.addToPRM(statisticalCharacterization);
-
+                if (this.responseTimes.size() > 0) {
+                    // calculate StatisticalCharacterization
+                    final double statisticalCharacterization = this.aggregator
+                            .calculateStatisticalCharaterization(this.responseTimes);
+                    this.addToPRM(statisticalCharacterization);
+                    this.responseTimes.clear();
+                }
                 this.lastSimulationTime = simulationTime;
-                this.responseTimes.clear();
-
             }
         }
         this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
