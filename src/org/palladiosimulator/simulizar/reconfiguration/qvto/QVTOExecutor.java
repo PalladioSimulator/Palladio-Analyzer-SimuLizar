@@ -25,8 +25,6 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
@@ -182,10 +180,6 @@ public class QVTOExecutor {
             double passageTime = this.context.getModel().getSimulationControl().getCurrentSimulationTime();
             LOGGER.log(Level.INFO,
                     "Rule application successfull at time " + passageTime + " with message: " + result.getMessage());
-
-            this.context.getEventNotificationHelper().fireReconfigurationEvent(
-                    new ReconfigurationEvent(EventType.RECONFIGURATION, this.context.getModel()));
-
             return true;
         } else {
             LOGGER.log(Level.WARN, "Rule application failed with message: " + result.getMessage());
