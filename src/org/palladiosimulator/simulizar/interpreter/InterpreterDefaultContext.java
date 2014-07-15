@@ -9,6 +9,7 @@ import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
+import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
  * Default context for the pcm interpreter.
@@ -37,13 +38,20 @@ public class InterpreterDefaultContext extends Context {
      *            the default context from which the new default context should be created.
      */
     public InterpreterDefaultContext(final InterpreterDefaultContext context) {
+        this(context, context.eventHelper, true);
+    }
+
+    public InterpreterDefaultContext(final Context context, final EventNotificationHelper eventHelper,
+            final boolean copyStack) {
         super(context.getModel());
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
+        this.eventHelper = eventHelper;
         this.stack = new SimulatedStack<Object>();
-        this.eventHelper = context.eventHelper;
-        if (context.getStack().size() > 0) {
+        if (copyStack && context.getStack().size() > 0) {
             this.stack.pushStackFrame(context.getStack().currentStackFrame().copyFrame());
+        } else {
+            this.stack.pushStackFrame(new SimulatedStackframe<Object>());
         }
     }
 

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.List;
@@ -157,8 +154,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory,
-                    this.instanceAssemblyContext);
+            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory);
 
             // interpret called seff
             return rdSeffInterpreter.doSwitch(calledSeffs.get(0));
