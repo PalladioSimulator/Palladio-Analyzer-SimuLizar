@@ -258,32 +258,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initializes reconfiguration time measurement.
-     * 
-     * FIXME I would bet that too many StringMeasuringPoints are created here, potentially leading
-     * to Exceptions [Lehrig]
-     * 
-     * TODO StringMeasuringPoint should not be used by SimuLizar. Create something better! I could
-     * imagine an EDP2 extension that introduces dedicated reconfiguration measuring points.
-     * [Lehrig]
-     * 
-     * @param event
-     *            which was fired
-     * @param <T>
-     *            extends Entity
-     */
-    private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
-
-        final SimuComModel simuComModel = event.getModel();
-
-        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
-
-        final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
-        measuringPoint.setMeasuringPoint("Reconfiguration");
-        this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint, this.reconfTimeProbe);
-    }
-
-    /**
      * @param modelElement
      * @param simuComModel
      * @return list with start and stop probe
@@ -339,9 +313,35 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     public void reconfigurationInterpretation(final ReconfigurationEvent event) {
         if (this.reconfTimeProbe == null) {
             initReconfTimeMeasurement(event);
-        } else {
-            this.reconfTimeProbe.takeMeasurement();
         }
+
+        this.reconfTimeProbe.takeMeasurement();
+    }
+
+    /**
+     * Initializes reconfiguration time measurement.
+     * 
+     * TODO StringMeasuringPoint should not be used by SimuLizar. Create something better! I could
+     * imagine an EDP2 extension that introduces dedicated reconfiguration measuring points.
+     * [Lehrig]
+     * 
+     * FIXME Dead code; no measurements taken here! Needs some more refactorings. [Lehrig]
+     * 
+     * @param event
+     *            which was fired
+     * @param <T>
+     *            extends Entity
+     */
+    private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
+
+        final SimuComModel simuComModel = event.getModel();
+
+        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
+
+        final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
+        measuringPoint.setMeasuringPoint("Reconfiguration");
+        // this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint,
+        // this.reconfTimeProbe);
     }
 
     private Boolean simulationIsRunning() {

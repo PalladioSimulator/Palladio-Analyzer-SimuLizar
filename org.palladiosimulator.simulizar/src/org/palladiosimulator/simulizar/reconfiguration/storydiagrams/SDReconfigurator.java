@@ -8,7 +8,8 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 
 /**
  * A reconfigurator implementation which relies on story diagrams to do the reconfiguration. The
- * story diagrams both check their reconfiguration precondition and perform the actual reconfiguration.
+ * story diagrams both check their reconfiguration precondition and perform the actual
+ * reconfiguration.
  * 
  * @author snowball
  *
@@ -16,7 +17,7 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 public class SDReconfigurator implements IReconfigurator {
 
     /**
-     * This class' internal LOGGER. 
+     * This class' internal LOGGER.
      */
     private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
 
@@ -26,13 +27,15 @@ public class SDReconfigurator implements IReconfigurator {
     private final SDAccess sdAccess;
 
     /**
-     * SD Interpreter used internally to interpret the SDs. 
+     * SD Interpreter used internally to interpret the SDs.
      */
     private final SDExecutor sdExecutor;
 
     /**
      * SD Reconfigurator constructor.
-     * @param modelAccessFactory Model access factory used to access the SDs.
+     * 
+     * @param modelAccessFactory
+     *            Model access factory used to access the SDs.
      */
     public SDReconfigurator(final IModelAccessFactory modelAccessFactory) {
         super();
@@ -41,12 +44,14 @@ public class SDReconfigurator implements IReconfigurator {
     }
 
     @Override
-    public void checkAndExecute(final EObject monitoredElement) {
+    public boolean checkAndExecute(final EObject monitoredElement) {
         if (this.sdAccess.sdModelsExist()) {
             LOGGER.debug("Checking reconfiguration rules due to PRM change");
             final boolean result = this.sdExecutor.executeActivities(monitoredElement);
             LOGGER.debug(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");
+            return result;
         }
+        return false;
     }
 }

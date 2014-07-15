@@ -16,7 +16,9 @@ public interface IReconfigurator {
      * 
      * @param monitoredElement
      *            PCM model element for which a new sensor measurement arrived.
+     * @return <code>true</code> if the reconfiguration was executed, <code>false</code> if it was
+     *         only checked but not executed
      */
-    public abstract void checkAndExecute(EObject monitoredElement);
+    public boolean checkAndExecute(EObject monitoredElement);
 
 }
