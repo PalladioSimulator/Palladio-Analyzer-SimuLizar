@@ -173,8 +173,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 try {
                     new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
                             MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
-                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement(), simuComModel
-                                    .getSimulationControl().getCurrentSimulationTime());
+                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement());
                 } catch (final UnsupportedDataTypeException e) {
                     LOG.error(e);
                     throw new RuntimeException(e);

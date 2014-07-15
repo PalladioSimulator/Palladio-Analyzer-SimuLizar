@@ -11,7 +11,6 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
-import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
@@ -84,8 +83,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
         final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.context.getModel(), closedWorkload
-                .getThinkTime_ClosedWorkload().getSpecification(), ModelsAtRuntime.getResourceURI(closedWorkload
-                .getUsageScenario_Workload())) {
+                .getThinkTime_ClosedWorkload().getSpecification(), usageScenario) {
             @Override
             public IScenarioRunner createScenarioRunner() {
                 return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
@@ -103,8 +101,7 @@ public class UsageModelAccess extends AbstractPCMModelAccess<UsageModel> {
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(),
-                ModelsAtRuntime.getResourceURI(usageScenario)) {
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(), usageScenario) {
             @Override
             public IScenarioRunner createScenarioRunner() {
                 return UsageModelAccess.this.getScenarioRunner(interpreterFactory, usageScenario);
