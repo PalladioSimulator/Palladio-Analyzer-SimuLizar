@@ -57,8 +57,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      */
     public ResponseTimeAggregator(final PRMAccess prmAccess, final MeasurementSpecification measurementSpecification,
             final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
-            final PCMModelElementMeasurement pcmModelElementMeasurement, final double baseSimulationTime)
-            throws UnsupportedDataTypeException {
+            final PCMModelElementMeasurement pcmModelElementMeasurement) throws UnsupportedDataTypeException {
         super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
         this.responseTimes = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
@@ -80,7 +79,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
             throw new UnsupportedDataTypeException("Only Intervall is currently supported");
         }
-        this.lastSimulationTime = baseSimulationTime;
+        this.lastSimulationTime = 0;
         this.monitoredElement = monitoredElement;
 
         responseTimeCalculator.addObserver(this);
