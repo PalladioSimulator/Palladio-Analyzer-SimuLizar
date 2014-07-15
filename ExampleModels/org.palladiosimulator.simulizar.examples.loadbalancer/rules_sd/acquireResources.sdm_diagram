@@ -533,4 +533,14 @@
     <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KV6R0PWDEeGFxO_nWR6Nkg" id="(0.8941798941798942,0.36764705882352944)"/>
     <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_KV6R0fWDEeGFxO_nWR6Nkg" id="(0.11627906976744186,0.6363636363636364)"/>
   </edges>
+  <edges xmi:type="notation:Edge" xmi:id="_tw3h0AweEeSBfZncz9Lepw" type="4001" source="_DXAtYPWAEeGabqA4905uGw" target="_DXAGUPWAEeGabqA4905uGw">
+    <children xmi:type="notation:DecorationNode" xmi:id="_tw4I4AweEeSBfZncz9Lepw" type="6001">
+      <layoutConstraint xmi:type="notation:Location" xmi:id="_tw4I4QweEeSBfZncz9Lepw" y="40"/>
+    </children>
+    <styles xmi:type="notation:RoutingStyle" xmi:id="_tw3h0QweEeSBfZncz9Lepw"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_tw3h0gweEeSBfZncz9Lepw" fontName="Segoe UI"/>
+    <element xmi:type="sda:ActivityEdge" href="acquireResources.sdm#//@ownedActivityEdge.6"/>
+    <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_tw3h0wweEeSBfZncz9Lepw" points="[-6, 155, 54, -1495]$[-62, 1639, -2, -11]"/>
+    <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_txJOoAweEeSBfZncz9Lepw" id="(0.6124721603563474,0.07738095238095238)"/>
+  </edges>
 </notation:Diagram>
