@@ -30,7 +30,7 @@
     <activeResourceSpecifications_ResourceContainer id="_JPnqkAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
-      <processingRate_ProcessingResourceSpecification specification="100"/>
+      <processingRate_ProcessingResourceSpecification specification="1000"/>
     </activeResourceSpecifications_ResourceContainer>
     <activeResourceSpecifications_ResourceContainer id="_K2xOkAEqEeS7FKokKTKFow">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
