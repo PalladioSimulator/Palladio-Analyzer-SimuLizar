@@ -4,7 +4,7 @@ Bundle-Name: Load Balancer
 Bundle-SymbolicName: org.palladiosimulator.simulizar.ui.wizard.loadbalancer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.ui.wizards.Activator
-Bundle-Vendor: SHK
+Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.ui.ide;bundle-version="3.9.1",
