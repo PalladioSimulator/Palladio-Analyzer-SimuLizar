@@ -4,7 +4,7 @@ Bundle-Name: Custom_Navigator
 Bundle-SymbolicName: org.palladiosimulator.simulizar.ui.perspective;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.ui.perspective.Activator
-Bundle-Vendor: SHK
+Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,

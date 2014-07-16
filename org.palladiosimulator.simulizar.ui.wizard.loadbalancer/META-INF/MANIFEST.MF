@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Load Balancer
-Bundle-SymbolicName: org.palladiosimulator.simulizar.ui.wizards;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.simulizar.ui.wizard.loadbalancer;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.ui.wizards.Activator
 Bundle-Vendor: SHK

@@ -14,4 +14,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar.ui,
  org.palladiosimulator.simulizar.ui.configuration
-Bundle-Vendor: ag-schaefer.upb.de
+Bundle-Vendor: palladiosimulator.org

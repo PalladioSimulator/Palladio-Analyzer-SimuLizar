@@ -30,6 +30,6 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="1.0.0",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar.launcher
-Bundle-Vendor: ag-schaefer.upb.de
+Bundle-Vendor: palladiosimulator.org
 Import-Package: org.eclipse.m2m.qvt.oml,
  org.eclipse.m2m.qvt.oml.util
