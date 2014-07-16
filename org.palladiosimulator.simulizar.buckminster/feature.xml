@@ -20,7 +20,7 @@
       <discovery label="Palladio" url="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
       <discovery label="Palladio Commons" url="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
       <discovery label="Palladio Third Party Wrapper" url="http://sdqweb.ipd.kit.edu/eclipse/thirdpartywrapper/nightly/"/>
-      <discovery label="SensorFramework" url="http://sdqweb.ipd.kit.edu/eclipse/sensorframework/releases/3.5.0/"/>
+      <discovery label="SensorFramework" url="http://sdqweb.ipd.kit.edu/eclipse/sensorframework/nightly/"/>
       <discovery label="ProbeFramework" url="http://sdqweb.ipd.kit.edu/eclipse/probeframework/nightly/"/>
       <discovery label="RecorderFramework" url="http://sdqweb.ipd.kit.edu/eclipse/recorderframework/nightly/"/>
       <discovery label="EDP2" url="http://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
