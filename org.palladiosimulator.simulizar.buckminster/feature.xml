@@ -31,49 +31,25 @@
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/milestones/3.4.0"/>
-      <discovery label="StoryDiagram Features" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/features/"/>
-      <discovery label="StoryDiagram Plugins" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/plugins/"/>
+      <discovery label="StoryDiagrams" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
    </url>
 
    <includes
          id="org.palladiosimulator.simulizar.feature"
          version="0.0.0"/>
 
-   <includes
-         id="org.storydriven.core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.storydriven.storydiagrams.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.storydriven.storydiagrams.interpreter.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.storydriven.storydiagrams.diagram.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="de.upb.swt.core.feature"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.m2m.qvt.oml"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.m2m.qvt.oml.editor"
-         version="0.0.0"/>
-
-   <includes
-         id="org.eclipse.m2m.qvt.oml.runtime"
-         version="0.0.0"/>
-
-   <includes
-         id="de.mdelab.sdm.interpreter.core.feature"
-         version="0.0.0"/>
+   <requires>
+      <import feature="org.eclipse.m2m.qvt.oml" version="3.4.0.v20140610-1621"/>
+      <import feature="org.eclipse.m2m.qvt.oml.editor" version="3.4.0.v20140610-1621"/>
+      <import feature="org.eclipse.m2m.qvt.oml.runtime" version="3.4.0.v20140610-1621"/>
+      <import feature="org.storydriven.storydiagrams.diagram.feature" version="1.0.1.qualifier"/>
+      <import feature="org.storydriven.storydiagrams.feature" version="1.0.1.qualifier"/>
+      <import feature="org.storydriven.storydiagrams.interpreter.feature" version="1.0.1.qualifier"/>
+      <import feature="de.mdelab.sdm.interpreter.core.feature" version="1.0.0.qualifier"/>
+      <import feature="de.upb.swt.core.feature" version="0.1.0.qualifier"/>
+      <import feature="org.storydriven.core.feature" version="1.0.1.qualifier"/>
+      <import plugin="org.junit"/>
+   </requires>
 
    <plugin
          id="org.palladiosimulator.simulizar.tests"
