@@ -31,7 +31,8 @@
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/milestones/3.4.0"/>
-      <discovery label="StoryDiagrams" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
+      <discovery label="StoryDiagram Features" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/features/"/>
+      <discovery label="StoryDiagram Plugins" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/plugins/"/>
    </url>
 
    <includes
