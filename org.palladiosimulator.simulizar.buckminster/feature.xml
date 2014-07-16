@@ -2,7 +2,8 @@
 <feature
       id="org.palladiosimulator.simulizar.buckminster"
       label="Simulizer Buckminster Feature"
-      version="1.0.0.qualifier">
+      version="1.0.0.qualifier"
+      provider-name="palladiosimulator.org">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -30,6 +31,7 @@
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/milestones/3.4.0"/>
+      <discovery label="StoryDiagrams" url="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
    </url>
 
    <includes
