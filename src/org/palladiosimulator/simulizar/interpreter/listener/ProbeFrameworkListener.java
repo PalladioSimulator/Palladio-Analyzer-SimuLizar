@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.activation.UnsupportedDataTypeException;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
+import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
@@ -28,7 +26,6 @@ import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
@@ -162,19 +159,23 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         final EObject modelElement = event.getModelElement();
 
         if (!entityIsAlreadyInstrumented(modelElement)) {
-            final MeasuringPoint measuringPoint = createMeasuringPoint(modelElement);
             final SimuComModel simuComModel = event.getThread().getModel();
             final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(
+                    createMeasuringPoint(modelElement),
+                    probeList);
 
-            final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
-                    PerformanceMetricEnum.RESPONSE_TIME);
+            final MeasurementSpecification measurementSpecification =
+                    this.pmsModelAccess.isMonitored(modelElement, PerformanceMetricEnum.RESPONSE_TIME);
             if (elementShouldBeMonitored(measurementSpecification)) {
                 try {
-                    new ResponseTimeAggregator(this.prmAccess, measurementSpecification, calculator,
-                            MeasuringPointUtility.measuringPointToString(measuringPoint), modelElement,
-                            PrmFactory.eINSTANCE.createPCMModelElementMeasurement());
-                } catch (final UnsupportedDataTypeException e) {
+                    final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(
+                            simuComModel,
+                            this.prmAccess,
+                            measurementSpecification,
+                            modelElement);
+                    calculator.addObserver(aggregator);
+                } catch (final UnsupportedOperationException e) {
                     LOG.error(e);
                     throw new RuntimeException(e);
                 }
