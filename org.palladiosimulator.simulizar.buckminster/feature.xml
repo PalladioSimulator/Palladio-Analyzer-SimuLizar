@@ -48,8 +48,8 @@
       <import feature="de.mdelab.sdm.interpreter.core.feature" version="1.0.0.qualifier"/>
       <import feature="de.upb.swt.core.feature" version="0.1.0.qualifier"/>
       <import feature="org.storydriven.core.feature" version="1.0.1.qualifier"/>
-      <import plugin="org.junit"/>
       <import feature="org.storydriven.storydiagrams.editor.feature" version="1.0.1.qualifier"/>
+      <import plugin="org.junit" version="4.11.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
