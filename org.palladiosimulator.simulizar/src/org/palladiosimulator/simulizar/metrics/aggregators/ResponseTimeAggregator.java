@@ -13,12 +13,13 @@ import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
+
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 /**
  * The aggregator "Response time".
@@ -31,10 +32,6 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
     private final List<Double> responseTimes;
 
     private final IStatisticalCharacterization aggregator;
-
-    private double lastSimulationTime;
-
-    private final EObject monitoredElement;
 
     /**
      * Constructor
@@ -55,10 +52,12 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      *             if statistical characterization is not supported. TODO: This class should not
      *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
-    public ResponseTimeAggregator(final PRMAccess prmAccess, final MeasurementSpecification measurementSpecification,
-            final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
-            final PCMModelElementMeasurement pcmModelElementMeasurement) throws UnsupportedDataTypeException {
-        super(prmAccess, measurementSpecification, pcmModelElementMeasurement);
+    public ResponseTimeAggregator(
+            final SimuComModel model,
+            final PRMAccess prmAccess,
+            final MeasurementSpecification measurementSpecification,
+            final EObject monitoredElement) {
+        super(prmAccess, measurementSpecification, monitoredElement);
         this.responseTimes = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
         case ARITHMETIC_MEAN:
@@ -74,15 +73,32 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
             this.aggregator = new HarmonicMean();
             break;
         default:
-            throw new UnsupportedDataTypeException("This aggregator is currently not supported");
+            throw new UnsupportedOperationException("This aggregator is currently not supported");
         }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
-            throw new UnsupportedDataTypeException("Only Intervall is currently supported");
+            throw new UnsupportedOperationException("Only Intervall is currently supported");
         }
-        this.lastSimulationTime = 0;
-        this.monitoredElement = monitoredElement;
+        new PeriodicallyTriggeredSimulationEntity(model, 0.0,
+                ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall()) {
 
-        responseTimeCalculator.addObserver(this);
+            @Override
+            protected void triggerInternal() {
+                finalizeCurrentIntervall();
+            }
+        };
+    }
+
+    /**
+     * 
+     */
+    private void finalizeCurrentIntervall() {
+        if (responseTimes.size() > 0) {
+            // calculate StatisticalCharacterization
+            final double statisticalCharacterization = aggregator
+                    .calculateStatisticalCharaterization(responseTimes);
+            addToPRM(statisticalCharacterization);
+            responseTimes.clear();
+        }
     }
 
     /**
@@ -90,39 +106,12 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      */
     @Override
     public void newMeasurementAvailable(final Measurement measurement) {
-        final Measure<Double, Duration> currentSimulationTimeMeasure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         final Measure<Double, Duration> responseTimeMeasure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
-
-        if (this.getMeasurementSpecification().getTemporalRestriction() instanceof Intervall) {
-            final Intervall intervall = (Intervall) this.getMeasurementSpecification().getTemporalRestriction();
-            if (simulationTime - this.lastSimulationTime >= intervall.getIntervall()) {
-                if (this.responseTimes.size() > 0) {
-                    // calculate StatisticalCharacterization
-                    final double statisticalCharacterization = this.aggregator
-                            .calculateStatisticalCharaterization(this.responseTimes);
-                    this.addToPRM(statisticalCharacterization);
-                    this.responseTimes.clear();
-                }
-                this.lastSimulationTime = simulationTime;
-            }
-        }
         this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
-    }
-
-    /**
-     * @see org.palladiosimulator.simulizar.metrics.PRMRecorder#getMonitoredPCMModellElement()
-     */
-    @Override
-    protected EObject getMonitoredPCMModellElement() {
-        return this.monitoredElement;
     }
 
     @Override
     public void preUnregister() {
-        // TODO Auto-generated method stub
-
     }
 }

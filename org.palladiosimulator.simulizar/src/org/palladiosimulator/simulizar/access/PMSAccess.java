@@ -77,7 +77,7 @@ public class PMSAccess extends AbstractModelAccess<PMSModel> {
     /**
      * TODO Really ugly, hacked code ;) Refactor into measuring point objects' class? [Lehrig]
      */
-    private Boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
+    private boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
         } else if (measuringPoint instanceof ResourceURIMeasuringPoint) {
