@@ -13,6 +13,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
@@ -157,28 +158,21 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
         final EObject modelElement = event.getModelElement();
+        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
+                PerformanceMetricEnum.RESPONSE_TIME);
 
-        if (!entityIsAlreadyInstrumented(modelElement)) {
-            final SimuComModel simuComModel = event.getThread().getModel();
-            final List<Probe> probeList = createStartAndStopProbe(modelElement, simuComModel);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(
-                    createMeasuringPoint(modelElement),
+        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
+            final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
+            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(createMeasuringPoint(event),
                     probeList);
 
-            final MeasurementSpecification measurementSpecification =
-                    this.pmsModelAccess.isMonitored(modelElement, PerformanceMetricEnum.RESPONSE_TIME);
-            if (elementShouldBeMonitored(measurementSpecification)) {
-                try {
-                    final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(
-                            simuComModel,
-                            this.prmAccess,
-                            measurementSpecification,
-                            modelElement);
-                    calculator.addObserver(aggregator);
-                } catch (final UnsupportedOperationException e) {
-                    LOG.error(e);
-                    throw new RuntimeException(e);
-                }
+            try {
+                final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel, this.prmAccess,
+                        measurementSpecification, modelElement);
+                calculator.addObserver(aggregator);
+            } catch (final UnsupportedOperationException e) {
+                LOG.error(e);
+                throw new RuntimeException(e);
             }
         }
     }
@@ -191,7 +185,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      *            extends Entity
      * @return MeasuringPoint for modelElement
      */
-    private <T extends Entity> MeasuringPoint createMeasuringPoint(final EObject modelElement) {
+    private <T extends Entity> MeasuringPoint createMeasuringPoint(final ModelElementPassedEvent<T> event) {
+        final EObject modelElement = event.getModelElement();
+
         MeasuringPoint result;
         if (modelElement == null) {
             throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
@@ -207,20 +203,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         } else if (modelElement instanceof ExternalCallAction) {
             final ExternalCallAction externalCallAction = (ExternalCallAction) modelElement;
 
-            final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
-            mp.setMeasuringPoint("UNKOWN ASSEMBLY " + "Role: "
-                    + externalCallAction.getCalledService_ExternalService().getEntityName() + "Operation: "
-                    + externalCallAction.getRole_ExternalService().getEntityName());
-
-            // FIXME Do not use StringMeasuringPoint but implement some nice solution using
-            // AssemblyOperationMeasuringPoint. The current problem is that an event does not
-            // provide the assembly as shown below. [Lehrig]
-
-            // AssemblyOperationMeasuringPoint mp =
-            // this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
-            // mp.setAssembly(???);
-            // mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
-            // mp.setRole(externalCallAction.getRole_ExternalService());
+            AssemblyOperationMeasuringPoint mp = this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
+            mp.setAssembly(((RDSEFFElementPassedEvent<ExternalCallAction>) event).getAssemblyContext());
+            mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
+            mp.setRole(externalCallAction.getRole_ExternalService());
             result = mp;
         } else if (modelElement instanceof EntryLevelSystemCall) {
             final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) modelElement;
@@ -334,10 +320,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      *            extends Entity
      */
     private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
-
-        final SimuComModel simuComModel = event.getModel();
-
-        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl());
+        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(this.simuComModel.getSimulationControl());
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
@@ -346,6 +329,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     private Boolean simulationIsRunning() {
-        return simuComModel.getSimulationControl().isRunning();
+        return this.simuComModel.getSimulationControl().isRunning();
     }
 }
