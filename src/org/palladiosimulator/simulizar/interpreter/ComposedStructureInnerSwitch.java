@@ -6,11 +6,12 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector;
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector;
 import de.uka.ipd.sdq.pcm.core.composition.Connector;
 import de.uka.ipd.sdq.pcm.core.composition.RequiredDelegationConnector;
 import de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.RequiredRole;
+import de.uka.ipd.sdq.pcm.repository.Signature;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -31,7 +32,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      */
     private final InterpreterDefaultContext context;
     private final IModelAccessFactory modelAccessFactory;
-    private final OperationSignature operationSignature;
+    private final Signature signature;
     private final RequiredRole requiredRole;
 
     /**
@@ -40,22 +41,47 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public ComposedStructureInnerSwitch(final InterpreterDefaultContext context,
-            final IModelAccessFactory interpreterFactory, final OperationSignature operationSignature,
+    public ComposedStructureInnerSwitch(
+            final InterpreterDefaultContext context,
+            final IModelAccessFactory interpreterFactory,
+            final Signature operationSignature,
             final RequiredRole requiredRole) {
         super();
         this.context = context;
         this.modelAccessFactory = interpreterFactory;
-        this.operationSignature = operationSignature;
+        this.signature = operationSignature;
         this.requiredRole = requiredRole;
     }
 
     @Override
     public SimulatedStackframe<Object> caseAssemblyConnector(final AssemblyConnector assemblyConnector) {
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
-                this.modelAccessFactory, assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(),
-                this.operationSignature, assemblyConnector.getProvidedRole_AssemblyConnector());
+        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(
+                this.context,
+                this.modelAccessFactory,
+                assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(),
+                this.signature,
+                assemblyConnector.getProvidedRole_AssemblyConnector());
         return repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch#caseAssemblyInfrastructureConnector
+     * (de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector)
+     */
+    @Override
+    public SimulatedStackframe<Object> caseAssemblyInfrastructureConnector(
+            AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
+        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(
+                this.context,
+                this.modelAccessFactory,
+                assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
+                this.signature,
+                assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
+        return repositoryComponentSwitch.doSwitch(assemblyInfrastructureConnector
+                .getProvidedRole__AssemblyInfrastructureConnector());
     }
 
     @Override
@@ -63,7 +89,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
             final RequiredDelegationConnector requiredDelegationConnector) {
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
         final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(
-                this.context, this.modelAccessFactory, this.operationSignature,
+                this.context, this.modelAccessFactory, this.signature,
                 requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
@@ -110,6 +136,22 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
                 return null;
             }
 
+            /*
+             * (non-Javadoc)
+             * 
+             * @see de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch#
+             * caseAssemblyInfrastructureConnector
+             * (de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector)
+             */
+            @Override
+            public Connector caseAssemblyInfrastructureConnector(
+                    AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
+                if (assemblyInfrastructureConnector.getRequiringAssemblyContext__AssemblyInfrastructureConnector() == myContext
+                        && assemblyInfrastructureConnector.getRequiredRole__AssemblyInfrastructureConnector() == requiredRole) {
+                    return assemblyInfrastructureConnector;
+                }
+                return null;
+            }
         };
         for (final Connector connector : myContext.getParentStructure__AssemblyContext()
                 .getConnectors__ComposedStructure()) {

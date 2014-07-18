@@ -70,7 +70,7 @@ public class EventNotificationHelper {
                 }
                 break;
             default:
-                throw new PCMModelInterpreterException("Tried to fire unknown event");
+                // throw new PCMModelInterpreterException("Tried to fire unknown event");
             }
         }
     }

@@ -31,8 +31,9 @@ import de.uka.ipd.sdq.pcm.seff.ForkedBehaviour;
 import de.uka.ipd.sdq.pcm.seff.InternalAction;
 import de.uka.ipd.sdq.pcm.seff.LoopAction;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
+import de.uka.ipd.sdq.pcm.seff.SeffPackage;
 import de.uka.ipd.sdq.pcm.seff.SetVariableAction;
-import de.uka.ipd.sdq.pcm.seff.StartAction;
+import de.uka.ipd.sdq.pcm.seff.seff_performance.InfrastructureCall;
 import de.uka.ipd.sdq.pcm.seff.seff_performance.ParametricResourceDemand;
 import de.uka.ipd.sdq.pcm.seff.util.SeffSwitch;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
@@ -47,7 +48,10 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker
  * 
  */
-class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
+class RDSeffSwitch extends SeffSwitch<Object> {
+
+    private final static Boolean SUCCESS = true;
+
     private final static Logger LOG = Logger.getLogger(RDSeffSwitch.class);
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
@@ -72,13 +76,127 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
     }
 
     /**
+     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour)
+     */
+    @Override
+    public Object caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
+        final int stacksize = this.context.getStack().size();
+
+        AbstractAction currentAction = null;
+        // interpret start action
+        for (final AbstractAction abstractAction : object.getSteps_Behaviour()) {
+            if (abstractAction.eClass() == SeffPackage.eINSTANCE.getStartAction()) {
+                firePassedEvent(abstractAction, EventType.BEGIN);
+                currentAction = abstractAction.getSuccessor_AbstractAction();
+                firePassedEvent(abstractAction, EventType.END);
+                break;
+            }
+        }
+        if (currentAction == null) {
+            throw new PCMModelInterpreterException("RDSEFF is invalid, it misses a start action");
+        }
+
+        while (currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
+            }
+            firePassedEvent(currentAction, EventType.BEGIN);
+            this.doSwitch(currentAction);
+            firePassedEvent(currentAction, EventType.END);
+            currentAction = currentAction.getSuccessor_AbstractAction();
+        }
+
+        if (this.context.getStack().size() != stacksize) {
+            throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
+        }
+
+        return this.resultStackFrame;
+    }
+
+    /**
+     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
+     */
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction
+     * )
+     */
+    @Override
+    public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
+        throw new UnsupportedOperationException("SEFF Interpreter tried to interpret unsupported action type: " +
+                object.eClass().getName());
+    }
+
+    /**
+     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseInternalAction(de.uka.ipd.sdq.pcm.seff.InternalAction)
+     */
+    @Override
+    public Object caseInternalAction(final InternalAction internalAction) {
+        if (internalAction.getResourceDemand_Action().size() > 0) {
+            interpretResourceDemands(internalAction);
+        }
+        if (internalAction.getInfrastructureCall__Action().size() > 0) {
+            for (InfrastructureCall infrastructureCall : internalAction.getInfrastructureCall__Action()) {
+                final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
+                final int repetions = StackContext.evaluateStatic(
+                        infrastructureCall.getNumberOfCalls__InfrastructureCall().getSpecification(),
+                        Integer.class,
+                        currentStackFrame);
+                for (int i = 0; i < repetions; i++) {
+                    final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
+                            this.context,
+                            this.modelAccessFactory,
+                            infrastructureCall.getSignature__InfrastructureCall(),
+                            infrastructureCall.getRequiredRole__InfrastructureCall());
+
+                    // create new stack frame for input parameter
+                    SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
+                            infrastructureCall.getInputVariableUsages__CallAction());
+                    final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
+                    composedStructureSwitch.doSwitch(myContext);
+                    this.context.getAssemblyContextStack().push(myContext);
+                    this.context.getStack().removeStackFrame();
+                }
+            }
+        }
+        if (internalAction.getInternalFailureOccurrenceDescriptions__InternalAction().size() > 0) {
+            throw new UnsupportedOperationException("Simulation of failures not yet supported by Simulizar");
+        }
+        return SUCCESS;
+    }
+
+    /**
+     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseExternalCallAction(de.uka.ipd.sdq.pcm.seff.ExternalCallAction)
+     */
+    @Override
+    public Object caseExternalCallAction(final ExternalCallAction externalCall) {
+        final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
+                this.modelAccessFactory, externalCall.getCalledService_ExternalService(),
+                externalCall.getRole_ExternalService());
+
+        // create new stack frame for input parameter
+        SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
+                externalCall.getInputVariableUsages__CallAction());
+        final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
+        final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
+        this.context.getAssemblyContextStack().push(myContext);
+        this.context.getStack().removeStackFrame();
+        SimulatedStackHelper.addParameterToStackFrame(outputFrame,
+                externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
+
+        return SUCCESS;
+    }
+
+    /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseBranchAction(de.uka.ipd.sdq.pcm.seff.BranchAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseBranchAction(final BranchAction object) {
+    public Object caseBranchAction(final BranchAction object) {
         final EList<AbstractBranchTransition> abstractBranchTransitions = object.getBranches_Branch();
         if (abstractBranchTransitions.isEmpty()) {
-            return super.caseBranchAction(object);
+            throw new PCMModelInterpreterException("Empty branch action is not allowed");
         }
 
         final AbstractBranchTransition branchTransition = this.transitionDeterminer
@@ -96,54 +214,24 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             this.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
 
-        return null;
+        return SUCCESS;
     }
 
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseCollectionIteratorAction(de.uka.ipd.sdq.pcm.seff.CollectionIteratorAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseCollectionIteratorAction(final CollectionIteratorAction object) {
+    public Object caseCollectionIteratorAction(final CollectionIteratorAction object) {
         this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
 
-        return null;
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseExternalCallAction(de.uka.ipd.sdq.pcm.seff.ExternalCallAction)
-     */
-    @Override
-    public SimulatedStackframe<Object> caseExternalCallAction(final ExternalCallAction externalCall) {
-        this.context.getEventNotificationHelper().firePassedEvent(
-                new RDSEFFElementPassedEvent<ExternalCallAction>(externalCall, EventType.BEGIN, this.context
-                        .getThread(), this.context.getAssemblyContextStack().peek()));
-
-        final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
-                this.modelAccessFactory, externalCall.getCalledService_ExternalService(),
-                externalCall.getRole_ExternalService());
-
-        // create new stack frame for input parameter
-        SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
-                externalCall.getInputVariableUsages__CallAction());
-        final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
-        this.context.getAssemblyContextStack().push(myContext);
-        this.context.getStack().removeStackFrame();
-        SimulatedStackHelper.addParameterToStackFrame(outputFrame,
-                externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
-
-        this.context.getEventNotificationHelper().firePassedEvent(
-                new RDSEFFElementPassedEvent<ExternalCallAction>(externalCall, EventType.END, this.context.getThread(),
-                        this.context.getAssemblyContextStack().peek()));
-
-        return null;
+        return SUCCESS;
     }
 
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseForkAction(de.uka.ipd.sdq.pcm.seff.ForkAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseForkAction(final ForkAction object) {
+    public Object caseForkAction(final ForkAction object) {
         /*
          * Component developers can use a SynchronisationPoint to join synchronously
          * ForkedBehaviours and specify a result of the computations with its attached
@@ -172,43 +260,14 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
 
         forkExecutor.run();
 
-        return null;
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseInternalAction(de.uka.ipd.sdq.pcm.seff.InternalAction)
-     */
-    @Override
-    public SimulatedStackframe<Object> caseInternalAction(final InternalAction internalAction) {
-        final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
-
-        final AllocationContext allocationContext = allocationReader.getAllocationContext(this.context
-                .getAssemblyContextStack().peek());
-
-        final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
-
-        for (final ParametricResourceDemand parametricResourceDemand : internalAction.getResourceDemand_Action()) {
-
-            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
-            final String idRequiredResourceType = parametricResourceDemand
-                    .getRequiredResource_ParametricResourceDemand().getId();
-            final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
-                    .getSpecification();
-            final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-            final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
-
-            resourceRegistry.getResourceContainer(resourceContainer.getId()).loadActiveResource(
-                    this.context.getThread(), idRequiredResourceType, value);
-
-        }
-        return null;
+        return SUCCESS;
     }
 
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseLoopAction(de.uka.ipd.sdq.pcm.seff.LoopAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseLoopAction(final LoopAction object) {
+    public Object caseLoopAction(final LoopAction object) {
         final PCMRandomVariable iterationCount = object.getIterationCount_LoopAction();
         final String stoex = iterationCount.getSpecification();
 
@@ -223,36 +282,14 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
         // interpret behavior the given number of times
         this.interpretLoop(object, numberOfLoops);
 
-        return null;
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour)
-     */
-    @Override
-    public SimulatedStackframe<Object> caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
-        final int stacksize = this.context.getStack().size();
-
-        // interpret start action
-        for (final AbstractAction abstractAction : object.getSteps_Behaviour()) {
-            if (abstractAction instanceof StartAction) {
-                this.doSwitch(abstractAction);
-                break;
-            }
-        }
-
-        if (this.context.getStack().size() != stacksize) {
-            throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
-        }
-
-        return this.resultStackFrame;
+        return SUCCESS;
     }
 
     /**
      * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseSetVariableAction(de.uka.ipd.sdq.pcm.seff.SetVariableAction)
      */
     @Override
-    public SimulatedStackframe<Object> caseSetVariableAction(final SetVariableAction object) {
+    public Object caseSetVariableAction(final SetVariableAction object) {
         SimulatedStackHelper.addParameterToStackFrame(this.context.getStack().currentStackFrame(),
                 object.getLocalVariableUsages_SetVariableAction(), this.resultStackFrame);
         /*
@@ -262,53 +299,17 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
          * 
          * Why?
          */
-        return null;
+        return SUCCESS;
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseStartAction(de.uka.ipd.sdq.pcm.seff.StartAction)
+     * @param abstractAction
+     * @param eventType
      */
-    // @Override
-    // public T caseStartAction(final StartAction object)
-    // {
-    // InterpreterLogger.debug(LOGGER, "Interpret StartAction: " + object);
-    //
-    // AbstractAction currentAction = object;
-    //
-    // InterpreterLogger.debug(LOGGER, "Follow action chain");
-    // // follow action chain, beginning with start action
-    // while ((currentAction = currentAction.getSuccessor_AbstractAction()) !=
-    // null)
-    // {
-    // this.doSwitch(currentAction);
-    // }
-    //
-    // InterpreterLogger.debug(LOGGER, "Finished StartAction: " + object);
-    // return super.caseStartAction(object);
-    // }
-
-    /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
-     */
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction
-     * )
-     */
-    @Override
-    public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
-        if (object.getSuccessor_AbstractAction() != null) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
-            }
-            this.doSwitch(object.getSuccessor_AbstractAction());
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Interpret " + object.getSuccessor_AbstractAction().eClass().getName() + ": " + object);
-            }
-        }
-        return null;
+    private <T extends AbstractAction> void firePassedEvent(final T abstractAction, EventType eventType) {
+        this.context.getEventNotificationHelper().firePassedEvent(
+                new RDSEFFElementPassedEvent<T>(abstractAction, eventType, this.context
+                        .getThread(), this.context.getAssemblyContextStack().peek()));
     }
 
     /**
@@ -477,6 +478,33 @@ class RDSeffSwitch extends SeffSwitch<SimulatedStackframe<Object>> {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Finished loop number " + i + ": " + object);
             }
+        }
+    }
+
+    /**
+     * @param internalAction
+     */
+    private void interpretResourceDemands(final InternalAction internalAction) {
+        final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
+
+        final AllocationContext allocationContext = allocationReader.getAllocationContext(this.context
+                .getAssemblyContextStack().peek());
+
+        final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
+
+        for (final ParametricResourceDemand parametricResourceDemand : internalAction.getResourceDemand_Action()) {
+
+            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
+            final String idRequiredResourceType = parametricResourceDemand
+                    .getRequiredResource_ParametricResourceDemand().getId();
+            final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
+                    .getSpecification();
+            final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
+            final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
+
+            resourceRegistry.getResourceContainer(resourceContainer.getId()).loadActiveResource(
+                    this.context.getThread(), idRequiredResourceType, value);
+
         }
     }
 

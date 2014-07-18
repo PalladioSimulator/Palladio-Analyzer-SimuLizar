@@ -20,8 +20,8 @@ import de.uka.ipd.sdq.pcm.core.entity.ComposedProvidingRequiringEntity;
 import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
 import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.ProvidedRole;
+import de.uka.ipd.sdq.pcm.repository.Signature;
 import de.uka.ipd.sdq.pcm.repository.util.RepositorySwitch;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
 import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
@@ -36,7 +36,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
 
-    private final OperationSignature signature;
+    private final Signature signature;
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
@@ -45,9 +45,12 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     /**
 	 * 
 	 */
-    public RepositoryComponentSwitch(final InterpreterDefaultContext context,
-            final IModelAccessFactory interpreterFactory, final AssemblyContext assemblyContext,
-            final OperationSignature signature, final ProvidedRole providedRole) {
+    public RepositoryComponentSwitch(
+            final InterpreterDefaultContext context,
+            final IModelAccessFactory interpreterFactory,
+            final AssemblyContext assemblyContext,
+            final Signature signature,
+            final ProvidedRole providedRole) {
         super();
         this.context = context;
         this.modelAccessFactory = interpreterFactory;
@@ -126,7 +129,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      */
     private List<ServiceEffectSpecification> getSeffsForCall(
             final EList<ServiceEffectSpecification> serviceEffectSpecifications,
-            final OperationSignature operationSignature) {
+            final Signature operationSignature) {
         final List<ServiceEffectSpecification> seffs = new Vector<ServiceEffectSpecification>();
 
         for (final ServiceEffectSpecification serviceEffectSpecification : serviceEffectSpecifications) {
@@ -157,7 +160,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory);
 
             // interpret called seff
-            return rdSeffInterpreter.doSwitch(calledSeffs.get(0));
+            return (SimulatedStackframe<Object>) rdSeffInterpreter.doSwitch(calledSeffs.get(0));
         }
     }
 
