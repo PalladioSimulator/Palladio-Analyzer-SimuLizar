@@ -13,6 +13,7 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
@@ -61,20 +62,26 @@ class RDSeffSwitch extends SeffSwitch<Object> {
 
     private final SimulatedStackframe<Object> resultStackFrame;
 
+    private final SimulatedBasicComponentInstance basicComponentInstance;
+
     /**
      * Constructor.
+     * 
+     * @param basicComponentInstance
      * 
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch.
      * @param assemblyContext
      *            the assembly context of the component of the SEFF.
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccessFactory interpreterFactory) {
+    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccessFactory interpreterFactory,
+            SimulatedBasicComponentInstance basicComponentInstance) {
         super();
         this.modelAccessFactory = interpreterFactory;
         this.context = context;
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
+        this.basicComponentInstance = basicComponentInstance;
     }
 
     /**
@@ -312,9 +319,17 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * )
      */
     @Override
-    public Object caseAcquireAction(AcquireAction object) {
-        // TODO Auto-generated method stub
-        return super.caseAcquireAction(object);
+    public Object caseAcquireAction(final AcquireAction acquireAction) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Process " + this.context.getThread().getId() + " tries to acquire " +
+                    acquireAction.getPassiveresource_AcquireAction().getEntityName());
+        }
+        this.basicComponentInstance.acquirePassiveResource(acquireAction.getPassiveresource_AcquireAction(), context);
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Process " + this.context.getThread().getId() + " successfully acquired " +
+                    acquireAction.getPassiveresource_AcquireAction().getEntityName());
+        }
+        return SUCCESS;
     }
 
     /*
@@ -325,9 +340,13 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * )
      */
     @Override
-    public Object caseReleaseAction(ReleaseAction object) {
-        // TODO Auto-generated method stub
-        return super.caseReleaseAction(object);
+    public Object caseReleaseAction(final ReleaseAction releaseAction) {
+        this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction());
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Process " + this.context.getThread().getId() + " released " +
+                    releaseAction.getPassiveResource_ReleaseAction().getEntityName());
+        }
+        return SUCCESS;
     }
 
     /**
@@ -405,7 +424,8 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                             RDSeffSwitch.this.context.getRuntimeState(), false);
                     seffContext.getAssemblyContextStack().push(parentAssemblyContext);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.modelAccessFactory);
+                            RDSeffSwitch.this.modelAccessFactory,
+                            RDSeffSwitch.this.basicComponentInstance);
 
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")

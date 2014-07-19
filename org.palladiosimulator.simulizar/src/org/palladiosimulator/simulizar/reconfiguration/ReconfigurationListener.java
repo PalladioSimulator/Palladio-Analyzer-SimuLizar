@@ -49,7 +49,9 @@ public class ReconfigurationListener {
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            LOGGER.info(notification.toString());
+            if (notification.getEventType() != Notification.REMOVING_ADAPTER) {
+                LOGGER.info(notification.toString());
+            }
         }
 
     };
