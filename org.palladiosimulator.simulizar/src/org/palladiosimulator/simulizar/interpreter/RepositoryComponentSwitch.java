@@ -78,8 +78,12 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
                 LOG.debug("Found new basic component component instance, registering it: " + basicComponent);
                 LOG.debug("FQComponentID is " + fqID);
             }
-            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
-                    new SimulatedBasicComponentInstance(fqID, basicComponent.getPassiveResource_BasicComponent()));
+            this.context
+                    .getRuntimeState()
+                    .getComponentInstanceRegistry()
+                    .addComponentInstance(
+                            new SimulatedBasicComponentInstance(this.context.getRuntimeState(), fqID, basicComponent
+                                    .getPassiveResource_BasicComponent()));
         }
         // create new stack frame for component parameters
         final SimulatedStack<Object> stack = this.context.getStack();
@@ -121,7 +125,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
                 LOG.debug("FQComponentID is " + fqID);
             }
             this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
-                    new SimulatedCompositeComponentInstance(fqID));
+                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {

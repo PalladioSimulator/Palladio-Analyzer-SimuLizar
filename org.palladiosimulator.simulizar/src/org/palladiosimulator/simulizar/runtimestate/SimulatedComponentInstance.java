@@ -7,6 +7,7 @@ import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 public abstract class SimulatedComponentInstance {
 
     private final FQComponentID myID;
+    private SimuComRuntimeState runtimeState;
 
     /**
      * @param myID
@@ -16,8 +17,9 @@ public abstract class SimulatedComponentInstance {
         this.myID = new FQComponentID(assemblyContextPath);
     }
 
-    protected SimulatedComponentInstance(final FQComponentID fqID) {
+    protected SimulatedComponentInstance(final SimuComRuntimeState runtimeState, final FQComponentID fqID) {
         super();
+        this.runtimeState = runtimeState;
         this.myID = fqID;
     }
 
@@ -25,4 +27,10 @@ public abstract class SimulatedComponentInstance {
         return myID;
     }
 
+    /**
+     * @return the runtimeState
+     */
+    protected final SimuComRuntimeState getRuntimeState() {
+        return runtimeState;
+    }
 }
