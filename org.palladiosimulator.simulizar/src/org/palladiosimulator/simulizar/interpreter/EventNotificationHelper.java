@@ -3,10 +3,8 @@
  */
 package org.palladiosimulator.simulizar.interpreter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
@@ -24,26 +22,15 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
  * @author snowball
  * 
  */
-public class EventNotificationHelper {
-
-    final Collection<IInterpreterListener> listener;
+public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> {
 
     public EventNotificationHelper() {
         super();
-        this.listener = new ArrayList<IInterpreterListener>();
-    }
-
-    public void addListener(final IInterpreterListener singleListener) {
-        this.listener.add(singleListener);
-    }
-
-    public void removeListener(final IInterpreterListener singleListener) {
-        this.listener.remove(singleListener);
     }
 
     @SuppressWarnings("unchecked")
     <T extends EObject> void firePassedEvent(final ModelElementPassedEvent<T> event) {
-        for (final IInterpreterListener singleListener : this.listener) {
+        for (final IInterpreterListener singleListener : this.getObservers()) {
             switch (event.getModelElement().eClass().getClassifierID()) {
             case UsagemodelPackage.USAGE_SCENARIO:
                 if (event.getEventType() == EventType.BEGIN) {
@@ -70,13 +57,19 @@ public class EventNotificationHelper {
                 }
                 break;
             default:
-                // throw new PCMModelInterpreterException("Tried to fire unknown event");
+                if (event.getEventType() == EventType.BEGIN) {
+                    singleListener
+                            .beginUnknownElementInterpretation(event);
+                } else {
+                    singleListener.endUnknownElementInterpretation(event);
+                }
+                break;
             }
         }
     }
 
     public void fireReconfigurationEvent(final ReconfigurationEvent event) {
-        for (final IInterpreterListener singleListener : this.listener) {
+        for (final IInterpreterListener singleListener : this.getObservers()) {
             if (event.getEventType() == EventType.RECONFIGURATION) {
                 singleListener.reconfigurationInterpretation(event);
             } else {
@@ -86,6 +79,6 @@ public class EventNotificationHelper {
     }
 
     public void removeAllListener() {
-        this.listener.clear();
+        this.getObservers().clear();
     }
 }

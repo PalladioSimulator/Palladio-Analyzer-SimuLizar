@@ -96,6 +96,16 @@ public class LogDebugListener extends AbstractInterpreterListener {
         this.logEvent(event);
     }
 
+    @Override
+    public <T extends EObject> void beginUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
+        this.logEvent(event);
+    }
+
+    @Override
+    public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
+        this.logEvent(event);
+    }
+
     private <T extends EObject> void logEvent(final ModelElementPassedEvent<T> event) {
         if (LOG.isDebugEnabled()) {
             final StringBuilder msgBuilder = new StringBuilder();
