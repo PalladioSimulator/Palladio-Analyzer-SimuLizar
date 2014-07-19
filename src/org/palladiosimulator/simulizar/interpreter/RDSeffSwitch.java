@@ -324,7 +324,11 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             LOG.debug("Process " + this.context.getThread().getId() + " tries to acquire " +
                     acquireAction.getPassiveresource_AcquireAction().getEntityName());
         }
-        this.basicComponentInstance.acquirePassiveResource(acquireAction.getPassiveresource_AcquireAction(), context);
+        this.basicComponentInstance.acquirePassiveResource(
+                acquireAction.getPassiveresource_AcquireAction(),
+                context,
+                context.getModel().getConfiguration().getSimulateFailures(),
+                acquireAction.getTimeoutValue());
         if (LOG.isDebugEnabled()) {
             LOG.debug("Process " + this.context.getThread().getId() + " successfully acquired " +
                     acquireAction.getPassiveresource_AcquireAction().getEntityName());
@@ -341,7 +345,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      */
     @Override
     public Object caseReleaseAction(final ReleaseAction releaseAction) {
-        this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction());
+        this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction(), context);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Process " + this.context.getThread().getId() + " released " +
                     releaseAction.getPassiveResource_ReleaseAction().getEntityName());
