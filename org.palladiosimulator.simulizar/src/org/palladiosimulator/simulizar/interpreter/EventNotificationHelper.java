@@ -79,6 +79,6 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
     }
 
     public void removeAllListener() {
-        this.getObservers().clear();
+        this.removeAllObserver();
     }
 }
