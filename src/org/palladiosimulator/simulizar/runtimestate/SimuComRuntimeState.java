@@ -20,6 +20,7 @@ public class SimuComRuntimeState {
 
     private final SimuComModel model;
     private final EventNotificationHelper eventHelper;
+    private final ComponentInstanceRegistry componentInstanceRegistry;
 
     /**
      * @param model
@@ -28,6 +29,7 @@ public class SimuComRuntimeState {
         super();
         this.model = model;
         this.eventHelper = new EventNotificationHelper();
+        this.componentInstanceRegistry = new ComponentInstanceRegistry();
     }
 
     /**
@@ -41,4 +43,10 @@ public class SimuComRuntimeState {
         return this.eventHelper;
     }
 
+    /**
+     * @return the componentInstanceRegistry
+     */
+    public final ComponentInstanceRegistry getComponentInstanceRegistry() {
+        return componentInstanceRegistry;
+    }
 }

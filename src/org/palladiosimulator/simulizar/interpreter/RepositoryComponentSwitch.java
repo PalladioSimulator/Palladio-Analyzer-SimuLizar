@@ -1,13 +1,19 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
@@ -33,6 +39,8 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * 
  */
 class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
+
+    private final static Logger LOG = Logger.getLogger(RepositoryComponentSwitch.class);
 
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
 
@@ -61,6 +69,18 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     @Override
     public SimulatedStackframe<Object> caseBasicComponent(final BasicComponent basicComponent) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Entering BasicComponent: " + basicComponent);
+        }
+        FQComponentID fqID = computeFQComponentID();
+        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Found new basic component component instance, registering it: " + basicComponent);
+                LOG.debug("FQComponentID is " + fqID);
+            }
+            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
+                    new SimulatedBasicComponentInstance(fqID, basicComponent.getPassiveResource_BasicComponent()));
+        }
         // create new stack frame for component parameters
         final SimulatedStack<Object> stack = this.context.getStack();
         final SimulatedStackframe<Object> componentParameterStackFrame = SimulatedStackHelper
@@ -91,6 +111,19 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     @Override
     public SimulatedStackframe<Object> caseComposedProvidingRequiringEntity(
             final ComposedProvidingRequiringEntity entity) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Entering ComposedProvidingRequiringEntity: " + entity);
+        }
+        FQComponentID fqID = computeFQComponentID();
+        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Found new composed component instance, registering it: " + entity);
+                LOG.debug("FQComponentID is " + fqID);
+            }
+            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
+                    new SimulatedCompositeComponentInstance(fqID));
+        }
+
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
             throw new PCMModelInterpreterException("Interpret entity of provided role only");
         }
@@ -146,6 +179,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      * @param calledSeffs
      *            a list of seffs.
      */
+    @SuppressWarnings("unchecked")
     private SimulatedStackframe<Object> interpretSeffs(final List<ServiceEffectSpecification> calledSeffs) {
         /*
          * we assume exactly one seff per call, the meta model also allows no seffs, but we omit
@@ -157,11 +191,29 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory);
+            FQComponentID componentID = computeFQComponentID();
+            SimulatedBasicComponentInstance basicComponentInstance =
+                    (SimulatedBasicComponentInstance) this.context.getRuntimeState().getComponentInstanceRegistry()
+                            .getComponentInstance(componentID);
+            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory,
+                    basicComponentInstance);
 
             // interpret called seff
             return (SimulatedStackframe<Object>) rdSeffInterpreter.doSwitch(calledSeffs.get(0));
         }
+    }
+
+    private List<AssemblyContext> computeAssemblyContextPath() {
+        final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
+        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
+        for (int i = 0; i < stack.size(); i++) {
+            result.add(stack.get(i));
+        }
+        return result;
+    }
+
+    private FQComponentID computeFQComponentID() {
+        return new FQComponentID(computeAssemblyContextPath());
     }
 
     /**
