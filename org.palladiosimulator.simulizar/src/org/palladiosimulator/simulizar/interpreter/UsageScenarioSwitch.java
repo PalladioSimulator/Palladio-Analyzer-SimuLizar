@@ -94,7 +94,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-        this.context.getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.BEGIN, this.context
                         .getThread()));
 
@@ -104,7 +104,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
         this.context.getStack().removeStackFrame();
 
-        this.context.getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END, this.context
                         .getThread()));
 
@@ -188,14 +188,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseUsageScenario(final UsageScenario usageScenario) {
-        this.context.getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context.getThread()));
         final int stacksize = this.context.getStack().size();
         this.doSwitch(usageScenario.getScenarioBehaviour_UsageScenario());
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
-        this.context.getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context.getThread()));
         return super.caseUsageScenario(usageScenario);
     }

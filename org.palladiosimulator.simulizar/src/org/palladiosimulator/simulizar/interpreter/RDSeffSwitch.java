@@ -23,6 +23,7 @@ import de.uka.ipd.sdq.pcm.repository.Parameter;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.AbstractAction;
 import de.uka.ipd.sdq.pcm.seff.AbstractBranchTransition;
+import de.uka.ipd.sdq.pcm.seff.AcquireAction;
 import de.uka.ipd.sdq.pcm.seff.BranchAction;
 import de.uka.ipd.sdq.pcm.seff.CollectionIteratorAction;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
@@ -30,6 +31,7 @@ import de.uka.ipd.sdq.pcm.seff.ForkAction;
 import de.uka.ipd.sdq.pcm.seff.ForkedBehaviour;
 import de.uka.ipd.sdq.pcm.seff.InternalAction;
 import de.uka.ipd.sdq.pcm.seff.LoopAction;
+import de.uka.ipd.sdq.pcm.seff.ReleaseAction;
 import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
 import de.uka.ipd.sdq.pcm.seff.SeffPackage;
 import de.uka.ipd.sdq.pcm.seff.SetVariableAction;
@@ -302,12 +304,38 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         return SUCCESS;
     }
 
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAcquireAction(de.uka.ipd.sdq.pcm.seff.AcquireAction
+     * )
+     */
+    @Override
+    public Object caseAcquireAction(AcquireAction object) {
+        // TODO Auto-generated method stub
+        return super.caseAcquireAction(object);
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see
+     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseReleaseAction(de.uka.ipd.sdq.pcm.seff.ReleaseAction
+     * )
+     */
+    @Override
+    public Object caseReleaseAction(ReleaseAction object) {
+        // TODO Auto-generated method stub
+        return super.caseReleaseAction(object);
+    }
+
     /**
      * @param abstractAction
      * @param eventType
      */
     private <T extends AbstractAction> void firePassedEvent(final T abstractAction, EventType eventType) {
-        this.context.getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new RDSEFFElementPassedEvent<T>(abstractAction, eventType, this.context
                         .getThread(), this.context.getAssemblyContextStack().peek()));
     }
@@ -374,7 +402,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                      * context including its stack.
                      */
                     final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
-                            RDSeffSwitch.this.context.getEventNotificationHelper(), false);
+                            RDSeffSwitch.this.context.getRuntimeState(), false);
                     seffContext.getAssemblyContextStack().push(parentAssemblyContext);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.modelAccessFactory);
