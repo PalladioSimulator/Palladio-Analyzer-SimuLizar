@@ -35,11 +35,6 @@ class ModelAccessFactory implements IModelAccessFactory {
         return new AllocationAccess(context, this.getModelHelper());
     }
 
-    @Override
-    public SystemAccess getSystemAccess(final InterpreterDefaultContext context) {
-        return new SystemAccess(context, this.getModelHelper());
-    }
-
     /**
      * 
      * @see org.palladiosimulator.simulizar.access.IModelAccessFactory#getPCMModelAccess(int,
@@ -48,11 +43,6 @@ class ModelAccessFactory implements IModelAccessFactory {
     @Override
     public UsageModelAccess getUsageModelAccess(final InterpreterDefaultContext context) {
         return new UsageModelAccess(context, this.getModelHelper());
-    }
-
-    @Override
-    public RepositoryAccess getRepositoryAccess(final InterpreterDefaultContext context) {
-        return new RepositoryAccess(context, this.getModelHelper());
     }
 
     /**

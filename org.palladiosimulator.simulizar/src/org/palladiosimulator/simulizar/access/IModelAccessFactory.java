@@ -14,10 +14,6 @@ public interface IModelAccessFactory {
 
     AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
 
-    SystemAccess getSystemAccess(InterpreterDefaultContext context);
-
-    RepositoryAccess getRepositoryAccess(InterpreterDefaultContext context);
-
     GlobalPCMAccess getGlobalPCMAccess();
 
     /**
@@ -30,5 +26,4 @@ public interface IModelAccessFactory {
     PRMAccess getPRMModelAccess();
 
     SDAccess getSDAccess();
-
 }

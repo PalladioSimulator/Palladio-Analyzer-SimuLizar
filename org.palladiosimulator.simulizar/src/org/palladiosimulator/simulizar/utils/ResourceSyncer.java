@@ -47,7 +47,7 @@ public class ResourceSyncer {
         this.simuComModel = simuComModel;
         this.modelAccessFactory = modelAccessFactory;
         final ResourceEnvironment resourceEnvironment = modelAccessFactory.getGlobalPCMAccess().getModel()
-                .getResourceEnvironment();
+                .getAllocation().getTargetResourceEnvironment_Allocation();
         resourceEnvironment.eAdapters().add(new EContentAdapter() {
 
             @Override
@@ -212,7 +212,7 @@ public class ResourceSyncer {
         }
         // add resource container, if not done already
         for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMAccess().getModel()
-                .getResourceEnvironment().getResourceContainer_ResourceEnvironment()) {
+                .getAllocation().getTargetResourceEnvironment_Allocation().getResourceContainer_ResourceEnvironment()) {
             final String resourceContainerId = resourceContainer.getId();
 
             SimulatedResourceContainer simulatedResourceContainer;
