@@ -14,6 +14,7 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
+import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
@@ -70,9 +71,10 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // 2. Initialise Model Access Factory
         final IModelAccessFactory modelAccessFactory = AccessFactory.createModelAccessFactory(this.blackboard);
 
-        final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(simuComModel);
-        mainContext.getEventNotificationHelper().addListener(new LogDebugListener());
-        mainContext.getEventNotificationHelper().addListener(
+        final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
+        final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(runtimeState);
+        runtimeState.getEventNotificationHelper().addListener(new LogDebugListener());
+        runtimeState.getEventNotificationHelper().addListener(
                 new ProbeFrameworkListener(modelAccessFactory, simuComModel));
 
         // 3. Setup interpreters for each usage scenario
@@ -103,7 +105,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOG.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
 
         // 7. Deregister all listeners and execute cleanup code
-        mainContext.getEventNotificationHelper().removeAllListener();
+        runtimeState.getEventNotificationHelper().removeAllListener();
         sdReconfigurator.stopListening();
         qvtoReconfigurator.stopListening();
         simuComModel.getProbeFrameworkContext().finish();
