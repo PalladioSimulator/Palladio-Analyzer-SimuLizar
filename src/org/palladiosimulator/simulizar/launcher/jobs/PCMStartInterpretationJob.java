@@ -73,8 +73,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
         final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(runtimeState);
-        runtimeState.getEventNotificationHelper().addListener(new LogDebugListener());
-        runtimeState.getEventNotificationHelper().addListener(
+        runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());
+        runtimeState.getEventNotificationHelper().addObserver(
                 new ProbeFrameworkListener(modelAccessFactory, simuComModel));
 
         // 3. Setup interpreters for each usage scenario

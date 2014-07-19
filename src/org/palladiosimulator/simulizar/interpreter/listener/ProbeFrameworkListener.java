@@ -148,6 +148,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         this.endMeasurement(event);
     }
 
+    @Override
+    public <T extends EObject> void beginUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
+    }
+
+    @Override
+    public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
+    }
+
     /**
      * Initializes response time measurement.
      * 
