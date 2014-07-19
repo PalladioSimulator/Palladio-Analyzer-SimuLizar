@@ -19,8 +19,6 @@ import org.palladiosimulator.simulizar.utils.PCMModels;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -75,18 +73,13 @@ class ModelHelper {
 
         final List<EObject> globalPCMModelsList = new ArrayList<EObject>();
         globalPCMModelsList.add(globalPCMModels.getAllocation());
-        globalPCMModelsList.add(globalPCMModels.getRepository());
-        globalPCMModelsList.add(globalPCMModels.getResourceEnvironment());
-        globalPCMModelsList.add(globalPCMModels.getSystem());
         globalPCMModelsList.add(globalPCMModels.getUsageModel());
 
         final List<EObject> modelCopyCollection = (ArrayList<EObject>) EcoreUtil.copyAll(globalPCMModelsList);
 
         // add to PCMCopy
-        final PCMModels pcmCopy = new PCMModels((Repository) modelCopyCollection.get(1),
-                (de.uka.ipd.sdq.pcm.system.System) modelCopyCollection.get(3),
-                (ResourceEnvironment) modelCopyCollection.get(2), (Allocation) modelCopyCollection.get(0),
-                (UsageModel) modelCopyCollection.get(4));
+        final PCMModels pcmCopy = new PCMModels((Allocation) modelCopyCollection.get(0),
+                (UsageModel) modelCopyCollection.get(1));
 
         return pcmCopy;
     }
@@ -106,18 +99,7 @@ class ModelHelper {
         final PCMResourceSetPartition pcmResourceSetPartition = this.getPCMResourceSetPartition();
 
         // add to PCMCopy
-        return new PCMModels(findRepository(pcmResourceSetPartition.getRepositories()),
-                pcmResourceSetPartition.getSystem(), pcmResourceSetPartition.getResourceEnvironment(),
-                pcmResourceSetPartition.getAllocation(), pcmResourceSetPartition.getUsageModel());
-    }
-
-    private Repository findRepository(List<Repository> repositories) {
-        for (Repository r : repositories) {
-            if (r.getComponents__Repository().size() != 0) {
-                return r;
-            }
-        }
-        throw new RuntimeException("No valid repository found");
+        return new PCMModels(pcmResourceSetPartition.getAllocation(), pcmResourceSetPartition.getUsageModel());
     }
 
     /**

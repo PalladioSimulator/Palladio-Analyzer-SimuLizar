@@ -93,11 +93,7 @@ public class ReconfigurationListener {
     public void startListening() {
         if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
-            pcmModels.getRepository().eAdapters().add(this.loggerAdapter);
-            pcmModels.getResourceEnvironment().eAdapters().add(this.loggerAdapter);
-            pcmModels.getSystem().eAdapters().add(this.loggerAdapter);
-            pcmModels.getUsageModel().eAdapters().add(this.loggerAdapter);
-            pcmModels.getAllocation().eAdapters().add(this.loggerAdapter);
+            pcmModels.getUsageModel().eResource().getResourceSet().eAdapters().add(this.loggerAdapter);
         }
         this.prmAccess.getModel().eAdapters().add(this.prmListener);
     }
@@ -109,11 +105,7 @@ public class ReconfigurationListener {
         this.prmAccess.getModel().eAdapters().remove(this.prmListener);
         if (LOGGER.isInfoEnabled()) {
             final PCMModels pcmModels = this.pcmAccess.getModel();
-            pcmModels.getRepository().eAdapters().remove(this.loggerAdapter);
-            pcmModels.getResourceEnvironment().eAdapters().remove(this.loggerAdapter);
-            pcmModels.getSystem().eAdapters().remove(this.loggerAdapter);
-            pcmModels.getUsageModel().eAdapters().remove(this.loggerAdapter);
-            pcmModels.getAllocation().eAdapters().remove(this.loggerAdapter);
+            pcmModels.getUsageModel().eResource().getResourceSet().eAdapters().remove(this.loggerAdapter);
         }
     }
 

@@ -40,12 +40,12 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
  * 
  */
 public class SDExecutor {
-    
+
     /**
-     * This class' internal LOGGER. 
+     * This class' internal LOGGER.
      */
     private static final Logger LOGGER = Logger.getLogger(SDExecutor.class);
-    
+
     /**
     * 
     */
@@ -187,18 +187,20 @@ public class SDExecutor {
         final Variable<EClassifier> usageModelParameter = new Variable<EClassifier>(USAGE_MODEL, USAGE_MODEL_ECLASS,
                 globalPCMModel.getUsageModel());
         final Variable<EClassifier> systemModelParameter = new Variable<EClassifier>(SYSTEM_MODEL, SYSTEM_MODEL_ECLASS,
-                globalPCMModel.getSystem());
-        final Variable<EClassifier> repositoryModelParameter = new Variable<EClassifier>(REPOSITORY_MODEL,
-                REPOSITORY_MODEL_ECLASS, globalPCMModel.getRepository());
+                globalPCMModel.getAllocation().getSystem_Allocation());
+        // final Variable<EClassifier> repositoryModelParameter = new
+        // Variable<EClassifier>(REPOSITORY_MODEL,
+        // REPOSITORY_MODEL_ECLASS, globalPCMModel.getRepository());
         final Variable<EClassifier> allocationModelParameter = new Variable<EClassifier>(ALLOCATION_MODEL,
                 ALLOCATION_MODEL_ECLASS, globalPCMModel.getAllocation());
         final Variable<EClassifier> resourceEnvironmentModelParameter = new Variable<EClassifier>(
-                RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS, globalPCMModel.getResourceEnvironment());
+                RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
+                globalPCMModel.getAllocation().getTargetResourceEnvironment_Allocation());
         final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(PRM_MODEL,
                 PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmAccess.getModel());
         parameters.add(usageModelParameter);
         parameters.add(systemModelParameter);
-        parameters.add(repositoryModelParameter);
+        // parameters.add(repositoryModelParameter);
         parameters.add(allocationModelParameter);
         parameters.add(resourceEnvironmentModelParameter);
         parameters.add(prmModelParameter);
@@ -208,10 +210,13 @@ public class SDExecutor {
     /**
      * Executes one activities for the given monitored element.
      * 
-     * @param activity Activities in the StoryDiagram
-     * @param parameters Parameters for the StoryDiagram execution
+     * @param activity
+     *            Activities in the StoryDiagram
+     * @param parameters
+     *            Parameters for the StoryDiagram execution
      * @return always returns false
-     * @throws SDMException in case the SD Activity could not be executed
+     * @throws SDMException
+     *             in case the SD Activity could not be executed
      */
     private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
         this.sdmInterpreter.executeActivity(activity, parameters);
@@ -224,8 +229,8 @@ public class SDExecutor {
      * 
      * @param monitoredElement
      *            the pcm model element to be monitored.
-     * @return true if at least one reconfiguration's check was positive and it 
-     *              reconfigured the model.
+     * @return true if at least one reconfiguration's check was positive and it reconfigured the
+     *         model.
      */
     public boolean executeActivities(final EObject monitoredElement) {
         final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(MONITORED_ELEMENT,
