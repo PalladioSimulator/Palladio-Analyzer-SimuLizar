@@ -32,7 +32,7 @@
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
-      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/commons/releases/1.4.0"/>
+      <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/commons/nightly"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="thirdparty">
