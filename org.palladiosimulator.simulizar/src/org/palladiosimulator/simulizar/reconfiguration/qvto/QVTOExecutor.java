@@ -24,7 +24,6 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
 import org.palladiosimulator.simulizar.access.PRMAccess;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 
@@ -47,7 +46,6 @@ public class QVTOExecutor {
     private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
     private final List<TransformationExecutor> qvtoRuleSet;
     private final Map<String, Resource> pcmModelMap;
-    private final InterpreterDefaultContext context;
 
     /**
      * Constructor of the QVTOExecutor
@@ -60,13 +58,12 @@ public class QVTOExecutor {
      *            MDSDBlackboard storing the PCM models
      */
     public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration,
-            MDSDBlackboard blackboard, InterpreterDefaultContext context) {
+            MDSDBlackboard blackboard) {
         super();
         this.prmAccess = modelAccessFactory.getPRMModelAccess();
         this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
         this.loadQvtoRules(configuration);
         this.pcmModelMap = getRequiredModels(blackboard);
-        this.context = context;
     }
 
     /**
@@ -177,9 +174,8 @@ public class QVTOExecutor {
 
         // check the result for success
         if (result.getSeverity() == Diagnostic.OK) {
-            double passageTime = this.context.getModel().getSimulationControl().getCurrentSimulationTime();
             LOGGER.log(Level.INFO,
-                    "Rule application successfull at time " + passageTime + " with message: " + result.getMessage());
+                    "Rule application successfull with message: " + result.getMessage());
             return true;
         } else {
             LOGGER.log(Level.WARN, "Rule application failed with message: " + result.getMessage());

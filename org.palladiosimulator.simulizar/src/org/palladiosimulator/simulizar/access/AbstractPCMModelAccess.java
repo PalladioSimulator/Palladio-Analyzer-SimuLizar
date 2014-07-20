@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.access;
 
-import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.utils.PCMModels;
@@ -12,9 +11,8 @@ import org.palladiosimulator.simulizar.utils.PCMModels;
  * 
  */
 public abstract class AbstractPCMModelAccess<ModelType extends EObject> extends AbstractModelAccess<ModelType> {
-    protected static final Logger LOG = Logger.getLogger(AbstractPCMModelAccess.class.getName());
 
-    protected final InterpreterDefaultContext context;
+    private final InterpreterDefaultContext context;
 
     /**
      * Constructor
@@ -30,13 +28,6 @@ public abstract class AbstractPCMModelAccess<ModelType extends EObject> extends 
             throw new IllegalArgumentException("Context must be set!");
         }
         this.context = context;
-    }
-
-    /**
-     * @return returns the context
-     */
-    public InterpreterDefaultContext getContext() {
-        return this.context;
     }
 
     /**

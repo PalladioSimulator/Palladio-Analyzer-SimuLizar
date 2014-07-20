@@ -4,10 +4,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
-import org.palladiosimulator.simulizar.access.AccessFactory;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.ModelAccessFactory;
+import org.palladiosimulator.simulizar.access.ModelHelper;
 import org.palladiosimulator.simulizar.access.UsageModelAccess;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
@@ -69,17 +69,17 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         final SimuComModel simuComModel = this.initialiseSimuComModel();
 
         // 2. Initialise Model Access Factory
-        final IModelAccessFactory modelAccessFactory = AccessFactory.createModelAccessFactory(this.blackboard);
+        final IModelAccessFactory modelAccessFactory = new ModelAccessFactory(new ModelHelper(this.blackboard));
 
         final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
-        final InterpreterDefaultContext mainContext = new InterpreterDefaultContext(runtimeState);
         runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());
         runtimeState.getEventNotificationHelper().addObserver(
                 new ProbeFrameworkListener(modelAccessFactory, simuComModel));
 
         // 3. Setup interpreters for each usage scenario
-        final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(mainContext);
-        simuComModel.setUsageScenarios(usageModelAccess.getWorkloadDrivers(modelAccessFactory));
+        final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(runtimeState.getMainContext());
+        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModelAccess.getModel(),
+                modelAccessFactory));
 
         /*
          * 4. Setup Actuators that keep simulated system and model@runtime consistent Sync Resources
@@ -94,9 +94,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
                 new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
         sdReconfigurator.startListening();
 
+        // TODO FIXME Should not use blackboard directly but model helper. Otherwise it is
+        // inconsistent to the rest
+        // of the architecture
         final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard,
-                        mainContext) });
+                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard) });
         qvtoReconfigurator.startListening();
 
         // 6. Run Simulation

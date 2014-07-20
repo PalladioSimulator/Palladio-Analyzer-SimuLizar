@@ -3,8 +3,6 @@
  */
 package org.palladiosimulator.simulizar.access;
 
-import org.apache.log4j.Logger;
-
 /**
  * Abstract base class for model access classes.
  * 
@@ -12,7 +10,6 @@ import org.apache.log4j.Logger;
  * 
  */
 abstract class AbstractModelAccess<ModelType> {
-    protected static final Logger LOG = Logger.getLogger(AbstractModelAccess.class.getName());
 
     private final ModelHelper modelHelper;
 
