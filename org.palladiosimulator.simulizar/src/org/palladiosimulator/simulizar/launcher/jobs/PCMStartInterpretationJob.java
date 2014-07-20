@@ -4,7 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccessFactory;
 import org.palladiosimulator.simulizar.access.ModelHelper;
 import org.palladiosimulator.simulizar.access.UsageModelAccess;
@@ -69,7 +69,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         final SimuComModel simuComModel = this.initialiseSimuComModel();
 
         // 2. Initialise Model Access Factory
-        final IModelAccessFactory modelAccessFactory = new ModelAccessFactory(new ModelHelper(this.blackboard));
+        final IModelAccess modelAccessFactory = new ModelAccessFactory(new ModelHelper(this.blackboard));
 
         final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
         runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());

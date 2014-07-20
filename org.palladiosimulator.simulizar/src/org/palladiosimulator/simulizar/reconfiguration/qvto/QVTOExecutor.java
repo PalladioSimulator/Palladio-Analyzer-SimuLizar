@@ -22,10 +22,10 @@ import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
-import org.palladiosimulator.simulizar.access.PRMAccess;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -40,7 +40,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class QVTOExecutor {
 
-    private final PRMAccess prmAccess;
+    private final PRMModel prmAccess;
 
     private static final String QVTO_FILE_EXTENSION = ".qvto";
     private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
@@ -57,10 +57,10 @@ public class QVTOExecutor {
      * @param blackboard
      *            MDSDBlackboard storing the PCM models
      */
-    public QVTOExecutor(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration,
+    public QVTOExecutor(final IModelAccess modelAccessFactory, SimuComWorkflowConfiguration configuration,
             MDSDBlackboard blackboard) {
         super();
-        this.prmAccess = modelAccessFactory.getPRMModelAccess();
+        this.prmAccess = modelAccessFactory.getPRMModel();
         this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
         this.loadQvtoRules(configuration);
         this.pcmModelMap = getRequiredModels(blackboard);
@@ -148,7 +148,7 @@ public class QVTOExecutor {
     private boolean execute(TransformationExecutor executor) {
 
         // define the transformation input and outputs
-        EList<PCMModelElementMeasurement> runtimeModel = this.prmAccess.getModel().getPcmModelElementMeasurements();
+        EList<PCMModelElementMeasurement> runtimeModel = this.prmAccess.getPcmModelElementMeasurements();
         EList<EObject> pcmAllocation = this.pcmModelMap.get("allocation").getContents();
         EList<EObject> pcmSystem = this.pcmModelMap.get("system").getContents();
         EList<EObject> pcmResources = this.pcmModelMap.get("resourcetype").getContents();

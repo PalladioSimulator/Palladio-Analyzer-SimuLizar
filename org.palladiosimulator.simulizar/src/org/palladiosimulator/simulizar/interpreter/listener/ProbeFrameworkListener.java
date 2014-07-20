@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
+import static org.palladiosimulator.simulizar.utils.PMSUtil.isMonitored;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -21,12 +23,12 @@ import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
-import org.palladiosimulator.simulizar.access.PMSAccess;
-import org.palladiosimulator.simulizar.access.PRMAccess;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
@@ -49,8 +51,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
-    private final PMSAccess pmsModelAccess;
-    private final PRMAccess prmAccess;
+    private final PMSModel pmsModel;
+    private final PRMModel prmModel;
     private final SimuComModel simuComModel;
     private final ICalculatorFactory calculatorFactory;
 
@@ -67,10 +69,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public ProbeFrameworkListener(final IModelAccessFactory modelAccessFactory, final SimuComModel simuComModel) {
+    public ProbeFrameworkListener(final IModelAccess modelAccessFactory, final SimuComModel simuComModel) {
         super();
-        this.pmsModelAccess = modelAccessFactory.getPMSModelAccess();
-        this.prmAccess = modelAccessFactory.getPRMModelAccess();
+        this.pmsModel = modelAccessFactory.getPMSModel();
+        this.prmModel = modelAccessFactory.getPRMModel();
         this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfTimeProbe = null;
@@ -166,7 +168,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
         final EObject modelElement = event.getModelElement();
-        final MeasurementSpecification measurementSpecification = this.pmsModelAccess.isMonitored(modelElement,
+        final MeasurementSpecification measurementSpecification = isMonitored(pmsModel, modelElement,
                 PerformanceMetricEnum.RESPONSE_TIME);
 
         if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
@@ -175,7 +177,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                     probeList);
 
             try {
-                final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel, this.prmAccess,
+                final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel, this.prmModel,
                         measurementSpecification, modelElement);
                 calculator.addObserver(aggregator);
             } catch (final UnsupportedOperationException e) {

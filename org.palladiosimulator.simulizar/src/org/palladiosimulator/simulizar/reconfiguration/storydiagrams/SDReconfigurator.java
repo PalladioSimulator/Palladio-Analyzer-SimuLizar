@@ -1,10 +1,12 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagrams;
 
+import java.util.Collection;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
-import org.palladiosimulator.simulizar.access.SDAccess;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.storydriven.storydiagrams.activities.Activity;
 
 /**
  * A reconfigurator implementation which relies on story diagrams to do the reconfiguration. The
@@ -24,7 +26,7 @@ public class SDReconfigurator implements IReconfigurator {
     /**
      * Access interface to access all loaded SDs.
      */
-    private final SDAccess sdAccess;
+    private final Collection<Activity> sdAccess;
 
     /**
      * SD Interpreter used internally to interpret the SDs.
@@ -37,15 +39,15 @@ public class SDReconfigurator implements IReconfigurator {
      * @param modelAccessFactory
      *            Model access factory used to access the SDs.
      */
-    public SDReconfigurator(final IModelAccessFactory modelAccessFactory) {
+    public SDReconfigurator(final IModelAccess modelAccessFactory) {
         super();
-        this.sdAccess = modelAccessFactory.getSDAccess();
+        this.sdAccess = modelAccessFactory.getStoryDiagrams();
         this.sdExecutor = new SDExecutor(modelAccessFactory);
     }
 
     @Override
     public boolean checkAndExecute(final EObject monitoredElement) {
-        if (this.sdAccess.sdModelsExist()) {
+        if (!this.sdAccess.isEmpty()) {
             LOGGER.debug("Checking reconfiguration rules due to PRM change");
             final boolean result = this.sdExecutor.executeActivities(monitoredElement);
             LOGGER.debug(result ? "Reconfigured system by a matching rule"

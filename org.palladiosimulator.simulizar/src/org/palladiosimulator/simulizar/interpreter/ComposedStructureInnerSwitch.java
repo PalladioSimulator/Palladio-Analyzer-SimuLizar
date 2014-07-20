@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector;
@@ -31,7 +31,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      * Context of the simulated thread which resolves an external call
      */
     private final InterpreterDefaultContext context;
-    private final IModelAccessFactory modelAccessFactory;
+    private final IModelAccess modelAccessFactory;
     private final Signature signature;
     private final RequiredRole requiredRole;
 
@@ -43,7 +43,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      */
     public ComposedStructureInnerSwitch(
             final InterpreterDefaultContext context,
-            final IModelAccessFactory interpreterFactory,
+            final IModelAccess interpreterFactory,
             final Signature operationSignature,
             final RequiredRole requiredRole) {
         super();
