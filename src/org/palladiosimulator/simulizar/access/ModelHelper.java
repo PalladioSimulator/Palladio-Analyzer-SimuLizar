@@ -158,4 +158,8 @@ public class ModelHelper {
         return pcmCopy;
     }
 
+    public PCMResourceSetPartition getPCMResourceSetPartition() {
+        return this.pcmPartition;
+    }
+
 }

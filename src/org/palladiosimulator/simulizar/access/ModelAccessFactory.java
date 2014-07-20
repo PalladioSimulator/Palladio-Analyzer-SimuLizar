@@ -7,6 +7,8 @@ import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.storydriven.storydiagrams.activities.Activity;
 
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
+
 /**
  * Factory for pcm and pms model accesses and pcm model interpreters.
  * 
@@ -15,7 +17,6 @@ import org.storydriven.storydiagrams.activities.Activity;
  */
 public class ModelAccessFactory implements IModelAccess {
     private final ModelHelper modelHelper;
-    private final GlobalPCMAccess globalPCMAccess;
 
     /**
      * Constructor
@@ -26,7 +27,6 @@ public class ModelAccessFactory implements IModelAccess {
     public ModelAccessFactory(final ModelHelper modelHelper) {
         super();
         this.modelHelper = modelHelper;
-        this.globalPCMAccess = new GlobalPCMAccess(modelHelper);
     }
 
     @Override
@@ -50,8 +50,8 @@ public class ModelAccessFactory implements IModelAccess {
     }
 
     @Override
-    public GlobalPCMAccess getGlobalPCMAccess() {
-        return this.globalPCMAccess;
+    public PCMResourceSetPartition getGlobalPCMAccess() {
+        return this.modelHelper.getPCMResourceSetPartition();
     }
 
     @Override

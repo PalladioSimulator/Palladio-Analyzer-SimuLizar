@@ -5,13 +5,13 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.simulizar.access.GlobalPCMAccess;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.PCMModels;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 import org.palladiosimulator.simulizar.prm.util.PrmSwitch;
+
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations
@@ -59,7 +59,7 @@ public class ReconfigurationListener {
     /**
      * Access interface to the global PCM@Runtime model.
      */
-    private final GlobalPCMAccess pcmAccess;
+    private final PCMResourceSetPartition pcmResourceSetPartition;
 
     /**
      * Access interface to the PRM runtime model.
@@ -82,7 +82,7 @@ public class ReconfigurationListener {
      */
     public ReconfigurationListener(final IModelAccess modelAccessFactory, final IReconfigurator[] reconfigurators) {
         super();
-        this.pcmAccess = modelAccessFactory.getGlobalPCMAccess();
+        this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMAccess();
         this.prmModel = modelAccessFactory.getPRMModel();
         this.reconfigurators = reconfigurators;
     }
@@ -92,8 +92,7 @@ public class ReconfigurationListener {
      */
     public void startListening() {
         if (LOGGER.isInfoEnabled()) {
-            final PCMModels pcmModels = this.pcmAccess.getModel();
-            pcmModels.getUsageModel().eResource().getResourceSet().eAdapters().add(this.loggerAdapter);
+            pcmResourceSetPartition.getResourceSet().eAdapters().add(this.loggerAdapter);
         }
         this.prmModel.eAdapters().add(this.prmListener);
     }
@@ -104,8 +103,7 @@ public class ReconfigurationListener {
     public void stopListening() {
         this.prmModel.eAdapters().remove(this.prmListener);
         if (LOGGER.isInfoEnabled()) {
-            final PCMModels pcmModels = this.pcmAccess.getModel();
-            pcmModels.getUsageModel().eResource().getResourceSet().eAdapters().remove(this.loggerAdapter);
+            pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.loggerAdapter);
         }
     }
 

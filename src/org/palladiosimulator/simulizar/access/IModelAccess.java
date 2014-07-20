@@ -7,6 +7,8 @@ import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.storydriven.storydiagrams.activities.Activity;
 
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
+
 /**
  * Model access factory interface for creating pcm and prm model access, as well as pcm model
  * interpreter.
@@ -25,7 +27,7 @@ public interface IModelAccess {
     // -----
     // Access to any model which is global and exists only once
     // -----
-    public GlobalPCMAccess getGlobalPCMAccess();
+    public PCMResourceSetPartition getGlobalPCMAccess();
 
     public PMSModel getPMSModel();
 
