@@ -11,9 +11,7 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
-import org.palladiosimulator.simulizar.access.GlobalPCMAccess;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.PCMModels;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
@@ -34,6 +32,7 @@ import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceenvironmentPackage;
 import de.uka.ipd.sdq.pcm.system.SystemPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Story diagram executor helper class that supports executing SDs against the PCM model@runtime.
@@ -124,7 +123,7 @@ public class SDExecutor {
     private final StoryDrivenEclipseInterpreter sdmInterpreter;
 
     private final Collection<Activity> storyDiagrams;
-    private final GlobalPCMAccess globalPCMAccess;
+    private final PCMResourceSetPartition globalPcmResourceSetPartition;
     private final PRMModel prmModel;
 
     /**
@@ -136,7 +135,7 @@ public class SDExecutor {
     public SDExecutor(final IModelAccess modelAccessFactory) {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
-        this.globalPCMAccess = modelAccessFactory.getGlobalPCMAccess();
+        this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMAccess();
         this.prmModel = modelAccessFactory.getPRMModel();
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
@@ -182,20 +181,19 @@ public class SDExecutor {
      * @return List<Variable<EClassifier>> list of variables and their according EClassifiers
      */
     private List<Variable<EClassifier>> createParameter() {
-        final PCMModels globalPCMModel = this.globalPCMAccess.getModel();
         final List<Variable<EClassifier>> parameters = new ArrayList<Variable<EClassifier>>();
         final Variable<EClassifier> usageModelParameter = new Variable<EClassifier>(USAGE_MODEL, USAGE_MODEL_ECLASS,
-                globalPCMModel.getUsageModel());
+                this.globalPcmResourceSetPartition.getUsageModel());
         final Variable<EClassifier> systemModelParameter = new Variable<EClassifier>(SYSTEM_MODEL, SYSTEM_MODEL_ECLASS,
-                globalPCMModel.getAllocation().getSystem_Allocation());
+                this.globalPcmResourceSetPartition.getAllocation().getSystem_Allocation());
         // final Variable<EClassifier> repositoryModelParameter = new
         // Variable<EClassifier>(REPOSITORY_MODEL,
         // REPOSITORY_MODEL_ECLASS, globalPCMModel.getRepository());
         final Variable<EClassifier> allocationModelParameter = new Variable<EClassifier>(ALLOCATION_MODEL,
-                ALLOCATION_MODEL_ECLASS, globalPCMModel.getAllocation());
+                ALLOCATION_MODEL_ECLASS, this.globalPcmResourceSetPartition.getAllocation());
         final Variable<EClassifier> resourceEnvironmentModelParameter = new Variable<EClassifier>(
                 RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
-                globalPCMModel.getAllocation().getTargetResourceEnvironment_Allocation());
+                this.globalPcmResourceSetPartition.getAllocation().getTargetResourceEnvironment_Allocation());
         final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(PRM_MODEL,
                 PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmModel);
         parameters.add(usageModelParameter);
