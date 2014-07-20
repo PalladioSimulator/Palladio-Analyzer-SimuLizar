@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.access;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.utils.PCMModels;
 
 /**
  * Abstract base class for model access classes.

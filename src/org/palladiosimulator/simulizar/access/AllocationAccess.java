@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.access;
 
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.utils.PCMModels;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 

@@ -7,11 +7,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.simulizar.access.GlobalPCMAccess;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.PCMModels;
 import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 import org.palladiosimulator.simulizar.prm.util.PrmSwitch;
-import org.palladiosimulator.simulizar.utils.PCMModels;
 
 /**
  * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations
