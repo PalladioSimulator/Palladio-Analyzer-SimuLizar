@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
@@ -34,7 +34,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
-    private final IModelAccessFactory modelAccessFactory;
+    private final IModelAccess modelAccessFactory;
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, final IModelAccessFactory modelAccessFactory) {
+    public UsageScenarioSwitch(final InterpreterDefaultContext context, final IModelAccess modelAccessFactory) {
         this.context = context;
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.modelAccessFactory = modelAccessFactory;

@@ -1,6 +1,11 @@
 package org.palladiosimulator.simulizar.access;
 
+import java.util.Collection;
+
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.pms.PMSModel;
+import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.storydriven.storydiagrams.activities.Activity;
 
 /**
  * Factory for pcm and pms model accesses and pcm model interpreters.
@@ -8,12 +13,9 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
  * @author Joachim Meyer
  * 
  */
-public class ModelAccessFactory implements IModelAccessFactory {
+public class ModelAccessFactory implements IModelAccess {
     private final ModelHelper modelHelper;
-    private final PMSAccess pmsAccess;
-    private final PRMAccess prmAccess;
     private final GlobalPCMAccess globalPCMAccess;
-    private final SDAccess sdAccess;
 
     /**
      * Constructor
@@ -24,10 +26,7 @@ public class ModelAccessFactory implements IModelAccessFactory {
     public ModelAccessFactory(final ModelHelper modelHelper) {
         super();
         this.modelHelper = modelHelper;
-        this.pmsAccess = new PMSAccess(modelHelper);
-        this.prmAccess = new PRMAccess(modelHelper);
         this.globalPCMAccess = new GlobalPCMAccess(modelHelper);
-        this.sdAccess = new SDAccess(modelHelper);
     }
 
     @Override
@@ -41,13 +40,13 @@ public class ModelAccessFactory implements IModelAccessFactory {
     }
 
     @Override
-    public PMSAccess getPMSModelAccess() {
-        return this.pmsAccess;
+    public PMSModel getPMSModel() {
+        return this.modelHelper.getGlobalPMSModel();
     }
 
     @Override
-    public PRMAccess getPRMModelAccess() {
-        return this.prmAccess;
+    public PRMModel getPRMModel() {
+        return this.modelHelper.getGlobalPRMModel();
     }
 
     @Override
@@ -56,7 +55,7 @@ public class ModelAccessFactory implements IModelAccessFactory {
     }
 
     @Override
-    public SDAccess getSDAccess() {
-        return this.sdAccess;
+    public Collection<Activity> getStoryDiagrams() {
+        return this.modelHelper.getSDMModels();
     }
 }

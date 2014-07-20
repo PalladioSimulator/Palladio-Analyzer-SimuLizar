@@ -13,10 +13,10 @@ import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -54,7 +54,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      */
     public ResponseTimeAggregator(
             final SimuComModel model,
-            final PRMAccess prmAccess,
+            final PRMModel prmAccess,
             final MeasurementSpecification measurementSpecification,
             final EObject monitoredElement) {
         super(prmAccess, measurementSpecification, monitoredElement);

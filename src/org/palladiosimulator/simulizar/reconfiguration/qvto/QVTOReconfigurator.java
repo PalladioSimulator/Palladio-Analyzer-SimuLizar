@@ -5,7 +5,7 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 
@@ -41,7 +41,7 @@ public class QVTOReconfigurator implements IReconfigurator {
      * @param blackboard
      *            MDSDBlackboard storing the PCM models
      */
-    public QVTOReconfigurator(final IModelAccessFactory modelAccessFactory, SimuComWorkflowConfiguration configuration,
+    public QVTOReconfigurator(final IModelAccess modelAccessFactory, SimuComWorkflowConfiguration configuration,
             MDSDBlackboard blackboard) {
         super();
         this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration, blackboard);

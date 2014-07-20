@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagrams;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,11 +12,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.palladiosimulator.simulizar.access.GlobalPCMAccess;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.PCMModels;
-import org.palladiosimulator.simulizar.access.PRMAccess;
-import org.palladiosimulator.simulizar.access.SDAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
 import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
@@ -119,13 +119,13 @@ public class SDExecutor {
 
     private final List<Variable<EClassifier>> staticParameters;
 
-    private final List<Activity> activities;
+    private final Collection<Activity> activities;
 
     private final StoryDrivenEclipseInterpreter sdmInterpreter;
 
-    private final SDAccess sdAccess;
+    private final Collection<Activity> storyDiagrams;
     private final GlobalPCMAccess globalPCMAccess;
-    private final PRMAccess prmAccess;
+    private final PRMModel prmModel;
 
     /**
      * Constructor of the SD Executor.
@@ -133,11 +133,11 @@ public class SDExecutor {
      * @param modelAccessFactory
      *            the model access factory used to access the SD, PCM@runtime and PRM models.
      */
-    public SDExecutor(final IModelAccessFactory modelAccessFactory) {
+    public SDExecutor(final IModelAccess modelAccessFactory) {
         super();
-        this.sdAccess = modelAccessFactory.getSDAccess();
+        this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
         this.globalPCMAccess = modelAccessFactory.getGlobalPCMAccess();
-        this.prmAccess = modelAccessFactory.getPRMModelAccess();
+        this.prmModel = modelAccessFactory.getPRMModel();
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
         } catch (final SDMException e) {
@@ -159,9 +159,9 @@ public class SDExecutor {
      * 
      * @return list of activities with bound parameters.
      */
-    private List<Activity> createBindingsForActivities() {
-        final List<Activity> ActivitiesFromModels = this.sdAccess.getModel();
-        final List<Activity> result = new LinkedList<Activity>();
+    private Collection<Activity> createBindingsForActivities() {
+        final Collection<Activity> ActivitiesFromModels = this.storyDiagrams;
+        final Collection<Activity> result = new LinkedList<Activity>();
 
         for (final Activity activity : ActivitiesFromModels) {
             final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] {
@@ -197,7 +197,7 @@ public class SDExecutor {
                 RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
                 globalPCMModel.getAllocation().getTargetResourceEnvironment_Allocation());
         final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(PRM_MODEL,
-                PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmAccess.getModel());
+                PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmModel);
         parameters.add(usageModelParameter);
         parameters.add(systemModelParameter);
         // parameters.add(repositoryModelParameter);

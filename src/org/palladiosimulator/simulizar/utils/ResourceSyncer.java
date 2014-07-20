@@ -3,10 +3,10 @@ package org.palladiosimulator.simulizar.utils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
-import org.palladiosimulator.simulizar.access.PMSAccess;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
@@ -32,7 +32,7 @@ public class ResourceSyncer {
 
     private final SimuComModel simuComModel;
 
-    private final IModelAccessFactory modelAccessFactory;
+    private final IModelAccess modelAccessFactory;
 
     /**
      * Constructor
@@ -42,7 +42,7 @@ public class ResourceSyncer {
      * @param modelAccessFactory
      *            the modelAccessFactory.
      */
-    public ResourceSyncer(final SimuComModel simuComModel, final IModelAccessFactory modelAccessFactory) {
+    public ResourceSyncer(final SimuComModel simuComModel, final IModelAccess modelAccessFactory) {
         super();
         this.simuComModel = simuComModel;
         this.modelAccessFactory = modelAccessFactory;
@@ -163,8 +163,8 @@ public class ResourceSyncer {
         }
 
         // is monitored?
-        final PMSAccess pmsAccess = this.modelAccessFactory.getPMSModelAccess();
-        MeasurementSpecification measurementSpecification = pmsAccess.isMonitored(resourceContainer,
+        final PMSModel pmsModel = this.modelAccessFactory.getPMSModel();
+        MeasurementSpecification measurementSpecification = PMSUtil.isMonitored(pmsModel, resourceContainer,
                 PerformanceMetricEnum.UTILIZATION);
         if (isMonitored(measurementSpecification)) {
             final ResourceContainerMeasurement resourceContainerMeasurement = PrmFactory.eINSTANCE

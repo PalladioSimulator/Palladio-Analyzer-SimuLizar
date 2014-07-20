@@ -8,7 +8,7 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.simulizar.access.AllocationAccess;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
@@ -60,7 +60,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     private final static Logger LOG = Logger.getLogger(RDSeffSwitch.class);
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
-    private final IModelAccessFactory modelAccessFactory;
+    private final IModelAccess modelAccessFactory;
 
     private final SimulatedStackframe<Object> resultStackFrame;
 
@@ -76,7 +76,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param assemblyContext
      *            the assembly context of the component of the SEFF.
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccessFactory interpreterFactory,
+    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccess interpreterFactory,
             SimulatedBasicComponentInstance basicComponentInstance) {
         super();
         this.modelAccessFactory = interpreterFactory;

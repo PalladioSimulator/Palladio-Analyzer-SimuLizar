@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
@@ -34,7 +34,7 @@ public class SimulatedUsageModels {
      * 
      * @return a list of workload drivers
      */
-    public IWorkloadDriver[] getWorkloadDrivers(final UsageModel model, final IModelAccessFactory interpreterFactory) {
+    public IWorkloadDriver[] getWorkloadDrivers(final UsageModel model, final IModelAccess interpreterFactory) {
         final EList<UsageScenario> usageScenarios = model.getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
@@ -44,7 +44,7 @@ public class SimulatedUsageModels {
     }
 
     private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario,
-            final IModelAccessFactory interpreterFactory) {
+            final IModelAccess interpreterFactory) {
         // get workload of scenario
         final Workload workload = usageScenario.getWorkload_UsageScenario();
 
@@ -61,7 +61,7 @@ public class SimulatedUsageModels {
     }
 
     private IWorkloadDriver getClosedWorkloadDriver(final Workload workload, final UsageScenario usageScenario,
-            final IModelAccessFactory interpreterFactory) {
+            final IModelAccess interpreterFactory) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Create workload driver for ClosedWorkload: " + workload);
         }
@@ -80,7 +80,7 @@ public class SimulatedUsageModels {
     }
 
     private IWorkloadDriver getOpenWorkloadDriver(final Workload workload, final UsageScenario usageScenario,
-            final IModelAccessFactory interpreterFactory) {
+            final IModelAccess interpreterFactory) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Create workload driver for OpenWorkload: " + workload);
         }
@@ -98,7 +98,7 @@ public class SimulatedUsageModels {
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
     }
 
-    private IScenarioRunner getScenarioRunner(final IModelAccessFactory modelAccessFactory,
+    private IScenarioRunner getScenarioRunner(final IModelAccess modelAccessFactory,
             final UsageScenario scenario) {
         return new IScenarioRunner() {
 

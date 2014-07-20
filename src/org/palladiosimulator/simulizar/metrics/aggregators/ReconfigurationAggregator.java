@@ -1,15 +1,12 @@
-/**
- * 
- */
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 
 /**
  * @author Matthias
@@ -18,7 +15,7 @@ import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 public class ReconfigurationAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
     public ReconfigurationAggregator(
-            final PRMAccess prmAccess,
+            final PRMModel prmAccess,
             final MeasurementSpecification measurementSpecification,
             final Calculator responseTimeCalculator,
             final String measurementId,

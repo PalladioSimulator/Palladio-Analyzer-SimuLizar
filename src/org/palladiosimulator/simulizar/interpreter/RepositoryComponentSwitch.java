@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
@@ -48,14 +48,14 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
-    private final IModelAccessFactory modelAccessFactory;
+    private final IModelAccess modelAccessFactory;
 
     /**
 	 * 
 	 */
     public RepositoryComponentSwitch(
             final InterpreterDefaultContext context,
-            final IModelAccessFactory interpreterFactory,
+            final IModelAccess interpreterFactory,
             final AssemblyContext assemblyContext,
             final Signature signature,
             final ProvidedRole providedRole) {

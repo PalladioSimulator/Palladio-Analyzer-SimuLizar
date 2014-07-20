@@ -1,6 +1,11 @@
 package org.palladiosimulator.simulizar.access;
 
+import java.util.Collection;
+
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.pms.PMSModel;
+import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.storydriven.storydiagrams.activities.Activity;
 
 /**
  * Model access factory interface for creating pcm and prm model access, as well as pcm model
@@ -9,7 +14,7 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
  * @author Steffen Becker, Joachim Meyer
  * 
  */
-public interface IModelAccessFactory {
+public interface IModelAccess {
     // -----
     // Access to simlated processes local models/local copies of the global model
     // -----
@@ -22,9 +27,9 @@ public interface IModelAccessFactory {
     // -----
     public GlobalPCMAccess getGlobalPCMAccess();
 
-    public PMSAccess getPMSModelAccess();
+    public PMSModel getPMSModel();
 
-    public PRMAccess getPRMModelAccess();
+    public PRMModel getPRMModel();
 
-    public SDAccess getSDAccess();
+    public Collection<Activity> getStoryDiagrams();
 }

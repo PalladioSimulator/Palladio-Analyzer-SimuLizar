@@ -2,10 +2,10 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.ArrayList;
 
-import org.palladiosimulator.simulizar.access.IModelAccessFactory;
-import org.palladiosimulator.simulizar.access.PRMAccess;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -39,7 +39,7 @@ public class ResourceStateListener implements IStateListener {
 
     private final SimuComModel simuComModel;
 
-    private final PRMAccess prmAccess;
+    private final PRMModel prmAccess;
 
     /**
      * Constructor
@@ -61,7 +61,7 @@ public class ResourceStateListener implements IStateListener {
             final AbstractScheduledResource abstractScheduledResource, final SimuComModel simuComModel,
             final MeasurementSpecification measurementSpecification,
             final ResourceContainerMeasurement resourceContainerMeasurement, final ResourceContainer resourceContainer,
-            final ProcessingResourceSpecification processingResource, final IModelAccessFactory modelAccessFactory) {
+            final ProcessingResourceSpecification processingResource, final IModelAccess modelAccessFactory) {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
         this.simuComModel = simuComModel;
@@ -69,7 +69,7 @@ public class ResourceStateListener implements IStateListener {
         this.resourceContainerMeasurement = resourceContainerMeasurement;
         this.processingResource = processingResource;
         abstractScheduledResource.addStateListener(this, 0);
-        this.prmAccess = modelAccessFactory.getPRMModelAccess();
+        this.prmAccess = modelAccessFactory.getPRMModel();
     }
 
     /**
@@ -80,11 +80,11 @@ public class ResourceStateListener implements IStateListener {
      *            the measurement value.
      */
     protected void addToPRM(final double value) {
-        this.prmAccess.getModel().getPcmModelElementMeasurements().remove(this.resourceContainerMeasurement);
+        this.prmAccess.getPcmModelElementMeasurements().remove(this.resourceContainerMeasurement);
         this.resourceContainerMeasurement.setMeasurementValue(value);
         this.resourceContainerMeasurement.setProcessingResourceType(this.processingResource
                 .getActiveResourceType_ActiveResourceSpecification());
-        this.prmAccess.getModel().getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
+        this.prmAccess.getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
     }
 
     /**

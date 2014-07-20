@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.metrics;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.PRMAccess;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
@@ -21,7 +20,7 @@ public abstract class PRMRecorder {
 
     private final TemporalCharacterization temporalCharacterization;
 
-    private final PRMAccess prmAccess;
+    private final PRMModel prmAccess;
 
     /**
      * Constructor
@@ -35,7 +34,7 @@ public abstract class PRMRecorder {
      *            the prm PCMModelElementMeasurement.
      */
     public PRMRecorder(
-            final PRMAccess prmAccess,
+            final PRMModel prmAccess2,
             final MeasurementSpecification measurementSpecification,
             EObject monitoredElement) {
         super();
@@ -43,7 +42,7 @@ public abstract class PRMRecorder {
         this.pcmModelElementMeasurement.setPcmModelElement(monitoredElement);
         this.measurementSpecification = measurementSpecification;
         this.temporalCharacterization = measurementSpecification.getTemporalRestriction();
-        this.prmAccess = prmAccess;
+        this.prmAccess = prmAccess2;
     }
 
     /**
@@ -77,7 +76,7 @@ public abstract class PRMRecorder {
      * @return returns the prmModel.
      */
     protected PRMModel getPrmModel() {
-        return this.prmAccess.getModel();
+        return this.prmAccess;
     }
 
     /**
