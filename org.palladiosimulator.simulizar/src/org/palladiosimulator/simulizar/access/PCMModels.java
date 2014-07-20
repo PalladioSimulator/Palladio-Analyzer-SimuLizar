@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.utils;
+package org.palladiosimulator.simulizar.access;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;

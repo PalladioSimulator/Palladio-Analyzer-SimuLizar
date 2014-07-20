@@ -15,7 +15,6 @@ import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartiti
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
-import org.palladiosimulator.simulizar.utils.PCMModels;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
