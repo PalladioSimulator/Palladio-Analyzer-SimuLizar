@@ -1,6 +1,8 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -21,6 +23,8 @@ public class SimuComRuntimeState {
     private final SimuComModel model;
     private final EventNotificationHelper eventHelper;
     private final ComponentInstanceRegistry componentInstanceRegistry;
+    private final InterpreterDefaultContext mainContext;
+    private final SimulatedUsageModels usageModels;
 
     /**
      * @param model
@@ -30,6 +34,8 @@ public class SimuComRuntimeState {
         this.model = model;
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
+        this.mainContext = new InterpreterDefaultContext(this);
+        this.usageModels = new SimulatedUsageModels(mainContext);
     }
 
     /**
@@ -48,5 +54,13 @@ public class SimuComRuntimeState {
      */
     public final ComponentInstanceRegistry getComponentInstanceRegistry() {
         return componentInstanceRegistry;
+    }
+
+    public InterpreterDefaultContext getMainContext() {
+        return this.mainContext;
+    }
+
+    public SimulatedUsageModels getUsageModels() {
+        return this.usageModels;
     }
 }

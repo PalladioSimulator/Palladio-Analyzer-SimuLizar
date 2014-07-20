@@ -10,20 +10,21 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
  * 
  */
 public interface IModelAccessFactory {
-    UsageModelAccess getUsageModelAccess(InterpreterDefaultContext context);
+    // -----
+    // Access to simlated processes local models/local copies of the global model
+    // -----
+    public UsageModelAccess getUsageModelAccess(InterpreterDefaultContext context);
 
-    AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
+    public AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
 
-    GlobalPCMAccess getGlobalPCMAccess();
+    // -----
+    // Access to any model which is global and exists only once
+    // -----
+    public GlobalPCMAccess getGlobalPCMAccess();
 
-    /**
-     * Gets PMS model access.
-     * 
-     * @return the pms model access.
-     */
-    PMSAccess getPMSModelAccess();
+    public PMSAccess getPMSModelAccess();
 
-    PRMAccess getPRMModelAccess();
+    public PRMAccess getPRMModelAccess();
 
-    SDAccess getSDAccess();
+    public SDAccess getSDAccess();
 }

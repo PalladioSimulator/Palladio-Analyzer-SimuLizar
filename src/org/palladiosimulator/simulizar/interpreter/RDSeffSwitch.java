@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.simulizar.access.AllocationAccess;
 import org.palladiosimulator.simulizar.access.IModelAccessFactory;
+import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
@@ -17,6 +18,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.allocation.AllocationContext;
 import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
@@ -539,8 +541,9 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     private void interpretResourceDemands(final InternalAction internalAction) {
         final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
 
-        final AllocationContext allocationContext = allocationReader.getAllocationContext(this.context
-                .getAssemblyContextStack().peek());
+        final AllocationContext allocationContext = getAllocationContext(
+                allocationReader.getModel(),
+                this.context.getAssemblyContextStack().peek());
 
         final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
 
@@ -560,4 +563,19 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         }
     }
 
+    /**
+     * Gets the allocation context of the given assembly context.
+     * 
+     * @param assemblyContext
+     *            the assembly context.
+     * @return the allocation context.
+     */
+    private AllocationContext getAllocationContext(final Allocation allocation, final AssemblyContext assemblyContext) {
+        for (final AllocationContext allocationContext : allocation.getAllocationContexts_Allocation()) {
+            if (allocationContext.getAssemblyContext_AllocationContext().getId().equals(assemblyContext.getId())) {
+                return allocationContext;
+            }
+        }
+        throw new PCMModelAccessException("No AllocationContext found for AssemblyContext: " + assemblyContext);
+    }
 }

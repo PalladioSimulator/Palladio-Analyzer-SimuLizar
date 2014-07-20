@@ -8,7 +8,7 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
  * @author Joachim Meyer
  * 
  */
-class ModelAccessFactory implements IModelAccessFactory {
+public class ModelAccessFactory implements IModelAccessFactory {
     private final ModelHelper modelHelper;
     private final PMSAccess pmsAccess;
     private final PRMAccess prmAccess;
@@ -32,23 +32,14 @@ class ModelAccessFactory implements IModelAccessFactory {
 
     @Override
     public AllocationAccess getAllocationAccess(final InterpreterDefaultContext context) {
-        return new AllocationAccess(context, this.getModelHelper());
+        return new AllocationAccess(context, this.modelHelper);
     }
 
-    /**
-     * 
-     * @see org.palladiosimulator.simulizar.access.IModelAccessFactory#getPCMModelAccess(int,
-     *      org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext)
-     */
     @Override
     public UsageModelAccess getUsageModelAccess(final InterpreterDefaultContext context) {
-        return new UsageModelAccess(context, this.getModelHelper());
+        return new UsageModelAccess(context, this.modelHelper);
     }
 
-    /**
-     * 
-     * @see org.palladiosimulator.simulizar.access.IModelAccessFactory#getPMSModelAccess()
-     */
     @Override
     public PMSAccess getPMSModelAccess() {
         return this.pmsAccess;
@@ -68,12 +59,4 @@ class ModelAccessFactory implements IModelAccessFactory {
     public SDAccess getSDAccess() {
         return this.sdAccess;
     }
-
-    /**
-     * @return the modelHelper.
-     */
-    private ModelHelper getModelHelper() {
-        return this.modelHelper;
-    }
-
 }
