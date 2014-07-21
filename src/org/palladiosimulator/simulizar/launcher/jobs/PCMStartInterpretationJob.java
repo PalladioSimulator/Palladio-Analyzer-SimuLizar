@@ -90,16 +90,12 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         resourceSyncer.initialiseResourceEnvironment();
 
         // 5. Setup reconfiguration rules and engines
-        final ReconfigurationListener sdReconfigurator = new ReconfigurationListener(modelAccess,
-                new IReconfigurator[] { new SDReconfigurator(modelAccess) });
-        sdReconfigurator.startListening();
-
-        // TODO FIXME Should not use blackboard directly but model helper. Otherwise it is
-        // inconsistent to the rest
-        // of the architecture
-        final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccess,
-                new IReconfigurator[] { new QVTOReconfigurator(modelAccess, configuration, this.blackboard) });
-        qvtoReconfigurator.startListening();
+        final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
+                new IReconfigurator[] {
+                        new SDReconfigurator(modelAccess),
+                        new QVTOReconfigurator(modelAccess, configuration)
+                });
+        reconfigurationListener.startListening();
 
         // 6. Run Simulation
         LOG.debug("Start simulation");
@@ -108,8 +104,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         // 7. Deregister all listeners and execute cleanup code
         runtimeState.getEventNotificationHelper().removeAllListener();
-        sdReconfigurator.stopListening();
-        qvtoReconfigurator.stopListening();
+        reconfigurationListener.stopListening();
         simuComModel.getProbeFrameworkContext().finish();
         simuComModel.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
 

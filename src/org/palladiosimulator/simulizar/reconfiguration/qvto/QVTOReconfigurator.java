@@ -10,7 +10,6 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * A reconfigurator implementation which relies on QVTo to do the reconfiguration. The QVTo rules
@@ -41,10 +40,11 @@ public class QVTOReconfigurator implements IReconfigurator {
      * @param blackboard
      *            MDSDBlackboard storing the PCM models
      */
-    public QVTOReconfigurator(final IModelAccess modelAccessFactory, SimuComWorkflowConfiguration configuration,
-            MDSDBlackboard blackboard) {
+    public QVTOReconfigurator(
+            final IModelAccess modelAccessFactory,
+            final SimuComWorkflowConfiguration configuration) {
         super();
-        this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration, blackboard);
+        this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration);
     }
 
     /*
