@@ -135,7 +135,7 @@ public class SDExecutor {
     public SDExecutor(final IModelAccess modelAccessFactory) {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
-        this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMAccess();
+        this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.prmModel = modelAccessFactory.getPRMModel();
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());

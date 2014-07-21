@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.simulizar.access.AllocationAccess;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
@@ -539,10 +538,10 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param internalAction
      */
     private void interpretResourceDemands(final InternalAction internalAction) {
-        final AllocationAccess allocationReader = this.modelAccessFactory.getAllocationAccess(this.context);
+        final Allocation allocation = this.modelAccessFactory.getLocalPCMModel(this.context).getAllocation();
 
         final AllocationContext allocationContext = getAllocationContext(
-                allocationReader.getModel(),
+                allocation,
                 this.context.getAssemblyContextStack().peek());
 
         final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();

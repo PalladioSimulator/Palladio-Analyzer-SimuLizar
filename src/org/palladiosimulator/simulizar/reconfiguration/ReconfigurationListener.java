@@ -82,7 +82,7 @@ public class ReconfigurationListener {
      */
     public ReconfigurationListener(final IModelAccess modelAccessFactory, final IReconfigurator[] reconfigurators) {
         super();
-        this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMAccess();
+        this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.prmModel = modelAccessFactory.getPRMModel();
         this.reconfigurators = reconfigurators;
     }
