@@ -5,9 +5,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccessFactory;
-import org.palladiosimulator.simulizar.access.ModelHelper;
-import org.palladiosimulator.simulizar.access.UsageModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
@@ -18,6 +16,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.calculator.RecorderAttachingCalculatorFactoryDecorator;
@@ -69,36 +68,37 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         final SimuComModel simuComModel = this.initialiseSimuComModel();
 
         // 2. Initialise Model Access Factory
-        final IModelAccess modelAccessFactory = new ModelAccessFactory(new ModelHelper(this.blackboard));
+        final IModelAccess modelAccess = new ModelAccess(this.blackboard);
 
         final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
         runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());
         runtimeState.getEventNotificationHelper().addObserver(
-                new ProbeFrameworkListener(modelAccessFactory, simuComModel));
+                new ProbeFrameworkListener(modelAccess, simuComModel));
 
         // 3. Setup interpreters for each usage scenario
-        final UsageModelAccess usageModelAccess = modelAccessFactory.getUsageModelAccess(runtimeState.getMainContext());
-        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModelAccess.getModel(),
-                modelAccessFactory));
+        final UsageModel usageModel = modelAccess.getLocalPCMModel(runtimeState.getMainContext())
+                .getUsageModel();
+        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModel,
+                modelAccess));
 
         /*
          * 4. Setup Actuators that keep simulated system and model@runtime consistent Sync Resources
          * from global pcm model with simucom model for the first time, models are already loaded
          * into the blackboard by the workflow engine
          */
-        final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccessFactory);
+        final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccess);
         resourceSyncer.initialiseResourceEnvironment();
 
         // 5. Setup reconfiguration rules and engines
-        final ReconfigurationListener sdReconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new SDReconfigurator(modelAccessFactory) });
+        final ReconfigurationListener sdReconfigurator = new ReconfigurationListener(modelAccess,
+                new IReconfigurator[] { new SDReconfigurator(modelAccess) });
         sdReconfigurator.startListening();
 
         // TODO FIXME Should not use blackboard directly but model helper. Otherwise it is
         // inconsistent to the rest
         // of the architecture
-        final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccessFactory,
-                new IReconfigurator[] { new QVTOReconfigurator(modelAccessFactory, configuration, this.blackboard) });
+        final ReconfigurationListener qvtoReconfigurator = new ReconfigurationListener(modelAccess,
+                new IReconfigurator[] { new QVTOReconfigurator(modelAccess, configuration, this.blackboard) });
         qvtoReconfigurator.startListening();
 
         // 6. Run Simulation

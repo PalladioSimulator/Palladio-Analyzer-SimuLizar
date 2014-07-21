@@ -46,7 +46,7 @@ public class ResourceSyncer {
         super();
         this.simuComModel = simuComModel;
         this.modelAccessFactory = modelAccessFactory;
-        final ResourceEnvironment resourceEnvironment = modelAccessFactory.getGlobalPCMAccess()
+        final ResourceEnvironment resourceEnvironment = modelAccessFactory.getGlobalPCMModel()
                 .getAllocation().getTargetResourceEnvironment_Allocation();
         resourceEnvironment.eAdapters().add(new EContentAdapter() {
 
@@ -211,7 +211,7 @@ public class ResourceSyncer {
             LOG.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
         }
         // add resource container, if not done already
-        for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMAccess()
+        for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMModel()
                 .getAllocation().getTargetResourceEnvironment_Allocation().getResourceContainer_ResourceEnvironment()) {
             final String resourceContainerId = resourceContainer.getId();
 

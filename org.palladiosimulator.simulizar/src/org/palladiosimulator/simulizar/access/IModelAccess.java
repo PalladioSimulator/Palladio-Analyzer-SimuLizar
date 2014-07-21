@@ -10,24 +10,24 @@ import org.storydriven.storydiagrams.activities.Activity;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
- * Model access factory interface for creating pcm and prm model access, as well as pcm model
- * interpreter.
+ * Interface which allows access to all models at simulation time. Two classes of models exist:
+ * global models like the central PCM model, the PMS model, the PRM model, or all reconfiguration
+ * rules provided in various models. The second class of models are read-only copies of a subset of
+ * the global models provided to each simulated process/thread when it starts to execute.
  * 
  * @author Steffen Becker, Joachim Meyer
  * 
  */
 public interface IModelAccess {
     // -----
-    // Access to simlated processes local models/local copies of the global model
+    // Access to simulated processes local models/local copies of the global model
     // -----
-    public UsageModelAccess getUsageModelAccess(InterpreterDefaultContext context);
-
-    public AllocationAccess getAllocationAccess(InterpreterDefaultContext context);
+    public PCMResourceSetPartition getLocalPCMModel(InterpreterDefaultContext context);
 
     // -----
     // Access to any model which is global and exists only once
     // -----
-    public PCMResourceSetPartition getGlobalPCMAccess();
+    public PCMResourceSetPartition getGlobalPCMModel();
 
     public PMSModel getPMSModel();
 
