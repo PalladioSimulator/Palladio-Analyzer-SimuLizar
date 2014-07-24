@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  */
 public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    private static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
+    public static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
 
     public static final String SDM_MODEL_PARTITION_ID = "org.palladiosimulator.simulizar.reconfiguration.sdm";
 
