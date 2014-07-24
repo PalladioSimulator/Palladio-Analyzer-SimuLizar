@@ -49,7 +49,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
             throw new PMSModelLoadException("The PCM models must be loaded first");
         }
 
-        final PMSResourceSetPartition prmPartition = new PMSResourceSetPartition(this.getPCMResourceSetPartition());
+        final PMSResourceSetPartition pmsPartition = new PMSResourceSetPartition(this.getPCMResourceSetPartition());
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
@@ -58,12 +58,12 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
                 filePath = "file:///" + filePath;
             }
 
-            prmPartition.loadModel(URI.createURI(filePath));
+            pmsPartition.loadModel(URI.createURI(filePath));
 
         }
-        this.getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, prmPartition);
+        this.getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, pmsPartition);
         // now resolve all cross references from current resource to PCM
-        prmPartition.resolveAllProxiesToPCM();
+        pmsPartition.resolveAllProxiesToPCM();
 
     }
 
