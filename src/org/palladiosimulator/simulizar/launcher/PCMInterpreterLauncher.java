@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootComposite
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowLauncher;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowConfigurationBuilder;
@@ -24,9 +25,14 @@ import de.uka.ipd.sdq.workflow.pcm.configurations.PCMWorkflowConfigurationBuilde
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
 
-    protected IJob createWorkflowJob(final SimuLizarWorkflowConfiguration config, final ILaunch launch)
+    @Override
+    protected IJob createWorkflowJob(final SimuComWorkflowConfiguration config, final ILaunch launch)
             throws CoreException {
-        return new PCMInterpreterRootCompositeJob(config);
+        if (!(config instanceof SimuLizarWorkflowConfiguration)) {
+            throw new IllegalArgumentException("SimuLizarWorkflowConfiguration expected for PCMInterpreterLauncher");
+        }
+
+        return new PCMInterpreterRootCompositeJob((SimuLizarWorkflowConfiguration) config);
     }
 
     @Override
