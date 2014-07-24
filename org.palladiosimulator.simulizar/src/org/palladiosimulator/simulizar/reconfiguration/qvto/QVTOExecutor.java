@@ -20,16 +20,13 @@ import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
-
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.
  * 
- * @author Matthias Becker
- *
+ * @author Matthias Becker, Sebastian Lehrig
  */
 public class QVTOExecutor {
 
@@ -46,12 +43,8 @@ public class QVTOExecutor {
      *            ModelAccessFactory giving access to PCM and PRM models
      * @param configuration
      *            Simulation configuration
-     * @param blackboard
-     *            MDSDBlackboard storing the PCM models
      */
-    public QVTOExecutor(
-            final IModelAccess modelAccess,
-            final SimuComWorkflowConfiguration configuration) {
+    public QVTOExecutor(final IModelAccess modelAccess, final SimuLizarWorkflowConfiguration configuration) {
         super();
         this.modelAccess = modelAccess;
         this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
@@ -81,9 +74,8 @@ public class QVTOExecutor {
      * @param configuration
      *            Simulation configuration
      */
-    private void loadQvtoRules(final SimuComWorkflowConfiguration configuration) {
-
-        String path = (String) configuration.getAttributes().get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER);
+    private void loadQvtoRules(final SimuLizarWorkflowConfiguration configuration) {
+        final String path = configuration.getReconfigurationRulesFolder();
 
         if (!path.equals("")) {
 
@@ -190,8 +182,7 @@ public class QVTOExecutor {
 
         // check the result for success
         if (result.getSeverity() == Diagnostic.OK) {
-            LOGGER.log(Level.INFO,
-                    "Rule application successfull with message: " + result.getMessage());
+            LOGGER.log(Level.INFO, "Rule application successfull with message: " + result.getMessage());
             return true;
         } else {
             LOGGER.log(Level.WARN, "Rule application failed with message: " + result.getMessage());

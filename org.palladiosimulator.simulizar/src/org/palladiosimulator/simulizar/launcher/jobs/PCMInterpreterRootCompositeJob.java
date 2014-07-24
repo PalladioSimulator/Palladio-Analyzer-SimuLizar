@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -21,7 +22,7 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public PCMInterpreterRootCompositeJob(final SimuComWorkflowConfiguration configuration) {
+    public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration) {
         super(false);
 
         this.addJob(new LoadPCMModelsIntoBlackboardInterpreterJob(configuration));
