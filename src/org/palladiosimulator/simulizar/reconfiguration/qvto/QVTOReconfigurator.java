@@ -8,8 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
-
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
  * A reconfigurator implementation which relies on QVTo to do the reconfiguration. The QVTo rules
@@ -23,7 +22,7 @@ public class QVTOReconfigurator implements IReconfigurator {
     /**
      * This class' internal LOGGER.
      */
-    private static final Logger LOG = Logger.getLogger(SDReconfigurator.class);
+    private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
 
     /**
      * QVTO Interpreter used internally to interpret the SDs.
@@ -37,12 +36,8 @@ public class QVTOReconfigurator implements IReconfigurator {
      *            ModelAccessFactory giving access to PCM and PRM models
      * @param configuration
      *            Simulation configuration
-     * @param blackboard
-     *            MDSDBlackboard storing the PCM models
      */
-    public QVTOReconfigurator(
-            final IModelAccess modelAccessFactory,
-            final SimuComWorkflowConfiguration configuration) {
+    public QVTOReconfigurator(final IModelAccess modelAccessFactory, final SimuLizarWorkflowConfiguration configuration) {
         super();
         this.qvtoExecutor = new QVTOExecutor(modelAccessFactory, configuration);
     }
@@ -56,9 +51,9 @@ public class QVTOReconfigurator implements IReconfigurator {
      */
     @Override
     public boolean checkAndExecute(EObject monitoredElement) {
-        LOG.debug("Checking reconfiguration rules due to PRM change");
+        LOGGER.debug("Checking reconfiguration rules due to PRM change");
         final boolean result = this.qvtoExecutor.executeRules(monitoredElement);
-        LOG.debug(result ? "Reconfigured system by a matching rule"
+        LOGGER.debug(result ? "Reconfigured system by a matching rule"
                 : "No reconfiguration rule was executed, all conditions were false");
         return result;
     }

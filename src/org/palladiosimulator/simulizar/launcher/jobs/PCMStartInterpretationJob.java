@@ -12,6 +12,7 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.utils.ResourceSyncer;
 
@@ -44,7 +45,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
     private MDSDBlackboard blackboard;
 
-    private final SimuComWorkflowConfiguration configuration;
+    private final SimuLizarWorkflowConfiguration configuration;
 
     /**
      * Constructor
@@ -52,7 +53,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public PCMStartInterpretationJob(final SimuComWorkflowConfiguration configuration) {
+    public PCMStartInterpretationJob(final SimuLizarWorkflowConfiguration configuration) {
         this.configuration = configuration;
     }
 
@@ -72,14 +73,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
         runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());
-        runtimeState.getEventNotificationHelper().addObserver(
-                new ProbeFrameworkListener(modelAccess, simuComModel));
+        runtimeState.getEventNotificationHelper().addObserver(new ProbeFrameworkListener(modelAccess, simuComModel));
 
         // 3. Setup interpreters for each usage scenario
-        final UsageModel usageModel = modelAccess.getLocalPCMModel(runtimeState.getMainContext())
-                .getUsageModel();
-        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModel,
-                modelAccess));
+        final UsageModel usageModel = modelAccess.getLocalPCMModel(runtimeState.getMainContext()).getUsageModel();
+        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModel, modelAccess));
 
         /*
          * 4. Setup Actuators that keep simulated system and model@runtime consistent Sync Resources
@@ -91,10 +89,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
-                new IReconfigurator[] {
-                        new SDReconfigurator(modelAccess),
-                        new QVTOReconfigurator(modelAccess, configuration)
-                });
+                new IReconfigurator[] { new SDReconfigurator(modelAccess),
+                        new QVTOReconfigurator(modelAccess, configuration) });
         reconfigurationListener.startListening();
 
         // 6. Run Simulation
