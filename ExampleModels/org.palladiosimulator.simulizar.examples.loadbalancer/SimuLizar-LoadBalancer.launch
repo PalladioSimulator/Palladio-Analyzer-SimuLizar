@@ -28,7 +28,7 @@
 <stringAttribute key="maximumMeasurementCount" value="100000"/>
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="mwRepositoryFile" value="pathmap://PCM_MODELS/Glassfish.repository"/>
-<stringAttribute key="outpath" value="de.uka.ipd.sdq.temporary"/>
+<stringAttribute key="outpath" value="org.palladiosimulator.temporary"/>
 <stringAttribute key="persistenceFramework" value="SensorFramework"/>
 <stringAttribute key="pmsFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/monitors/monitoring.pms"/>
 <stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/rules_active"/>
