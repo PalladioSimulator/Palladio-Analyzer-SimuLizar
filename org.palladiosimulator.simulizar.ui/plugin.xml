@@ -24,4 +24,12 @@
 	        id="de.upb.pcm.interpreter.launchConfigurationTabGroup">
 	    </launchConfigurationTabGroup>
 	</extension>
+ <extension
+       point="de.uka.ipd.sdq.codegen.simucontroller.simulator">
+    <simulator
+          id="de.uka.ipd.sdq.codegen.simucontroller.simulizar"
+          launchDelegate="org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher"
+          name="SimuLizar (Interpreted Simulation)">
+    </simulator>
+ </extension>
 </plugin>
