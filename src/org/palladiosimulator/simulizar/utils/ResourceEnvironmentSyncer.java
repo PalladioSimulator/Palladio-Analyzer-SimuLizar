@@ -27,11 +27,9 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
  * 
  * @author Joachim Meyer, Sebastian Lehrig
  */
-public class ResourceSyncer {
-    protected static final Logger LOG = Logger.getLogger(ResourceSyncer.class.getName());
-
+public class ResourceEnvironmentSyncer {
+    private static final Logger LOG = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final SimuComModel simuComModel;
-
     private final IModelAccess modelAccessFactory;
 
     /**
@@ -42,7 +40,7 @@ public class ResourceSyncer {
      * @param modelAccessFactory
      *            the modelAccessFactory.
      */
-    public ResourceSyncer(final SimuComModel simuComModel, final IModelAccess modelAccessFactory) {
+    public ResourceEnvironmentSyncer(final SimuComModel simuComModel, final IModelAccess modelAccessFactory) {
         super();
         this.simuComModel = simuComModel;
         this.modelAccessFactory = modelAccessFactory;
@@ -55,17 +53,50 @@ public class ResourceSyncer {
                 super.notifyChanged(notification);
                 LOG.info("Resource environment changed by reconfiguration - Resync simulated resources: "
                         + notification);
-                ResourceSyncer.this.syncResourceEnvironment();
+                ResourceEnvironmentSyncer.this.initializeSyncer();
             }
 
         });
     }
 
     /**
-     * @return returns the simuComModel.
+     * Syncs resource environment model with SimuCom.
      */
-    private SimuComModel getSimuComModel() {
-        return this.simuComModel;
+    public void initializeSyncer() {
+
+        // TODO this is only a draft
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
+        }
+        // add resource container, if not done already
+        for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMModel()
+                .getAllocation().getTargetResourceEnvironment_Allocation().getResourceContainer_ResourceEnvironment()) {
+            final String resourceContainerId = resourceContainer.getId();
+
+            SimulatedResourceContainer simulatedResourceContainer;
+            if (simuComModel.getResourceRegistry().containsResourceContainer(resourceContainerId)) {
+                simulatedResourceContainer = (SimulatedResourceContainer) simuComModel.getResourceRegistry()
+                        .getResourceContainer(resourceContainerId);
+                if (LOG.isDebugEnabled()) {
+                    LOG.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
+                }
+                // now sync active resources
+                syncActiveResources(resourceContainer, simulatedResourceContainer);
+            } else {
+                // create
+                simulatedResourceContainer = (SimulatedResourceContainer) simuComModel.getResourceRegistry()
+                        .createResourceContainer(resourceContainerId);
+                LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
+                        + simulatedResourceContainer);
+
+                // now sync active resources
+                syncActiveResources(resourceContainer, simulatedResourceContainer);
+            }
+
+        }
+
+        LOG.debug("Synchronisation done");
+        // TODO remove unused
     }
 
     /**
@@ -179,7 +210,7 @@ public class ResourceSyncer {
                     .getActiveResources()) {
                 if (abstractScheduledResource.getName().equals(processingResource.getId())) {
                     new ResourceStateListener(processingResource.getActiveResourceType_ActiveResourceSpecification(),
-                            abstractScheduledResource, this.getSimuComModel(), measurementSpecification,
+                            abstractScheduledResource, simuComModel, measurementSpecification,
                             resourceContainerMeasurement, resourceContainer, processingResource,
                             this.modelAccessFactory);
                     break;
@@ -195,50 +226,6 @@ public class ResourceSyncer {
      */
     private boolean isMonitored(MeasurementSpecification measurementSpecification) {
         return measurementSpecification != null;
-    }
-
-    public void initialiseResourceEnvironment() {
-        syncResourceEnvironment();
-    }
-
-    /**
-     * Syncs resource environment model with SimuCom.
-     */
-    private void syncResourceEnvironment() {
-
-        // TODO this is only a draft
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
-        }
-        // add resource container, if not done already
-        for (final ResourceContainer resourceContainer : this.modelAccessFactory.getGlobalPCMModel()
-                .getAllocation().getTargetResourceEnvironment_Allocation().getResourceContainer_ResourceEnvironment()) {
-            final String resourceContainerId = resourceContainer.getId();
-
-            SimulatedResourceContainer simulatedResourceContainer;
-            if (this.getSimuComModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
-                simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
-                        .getResourceContainer(resourceContainerId);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
-                }
-                // now sync active resources
-                this.syncActiveResources(resourceContainer, simulatedResourceContainer);
-            } else {
-                // create
-                simulatedResourceContainer = (SimulatedResourceContainer) this.getSimuComModel().getResourceRegistry()
-                        .createResourceContainer(resourceContainerId);
-                LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
-                        + simulatedResourceContainer);
-
-                // now sync active resources
-                this.syncActiveResources(resourceContainer, simulatedResourceContainer);
-            }
-
-        }
-
-        LOG.debug("Synchronisation done");
-        // TODO remove unused
     }
 
 }

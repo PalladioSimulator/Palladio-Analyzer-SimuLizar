@@ -14,7 +14,7 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
-import org.palladiosimulator.simulizar.utils.ResourceSyncer;
+import org.palladiosimulator.simulizar.utils.ResourceEnvironmentSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
@@ -84,8 +84,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
          * from global pcm model with simucom model for the first time, models are already loaded
          * into the blackboard by the workflow engine
          */
-        final ResourceSyncer resourceSyncer = new ResourceSyncer(simuComModel, modelAccess);
-        resourceSyncer.initialiseResourceEnvironment();
+        final ResourceEnvironmentSyncer resourceSyncer = new ResourceEnvironmentSyncer(simuComModel, modelAccess);
+        resourceSyncer.initializeSyncer();
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
