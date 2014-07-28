@@ -2,18 +2,17 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.ArrayList;
 
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
-import de.uka.ipd.sdq.pcm.resourcetype.ProcessingResourceType;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
  * Utilization performance metric for resources, based on queue length at resources. Interval starts
@@ -37,9 +36,7 @@ public class ResourceStateListener implements IStateListener {
 
     private final ProcessingResourceSpecification processingResource;
 
-    private final SimuComModel simuComModel;
-
-    private final PRMModel prmAccess;
+    private final ISimulationControl simulationControl;
 
     /**
      * Constructor
@@ -52,24 +49,35 @@ public class ResourceStateListener implements IStateListener {
      *            the measurement specification of the resource container of the resource.
      * @param resourceContainerMeasurement
      *            the resource container measurement of the prm.
-     * @param resourceContainer
-     *            the pcm resource container of the resource.
      * @param processingResource
      *            the pcm processing resource specification of the resource.
      */
-    public ResourceStateListener(final ProcessingResourceType processingResourceType,
-            final AbstractScheduledResource abstractScheduledResource, final SimuComModel simuComModel,
+    public ResourceStateListener(
+            final ProcessingResourceSpecification processingResource,
+            final AbstractScheduledResource abstractScheduledResource,
+            final ISimulationControl iSimulationControl,
             final MeasurementSpecification measurementSpecification,
-            final ResourceContainerMeasurement resourceContainerMeasurement, final ResourceContainer resourceContainer,
-            final ProcessingResourceSpecification processingResource, final IModelAccess modelAccessFactory) {
+            final ResourceContainer resourceContainer,
+            final PRMModel prm) {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
-        this.simuComModel = simuComModel;
-        this.lastSimulationTime = simuComModel.getSimulationControl().getCurrentSimulationTime();
-        this.resourceContainerMeasurement = resourceContainerMeasurement;
+        this.simulationControl = iSimulationControl;
+        this.lastSimulationTime = simulationControl.getCurrentSimulationTime();
+
+        this.resourceContainerMeasurement = PrmFactory.eINSTANCE
+                .createResourceContainerMeasurement();
+        resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
+        resourceContainerMeasurement.setPcmModelElement(resourceContainer);
+        resourceContainerMeasurement.setProcessingResourceType(processingResource
+                .getActiveResourceType_ActiveResourceSpecification());
+        prm.getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
+
         this.processingResource = processingResource;
+        // FIXME: Instance should be variable
         abstractScheduledResource.addStateListener(this, 0);
-        this.prmAccess = modelAccessFactory.getPRMModel();
+
+        this.resourceContainerMeasurement.setProcessingResourceType(this.processingResource
+                .getActiveResourceType_ActiveResourceSpecification());
     }
 
     /**
@@ -79,12 +87,8 @@ public class ResourceStateListener implements IStateListener {
      * @param value
      *            the measurement value.
      */
-    protected void addToPRM(final double value) {
-        this.prmAccess.getPcmModelElementMeasurements().remove(this.resourceContainerMeasurement);
+    private void addToPRM(final double value) {
         this.resourceContainerMeasurement.setMeasurementValue(value);
-        this.resourceContainerMeasurement.setProcessingResourceType(this.processingResource
-                .getActiveResourceType_ActiveResourceSpecification());
-        this.prmAccess.getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
     }
 
     /**
@@ -92,8 +96,8 @@ public class ResourceStateListener implements IStateListener {
      */
     @Override
     public void stateChanged(final long queueLength, final int instanceId) {
-        if (this.simuComModel.getSimulationControl().isRunning()) {
-            final double simulationTime = this.simuComModel.getSimulationControl().getCurrentSimulationTime();
+        if (this.simulationControl.isRunning()) {
+            final double simulationTime = this.simulationControl.getCurrentSimulationTime();
             if (this.lastTimeIdle) {
                 this.lastTimeIdle = false;
                 // calculate time of zero jobs
