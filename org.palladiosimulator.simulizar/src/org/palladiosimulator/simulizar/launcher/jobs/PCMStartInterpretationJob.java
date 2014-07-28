@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.syncer.IModelSyncer;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
+import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
@@ -93,6 +94,9 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         for (IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
+
+        // Start the code to evolve the usage model over time
+        new UsageEvolver(runtimeState, usageModel).start();
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
