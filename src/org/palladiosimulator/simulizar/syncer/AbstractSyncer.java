@@ -4,15 +4,14 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 
 public abstract class AbstractSyncer<T extends EObject>
         implements IModelSyncer {
 
     private static final Logger LOG = Logger.getLogger(AbstractSyncer.class);
 
-    protected final SimuComModel simuComModel;
+    protected final SimuComRuntimeState runtimeModel;
     protected final T model;
 
     private final EContentAdapter adapter;
@@ -20,18 +19,21 @@ public abstract class AbstractSyncer<T extends EObject>
     /**
      * @param simuComModel
      */
-    protected AbstractSyncer(final SimuComModel simuComModel, final T model) {
+    protected AbstractSyncer(final SimuComRuntimeState simuComModel, final T model) {
         super();
-        this.simuComModel = simuComModel;
+        this.runtimeModel = simuComModel;
         this.model = model;
         this.adapter = new EContentAdapter() {
 
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                LOG.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
-                        + notification);
-                synchronizeSimulationEntities(notification);
+                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER ||
+                notification.getEventType() == Notification.RESOLVE)) {
+                    LOG.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
+                            + notification);
+                    synchronizeSimulationEntities(notification);
+                }
             }
 
         };

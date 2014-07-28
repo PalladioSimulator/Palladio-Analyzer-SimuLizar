@@ -16,6 +16,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.syncer.IModelSyncer;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
+import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
@@ -86,7 +87,9 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
          * into the blackboard by the workflow engine
          */
         final IModelSyncer[] modelSyncers =
-                new IModelSyncer[] { new ResourceEnvironmentSyncer(simuComModel, modelAccess) };
+                new IModelSyncer[] {
+                        new ResourceEnvironmentSyncer(runtimeState, modelAccess),
+                        new UsageModelSyncer(runtimeState, usageModel) };
         for (IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
