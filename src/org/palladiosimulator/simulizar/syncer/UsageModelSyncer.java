@@ -2,13 +2,16 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 
+import de.uka.ipd.sdq.pcm.core.CorePackage;
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
+import de.uka.ipd.sdq.stoex.StoexPackage;
 
 public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IModelSyncer {
 
@@ -32,8 +35,15 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
         case Notification.RESOLVE:
             break;
         case Notification.SET:
-            if (UsagemodelPackage.eINSTANCE.getWorkload().isInstance(notification.getNotifier())) {
-                syncWorkload(notification);
+            if (UsagemodelPackage.eINSTANCE.getClosedWorkload().isInstance(notification.getNotifier())) {
+                syncClosedWorkload(notification);
+            } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
+                    &&
+                    ((EObject) notification.getNotifier()).eContainer() instanceof OpenWorkload
+                    &&
+                    notification.getFeature() == StoexPackage.eINSTANCE
+                            .getRandomVariable_Specification()) {
+                syncOpenWorkload(notification);
             } else {
                 LOG.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
             }
@@ -47,16 +57,17 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
     /**
      * @param notification
      */
-    private void syncWorkload(final Notification notification) {
-        final Workload workload = (Workload) notification.getNotifier();
-        if (notification.getFeature() == UsagemodelPackage.eINSTANCE.getClosedWorkload_Population()) {
-            closedWorkloadPopulationChanged(workload, notification.getNewIntValue());
-        } else if (notification.getFeature() == UsagemodelPackage.eINSTANCE
-                .getOpenWorkload_InterArrivalTime_OpenWorkload()) {
-            openWorkloadInterarrivalChange(workload, notification.getNewStringValue());
-        } else {
-            LOG.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
-        }
+    private void syncClosedWorkload(final Notification notification) {
+        final ClosedWorkload workload = (ClosedWorkload) notification.getNotifier();
+        closedWorkloadPopulationChanged(workload, notification.getNewIntValue());
+    }
+
+    /**
+     * @param notification
+     */
+    private void syncOpenWorkload(final Notification notification) {
+        final OpenWorkload workload = (OpenWorkload) ((EObject) notification.getNotifier()).eContainer();
+        openWorkloadInterarrivalChange(workload, notification.getNewStringValue());
     }
 
     private void openWorkloadInterarrivalChange(final Workload workload, final String newInterarrivalTime) {
