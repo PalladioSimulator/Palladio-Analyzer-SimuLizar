@@ -85,12 +85,16 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
          * from global pcm model with simucom model for the first time, models are already loaded
          * into the blackboard by the workflow engine
          */
-        final IModelSyncer resourceSyncer = new ResourceEnvironmentSyncer(simuComModel, modelAccess);
-        resourceSyncer.initializeSyncer();
+        final IModelSyncer[] modelSyncers =
+                new IModelSyncer[] { new ResourceEnvironmentSyncer(simuComModel, modelAccess) };
+        for (IModelSyncer modelSyncer : modelSyncers) {
+            modelSyncer.initializeSyncer();
+        }
 
         // 5. Setup reconfiguration rules and engines
         final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
-                new IReconfigurator[] { new SDReconfigurator(modelAccess),
+                new IReconfigurator[] {
+                        new SDReconfigurator(modelAccess),
                         new QVTOReconfigurator(modelAccess, configuration) });
         reconfigurationListener.startListening();
 
@@ -104,6 +108,9 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         reconfigurationListener.stopListening();
         simuComModel.getProbeFrameworkContext().finish();
         simuComModel.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
+        for (IModelSyncer modelSyncer : modelSyncers) {
+            modelSyncer.stopSyncer();
+        }
 
         LOG.info("finished job: " + this);
     }
