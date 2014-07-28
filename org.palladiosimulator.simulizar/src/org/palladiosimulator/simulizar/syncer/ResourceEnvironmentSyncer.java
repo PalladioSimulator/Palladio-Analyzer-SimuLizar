@@ -8,6 +8,7 @@ import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
 import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -15,7 +16,6 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourcetype.SchedulingPolicy;
 import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
@@ -44,7 +44,7 @@ public class ResourceEnvironmentSyncer
      * @param modelAccessFactory
      *            the modelAccessFactory.
      */
-    public ResourceEnvironmentSyncer(final SimuComModel simuComModel, final IModelAccess modelAccessFactory) {
+    public ResourceEnvironmentSyncer(final SimuComRuntimeState simuComModel, final IModelAccess modelAccessFactory) {
         super(simuComModel, modelAccessFactory.getGlobalPCMModel()
                 .getAllocation().getTargetResourceEnvironment_Allocation());
         this.pms = modelAccessFactory.getPMSModel();
@@ -66,8 +66,8 @@ public class ResourceEnvironmentSyncer
             final String resourceContainerId = resourceContainer.getId();
 
             SimulatedResourceContainer simulatedResourceContainer;
-            if (simuComModel.getResourceRegistry().containsResourceContainer(resourceContainerId)) {
-                simulatedResourceContainer = (SimulatedResourceContainer) simuComModel.getResourceRegistry()
+            if (runtimeModel.getModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
+                simulatedResourceContainer = (SimulatedResourceContainer) runtimeModel.getModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
                 if (LOG.isDebugEnabled()) {
                     LOG.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
@@ -90,7 +90,7 @@ public class ResourceEnvironmentSyncer
      */
     private void createSimulatedResource(ResourceContainer resourceContainer, final String resourceContainerId) {
         final AbstractSimulatedResourceContainer simulatedResourceContainer =
-                simuComModel.getResourceRegistry().createResourceContainer(resourceContainerId);
+                runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainerId);
         LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
                 + simulatedResourceContainer);
         // now sync active resources
@@ -212,7 +212,7 @@ public class ResourceEnvironmentSyncer
                     new ResourceStateListener(
                             processingResource,
                             abstractScheduledResource,
-                            simuComModel.getSimulationControl(),
+                            runtimeModel.getModel().getSimulationControl(),
                             measurementSpecification,
                             resourceContainer,
                             prm);
