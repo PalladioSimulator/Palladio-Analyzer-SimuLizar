@@ -1,14 +1,8 @@
 package org.palladiosimulator.simulizar.launcher.partitions;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature.Setting;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.emf.ecore.util.EcoreUtil.ProxyCrossReferencer;
-import org.palladiosimulator.simulizar.exceptions.PMSModelLoadException;
+import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 
@@ -24,7 +18,8 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  */
 public class PMSResourceSetPartition extends ResourceSetPartition {
 
-    private final PCMResourceSetPartition pcmResourceSetPartition;
+    private final static Logger LOG = Logger.getLogger(PMSResourceSetPartition.class);
+    private final PMSModel pmsModel;
 
     /**
      * Constructor
@@ -34,66 +29,25 @@ public class PMSResourceSetPartition extends ResourceSetPartition {
      */
     public PMSResourceSetPartition(final PCMResourceSetPartition pcmResourceSetPartition) {
         super();
-        this.pcmResourceSetPartition = pcmResourceSetPartition;
+        this.pmsModel = loadPMSModel();
+    }
+
+    public PMSModel getPMSModel() {
+        return this.pmsModel;
     }
 
     /**
      * @return return the PMSModel element
      */
-    public PMSModel getPMSModel() {
-        return this.getRootElement();
-    }
-
-    /**
-     * @return Returns the pcmResourceSetPartition.
-     */
-    private PCMResourceSetPartition getPcmResourceSetPartition() {
-        return this.pcmResourceSetPartition;
-    }
-
-    /**
-     * Gets the root element of the PMS, the PMSModel
-     * 
-     * @return the PMSModel
-     */
-    private PMSModel getRootElement() {
-        for (final Resource resource : this.rs.getResources()) {
-            if (resource != null && resource.getContents().size() > 0
-                    && resource.getContents().get(0).eClass() == PmsPackage.eINSTANCE.getPMSModel()) {
-                return (PMSModel) resource.getContents().get(0);
-            }
+    private PMSModel loadPMSModel() {
+        try {
+            List<PMSModel> result = getElement(PmsPackage.eINSTANCE.getPMSModel());
+            LOG.debug("Retrieved PMS Model into blackboard partition");
+            return result.get(0);
+        } catch (Exception e) {
+            LOG.warn("No PMS found, no requests will be measured.");
+            return null;
         }
-
-        throw new RuntimeException("Failed to retrieve PMS model element "
-                + PmsPackage.eINSTANCE.getPMSModel().getName());
-
-    }
-
-    /**
-     * Resolves all cross references from PMS to PCM
-     */
-    public void resolveAllProxiesToPCM() {
-        /*
-         * Note: the prm resource set should only have one resource, but maybe we need more in the
-         * future
-         */
-
-        for (final Resource resource : this.rs.getResources()) {
-            final Map<EObject, Collection<Setting>> proxiesToBeResolved = ProxyCrossReferencer.find(resource);
-            for (final EObject element : proxiesToBeResolved.keySet()) {
-                // resolve
-                final EObject resolved = EcoreUtil.resolve(element, this.getPcmResourceSetPartition().getResourceSet());
-                if (resolved.eIsProxy()) {
-                    throw new PMSModelLoadException("Unable to resolve proxy " + resolved);
-                }
-                // now proxy is resolved, replace proxy in prm model (for each setting)
-                for (final Setting setting : proxiesToBeResolved.get(element)) {
-                    EcoreUtil.replace(setting, element, resolved);
-                }
-
-            }
-        }
-
     }
 
 }

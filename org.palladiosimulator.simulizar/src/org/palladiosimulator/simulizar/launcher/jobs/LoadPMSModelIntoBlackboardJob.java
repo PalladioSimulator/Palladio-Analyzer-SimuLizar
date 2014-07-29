@@ -63,7 +63,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
         }
         this.getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, pmsPartition);
         // now resolve all cross references from current resource to PCM
-        pmsPartition.resolveAllProxiesToPCM();
+        pmsPartition.resolveAllProxies();
 
     }
 
