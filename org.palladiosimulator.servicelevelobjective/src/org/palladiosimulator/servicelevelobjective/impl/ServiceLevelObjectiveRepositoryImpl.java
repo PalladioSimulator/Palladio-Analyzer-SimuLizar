@@ -5,39 +5,36 @@ package org.palladiosimulator.servicelevelobjective.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Service Level Objective Repository</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Service Level Objective Repository</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveRepositoryImpl#getServicelevelobjectives <em>Servicelevelobjectives</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.servicelevelobjective.impl.ServiceLevelObjectiveRepositoryImpl#getServicelevelobjectives
+ * <em>Servicelevelobjectives</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ServiceLevelObjectiveRepositoryImpl extends MinimalEObjectImpl.Container implements ServiceLevelObjectiveRepository {
+public class ServiceLevelObjectiveRepositoryImpl extends MinimalEObjectImpl.Container implements
+ServiceLevelObjectiveRepository {
     /**
-     * The cached value of the '{@link #getServicelevelobjectives() <em>Servicelevelobjectives</em>}' containment reference list.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getServicelevelobjectives() <em>Servicelevelobjectives</em>}
+     * ' containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @see #getServicelevelobjectives()
      * @generated
      * @ordered
@@ -45,8 +42,8 @@ public class ServiceLevelObjectiveRepositoryImpl extends MinimalEObjectImpl.Cont
     protected EList<ServiceLevelObjective> servicelevelobjectives;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected ServiceLevelObjectiveRepositoryImpl() {
@@ -54,8 +51,8 @@ public class ServiceLevelObjectiveRepositoryImpl extends MinimalEObjectImpl.Cont
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -64,89 +61,93 @@ public class ServiceLevelObjectiveRepositoryImpl extends MinimalEObjectImpl.Cont
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public EList<ServiceLevelObjective> getServicelevelobjectives() {
-        if (servicelevelobjectives == null) {
-            servicelevelobjectives = new EObjectContainmentEList<ServiceLevelObjective>(ServiceLevelObjective.class, this, ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES);
-        }
-        return servicelevelobjectives;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    public EList<ServiceLevelObjective> getServicelevelobjectives() {
+        if (this.servicelevelobjectives == null) {
+            this.servicelevelobjectives = new EObjectContainmentEList<ServiceLevelObjective>(
+                    ServiceLevelObjective.class, this,
+                    ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES);
+        }
+        return this.servicelevelobjectives;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
         switch (featureID) {
-            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
-                return ((InternalEList<?>)getServicelevelobjectives()).basicRemove(otherEnd, msgs);
+        case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
+            return ((InternalEList<?>) this.getServicelevelobjectives()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
-                return getServicelevelobjectives();
+        case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
+            return this.getServicelevelobjectives();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
-                getServicelevelobjectives().clear();
-                getServicelevelobjectives().addAll((Collection<? extends ServiceLevelObjective>)newValue);
-                return;
+        case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
+            this.getServicelevelobjectives().clear();
+            this.getServicelevelobjectives().addAll((Collection<? extends ServiceLevelObjective>) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
-            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
-                getServicelevelobjectives().clear();
-                return;
+        case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
+            this.getServicelevelobjectives().clear();
+            return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
-            case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
-                return servicelevelobjectives != null && !servicelevelobjectives.isEmpty();
+        case ServicelevelObjectivePackage.SERVICE_LEVEL_OBJECTIVE_REPOSITORY__SERVICELEVELOBJECTIVES:
+            return this.servicelevelobjectives != null && !this.servicelevelobjectives.isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
-} //ServiceLevelObjectiveRepositoryImpl
+} // ServiceLevelObjectiveRepositoryImpl

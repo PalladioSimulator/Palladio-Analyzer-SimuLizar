@@ -5,14 +5,14 @@ package org.palladiosimulator.servicelevelobjective;
 import javax.measure.Measure;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Linear Fuzzy Threshold</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '
+ * <em><b>Linear Fuzzy Threshold</b></em>'. <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.palladiosimulator.servicelevelobjective.LinearFuzzyThreshold#getSoftLimit <em>Soft Limit</em>}</li>
+ * <li>{@link org.palladiosimulator.servicelevelobjective.LinearFuzzyThreshold#getSoftLimit <em>Soft
+ * Limit</em>}</li>
  * </ul>
  * </p>
  *
@@ -22,13 +22,13 @@ import javax.measure.Measure;
  */
 public interface LinearFuzzyThreshold extends Threshold {
     /**
-     * Returns the value of the '<em><b>Soft Limit</b></em>' attribute.
-     * <!-- begin-user-doc -->
+     * Returns the value of the '<em><b>Soft Limit</b></em>' attribute. <!-- begin-user-doc -->
      * <p>
-     * If the meaning of the '<em>Soft Limit</em>' attribute isn't clear,
-     * there really should be more of a description here...
+     * If the meaning of the '<em>Soft Limit</em>' attribute isn't clear, there really should be
+     * more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @return the value of the '<em>Soft Limit</em>' attribute.
      * @see #setSoftLimit(Measure)
      * @see org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage#getLinearFuzzyThreshold_SoftLimit()
@@ -38,10 +38,12 @@ public interface LinearFuzzyThreshold extends Threshold {
     Measure getSoftLimit();
 
     /**
-     * Sets the value of the '{@link org.palladiosimulator.servicelevelobjective.LinearFuzzyThreshold#getSoftLimit <em>Soft Limit</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Soft Limit</em>' attribute.
+     * Sets the value of the '
+     * {@link org.palladiosimulator.servicelevelobjective.LinearFuzzyThreshold#getSoftLimit
+     * <em>Soft Limit</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @param value
+     *            the new value of the '<em>Soft Limit</em>' attribute.
      * @see #getSoftLimit()
      * @generated
      */

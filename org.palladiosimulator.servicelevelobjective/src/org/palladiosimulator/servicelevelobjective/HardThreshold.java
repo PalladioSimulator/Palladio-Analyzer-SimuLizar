@@ -2,10 +2,8 @@
  */
 package org.palladiosimulator.servicelevelobjective;
 
-
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Hard Threshold</b></em>'.
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Hard Threshold</b></em>'.
  * <!-- end-user-doc -->
  *
  *

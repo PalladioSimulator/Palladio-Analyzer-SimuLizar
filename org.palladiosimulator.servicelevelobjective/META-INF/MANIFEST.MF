@@ -11,10 +11,10 @@ Export-Package: org.palladiosimulator.servicelevelobjective,
  org.palladiosimulator.servicelevelobjective.impl,
  org.palladiosimulator.servicelevelobjective.util
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore;visibility:=reexport,
  de.uka.ipd.sdq.identifier;visibility:=reexport,
  org.palladiosimulator.metricspec;visibility:=reexport,
  de.uka.ipd.sdq.pcm;bundle-version="3.2.0",
  org.jscience;bundle-version="4.1.3",
- org.palladiosimulator.edp2;bundle-version="2.0.0"
+ org.palladiosimulator.edp2;bundle-version="2.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy

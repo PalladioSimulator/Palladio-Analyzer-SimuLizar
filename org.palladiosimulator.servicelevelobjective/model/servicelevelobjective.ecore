@@ -13,10 +13,10 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="upperThreshold" eType="#//Threshold"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="measuringPoint" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"
+        eType="ecore:EClass ../../org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metricDescription" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
+        eType="ecore:EClass ../../org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Threshold" abstract="true" eSuperTypes="../../de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="thresholdLimit" eType="#//JSMeasure"/>
