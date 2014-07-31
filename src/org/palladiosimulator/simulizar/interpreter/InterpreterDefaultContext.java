@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.simucomframework.Context;
@@ -28,9 +28,9 @@ public class InterpreterDefaultContext extends Context {
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
-    private final SimuComRuntimeState runtimeState;
+    private final SimuLizarRuntimeState runtimeState;
 
-    public InterpreterDefaultContext(final SimuComRuntimeState simulizarModel) {
+    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
@@ -44,14 +44,14 @@ public class InterpreterDefaultContext extends Context {
      * @param simProcess
      *            the sim process of this context, means the process in which this context is used
      */
-    public InterpreterDefaultContext(final SimuComRuntimeState simulizarModel, final SimuComSimProcess simProcess) {
+    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel, final SimuComSimProcess simProcess) {
         this(simulizarModel);
         this.setSimProcess(simProcess);
     }
 
     public InterpreterDefaultContext(
             final Context context,
-            final SimuComRuntimeState runtimeState,
+            final SimuLizarRuntimeState runtimeState,
             final boolean copyStack) {
         super(context.getModel());
         this.setEvaluationMode(context.getEvaluationMode());
@@ -77,7 +77,7 @@ public class InterpreterDefaultContext extends Context {
         this(context, context.getRuntimeState(), true);
     }
 
-    public SimuComRuntimeState getRuntimeState() {
+    public SimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
 

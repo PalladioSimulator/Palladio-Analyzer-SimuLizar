@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.syncer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.pcm.core.CorePackage;
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
@@ -18,9 +18,8 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
     private final static Logger LOG = Logger.getLogger(UsageModelSyncer.class);
 
     public UsageModelSyncer(
-            final SimuComRuntimeState simuComModel,
-            final UsageModel model) {
-        super(simuComModel, model);
+            final SimuLizarRuntimeState runtimeModel) {
+        super(runtimeModel, runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel());
     }
 
     @Override

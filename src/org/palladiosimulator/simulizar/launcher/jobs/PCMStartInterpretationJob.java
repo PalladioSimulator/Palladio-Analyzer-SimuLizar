@@ -2,34 +2,10 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationListener;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
-import org.palladiosimulator.simulizar.syncer.IModelSyncer;
-import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
-import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
-import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
-import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
-import de.uka.ipd.sdq.simucomframework.calculator.RecorderAttachingCalculatorFactoryDecorator;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
-import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
-import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
-import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -57,6 +33,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      *            the SimuCom workflow configuration.
      */
     public PCMStartInterpretationJob(final SimuLizarWorkflowConfiguration configuration) {
+        super();
         this.configuration = configuration;
     }
 
@@ -65,60 +42,15 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-
         LOG.info("Start job: " + this);
 
-        // 1. Initialise SimuComModel & Simulation Engine
-        final SimuComModel simuComModel = this.initialiseSimuComModel();
+        LOG.info("Initialise Simulizar runtime state");
+        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(
+                configuration,
+                new ModelAccess(this.blackboard));
 
-        // 2. Initialise Model Access Factory
-        final IModelAccess modelAccess = new ModelAccess(this.blackboard);
-
-        final SimuComRuntimeState runtimeState = new SimuComRuntimeState(simuComModel);
-        runtimeState.getEventNotificationHelper().addObserver(new LogDebugListener());
-        runtimeState.getEventNotificationHelper().addObserver(new ProbeFrameworkListener(modelAccess, simuComModel));
-
-        // 3. Setup interpreters for each usage scenario
-        final UsageModel usageModel = modelAccess.getLocalPCMModel(runtimeState.getMainContext()).getUsageModel();
-        simuComModel.setUsageScenarios(runtimeState.getUsageModels().getWorkloadDrivers(usageModel, modelAccess));
-
-        /*
-         * 4. Setup Actuators that keep simulated system and model@runtime consistent Sync Resources
-         * from global pcm model with simucom model for the first time, models are already loaded
-         * into the blackboard by the workflow engine
-         */
-        final IModelSyncer[] modelSyncers =
-                new IModelSyncer[] {
-                        new ResourceEnvironmentSyncer(runtimeState, modelAccess),
-                        new UsageModelSyncer(runtimeState, usageModel) };
-        for (IModelSyncer modelSyncer : modelSyncers) {
-            modelSyncer.initializeSyncer();
-        }
-
-        // Start the code to evolve the usage model over time
-        new UsageEvolver(runtimeState, usageModel).start();
-
-        // 5. Setup reconfiguration rules and engines
-        final ReconfigurationListener reconfigurationListener = new ReconfigurationListener(modelAccess,
-                new IReconfigurator[] {
-                        new SDReconfigurator(modelAccess),
-                        new QVTOReconfigurator(modelAccess, configuration) });
-        reconfigurationListener.startListening();
-
-        // 6. Run Simulation
-        LOG.debug("Start simulation");
-        final double simRealTimeNano = ExperimentRunner.run(simuComModel);
-        LOG.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
-
-        // 7. Deregister all listeners and execute cleanup code
-        runtimeState.getEventNotificationHelper().removeAllListener();
-        reconfigurationListener.stopListening();
-        simuComModel.getProbeFrameworkContext().finish();
-        simuComModel.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (IModelSyncer modelSyncer : modelSyncers) {
-            modelSyncer.stopSyncer();
-        }
-
+        runtimeState.runSimulation();
+        runtimeState.cleanUp();
         LOG.info("finished job: " + this);
     }
 
@@ -145,57 +77,4 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         this.blackboard = blackboard;
     }
 
-    private SimuComModel initialiseSimuComModel() {
-        // Configuration options for the simulation engine
-        final AbstractSimulationConfig simulationConfiguration = this.getConfiguration().getSimulationConfiguration();
-
-        // Status model to store the runtime state of the simulator
-        final SimuComStatus simuComStatus = this.createSimuComStatus();
-
-        // Factory used to create the simulation engine used in the simulation,
-        // e.g., SSJ engine or Desmo-J engine
-        final ISimEngineFactory simEngineFactory = this.getSimEngineFactory();
-
-        // ProbeFramework context used to take the measurements of the simulation
-        final ProbeFrameworkContext probeFrameworkContext = new ProbeFrameworkContext(
-                new RecorderAttachingCalculatorFactoryDecorator(new DefaultCalculatorFactory(),
-                        (SimuComConfig) simulationConfiguration));
-
-        final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
-                simEngineFactory, false, probeFrameworkContext);
-
-        simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
-
-        return simuComModel;
-    }
-
-    private ISimEngineFactory getSimEngineFactory() {
-        // load factory for the preferred simulation engine
-        final ISimEngineFactory factory = SimulationPreferencesHelper.getPreferredSimulationEngine();
-        if (factory == null) {
-            throw new RuntimeException("There is no simulation engine available. Install at least one engine.");
-        }
-        return factory;
-    }
-
-    /**
-     * @return returns the configuration.
-     */
-    private SimuComWorkflowConfiguration getConfiguration() {
-        return this.configuration;
-    }
-
-    /**
-     * Gets the SimuCom status, creates one if none exists.
-     * 
-     * @return the SimuCom status.
-     */
-    private SimuComStatus createSimuComStatus() {
-        final SimuComStatus simuComStatus = SimucomstatusFactory.eINSTANCE.createSimuComStatus();
-
-        simuComStatus.setProcessStatus(SimucomstatusFactory.eINSTANCE.createSimulatedProcesses());
-        simuComStatus.setResourceStatus(SimucomstatusFactory.eINSTANCE.createSimulatedResources());
-
-        return simuComStatus;
-    }
 }

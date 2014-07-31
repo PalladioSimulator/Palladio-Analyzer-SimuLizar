@@ -11,7 +11,6 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
@@ -40,12 +39,12 @@ public class SimulatedUsageModels {
      * @return a list of workload drivers
      */
     public IWorkloadDriver[] getWorkloadDrivers(
-            final UsageModel model,
-            final IModelAccess interpreterFactory) {
-        final EList<UsageScenario> usageScenarios = model.getUsageScenario_UsageModel();
+            final IModelAccess modelAccess) {
+        final EList<UsageScenario> usageScenarios = modelAccess.getGlobalPCMModel().getUsageModel()
+                .getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
-            workloads[i] = getWorkloadDriver(usageScenarios.get(i), interpreterFactory);
+            workloads[i] = getWorkloadDriver(usageScenarios.get(i), modelAccess);
         }
         return workloads;
     }

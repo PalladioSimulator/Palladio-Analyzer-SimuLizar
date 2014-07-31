@@ -4,14 +4,14 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public abstract class AbstractSyncer<T extends EObject>
         implements IModelSyncer {
 
     private static final Logger LOG = Logger.getLogger(AbstractSyncer.class);
 
-    protected final SimuComRuntimeState runtimeModel;
+    protected final SimuLizarRuntimeState runtimeModel;
     protected final T model;
 
     private final EContentAdapter adapter;
@@ -19,7 +19,7 @@ public abstract class AbstractSyncer<T extends EObject>
     /**
      * @param simuComModel
      */
-    protected AbstractSyncer(final SimuComRuntimeState simuComModel, final T model) {
+    protected AbstractSyncer(final SimuLizarRuntimeState simuComModel, final T model) {
         super();
         this.runtimeModel = simuComModel;
         this.model = model;
