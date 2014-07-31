@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
@@ -8,13 +8,13 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 
 public class UsageEvolver {
 
-    private final SimuComRuntimeState runtimeState;
+    private final SimuLizarRuntimeState runtimeState;
     private final UsageModel usageModel;
 
-    public UsageEvolver(final SimuComRuntimeState runtimeState, final UsageModel usageModel) {
+    public UsageEvolver(final SimuLizarRuntimeState runtimeState) {
         super();
         this.runtimeState = runtimeState;
-        this.usageModel = usageModel;
+        this.usageModel = runtimeState.getModelAccess().getGlobalPCMModel().getUsageModel();
     }
 
     public void start() {

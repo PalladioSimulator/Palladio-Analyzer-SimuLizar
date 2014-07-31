@@ -2,13 +2,12 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.runtimestate.SimuComRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -39,16 +38,14 @@ public class ResourceEnvironmentSyncer
     /**
      * Constructor
      * 
-     * @param simuComModel
+     * @param runtimeState
      *            the SimuCom model.
-     * @param modelAccessFactory
-     *            the modelAccessFactory.
      */
-    public ResourceEnvironmentSyncer(final SimuComRuntimeState simuComModel, final IModelAccess modelAccessFactory) {
-        super(simuComModel, modelAccessFactory.getGlobalPCMModel()
+    public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
+        super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel()
                 .getAllocation().getTargetResourceEnvironment_Allocation());
-        this.pms = modelAccessFactory.getPMSModel();
-        this.prm = modelAccessFactory.getPRMModel();
+        this.pms = runtimeState.getModelAccess().getPMSModel();
+        this.prm = runtimeState.getModelAccess().getPRMModel();
     }
 
     /*

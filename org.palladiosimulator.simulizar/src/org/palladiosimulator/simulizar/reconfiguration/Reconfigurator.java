@@ -1,10 +1,14 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
@@ -20,12 +24,14 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * @author snowball
  *
  */
-public class ReconfigurationListener {
+public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
 
     /**
      * This class' internal LOGGER.
      */
-    private static final Logger LOGGER = Logger.getLogger(ReconfigurationListener.class);
+    private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
+
+    private final Collection<Notification> modelChanges = new LinkedList<Notification>();
 
     /**
      * Change listener, which will convert selected changes in the PRM instance into reconfiguration
@@ -36,21 +42,27 @@ public class ReconfigurationListener {
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            ReconfigurationListener.this.checkAndExecuteReconfigurations(notification);
+            modelChanges.clear();
+            Reconfigurator.this.checkAndExecuteReconfigurations(notification);
+            if (modelChanges.size() > 0) {
+                Reconfigurator.this.getEventDispatcher().reconfigurationExecuted(modelChanges);
+            }
         }
 
     };
 
     /**
-     * A log listener which logs all changes in the PRM.
+     * A log listener which logs all changes in the global PCM model.
      */
-    private final Adapter loggerAdapter = new EContentAdapter() {
+    private final Adapter globalPCMChangeListener = new EContentAdapter() {
 
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
             if (notification.getEventType() != Notification.REMOVING_ADAPTER) {
-                LOGGER.info(notification.toString());
+                modelChanges.add(notification);
+                LOGGER.debug("Detected change in global PCM model. Changed object: " + notification.getNotifier());
+                LOGGER.debug(notification.toString());
             }
         }
 
@@ -80,7 +92,7 @@ public class ReconfigurationListener {
      *            Set of reconfigurators which will be triggered as soon as new, interesting
      *            monitoring data arrives.
      */
-    public ReconfigurationListener(final IModelAccess modelAccessFactory, final IReconfigurator[] reconfigurators) {
+    public Reconfigurator(final IModelAccess modelAccessFactory, final IReconfigurator[] reconfigurators) {
         super();
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.prmModel = modelAccessFactory.getPRMModel();
@@ -92,7 +104,7 @@ public class ReconfigurationListener {
      */
     public void startListening() {
         if (LOGGER.isInfoEnabled()) {
-            pcmResourceSetPartition.getResourceSet().eAdapters().add(this.loggerAdapter);
+            pcmResourceSetPartition.getResourceSet().eAdapters().add(this.globalPCMChangeListener);
         }
         this.prmModel.eAdapters().add(this.prmListener);
     }
@@ -103,7 +115,7 @@ public class ReconfigurationListener {
     public void stopListening() {
         this.prmModel.eAdapters().remove(this.prmListener);
         if (LOGGER.isInfoEnabled()) {
-            pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.loggerAdapter);
+            pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.globalPCMChangeListener);
         }
     }
 

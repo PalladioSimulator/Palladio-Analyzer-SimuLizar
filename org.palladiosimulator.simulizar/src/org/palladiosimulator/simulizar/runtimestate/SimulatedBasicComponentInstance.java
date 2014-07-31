@@ -19,7 +19,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
     private final Map<String, IPassiveResource> passiveResourcesMap;
 
     public SimulatedBasicComponentInstance(
-            final SimuComRuntimeState runtimeState,
+            final SimuLizarRuntimeState runtimeState,
             final FQComponentID fqID,
             final List<PassiveResource> passiveResources) {
         super(runtimeState, fqID);
