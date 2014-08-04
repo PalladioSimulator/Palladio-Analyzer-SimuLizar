@@ -67,8 +67,7 @@ public class SimulatedUsageModels {
         }
     }
 
-    private de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload getClosedWorkloadDriver(
-            final Workload workload,
+    private de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload getClosedWorkloadDriver(final Workload workload,
             final UsageScenario usageScenario) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Create workload driver for ClosedWorkload: " + workload);
@@ -102,9 +101,7 @@ public class SimulatedUsageModels {
         };
 
         // create workload driver by using given factory
-        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(
-                this.rootContext.getModel(),
-                userFactory,
+        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.rootContext.getModel(), userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
     }
 

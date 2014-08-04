@@ -52,11 +52,8 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      *             if statistical characterization is not supported. TODO: This class should not
      *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
-    public ResponseTimeAggregator(
-            final SimuComModel model,
-            final PRMModel prmAccess,
-            final MeasurementSpecification measurementSpecification,
-            final EObject monitoredElement) {
+    public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
+            final MeasurementSpecification measurementSpecification, final EObject monitoredElement) {
         super(prmAccess, measurementSpecification, monitoredElement);
         this.responseTimes = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
@@ -94,8 +91,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
     private void finalizeCurrentIntervall() {
         if (responseTimes.size() > 0) {
             // calculate StatisticalCharacterization
-            final double statisticalCharacterization = aggregator
-                    .calculateStatisticalCharaterization(responseTimes);
+            final double statisticalCharacterization = aggregator.calculateStatisticalCharaterization(responseTimes);
             addToPRM(statisticalCharacterization);
             responseTimes.clear();
         }

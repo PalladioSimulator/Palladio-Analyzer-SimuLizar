@@ -26,10 +26,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
  * 
  * @author Joachim Meyer, Sebastian Lehrig
  */
-public class ResourceEnvironmentSyncer
-        extends AbstractSyncer<ResourceEnvironment>
-        implements IModelSyncer
-{
+public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
     private static final Logger LOG = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final PMSModel pms;
@@ -42,8 +39,8 @@ public class ResourceEnvironmentSyncer
      *            the SimuCom model.
      */
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
-        super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel()
-                .getAllocation().getTargetResourceEnvironment_Allocation());
+        super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
+                .getTargetResourceEnvironment_Allocation());
         this.pms = runtimeState.getModelAccess().getPMSModel();
         this.prm = runtimeState.getModelAccess().getPRMModel();
     }
@@ -86,10 +83,9 @@ public class ResourceEnvironmentSyncer
      * @param resourceContainerId
      */
     private void createSimulatedResource(ResourceContainer resourceContainer, final String resourceContainerId) {
-        final AbstractSimulatedResourceContainer simulatedResourceContainer =
-                runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainerId);
-        LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
-                + simulatedResourceContainer);
+        final AbstractSimulatedResourceContainer simulatedResourceContainer = runtimeModel.getModel()
+                .getResourceRegistry().createResourceContainer(resourceContainerId);
+        LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " " + simulatedResourceContainer);
         // now sync active resources
         syncActiveResources(resourceContainer, simulatedResourceContainer);
     }
@@ -183,14 +179,11 @@ public class ResourceEnvironmentSyncer
      * @param processingResource
      * @param schedulingStrategy
      */
-    private void createSimulatedActiveResource(
-            final ResourceContainer resourceContainer,
+    private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final AbstractSimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
         ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(
-                ModelsAtRuntime.getResourceURI(processingResource),
-                new String[] {},
-                resourceContainer.getId(),
+                ModelsAtRuntime.getResourceURI(processingResource), new String[] {}, resourceContainer.getId(),
                 schedulingStrategy);
         if (LOG.isDebugEnabled()) {
             LOG.debug("Added ActiveResource. TypeID: "
@@ -206,13 +199,8 @@ public class ResourceEnvironmentSyncer
             for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
                     .getActiveResources()) {
                 if (abstractScheduledResource.getName().equals(processingResource.getId())) {
-                    new ResourceStateListener(
-                            processingResource,
-                            abstractScheduledResource,
-                            runtimeModel.getModel().getSimulationControl(),
-                            measurementSpecification,
-                            resourceContainer,
-                            prm);
+                    new ResourceStateListener(processingResource, abstractScheduledResource, runtimeModel.getModel()
+                            .getSimulationControl(), measurementSpecification, resourceContainer, prm);
                     break;
                 }
 

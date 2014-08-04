@@ -45,9 +45,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOG.info("Start job: " + this);
 
         LOG.info("Initialise Simulizar runtime state");
-        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(
-                configuration,
-                new ModelAccess(this.blackboard));
+        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(configuration, new ModelAccess(
+                this.blackboard));
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();

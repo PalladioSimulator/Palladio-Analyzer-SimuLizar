@@ -10,8 +10,12 @@ public class SimulizarConstants {
      * Set the file extensions which the dialogs will use as selection filter and for file name
      * validation.
      */
-    public static final String[] MONITORING_SPECIFICATION_FILE_EXTENSION = new String[] { "*.pms" };
-    public static final String[] RECONFIGURATION_RULES_FILE_EXTENSION = new String[] { "*.sdm", ".qvto" };
+    public static final String[] MONITORING_SPECIFICATION_FILE_EXTENSION = new String[] {
+        "*.pms"
+    };
+    public static final String[] RECONFIGURATION_RULES_FILE_EXTENSION = new String[] {
+            "*.sdm", ".qvto"
+    };
 
     // Default values
     /** Default URI of the pms file. */

@@ -34,8 +34,7 @@ public class UsageEvolver {
                 if (false && count <= 4) {
                     OpenWorkload wl = (OpenWorkload) usageModel.getUsageScenario_UsageModel().get(0)
                             .getWorkload_UsageScenario();
-                    wl.getInterArrivalTime_OpenWorkload().setSpecification(
-                            "Exp(" + (0.5d + count++ * step) + ")");
+                    wl.getInterArrivalTime_OpenWorkload().setSpecification("Exp(" + (0.5d + count++ * step) + ")");
                 }
             }
 

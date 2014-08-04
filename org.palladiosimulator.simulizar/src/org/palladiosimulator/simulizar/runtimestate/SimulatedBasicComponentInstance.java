@@ -18,9 +18,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
     private final List<PassiveResource> passiveResourcesList;
     private final Map<String, IPassiveResource> passiveResourcesMap;
 
-    public SimulatedBasicComponentInstance(
-            final SimuLizarRuntimeState runtimeState,
-            final FQComponentID fqID,
+    public SimulatedBasicComponentInstance(final SimuLizarRuntimeState runtimeState, final FQComponentID fqID,
             final List<PassiveResource> passiveResources) {
         super(runtimeState, fqID);
         this.passiveResourcesList = passiveResources;
@@ -28,12 +26,10 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
         for (PassiveResource passiveResource : passiveResources) {
-            final long initialCount = StackContext.evaluateStatic(
-                    passiveResource.getCapacity_PassiveResource().getSpecification(),
-                    Integer.class);
+            final long initialCount = StackContext.evaluateStatic(passiveResource.getCapacity_PassiveResource()
+                    .getSpecification(), Integer.class);
             final IPassiveResource simulatedResource = new SimSimpleFairPassiveResource(passiveResource, myAssCtx,
-                    getRuntimeState().getModel(),
-                    initialCount);
+                    getRuntimeState().getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
             CalculatorHelper.setupPassiveResourceStateCalculator(simulatedResource, getRuntimeState().getModel());
             CalculatorHelper.setupWaitingTimeCalculator(simulatedResource, getRuntimeState().getModel());
@@ -41,11 +37,8 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         }
     }
 
-    public void acquirePassiveResource(
-            final PassiveResource passiveResource,
-            final InterpreterDefaultContext context,
-            boolean timeout,
-            double timeoutValue) {
+    public void acquirePassiveResource(final PassiveResource passiveResource, final InterpreterDefaultContext context,
+            boolean timeout, double timeoutValue) {
         checkAcquireReleasePrecondition(passiveResource);
 
         passiveResourcesMap.get(passiveResource.getId()).acquire(context.getThread(), 1, timeout, timeoutValue);

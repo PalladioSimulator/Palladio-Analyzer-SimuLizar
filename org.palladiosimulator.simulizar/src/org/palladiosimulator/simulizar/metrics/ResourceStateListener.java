@@ -52,20 +52,16 @@ public class ResourceStateListener implements IStateListener {
      * @param processingResource
      *            the pcm processing resource specification of the resource.
      */
-    public ResourceStateListener(
-            final ProcessingResourceSpecification processingResource,
-            final AbstractScheduledResource abstractScheduledResource,
-            final ISimulationControl iSimulationControl,
-            final MeasurementSpecification measurementSpecification,
-            final ResourceContainer resourceContainer,
+    public ResourceStateListener(final ProcessingResourceSpecification processingResource,
+            final AbstractScheduledResource abstractScheduledResource, final ISimulationControl iSimulationControl,
+            final MeasurementSpecification measurementSpecification, final ResourceContainer resourceContainer,
             final PRMModel prm) {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
         this.simulationControl = iSimulationControl;
         this.lastSimulationTime = simulationControl.getCurrentSimulationTime();
 
-        this.resourceContainerMeasurement = PrmFactory.eINSTANCE
-                .createResourceContainerMeasurement();
+        this.resourceContainerMeasurement = PrmFactory.eINSTANCE.createResourceContainerMeasurement();
         resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
         resourceContainerMeasurement.setPcmModelElement(resourceContainer);
         resourceContainerMeasurement.setProcessingResourceType(processingResource

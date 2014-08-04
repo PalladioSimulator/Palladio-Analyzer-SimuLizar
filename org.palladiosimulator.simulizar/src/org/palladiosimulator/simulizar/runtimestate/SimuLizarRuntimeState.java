@@ -115,8 +115,7 @@ public class SimuLizarRuntimeState {
         reconfigurator.removeAllObserver();
         reconfigurator.stopListening();
         this.model.getProbeFrameworkContext().finish();
-        this.model.getConfiguration().getRecorderConfigurationFactory()
-                .finalizeRecorderConfigurationFactory();
+        this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
         for (IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.stopSyncer();
         }
@@ -125,18 +124,14 @@ public class SimuLizarRuntimeState {
     private void initializeInterpreterListeners() {
         LOG.debug("Adding Debug and monitoring interpreter listeners");
         eventHelper.addObserver(new LogDebugListener());
-        eventHelper.addObserver(
-                new ProbeFrameworkListener(
-                        modelAccess,
-                        model));
+        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model));
     }
 
     private void initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration) {
         LOG.debug("Initializing reconfigurator engines and their rule sets");
-        reconfigurator = new Reconfigurator(modelAccess,
-                new IReconfigurator[] {
-                        new SDReconfigurator(modelAccess),
-                        new QVTOReconfigurator(modelAccess, configuration) });
+        reconfigurator = new Reconfigurator(modelAccess, new IReconfigurator[] {
+                new SDReconfigurator(modelAccess), new QVTOReconfigurator(modelAccess, configuration)
+        });
         reconfigurator.addObserver(new IReconfigurationListener() {
 
             @Override
@@ -151,10 +146,9 @@ public class SimuLizarRuntimeState {
 
     private void initializeModelSyncers() {
         LOG.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
-        this.modelSyncers =
-                new IModelSyncer[] {
-                        new ResourceEnvironmentSyncer(this),
-                        new UsageModelSyncer(this) };
+        this.modelSyncers = new IModelSyncer[] {
+                new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this)
+        };
         for (IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }

@@ -259,7 +259,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param simuComModel
      * @return list with start and stop probe
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({
+            "rawtypes", "unchecked"
+    })
     protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
