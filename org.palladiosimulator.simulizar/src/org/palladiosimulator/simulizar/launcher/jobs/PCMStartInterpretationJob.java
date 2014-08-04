@@ -20,7 +20,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  */
 public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSDBlackboard> {
 
-    private static final Logger LOG = Logger.getLogger(PCMStartInterpretationJob.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class.getName());
 
     private MDSDBlackboard blackboard;
 
@@ -42,15 +42,15 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-        LOG.info("Start job: " + this);
+        LOGGER.info("Start job: " + this);
 
-        LOG.info("Initialise Simulizar runtime state");
+        LOGGER.info("Initialise Simulizar runtime state");
         final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(configuration, new ModelAccess(
                 this.blackboard));
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();
-        LOG.info("finished job: " + this);
+        LOGGER.info("finished job: " + this);
     }
 
     /**

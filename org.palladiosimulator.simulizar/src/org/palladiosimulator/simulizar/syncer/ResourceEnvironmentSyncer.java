@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
  */
 public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
-    private static final Logger LOG = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final PMSModel pms;
     private final PRMModel prm;
 
@@ -52,8 +52,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      */
     @Override
     public void initializeSyncer() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
         }
         // add resource container, if not done already
         for (final ResourceContainer resourceContainer : model.getResourceContainer_ResourceEnvironment()) {
@@ -63,8 +63,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
             if (runtimeModel.getModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
                 simulatedResourceContainer = (SimulatedResourceContainer) runtimeModel.getModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
                 }
                 // now sync active resources
                 syncActiveResources(resourceContainer, simulatedResourceContainer);
@@ -74,7 +74,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
         }
 
-        LOG.debug("Synchronisation done");
+        LOGGER.debug("Synchronisation done");
         // TODO remove unused
     }
 
@@ -85,7 +85,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private void createSimulatedResource(ResourceContainer resourceContainer, final String resourceContainerId) {
         final AbstractSimulatedResourceContainer simulatedResourceContainer = runtimeModel.getModel()
                 .getResourceRegistry().createResourceContainer(resourceContainerId);
-        LOG.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " " + simulatedResourceContainer);
+        LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " " + simulatedResourceContainer);
         // now sync active resources
         syncActiveResources(resourceContainer, simulatedResourceContainer);
     }
@@ -185,8 +185,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(
                 ModelsAtRuntime.getResourceURI(processingResource), new String[] {}, resourceContainer.getId(),
                 schedulingStrategy);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Added ActiveResource. TypeID: "
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }

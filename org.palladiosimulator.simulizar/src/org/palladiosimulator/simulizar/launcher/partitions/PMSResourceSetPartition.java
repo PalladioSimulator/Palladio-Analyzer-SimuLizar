@@ -18,7 +18,7 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  */
 public class PMSResourceSetPartition extends ResourceSetPartition {
 
-    private final static Logger LOG = Logger.getLogger(PMSResourceSetPartition.class);
+    private static final Logger LOGGER = Logger.getLogger(PMSResourceSetPartition.class);
     private PMSModel pmsModel;
 
     /**
@@ -44,11 +44,11 @@ public class PMSResourceSetPartition extends ResourceSetPartition {
      */
     private PMSModel loadPMSModel() {
         try {
-            LOG.debug("Retrieving PMS Model from blackboard partition");
+            LOGGER.debug("Retrieving PMS Model from blackboard partition");
             List<PMSModel> result = getElement(PmsPackage.eINSTANCE.getPMSModel());
             return result.get(0);
         } catch (Exception e) {
-            LOG.warn("No PMS found, no requests will be measured.");
+            LOGGER.warn("No PMS found, no requests will be measured.");
             return null;
         }
     }

@@ -21,7 +21,7 @@ import de.uka.ipd.sdq.stoex.NamespaceReference;
  * 
  */
 public final class SimulatedStackHelper {
-    private static final Logger LOG = Logger.getLogger(SimulatedStackHelper.class);
+    private static final Logger LOGGER = Logger.getLogger(SimulatedStackHelper.class);
 
     /**
      * Adds parameters to given stack frame.
@@ -57,8 +57,8 @@ public final class SimulatedStackHelper {
                 }
                 targetStackFrame.addValue(id, value);
 
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Added value " + value + " for id " + id + " to stackframe " + targetStackFrame);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Added value " + value + " for id " + id + " to stackframe " + targetStackFrame);
                 }
             }
         }
@@ -95,8 +95,8 @@ public final class SimulatedStackHelper {
         } else {
             stackFrame = new SimulatedStackframe<Object>(parent);
         }
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Added new stack frame: " + stackFrame);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Added new stack frame: " + stackFrame);
         }
         addParameterToStackFrame(stack.size() == 0 ? null : stack.currentStackFrame(), parameter, stackFrame);
         stack.pushStackFrame(stackFrame);

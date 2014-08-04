@@ -7,7 +7,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 
 public class PeriodicSimulationEvent extends AbstractSimEventDelegator<PeriodicallyTriggeredSimulationEntity> {
 
-    private static final Logger LOG = Logger.getLogger(PeriodicSimulationEvent.class);
+    private static final Logger LOGGER = Logger.getLogger(PeriodicSimulationEvent.class);
     private final double delay;
 
     public PeriodicSimulationEvent(final SimuComModel model, final double delay) {
@@ -17,8 +17,8 @@ public class PeriodicSimulationEvent extends AbstractSimEventDelegator<Periodica
 
     @Override
     public void eventRoutine(final PeriodicallyTriggeredSimulationEntity who) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Periodic event " + getName() + " occurred at simulation time "
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Periodic event " + getName() + " occurred at simulation time "
                     + getModel().getSimulationControl().getCurrentSimulationTime());
         }
         if (getModel().getSimulationControl().isRunning()) {

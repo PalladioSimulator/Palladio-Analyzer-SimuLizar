@@ -8,7 +8,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
 
     private final PeriodicSimulationEvent myTriggerEvent;
-    private static final Logger LOG = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
+    private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
 
     public PeriodicallyTriggeredSimulationEntity(final SimuComModel model, final double firstOccurrence,
             final double delay) {
@@ -18,8 +18,8 @@ public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
     }
 
     public final void trigger() {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Periodic trigger for entity " + getName() + " occurred at simulation time "
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Periodic trigger for entity " + getName() + " occurred at simulation time "
                     + getModel().getSimulationControl().getCurrentSimulationTime());
         }
         triggerInternal();

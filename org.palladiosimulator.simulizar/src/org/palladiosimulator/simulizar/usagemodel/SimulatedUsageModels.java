@@ -22,7 +22,7 @@ import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
 
 public class SimulatedUsageModels {
 
-    private static final Logger LOG = Logger.getLogger(SimulatedUsageModels.class);
+    private static final Logger LOGGER = Logger.getLogger(SimulatedUsageModels.class);
     private final InterpreterDefaultContext rootContext;
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
@@ -69,8 +69,8 @@ public class SimulatedUsageModels {
 
     private de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload getClosedWorkloadDriver(final Workload workload,
             final UsageScenario usageScenario) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Create workload driver for ClosedWorkload: " + workload);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Create workload driver for ClosedWorkload: " + workload);
         }
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
@@ -88,8 +88,8 @@ public class SimulatedUsageModels {
 
     private de.uka.ipd.sdq.simucomframework.usage.OpenWorkload getOpenWorkloadDriver(final Workload workload,
             final UsageScenario usageScenario) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Create workload driver for OpenWorkload: " + workload);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Create workload driver for OpenWorkload: " + workload);
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 

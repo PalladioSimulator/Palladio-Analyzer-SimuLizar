@@ -23,7 +23,7 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
  * 
  */
 public class TransitionDeterminer {
-    protected static final Logger LOG = Logger.getLogger(TransitionDeterminer.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(TransitionDeterminer.class.getName());
 
     private final SimuComConfig config;
     private final InterpreterDefaultContext context;
@@ -90,8 +90,8 @@ public class TransitionDeterminer {
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
         final BranchTransition branchTransition = branchTransitions.get(transitionIndex);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
         }
         return branchTransition;
     }
@@ -125,8 +125,8 @@ public class TransitionDeterminer {
 
             if (this.conditionHolds(condition)) {
                 branchTransition = (GuardedBranchTransition) guardedBranchTransitions.get(i);
-                if (LOG.isDebugEnabled()) {
-                    LOG.debug("Conditions holds for branch transition " + i + " " + branchTransition);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Conditions holds for branch transition " + i + " " + branchTransition);
                 }
                 break;
             }
@@ -153,8 +153,8 @@ public class TransitionDeterminer {
 
         final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) probabilisticBranchTransitions
                 .get(transitionIndex);
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
         }
         return branchTransition;
     }
@@ -173,11 +173,11 @@ public class TransitionDeterminer {
          */
         AbstractBranchTransition branchTransition = null;
         if (abstractBranchTransitions.get(0) instanceof ProbabilisticBranchTransition) {
-            LOG.debug("Found ProbabilisticBranchTransitions");
+            LOGGER.debug("Found ProbabilisticBranchTransitions");
             branchTransition = this.determineProbabilisticBranchTransition(abstractBranchTransitions);
 
         } else {
-            LOG.debug("Found GuardedBranchTransitions");
+            LOGGER.debug("Found GuardedBranchTransitions");
             branchTransition = this.determineGuardedBranchTransition(abstractBranchTransitions);
         }
         return branchTransition;

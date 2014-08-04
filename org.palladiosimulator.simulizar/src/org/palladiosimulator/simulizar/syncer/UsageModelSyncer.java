@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 
 public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IModelSyncer {
 
-    private final static Logger LOG = Logger.getLogger(UsageModelSyncer.class);
+    private static final Logger LOGGER = Logger.getLogger(UsageModelSyncer.class);
 
     public UsageModelSyncer(final SimuLizarRuntimeState runtimeModel) {
         super(runtimeModel, runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel());
@@ -27,7 +27,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
 
     @Override
     protected void synchronizeSimulationEntities(final Notification notification) {
-        LOG.debug("Usage model changed... Resync needed");
+        LOGGER.debug("Usage model changed... Resync needed");
         switch (notification.getEventType()) {
         case Notification.REMOVING_ADAPTER:
         case Notification.RESOLVE:
@@ -40,11 +40,11 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
                     && notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
                 syncOpenWorkload(notification);
             } else {
-                LOG.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+                LOGGER.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
             }
             break;
         default:
-            LOG.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+            LOGGER.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
             break;
         }
     }
@@ -66,13 +66,13 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
     }
 
     private void openWorkloadInterarrivalChange(final Workload workload, final String newInterarrivalTime) {
-        LOG.debug("Setting open workload interarrival time to " + newInterarrivalTime);
+        LOGGER.debug("Setting open workload interarrival time to " + newInterarrivalTime);
         this.runtimeModel.getUsageModels().getOpenWorkloadDriver((OpenWorkload) workload)
                 .setInterarrivalTime(newInterarrivalTime);
     }
 
     private void closedWorkloadPopulationChanged(final Workload workload, final int newPopulation) {
-        LOG.debug("Setting closed workload population to " + newPopulation);
+        LOGGER.debug("Setting closed workload population to " + newPopulation);
         this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setPopulation(newPopulation);
     }
