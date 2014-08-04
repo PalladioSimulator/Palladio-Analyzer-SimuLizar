@@ -35,9 +35,7 @@ public final class PMSUtil {
      * @return the MeasurementSpecification, if element should be monitored according to given
      *         performance metric, otherwise null
      */
-    public static MeasurementSpecification isMonitored(
-            final PMSModel pmsModel,
-            final EObject element,
+    public static MeasurementSpecification isMonitored(final PMSModel pmsModel, final EObject element,
             final PerformanceMetricEnum performanceMetric) {
         if (pmsModel != null) {
             for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
@@ -61,8 +59,9 @@ public final class PMSUtil {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
         } else if (measuringPoint instanceof ResourceURIMeasuringPoint) {
-            final String resourceUri = ((ResourceURIMeasuringPoint) measuringPoint).getResourceURI();
-            return ModelsAtRuntime.getResourceURI(element).equals(resourceUri);
+            final String measuringPointResourceURI = ((ResourceURIMeasuringPoint) measuringPoint).getResourceURI();
+            final String elementResourceFragment = ModelsAtRuntime.getResourceFragment(element);
+            return measuringPointResourceURI.endsWith(elementResourceFragment);
         } else if (measuringPoint instanceof StringMeasuringPoint) {
             throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
         } else if (measuringPoint instanceof ActiveResourceMeasuringPoint) {
