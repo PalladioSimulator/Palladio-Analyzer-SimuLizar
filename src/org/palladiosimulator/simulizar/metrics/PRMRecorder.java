@@ -33,9 +33,7 @@ public abstract class PRMRecorder {
      * @param pcmModelElementMeasurement
      *            the prm PCMModelElementMeasurement.
      */
-    public PRMRecorder(
-            final PRMModel prmAccess2,
-            final MeasurementSpecification measurementSpecification,
+    public PRMRecorder(final PRMModel prmAccess2, final MeasurementSpecification measurementSpecification,
             EObject monitoredElement) {
         super();
         this.pcmModelElementMeasurement = PrmFactory.eINSTANCE.createPCMModelElementMeasurement();

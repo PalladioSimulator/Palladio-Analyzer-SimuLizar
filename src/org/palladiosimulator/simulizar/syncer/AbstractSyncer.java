@@ -6,8 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-public abstract class AbstractSyncer<T extends EObject>
-        implements IModelSyncer {
+public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer {
 
     private static final Logger LOG = Logger.getLogger(AbstractSyncer.class);
 
@@ -28,8 +27,7 @@ public abstract class AbstractSyncer<T extends EObject>
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER ||
-                notification.getEventType() == Notification.RESOLVE)) {
+                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
                     LOG.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
                             + notification);
                     synchronizeSimulationEntities(notification);

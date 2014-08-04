@@ -58,8 +58,7 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
                 break;
             default:
                 if (event.getEventType() == EventType.BEGIN) {
-                    singleListener
-                            .beginUnknownElementInterpretation(event);
+                    singleListener.beginUnknownElementInterpretation(event);
                 } else {
                     singleListener.endUnknownElementInterpretation(event);
                 }

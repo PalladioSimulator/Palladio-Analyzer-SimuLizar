@@ -133,8 +133,8 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      */
     @Override
     public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
-        throw new UnsupportedOperationException("SEFF Interpreter tried to interpret unsupported action type: " +
-                object.eClass().getName());
+        throw new UnsupportedOperationException("SEFF Interpreter tried to interpret unsupported action type: "
+                + object.eClass().getName());
     }
 
     /**
@@ -148,14 +148,11 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
             for (InfrastructureCall infrastructureCall : internalAction.getInfrastructureCall__Action()) {
                 final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-                final int repetions = StackContext.evaluateStatic(
-                        infrastructureCall.getNumberOfCalls__InfrastructureCall().getSpecification(),
-                        Integer.class,
-                        currentStackFrame);
+                final int repetions = StackContext.evaluateStatic(infrastructureCall
+                        .getNumberOfCalls__InfrastructureCall().getSpecification(), Integer.class, currentStackFrame);
                 for (int i = 0; i < repetions; i++) {
                     final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
-                            this.context,
-                            infrastructureCall.getSignature__InfrastructureCall(),
+                            this.context, infrastructureCall.getSignature__InfrastructureCall(),
                             infrastructureCall.getRequiredRole__InfrastructureCall());
 
                     // create new stack frame for input parameter
@@ -180,8 +177,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     @Override
     public Object caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
-                externalCall.getCalledService_ExternalService(),
-                externalCall.getRole_ExternalService());
+                externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
@@ -319,17 +315,14 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     @Override
     public Object caseAcquireAction(final AcquireAction acquireAction) {
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Process " + this.context.getThread().getId() + " tries to acquire " +
-                    acquireAction.getPassiveresource_AcquireAction().getEntityName());
+            LOG.debug("Process " + this.context.getThread().getId() + " tries to acquire "
+                    + acquireAction.getPassiveresource_AcquireAction().getEntityName());
         }
-        this.basicComponentInstance.acquirePassiveResource(
-                acquireAction.getPassiveresource_AcquireAction(),
-                context,
-                context.getModel().getConfiguration().getSimulateFailures(),
-                acquireAction.getTimeoutValue());
+        this.basicComponentInstance.acquirePassiveResource(acquireAction.getPassiveresource_AcquireAction(), context,
+                context.getModel().getConfiguration().getSimulateFailures(), acquireAction.getTimeoutValue());
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Process " + this.context.getThread().getId() + " successfully acquired " +
-                    acquireAction.getPassiveresource_AcquireAction().getEntityName());
+            LOG.debug("Process " + this.context.getThread().getId() + " successfully acquired "
+                    + acquireAction.getPassiveresource_AcquireAction().getEntityName());
         }
         return SUCCESS;
     }
@@ -345,8 +338,8 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     public Object caseReleaseAction(final ReleaseAction releaseAction) {
         this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction(), context);
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Process " + this.context.getThread().getId() + " released " +
-                    releaseAction.getPassiveResource_ReleaseAction().getEntityName());
+            LOG.debug("Process " + this.context.getThread().getId() + " released "
+                    + releaseAction.getPassiveResource_ReleaseAction().getEntityName());
         }
         return SUCCESS;
     }
@@ -356,9 +349,12 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param eventType
      */
     private <T extends AbstractAction> void firePassedEvent(final T abstractAction, EventType eventType) {
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
-                new RDSEFFElementPassedEvent<T>(abstractAction, eventType, this.context
-                        .getThread(), this.context.getAssemblyContextStack().peek()));
+        this.context
+                .getRuntimeState()
+                .getEventNotificationHelper()
+                .firePassedEvent(
+                        new RDSEFFElementPassedEvent<T>(abstractAction, eventType, this.context.getThread(),
+                                this.context.getAssemblyContextStack().peek()));
     }
 
     /**
@@ -534,9 +530,8 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param internalAction
      */
     private void interpretResourceDemands(final InternalAction internalAction) {
-        final AllocationContext allocationContext = getAllocationContext(
-                allocation,
-                this.context.getAssemblyContextStack().peek());
+        final AllocationContext allocationContext = getAllocationContext(allocation, this.context
+                .getAssemblyContextStack().peek());
 
         final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
 

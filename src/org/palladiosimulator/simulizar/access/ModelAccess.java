@@ -142,9 +142,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends ResourceSetPartition> T getResourceSetPartition(
-            final MDSDBlackboard blackboard,
-            final String id) {
+    private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard, final String id) {
         return (T) blackboard.getPartition(id);
     }
 

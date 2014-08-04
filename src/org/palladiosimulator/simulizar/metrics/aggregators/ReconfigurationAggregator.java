@@ -14,12 +14,8 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
  */
 public class ReconfigurationAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
-    public ReconfigurationAggregator(
-            final PRMModel prmAccess,
-            final MeasurementSpecification measurementSpecification,
-            final Calculator responseTimeCalculator,
-            final String measurementId,
-            final EObject monitoredElement,
+    public ReconfigurationAggregator(final PRMModel prmAccess, final MeasurementSpecification measurementSpecification,
+            final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
             final double baseSimulationTime) {
         super(prmAccess, measurementSpecification, monitoredElement);
         // TODO Auto-generated constructor stub

@@ -17,8 +17,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
 
     private final static Logger LOG = Logger.getLogger(UsageModelSyncer.class);
 
-    public UsageModelSyncer(
-            final SimuLizarRuntimeState runtimeModel) {
+    public UsageModelSyncer(final SimuLizarRuntimeState runtimeModel) {
         super(runtimeModel, runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel());
     }
 
@@ -37,11 +36,8 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
             if (UsagemodelPackage.eINSTANCE.getClosedWorkload().isInstance(notification.getNotifier())) {
                 syncClosedWorkload(notification);
             } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
-                    &&
-                    ((EObject) notification.getNotifier()).eContainer() instanceof OpenWorkload
-                    &&
-                    notification.getFeature() == StoexPackage.eINSTANCE
-                            .getRandomVariable_Specification()) {
+                    && ((EObject) notification.getNotifier()).eContainer() instanceof OpenWorkload
+                    && notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
                 syncOpenWorkload(notification);
             } else {
                 LOG.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");

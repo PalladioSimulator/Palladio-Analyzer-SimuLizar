@@ -40,10 +40,7 @@ public class InterpreterDefaultContext extends Context {
         this.modelAccess = runtimeState.getModelAccess();
     }
 
-    InterpreterDefaultContext(
-            final Context context,
-            final SimuLizarRuntimeState runtimeState,
-            final boolean copyStack) {
+    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState, final boolean copyStack) {
         super(context.getModel());
         this.modelAccess = runtimeState.getModelAccess().clone();
         this.setEvaluationMode(context.getEvaluationMode());

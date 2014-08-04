@@ -51,11 +51,8 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     /**
 	 * 
 	 */
-    public RepositoryComponentSwitch(
-            final InterpreterDefaultContext context,
-            final AssemblyContext assemblyContext,
-            final Signature signature,
-            final ProvidedRole providedRole) {
+    public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+            final Signature signature, final ProvidedRole providedRole) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
@@ -120,8 +117,10 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
                 LOG.debug("Found new composed component instance, registering it: " + entity);
                 LOG.debug("FQComponentID is " + fqID);
             }
-            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
-                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
+            this.context
+                    .getRuntimeState()
+                    .getComponentInstanceRegistry()
+                    .addComponentInstance(new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
@@ -160,8 +159,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      * @return a list of seffs corresponding to the operation signature.
      */
     private List<ServiceEffectSpecification> getSeffsForCall(
-            final EList<ServiceEffectSpecification> serviceEffectSpecifications,
-            final Signature operationSignature) {
+            final EList<ServiceEffectSpecification> serviceEffectSpecifications, final Signature operationSignature) {
         final List<ServiceEffectSpecification> seffs = new Vector<ServiceEffectSpecification>();
 
         for (final ServiceEffectSpecification serviceEffectSpecification : serviceEffectSpecifications) {
@@ -191,11 +189,9 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
             FQComponentID componentID = computeFQComponentID();
-            SimulatedBasicComponentInstance basicComponentInstance =
-                    (SimulatedBasicComponentInstance) this.context.getRuntimeState().getComponentInstanceRegistry()
-                            .getComponentInstance(componentID);
-            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context,
-                    basicComponentInstance);
+            SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
+                    .getRuntimeState().getComponentInstanceRegistry().getComponentInstance(componentID);
+            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, basicComponentInstance);
 
             // interpret called seff
             return (SimulatedStackframe<Object>) rdSeffInterpreter.doSwitch(calledSeffs.get(0));

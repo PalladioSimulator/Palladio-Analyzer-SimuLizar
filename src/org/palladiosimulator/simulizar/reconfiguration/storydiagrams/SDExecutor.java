@@ -165,9 +165,11 @@ public class SDExecutor {
         for (final Activity activity : ActivitiesFromModels) {
             final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] {
                     USAGE_MODEL, SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL,
-                    PRM_MODEL, MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
-                    REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
-                    PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS });
+                    PRM_MODEL, MONITORED_ELEMENT
+            }, new EClassifier[] {
+                    USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS, REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS,
+                    RESOURCE_ENVIRONMENT_MODEL_ECLASS, PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS
+            });
 
             result.add(activityWithBindings);
         }
@@ -192,8 +194,8 @@ public class SDExecutor {
         final Variable<EClassifier> allocationModelParameter = new Variable<EClassifier>(ALLOCATION_MODEL,
                 ALLOCATION_MODEL_ECLASS, this.globalPcmResourceSetPartition.getAllocation());
         final Variable<EClassifier> resourceEnvironmentModelParameter = new Variable<EClassifier>(
-                RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
-                this.globalPcmResourceSetPartition.getAllocation().getTargetResourceEnvironment_Allocation());
+                RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS, this.globalPcmResourceSetPartition
+                        .getAllocation().getTargetResourceEnvironment_Allocation());
         final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(PRM_MODEL,
                 PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmModel);
         parameters.add(usageModelParameter);

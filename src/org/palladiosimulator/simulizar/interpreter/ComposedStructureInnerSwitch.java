@@ -39,9 +39,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public ComposedStructureInnerSwitch(
-            final InterpreterDefaultContext context,
-            final Signature operationSignature,
+    public ComposedStructureInnerSwitch(final InterpreterDefaultContext context, final Signature operationSignature,
             final RequiredRole requiredRole) {
         super();
         this.context = context;
@@ -51,10 +49,8 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 
     @Override
     public SimulatedStackframe<Object> caseAssemblyConnector(final AssemblyConnector assemblyConnector) {
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(
-                this.context,
-                assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(),
-                this.signature,
+        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
+                assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(), this.signature,
                 assemblyConnector.getProvidedRole_AssemblyConnector());
         return repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
     }
@@ -69,11 +65,9 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
     @Override
     public SimulatedStackframe<Object> caseAssemblyInfrastructureConnector(
             AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(
-                this.context,
+        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
-                this.signature,
-                assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
+                this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
         return repositoryComponentSwitch.doSwitch(assemblyInfrastructureConnector
                 .getProvidedRole__AssemblyInfrastructureConnector());
     }
