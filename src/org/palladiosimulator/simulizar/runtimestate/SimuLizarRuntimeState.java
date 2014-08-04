@@ -39,7 +39,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  */
 public class SimuLizarRuntimeState {
 
-    private static final Logger LOG = Logger.getLogger(SimuLizarRuntimeState.class);
+    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
     private final SimuComModel model;
     private final EventNotificationHelper eventHelper;
@@ -64,7 +64,7 @@ public class SimuLizarRuntimeState {
         this.mainContext = new InterpreterDefaultContext(this);
         this.usageModels = new SimulatedUsageModels(mainContext);
 
-        LOG.debug("Initialise simucom framework's workload drivers");
+        LOGGER.debug("Initialise simucom framework's workload drivers");
         this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
 
         initializeInterpreterListeners();
@@ -104,13 +104,13 @@ public class SimuLizarRuntimeState {
     }
 
     public void runSimulation() {
-        LOG.debug("Starting Simulizar simulation...");
+        LOGGER.debug("Starting Simulizar simulation...");
         final double simRealTimeNano = ExperimentRunner.run(model);
-        LOG.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
+        LOGGER.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
     }
 
     public void cleanUp() {
-        LOG.debug("Deregister all listeners and execute cleanup code");
+        LOGGER.debug("Deregister all listeners and execute cleanup code");
         this.eventHelper.removeAllListener();
         reconfigurator.removeAllObserver();
         reconfigurator.stopListening();
@@ -122,13 +122,13 @@ public class SimuLizarRuntimeState {
     }
 
     private void initializeInterpreterListeners() {
-        LOG.debug("Adding Debug and monitoring interpreter listeners");
+        LOGGER.debug("Adding Debug and monitoring interpreter listeners");
         eventHelper.addObserver(new LogDebugListener());
         eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model));
     }
 
     private void initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration) {
-        LOG.debug("Initializing reconfigurator engines and their rule sets");
+        LOGGER.debug("Initializing reconfigurator engines and their rule sets");
         reconfigurator = new Reconfigurator(modelAccess, new IReconfigurator[] {
                 new SDReconfigurator(modelAccess), new QVTOReconfigurator(modelAccess, configuration)
         });
@@ -136,7 +136,7 @@ public class SimuLizarRuntimeState {
 
             @Override
             public void reconfigurationExecuted(Collection<Notification> modelChanges) {
-                LOG.info("------- System reconfigured at simulation time "
+                LOGGER.info("------- System reconfigured at simulation time "
                         + model.getSimulationControl().getCurrentSimulationTime() + "-------");
             }
         });
@@ -145,7 +145,7 @@ public class SimuLizarRuntimeState {
     }
 
     private void initializeModelSyncers() {
-        LOG.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
+        LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
         this.modelSyncers = new IModelSyncer[] {
                 new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this)
         };
@@ -155,7 +155,7 @@ public class SimuLizarRuntimeState {
     }
 
     private void initializeUsageEvolver() {
-        LOG.debug("Start the code to evolve the usage model over time");
+        LOGGER.debug("Start the code to evolve the usage model over time");
         new UsageEvolver(this).start();
     }
 }

@@ -35,7 +35,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
-    private static final Logger LOG = Logger.getLogger(ModelAccess.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ModelAccess.class.getName());
 
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
@@ -148,7 +148,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     @Override
     public void reconfigurationExecuted(final Collection<Notification> modelChanges) {
-        LOG.debug("Reconfiguration(s) have been exectuted, taking a new copy of the global PCM for new simulation threads");
+        LOGGER.debug("Reconfiguration(s) have been exectuted, taking a new copy of the global PCM for new simulation threads");
         copyPCMPartition();
     }
 

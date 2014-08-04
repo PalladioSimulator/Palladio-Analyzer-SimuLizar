@@ -15,7 +15,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
  * 
  */
 public class LogDebugListener extends AbstractInterpreterListener {
-    private static final Logger LOG = Logger.getLogger(LogDebugListener.class);
+    private static final Logger LOGGER = Logger.getLogger(LogDebugListener.class);
 
     /**
 	 * 
@@ -107,7 +107,7 @@ public class LogDebugListener extends AbstractInterpreterListener {
     }
 
     private <T extends EObject> void logEvent(final ModelElementPassedEvent<T> event) {
-        if (LOG.isDebugEnabled()) {
+        if (LOGGER.isDebugEnabled()) {
             final StringBuilder msgBuilder = new StringBuilder();
             switch (event.getEventType()) {
             case BEGIN:
@@ -124,7 +124,7 @@ public class LogDebugListener extends AbstractInterpreterListener {
             msgBuilder.append(event.getThread().getId());
             msgBuilder.append("\" at simulation time ");
             msgBuilder.append(event.getPassageTime());
-            LOG.debug(msgBuilder.toString());
+            LOGGER.debug(msgBuilder.toString());
         }
     }
 
@@ -134,7 +134,7 @@ public class LogDebugListener extends AbstractInterpreterListener {
         msgBuilder.append("Reconfiguration ");
         msgBuilder.append(" at simulation time ");
         msgBuilder.append(event.getPassageTime());
-        LOG.debug(msgBuilder.toString());
+        LOGGER.debug(msgBuilder.toString());
     }
 
 }

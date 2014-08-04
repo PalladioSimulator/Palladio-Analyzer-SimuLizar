@@ -39,7 +39,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  */
 class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
-    private final static Logger LOG = Logger.getLogger(RepositoryComponentSwitch.class);
+    private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
 
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
 
@@ -62,14 +62,14 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     @Override
     public SimulatedStackframe<Object> caseBasicComponent(final BasicComponent basicComponent) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Entering BasicComponent: " + basicComponent);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Entering BasicComponent: " + basicComponent);
         }
         FQComponentID fqID = computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Found new basic component component instance, registering it: " + basicComponent);
-                LOG.debug("FQComponentID is " + fqID);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
+                LOGGER.debug("FQComponentID is " + fqID);
             }
             this.context
                     .getRuntimeState()
@@ -108,14 +108,14 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     @Override
     public SimulatedStackframe<Object> caseComposedProvidingRequiringEntity(
             final ComposedProvidingRequiringEntity entity) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Entering ComposedProvidingRequiringEntity: " + entity);
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
         }
         FQComponentID fqID = computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
-            if (LOG.isDebugEnabled()) {
-                LOG.debug("Found new composed component instance, registering it: " + entity);
-                LOG.debug("FQComponentID is " + fqID);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Found new composed component instance, registering it: " + entity);
+                LOGGER.debug("FQComponentID is " + fqID);
             }
             this.context
                     .getRuntimeState()

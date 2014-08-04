@@ -47,7 +47,7 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  */
 public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
-    private static final Logger LOG = Logger.getLogger(ProbeFrameworkListener.class);
+    private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
@@ -181,7 +181,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                         measurementSpecification, modelElement);
                 calculator.addObserver(aggregator);
             } catch (final UnsupportedOperationException e) {
-                LOG.error(e);
+                LOGGER.error(e);
                 throw new RuntimeException(e);
             }
         }

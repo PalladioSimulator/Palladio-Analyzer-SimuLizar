@@ -8,7 +8,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer {
 
-    private static final Logger LOG = Logger.getLogger(AbstractSyncer.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractSyncer.class);
 
     protected final SimuLizarRuntimeState runtimeModel;
     protected final T model;
@@ -28,7 +28,7 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
                 if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
-                    LOG.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
+                    LOGGER.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
                             + notification);
                     synchronizeSimulationEntities(notification);
                 }
