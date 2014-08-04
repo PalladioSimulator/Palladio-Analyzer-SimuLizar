@@ -16,6 +16,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '
  * <em><b>Performance Metric Enum</b></em>', and utility methods for working with them. <!--
  * end-user-doc -->
+ * 
  * @see org.palladiosimulator.simulizar.pms.PmsPackage#getPerformanceMetricEnum()
  * @model
  * @generated
@@ -72,13 +73,13 @@ public enum PerformanceMetricEnum implements Enumerator {
     THROUGHPUT(4, "Throughput", "Throughput");
 
     /**
-     * The '<em><b>Waiting Time</b></em>' literal value.
-     * <!-- begin-user-doc -->
+     * The '<em><b>Waiting Time</b></em>' literal value. <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Waiting Time</b></em>' literal object isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #WAITING_TIME
      * @model name="WaitingTime"
      * @generated
@@ -87,13 +88,13 @@ public enum PerformanceMetricEnum implements Enumerator {
     public static final int WAITING_TIME_VALUE = 0;
 
     /**
-     * The '<em><b>Response Time</b></em>' literal value.
-     * <!-- begin-user-doc -->
+     * The '<em><b>Response Time</b></em>' literal value. <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Response Time</b></em>' literal object isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #RESPONSE_TIME
      * @model name="ResponseTime"
      * @generated
@@ -102,13 +103,13 @@ public enum PerformanceMetricEnum implements Enumerator {
     public static final int RESPONSE_TIME_VALUE = 1;
 
     /**
-     * The '<em><b>Utilization</b></em>' literal value.
-     * <!-- begin-user-doc -->
+     * The '<em><b>Utilization</b></em>' literal value. <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Utilization</b></em>' literal object isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #UTILIZATION
      * @model name="Utilization"
      * @generated
@@ -117,13 +118,13 @@ public enum PerformanceMetricEnum implements Enumerator {
     public static final int UTILIZATION_VALUE = 2;
 
     /**
-     * The '<em><b>Arrival Rate</b></em>' literal value.
-     * <!-- begin-user-doc -->
+     * The '<em><b>Arrival Rate</b></em>' literal value. <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Arrival Rate</b></em>' literal object isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #ARRIVAL_RATE
      * @model name="ArrivalRate"
      * @generated
@@ -132,13 +133,13 @@ public enum PerformanceMetricEnum implements Enumerator {
     public static final int ARRIVAL_RATE_VALUE = 3;
 
     /**
-     * The '<em><b>Throughput</b></em>' literal value.
-     * <!-- begin-user-doc -->
+     * The '<em><b>Throughput</b></em>' literal value. <!-- begin-user-doc -->
      * <p>
      * If the meaning of '<em><b>Throughput</b></em>' literal object isn't clear, there really
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
+     * 
      * @see #THROUGHPUT
      * @model name="Throughput"
      * @generated
@@ -153,23 +154,21 @@ public enum PerformanceMetricEnum implements Enumerator {
      * @generated
      */
     private static final PerformanceMetricEnum[] VALUES_ARRAY = new PerformanceMetricEnum[] {
-            WAITING_TIME,
-            RESPONSE_TIME,
-            UTILIZATION,
-            ARRIVAL_RATE,
-            THROUGHPUT,
-        };
+            WAITING_TIME, RESPONSE_TIME, UTILIZATION, ARRIVAL_RATE, THROUGHPUT,
+    };
 
     /**
      * A public read-only list of all the '<em><b>Performance Metric Enum</b></em>' enumerators.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static final List<PerformanceMetricEnum> VALUES = Collections.unmodifiableList(Arrays.asList(VALUES_ARRAY));
 
     /**
-     * Returns the '<em><b>Performance Metric Enum</b></em>' literal with the specified literal value.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Performance Metric Enum</b></em>' literal with the specified literal
+     * value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static PerformanceMetricEnum get(String literal) {
@@ -199,42 +198,51 @@ public enum PerformanceMetricEnum implements Enumerator {
     }
 
     /**
-     * Returns the '<em><b>Performance Metric Enum</b></em>' literal with the specified integer value.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Returns the '<em><b>Performance Metric Enum</b></em>' literal with the specified integer
+     * value. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public static PerformanceMetricEnum get(int value) {
         switch (value) {
-            case WAITING_TIME_VALUE: return WAITING_TIME;
-            case RESPONSE_TIME_VALUE: return RESPONSE_TIME;
-            case UTILIZATION_VALUE: return UTILIZATION;
-            case ARRIVAL_RATE_VALUE: return ARRIVAL_RATE;
-            case THROUGHPUT_VALUE: return THROUGHPUT;
+        case WAITING_TIME_VALUE:
+            return WAITING_TIME;
+        case RESPONSE_TIME_VALUE:
+            return RESPONSE_TIME;
+        case UTILIZATION_VALUE:
+            return UTILIZATION;
+        case ARRIVAL_RATE_VALUE:
+            return ARRIVAL_RATE;
+        case THROUGHPUT_VALUE:
+            return THROUGHPUT;
         }
         return null;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final int value;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final String name;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     private final String literal;
 
     /**
-     * Only this class can construct instances.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     private PerformanceMetricEnum(int value, String name, String literal) {
@@ -245,26 +253,29 @@ public enum PerformanceMetricEnum implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public int getValue() {
-      return value;
+        return value;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getName() {
-      return name;
+        return name;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public String getLiteral() {
-      return literal;
+        return literal;
     }
 
     /**

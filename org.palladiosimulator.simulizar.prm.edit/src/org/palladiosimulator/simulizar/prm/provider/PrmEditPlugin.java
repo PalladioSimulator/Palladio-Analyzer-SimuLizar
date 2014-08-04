@@ -44,9 +44,11 @@ public final class PrmEditPlugin extends EMFPlugin {
      * @generated
      */
     public PrmEditPlugin() {
-        super(new ResourceLocator[] { EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE,
-                PalladioComponentModelEditPlugin.INSTANCE, PmsEditPlugin.INSTANCE,
-                ProbabilityFunctionEditPlugin.INSTANCE, StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE, });
+        super(new ResourceLocator[] {
+                EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE, PalladioComponentModelEditPlugin.INSTANCE,
+                PmsEditPlugin.INSTANCE, ProbabilityFunctionEditPlugin.INSTANCE, StoexEditPlugin.INSTANCE,
+                UnitsEditPlugin.INSTANCE,
+        });
     }
 
     /**

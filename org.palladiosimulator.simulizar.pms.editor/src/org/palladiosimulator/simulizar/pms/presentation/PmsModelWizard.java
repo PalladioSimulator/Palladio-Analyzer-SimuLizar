@@ -294,7 +294,9 @@ public class PmsModelWizard extends Wizard implements INewWizard {
                 String extension = new Path(getFileName()).getFileExtension();
                 if (extension == null || !FILE_EXTENSIONS.contains(extension)) {
                     String key = FILE_EXTENSIONS.size() > 1 ? "_WARN_FilenameExtensions" : "_WARN_FilenameExtension";
-                    setErrorMessage(PmsEditorPlugin.INSTANCE.getString(key, new Object[] { FORMATTED_FILE_EXTENSIONS }));
+                    setErrorMessage(PmsEditorPlugin.INSTANCE.getString(key, new Object[] {
+                        FORMATTED_FILE_EXTENSIONS
+                    }));
                     return false;
                 }
                 return true;

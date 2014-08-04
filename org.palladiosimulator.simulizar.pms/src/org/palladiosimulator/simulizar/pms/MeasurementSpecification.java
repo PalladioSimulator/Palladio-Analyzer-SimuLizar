@@ -10,16 +10,19 @@ package org.palladiosimulator.simulizar.pms;
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Measurement Specification</b></em>'. <!-- end-user-doc -->
  *
- * <!-- begin-model-doc -->
- * A measurement specification for a pcm element including the performance metric and the statistical charaterization.
- * <!-- end-model-doc -->
+ * <!-- begin-model-doc --> A measurement specification for a pcm element including the performance
+ * metric and the statistical charaterization. <!-- end-model-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction <em>Temporal Restriction</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric <em>Performance Metric</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization <em>Statistical Characterization</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction
+ * <em>Temporal Restriction</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric <em>
+ * Performance Metric</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization
+ * <em>Statistical Characterization</em>}</li>
  * </ul>
  * </p>
  *
@@ -46,10 +49,13 @@ public interface MeasurementSpecification extends UniqueElement {
     TemporalCharacterization getTemporalRestriction();
 
     /**
-     * Sets the value of the '{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction <em>Temporal Restriction</em>}' containment reference.
-     * <!-- begin-user-doc --> <!--
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction
+     * <em>Temporal Restriction</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * @param value the new value of the '<em>Temporal Restriction</em>' containment reference.
+     * 
+     * @param value
+     *            the new value of the '<em>Temporal Restriction</em>' containment reference.
      * @see #getTemporalRestriction()
      * @generated
      */
@@ -75,9 +81,12 @@ public interface MeasurementSpecification extends UniqueElement {
     PerformanceMetricEnum getPerformanceMetric();
 
     /**
-     * Sets the value of the '{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric <em>Performance Metric</em>}' attribute.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * @param value the new value of the '<em>Performance Metric</em>' attribute.
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric
+     * <em>Performance Metric</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @param value
+     *            the new value of the '<em>Performance Metric</em>' attribute.
      * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
      * @see #getPerformanceMetric()
      * @generated

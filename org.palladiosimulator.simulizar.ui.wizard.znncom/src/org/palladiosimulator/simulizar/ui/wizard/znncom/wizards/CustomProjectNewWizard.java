@@ -15,48 +15,48 @@ import org.palladiosimulator.simulizar.ui.wizard.znncom.projects.CustomProjectSu
 
 public class CustomProjectNewWizard extends Wizard implements INewWizard, IExecutableExtension {
 
-	private WizardNewProjectCreationPage _pageOne;
-	private IConfigurationElement _configurationElement;
-	
-	public CustomProjectNewWizard() {
-	}
+    private WizardNewProjectCreationPage _pageOne;
+    private IConfigurationElement _configurationElement;
 
-	@Override
-	public void init(IWorkbench workbench, IStructuredSelection selection) {
-		// TODO Auto-generated method stub
-	}
+    public CustomProjectNewWizard() {
+    }
 
-	@Override
-	public boolean performFinish() {
-		String name = _pageOne.getProjectName();
-	    URI location = null;
-	    if (!_pageOne.useDefaults()) {
-	        location = _pageOne.getLocationURI();
-	    } // else location == null
-	 
-	    CustomProjectSupport.createProject(name, location);
-	 
-	    BasicNewProjectResourceWizard.updatePerspective(_configurationElement);
-	    
-	    return true;
-	}
-	
-	@Override
-	public void addPages() {
-	    super.addPages();
-	 
-	    _pageOne = new WizardNewProjectCreationPage("SimuLizar example project");
-	    _pageOne.setTitle("SimuLizar example project");
-	    _pageOne.setDescription("SimuLizar example project.");
-	 
-	    addPage(_pageOne);
-	}
+    @Override
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+        // TODO Auto-generated method stub
+    }
 
-	@Override
-	public void setInitializationData(IConfigurationElement config,
-			String propertyName, Object data) throws CoreException {
-		_configurationElement = config;
-		
-	}
+    @Override
+    public boolean performFinish() {
+        String name = _pageOne.getProjectName();
+        URI location = null;
+        if (!_pageOne.useDefaults()) {
+            location = _pageOne.getLocationURI();
+        } // else location == null
+
+        CustomProjectSupport.createProject(name, location);
+
+        BasicNewProjectResourceWizard.updatePerspective(_configurationElement);
+
+        return true;
+    }
+
+    @Override
+    public void addPages() {
+        super.addPages();
+
+        _pageOne = new WizardNewProjectCreationPage("SimuLizar example project");
+        _pageOne.setTitle("SimuLizar example project");
+        _pageOne.setDescription("SimuLizar example project.");
+
+        addPage(_pageOne);
+    }
+
+    @Override
+    public void setInitializationData(IConfigurationElement config, String propertyName, Object data)
+            throws CoreException {
+        _configurationElement = config;
+
+    }
 
 }

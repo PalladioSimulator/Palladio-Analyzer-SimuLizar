@@ -21,6 +21,7 @@ import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 public abstract class TemporalCharacterizationImpl extends UniqueElementImpl implements TemporalCharacterization {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected TemporalCharacterizationImpl() {
@@ -29,6 +30,7 @@ public abstract class TemporalCharacterizationImpl extends UniqueElementImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override

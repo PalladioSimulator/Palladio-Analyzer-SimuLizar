@@ -106,7 +106,8 @@ public class SimuLizarRuntimeState {
     public void runSimulation() {
         LOGGER.debug("Starting Simulizar simulation...");
         final double simRealTimeNano = ExperimentRunner.run(model);
-        LOGGER.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
+        LOGGER.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
+                + " real time seconds");
     }
 
     public void cleanUp() {

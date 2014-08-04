@@ -18,7 +18,8 @@ import org.palladiosimulator.simulizar.pms.PmsPackage;
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.palladiosimulator.simulizar.pms.impl.IntervallImpl#getIntervall <em>Intervall</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.pms.impl.IntervallImpl#getIntervall <em>Intervall
+ * </em>}</li>
  * </ul>
  * </p>
  *
@@ -47,6 +48,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     protected IntervallImpl() {
@@ -55,6 +57,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
@@ -64,6 +67,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public double getIntervall() {
@@ -72,76 +76,84 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     public void setIntervall(double newIntervall) {
         double oldIntervall = intervall;
         intervall = newIntervall;
         if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.INTERVALL__INTERVALL, oldIntervall, intervall));
+            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.INTERVALL__INTERVALL, oldIntervall,
+                    intervall));
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public Object eGet(int featureID, boolean resolve, boolean coreType) {
         switch (featureID) {
-            case PmsPackage.INTERVALL__INTERVALL:
-                return getIntervall();
+        case PmsPackage.INTERVALL__INTERVALL:
+            return getIntervall();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public void eSet(int featureID, Object newValue) {
         switch (featureID) {
-            case PmsPackage.INTERVALL__INTERVALL:
-                setIntervall((Double)newValue);
-                return;
+        case PmsPackage.INTERVALL__INTERVALL:
+            setIntervall((Double) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public void eUnset(int featureID) {
         switch (featureID) {
-            case PmsPackage.INTERVALL__INTERVALL:
-                setIntervall(INTERVALL_EDEFAULT);
-                return;
+        case PmsPackage.INTERVALL__INTERVALL:
+            setIntervall(INTERVALL_EDEFAULT);
+            return;
         }
         super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public boolean eIsSet(int featureID) {
         switch (featureID) {
-            case PmsPackage.INTERVALL__INTERVALL:
-                return intervall != INTERVALL_EDEFAULT;
+        case PmsPackage.INTERVALL__INTERVALL:
+            return intervall != INTERVALL_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy()) return super.toString();
+        if (eIsProxy())
+            return super.toString();
 
         StringBuffer result = new StringBuffer(super.toString());
         result.append(" (intervall: ");

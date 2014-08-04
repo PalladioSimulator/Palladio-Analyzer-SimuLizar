@@ -10,8 +10,7 @@ package org.palladiosimulator.simulizar.pms;
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Temporal Characterization</b></em>'. <!-- end-user-doc -->
  *
- * <!-- begin-model-doc -->
- * Abstract base class for the intervall of the measurement specification.
+ * <!-- begin-model-doc --> Abstract base class for the intervall of the measurement specification.
  * <!-- end-model-doc -->
  *
  *
