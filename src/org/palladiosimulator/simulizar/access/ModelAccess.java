@@ -11,7 +11,6 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadPMSModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.PMSResourceSetPartition;
@@ -23,23 +22,20 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimProcess;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimProcessListener;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
- * 
- * Helper to access the pcm model (global and local), the prm model, the pms model and all SD
+ * Helper to access the PCM model (global and local), the prm model, the pms model and all SD
  * models.
  * 
  * @author Joachim Meyer, Steffen Becker
  */
 public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
-    protected static final Logger LOG = Logger.getLogger(ModelAccess.class.getName());
+    private static final Logger LOG = Logger.getLogger(ModelAccess.class.getName());
 
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
@@ -63,33 +59,23 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.currentPCMCopy = copyPCMPartition();
     }
 
+    private ModelAccess(final ModelAccess copy) {
+        super();
+        this.prmModel = copy.prmModel;
+        this.pcmPartition = copy.pcmPartition;
+        this.sdmPartition = copy.sdmPartition;
+        this.pmsPartition = copy.pmsPartition;
+        this.currentPCMCopy = copy.currentPCMCopy;
+    }
+
     @Override
-    public PCMResourceSetPartition getLocalPCMModel(final InterpreterDefaultContext context) {
-        if (context.getThread() != null) {
-            SimuComSimProcess process = context.getThread();
-            process.addProcessListener(new ISimProcessListener() {
-                @Override
-                public void notifySuspending(ISimProcess process) {
-                }
+    public IModelAccess clone() {
+        return new ModelAccess(this);
+    }
 
-                @Override
-                public void notifyResuming(ISimProcess process) {
-                }
-
-                @Override
-                public void notifyTerminated(ISimProcess process) {
-                    LOG.debug("Terminating process detected, cleaning up its model copy");
-                    process.removeProcessListener(this);
-                    modelCopies.remove(process);
-                }
-            });
-            if (!modelCopies.containsKey(process)) {
-                modelCopies.put(process, this.currentPCMCopy);
-            }
-            return modelCopies.get(process);
-        } else {
-            return this.pcmPartition;
-        }
+    @Override
+    public PCMResourceSetPartition getLocalPCMModel() {
+        return this.currentPCMCopy;
     }
 
     /**
@@ -163,7 +149,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     }
 
     @Override
-    public void reconfigurationExecuted(Collection<Notification> modelChanges) {
+    public void reconfigurationExecuted(final Collection<Notification> modelChanges) {
         LOG.debug("Reconfiguration(s) have been exectuted, taking a new copy of the global PCM for new simulation threads");
         copyPCMPartition();
     }

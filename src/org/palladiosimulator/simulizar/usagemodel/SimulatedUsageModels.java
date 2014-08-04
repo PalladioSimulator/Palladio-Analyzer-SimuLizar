@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
@@ -24,13 +23,13 @@ import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
 public class SimulatedUsageModels {
 
     private static final Logger LOG = Logger.getLogger(SimulatedUsageModels.class);
-    private final InterpreterDefaultContext context;
+    private final InterpreterDefaultContext rootContext;
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
 
-    public SimulatedUsageModels(final InterpreterDefaultContext mainContext) {
+    public SimulatedUsageModels(final InterpreterDefaultContext rootContext) {
         super();
-        this.context = mainContext;
+        this.rootContext = rootContext;
     }
 
     /**
@@ -38,55 +37,49 @@ public class SimulatedUsageModels {
      * 
      * @return a list of workload drivers
      */
-    public IWorkloadDriver[] getWorkloadDrivers(
-            final IModelAccess modelAccess) {
-        final EList<UsageScenario> usageScenarios = modelAccess.getGlobalPCMModel().getUsageModel()
+    public IWorkloadDriver[] getWorkloadDrivers() {
+        final EList<UsageScenario> usageScenarios = rootContext.getModelAccess().getGlobalPCMModel().getUsageModel()
                 .getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
-            workloads[i] = getWorkloadDriver(usageScenarios.get(i), modelAccess);
+            workloads[i] = getWorkloadDriver(usageScenarios.get(i));
         }
         return workloads;
     }
 
-    private IWorkloadDriver getWorkloadDriver(
-            final UsageScenario usageScenario,
-            final IModelAccess interpreterFactory) {
+    private IWorkloadDriver getWorkloadDriver(final UsageScenario usageScenario) {
         // get workload of scenario
         final Workload workload = usageScenario.getWorkload_UsageScenario();
 
         // determine if workload is open or closed
-        if (workload.eClass().getClassifierID() == UsagemodelPackage.CLOSED_WORKLOAD) {
+        if (workload.eClass() == UsagemodelPackage.eINSTANCE.getClosedWorkload()) {
             final de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload driver = getClosedWorkloadDriver(workload,
-                    usageScenario, interpreterFactory);
+                    usageScenario);
             closedWorkloads.put((ClosedWorkload) workload, driver);
             return driver;
-        }
-
-        if (workload.eClass().getClassifierID() == UsagemodelPackage.OPEN_WORKLOAD) {
+        } else if (workload.eClass() == UsagemodelPackage.eINSTANCE.getOpenWorkload()) {
             final de.uka.ipd.sdq.simucomframework.usage.OpenWorkload driver = getOpenWorkloadDriver(workload,
-                    usageScenario, interpreterFactory);
+                    usageScenario);
             openWorkloads.put((OpenWorkload) workload, driver);
             return driver;
+        } else {
+            throw new UnsupportedOperationException("Unsupported Workload Found");
         }
-
-        throw new UnsupportedOperationException("Unsupported Workload Found");
     }
 
     private de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload getClosedWorkloadDriver(
             final Workload workload,
-            final UsageScenario usageScenario,
-            final IModelAccess interpreterFactory) {
+            final UsageScenario usageScenario) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Create workload driver for ClosedWorkload: " + workload);
         }
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
-        final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.context.getModel(), closedWorkload
+        final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.rootContext.getModel(), closedWorkload
                 .getThinkTime_ClosedWorkload().getSpecification(), usageScenario) {
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return getScenarioRunner(interpreterFactory, usageScenario);
+                return getScenarioRunner(usageScenario);
             }
         };
 
@@ -95,38 +88,35 @@ public class SimulatedUsageModels {
     }
 
     private de.uka.ipd.sdq.simucomframework.usage.OpenWorkload getOpenWorkloadDriver(final Workload workload,
-            final UsageScenario usageScenario,
-            final IModelAccess interpreterFactory) {
+            final UsageScenario usageScenario) {
         if (LOG.isDebugEnabled()) {
             LOG.debug("Create workload driver for OpenWorkload: " + workload);
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.context.getModel(), usageScenario) {
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.rootContext.getModel(), usageScenario) {
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return getScenarioRunner(interpreterFactory, usageScenario);
+                return getScenarioRunner(usageScenario);
             }
         };
 
         // create workload driver by using given factory
         return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(
-                this.context.getModel(),
+                this.rootContext.getModel(),
                 userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
     }
 
-    private IScenarioRunner getScenarioRunner(final IModelAccess modelAccessFactory,
-            final UsageScenario scenario) {
+    private IScenarioRunner getScenarioRunner(final UsageScenario scenario) {
         return new IScenarioRunner() {
 
             @Override
             public void scenarioRunner(final SimuComSimProcess thread) {
-                final InterpreterDefaultContext myContext = new InterpreterDefaultContext(context);
-                myContext.setSimProcess(thread);
-                final UsageScenarioSwitch<Object> interpreter = new UsageScenarioSwitch<Object>(myContext,
-                        modelAccessFactory);
-                interpreter.doSwitch(scenario);
+                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(rootContext, thread);
+                final UsageScenario myUsageScenarioCopy = (UsageScenario) newContext.getModelAccess()
+                        .getLocalPCMModel().getUsageModel().eResource().getEObject(scenario.getId());
+                new UsageScenarioSwitch<Object>(newContext).doSwitch(myUsageScenarioCopy);
             }
         };
     }

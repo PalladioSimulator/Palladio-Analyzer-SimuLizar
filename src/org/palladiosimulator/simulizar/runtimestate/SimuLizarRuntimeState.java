@@ -65,7 +65,7 @@ public class SimuLizarRuntimeState {
         this.usageModels = new SimulatedUsageModels(mainContext);
 
         LOG.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers(modelAccess));
+        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
 
         initializeInterpreterListeners();
         initializeReconfiguratorEngines(configuration);
