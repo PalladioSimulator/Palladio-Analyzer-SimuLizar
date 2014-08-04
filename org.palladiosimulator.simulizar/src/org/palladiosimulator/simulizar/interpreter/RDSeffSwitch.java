@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
@@ -59,7 +58,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     private final static Logger LOG = Logger.getLogger(RDSeffSwitch.class);
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
-    private final IModelAccess modelAccessFactory;
+    private final Allocation allocation;
 
     private final SimulatedStackframe<Object> resultStackFrame;
 
@@ -75,11 +74,10 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param assemblyContext
      *            the assembly context of the component of the SEFF.
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context, final IModelAccess interpreterFactory,
-            SimulatedBasicComponentInstance basicComponentInstance) {
+    public RDSeffSwitch(final InterpreterDefaultContext context, SimulatedBasicComponentInstance basicComponentInstance) {
         super();
-        this.modelAccessFactory = interpreterFactory;
         this.context = context;
+        this.allocation = context.getModelAccess().getLocalPCMModel().getAllocation();
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
@@ -157,7 +155,6 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                 for (int i = 0; i < repetions; i++) {
                     final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
                             this.context,
-                            this.modelAccessFactory,
                             infrastructureCall.getSignature__InfrastructureCall(),
                             infrastructureCall.getRequiredRole__InfrastructureCall());
 
@@ -183,7 +180,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     @Override
     public Object caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
-                this.modelAccessFactory, externalCall.getCalledService_ExternalService(),
+                externalCall.getCalledService_ExternalService(),
                 externalCall.getRole_ExternalService());
 
         // create new stack frame for input parameter
@@ -429,7 +426,6 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                             RDSeffSwitch.this.context.getRuntimeState(), false);
                     seffContext.getAssemblyContextStack().push(parentAssemblyContext);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.modelAccessFactory,
                             RDSeffSwitch.this.basicComponentInstance);
 
                     if (LOG.isDebugEnabled()) {
@@ -538,8 +534,6 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * @param internalAction
      */
     private void interpretResourceDemands(final InternalAction internalAction) {
-        final Allocation allocation = this.modelAccessFactory.getLocalPCMModel(this.context).getAllocation();
-
         final AllocationContext allocationContext = getAllocationContext(
                 allocation,
                 this.context.getAssemblyContextStack().peek());

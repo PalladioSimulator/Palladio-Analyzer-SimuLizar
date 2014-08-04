@@ -9,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
@@ -48,20 +47,17 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
-    private final IModelAccess modelAccessFactory;
 
     /**
 	 * 
 	 */
     public RepositoryComponentSwitch(
             final InterpreterDefaultContext context,
-            final IModelAccess interpreterFactory,
             final AssemblyContext assemblyContext,
             final Signature signature,
             final ProvidedRole providedRole) {
         super();
         this.context = context;
-        this.modelAccessFactory = interpreterFactory;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
@@ -133,7 +129,6 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         }
         final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(this.providedRole);
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
-                this.modelAccessFactory,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
                 connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
         return repositoryComponentSwitch.doSwitch(connectedProvidedDelegationConnector
@@ -199,7 +194,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             SimulatedBasicComponentInstance basicComponentInstance =
                     (SimulatedBasicComponentInstance) this.context.getRuntimeState().getComponentInstanceRegistry()
                             .getComponentInstance(componentID);
-            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, this.modelAccessFactory,
+            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context,
                     basicComponentInstance);
 
             // interpret called seff

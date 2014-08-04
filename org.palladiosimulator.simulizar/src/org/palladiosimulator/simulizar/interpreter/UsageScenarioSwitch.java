@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
@@ -34,7 +33,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
-    private final IModelAccess modelAccessFactory;
 
     /**
      * Constructor
@@ -42,10 +40,9 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, final IModelAccess modelAccessFactory) {
+    public UsageScenarioSwitch(final InterpreterDefaultContext context) {
         this.context = context;
         this.transitionDeterminer = new TransitionDeterminer(context);
-        this.modelAccessFactory = modelAccessFactory;
     }
 
     /**
@@ -90,7 +87,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     @Override
     public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
         final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
-                this.modelAccessFactory, RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
+                RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 

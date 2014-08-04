@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.access;
 
 import java.util.Collection;
 
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.storydriven.storydiagrams.activities.Activity;
@@ -18,11 +17,11 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * @author Steffen Becker, Joachim Meyer
  * 
  */
-public interface IModelAccess {
+public interface IModelAccess extends Cloneable {
     // -----
     // Access to simulated processes local models/local copies of the global model
     // -----
-    public PCMResourceSetPartition getLocalPCMModel(InterpreterDefaultContext context);
+    public PCMResourceSetPartition getLocalPCMModel();
 
     // -----
     // Access to any model which is global and exists only once
@@ -34,4 +33,6 @@ public interface IModelAccess {
     public PRMModel getPRMModel();
 
     public Collection<Activity> getStoryDiagrams();
+
+    public IModelAccess clone();
 }

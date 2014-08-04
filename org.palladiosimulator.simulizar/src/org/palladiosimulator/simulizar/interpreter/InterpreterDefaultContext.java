@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
@@ -24,36 +25,27 @@ public class InterpreterDefaultContext extends Context {
     */
     private static final long serialVersionUID = -5027373777424401211L;
 
-    protected static final Logger LOG = Logger.getLogger(InterpreterDefaultContext.class.getName());
+    private static final Logger LOG = Logger.getLogger(InterpreterDefaultContext.class.getName());
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
     private final SimuLizarRuntimeState runtimeState;
 
+    private final IModelAccess modelAccess;
+
     public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
+        this.modelAccess = runtimeState.getModelAccess();
     }
 
-    /**
-     * Constrcutor
-     * 
-     * @param simuComModel
-     *            the SimuCom model.
-     * @param simProcess
-     *            the sim process of this context, means the process in which this context is used
-     */
-    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel, final SimuComSimProcess simProcess) {
-        this(simulizarModel);
-        this.setSimProcess(simProcess);
-    }
-
-    public InterpreterDefaultContext(
+    InterpreterDefaultContext(
             final Context context,
             final SimuLizarRuntimeState runtimeState,
             final boolean copyStack) {
         super(context.getModel());
+        this.modelAccess = runtimeState.getModelAccess().clone();
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
         this.stack = new SimulatedStack<Object>();
@@ -72,9 +64,11 @@ public class InterpreterDefaultContext extends Context {
      * 
      * @param context
      *            the default context from which the new default context should be created.
+     * @param thread
      */
-    public InterpreterDefaultContext(final InterpreterDefaultContext context) {
+    public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
         this(context, context.getRuntimeState(), true);
+        this.setSimProcess(thread);
     }
 
     public SimuLizarRuntimeState getRuntimeState() {
@@ -91,5 +85,9 @@ public class InterpreterDefaultContext extends Context {
 
     public Stack<AssemblyContext> getAssemblyContextStack() {
         return this.assemblyContextStack;
+    }
+
+    public IModelAccess getModelAccess() {
+        return this.modelAccess;
     }
 }
