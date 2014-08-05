@@ -39,7 +39,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
-    private final PCMResourceSetPartition currentPCMCopy;
+    private PCMResourceSetPartition currentPCMCopy;
     private final PMSResourceSetPartition pmsPartition;
     private final SDMResourceSetPartition sdmPartition;
     private final PRMModel prmModel;
@@ -149,7 +149,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     @Override
     public void reconfigurationExecuted(final Collection<Notification> modelChanges) {
         LOGGER.debug("Reconfiguration(s) have been exectuted, taking a new copy of the global PCM for new simulation threads");
-        copyPCMPartition();
+        this.currentPCMCopy = copyPCMPartition();
     }
 
 }

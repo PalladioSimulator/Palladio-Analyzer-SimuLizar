@@ -56,7 +56,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private final SimuComModel simuComModel;
     private final ICalculatorFactory calculatorFactory;
 
-    private final Map<EObject, List<TriggeredProbe>> currentTimeProbes = new HashMap<EObject, List<TriggeredProbe>>();
+    private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
     private TriggeredProbe reconfTimeProbe;
 
     /** Default EMF factory for measuring points. */
@@ -266,7 +266,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-        currentTimeProbes.put(modelElement, Collections.unmodifiableList(probeList));
+        currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
         return probeList;
     }
 
@@ -283,7 +283,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @return
      */
     protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
-        return this.currentTimeProbes.containsKey(modelElement);
+        return this.currentTimeProbes.containsKey(((Entity) modelElement).getId());
     }
 
     /**
@@ -292,8 +292,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
         this.initReponseTimeMeasurement(event);
-        if (this.currentTimeProbes.containsKey(event.getModelElement()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(event.getModelElement()).get(START_PROBE_INDEX)
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
     }
@@ -302,8 +302,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
-        if (this.currentTimeProbes.containsKey(event.getModelElement()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(event.getModelElement()).get(STOP_PROBE_INDEX)
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
     }
