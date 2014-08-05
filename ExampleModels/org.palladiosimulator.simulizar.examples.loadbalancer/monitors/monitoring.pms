@@ -5,4 +5,14 @@
       <temporalRestriction xsi:type="pms:Intervall" guid="_DFD2wPuNEeOX2Z83ChpkJQ" intervall="10.0"/>
     </measurementSpecification>
   </performanceMeasurements>
+  <performanceMeasurements guid="_e8-akBvTEeSxr4gUyq8rDQ" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint server1.measuringpoint#/">
+    <measurementSpecification guid="_fQOGsBvTEeSxr4gUyq8rDQ" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_hTmTsBvTEeSxr4gUyq8rDQ" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_Q88hABxlEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint server2.measuringpoint#/">
+    <measurementSpecification guid="_X-R1wBxlEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_as4xEBxlEeS4r6bYaQZ1eg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
 </pms:PMSModel>
