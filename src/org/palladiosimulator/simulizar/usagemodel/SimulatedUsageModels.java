@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
+import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
@@ -111,8 +112,10 @@ public class SimulatedUsageModels {
             @Override
             public void scenarioRunner(final SimuComSimProcess thread) {
                 final InterpreterDefaultContext newContext = new InterpreterDefaultContext(rootContext, thread);
-                final UsageScenario myUsageScenarioCopy = (UsageScenario) newContext.getModelAccess()
-                        .getLocalPCMModel().getUsageModel().eResource().getEObject(scenario.getId());
+                final UsageModel usageModel = newContext.getModelAccess()
+                        .getLocalPCMModel().getUsageModel();
+                final UsageScenario myUsageScenarioCopy = (UsageScenario) usageModel.eResource().getEObject(
+                        scenario.getId());
                 new UsageScenarioSwitch<Object>(newContext).doSwitch(myUsageScenarioCopy);
             }
         };
