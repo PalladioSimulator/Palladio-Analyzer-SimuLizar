@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:parameter="http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//parameter http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel" xmi:id="_Ytqs8gEqEeS7FKokKTKFow" type="PCM Usage Model" name="overload.usagemodel_diagram" measurementUnit="Pixel">
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//usagemodel" xmi:id="_Ytqs8gEqEeS7FKokKTKFow" type="PCM Usage Model" name="overload.usagemodel_diagram" measurementUnit="Pixel">
   <children xmi:type="notation:Node" xmi:id="_YwIyIAEqEeS7FKokKTKFow" type="2004">
     <children xmi:type="notation:DecorationNode" xmi:id="_YwJZMAEqEeS7FKokKTKFow" type="5017"/>
     <children xmi:type="notation:DecorationNode" xmi:id="_YwJZMQEqEeS7FKokKTKFow" type="7012">
@@ -19,23 +19,6 @@
           <children xmi:type="notation:Shape" xmi:id="_eLC7oAEqEeS7FKokKTKFow" type="3003" fontName="Segoe UI">
             <children xmi:type="notation:DecorationNode" xmi:id="_eLDisAEqEeS7FKokKTKFow" type="5004"/>
             <children xmi:type="notation:DecorationNode" xmi:id="_eLDisQEqEeS7FKokKTKFow" type="7002">
-              <children xmi:type="notation:Node" xmi:id="_gI_PAAEqEeS7FKokKTKFow" type="3012">
-                <children xmi:type="notation:DecorationNode" xmi:id="_gI_PBQEqEeS7FKokKTKFow" type="5012"/>
-                <children xmi:type="notation:BasicCompartment" xmi:id="_gI_PBgEqEeS7FKokKTKFow" type="7011">
-                  <children xmi:type="notation:Node" xmi:id="_gkT5EAEqEeS7FKokKTKFow" type="3013">
-                    <element xmi:type="parameter:VariableCharacterisation" href="overload.usagemodel#//@usageScenario_UsageModel.0/@scenarioBehaviour_UsageScenario/@actions_ScenarioBehaviour.2/@inputParameterUsages_EntryLevelSystemCall.0/@variableCharacterisation_VariableUsage.0"/>
-                    <layoutConstraint xmi:type="notation:Location" xmi:id="_gkT5EQEqEeS7FKokKTKFow"/>
-                  </children>
-                  <styles xmi:type="notation:TitleStyle" xmi:id="_gI_PBwEqEeS7FKokKTKFow" showTitle="true"/>
-                  <styles xmi:type="notation:SortingStyle" xmi:id="_gI_PCAEqEeS7FKokKTKFow"/>
-                  <styles xmi:type="notation:FilteringStyle" xmi:id="_gI_PCQEqEeS7FKokKTKFow"/>
-                </children>
-                <styles xmi:type="notation:DescriptionStyle" xmi:id="_gI_PAQEqEeS7FKokKTKFow"/>
-                <styles xmi:type="notation:FontStyle" xmi:id="_gI_PAgEqEeS7FKokKTKFow" fontName="Segoe UI"/>
-                <styles xmi:type="notation:LineStyle" xmi:id="_gI_PAwEqEeS7FKokKTKFow"/>
-                <element xmi:type="parameter:VariableUsage" href="overload.usagemodel#//@usageScenario_UsageModel.0/@scenarioBehaviour_UsageScenario/@actions_ScenarioBehaviour.2/@inputParameterUsages_EntryLevelSystemCall.0"/>
-                <layoutConstraint xmi:type="notation:Bounds" xmi:id="_gI_PBAEqEeS7FKokKTKFow"/>
-              </children>
               <styles xmi:type="notation:SortingStyle" xmi:id="_eLDisgEqEeS7FKokKTKFow"/>
               <styles xmi:type="notation:FilteringStyle" xmi:id="_eLDiswEqEeS7FKokKTKFow"/>
             </children>

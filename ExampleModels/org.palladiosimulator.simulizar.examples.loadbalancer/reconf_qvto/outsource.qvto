@@ -93,18 +93,15 @@ transformation outsource(	in prm : PRM,
 			log('Lastverteiler gefunden');
 				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
 					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer1");
 						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer2");
-						if(branch2.branchProbability < 0.5) {
+						if(branch2.branchProbability < 0.5 and branch1.branchProbability > 0.5) {
 							branch2.branchProbability := branch2.branchProbability + outsourceFactor;
 							log('Set branchProbability to ' + branch2.branchProbability.toString());
-							return true;
-						};
-						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer1");
-						if(branch1.branchProbability > 0.5) {
 							branch1.branchProbability := branch1.branchProbability - outsourceFactor;
 							log('Set branchProbability to ' + branch1.branchProbability.toString());
 							return true;
-						}
+						};
 					}
 				}
 			}
