@@ -55,6 +55,22 @@
                relative="org.eclipse.ui.editorss"
                visible="true">
          </view>
+         <view
+               id="de.uka.ipd.sdq.codegen.simudatavisualization.ExperimentsView"
+               minimized="false"
+               ratio="0.25"
+               relationship="stack"
+               relative="org.palladiosimulator.simulizar.ui.perspective.navigator"
+               visible="true">
+         </view>
+         <view
+               id="org.palladiosimulator.edp2.ui.views.navigator"
+               minimized="false"
+               ratio="0.25"
+               relationship="stack"
+               relative="org.palladiosimulator.simulizar.ui.perspective.navigator"
+               visible="true">
+         </view>
       </perspectiveExtension>
       <perspectiveExtension
             targetID="org.palladiosimulator.simulizar.ui.perspective">
