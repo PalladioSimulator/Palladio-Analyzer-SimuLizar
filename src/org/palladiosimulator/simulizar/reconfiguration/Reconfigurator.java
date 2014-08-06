@@ -133,15 +133,17 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         if (isNotificationNewMeasurement(monitoredElement)) {
             for (final IReconfigurator reconfigurator : this.reconfigurators) {
                 if (reconfigurator.checkAndExecute(monitoredElement)) {
-                    LOGGER.info("Successfully executed reconfiguration.");
+                    LOGGER.debug("Successfully executed reconfiguration.");
                 }
             }
         }
     }
 
     /**
+     * Checks whether the monitored element is not null
+     * 
      * @param monitoredElement
-     * @return
+     * @return true if the monitored element is not null
      */
     private boolean isNotificationNewMeasurement(final EObject monitoredElement) {
         return monitoredElement != null;

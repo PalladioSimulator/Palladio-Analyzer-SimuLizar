@@ -5,8 +5,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.m2m.qvt.oml.util.Log;
 
 /**
+ * QVTo Reconfigurator Logging Class
  * 
- * @author Matthias
+ * @author Matthias Becker
  *
  */
 public class QVTOReconfigurationLogger implements Log {
@@ -24,7 +25,7 @@ public class QVTOReconfigurationLogger implements Log {
 
     @Override
     public void log(String message) {
-        logger.log(Level.INFO, message);
+        logger.log(Level.DEBUG, message);
 
     }
 
