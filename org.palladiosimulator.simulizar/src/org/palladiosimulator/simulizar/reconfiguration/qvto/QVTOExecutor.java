@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,13 +59,10 @@ public class QVTOExecutor {
      * @return true if at least one reconfiguration was executed successfully
      */
     public boolean executeRules(final EObject monitoredElement) {
-
         boolean result = false;
-        // iterate over all rules and execute them
         for (final TransformationExecutor rule : this.qvtoRuleSet) {
             result |= execute(rule);
         }
-
         return result;
     }
 
@@ -87,7 +83,12 @@ public class QVTOExecutor {
     }
 
     /**
+     * Load the QVTo reconfiguration rules from the files
+     * 
+     * FIXME: Remove this and load reconfiguration rules into a blackboard.
+     * 
      * @param files
+     *            that contain the QVTo reconfiguration rules
      */
     private void loadQVTRules(final File[] files) {
         if (files != null && files.length > 0) {
@@ -103,8 +104,13 @@ public class QVTOExecutor {
     }
 
     /**
+     * Get the reconfiguration rule files.
+     * 
+     * FIXME: Remove this and load reconfiguration rules into a blackboard.
+     * 
      * @param folder
-     * @return
+     *            Filepath to the reconfiguration rules
+     * @return folder of the QVTo reconfiguration rules
      */
     private File[] getQVToFiles(File folder) {
         if (folder == null || !folder.exists()) {
@@ -122,8 +128,13 @@ public class QVTOExecutor {
     }
 
     /**
+     * Get the reconfiguration rule folder.
+     * 
+     * FIXME: Remove this and load reconfiguration rules into a blackboard.
+     * 
      * @param path
-     * @return
+     *            String to the reconfiguration rules
+     * @return folder of the QVTo reconfiguration rules
      */
     private File getFolder(String path) {
         // add file protocol only if necessary
@@ -158,18 +169,10 @@ public class QVTOExecutor {
         // define the transformation input and outputs
         List<PCMModelElementMeasurement> runtimeModel = this.modelAccess.getPRMModel().getPcmModelElementMeasurements();
         List<EObject> pcmAllocation = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel().getAllocation());
-        List<EObject> pcmSystem = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel().getSystem());
-        List<EObject> pcmResources = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel()
-                .getResourceTypeRepository());
-        List<EObject> pcmRepository = new ArrayList<EObject>();
-        pcmRepository.addAll(this.modelAccess.getGlobalPCMModel().getRepositories());
 
         // create the input and inout extents with its initial contents
-        ModelExtent input = new BasicModelExtent(runtimeModel);
-        ModelExtent inoutRepository = new BasicModelExtent(pcmRepository);
-        ModelExtent inoutSystem = new BasicModelExtent(pcmSystem);
+        ModelExtent inRuntimeModel = new BasicModelExtent(runtimeModel);
         ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
-        ModelExtent inoutResources = new BasicModelExtent(pcmResources);
 
         // setup the execution environment details ->
         // configuration properties, LOGGER, monitor object etc.
@@ -179,12 +182,11 @@ public class QVTOExecutor {
 
         // run the transformation assigned to the executor with the given
         // input and output and execution context
-        ExecutionDiagnostic result = executor.execute(exContext, input, inoutRepository, inoutSystem, inoutAllocation,
-                inoutResources);
+        ExecutionDiagnostic result = executor.execute(exContext, inRuntimeModel, inoutAllocation);
 
         // check the result for success
         if (result.getSeverity() == Diagnostic.OK) {
-            LOGGER.log(Level.INFO, "Rule application successfull with message: " + result.getMessage());
+            LOGGER.log(Level.DEBUG, "Rule successfully executed with message: " + result.getMessage());
             return true;
         } else {
             LOGGER.log(Level.WARN, "Rule application failed with message: " + result.getMessage());
