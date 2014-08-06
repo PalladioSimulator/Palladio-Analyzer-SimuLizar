@@ -8,14 +8,14 @@
       <steps_Behaviour xsi:type="seff:StartAction" id="_yAN2oQEnEeS7FKokKTKFow" entityName="start" successor_AbstractAction="_m2PcEAEoEeS7FKokKTKFow"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_yAN2ogEnEeS7FKokKTKFow" entityName="stop" predecessor_AbstractAction="_m2PcEAEoEeS7FKokKTKFow"/>
       <steps_Behaviour xsi:type="seff:BranchAction" id="_m2PcEAEoEeS7FKokKTKFow" entityName="adaptiveRandomLoadBalancing" predecessor_AbstractAction="_yAN2oQEnEeS7FKokKTKFow" successor_AbstractAction="_yAN2ogEnEeS7FKokKTKFow">
-        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_ridTkAEoEeS7FKokKTKFow" entityName="delegateToServer1" branchProbability="0.9">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_ridTkAEoEeS7FKokKTKFow" entityName="delegateToServer1" branchProbability="1.0">
           <branchBehaviour_BranchTransition id="_riehsAEoEeS7FKokKTKFow">
             <steps_Behaviour xsi:type="seff:StartAction" id="_riehsQEoEeS7FKokKTKFow" successor_AbstractAction="_8nlBcAEoEeS7FKokKTKFow"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_riehsgEoEeS7FKokKTKFow" predecessor_AbstractAction="_8nlBcAEoEeS7FKokKTKFow"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_8nlBcAEoEeS7FKokKTKFow" predecessor_AbstractAction="_riehsQEoEeS7FKokKTKFow" successor_AbstractAction="_riehsgEoEeS7FKokKTKFow" calledService_ExternalService="_f0xPUAEmEeS7FKokKTKFow" role_ExternalService="_WDUjYAEmEeS7FKokKTKFow"/>
           </branchBehaviour_BranchTransition>
         </branches_Branch>
-        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_tjFukAEoEeS7FKokKTKFow" entityName="delegateToServer2" branchProbability="0.1">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_tjFukAEoEeS7FKokKTKFow" entityName="delegateToServer2">
           <branchBehaviour_BranchTransition id="_tjFukQEoEeS7FKokKTKFow">
             <steps_Behaviour xsi:type="seff:StartAction" id="_tjFukgEoEeS7FKokKTKFow" successor_AbstractAction="_-fSxAAEoEeS7FKokKTKFow"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_tjFukwEoEeS7FKokKTKFow" predecessor_AbstractAction="_-fSxAAEoEeS7FKokKTKFow"/>
@@ -32,7 +32,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_xwxh4QEmEeS7FKokKTKFow" entityName="stop" predecessor_AbstractAction="_7FXSsAEmEeS7FKokKTKFow"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_7FXSsAEmEeS7FKokKTKFow" entityName="processData" predecessor_AbstractAction="_xwxh4AEmEeS7FKokKTKFow" successor_AbstractAction="_xwxh4QEmEeS7FKokKTKFow">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand specification="100"/>
+          <specification_ParametericResourceDemand specification="300"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
