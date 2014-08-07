@@ -65,19 +65,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering BasicComponent: " + basicComponent);
         }
-        FQComponentID fqID = computeFQComponentID();
-        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
-                LOGGER.debug("FQComponentID is " + fqID);
-            }
-            this.context
-                    .getRuntimeState()
-                    .getComponentInstanceRegistry()
-                    .addComponentInstance(
-                            new SimulatedBasicComponentInstance(this.context.getRuntimeState(), fqID, basicComponent
-                                    .getPassiveResource_BasicComponent()));
-        }
+
         // create new stack frame for component parameters
         final SimulatedStack<Object> stack = this.context.getStack();
         final SimulatedStackframe<Object> componentParameterStackFrame = SimulatedStackHelper
@@ -88,6 +76,20 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         // create new stack frame for assembly context component parameters
         SimulatedStackHelper.createAndPushNewStackFrame(stack,
                 this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
+
+        FQComponentID fqID = computeFQComponentID();
+        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
+                LOGGER.debug("FQComponentID is " + fqID);
+            }
+            this.context
+                    .getRuntimeState()
+                    .getComponentInstanceRegistry()
+                    .addComponentInstance(
+                            new SimulatedBasicComponentInstance(this.context, fqID, basicComponent
+                                    .getPassiveResource_BasicComponent()));
+        }
 
         // get seffs for call
         final List<ServiceEffectSpecification> calledSeffs = this.getSeffsForCall(
