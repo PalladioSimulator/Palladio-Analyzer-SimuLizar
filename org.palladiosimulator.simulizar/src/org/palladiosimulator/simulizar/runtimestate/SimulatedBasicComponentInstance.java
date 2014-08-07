@@ -18,16 +18,18 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
     private final List<PassiveResource> passiveResourcesList;
     private final Map<String, IPassiveResource> passiveResourcesMap;
 
-    public SimulatedBasicComponentInstance(final SimuLizarRuntimeState runtimeState, final FQComponentID fqID,
+    public SimulatedBasicComponentInstance(final InterpreterDefaultContext context, final FQComponentID fqID,
             final List<PassiveResource> passiveResources) {
-        super(runtimeState, fqID);
+        super(context.getRuntimeState(), fqID);
         this.passiveResourcesList = passiveResources;
 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
         for (PassiveResource passiveResource : passiveResources) {
-            final long initialCount = StackContext.evaluateStatic(passiveResource.getCapacity_PassiveResource()
-                    .getSpecification(), Integer.class);
+            final long initialCount = StackContext.evaluateStatic(
+                    passiveResource.getCapacity_PassiveResource().getSpecification(),
+                    Integer.class,
+                    context.getStack().currentStackFrame());
             final IPassiveResource simulatedResource = new SimSimpleFairPassiveResource(passiveResource, myAssCtx,
                     getRuntimeState().getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
