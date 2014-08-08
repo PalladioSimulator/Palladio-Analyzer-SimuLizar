@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -407,8 +408,11 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         // for each create process, and add to array of processes
 
         for (final ForkedBehaviour forkedBehaviour : forkedBehaviours) {
-            final AssemblyContext parentAssemblyContext = this.context.getAssemblyContextStack().peek();
-            processes.add(new ForkedBehaviourProcess(this.context, parentAssemblyContext.getId(), isAsync) {
+            @SuppressWarnings("unchecked")
+            final Stack<AssemblyContext> parentAssemblyContextStack = (Stack<AssemblyContext>) this.context
+                    .getAssemblyContextStack().clone();
+            processes.add(new ForkedBehaviourProcess(this.context, this.context.getAssemblyContextStack().peek()
+                    .getId(), isAsync) {
 
                 @Override
                 protected void executeBehaviour() {
@@ -420,7 +424,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                      */
                     final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
                             RDSeffSwitch.this.context.getRuntimeState(), false);
-                    seffContext.getAssemblyContextStack().push(parentAssemblyContext);
+                    seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.basicComponentInstance);
 
