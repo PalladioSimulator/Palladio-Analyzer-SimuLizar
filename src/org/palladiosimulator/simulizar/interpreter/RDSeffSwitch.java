@@ -148,9 +148,9 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
             for (InfrastructureCall infrastructureCall : internalAction.getInfrastructureCall__Action()) {
                 final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-                final int repetions = StackContext.evaluateStatic(infrastructureCall
+                final int repetitions = StackContext.evaluateStatic(infrastructureCall
                         .getNumberOfCalls__InfrastructureCall().getSpecification(), Integer.class, currentStackFrame);
-                for (int i = 0; i < repetions; i++) {
+                for (int i = 0; i < repetitions; i++) {
                     final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
                             this.context, infrastructureCall.getSignature__InfrastructureCall(),
                             infrastructureCall.getRequiredRole__InfrastructureCall());
