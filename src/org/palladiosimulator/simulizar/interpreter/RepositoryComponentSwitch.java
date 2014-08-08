@@ -141,12 +141,22 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      */
     @Override
     public SimulatedStackframe<Object> caseProvidedRole(final ProvidedRole providedRole) {
-        this.context.getAssemblyContextStack().push(this.instanceAssemblyContext);
+        this.context.getAssemblyContextStack().push(
+                this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT ?
+                        generateSystemAssemblyContext(providedRole) :
+                        this.instanceAssemblyContext);
 
         final SimulatedStackframe<Object> result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
 
         this.context.getAssemblyContextStack().pop();
 
+        return result;
+    }
+
+    private AssemblyContext generateSystemAssemblyContext(final ProvidedRole providedRole2) {
+        final AssemblyContext result = CompositionFactory.eINSTANCE.createAssemblyContext();
+        result.setEntityName(providedRole.getProvidingEntity_ProvidedRole().getEntityName());
+        result.setId(SYSTEM_ASSEMBLY_CONTEXT.getId());
         return result;
     }
 
@@ -200,6 +210,10 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         }
     }
 
+    private FQComponentID computeFQComponentID() {
+        return new FQComponentID(computeAssemblyContextPath());
+    }
+
     private List<AssemblyContext> computeAssemblyContextPath() {
         final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
         final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
@@ -207,10 +221,6 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             result.add(stack.get(i));
         }
         return result;
-    }
-
-    private FQComponentID computeFQComponentID() {
-        return new FQComponentID(computeAssemblyContextPath());
     }
 
     /**

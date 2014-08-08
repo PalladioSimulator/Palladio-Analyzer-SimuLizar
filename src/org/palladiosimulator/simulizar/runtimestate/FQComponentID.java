@@ -30,7 +30,9 @@ public class FQComponentID {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((assembyContextPath == null) ? 0 : assembyContextPath.hashCode());
+        for (final AssemblyContext ctx : assembyContextPath) {
+            result = prime * result + ctx.getId().hashCode();
+        }
         return result;
     }
 
@@ -55,8 +57,14 @@ public class FQComponentID {
             if (other.assembyContextPath != null) {
                 return false;
             }
-        } else if (!assembyContextPath.equals(other.assembyContextPath)) {
-            return false;
+        } else {
+            if (this.assembyContextPath.size() != other.assembyContextPath.size())
+                return false;
+            for (int i = 0; i < assembyContextPath.size(); i++) {
+                if (!this.assembyContextPath.get(i).getId().equals(other.assembyContextPath.get(i).getId())) {
+                    return false;
+                }
+            }
         }
         return true;
     }
