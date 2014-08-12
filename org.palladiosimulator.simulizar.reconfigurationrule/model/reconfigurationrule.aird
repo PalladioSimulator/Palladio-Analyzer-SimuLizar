@@ -316,7 +316,7 @@
           </cache>
         </data>
       </ownedAnnotationEntries>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_VSwokB4DEeS2-8H7GGCgdA" name="ReconfigurationRuleSet" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4d026a3a{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocation}' must be set&#xA;ERROR : The typed element must have a type" outgoingEdges="_a_kaYB4DEeS2-8H7GGCgdA" width="12" height="10">
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_VSwokB4DEeS2-8H7GGCgdA" name="ReconfigurationRuleSet" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4377e40a{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocationResource}' must be set&#xA;ERROR : The typed element must have a type" outgoingEdges="_a_kaYB4DEeS2-8H7GGCgdA" width="12" height="10">
         <target xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//ReconfigurationRuleSet"/>
         <semanticElements xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//ReconfigurationRuleSet"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -329,7 +329,7 @@
           <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_OO4upB4uEeS2-8H7GGCgdA" red="255" green="252" blue="216"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_OOuWkB4uEeS2-8H7GGCgdA" name="controllerAllocationResource" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4d026a3a{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocation}' must be set&#xA;ERROR : The typed element must have a type">
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_OOuWkB4uEeS2-8H7GGCgdA" name="controllerAllocationResource" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4377e40a{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocationResource}' must be set&#xA;ERROR : The typed element must have a type">
           <target xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocationResource"/>
           <semanticElements xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//ReconfigurationRuleSet/controllerAllocationResource"/>
           <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_OOvksB4uEeS2-8H7GGCgdA" labelAlignment="LEFT" description="_OOu9oh4uEeS2-8H7GGCgdA">
@@ -340,7 +340,7 @@
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
         </ownedElements>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_X73_4B4DEeS2-8H7GGCgdA" name="ReconfigurationRule" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@67174f09{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand}' must be set&#xA;ERROR : The typed element must have a type" outgoingEdges="_rN-i0B7sEeSdNdlJLW6QSg _djjkwB7tEeSdNdlJLW6QSg" incomingEdges="_a_kaYB4DEeS2-8H7GGCgdA" width="12" height="10">
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_X73_4B4DEeS2-8H7GGCgdA" name="ReconfigurationRule" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4884d951{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand}' must be set&#xA;ERROR : The typed element must have a type" outgoingEdges="_rN-i0B7sEeSdNdlJLW6QSg _djjkwB7tEeSdNdlJLW6QSg" incomingEdges="_a_kaYB4DEeS2-8H7GGCgdA" width="12" height="10">
         <target xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//ReconfigurationRule"/>
         <semanticElements xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//ReconfigurationRule"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -363,7 +363,7 @@
           </ownedStyle>
           <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']/@subNodeMappings[name='EC%20EAttribute']"/>
         </ownedElements>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_br300B4FEeS2-8H7GGCgdA" name="resourceDemand" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@67174f09{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand}' must be set&#xA;ERROR : The typed element must have a type">
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_br300B4FEeS2-8H7GGCgdA" name="resourceDemand" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@4884d951{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand}' must be set&#xA;ERROR : The typed element must have a type">
           <target xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand"/>
           <semanticElements xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//ReconfigurationRule/resourceDemand"/>
           <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_br5C8B4FEeS2-8H7GGCgdA" labelAlignment="LEFT" description="_br4b4h4FEeS2-8H7GGCgdA">
@@ -447,7 +447,7 @@
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
       </ownedDiagramElements>
-      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_B4l5kB7tEeSdNdlJLW6QSg" name="Rule" tooltipText="" incomingEdges="_Mnd3EB7tEeSdNdlJLW6QSg _NM2cEB7tEeSdNdlJLW6QSg _djjkwB7tEeSdNdlJLW6QSg" width="12" height="10">
+      <ownedDiagramElements xmi:type="diagram:DNodeList" xmi:id="_B4l5kB7tEeSdNdlJLW6QSg" name="Rule" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@889d093{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//Rule/uri}' must be set&#xA;ERROR : The typed element must have a type" incomingEdges="_Mnd3EB7tEeSdNdlJLW6QSg _NM2cEB7tEeSdNdlJLW6QSg _djjkwB7tEeSdNdlJLW6QSg" width="12" height="10">
         <target xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//Rule"/>
         <semanticElements xmi:type="ecore:EClass" href="reconfigurationrule.ecore#//Rule"/>
         <arrangeConstraints>KEEP_LOCATION</arrangeConstraints>
@@ -460,7 +460,7 @@
           <foregroundColor xmi:type="viewpoint:RGBValues" xmi:id="_T80UBB7tEeSdNdlJLW6QSg" red="228" green="228" blue="228"/>
         </ownedStyle>
         <actualMapping xmi:type="description_1:ContainerMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@containerMappings[name='EC%20EClass']"/>
-        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_T8p78B7tEeSdNdlJLW6QSg" name="uri" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@7d94c39b{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//Rule/newAttribute}' must be set&#xA;ERROR : The typed element must have a type">
+        <ownedElements xmi:type="diagram:DNodeListElement" xmi:id="_T8p78B7tEeSdNdlJLW6QSg" name="uri" tooltipText="&#xA;ERROR : The required feature 'eAttributeType' of 'org.eclipse.emf.ecore.impl.EAttributeImpl@889d093{platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//Rule/uri}' must be set&#xA;ERROR : The typed element must have a type">
           <target xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//Rule/uri"/>
           <semanticElements xmi:type="ecore:EAttribute" href="reconfigurationrule.ecore#//Rule/uri"/>
           <ownedStyle xmi:type="diagram:BundledImage" xmi:id="_T8rKEx7tEeSdNdlJLW6QSg" labelAlignment="LEFT" description="_T8rKER7tEeSdNdlJLW6QSg">
