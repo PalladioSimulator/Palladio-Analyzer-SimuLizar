@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
-import static org.palladiosimulator.simulizar.utils.PMSUtil.isMonitored;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -27,8 +25,10 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
+import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
@@ -76,6 +76,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfTimeProbe = null;
+
+        initReponseTimeMeasurement();
     }
 
     /*
@@ -166,28 +168,35 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param <T>
      *            extends Entity
      */
-    private <T extends Entity> void initReponseTimeMeasurement(final ModelElementPassedEvent<T> event) {
-        final EObject modelElement = event.getModelElement();
-        final MeasurementSpecification measurementSpecification = isMonitored(pmsModel, modelElement,
-                PerformanceMetricEnum.RESPONSE_TIME);
+    private <T extends Entity> void initReponseTimeMeasurement() {
 
-        if (elementShouldBeMonitored(measurementSpecification) && !entityIsAlreadyInstrumented(modelElement)) {
-            final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
-            final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(createMeasuringPoint(event),
-                    probeList);
+        if (pmsModel != null) {
 
-            try {
-                final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel, this.prmModel,
-                        measurementSpecification, modelElement);
-                calculator.addObserver(aggregator);
-            } catch (final UnsupportedOperationException e) {
-                LOGGER.error(e);
-                throw new RuntimeException(e);
+            for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
+
+                final MeasuringPoint mp = performanceMeasurement.getMeasuringPoint();
+                final EObject modelElement = PMSUtil.getMonitoredElements(mp);
+                final MeasurementSpecification measurementSpecification = PMSUtil.isMonitored(pmsModel, modelElement,
+                        PerformanceMetricEnum.RESPONSE_TIME);
+
+                final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
+                final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(mp, probeList);
+
+                try {
+                    final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel,
+                            this.prmModel, measurementSpecification, modelElement);
+                    calculator.addObserver(aggregator);
+                } catch (final UnsupportedOperationException e) {
+                    LOGGER.error(e);
+                    throw new RuntimeException(e);
+                }
             }
         }
+
     }
 
     /**
+     * FIXME This method is not required anymore IF all types measuring points can be modeled
      * 
      * @param modelElement
      *            for which a MeasuringPoint shall be created
@@ -195,8 +204,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      *            extends Entity
      * @return MeasuringPoint for modelElement
      */
-    private <T extends Entity> MeasuringPoint createMeasuringPoint(final ModelElementPassedEvent<T> event) {
-        final EObject modelElement = event.getModelElement();
+    private <T extends Entity> MeasuringPoint createMeasuringPoint(EObject modelElement) {
 
         MeasuringPoint result;
         if (modelElement == null) {
@@ -214,7 +222,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             final ExternalCallAction externalCallAction = (ExternalCallAction) modelElement;
 
             AssemblyOperationMeasuringPoint mp = this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
-            mp.setAssembly(((RDSEFFElementPassedEvent<ExternalCallAction>) event).getAssemblyContext());
+            // FIXME How can I get the AssemblyContext from the monitored Element in advanced
+            // (before running the simulation)
+            // mp.setAssembly(((RDSEFFElementPassedEvent<ExternalCallAction>)
+            // event).getAssemblyContext());
             mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
             mp.setRole(externalCallAction.getRole_ExternalService());
             result = mp;
@@ -259,9 +270,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param simuComModel
      * @return list with start and stop probe
      */
-    @SuppressWarnings({
-            "rawtypes", "unchecked"
-    })
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
@@ -272,9 +281,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     /**
      * @param measurementSpecification
-     * @return
+     *            the measurement specification to check
+     * @return true if it is monitored
      */
-    protected boolean elementShouldBeMonitored(final MeasurementSpecification measurementSpecification) {
+    private boolean isMonitored(final MeasurementSpecification measurementSpecification) {
         return measurementSpecification != null;
     }
 
@@ -291,7 +301,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
-        this.initReponseTimeMeasurement(event);
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
             this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
