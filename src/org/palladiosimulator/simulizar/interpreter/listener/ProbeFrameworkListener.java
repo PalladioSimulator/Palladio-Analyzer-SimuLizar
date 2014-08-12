@@ -171,21 +171,30 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
             for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
 
-                final MeasuringPoint mp = performanceMeasurement.getMeasuringPoint();
-                final EObject modelElement = PMSUtil.getMonitoredElements(mp);
-                final MeasurementSpecification measurementSpecification = PMSUtil.isMonitored(pmsModel, modelElement,
-                        PerformanceMetricEnum.RESPONSE_TIME);
+                final MeasuringPoint measuringPoint = performanceMeasurement.getMeasuringPoint();
+                final EObject modelElement = PMSUtil.getMonitoredElement(measuringPoint);
 
-                final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
-                final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(mp, probeList);
+                MeasurementSpecification measurementSpecification = null;
+                for (final MeasurementSpecification measurementSpec : performanceMeasurement
+                        .getMeasurementSpecification()) {
+                    if (measurementSpec.getPerformanceMetric() == PerformanceMetricEnum.RESPONSE_TIME) {
+                        measurementSpecification = measurementSpec;
+                    }
+                }
 
-                try {
-                    final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel,
-                            this.prmModel, measurementSpecification, modelElement);
-                    calculator.addObserver(aggregator);
-                } catch (final UnsupportedOperationException e) {
-                    LOGGER.error(e);
-                    throw new RuntimeException(e);
+                if (measurementSpecification != null) {
+                    final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
+                    final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint,
+                            probeList);
+
+                    try {
+                        final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel,
+                                this.prmModel, measurementSpecification, modelElement);
+                        calculator.addObserver(aggregator);
+                    } catch (final UnsupportedOperationException e) {
+                        LOGGER.error(e);
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
@@ -260,7 +269,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param simuComModel
      * @return list with start and stop probe
      */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+    @SuppressWarnings({
+            "rawtypes", "unchecked"
+    })
     protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
