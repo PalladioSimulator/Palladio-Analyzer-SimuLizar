@@ -54,6 +54,45 @@ public final class PMSUtil {
         return null;
     }
 
+    /**
+     * Method checks if given element should be monitored with given performance metric. If yes, it
+     * will return the corresponding MeasurementSpecification, otherwise null.
+     * 
+     * @param element
+     *            the element to be checked.
+     * @param performanceMetric
+     *            the performance metric.
+     * @return the MeasurementSpecification, if element should be monitored according to given
+     *         performance metric, otherwise null
+     */
+    public static EObject getMonitoredElements(final MeasuringPoint mp) {
+
+        EObject eobject = getEObjectFromPCMMeasuringPoint(mp);
+
+        if (eobject == null) {
+            eobject = getEObjectFromGeneralMeasuringPoint(mp);
+            if (eobject == null) {
+                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint");
+            }
+        }
+        return eobject;
+    }
+
+    private static EObject getEObjectFromGeneralMeasuringPoint(MeasuringPoint mp) {
+        return new MeasuringpointSwitch<EObject>() {
+            @Override
+            public EObject caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
+                return ModelsAtRuntime.loadModel(object.getResourceURI());
+            }
+        }.doSwitch(mp);
+    }
+
+    private static EObject getEObjectFromPCMMeasuringPoint(MeasuringPoint mp) {
+
+        return new PcmmeasuringpointSwitch<EObject>() {
+        }.doSwitch(mp);
+    }
+
     private static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
