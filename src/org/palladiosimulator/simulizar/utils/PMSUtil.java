@@ -24,12 +24,21 @@ import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 
+/**
+ * Util methods for the monitoring model
+ * 
+ * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
+ * 
+ */
+
 public final class PMSUtil {
 
     /**
      * Method checks if given element should be monitored with given performance metric. If yes, it
      * will return the corresponding MeasurementSpecification, otherwise null.
      * 
+     * @param pmsModel
+     *            the monitoring model
      * @param element
      *            the element to be checked.
      * @param performanceMetric
@@ -55,15 +64,11 @@ public final class PMSUtil {
     }
 
     /**
-     * Method checks if given element should be monitored with given performance metric. If yes, it
-     * will return the corresponding MeasurementSpecification, otherwise null.
+     * Method returns the monitored element EObject for a measuring point.
      * 
-     * @param element
-     *            the element to be checked.
-     * @param performanceMetric
-     *            the performance metric.
-     * @return the MeasurementSpecification, if element should be monitored according to given
-     *         performance metric, otherwise null
+     * @param mp
+     *            the measuring point for which the monitored element shall be returned
+     * @return the monitored element
      */
     public static EObject getMonitoredElements(final MeasuringPoint mp) {
 
@@ -78,19 +83,33 @@ public final class PMSUtil {
         return eobject;
     }
 
-    private static EObject getEObjectFromGeneralMeasuringPoint(MeasuringPoint mp) {
+    /**
+     * Returns the measured element EObject for a general measuring point.
+     * 
+     * @param measuringPoint
+     *            the measuring point
+     * @return the measured element
+     */
+    private static EObject getEObjectFromGeneralMeasuringPoint(MeasuringPoint measuringPoint) {
         return new MeasuringpointSwitch<EObject>() {
             @Override
             public EObject caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
                 return ModelsAtRuntime.loadModel(object.getResourceURI());
             }
-        }.doSwitch(mp);
+        }.doSwitch(measuringPoint);
     }
 
-    private static EObject getEObjectFromPCMMeasuringPoint(MeasuringPoint mp) {
+    /**
+     * Returns the measured element EObject for a PCM measuring point.
+     * 
+     * @param measuringPoint
+     *            the measuring point
+     * @return the measured element
+     */
+    private static EObject getEObjectFromPCMMeasuringPoint(MeasuringPoint measuringPoint) {
 
         return new PcmmeasuringpointSwitch<EObject>() {
-        }.doSwitch(mp);
+        }.doSwitch(measuringPoint);
     }
 
     private static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
