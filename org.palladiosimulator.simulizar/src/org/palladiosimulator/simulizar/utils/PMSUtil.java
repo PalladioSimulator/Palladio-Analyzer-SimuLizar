@@ -70,7 +70,7 @@ public final class PMSUtil {
      *            the measuring point for which the monitored element shall be returned
      * @return the monitored element
      */
-    public static EObject getMonitoredElements(final MeasuringPoint mp) {
+    public static EObject getMonitoredElement(final MeasuringPoint mp) {
 
         EObject eobject = getEObjectFromPCMMeasuringPoint(mp);
 
@@ -109,6 +109,12 @@ public final class PMSUtil {
     private static EObject getEObjectFromPCMMeasuringPoint(MeasuringPoint measuringPoint) {
 
         return new PcmmeasuringpointSwitch<EObject>() {
+
+            @Override
+            public EObject caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
+                return object.getUsageScenario();
+            }
+
         }.doSwitch(measuringPoint);
     }
 
@@ -140,10 +146,9 @@ public final class PMSUtil {
                     ResourceContainer resourceContainer = (ResourceContainer) element;
                     return resourceContainer.getId().equals(
                             activeResource.getResourceContainer_ProcessingResourceSpecification().getId());
-                } else {
-                    throw new IllegalArgumentException(
-                            "ResourceContainer is the only supported ActiveResourceMeasuringPoint");
                 }
+
+                return false;
             }
 
             @Override
@@ -153,9 +158,9 @@ public final class PMSUtil {
                     return externalCallAction.getCalledService_ExternalService().getId()
                             .equals(object.getOperationSignature().getId())
                             && externalCallAction.getRole_ExternalService().getId().equals(object.getRole().getId());
-                } else {
-                    throw new IllegalArgumentException("Unsupported element for a AssemblyOperationMeasuringPoint");
                 }
+
+                return false;
             }
 
             @Override
@@ -176,9 +181,9 @@ public final class PMSUtil {
                             .equals(object.getOperationSignature().getId())
                             && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
                                     .equals(object.getRole().getId());
-                } else {
-                    throw new IllegalArgumentException("Unsupported element for a SystemOperationMeasuringPoint");
                 }
+
+                return false;
             }
 
             @Override
@@ -188,7 +193,7 @@ public final class PMSUtil {
                     return usageScenario.getId().equals(object.getUsageScenario().getId());
                 }
 
-                throw new IllegalArgumentException("Unknown UsageScenarioMeasuringPoint");
+                return false;
             }
 
         }
