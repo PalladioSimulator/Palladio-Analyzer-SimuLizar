@@ -161,14 +161,11 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initializes response time measurement.
+     * Initialize the response time measurements. First gets the monitored elements from the PMS
+     * model, create according calculators, and aggregators.
      * 
-     * @param event
-     *            which was fired
-     * @param <T>
-     *            extends Entity
      */
-    private <T extends Entity> void initReponseTimeMeasurement() {
+    private void initReponseTimeMeasurement() {
 
         if (pmsModel != null) {
 
@@ -231,13 +228,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             result = mp;
         } else if (modelElement instanceof EntryLevelSystemCall) {
             final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) modelElement;
-
-            // final StringMeasuringPoint mp = measuringpointFactory.createStringMeasuringPoint();
-            // mp.setMeasuringPoint("UNKOWN SYSTEM " + "Role: "
-            // + entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getEntityName() +
-            // "Operation: "
-            // +
-            // entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getEntityName());
 
             final SystemOperationMeasuringPoint mp = this.pcmMeasuringpointFactory
                     .createSystemOperationMeasuringPoint();
