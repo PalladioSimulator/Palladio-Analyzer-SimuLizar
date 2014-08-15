@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.utils;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
@@ -22,7 +23,6 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
-import de.uka.ipd.sdq.simucomframework.ModelsAtRuntime;
 
 /**
  * Util methods for the monitoring model
@@ -94,7 +94,7 @@ public final class PMSUtil {
         return new MeasuringpointSwitch<EObject>() {
             @Override
             public EObject caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
-                return ModelsAtRuntime.loadModel(object.getResourceURI());
+                return EMFLoadHelper.loadModel(object.getResourceURI());
             }
         }.doSwitch(measuringPoint);
     }
@@ -207,7 +207,7 @@ public final class PMSUtil {
             @Override
             public Boolean caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
                 final String measuringPointResourceURI = object.getResourceURI();
-                final String elementResourceFragment = ModelsAtRuntime.getResourceFragment(element);
+                final String elementResourceFragment = EMFLoadHelper.getResourceFragment(element);
                 return measuringPointResourceURI.endsWith(elementResourceFragment);
             }
 
