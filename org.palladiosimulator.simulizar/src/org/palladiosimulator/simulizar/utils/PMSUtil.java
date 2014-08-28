@@ -9,6 +9,8 @@ import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitc
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
@@ -111,6 +113,11 @@ public final class PMSUtil {
         return new PcmmeasuringpointSwitch<EObject>() {
 
             @Override
+            public EObject caseEntryLevelSystemCallMeasuringPoint(EntryLevelSystemCallMeasuringPoint object) {
+                return object.getEntryLevelSystemCall();
+            }
+
+            @Override
             public EObject caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
                 return object.getUsageScenario();
             }
@@ -166,6 +173,26 @@ public final class PMSUtil {
             @Override
             public Boolean caseAssemblyPassiveResourceMeasuringPoint(AssemblyPassiveResourceMeasuringPoint object) {
                 throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
+            }
+
+            @Override
+            public Boolean caseEntryLevelSystemCallMeasuringPoint(EntryLevelSystemCallMeasuringPoint object) {
+                if (element instanceof EntryLevelSystemCall) {
+                    final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) element;
+                    return entryLevelSystemCall.getId().equals(object.getEntryLevelSystemCall().getId());
+                }
+
+                return false;
+            }
+
+            @Override
+            public Boolean caseExternalCallActionMeasuringPoint(ExternalCallActionMeasuringPoint object) {
+                if (element instanceof ExternalCallAction) {
+                    final ExternalCallAction externalCallAction = (ExternalCallAction) element;
+                    return externalCallAction.getId().equals(object.getExternalCall().getId());
+                }
+
+                return false;
             }
 
             @Override
