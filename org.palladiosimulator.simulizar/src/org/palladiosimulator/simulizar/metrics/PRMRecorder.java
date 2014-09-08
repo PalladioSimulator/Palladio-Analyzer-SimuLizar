@@ -8,10 +8,10 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
 /**
- * Recorder for saving measurement of a measurement specification and pcm model element in prm
+ * AbstractRecorder for saving measurement of a measurement specification and pcm model element in prm
  * model. Can be used as base class for aggregators or performance metrics.
  * 
- * @author Joachim Meyer TODO: Should be a _Real_ Recorder, i.e., Recorder from ProbeFramework
+ * @author Joachim Meyer TODO: Should be a _Real_ AbstractRecorder, i.e., AbstractRecorder from ProbeFramework
  */
 public abstract class PRMRecorder {
     private final PCMModelElementMeasurement pcmModelElementMeasurement;
