@@ -117,7 +117,7 @@ public class SimuLizarRuntimeState {
         reconfigurator.stopListening();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (IModelSyncer modelSyncer : modelSyncers) {
+        for (final IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.stopSyncer();
         }
     }
