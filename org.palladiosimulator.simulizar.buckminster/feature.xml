@@ -27,6 +27,7 @@
       <discovery label="EDP2" url="http://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
       <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/releases/3.4.0"/>
       <discovery label="ScaleDL Usage Evolution" url="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
+      <discovery label="Limbo" url="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
       <discovery label="Service Level Objective (SLO) Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/servicelevelobjectives/nightly/"/>
       <discovery label="Palladio" url="http://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>

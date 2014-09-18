@@ -30,6 +30,8 @@
   
   <rm:locator pattern="^org\.scaledl\.usageevolution.*" searchPathRef="UsageEvolution" failOnError="false"/>
   
+  <rm:locator pattern="^dlim.*" searchPathRef="Limbo" failOnError="false"/>
+  
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
@@ -142,6 +144,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="Limbo">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
     </rm:provider>
   </rm:searchPath>
   
