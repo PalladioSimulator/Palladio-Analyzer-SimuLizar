@@ -34,5 +34,8 @@ Export-Package: org.palladiosimulator.simulizar.launcher,
  org.palladiosimulator.simulizar.launcher.partitions,
  org.palladiosimulator.simulizar.runconfig
 Bundle-Vendor: palladiosimulator.org
-Import-Package: org.eclipse.m2m.qvt.oml,
- org.eclipse.m2m.qvt.oml.util
+Import-Package: dlim,
+ dlim.generator,
+ org.eclipse.m2m.qvt.oml,
+ org.eclipse.m2m.qvt.oml.util,
+ org.scaledl.usageevolution
