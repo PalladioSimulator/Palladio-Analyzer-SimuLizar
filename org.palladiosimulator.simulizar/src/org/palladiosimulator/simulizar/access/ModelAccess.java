@@ -13,12 +13,15 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadPMSModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
+import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.PMSResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
+import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
+import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -28,10 +31,10 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
- * Helper to access the PCM model (global and local), the prm model, the pms model and all SD
- * models.
+ * Helper to access the PCM model (global and local), the prm model, the pms model, the usage
+ * evolution model and all SD models.
  * 
- * @author Joachim Meyer, Steffen Becker
+ * @author Joachim Meyer, Steffen Becker, Erlend Stav
  */
 public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
@@ -42,6 +45,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private PCMResourceSetPartition currentPCMCopy;
     private final PMSResourceSetPartition pmsPartition;
     private final SDMResourceSetPartition sdmPartition;
+    private final UEResourceSetPartition uePartititon;
     private final PRMModel prmModel;
 
     /**
@@ -56,6 +60,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
         this.pmsPartition = getResourceSetPartition(blackboard, LoadPMSModelIntoBlackboardJob.PMS_MODEL_PARTITION_ID);
+        this.uePartititon = getResourceSetPartition(blackboard, LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
 
@@ -65,6 +70,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.pcmPartition = copy.pcmPartition;
         this.sdmPartition = copy.sdmPartition;
         this.pmsPartition = copy.pmsPartition;
+        this.uePartititon = copy.uePartititon;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
 
@@ -112,6 +118,15 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     @Override
     public PRMModel getPRMModel() {
         return this.prmModel;
+    }
+
+    /**
+     * 
+     * @return the global usage evolution model.
+     */
+    @Override
+    public UsageEvolution getUsageEvolutionModel() {
+        return this.uePartititon.getUsageEvolution();
     }
 
     /**

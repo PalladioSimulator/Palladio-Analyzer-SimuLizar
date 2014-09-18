@@ -33,6 +33,7 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
 
         config.setPmsFile(getStringAttribute(SimulizarConstants.PMS_FILE));
         config.setReconfigurationRulesFolder(getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER));
+        config.setUsageEvolutionFile(getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
 
         SimuComConfig simuComConfig = new SimuComConfig(properties, config.isDebug());
 

@@ -23,6 +23,8 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     protected Text pmsFile;
     /** Text field for path to reconfiguration rules folder. */
     protected Text reconfigurationRulesFolder;
+    /** Text field for path to usage evolution file. */
+    protected Text usageEvolutionFile;
 
     /**
      * @see de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab#createControl(org.eclipse.swt.widgets.Composite)
@@ -48,6 +50,17 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
 
+
+    
+        /**
+         * Create UsageEvolution file section
+         */
+        usageEvolutionFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+        TabHelper.createFileInputSection(container, modifyListener,
+                "Optional: Usage Evolution File",
+                SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File", getShell(),
+                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+
     }
 
     /**
@@ -71,6 +84,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
             LaunchConfigPlugin.errorLogger(getName(), "Reconfiguration Rules Folder", e.getMessage());
         }
 
+        try {
+            usageEvolutionFile.setText(configuration
+                    .getAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE));
+        } catch (final CoreException e) {
+            LaunchConfigPlugin.errorLogger(getName(), "Usage Evolution File", e.getMessage());
+        }
     }
 
     /*
@@ -85,6 +104,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         configuration.setAttribute(SimulizarConstants.PMS_FILE, pmsFile.getText());
         configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 reconfigurationRulesFolder.getText());
+        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
     }
 
     /*
@@ -99,6 +119,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         configuration.setAttribute(SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE);
         configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
     }
 
     /**

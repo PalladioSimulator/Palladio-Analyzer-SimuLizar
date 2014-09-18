@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
@@ -31,6 +32,8 @@ public interface IModelAccess extends Cloneable {
     public PMSModel getPMSModel();
 
     public PRMModel getPRMModel();
+
+    public UsageEvolution getUsageEvolutionModel();
 
     public Collection<Activity> getStoryDiagrams();
 
