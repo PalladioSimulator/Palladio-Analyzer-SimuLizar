@@ -66,7 +66,7 @@ public class LoadDEModelIntoBlackBoardJob implements IJob,
 
 		}
 		this.getBlackboard().addPartition(DE_MODEL_PARTITION_ID, demPartition);
-		// now resolve all cross references from current resource to PCM
+		// now resolve all cross references from curr. resource to PCM
 		demPartition.resolveAllProxies();
 
 	}
