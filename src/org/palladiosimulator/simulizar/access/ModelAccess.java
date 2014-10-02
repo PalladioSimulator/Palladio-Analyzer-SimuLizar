@@ -122,11 +122,14 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     /**
      * 
-     * @return the global usage evolution model.
+     * @return the global usage evolution model, or null if no such model is available
      */
     @Override
     public UsageEvolution getUsageEvolutionModel() {
-        return this.uePartititon.getUsageEvolution();
+        if (this.uePartititon == null)
+            return null;
+        else
+            return this.uePartititon.getUsageEvolution();
     }
 
     /**
