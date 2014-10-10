@@ -60,22 +60,7 @@
 
 
 
-   <extension point="org.eclipse.ui.newWizards">
-      <!-- @generated dlim -->
-      <category
-            id="org.eclipse.emf.ecore.Wizard.category.ID"
-            name="%_UI_Wizard_category"/>
-      <wizard
-            id="dlim.presentation.DlimModelWizardID"
-            name="%_UI_DlimModelWizard_label"
-            class="dlim.presentation.DlimModelWizard"
-            category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/DlimModelFile.gif">
-         <description>%_UI_DlimModelWizard_description</description>
-         <selection class="org.eclipse.core.resources.IResource"/>
-      </wizard>
-   </extension>
-
+null
    <extension point="org.eclipse.ui.editors">
       <editor
             id="dlim.presentation.DlimEditorID"

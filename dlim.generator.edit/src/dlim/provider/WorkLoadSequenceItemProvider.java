@@ -263,6 +263,7 @@ public class WorkLoadSequenceItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
+			childrenFeatures.add(DlimPackage.Literals.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
 			childrenFeatures.add(DlimPackage.Literals.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK);
 		}
 		return childrenFeatures;
@@ -328,6 +329,7 @@ public class WorkLoadSequenceItemProvider
 			case DlimPackage.WORK_LOAD_SEQUENCE__FINAL_DURATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
+			case DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS:
 			case DlimPackage.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
@@ -345,6 +347,11 @@ public class WorkLoadSequenceItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(DlimPackage.Literals.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS,
+				 DlimFactory.eINSTANCE.createTimeDependentWorkFunctionContainer()));
 
 		newChildDescriptors.add
 			(createChildParameter

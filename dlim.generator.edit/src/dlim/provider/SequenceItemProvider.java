@@ -230,11 +230,6 @@ public class SequenceItemProvider
 			(createChildParameter
 				(DlimPackage.Literals.SEQUENCE__SEQUENCE_FUNCTION_CONTAINERS,
 				 DlimFactory.eINSTANCE.createTimeDependentFunctionContainer()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(DlimPackage.Literals.SEQUENCE__SEQUENCE_FUNCTION_CONTAINERS,
-				 DlimFactory.eINSTANCE.createTimeDependentWorkFunctionContainer()));
 	}
 
 }

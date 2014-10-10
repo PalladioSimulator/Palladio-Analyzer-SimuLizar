@@ -1652,76 +1652,13 @@ public interface DlimPackage extends EPackage {
 	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER = 26;
 
 	/**
-	 * The feature id for the '<em><b>Name</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME = TIME_DEPENDENT_FUNCTION_CONTAINER__NAME;
-
-	/**
-	 * The feature id for the '<em><b>Duration</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION = TIME_DEPENDENT_FUNCTION_CONTAINER__DURATION;
-
-	/**
-	 * The feature id for the '<em><b>First Iteration Start</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START = TIME_DEPENDENT_FUNCTION_CONTAINER__FIRST_ITERATION_START;
-
-	/**
-	 * The feature id for the '<em><b>First Iteration End</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END = TIME_DEPENDENT_FUNCTION_CONTAINER__FIRST_ITERATION_END;
-
-	/**
-	 * The feature id for the '<em><b>Function</b></em>' containment reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FUNCTION = TIME_DEPENDENT_FUNCTION_CONTAINER__FUNCTION;
-
-	/**
-	 * The feature id for the '<em><b>Point Of Reference Clock Object</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT = TIME_DEPENDENT_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT;
-
-	/**
-	 * The feature id for the '<em><b>Point Of Reference Clock Type</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = TIME_DEPENDENT_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE;
-
-	/**
 	 * The feature id for the '<em><b>Work</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 0;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK = 0;
 
 	/**
 	 * The feature id for the '<em><b>Work Start Time</b></em>' attribute.
@@ -1730,7 +1667,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_START_TIME = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 1;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_START_TIME = 1;
 
 	/**
 	 * The feature id for the '<em><b>Work Duration</b></em>' attribute.
@@ -1739,7 +1676,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_DURATION = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 2;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_DURATION = 2;
 
 	/**
 	 * The feature id for the '<em><b>Time Synchronization</b></em>' reference.
@@ -1748,7 +1685,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__TIME_SYNCHRONIZATION = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 3;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__TIME_SYNCHRONIZATION = 3;
 
 	/**
 	 * The feature id for the '<em><b>Mutual Load Function</b></em>' reference.
@@ -1757,7 +1694,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 4;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION = 4;
 
 	/**
 	 * The feature id for the '<em><b>Priority</b></em>' attribute.
@@ -1766,7 +1703,70 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 5;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY = 5;
+
+	/**
+	 * The feature id for the '<em><b>Load Sequence</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE = 6;
+
+	/**
+	 * The feature id for the '<em><b>Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME = 7;
+
+	/**
+	 * The feature id for the '<em><b>Duration</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION = 8;
+
+	/**
+	 * The feature id for the '<em><b>First Iteration Start</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START = 9;
+
+	/**
+	 * The feature id for the '<em><b>First Iteration End</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END = 10;
+
+	/**
+	 * The feature id for the '<em><b>Point Of Reference Clock Object</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT = 11;
+
+	/**
+	 * The feature id for the '<em><b>Point Of Reference Clock Type</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = 12;
 
 	/**
 	 * The number of structural features of the '<em>Time Dependent Work Function Container</em>' class.
@@ -1775,25 +1775,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = TIME_DEPENDENT_FUNCTION_CONTAINER_FEATURE_COUNT + 6;
-
-	/**
-	 * The operation id for the '<em>Duration Greater Zero</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER___DURATION_GREATER_ZERO__DIAGNOSTICCHAIN_MAP = TIME_DEPENDENT_FUNCTION_CONTAINER___DURATION_GREATER_ZERO__DIAGNOSTICCHAIN_MAP;
-
-	/**
-	 * The operation id for the '<em>Reference Clock In Tree Node</em>' operation.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER___REFERENCE_CLOCK_IN_TREE_NODE__DIAGNOSTICCHAIN_MAP = TIME_DEPENDENT_FUNCTION_CONTAINER___REFERENCE_CLOCK_IN_TREE_NODE__DIAGNOSTICCHAIN_MAP;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = 13;
 
 	/**
 	 * The number of operations of the '<em>Time Dependent Work Function Container</em>' class.
@@ -1802,7 +1784,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_OPERATION_COUNT = TIME_DEPENDENT_FUNCTION_CONTAINER_OPERATION_COUNT + 0;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_OPERATION_COUNT = 0;
 
 	/**
 	 * The meta object id for the '{@link dlim.impl.WorkLoadSequenceImpl <em>Work Load Sequence</em>}' class.
@@ -1815,7 +1797,7 @@ public interface DlimPackage extends EPackage {
 	int WORK_LOAD_SEQUENCE = 27;
 
 	/**
-	 * The feature id for the '<em><b>Work Function Containers</b></em>' reference list.
+	 * The feature id for the '<em><b>Work Function Containers</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -2804,6 +2786,83 @@ public interface DlimPackage extends EPackage {
 	EAttribute getTimeDependentWorkFunctionContainer_Priority();
 
 	/**
+	 * Returns the meta object for the containment reference '{@link dlim.TimeDependentWorkFunctionContainer#getLoadSequence <em>Load Sequence</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Load Sequence</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getLoadSequence()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EReference getTimeDependentWorkFunctionContainer_LoadSequence();
+
+	/**
+	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getName <em>Name</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Name</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getName()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EAttribute getTimeDependentWorkFunctionContainer_Name();
+
+	/**
+	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getDuration <em>Duration</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Duration</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getDuration()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EAttribute getTimeDependentWorkFunctionContainer_Duration();
+
+	/**
+	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart <em>First Iteration Start</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>First Iteration Start</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EAttribute getTimeDependentWorkFunctionContainer_FirstIterationStart();
+
+	/**
+	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd <em>First Iteration End</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>First Iteration End</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EAttribute getTimeDependentWorkFunctionContainer_FirstIterationEnd();
+
+	/**
+	 * Returns the meta object for the reference '{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the reference '<em>Point Of Reference Clock Object</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EReference getTimeDependentWorkFunctionContainer_PointOfReferenceClockObject();
+
+	/**
+	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Point Of Reference Clock Type</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EAttribute getTimeDependentWorkFunctionContainer_PointOfReferenceClockType();
+
+	/**
 	 * Returns the meta object for class '{@link dlim.WorkLoadSequence <em>Work Load Sequence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2814,10 +2873,10 @@ public interface DlimPackage extends EPackage {
 	EClass getWorkLoadSequence();
 
 	/**
-	 * Returns the meta object for the reference list '{@link dlim.WorkLoadSequence#getWorkFunctionContainers <em>Work Function Containers</em>}'.
+	 * Returns the meta object for the containment reference list '{@link dlim.WorkLoadSequence#getWorkFunctionContainers <em>Work Function Containers</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference list '<em>Work Function Containers</em>'.
+	 * @return the meta object for the containment reference list '<em>Work Function Containers</em>'.
 	 * @see dlim.WorkLoadSequence#getWorkFunctionContainers()
 	 * @see #getWorkLoadSequence()
 	 * @generated
@@ -3666,6 +3725,62 @@ public interface DlimPackage extends EPackage {
 		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY = eINSTANCE.getTimeDependentWorkFunctionContainer_Priority();
 
 		/**
+		 * The meta object literal for the '<em><b>Load Sequence</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE = eINSTANCE.getTimeDependentWorkFunctionContainer_LoadSequence();
+
+		/**
+		 * The meta object literal for the '<em><b>Name</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME = eINSTANCE.getTimeDependentWorkFunctionContainer_Name();
+
+		/**
+		 * The meta object literal for the '<em><b>Duration</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION = eINSTANCE.getTimeDependentWorkFunctionContainer_Duration();
+
+		/**
+		 * The meta object literal for the '<em><b>First Iteration Start</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START = eINSTANCE.getTimeDependentWorkFunctionContainer_FirstIterationStart();
+
+		/**
+		 * The meta object literal for the '<em><b>First Iteration End</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END = eINSTANCE.getTimeDependentWorkFunctionContainer_FirstIterationEnd();
+
+		/**
+		 * The meta object literal for the '<em><b>Point Of Reference Clock Object</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT = eINSTANCE.getTimeDependentWorkFunctionContainer_PointOfReferenceClockObject();
+
+		/**
+		 * The meta object literal for the '<em><b>Point Of Reference Clock Type</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = eINSTANCE.getTimeDependentWorkFunctionContainer_PointOfReferenceClockType();
+
+		/**
 		 * The meta object literal for the '{@link dlim.impl.WorkLoadSequenceImpl <em>Work Load Sequence</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3676,7 +3791,7 @@ public interface DlimPackage extends EPackage {
 		EClass WORK_LOAD_SEQUENCE = eINSTANCE.getWorkLoadSequence();
 
 		/**
-		 * The meta object literal for the '<em><b>Work Function Containers</b></em>' reference list feature.
+		 * The meta object literal for the '<em><b>Work Function Containers</b></em>' containment reference list feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
