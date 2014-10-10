@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
-import dlim.Sequence;
+import dlim.WorkLoadSequence;
 
 /**
  * Helper to access the PCM model (global and local), the prm model, the pms
@@ -110,7 +110,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 	}
 
 	@Override
-	public Sequence getDEModel() {
+	public WorkLoadSequence getDEModel() {
 		return this.demPartition.getDEModel();
 	}
 
