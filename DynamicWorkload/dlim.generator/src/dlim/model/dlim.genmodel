@@ -125,15 +125,22 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//PolynomialFactor/offset"/>
     </genClasses>
     <genClasses ecoreClass="dlim.ecore#//TimeDependentWorkFunctionContainer">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/work"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/work"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/workStartTime"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/workDuration"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/timeSynchronization"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/mutualLoadFunction"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/priority"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/loadSequence"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/duration"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/firstIterationStart"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/firstIterationEnd"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockObject"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockType"/>
     </genClasses>
     <genClasses ecoreClass="dlim.ecore#//WorkLoadSequence">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//WorkLoadSequence/workFunctionContainers"/>
+      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//WorkLoadSequence/workFunctionContainers"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/terminateAfterTime"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//WorkLoadSequence/referenceClock"/>

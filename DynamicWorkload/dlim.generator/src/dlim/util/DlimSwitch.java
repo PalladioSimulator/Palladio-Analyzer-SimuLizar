@@ -286,7 +286,6 @@ public class DlimSwitch<T> extends Switch<T> {
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER: {
 				TimeDependentWorkFunctionContainer timeDependentWorkFunctionContainer = (TimeDependentWorkFunctionContainer)theEObject;
 				T result = caseTimeDependentWorkFunctionContainer(timeDependentWorkFunctionContainer);
-				if (result == null) result = caseTimeDependentFunctionContainer(timeDependentWorkFunctionContainer);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

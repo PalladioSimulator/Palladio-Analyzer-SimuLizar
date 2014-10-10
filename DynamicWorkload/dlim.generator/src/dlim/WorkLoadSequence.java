@@ -32,7 +32,7 @@ import org.eclipse.emf.ecore.EObject;
  */
 public interface WorkLoadSequence extends EObject {
 	/**
-	 * Returns the value of the '<em><b>Work Function Containers</b></em>' reference list.
+	 * Returns the value of the '<em><b>Work Function Containers</b></em>' containment reference list.
 	 * The list contents are of type {@link dlim.TimeDependentWorkFunctionContainer}.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -40,9 +40,9 @@ public interface WorkLoadSequence extends EObject {
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Work Function Containers</em>' reference list.
+	 * @return the value of the '<em>Work Function Containers</em>' containment reference list.
 	 * @see dlim.DlimPackage#getWorkLoadSequence_WorkFunctionContainers()
-	 * @model required="true"
+	 * @model containment="true" required="true"
 	 * @generated
 	 */
 	EList<TimeDependentWorkFunctionContainer> getWorkFunctionContainers();

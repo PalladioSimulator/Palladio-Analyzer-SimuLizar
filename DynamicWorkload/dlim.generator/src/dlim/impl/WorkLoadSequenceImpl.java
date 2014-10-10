@@ -20,7 +20,9 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -45,7 +47,7 @@ import org.eclipse.emf.ecore.util.EObjectResolvingEList;
  */
 public class WorkLoadSequenceImpl extends MinimalEObjectImpl.Container implements WorkLoadSequence {
 	/**
-	 * The cached value of the '{@link #getWorkFunctionContainers() <em>Work Function Containers</em>}' reference list.
+	 * The cached value of the '{@link #getWorkFunctionContainers() <em>Work Function Containers</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @see #getWorkFunctionContainers()
@@ -230,7 +232,7 @@ public class WorkLoadSequenceImpl extends MinimalEObjectImpl.Container implement
 	 */
 	public EList<TimeDependentWorkFunctionContainer> getWorkFunctionContainers() {
 		if (workFunctionContainers == null) {
-			workFunctionContainers = new EObjectResolvingEList<TimeDependentWorkFunctionContainer>(TimeDependentWorkFunctionContainer.class, this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
+			workFunctionContainers = new EObjectContainmentEList<TimeDependentWorkFunctionContainer>(TimeDependentWorkFunctionContainer.class, this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
 		}
 		return workFunctionContainers;
 	}
@@ -433,6 +435,8 @@ public class WorkLoadSequenceImpl extends MinimalEObjectImpl.Container implement
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
+			case DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS:
+				return ((InternalEList<?>)getWorkFunctionContainers()).basicRemove(otherEnd, msgs);
 			case DlimPackage.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK:
 				return basicSetReferenceClock(null, msgs);
 		}

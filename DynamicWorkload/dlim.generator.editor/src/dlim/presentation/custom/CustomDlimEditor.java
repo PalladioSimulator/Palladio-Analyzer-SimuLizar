@@ -8,6 +8,7 @@ import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
+import dlim.Sequence;
 import dlim.WorkLoadSequence;
 import dlim.generator.editor.views.PlotView;
 import dlim.presentation.DlimEditor;
@@ -36,8 +37,11 @@ public class CustomDlimEditor extends DlimEditor {
 							for (int i = 0; i < references.length; i++) {
 								if (references[i].getId().equals("dlim.generator.editor.views.PlotView")) {
 									PlotView view = (PlotView)(references[i].getView(true));
-									if (((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().size() > 0)
-										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getFunction());
+									if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof Sequence)
+										view.updatePlot((editingDomain.getResourceSet().getResources().get(0).getContents().get(0)));
+									else if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof WorkLoadSequence) {
+//										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getLoadSequence());
+									}
 								}
 							}
 						}

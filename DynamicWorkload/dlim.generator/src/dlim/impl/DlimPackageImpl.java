@@ -1081,6 +1081,69 @@ public class DlimPackageImpl extends EPackageImpl implements DlimPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EReference getTimeDependentWorkFunctionContainer_LoadSequence() {
+		return (EReference)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(6);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeDependentWorkFunctionContainer_Name() {
+		return (EAttribute)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(7);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeDependentWorkFunctionContainer_Duration() {
+		return (EAttribute)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(8);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeDependentWorkFunctionContainer_FirstIterationStart() {
+		return (EAttribute)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(9);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeDependentWorkFunctionContainer_FirstIterationEnd() {
+		return (EAttribute)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(10);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EReference getTimeDependentWorkFunctionContainer_PointOfReferenceClockObject() {
+		return (EReference)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(11);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getTimeDependentWorkFunctionContainer_PointOfReferenceClockType() {
+		return (EAttribute)timeDependentWorkFunctionContainerEClass.getEStructuralFeatures().get(12);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public EClass getWorkLoadSequence() {
 		return workLoadSequenceEClass;
 	}
@@ -1320,6 +1383,13 @@ public class DlimPackageImpl extends EPackageImpl implements DlimPackage {
 		createEReference(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__TIME_SYNCHRONIZATION);
 		createEReference(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION);
 		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY);
+		createEReference(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE);
+		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME);
+		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION);
+		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START);
+		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END);
+		createEReference(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT);
+		createEAttribute(timeDependentWorkFunctionContainerEClass, TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE);
 
 		workLoadSequenceEClass = createEClass(WORK_LOAD_SEQUENCE);
 		createEReference(workLoadSequenceEClass, WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
@@ -1389,7 +1459,6 @@ public class DlimPackageImpl extends EPackageImpl implements DlimPackage {
 		absoluteValueFunctionEClass.getESuperTypes().add(this.getUnivariateFunction());
 		univariateFunctionEClass.getESuperTypes().add(this.getFunction());
 		polynomialEClass.getESuperTypes().add(this.getFunction());
-		timeDependentWorkFunctionContainerEClass.getESuperTypes().add(this.getTimeDependentFunctionContainer());
 
 		// Initialize classes, features, and operations; add parameters
 		initEClass(sequenceEClass, Sequence.class, "Sequence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -1532,12 +1601,19 @@ public class DlimPackageImpl extends EPackageImpl implements DlimPackage {
 		initEReference(getTimeDependentWorkFunctionContainer_Work(), theUsagemodelPackage.getUsageScenario(), null, "work", null, 1, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTimeDependentWorkFunctionContainer_WorkStartTime(), ecorePackage.getEDouble(), "workStartTime", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTimeDependentWorkFunctionContainer_WorkDuration(), ecorePackage.getEDouble(), "workDuration", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getTimeDependentWorkFunctionContainer_TimeSynchronization(), this.getTimeDependentWorkFunctionContainer(), null, "timeSynchronization", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTimeDependentWorkFunctionContainer_TimeSynchronization(), this.getTimeDependentWorkFunctionContainer(), null, "timeSynchronization", null, 0, 1, TimeDependentWorkFunctionContainer.class, IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getTimeDependentWorkFunctionContainer_MutualLoadFunction(), this.getSequence(), null, "mutualLoadFunction", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getTimeDependentWorkFunctionContainer_Priority(), ecorePackage.getEInt(), "priority", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getTimeDependentWorkFunctionContainer_LoadSequence(), this.getSequence(), null, "loadSequence", null, 1, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTimeDependentWorkFunctionContainer_Name(), ecorePackage.getEString(), "name", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTimeDependentWorkFunctionContainer_Duration(), ecorePackage.getEDouble(), "duration", "1.0", 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTimeDependentWorkFunctionContainer_FirstIterationStart(), ecorePackage.getEDouble(), "firstIterationStart", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTimeDependentWorkFunctionContainer_FirstIterationEnd(), ecorePackage.getEDouble(), "firstIterationEnd", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, IS_DERIVED, IS_ORDERED);
+		initEReference(getTimeDependentWorkFunctionContainer_PointOfReferenceClockObject(), this.getReferenceClockObject(), null, "pointOfReferenceClockObject", null, 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEAttribute(getTimeDependentWorkFunctionContainer_PointOfReferenceClockType(), this.getClockType(), "pointOfReferenceClockType", "CONTAINERCLOCK", 0, 1, TimeDependentWorkFunctionContainer.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(workLoadSequenceEClass, WorkLoadSequence.class, "WorkLoadSequence", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-		initEReference(getWorkLoadSequence_WorkFunctionContainers(), this.getTimeDependentWorkFunctionContainer(), null, "workFunctionContainers", null, 1, -1, WorkLoadSequence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getWorkLoadSequence_WorkFunctionContainers(), this.getTimeDependentWorkFunctionContainer(), null, "workFunctionContainers", null, 1, -1, WorkLoadSequence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorkLoadSequence_Name(), ecorePackage.getEString(), "name", null, 0, 1, WorkLoadSequence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getWorkLoadSequence_TerminateAfterTime(), ecorePackage.getEDouble(), "terminateAfterTime", null, 0, 1, WorkLoadSequence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEReference(getWorkLoadSequence_ReferenceClock(), this.getReferenceClockObject(), null, "referenceClock", null, 0, 1, WorkLoadSequence.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);

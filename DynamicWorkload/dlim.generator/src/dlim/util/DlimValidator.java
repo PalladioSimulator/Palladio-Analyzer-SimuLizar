@@ -550,18 +550,7 @@ public class DlimValidator extends EObjectValidator {
 	 * @generated
 	 */
 	public boolean validateTimeDependentWorkFunctionContainer(TimeDependentWorkFunctionContainer timeDependentWorkFunctionContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
-		if (!validate_NoCircularContainment(timeDependentWorkFunctionContainer, diagnostics, context)) return false;
-		boolean result = validate_EveryMultiplicityConforms(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryDataValueConforms(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryReferenceIsContained(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryBidirectionalReferenceIsPaired(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryProxyResolves(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_UniqueID(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryKeyUnique(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validate_EveryMapEntryUnique(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validateTimeDependentFunctionContainer_durationGreaterZero(timeDependentWorkFunctionContainer, diagnostics, context);
-		if (result || diagnostics != null) result &= validateTimeDependentFunctionContainer_referenceClockInTreeNode(timeDependentWorkFunctionContainer, diagnostics, context);
-		return result;
+		return validate_EveryDefaultConstraint(timeDependentWorkFunctionContainer, diagnostics, context);
 	}
 
 	/**

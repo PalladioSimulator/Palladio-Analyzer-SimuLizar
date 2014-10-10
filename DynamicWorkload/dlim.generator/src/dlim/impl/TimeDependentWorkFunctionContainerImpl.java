@@ -4,17 +4,21 @@ package dlim.impl;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 
+import dlim.ClockType;
 import dlim.DlimPackage;
+import dlim.ReferenceClockObject;
 import dlim.Sequence;
 import dlim.TimeDependentWorkFunctionContainer;
 
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -29,12 +33,19 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getTimeSynchronization <em>Time Synchronization</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getMutualLoadFunction <em>Mutual Load Function</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPriority <em>Priority</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getLoadSequence <em>Load Sequence</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getName <em>Name</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getDuration <em>Duration</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getFirstIterationStart <em>First Iteration Start</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getFirstIterationEnd <em>First Iteration End</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctionContainerImpl implements TimeDependentWorkFunctionContainer {
+public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.Container implements TimeDependentWorkFunctionContainer {
 	/**
 	 * The cached value of the '{@link #getWork() <em>Work</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -124,6 +135,126 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 	 * @ordered
 	 */
 	protected int priority = PRIORITY_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getLoadSequence() <em>Load Sequence</em>}' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getLoadSequence()
+	 * @generated
+	 * @ordered
+	 */
+	protected Sequence loadSequence;
+
+	/**
+	 * The default value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final String NAME_EDEFAULT = null;
+
+	/**
+	 * The cached value of the '{@link #getName() <em>Name</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getName()
+	 * @generated
+	 * @ordered
+	 */
+	protected String name = NAME_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getDuration() <em>Duration</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDuration()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double DURATION_EDEFAULT = 1.0;
+
+	/**
+	 * The cached value of the '{@link #getDuration() <em>Duration</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getDuration()
+	 * @generated
+	 * @ordered
+	 */
+	protected double duration = DURATION_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getFirstIterationStart() <em>First Iteration Start</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFirstIterationStart()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double FIRST_ITERATION_START_EDEFAULT = 0.0;
+
+	/**
+	 * The cached value of the '{@link #getFirstIterationStart() <em>First Iteration Start</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFirstIterationStart()
+	 * @generated
+	 * @ordered
+	 */
+	protected double firstIterationStart = FIRST_ITERATION_START_EDEFAULT;
+
+	/**
+	 * The default value of the '{@link #getFirstIterationEnd() <em>First Iteration End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFirstIterationEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final double FIRST_ITERATION_END_EDEFAULT = 0.0;
+
+	/**
+	 * The cached value of the '{@link #getFirstIterationEnd() <em>First Iteration End</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getFirstIterationEnd()
+	 * @generated
+	 * @ordered
+	 */
+	protected double firstIterationEnd = FIRST_ITERATION_END_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getPointOfReferenceClockObject() <em>Point Of Reference Clock Object</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPointOfReferenceClockObject()
+	 * @generated
+	 * @ordered
+	 */
+	protected ReferenceClockObject pointOfReferenceClockObject;
+
+	/**
+	 * The default value of the '{@link #getPointOfReferenceClockType() <em>Point Of Reference Clock Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPointOfReferenceClockType()
+	 * @generated
+	 * @ordered
+	 */
+	protected static final ClockType POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT = ClockType.CONTAINER_CLOCK;
+
+	/**
+	 * The cached value of the '{@link #getPointOfReferenceClockType() <em>Point Of Reference Clock Type</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getPointOfReferenceClockType()
+	 * @generated
+	 * @ordered
+	 */
+	protected ClockType pointOfReferenceClockType = POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -326,6 +457,206 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public Sequence getLoadSequence() {
+		return loadSequence;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetLoadSequence(Sequence newLoadSequence, NotificationChain msgs) {
+		Sequence oldLoadSequence = loadSequence;
+		loadSequence = newLoadSequence;
+		if (eNotificationRequired()) {
+			ENotificationImpl notification = new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE, oldLoadSequence, newLoadSequence);
+			if (msgs == null) msgs = notification; else msgs.add(notification);
+		}
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setLoadSequence(Sequence newLoadSequence) {
+		if (newLoadSequence != loadSequence) {
+			NotificationChain msgs = null;
+			if (loadSequence != null)
+				msgs = ((InternalEObject)loadSequence).eInverseRemove(this, EOPPOSITE_FEATURE_BASE - DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE, null, msgs);
+			if (newLoadSequence != null)
+				msgs = ((InternalEObject)newLoadSequence).eInverseAdd(this, EOPPOSITE_FEATURE_BASE - DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE, null, msgs);
+			msgs = basicSetLoadSequence(newLoadSequence, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE, newLoadSequence, newLoadSequence));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setName(String newName) {
+		String oldName = name;
+		name = newName;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME, oldName, name));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public double getDuration() {
+		return duration;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setDuration(double newDuration) {
+		double oldDuration = duration;
+		duration = newDuration;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION, oldDuration, duration));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public double getFirstIterationStart() {
+		return firstIterationStart;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFirstIterationStart(double newFirstIterationStart) {
+		double oldFirstIterationStart = firstIterationStart;
+		firstIterationStart = newFirstIterationStart;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START, oldFirstIterationStart, firstIterationStart));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public double getFirstIterationEnd() {
+		return firstIterationEnd;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setFirstIterationEnd(double newFirstIterationEnd) {
+		double oldFirstIterationEnd = firstIterationEnd;
+		firstIterationEnd = newFirstIterationEnd;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END, oldFirstIterationEnd, firstIterationEnd));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ReferenceClockObject getPointOfReferenceClockObject() {
+		if (pointOfReferenceClockObject != null && pointOfReferenceClockObject.eIsProxy()) {
+			InternalEObject oldPointOfReferenceClockObject = (InternalEObject)pointOfReferenceClockObject;
+			pointOfReferenceClockObject = (ReferenceClockObject)eResolveProxy(oldPointOfReferenceClockObject);
+			if (pointOfReferenceClockObject != oldPointOfReferenceClockObject) {
+				if (eNotificationRequired())
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT, oldPointOfReferenceClockObject, pointOfReferenceClockObject));
+			}
+		}
+		return pointOfReferenceClockObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ReferenceClockObject basicGetPointOfReferenceClockObject() {
+		return pointOfReferenceClockObject;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPointOfReferenceClockObject(ReferenceClockObject newPointOfReferenceClockObject) {
+		ReferenceClockObject oldPointOfReferenceClockObject = pointOfReferenceClockObject;
+		pointOfReferenceClockObject = newPointOfReferenceClockObject;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT, oldPointOfReferenceClockObject, pointOfReferenceClockObject));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public ClockType getPointOfReferenceClockType() {
+		return pointOfReferenceClockType;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setPointOfReferenceClockType(ClockType newPointOfReferenceClockType) {
+		ClockType oldPointOfReferenceClockType = pointOfReferenceClockType;
+		pointOfReferenceClockType = newPointOfReferenceClockType == null ? POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT : newPointOfReferenceClockType;
+		if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE, oldPointOfReferenceClockType, pointOfReferenceClockType));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				return basicSetLoadSequence(null, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
@@ -344,6 +675,21 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 				return basicGetMutualLoadFunction();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				return getPriority();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				return getLoadSequence();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
+				return getName();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
+				return getDuration();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
+				return getFirstIterationStart();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
+				return getFirstIterationEnd();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
+				if (resolve) return getPointOfReferenceClockObject();
+				return basicGetPointOfReferenceClockObject();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
+				return getPointOfReferenceClockType();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -373,6 +719,27 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				setPriority((Integer)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				setLoadSequence((Sequence)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
+				setName((String)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
+				setDuration((Double)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
+				setFirstIterationStart((Double)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
+				setFirstIterationEnd((Double)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
+				setPointOfReferenceClockObject((ReferenceClockObject)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
+				setPointOfReferenceClockType((ClockType)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -404,6 +771,27 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				setPriority(PRIORITY_EDEFAULT);
 				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				setLoadSequence((Sequence)null);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
+				setName(NAME_EDEFAULT);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
+				setDuration(DURATION_EDEFAULT);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
+				setFirstIterationStart(FIRST_ITERATION_START_EDEFAULT);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
+				setFirstIterationEnd(FIRST_ITERATION_END_EDEFAULT);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
+				setPointOfReferenceClockObject((ReferenceClockObject)null);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
+				setPointOfReferenceClockType(POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -428,6 +816,20 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 				return mutualLoadFunction != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				return priority != PRIORITY_EDEFAULT;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				return loadSequence != null;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
+				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
+				return duration != DURATION_EDEFAULT;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
+				return firstIterationStart != FIRST_ITERATION_START_EDEFAULT;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
+				return firstIterationEnd != FIRST_ITERATION_END_EDEFAULT;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
+				return pointOfReferenceClockObject != null;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
+				return pointOfReferenceClockType != POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
 	}
@@ -448,6 +850,16 @@ public class TimeDependentWorkFunctionContainerImpl extends TimeDependentFunctio
 		result.append(workDuration);
 		result.append(", priority: ");
 		result.append(priority);
+		result.append(", name: ");
+		result.append(name);
+		result.append(", duration: ");
+		result.append(duration);
+		result.append(", firstIterationStart: ");
+		result.append(firstIterationStart);
+		result.append(", firstIterationEnd: ");
+		result.append(firstIterationEnd);
+		result.append(", pointOfReferenceClockType: ");
+		result.append(pointOfReferenceClockType);
 		result.append(')');
 		return result.toString();
 	}

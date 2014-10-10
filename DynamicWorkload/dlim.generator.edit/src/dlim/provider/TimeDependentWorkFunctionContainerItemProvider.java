@@ -3,6 +3,8 @@
 package dlim.provider;
 
 
+import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelFactory;
+import dlim.DlimFactory;
 import dlim.DlimPackage;
 import dlim.TimeDependentWorkFunctionContainer;
 
@@ -12,9 +14,17 @@ import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 
+import org.eclipse.emf.common.util.ResourceLocator;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
+import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
+import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.IItemPropertySource;
+import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
+import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
 /**
@@ -23,7 +33,7 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
  * <!-- end-user-doc -->
  * @generated
  */
-public class TimeDependentWorkFunctionContainerItemProvider extends TimeDependentFunctionContainerItemProvider {
+public class TimeDependentWorkFunctionContainerItemProvider extends ItemProviderAdapter implements IEditingDomainItemProvider, IStructuredItemContentProvider, ITreeItemContentProvider, IItemLabelProvider, IItemPropertySource {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -51,6 +61,12 @@ public class TimeDependentWorkFunctionContainerItemProvider extends TimeDependen
 			addTimeSynchronizationPropertyDescriptor(object);
 			addMutualLoadFunctionPropertyDescriptor(object);
 			addPriorityPropertyDescriptor(object);
+			addNamePropertyDescriptor(object);
+			addDurationPropertyDescriptor(object);
+			addFirstIterationStartPropertyDescriptor(object);
+			addFirstIterationEndPropertyDescriptor(object);
+			addPointOfReferenceClockObjectPropertyDescriptor(object);
+			addPointOfReferenceClockTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -188,6 +204,169 @@ public class TimeDependentWorkFunctionContainerItemProvider extends TimeDependen
 	}
 
 	/**
+	 * This adds a property descriptor for the Name feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addNamePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_name_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_name_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Duration feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addDurationPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_duration_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_duration_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the First Iteration Start feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFirstIterationStartPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_firstIterationStart_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_firstIterationStart_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the First Iteration End feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addFirstIterationEndPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_firstIterationEnd_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_firstIterationEnd_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Point Of Reference Clock Object feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPointOfReferenceClockObjectPropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockObject_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockObject_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT,
+				 true,
+				 false,
+				 true,
+				 null,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This adds a property descriptor for the Point Of Reference Clock Type feature.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected void addPointOfReferenceClockTypePropertyDescriptor(Object object) {
+		itemPropertyDescriptors.add
+			(createItemPropertyDescriptor
+				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
+				 getResourceLocator(),
+				 getString("_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockType_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockType_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
+				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE,
+				 true,
+				 false,
+				 false,
+				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
+				 null,
+				 null));
+	}
+
+	/**
+	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
+	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
+	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
+		if (childrenFeatures == null) {
+			super.getChildrenFeatures(object);
+			childrenFeatures.add(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK);
+			childrenFeatures.add(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE);
+		}
+		return childrenFeatures;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EStructuralFeature getChildFeature(Object object, Object child) {
+		// Check the type of the specified child object and return the proper feature to use for
+		// adding (see {@link AddCommand}) it as a child.
+
+		return super.getChildFeature(object, child);
+	}
+
+	/**
 	 * This returns TimeDependentWorkFunctionContainer.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -228,7 +407,16 @@ public class TimeDependentWorkFunctionContainerItemProvider extends TimeDependen
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_START_TIME:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_DURATION:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
 		super.notifyChanged(notification);
@@ -244,6 +432,27 @@ public class TimeDependentWorkFunctionContainerItemProvider extends TimeDependen
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
+
+		newChildDescriptors.add
+			(createChildParameter
+				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK,
+				 UsagemodelFactory.eINSTANCE.createUsageScenario()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE,
+				 DlimFactory.eINSTANCE.createSequence()));
+	}
+
+	/**
+	 * Return the resource locator for this item provider's resources.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ResourceLocator getResourceLocator() {
+		return DlimEditPlugin.INSTANCE;
 	}
 
 }
