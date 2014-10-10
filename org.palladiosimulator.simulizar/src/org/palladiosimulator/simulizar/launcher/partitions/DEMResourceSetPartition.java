@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import dlim.DlimPackage;
-import dlim.Sequence;
+import dlim.WorkLoadSequence;
 
 /**
  * Special ResourceSetPartition for the Dynamic Environment Model.
@@ -20,7 +20,7 @@ public class DEMResourceSetPartition extends ResourceSetPartition {
 
 	private static final Logger LOGGER = Logger
 			.getLogger(DEMResourceSetPartition.class);
-	private Sequence deModel;
+	private WorkLoadSequence deModel;
 
 	/**
 	 * Constructor
@@ -35,7 +35,7 @@ public class DEMResourceSetPartition extends ResourceSetPartition {
 		this.deModel = null;
 	}
 
-	public Sequence getDEModel() {
+	public WorkLoadSequence getDEModel() {
 		if (this.deModel == null) {
 			this.deModel = loadDEModel();
 		}
@@ -45,11 +45,11 @@ public class DEMResourceSetPartition extends ResourceSetPartition {
 	/**
 	 * @return return the PMSModel element
 	 */
-	private Sequence loadDEModel() {
+	private WorkLoadSequence loadDEModel() {
 		try {
 			LOGGER.debug("Retrieving Dynamic Environment Model from blackboard partition");
-			List<Sequence> result = getElement(DlimPackage.eINSTANCE
-					.getSequence());
+			List<WorkLoadSequence> result = getElement(DlimPackage.eINSTANCE
+					.getWorkLoadSequence());
 			return result.get(0);
 		} catch (Exception e) {
 			LOGGER.warn("No DEM found, no requests will be measured.");

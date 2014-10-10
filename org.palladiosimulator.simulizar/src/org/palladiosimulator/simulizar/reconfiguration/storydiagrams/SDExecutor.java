@@ -34,7 +34,7 @@ import de.uka.ipd.sdq.pcm.system.SystemPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import dlim.DlimPackage;
-import dlim.Sequence;
+import dlim.WorkLoadSequence;
 
 /**
  * Story diagram executor helper class that supports executing SDs against the
@@ -145,7 +145,7 @@ public class SDExecutor {
 	private final Collection<Activity> storyDiagrams;
 	private final PCMResourceSetPartition globalPcmResourceSetPartition;
 	private final PRMModel prmModel;
-	private final Sequence demModel;
+	private final WorkLoadSequence demModel;
 
 	/**
 	 * Constructor of the SD Executor.

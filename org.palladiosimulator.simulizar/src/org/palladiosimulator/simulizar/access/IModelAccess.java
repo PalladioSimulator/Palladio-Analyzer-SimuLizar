@@ -7,7 +7,7 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import dlim.Sequence;
+import dlim.WorkLoadSequence;
 
 /**
  * Interface which allows access to all models at simulation time. Two classes
@@ -31,7 +31,7 @@ public interface IModelAccess extends Cloneable {
 	// -----
 	public PCMResourceSetPartition getGlobalPCMModel();
 
-	public Sequence getDEModel();
+	public WorkLoadSequence getDEModel();
 
 	public PMSModel getPMSModel();
 
