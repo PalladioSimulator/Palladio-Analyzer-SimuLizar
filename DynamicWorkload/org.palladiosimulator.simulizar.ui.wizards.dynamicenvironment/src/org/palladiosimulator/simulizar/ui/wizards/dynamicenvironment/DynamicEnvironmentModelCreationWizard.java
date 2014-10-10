@@ -178,16 +178,13 @@ public class DynamicEnvironmentModelCreationWizard extends Wizard implements INe
 			}
 
 			// Open an editor on the new file.
-			//
 			try {
-				page.openEditor
-					(new FileEditorInput(modelFile),
-					 workbench.getEditorRegistry().getDefaultEditor(modelFile.getFullPath().toString()).getId());					 	 
+				page.openEditor(new FileEditorInput(modelFile),workbench.getEditorRegistry().getDefaultEditor(modelFile.getFullPath().toString()).getId());					 	 
 			}
 			catch (PartInitException exception) {
 			MessageDialog.openError(workbenchWindow.getShell(), DlimEditorPlugin.INSTANCE.getString("_UI_OpenEditorError_label"), exception.getMessage());
 				return false;
-		}
+			}
 		System.out.println("Usage Scenarios: " + this.usageModel.getUsageScenario_UsageModel().get(0).getEntityName());
 		return true;
 	}
@@ -205,7 +202,7 @@ public class DynamicEnvironmentModelCreationWizard extends Wizard implements INe
 			tdwfContainer.setName(us.getEntityName());
 			tdwfContainer.setWork(us);
 			Sequence rootLoadObject = dlimFactory.createSequence();
-			tdwfContainer.setFunction(rootLoadObject);
+			tdwfContainer.setLoadSequence(rootLoadObject);
 			rootWLSequence.getWorkFunctionContainers().add(tdwfContainer);
 		}
 		return rootWLSequence;
