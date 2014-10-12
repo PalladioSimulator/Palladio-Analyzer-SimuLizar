@@ -2,9 +2,7 @@ package org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.resources.IContainer;
@@ -18,13 +16,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.ui.IExportWizard;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPage;
@@ -46,9 +42,6 @@ import dlim.Sequence;
 import dlim.TimeDependentWorkFunctionContainer;
 import dlim.WorkLoadSequence;
 import dlim.presentation.DlimEditorPlugin;
-import dlim.presentation.DlimModelWizard;
-import dlim.presentation.DlimModelWizard.DlimModelWizardInitialObjectCreationPage;
-import dlim.presentation.DlimModelWizard.DlimModelWizardNewFileCreationPage;
 
 
 /**
