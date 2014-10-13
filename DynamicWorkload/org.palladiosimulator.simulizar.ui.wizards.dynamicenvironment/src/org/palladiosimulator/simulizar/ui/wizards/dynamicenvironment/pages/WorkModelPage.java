@@ -1,14 +1,8 @@
 package org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.pages;
 
-import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ColumnLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewer;
-import org.eclipse.jface.viewers.ComboBoxCellEditor;
-import org.eclipse.jface.viewers.ComboBoxViewerCellEditor;
-import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
-import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -25,14 +19,15 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.editingsupport.PropertyValueEditingSupport;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+import dlim.DlimFactory;
+import dlim.DlimPackage;
 import dlim.Sequence;
 import dlim.TimeDependentWorkFunctionContainer;
 import dlim.WorkLoadSequence;
-import dlim.DlimFactory;
-import dlim.DlimPackage;
 
 public class WorkModelPage extends WizardPage {
 	
@@ -142,8 +137,10 @@ public class WorkModelPage extends WizardPage {
 		workAttributesTable.setLinesVisible(true);
 		setCellEditor(workAttributesTable, 1);
 		setCellEditor(workAttributesTable, 2);
+		setCellEditor(workAttributesTable, 3);
 		setCellEditor(workAttributesTable, 4);
 		setCellEditor(workAttributesTable, 5);
+		setCellEditor(workAttributesTable, 6);
 		
 		workColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
 		workColumn.getColumn().setWidth(100);
@@ -221,19 +218,19 @@ public class WorkModelPage extends WizardPage {
 			}
 		});
 		
-//		mutualLoadColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
-//		mutualLoadColumn.getColumn().setWidth(100);
-//		mutualLoadColumn.getColumn().setText("Mutual Load");
-//		mutualLoadColumn.setLabelProvider(new ColumnLabelProvider() {
-//			@Override
-//			public String getText(Object element) {
-//				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
-//				String cName = "";
-//				if (tdwfc.getTimeSynchronization() != null)
-//					cName = tdwfc.getTimeSynchronization().getWork().getEntityName();
-//				return cName;
-//			}
-//		});
+		mutualLoadColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
+		mutualLoadColumn.getColumn().setWidth(100);
+		mutualLoadColumn.getColumn().setText("Mutual Load");
+		mutualLoadColumn.setLabelProvider(new ColumnLabelProvider() {
+			@Override
+			public String getText(Object element) {
+				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
+				String cName = "";
+				if (tdwfc.getTimeSynchronization() != null)
+					cName = tdwfc.getTimeSynchronization().getWork().getEntityName();
+				return cName;
+			}
+		});
 		
 		
 	}
@@ -257,7 +254,7 @@ public class WorkModelPage extends WizardPage {
 				this.workAttributesTableViewer.add(tdwfContainer);
 			}
 			
-			synchronizeColumn.setEditingSupport(new PropertyValueEditingSupport(synchronizeColumn.getViewer(), this.rootWLSequence));
+//			synchronizeColumn.setEditingSupport(new PropertyValueEditingSupport(synchronizeColumn.getViewer(), this.rootWLSequence));
 //			mutualLoadColumn.setEditingSupport(new PropertyValueEditingSupport(mutualLoadColumn.getViewer(), this.rootWLSequence));
 		}
 	}
@@ -311,57 +308,5 @@ public class WorkModelPage extends WizardPage {
 	      }
 	    });
 	}
-	
-	
-    public class PropertyValueEditingSupport extends EditingSupport {  
-        
-        private final String[] valueArray = null;  
-        private Composite parent; 
-        private ComboBoxCellEditor combobox_editor;  
-        private WorkLoadSequence wlSequence;
-        
-        public PropertyValueEditingSupport(ColumnViewer viewer, WorkLoadSequence wlSequence) {  
-            super(viewer);
-            this.wlSequence = wlSequence;
-            parent =((TableViewer) viewer).getTable(); 
-            combobox_editor = new ComboBoxCellEditor(parent, new String[0]);          
-        }  
-      
-        @Override  
-        protected boolean canEdit(Object element) {  
-            return true;  
-        }  
-      
-        @Override  
-        protected CellEditor getCellEditor(Object element) {
-        	int i = 0;
-            for (TimeDependentWorkFunctionContainer tdwfc : wlSequence.getWorkFunctionContainers()) {
-            	valueArray[i] = tdwfc.getWork().getEntityName();
-            	i++;
-            }
-            combobox_editor.setItems(valueArray);
-        	return combobox_editor;  
-        }  
-      
-        @Override  
-        protected Object getValue(Object element) {
-        	String usageName = (String)element;
-        	TimeDependentWorkFunctionContainer con = null;
-        	for (TimeDependentWorkFunctionContainer tdwfc : wlSequence.getWorkFunctionContainers()) {
-            	if (usageName.equals(tdwfc.getWork().getEntityName()))
-            		con = tdwfc;
-            }
-			return con;
-        	    
-        }  
-      
-        @Override  
-        protected void setValue(Object element, Object value) {  
-            // Get the current service that's been selected  
-            // if it's something else, value is an index in the service property values set  
-        	TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer)element;
-        	tdwfc.setTimeSynchronization((TimeDependentWorkFunctionContainer)value);
-            getViewer().update(element, null);  
-        }  
-    }  
+          
 }
