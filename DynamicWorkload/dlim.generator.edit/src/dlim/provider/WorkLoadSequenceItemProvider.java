@@ -66,11 +66,6 @@ public class WorkLoadSequenceItemProvider
 			addWorkFunctionContainersPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
 			addTerminateAfterTimePropertyDescriptor(object);
-			addTerminateAfterLoopsPropertyDescriptor(object);
-			addFirstIterationStartPropertyDescriptor(object);
-			addFirstIterationEndPropertyDescriptor(object);
-			addLoopDurationPropertyDescriptor(object);
-			addFinalDurationPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -133,116 +128,6 @@ public class WorkLoadSequenceItemProvider
 				 getString("_UI_WorkLoadSequence_terminateAfterTime_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_terminateAfterTime_feature", "_UI_WorkLoadSequence_type"),
 				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__TERMINATE_AFTER_TIME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Terminate After Loops feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addTerminateAfterLoopsPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_terminateAfterLoops_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_terminateAfterLoops_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__TERMINATE_AFTER_LOOPS,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the First Iteration Start feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFirstIterationStartPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_firstIterationStart_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_firstIterationStart_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__FIRST_ITERATION_START,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the First Iteration End feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFirstIterationEndPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_firstIterationEnd_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_firstIterationEnd_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__FIRST_ITERATION_END,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Loop Duration feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addLoopDurationPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_loopDuration_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_loopDuration_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__LOOP_DURATION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Final Duration feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFinalDurationPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_finalDuration_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_finalDuration_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__FINAL_DURATION,
 				 true,
 				 false,
 				 false,

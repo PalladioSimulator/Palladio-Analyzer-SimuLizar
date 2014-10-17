@@ -180,21 +180,18 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TimeDependentWorkFunctionContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="work" lowerBound="1" eType="ecore:EClass ../../../../de.uka.ipd.sdq.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="workStartTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="workDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="workStartTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="0.0"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="workDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="1.0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeSynchronization" eType="#//TimeDependentWorkFunctionContainer"
         transient="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="mutualLoadFunction" eType="#//Sequence"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="mutualLoadFunction" eType="#//TimeDependentWorkFunctionContainer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
+        defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="loadSequence" lowerBound="1"
         eType="#//Sequence" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="duration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        defaultValueLiteral="1.0"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstIterationStart" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstIterationEnd" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pointOfReferenceClockObject"
         eType="#//ReferenceClockObject"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="pointOfReferenceClockType"

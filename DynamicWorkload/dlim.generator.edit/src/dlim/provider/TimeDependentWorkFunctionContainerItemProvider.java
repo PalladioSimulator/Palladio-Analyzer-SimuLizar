@@ -60,11 +60,7 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 			addWorkDurationPropertyDescriptor(object);
 			addTimeSynchronizationPropertyDescriptor(object);
 			addMutualLoadFunctionPropertyDescriptor(object);
-			addPriorityPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addDurationPropertyDescriptor(object);
-			addFirstIterationStartPropertyDescriptor(object);
-			addFirstIterationEndPropertyDescriptor(object);
 			addPointOfReferenceClockObjectPropertyDescriptor(object);
 			addPointOfReferenceClockTypePropertyDescriptor(object);
 		}
@@ -182,28 +178,6 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Priority feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addPriorityPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_priority_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_priority_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This adds a property descriptor for the Name feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -221,72 +195,6 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 				 false,
 				 false,
 				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Duration feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addDurationPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_duration_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_duration_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the First Iteration Start feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFirstIterationStartPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_firstIterationStart_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_firstIterationStart_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the First Iteration End feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addFirstIterationEndPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_firstIterationEnd_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_firstIterationEnd_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -408,9 +316,6 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_DURATION:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;

@@ -56,7 +56,7 @@ public class UsageEvolver {
 //					ArrayList<ArrivalRateTuple> arrivalRateList = new ArrayList<ArrivalRateTuple>();
 					LOGGER.info("Duration: "+dynamicWorkload.getFinalDuration());
 					double samplingStep = 1.0;
-					for (double i = samplingStep; i < dynamicWorkload.getFinalDuration(); i += samplingStep) {
+					for (double i = samplingStep; i < dynamicWorkload.getTerminateAfterTime(); i += samplingStep) {
 						LOGGER.info(i+" second in "+dynamicWorkload.getFinalDuration());
 						for (TimeDependentWorkFunctionContainer tdwfc : dynamicWorkload.getWorkFunctionContainers()) {
 							double workStartTime = tdwfc.getWorkStartTime();

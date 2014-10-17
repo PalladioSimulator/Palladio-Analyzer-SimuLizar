@@ -22,9 +22,10 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/terminateAfterTime"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//Sequence/referenceClock"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//Sequence/sequenceFunctionContainers"/>
+      <genFeatures property="None" children="true" createChild="true" propertyDescription=""
+          ecoreFeature="ecore:EReference dlim.ecore#//Sequence/sequenceFunctionContainers"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/terminateAfterLoops"/>
-      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/firstIterationStart"/>
+      <genFeatures property="None" createChild="false" propertyCategory="" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/firstIterationStart"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/firstIterationEnd"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/loopDuration"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//Sequence/finalDuration"/>
@@ -130,12 +131,9 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/workDuration"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/timeSynchronization"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/mutualLoadFunction"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/priority"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/priority"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/loadSequence"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/name"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/duration"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/firstIterationStart"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/firstIterationEnd"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockObject"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockType"/>
     </genClasses>
@@ -144,11 +142,11 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/name"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/terminateAfterTime"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//WorkLoadSequence/referenceClock"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/terminateAfterLoops"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/firstIterationStart"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/firstIterationEnd"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/loopDuration"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/finalDuration"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/terminateAfterLoops"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/firstIterationStart"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/firstIterationEnd"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/loopDuration"/>
+      <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/finalDuration"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
