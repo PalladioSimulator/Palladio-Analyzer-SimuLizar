@@ -19,13 +19,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.DynamicEnvironmentModelCreationWizard;
+import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.editingsupport.LoadFunctionEditingSupport;
 import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.editingsupport.PropertyValueEditingSupport;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import dlim.DlimFactory;
 import dlim.DlimPackage;
+import dlim.LinearTrend;
 import dlim.Sequence;
+import dlim.TimeDependentFunctionContainer;
 import dlim.TimeDependentWorkFunctionContainer;
 import dlim.WorkLoadSequence;
 
@@ -139,8 +143,8 @@ public class WorkModelPage extends WizardPage {
 		setCellEditor(workAttributesTable, 2);
 		setCellEditor(workAttributesTable, 3);
 		setCellEditor(workAttributesTable, 4);
-		setCellEditor(workAttributesTable, 5);
-		setCellEditor(workAttributesTable, 6);
+//		setCellEditor(workAttributesTable, 5);
+//		setCellEditor(workAttributesTable, 6);
 		
 		workColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
 		workColumn.getColumn().setWidth(100);
@@ -196,27 +200,31 @@ public class WorkModelPage extends WizardPage {
 		});
 		  
 		
-		loadNameColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
-		loadNameColumn.getColumn().setWidth(100);
-		loadNameColumn.getColumn().setText("Load Name");
-		loadNameColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
-				return tdwfc.getLoadSequence().getName();
-			}
-		});
+//		loadNameColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
+//		loadNameColumn.getColumn().setWidth(100);
+//		loadNameColumn.getColumn().setText("Load Name");
+//		loadNameColumn.setLabelProvider(new ColumnLabelProvider() {
+//			@Override
+//			public String getText(Object element) {
+//				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
+//				return tdwfc.getLoadSequence().getName();
+//			}
+//		});
 		
-		loadFunctionColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
-		loadFunctionColumn.getColumn().setWidth(100);
-		loadFunctionColumn.getColumn().setText("Load Function");
-		loadFunctionColumn.setLabelProvider(new ColumnLabelProvider() {
-			@Override
-			public String getText(Object element) {
-				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
-				return tdwfc.getLoadSequence().getName();
-			}
-		});
+//		loadFunctionColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
+//		loadFunctionColumn.getColumn().setWidth(100);
+//		loadFunctionColumn.getColumn().setText("Load Function");
+//		loadFunctionColumn.setLabelProvider(new ColumnLabelProvider() {
+//			@Override
+//			public String getText(Object element) {
+//				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
+//				String functionType = "";
+//				if (tdwfc.getLoadSequence().getSequenceFunctionContainers().get(0).getFunction() instanceof LinearTrend)
+//					functionType = "LinearTrend";
+//				return functionType;
+//			}
+//		});
+//		loadFunctionColumn.setEditingSupport(new LoadFunctionEditingSupport(loadFunctionColumn.getViewer()));
 		
 		mutualLoadColumn = new TableViewerColumn(workAttributesTableViewer, SWT.NONE);
 		mutualLoadColumn.getColumn().setWidth(100);
@@ -227,7 +235,7 @@ public class WorkModelPage extends WizardPage {
 				TimeDependentWorkFunctionContainer tdwfc = (TimeDependentWorkFunctionContainer) element;
 				String cName = "";
 				if (tdwfc.getTimeSynchronization() != null)
-					cName = tdwfc.getTimeSynchronization().getWork().getEntityName();
+					cName = tdwfc.getMutualLoadFunction().getWork().getEntityName();
 				return cName;
 			}
 		});
@@ -241,21 +249,25 @@ public class WorkModelPage extends WizardPage {
 			for (UsageScenario us : this.usageModel.getUsageScenario_UsageModel()) {
 				System.out.println("Work Page: " + us.getEntityName());
 //				this.getControl().getParent().layout(true,true)
-//				Label parameterFieldLabel = new Label(composite, SWT.NONE);
-//				parameterFieldLabel.setText(us.getEntityName());
 				
 				TimeDependentWorkFunctionContainer tdwfContainer = dlimFactory.createTimeDependentWorkFunctionContainer();
-				tdwfContainer.setName(us.getEntityName());
+				tdwfContainer.setName(us.getEntityName() + "_wfContainer");
 				tdwfContainer.setWork(us);
 				Sequence rootLoadObject = dlimFactory.createSequence();
+				rootLoadObject.setName(us.getEntityName() + "_loadSequence");
+//				TimeDependentFunctionContainer tdfc = dlimFactory.createTimeDependentFunctionContainer();
+//				rootLoadObject.getSequenceFunctionContainers().add(tdfc);
 				tdwfContainer.setLoadSequence(rootLoadObject);
 				rootWLSequence.getWorkFunctionContainers().add(tdwfContainer);
 				
 				this.workAttributesTableViewer.add(tdwfContainer);
-			}
-			
+			}			
 //			synchronizeColumn.setEditingSupport(new PropertyValueEditingSupport(synchronizeColumn.getViewer(), this.rootWLSequence));
 //			mutualLoadColumn.setEditingSupport(new PropertyValueEditingSupport(mutualLoadColumn.getViewer(), this.rootWLSequence));
+			
+			if(this.getWizard() instanceof DynamicEnvironmentModelCreationWizard) {
+				((DynamicEnvironmentModelCreationWizard)this.getWizard()).setCreatedWorkLoadSequence(this.rootWLSequence);
+			}
 		}
 	}
 	
@@ -296,10 +308,23 @@ public class WorkModelPage extends WizardPage {
 	            	((TimeDependentWorkFunctionContainer)item.getData()).setWorkStartTime(Double.parseDouble(text.getText()));
 	            if(EDITABLECOLUMN == 2)
 	            	((TimeDependentWorkFunctionContainer)item.getData()).setWorkDuration(Double.parseDouble(text.getText()));
-	            if(EDITABLECOLUMN == 4)
-	            	((TimeDependentWorkFunctionContainer)item.getData()).getLoadSequence().setName(text.getText());
+	            if(EDITABLECOLUMN == 3) {
+	            	for (TimeDependentWorkFunctionContainer wfc : rootWLSequence.getWorkFunctionContainers()) {
+	            		if (text.getText().equalsIgnoreCase(wfc.getWork().getEntityName()))
+	            			((TimeDependentWorkFunctionContainer)item.getData()).setTimeSynchronization(wfc);
+	            	}           	
+	            }            	
+//	            if(EDITABLECOLUMN == 4)
+//	            	((TimeDependentWorkFunctionContainer)item.getData()).getLoadSequence().setName(text.getText());
 //	            if(EDITABLECOLUMN == 5)
-	            	
+//	            	((TimeDependentWorkFunctionContainer)item.getData()).setLoadSequence(Double.parseDouble(text.getText()));
+	            if(EDITABLECOLUMN == 4) {
+	            	for (TimeDependentWorkFunctionContainer wfc : rootWLSequence.getWorkFunctionContainers()) {
+	            		if (text.getText().equalsIgnoreCase(wfc.getWork().getEntityName()))
+	            			((TimeDependentWorkFunctionContainer)item.getData()).setMutualLoadFunction(wfc);
+	            	}
+	            }
+	            ((DynamicEnvironmentModelCreationWizard)getWizard()).setCreatedWorkLoadSequence(rootWLSequence);
 	          }
 	        });
 	        newEditor.selectAll();

@@ -21,9 +21,6 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPriority <em>Priority</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getLoadSequence <em>Load Sequence</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getName <em>Name</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getDuration <em>Duration</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart <em>First Iteration Start</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd <em>First Iteration End</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
  * </ul>
@@ -62,6 +59,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Work Start Time</b></em>' attribute.
+	 * The default value is <code>"0.0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Work Start Time</em>' attribute isn't clear,
@@ -71,7 +69,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Work Start Time</em>' attribute.
 	 * @see #setWorkStartTime(double)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_WorkStartTime()
-	 * @model
+	 * @model default="0.0"
 	 * @generated
 	 */
 	double getWorkStartTime();
@@ -88,6 +86,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 
 	/**
 	 * Returns the value of the '<em><b>Work Duration</b></em>' attribute.
+	 * The default value is <code>"1.0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Work Duration</em>' attribute isn't clear,
@@ -97,7 +96,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Work Duration</em>' attribute.
 	 * @see #setWorkDuration(double)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_WorkDuration()
-	 * @model
+	 * @model default="1.0"
 	 * @generated
 	 */
 	double getWorkDuration();
@@ -147,12 +146,12 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mutual Load Function</em>' reference.
-	 * @see #setMutualLoadFunction(Sequence)
+	 * @see #setMutualLoadFunction(TimeDependentWorkFunctionContainer)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_MutualLoadFunction()
 	 * @model
 	 * @generated
 	 */
-	Sequence getMutualLoadFunction();
+	TimeDependentWorkFunctionContainer getMutualLoadFunction();
 
 	/**
 	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getMutualLoadFunction <em>Mutual Load Function</em>}' reference.
@@ -162,10 +161,11 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @see #getMutualLoadFunction()
 	 * @generated
 	 */
-	void setMutualLoadFunction(Sequence value);
+	void setMutualLoadFunction(TimeDependentWorkFunctionContainer value);
 
 	/**
 	 * Returns the value of the '<em><b>Priority</b></em>' attribute.
+	 * The default value is <code>"0"</code>.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Priority</em>' attribute isn't clear,
@@ -175,7 +175,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Priority</em>' attribute.
 	 * @see #setPriority(int)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_Priority()
-	 * @model
+	 * @model default="0"
 	 * @generated
 	 */
 	int getPriority();
@@ -241,85 +241,6 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Duration</b></em>' attribute.
-	 * The default value is <code>"1.0"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Duration</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Duration</em>' attribute.
-	 * @see #setDuration(double)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_Duration()
-	 * @model default="1.0"
-	 * @generated
-	 */
-	double getDuration();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getDuration <em>Duration</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Duration</em>' attribute.
-	 * @see #getDuration()
-	 * @generated
-	 */
-	void setDuration(double value);
-
-	/**
-	 * Returns the value of the '<em><b>First Iteration Start</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>First Iteration Start</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>First Iteration Start</em>' attribute.
-	 * @see #setFirstIterationStart(double)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_FirstIterationStart()
-	 * @model derived="true"
-	 * @generated
-	 */
-	double getFirstIterationStart();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart <em>First Iteration Start</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>First Iteration Start</em>' attribute.
-	 * @see #getFirstIterationStart()
-	 * @generated
-	 */
-	void setFirstIterationStart(double value);
-
-	/**
-	 * Returns the value of the '<em><b>First Iteration End</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>First Iteration End</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>First Iteration End</em>' attribute.
-	 * @see #setFirstIterationEnd(double)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_FirstIterationEnd()
-	 * @model derived="true"
-	 * @generated
-	 */
-	double getFirstIterationEnd();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd <em>First Iteration End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>First Iteration End</em>' attribute.
-	 * @see #getFirstIterationEnd()
-	 * @generated
-	 */
-	void setFirstIterationEnd(double value);
 
 	/**
 	 * Returns the value of the '<em><b>Point Of Reference Clock Object</b></em>' reference.

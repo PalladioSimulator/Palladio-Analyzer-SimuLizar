@@ -1724,40 +1724,13 @@ public interface DlimPackage extends EPackage {
 	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME = 7;
 
 	/**
-	 * The feature id for the '<em><b>Duration</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION = 8;
-
-	/**
-	 * The feature id for the '<em><b>First Iteration Start</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START = 9;
-
-	/**
-	 * The feature id for the '<em><b>First Iteration End</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END = 10;
-
-	/**
 	 * The feature id for the '<em><b>Point Of Reference Clock Object</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT = 11;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT = 8;
 
 	/**
 	 * The feature id for the '<em><b>Point Of Reference Clock Type</b></em>' attribute.
@@ -1766,7 +1739,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = 12;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = 9;
 
 	/**
 	 * The number of structural features of the '<em>Time Dependent Work Function Container</em>' class.
@@ -1775,7 +1748,7 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = 13;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = 10;
 
 	/**
 	 * The number of operations of the '<em>Time Dependent Work Function Container</em>' class.
@@ -2808,39 +2781,6 @@ public interface DlimPackage extends EPackage {
 	EAttribute getTimeDependentWorkFunctionContainer_Name();
 
 	/**
-	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getDuration <em>Duration</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Duration</em>'.
-	 * @see dlim.TimeDependentWorkFunctionContainer#getDuration()
-	 * @see #getTimeDependentWorkFunctionContainer()
-	 * @generated
-	 */
-	EAttribute getTimeDependentWorkFunctionContainer_Duration();
-
-	/**
-	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart <em>First Iteration Start</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>First Iteration Start</em>'.
-	 * @see dlim.TimeDependentWorkFunctionContainer#getFirstIterationStart()
-	 * @see #getTimeDependentWorkFunctionContainer()
-	 * @generated
-	 */
-	EAttribute getTimeDependentWorkFunctionContainer_FirstIterationStart();
-
-	/**
-	 * Returns the meta object for the attribute '{@link dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd <em>First Iteration End</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>First Iteration End</em>'.
-	 * @see dlim.TimeDependentWorkFunctionContainer#getFirstIterationEnd()
-	 * @see #getTimeDependentWorkFunctionContainer()
-	 * @generated
-	 */
-	EAttribute getTimeDependentWorkFunctionContainer_FirstIterationEnd();
-
-	/**
 	 * Returns the meta object for the reference '{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -3739,30 +3679,6 @@ public interface DlimPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME = eINSTANCE.getTimeDependentWorkFunctionContainer_Name();
-
-		/**
-		 * The meta object literal for the '<em><b>Duration</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION = eINSTANCE.getTimeDependentWorkFunctionContainer_Duration();
-
-		/**
-		 * The meta object literal for the '<em><b>First Iteration Start</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START = eINSTANCE.getTimeDependentWorkFunctionContainer_FirstIterationStart();
-
-		/**
-		 * The meta object literal for the '<em><b>First Iteration End</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END = eINSTANCE.getTimeDependentWorkFunctionContainer_FirstIterationEnd();
 
 		/**
 		 * The meta object literal for the '<em><b>Point Of Reference Clock Object</b></em>' reference feature.

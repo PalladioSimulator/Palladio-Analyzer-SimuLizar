@@ -40,7 +40,7 @@ public class CustomDlimEditor extends DlimEditor {
 									if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof Sequence)
 										view.updatePlot((editingDomain.getResourceSet().getResources().get(0).getContents().get(0)));
 									else if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof WorkLoadSequence) {
-//										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getLoadSequence());
+										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getLoadSequence());
 									}
 								}
 							}

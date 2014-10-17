@@ -35,9 +35,6 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPriority <em>Priority</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getLoadSequence <em>Load Sequence</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getName <em>Name</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getDuration <em>Duration</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getFirstIterationStart <em>First Iteration Start</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getFirstIterationEnd <em>First Iteration End</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
  * </ul>
@@ -84,7 +81,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * @generated
 	 * @ordered
 	 */
-	protected static final double WORK_DURATION_EDEFAULT = 0.0;
+	protected static final double WORK_DURATION_EDEFAULT = 1.0;
 
 	/**
 	 * The cached value of the '{@link #getWorkDuration() <em>Work Duration</em>}' attribute.
@@ -114,7 +111,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * @generated
 	 * @ordered
 	 */
-	protected Sequence mutualLoadFunction;
+	protected TimeDependentWorkFunctionContainer mutualLoadFunction;
 
 	/**
 	 * The default value of the '{@link #getPriority() <em>Priority</em>}' attribute.
@@ -165,66 +162,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getDuration() <em>Duration</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDuration()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double DURATION_EDEFAULT = 1.0;
-
-	/**
-	 * The cached value of the '{@link #getDuration() <em>Duration</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getDuration()
-	 * @generated
-	 * @ordered
-	 */
-	protected double duration = DURATION_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getFirstIterationStart() <em>First Iteration Start</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFirstIterationStart()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double FIRST_ITERATION_START_EDEFAULT = 0.0;
-
-	/**
-	 * The cached value of the '{@link #getFirstIterationStart() <em>First Iteration Start</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFirstIterationStart()
-	 * @generated
-	 * @ordered
-	 */
-	protected double firstIterationStart = FIRST_ITERATION_START_EDEFAULT;
-
-	/**
-	 * The default value of the '{@link #getFirstIterationEnd() <em>First Iteration End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFirstIterationEnd()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double FIRST_ITERATION_END_EDEFAULT = 0.0;
-
-	/**
-	 * The cached value of the '{@link #getFirstIterationEnd() <em>First Iteration End</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getFirstIterationEnd()
-	 * @generated
-	 * @ordered
-	 */
-	protected double firstIterationEnd = FIRST_ITERATION_END_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getPointOfReferenceClockObject() <em>Point Of Reference Clock Object</em>}' reference.
@@ -398,10 +335,10 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Sequence getMutualLoadFunction() {
+	public TimeDependentWorkFunctionContainer getMutualLoadFunction() {
 		if (mutualLoadFunction != null && mutualLoadFunction.eIsProxy()) {
 			InternalEObject oldMutualLoadFunction = (InternalEObject)mutualLoadFunction;
-			mutualLoadFunction = (Sequence)eResolveProxy(oldMutualLoadFunction);
+			mutualLoadFunction = (TimeDependentWorkFunctionContainer)eResolveProxy(oldMutualLoadFunction);
 			if (mutualLoadFunction != oldMutualLoadFunction) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION, oldMutualLoadFunction, mutualLoadFunction));
@@ -415,7 +352,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Sequence basicGetMutualLoadFunction() {
+	public TimeDependentWorkFunctionContainer basicGetMutualLoadFunction() {
 		return mutualLoadFunction;
 	}
 
@@ -424,8 +361,8 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMutualLoadFunction(Sequence newMutualLoadFunction) {
-		Sequence oldMutualLoadFunction = mutualLoadFunction;
+	public void setMutualLoadFunction(TimeDependentWorkFunctionContainer newMutualLoadFunction) {
+		TimeDependentWorkFunctionContainer oldMutualLoadFunction = mutualLoadFunction;
 		mutualLoadFunction = newMutualLoadFunction;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION, oldMutualLoadFunction, mutualLoadFunction));
@@ -514,69 +451,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public double getDuration() {
-		return duration;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setDuration(double newDuration) {
-		double oldDuration = duration;
-		duration = newDuration;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION, oldDuration, duration));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public double getFirstIterationStart() {
-		return firstIterationStart;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setFirstIterationStart(double newFirstIterationStart) {
-		double oldFirstIterationStart = firstIterationStart;
-		firstIterationStart = newFirstIterationStart;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START, oldFirstIterationStart, firstIterationStart));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public double getFirstIterationEnd() {
-		return firstIterationEnd;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setFirstIterationEnd(double newFirstIterationEnd) {
-		double oldFirstIterationEnd = firstIterationEnd;
-		firstIterationEnd = newFirstIterationEnd;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END, oldFirstIterationEnd, firstIterationEnd));
 	}
 
 	/**
@@ -679,12 +553,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return getLoadSequence();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				return getName();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
-				return getDuration();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
-				return getFirstIterationStart();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
-				return getFirstIterationEnd();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
 				if (resolve) return getPointOfReferenceClockObject();
 				return basicGetPointOfReferenceClockObject();
@@ -715,7 +583,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				setTimeSynchronization((TimeDependentWorkFunctionContainer)newValue);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
-				setMutualLoadFunction((Sequence)newValue);
+				setMutualLoadFunction((TimeDependentWorkFunctionContainer)newValue);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				setPriority((Integer)newValue);
@@ -725,15 +593,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				setName((String)newValue);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
-				setDuration((Double)newValue);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
-				setFirstIterationStart((Double)newValue);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
-				setFirstIterationEnd((Double)newValue);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
 				setPointOfReferenceClockObject((ReferenceClockObject)newValue);
@@ -766,7 +625,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				setTimeSynchronization((TimeDependentWorkFunctionContainer)null);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
-				setMutualLoadFunction((Sequence)null);
+				setMutualLoadFunction((TimeDependentWorkFunctionContainer)null);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 				setPriority(PRIORITY_EDEFAULT);
@@ -776,15 +635,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				setName(NAME_EDEFAULT);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
-				setDuration(DURATION_EDEFAULT);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
-				setFirstIterationStart(FIRST_ITERATION_START_EDEFAULT);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
-				setFirstIterationEnd(FIRST_ITERATION_END_EDEFAULT);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
 				setPointOfReferenceClockObject((ReferenceClockObject)null);
@@ -820,12 +670,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return loadSequence != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__DURATION:
-				return duration != DURATION_EDEFAULT;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_START:
-				return firstIterationStart != FIRST_ITERATION_START_EDEFAULT;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__FIRST_ITERATION_END:
-				return firstIterationEnd != FIRST_ITERATION_END_EDEFAULT;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
 				return pointOfReferenceClockObject != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
@@ -852,12 +696,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 		result.append(priority);
 		result.append(", name: ");
 		result.append(name);
-		result.append(", duration: ");
-		result.append(duration);
-		result.append(", firstIterationStart: ");
-		result.append(firstIterationStart);
-		result.append(", firstIterationEnd: ");
-		result.append(firstIterationEnd);
 		result.append(", pointOfReferenceClockType: ");
 		result.append(pointOfReferenceClockType);
 		result.append(')');

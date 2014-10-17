@@ -134,7 +134,9 @@ public class DynamicEnvironmentModelCreationWizard extends Wizard implements INe
 							Resource resource = resourceSet.createResource(fileURI);
 
 							// Add the initial model object to the contents.
-							EObject rootObject = createInitialModel();
+							EObject rootObject = rootWLSequence;
+							if (rootWLSequence.getWorkFunctionContainers().isEmpty())
+								rootObject = createInitialModel();
 							if (rootObject != null) {
 								resource.getContents().add(rootObject);
 							}
@@ -252,16 +254,19 @@ public class DynamicEnvironmentModelCreationWizard extends Wizard implements INe
 		this.workModelPage.setUsageModel(model);
 	}
 	
+	public void setCreatedWorkLoadSequence(WorkLoadSequence rootWLSequence2) {
+		this.rootWLSequence = rootWLSequence2;	
+	}
+	
 	/**
 	 * Enables the finish button of the wizard if the last page of the wizard is reached
 	 * @return boolean
 	 */
 	public boolean canFinish() {
-//		if (this.getContainer().getCurrentPage() == adaptVerificationPropertiesPage) 
+		if (this.getContainer().getCurrentPage() == workModelPage) 
 			return true;
-//		else
-//			return false;
+		else
+			return false;
 	}
-	
 	
 }
