@@ -21,6 +21,7 @@ import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
 
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EObjectResolvingEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
@@ -232,7 +233,7 @@ public class WorkLoadSequenceImpl extends MinimalEObjectImpl.Container implement
 	 */
 	public EList<TimeDependentWorkFunctionContainer> getWorkFunctionContainers() {
 		if (workFunctionContainers == null) {
-			workFunctionContainers = new EObjectContainmentEList<TimeDependentWorkFunctionContainer>(TimeDependentWorkFunctionContainer.class, this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
+			workFunctionContainers = new EObjectContainmentWithInverseEList<TimeDependentWorkFunctionContainer>(TimeDependentWorkFunctionContainer.class, this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS);
 		}
 		return workFunctionContainers;
 	}
@@ -425,6 +426,21 @@ public class WorkLoadSequenceImpl extends MinimalEObjectImpl.Container implement
 		finalDuration = newFinalDuration;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.WORK_LOAD_SEQUENCE__FINAL_DURATION, oldFinalDuration, finalDuration));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getWorkFunctionContainers()).basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
 	}
 
 	/**

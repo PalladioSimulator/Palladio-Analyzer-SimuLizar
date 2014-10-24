@@ -205,6 +205,10 @@ public class DlimAdapterFactory extends AdapterFactoryImpl {
 				return createWorkLoadSequenceAdapter();
 			}
 			@Override
+			public Adapter caseInputParameterCharacterizationContainer(InputParameterCharacterizationContainer object) {
+				return createInputParameterCharacterizationContainerAdapter();
+			}
+			@Override
 			public Adapter defaultCase(EObject object) {
 				return createEObjectAdapter();
 			}
@@ -613,6 +617,20 @@ public class DlimAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createWorkLoadSequenceAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link dlim.InputParameterCharacterizationContainer <em>Input Parameter Characterization Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see dlim.InputParameterCharacterizationContainer
+	 * @generated
+	 */
+	public Adapter createInputParameterCharacterizationContainerAdapter() {
 		return null;
 	}
 

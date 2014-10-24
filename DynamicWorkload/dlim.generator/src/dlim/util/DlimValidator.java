@@ -200,6 +200,8 @@ public class DlimValidator extends EObjectValidator {
 				return validateTimeDependentWorkFunctionContainer((TimeDependentWorkFunctionContainer)value, diagnostics, context);
 			case DlimPackage.WORK_LOAD_SEQUENCE:
 				return validateWorkLoadSequence((WorkLoadSequence)value, diagnostics, context);
+			case DlimPackage.INPUT_PARAMETER_CHARACTERIZATION_CONTAINER:
+				return validateInputParameterCharacterizationContainer((InputParameterCharacterizationContainer)value, diagnostics, context);
 			case DlimPackage.CLOCK_TYPE:
 				return validateClockType((ClockType)value, diagnostics, context);
 			case DlimPackage.OPERATOR:
@@ -560,6 +562,15 @@ public class DlimValidator extends EObjectValidator {
 	 */
 	public boolean validateWorkLoadSequence(WorkLoadSequence workLoadSequence, DiagnosticChain diagnostics, Map<Object, Object> context) {
 		return validate_EveryDefaultConstraint(workLoadSequence, diagnostics, context);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public boolean validateInputParameterCharacterizationContainer(InputParameterCharacterizationContainer inputParameterCharacterizationContainer, DiagnosticChain diagnostics, Map<Object, Object> context) {
+		return validate_EveryDefaultConstraint(inputParameterCharacterizationContainer, diagnostics, context);
 	}
 
 	/**

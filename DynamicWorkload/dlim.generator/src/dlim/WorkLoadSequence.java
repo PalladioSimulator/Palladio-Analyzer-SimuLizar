@@ -34,6 +34,7 @@ public interface WorkLoadSequence extends EObject {
 	/**
 	 * Returns the value of the '<em><b>Work Function Containers</b></em>' containment reference list.
 	 * The list contents are of type {@link dlim.TimeDependentWorkFunctionContainer}.
+	 * It is bidirectional and its opposite is '{@link dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Work Function Containers</em>' reference list isn't clear,
@@ -42,7 +43,8 @@ public interface WorkLoadSequence extends EObject {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Work Function Containers</em>' containment reference list.
 	 * @see dlim.DlimPackage#getWorkLoadSequence_WorkFunctionContainers()
-	 * @model containment="true" required="true"
+	 * @see dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers
+	 * @model opposite="workLoadSequence_WorkFunctionContainers" containment="true" required="true"
 	 * @generated
 	 */
 	EList<TimeDependentWorkFunctionContainer> getWorkFunctionContainers();

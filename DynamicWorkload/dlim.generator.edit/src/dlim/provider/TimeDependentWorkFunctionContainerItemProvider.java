@@ -255,8 +255,8 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 	public Collection<? extends EStructuralFeature> getChildrenFeatures(Object object) {
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
-			childrenFeatures.add(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK);
 			childrenFeatures.add(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE);
+			childrenFeatures.add(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS);
 		}
 		return childrenFeatures;
 	}
@@ -319,8 +319,8 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -340,13 +340,13 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 
 		newChildDescriptors.add
 			(createChildParameter
-				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK,
-				 UsagemodelFactory.eINSTANCE.createUsageScenario()));
+				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE,
+				 DlimFactory.eINSTANCE.createSequence()));
 
 		newChildDescriptors.add
 			(createChildParameter
-				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE,
-				 DlimFactory.eINSTANCE.createSequence()));
+				(DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS,
+				 DlimFactory.eINSTANCE.createInputParameterCharacterizationContainer()));
 	}
 
 	/**
