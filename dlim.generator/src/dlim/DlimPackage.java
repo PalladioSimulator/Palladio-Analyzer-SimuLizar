@@ -1742,13 +1742,31 @@ public interface DlimPackage extends EPackage {
 	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = 9;
 
 	/**
+	 * The feature id for the '<em><b>Parameter Charaterization Containers</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS = 10;
+
+	/**
+	 * The feature id for the '<em><b>Work Load Sequence Work Function Containers</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS = 11;
+
+	/**
 	 * The number of structural features of the '<em>Time Dependent Work Function Container</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = 10;
+	int TIME_DEPENDENT_WORK_FUNCTION_CONTAINER_FEATURE_COUNT = 12;
 
 	/**
 	 * The number of operations of the '<em>Time Dependent Work Function Container</em>' class.
@@ -1869,6 +1887,61 @@ public interface DlimPackage extends EPackage {
 	int WORK_LOAD_SEQUENCE_OPERATION_COUNT = 0;
 
 	/**
+	 * The meta object id for the '{@link dlim.impl.InputParameterCharacterizationContainerImpl <em>Input Parameter Characterization Container</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see dlim.impl.InputParameterCharacterizationContainerImpl
+	 * @see dlim.impl.DlimPackageImpl#getInputParameterCharacterizationContainer()
+	 * @generated
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER = 28;
+
+	/**
+	 * The feature id for the '<em><b>Variable Usage</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__VARIABLE_USAGE = 0;
+
+	/**
+	 * The feature id for the '<em><b>Parameter Value</b></em>' containment reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__PARAMETER_VALUE = 1;
+
+	/**
+	 * The feature id for the '<em><b>TDWFC Parameter Characterization Containers</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__TDWFC_PARAMETER_CHARACTERIZATION_CONTAINERS = 2;
+
+	/**
+	 * The number of structural features of the '<em>Input Parameter Characterization Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER_FEATURE_COUNT = 3;
+
+	/**
+	 * The number of operations of the '<em>Input Parameter Characterization Container</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int INPUT_PARAMETER_CHARACTERIZATION_CONTAINER_OPERATION_COUNT = 0;
+
+	/**
 	 * The meta object id for the '{@link dlim.ClockType <em>Clock Type</em>}' enum.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -1876,7 +1949,7 @@ public interface DlimPackage extends EPackage {
 	 * @see dlim.impl.DlimPackageImpl#getClockType()
 	 * @generated
 	 */
-	int CLOCK_TYPE = 28;
+	int CLOCK_TYPE = 29;
 
 	/**
 	 * The meta object id for the '{@link dlim.Operator <em>Operator</em>}' enum.
@@ -1886,7 +1959,7 @@ public interface DlimPackage extends EPackage {
 	 * @see dlim.impl.DlimPackageImpl#getOperator()
 	 * @generated
 	 */
-	int OPERATOR = 29;
+	int OPERATOR = 30;
 
 
 	/**
@@ -2803,6 +2876,28 @@ public interface DlimPackage extends EPackage {
 	EAttribute getTimeDependentWorkFunctionContainer_PointOfReferenceClockType();
 
 	/**
+	 * Returns the meta object for the containment reference list '{@link dlim.TimeDependentWorkFunctionContainer#getParameterCharaterizationContainers <em>Parameter Charaterization Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference list '<em>Parameter Charaterization Containers</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getParameterCharaterizationContainers()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EReference getTimeDependentWorkFunctionContainer_ParameterCharaterizationContainers();
+
+	/**
+	 * Returns the meta object for the container reference '{@link dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Work Load Sequence Work Function Containers</em>'.
+	 * @see dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers()
+	 * @see #getTimeDependentWorkFunctionContainer()
+	 * @generated
+	 */
+	EReference getTimeDependentWorkFunctionContainer_WorkLoadSequence_WorkFunctionContainers();
+
+	/**
 	 * Returns the meta object for class '{@link dlim.WorkLoadSequence <em>Work Load Sequence</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -2910,6 +3005,49 @@ public interface DlimPackage extends EPackage {
 	 * @generated
 	 */
 	EAttribute getWorkLoadSequence_FinalDuration();
+
+	/**
+	 * Returns the meta object for class '{@link dlim.InputParameterCharacterizationContainer <em>Input Parameter Characterization Container</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Input Parameter Characterization Container</em>'.
+	 * @see dlim.InputParameterCharacterizationContainer
+	 * @generated
+	 */
+	EClass getInputParameterCharacterizationContainer();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link dlim.InputParameterCharacterizationContainer#getVariableUsage <em>Variable Usage</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Variable Usage</em>'.
+	 * @see dlim.InputParameterCharacterizationContainer#getVariableUsage()
+	 * @see #getInputParameterCharacterizationContainer()
+	 * @generated
+	 */
+	EReference getInputParameterCharacterizationContainer_VariableUsage();
+
+	/**
+	 * Returns the meta object for the containment reference '{@link dlim.InputParameterCharacterizationContainer#getParameterValue <em>Parameter Value</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the containment reference '<em>Parameter Value</em>'.
+	 * @see dlim.InputParameterCharacterizationContainer#getParameterValue()
+	 * @see #getInputParameterCharacterizationContainer()
+	 * @generated
+	 */
+	EReference getInputParameterCharacterizationContainer_ParameterValue();
+
+	/**
+	 * Returns the meta object for the container reference '{@link dlim.InputParameterCharacterizationContainer#getTDWFC_ParameterCharacterizationContainers <em>TDWFC Parameter Characterization Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>TDWFC Parameter Characterization Containers</em>'.
+	 * @see dlim.InputParameterCharacterizationContainer#getTDWFC_ParameterCharacterizationContainers()
+	 * @see #getInputParameterCharacterizationContainer()
+	 * @generated
+	 */
+	EReference getInputParameterCharacterizationContainer_TDWFC_ParameterCharacterizationContainers();
 
 	/**
 	 * Returns the meta object for enum '{@link dlim.ClockType <em>Clock Type</em>}'.
@@ -3697,6 +3835,22 @@ public interface DlimPackage extends EPackage {
 		EAttribute TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE = eINSTANCE.getTimeDependentWorkFunctionContainer_PointOfReferenceClockType();
 
 		/**
+		 * The meta object literal for the '<em><b>Parameter Charaterization Containers</b></em>' containment reference list feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS = eINSTANCE.getTimeDependentWorkFunctionContainer_ParameterCharaterizationContainers();
+
+		/**
+		 * The meta object literal for the '<em><b>Work Load Sequence Work Function Containers</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS = eINSTANCE.getTimeDependentWorkFunctionContainer_WorkLoadSequence_WorkFunctionContainers();
+
+		/**
 		 * The meta object literal for the '{@link dlim.impl.WorkLoadSequenceImpl <em>Work Load Sequence</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -3777,6 +3931,40 @@ public interface DlimPackage extends EPackage {
 		 * @generated
 		 */
 		EAttribute WORK_LOAD_SEQUENCE__FINAL_DURATION = eINSTANCE.getWorkLoadSequence_FinalDuration();
+
+		/**
+		 * The meta object literal for the '{@link dlim.impl.InputParameterCharacterizationContainerImpl <em>Input Parameter Characterization Container</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see dlim.impl.InputParameterCharacterizationContainerImpl
+		 * @see dlim.impl.DlimPackageImpl#getInputParameterCharacterizationContainer()
+		 * @generated
+		 */
+		EClass INPUT_PARAMETER_CHARACTERIZATION_CONTAINER = eINSTANCE.getInputParameterCharacterizationContainer();
+
+		/**
+		 * The meta object literal for the '<em><b>Variable Usage</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__VARIABLE_USAGE = eINSTANCE.getInputParameterCharacterizationContainer_VariableUsage();
+
+		/**
+		 * The meta object literal for the '<em><b>Parameter Value</b></em>' containment reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__PARAMETER_VALUE = eINSTANCE.getInputParameterCharacterizationContainer_ParameterValue();
+
+		/**
+		 * The meta object literal for the '<em><b>TDWFC Parameter Characterization Containers</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EReference INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__TDWFC_PARAMETER_CHARACTERIZATION_CONTAINERS = eINSTANCE.getInputParameterCharacterizationContainer_TDWFC_ParameterCharacterizationContainers();
 
 		/**
 		 * The meta object literal for the '{@link dlim.ClockType <em>Clock Type</em>}' enum.

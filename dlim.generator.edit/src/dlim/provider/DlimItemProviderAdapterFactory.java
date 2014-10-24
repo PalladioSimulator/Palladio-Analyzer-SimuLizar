@@ -577,6 +577,29 @@ public class DlimItemProviderAdapterFactory extends DlimAdapterFactory implement
 	}
 
 	/**
+	 * This keeps track of the one adapter used for all {@link dlim.InputParameterCharacterizationContainer} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected InputParameterCharacterizationContainerItemProvider inputParameterCharacterizationContainerItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link dlim.InputParameterCharacterizationContainer}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createInputParameterCharacterizationContainerAdapter() {
+		if (inputParameterCharacterizationContainerItemProvider == null) {
+			inputParameterCharacterizationContainerItemProvider = new InputParameterCharacterizationContainerItemProvider(this);
+		}
+
+		return inputParameterCharacterizationContainerItemProvider;
+	}
+
+	/**
 	 * This returns the root adapter factory that contains this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -697,6 +720,7 @@ public class DlimItemProviderAdapterFactory extends DlimAdapterFactory implement
 		if (polynomialFactorItemProvider != null) polynomialFactorItemProvider.dispose();
 		if (timeDependentWorkFunctionContainerItemProvider != null) timeDependentWorkFunctionContainerItemProvider.dispose();
 		if (workLoadSequenceItemProvider != null) workLoadSequenceItemProvider.dispose();
+		if (inputParameterCharacterizationContainerItemProvider != null) inputParameterCharacterizationContainerItemProvider.dispose();
 	}
 
 }

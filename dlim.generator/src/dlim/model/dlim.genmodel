@@ -126,7 +126,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//PolynomialFactor/offset"/>
     </genClasses>
     <genClasses ecoreClass="dlim.ecore#//TimeDependentWorkFunctionContainer">
-      <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/work"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/work"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/workStartTime"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/workDuration"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/timeSynchronization"/>
@@ -136,6 +136,8 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/name"/>
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockObject"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//TimeDependentWorkFunctionContainer/pointOfReferenceClockType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/parameterCharaterizationContainers"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference dlim.ecore#//TimeDependentWorkFunctionContainer/workLoadSequence_WorkFunctionContainers"/>
     </genClasses>
     <genClasses ecoreClass="dlim.ecore#//WorkLoadSequence">
       <genFeatures children="true" createChild="true" propertySortChoices="true" ecoreFeature="ecore:EReference dlim.ecore#//WorkLoadSequence/workFunctionContainers"/>
@@ -147,6 +149,11 @@
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/firstIterationEnd"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/loopDuration"/>
       <genFeatures property="None" createChild="false" ecoreFeature="ecore:EAttribute dlim.ecore#//WorkLoadSequence/finalDuration"/>
+    </genClasses>
+    <genClasses ecoreClass="dlim.ecore#//InputParameterCharacterizationContainer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//InputParameterCharacterizationContainer/variableUsage"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference dlim.ecore#//InputParameterCharacterizationContainer/parameterValue"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference dlim.ecore#//InputParameterCharacterizationContainer/tDWFC_ParameterCharacterizationContainers"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>

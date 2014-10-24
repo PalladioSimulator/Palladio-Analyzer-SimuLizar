@@ -6,19 +6,27 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 
 import dlim.ClockType;
 import dlim.DlimPackage;
+import dlim.InputParameterCharacterizationContainer;
 import dlim.ReferenceClockObject;
 import dlim.Sequence;
 import dlim.TimeDependentWorkFunctionContainer;
 
+import dlim.WorkLoadSequence;
+import java.util.Collection;
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.eclipse.emf.ecore.util.InternalEList;
 
 /**
  * <!-- begin-user-doc -->
@@ -37,6 +45,8 @@ import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getName <em>Name</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getParameterCharaterizationContainers <em>Parameter Charaterization Containers</em>}</li>
+ *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}</li>
  * </ul>
  * </p>
  *
@@ -192,6 +202,16 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * @ordered
 	 */
 	protected ClockType pointOfReferenceClockType = POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
+
+	/**
+	 * The cached value of the '{@link #getParameterCharaterizationContainers() <em>Parameter Charaterization Containers</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see #getParameterCharaterizationContainers()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<InputParameterCharacterizationContainer> parameterCharaterizationContainers;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -517,13 +537,103 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EList<InputParameterCharacterizationContainer> getParameterCharaterizationContainers() {
+		if (parameterCharaterizationContainers == null) {
+			parameterCharaterizationContainers = new EObjectContainmentWithInverseEList<InputParameterCharacterizationContainer>(InputParameterCharacterizationContainer.class, this, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS, DlimPackage.INPUT_PARAMETER_CHARACTERIZATION_CONTAINER__TDWFC_PARAMETER_CHARACTERIZATION_CONTAINERS);
+		}
+		return parameterCharaterizationContainers;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public WorkLoadSequence getWorkLoadSequence_WorkFunctionContainers() {
+		if (eContainerFeatureID() != DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS) return null;
+		return (WorkLoadSequence)eInternalContainer();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NotificationChain basicSetWorkLoadSequence_WorkFunctionContainers(WorkLoadSequence newWorkLoadSequence_WorkFunctionContainers, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject)newWorkLoadSequence_WorkFunctionContainers, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS, msgs);
+		return msgs;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public void setWorkLoadSequence_WorkFunctionContainers(WorkLoadSequence newWorkLoadSequence_WorkFunctionContainers) {
+		if (newWorkLoadSequence_WorkFunctionContainers != eInternalContainer() || (eContainerFeatureID() != DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS && newWorkLoadSequence_WorkFunctionContainers != null)) {
+			if (EcoreUtil.isAncestor(this, newWorkLoadSequence_WorkFunctionContainers))
+				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
+			NotificationChain msgs = null;
+			if (eInternalContainer() != null)
+				msgs = eBasicRemoveFromContainer(msgs);
+			if (newWorkLoadSequence_WorkFunctionContainers != null)
+				msgs = ((InternalEObject)newWorkLoadSequence_WorkFunctionContainers).eInverseAdd(this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS, WorkLoadSequence.class, msgs);
+			msgs = basicSetWorkLoadSequence_WorkFunctionContainers(newWorkLoadSequence_WorkFunctionContainers, msgs);
+			if (msgs != null) msgs.dispatch();
+		}
+		else if (eNotificationRequired())
+			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS, newWorkLoadSequence_WorkFunctionContainers, newWorkLoadSequence_WorkFunctionContainers));
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				return ((InternalEList<InternalEObject>)(InternalEList<?>)getParameterCharaterizationContainers()).basicAdd(otherEnd, msgs);
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				if (eInternalContainer() != null)
+					msgs = eBasicRemoveFromContainer(msgs);
+				return basicSetWorkLoadSequence_WorkFunctionContainers((WorkLoadSequence)otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
 				return basicSetLoadSequence(null, msgs);
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				return ((InternalEList<?>)getParameterCharaterizationContainers()).basicRemove(otherEnd, msgs);
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				return basicSetWorkLoadSequence_WorkFunctionContainers(null, msgs);
 		}
 		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
+		switch (eContainerFeatureID()) {
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				return eInternalContainer().eInverseRemove(this, DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS, WorkLoadSequence.class, msgs);
+		}
+		return super.eBasicRemoveFromContainerFeature(msgs);
 	}
 
 	/**
@@ -558,6 +668,10 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return basicGetPointOfReferenceClockObject();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				return getPointOfReferenceClockType();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				return getParameterCharaterizationContainers();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				return getWorkLoadSequence_WorkFunctionContainers();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -567,6 +681,7 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void eSet(int featureID, Object newValue) {
 		switch (featureID) {
@@ -599,6 +714,13 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				setPointOfReferenceClockType((ClockType)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				getParameterCharaterizationContainers().clear();
+				getParameterCharaterizationContainers().addAll((Collection<? extends InputParameterCharacterizationContainer>)newValue);
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				setWorkLoadSequence_WorkFunctionContainers((WorkLoadSequence)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -642,6 +764,12 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				setPointOfReferenceClockType(POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT);
 				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				getParameterCharaterizationContainers().clear();
+				return;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				setWorkLoadSequence_WorkFunctionContainers((WorkLoadSequence)null);
+				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -674,6 +802,10 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return pointOfReferenceClockObject != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				return pointOfReferenceClockType != POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
+				return parameterCharaterizationContainers != null && !parameterCharaterizationContainers.isEmpty();
+			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
+				return getWorkLoadSequence_WorkFunctionContainers() != null;
 		}
 		return super.eIsSet(featureID);
 	}

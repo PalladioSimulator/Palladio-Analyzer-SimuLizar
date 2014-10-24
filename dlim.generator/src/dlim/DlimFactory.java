@@ -221,6 +221,15 @@ public interface DlimFactory extends EFactory {
 	WorkLoadSequence createWorkLoadSequence();
 
 	/**
+	 * Returns a new object of class '<em>Input Parameter Characterization Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Input Parameter Characterization Container</em>'.
+	 * @generated
+	 */
+	InputParameterCharacterizationContainer createInputParameterCharacterizationContainer();
+
+	/**
 	 * Returns the package supported by this factory.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

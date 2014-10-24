@@ -295,6 +295,12 @@ public class DlimSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case DlimPackage.INPUT_PARAMETER_CHARACTERIZATION_CONTAINER: {
+				InputParameterCharacterizationContainer inputParameterCharacterizationContainer = (InputParameterCharacterizationContainer)theEObject;
+				T result = caseInputParameterCharacterizationContainer(inputParameterCharacterizationContainer);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -716,6 +722,21 @@ public class DlimSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseWorkLoadSequence(WorkLoadSequence object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Input Parameter Characterization Container</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Input Parameter Characterization Container</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseInputParameterCharacterizationContainer(InputParameterCharacterizationContainer object) {
 		return null;
 	}
 

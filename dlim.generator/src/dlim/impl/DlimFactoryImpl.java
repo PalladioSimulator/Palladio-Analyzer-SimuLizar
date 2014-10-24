@@ -101,6 +101,7 @@ public class DlimFactoryImpl extends EFactoryImpl implements DlimFactory {
 			case DlimPackage.POLYNOMIAL_FACTOR: return createPolynomialFactor();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER: return createTimeDependentWorkFunctionContainer();
 			case DlimPackage.WORK_LOAD_SEQUENCE: return createWorkLoadSequence();
+			case DlimPackage.INPUT_PARAMETER_CHARACTERIZATION_CONTAINER: return createInputParameterCharacterizationContainer();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -358,6 +359,16 @@ public class DlimFactoryImpl extends EFactoryImpl implements DlimFactory {
 	public WorkLoadSequence createWorkLoadSequence() {
 		WorkLoadSequenceImpl workLoadSequence = new WorkLoadSequenceImpl();
 		return workLoadSequence;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public InputParameterCharacterizationContainer createInputParameterCharacterizationContainer() {
+		InputParameterCharacterizationContainerImpl inputParameterCharacterizationContainer = new InputParameterCharacterizationContainerImpl();
+		return inputParameterCharacterizationContainer;
 	}
 
 	/**

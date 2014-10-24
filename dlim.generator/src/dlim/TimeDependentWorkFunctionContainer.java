@@ -3,6 +3,7 @@
 package dlim;
 
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -23,6 +24,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getName <em>Name</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
+ *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getParameterCharaterizationContainers <em>Parameter Charaterization Containers</em>}</li>
+ *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}</li>
  * </ul>
  * </p>
  *
@@ -42,7 +45,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Work</em>' reference.
 	 * @see #setWork(UsageScenario)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_Work()
-	 * @model required="true"
+	 * @model required="true" ordered="false"
 	 * @generated
 	 */
 	UsageScenario getWork();
@@ -122,7 +125,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Time Synchronization</em>' reference.
 	 * @see #setTimeSynchronization(TimeDependentWorkFunctionContainer)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_TimeSynchronization()
-	 * @model transient="true"
+	 * @model
 	 * @generated
 	 */
 	TimeDependentWorkFunctionContainer getTimeSynchronization();
@@ -201,7 +204,7 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @return the value of the '<em>Load Sequence</em>' containment reference.
 	 * @see #setLoadSequence(Sequence)
 	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_LoadSequence()
-	 * @model containment="true" required="true"
+	 * @model containment="true"
 	 * @generated
 	 */
 	Sequence getLoadSequence();
@@ -297,5 +300,51 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @generated
 	 */
 	void setPointOfReferenceClockType(ClockType value);
+
+	/**
+	 * Returns the value of the '<em><b>Parameter Charaterization Containers</b></em>' containment reference list.
+	 * The list contents are of type {@link dlim.InputParameterCharacterizationContainer}.
+	 * It is bidirectional and its opposite is '{@link dlim.InputParameterCharacterizationContainer#getTDWFC_ParameterCharacterizationContainers <em>TDWFC Parameter Characterization Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Parameter Charaterization Containers</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Parameter Charaterization Containers</em>' containment reference list.
+	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_ParameterCharaterizationContainers()
+	 * @see dlim.InputParameterCharacterizationContainer#getTDWFC_ParameterCharacterizationContainers
+	 * @model opposite="tDWFC_ParameterCharacterizationContainers" containment="true"
+	 * @generated
+	 */
+	EList<InputParameterCharacterizationContainer> getParameterCharaterizationContainers();
+
+	/**
+	 * Returns the value of the '<em><b>Work Load Sequence Work Function Containers</b></em>' container reference.
+	 * It is bidirectional and its opposite is '{@link dlim.WorkLoadSequence#getWorkFunctionContainers <em>Work Function Containers</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <p>
+	 * If the meaning of the '<em>Work Load Sequence Work Function Containers</em>' container reference isn't clear,
+	 * there really should be more of a description here...
+	 * </p>
+	 * <!-- end-user-doc -->
+	 * @return the value of the '<em>Work Load Sequence Work Function Containers</em>' container reference.
+	 * @see #setWorkLoadSequence_WorkFunctionContainers(WorkLoadSequence)
+	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_WorkLoadSequence_WorkFunctionContainers()
+	 * @see dlim.WorkLoadSequence#getWorkFunctionContainers
+	 * @model opposite="workFunctionContainers" required="true" transient="false"
+	 * @generated
+	 */
+	WorkLoadSequence getWorkLoadSequence_WorkFunctionContainers();
+
+	/**
+	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @param value the new value of the '<em>Work Load Sequence Work Function Containers</em>' container reference.
+	 * @see #getWorkLoadSequence_WorkFunctionContainers()
+	 * @generated
+	 */
+	void setWorkLoadSequence_WorkFunctionContainers(WorkLoadSequence value);
 
 } // TimeDependentWorkFunctionContainer

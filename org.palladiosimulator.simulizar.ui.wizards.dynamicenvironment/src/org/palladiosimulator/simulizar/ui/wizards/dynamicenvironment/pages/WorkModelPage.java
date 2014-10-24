@@ -23,6 +23,10 @@ import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.DynamicEnvi
 import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.editingsupport.LoadFunctionEditingSupport;
 import org.palladiosimulator.simulizar.ui.wizards.dynamicenvironment.editingsupport.PropertyValueEditingSupport;
 
+import de.uka.ipd.sdq.pcm.parameter.VariableCharacterisation;
+import de.uka.ipd.sdq.pcm.parameter.VariableUsage;
+import de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction;
+import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import dlim.DlimFactory;
@@ -309,10 +313,10 @@ public class WorkModelPage extends WizardPage {
 	            if(EDITABLECOLUMN == 2)
 	            	((TimeDependentWorkFunctionContainer)item.getData()).setWorkDuration(Double.parseDouble(text.getText()));
 	            if(EDITABLECOLUMN == 3) {
-	            	for (TimeDependentWorkFunctionContainer wfc : rootWLSequence.getWorkFunctionContainers()) {
-	            		if (text.getText().equalsIgnoreCase(wfc.getWork().getEntityName()))
-	            			((TimeDependentWorkFunctionContainer)item.getData()).setTimeSynchronization(wfc);
-	            	}           	
+	            	for (TimeDependentWorkFunctionContainer ts : rootWLSequence.getWorkFunctionContainers()) {
+	            		if (text.getText().equalsIgnoreCase(ts.getWork().getEntityName()))
+	            			((TimeDependentWorkFunctionContainer)item.getData()).setTimeSynchronization(ts);
+	            	}
 	            }            	
 //	            if(EDITABLECOLUMN == 4)
 //	            	((TimeDependentWorkFunctionContainer)item.getData()).getLoadSequence().setName(text.getText());
