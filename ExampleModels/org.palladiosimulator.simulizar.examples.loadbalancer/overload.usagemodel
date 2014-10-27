@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0">
+  <usageScenario_UsageModel id="_YtqF4AEqEeS7FKokKTKFow" entityName="overloadUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_YtqF4QEqEeS7FKokKTKFow" entityName="defaultUsageScenarioBehaviour">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_Ytqs8AEqEeS7FKokKTKFow" successor="_cYRWcAEqEeS7FKokKTKFow"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Ytqs8QEqEeS7FKokKTKFow" predecessor="_cYRWcAEqEeS7FKokKTKFow"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_cYRWcAEqEeS7FKokKTKFow" successor="_Ytqs8QEqEeS7FKokKTKFow" predecessor="_Ytqs8AEqEeS7FKokKTKFow">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_f0xPUAEmEeS7FKokKTKFow"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+    <workload_UsageScenario xsi:type="usagemodel:OpenWorkload">
+      <interArrivalTime_OpenWorkload specification="Exp(0.00001)"/>
+    </workload_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_owTGYFxsEeST6ZT5vDWczA" entityName="upload">
+    <scenarioBehaviour_UsageScenario id="_tBcLcFxsEeST6ZT5vDWczA">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_tC7ZMFxsEeST6ZT5vDWczA" successor="_xCOgUFxsEeST6ZT5vDWczA"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_tC7ZMVxsEeST6ZT5vDWczA" predecessor="_xCOgUFxsEeST6ZT5vDWczA"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_xCOgUFxsEeST6ZT5vDWczA" successor="_tC7ZMVxsEeST6ZT5vDWczA" predecessor="_tC7ZMFxsEeST6ZT5vDWczA">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_f0xPUAEmEeS7FKokKTKFow"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+    <workload_UsageScenario xsi:type="usagemodel:OpenWorkload">
+      <interArrivalTime_OpenWorkload specification="Exp(0.01)"/>
+    </workload_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_quTrMFxsEeST6ZT5vDWczA" entityName="download">
+    <scenarioBehaviour_UsageScenario id="_eum3oFxvEeST6ZT5vDWczA">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_eum3oVxvEeST6ZT5vDWczA" successor="_gmEvkFxvEeST6ZT5vDWczA"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_eum3olxvEeST6ZT5vDWczA" predecessor="_gmEvkFxvEeST6ZT5vDWczA"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_gmEvkFxvEeST6ZT5vDWczA" successor="_eum3olxvEeST6ZT5vDWczA" predecessor="_eum3oVxvEeST6ZT5vDWczA">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_f0xPUAEmEeS7FKokKTKFow"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+    <workload_UsageScenario xsi:type="usagemodel:OpenWorkload">
+      <interArrivalTime_OpenWorkload specification="Exp(0.01)"/>
+    </workload_UsageScenario>
+  </usageScenario_UsageModel>
+</usagemodel:UsageModel>
