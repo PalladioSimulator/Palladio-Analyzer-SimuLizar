@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:resourceenvironment="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//allocation http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//resourceenvironment" xmi:id="_CX1d8QErEeS7FKokKTKFow" type="allocation" name="loadbalancer_on_iaas.allocation_diagram" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_Cabe8AErEeS7FKokKTKFow" type="2003" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGAAErEeS7FKokKTKFow" type="5008"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGAQErEeS7FKokKTKFow" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_DcDUAAErEeS7FKokKTKFow" type="3002" fontName="Segoe UI">
+        <children xmi:type="notation:DecorationNode" xmi:id="_DcDUAgErEeS7FKokKTKFow" type="5006"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_DcDUAwErEeS7FKokKTKFow" type="5007"/>
+        <element xmi:type="allocation:AllocationContext" href="loadbalancer_on_iaas.allocation#_C-3BsAErEeS7FKokKTKFow"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DcDUAQErEeS7FKokKTKFow" x="30" y="28"/>
+      </children>
+    </children>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_xISeMAEpEeS7FKokKTKFow"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Cabe8QErEeS7FKokKTKFow" x="30" y="30"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_CacGAgErEeS7FKokKTKFow" type="2003" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGBAErEeS7FKokKTKFow" type="5008"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGBQErEeS7FKokKTKFow" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_Em0eAAErEeS7FKokKTKFow" type="3002" fontName="Segoe UI">
+        <children xmi:type="notation:DecorationNode" xmi:id="_Em0eAgErEeS7FKokKTKFow" type="5006"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_Em0eAwErEeS7FKokKTKFow" type="5007"/>
+        <element xmi:type="allocation:AllocationContext" href="loadbalancer_on_iaas.allocation#_EPHvsAErEeS7FKokKTKFow"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Em0eAQErEeS7FKokKTKFow" x="30" y="29"/>
+      </children>
+    </children>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_yaTfsAEpEeS7FKokKTKFow"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGAwErEeS7FKokKTKFow" x="545" y="30"/>
+  </children>
+  <children xmi:type="notation:Shape" xmi:id="_CacGBgErEeS7FKokKTKFow" type="2003" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGCAErEeS7FKokKTKFow" type="5008"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_CacGCQErEeS7FKokKTKFow" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_FgQncAErEeS7FKokKTKFow" type="3002" fontName="Segoe UI">
+        <children xmi:type="notation:DecorationNode" xmi:id="_FgQncgErEeS7FKokKTKFow" type="5006"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_FgQncwErEeS7FKokKTKFow" type="5007"/>
+        <element xmi:type="allocation:AllocationContext" href="loadbalancer_on_iaas.allocation#_FQz2MAErEeS7FKokKTKFow"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_FgQncQErEeS7FKokKTKFow" x="30" y="28"/>
+      </children>
+    </children>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_3uVlIAEpEeS7FKokKTKFow"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGBwErEeS7FKokKTKFow" x="880" y="30"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_CX1d8gErEeS7FKokKTKFow"/>
+  <element xmi:type="allocation:Allocation" href="loadbalancer_on_iaas.allocation#_CX1d8AErEeS7FKokKTKFow"/>
+</notation:Diagram>

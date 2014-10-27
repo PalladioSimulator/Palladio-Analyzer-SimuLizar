@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pms="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0" guid="_6wCIABxmEeS4r6bYaQZ1eg">
+  <performanceMeasurements guid="_AsccEBxnEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint usagescenario.measuringpoint#/">
+    <measurementSpecification guid="_YDyggBxoEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_hYBsABxoEeS4r6bYaQZ1eg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_Twm0EBxoEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint server1.measuringpoint#/">
+    <measurementSpecification guid="_a1nu8BxoEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_ke-14BxoEeS4r6bYaQZ1eg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_UPbeEBxoEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint server2.measuringpoint#/">
+    <measurementSpecification guid="_czctkBxoEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_lxtpEBxoEeS4r6bYaQZ1eg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_UsMSkBxoEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint server3.measuringpoint#/">
+    <measurementSpecification guid="_fmMiABxoEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_m_MI0BxoEeS4r6bYaQZ1eg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+</pms:PMSModel>
