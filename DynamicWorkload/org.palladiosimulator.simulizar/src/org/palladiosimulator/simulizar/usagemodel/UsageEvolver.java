@@ -55,18 +55,20 @@ public class UsageEvolver {
 			protected void triggerInternal() {
 				LOGGER.info("Dynamic Workload model has been specified: " + dynamicWorkload.getName());
 				if (dynamicWorkload != null) {
-					// ArrayList<ArrivalRateTuple> arrivalRateList = new
-					// ArrayList<ArrivalRateTuple>();
 					LOGGER.info("Duration: " + dynamicWorkload.getTerminateAfterTime());
 					double samplingStep = 1.0;
-
-					for (double i = 0; i <= dynamicWorkload.getTerminateAfterTime(); i += samplingStep) {
+					ArrayList<TimeDependentWorkFunctionContainer> activeWorkLoadList = new ArrayList<TimeDependentWorkFunctionContainer>();
+					ArrayList<TimeDependentWorkFunctionContainer> inActiveWorkLoadList = new ArrayList<TimeDependentWorkFunctionContainer>();
+					ModelEvaluator evaluator = null;
+					OpenWorkload inActiveWorkLoad = null;
+					OpenWorkload activeScenario_WorkLoad = null;
+					for (double i = samplingStep; i < dynamicWorkload.getTerminateAfterTime(); i += samplingStep) {
 						LOGGER.info(i + " second in " + dynamicWorkload.getTerminateAfterTime());
-						ArrayList<TimeDependentWorkFunctionContainer> activeWorkLoadList = new ArrayList<TimeDependentWorkFunctionContainer>();
-						ArrayList<TimeDependentWorkFunctionContainer> inActiveWorkLoadList = new ArrayList<TimeDependentWorkFunctionContainer>();
+						double workStartTime = 0.0;
+						double workEndTime = 0.0;
 						for (TimeDependentWorkFunctionContainer tdwfc : dynamicWorkload.getWorkFunctionContainers()) {
-							double workStartTime = tdwfc.getWorkStartTime();
-							double workEndTime = tdwfc.getWorkStartTime() + tdwfc.getWorkDuration();
+							workStartTime = tdwfc.getWorkStartTime();
+							workEndTime = tdwfc.getWorkStartTime() + tdwfc.getWorkDuration();
 							if (i >= workStartTime && i <= workEndTime) {
 								activeWorkLoadList.add(tdwfc);
 							} else {
@@ -88,8 +90,8 @@ public class UsageEvolver {
 									usIndex = usageModel.getUsageScenario_UsageModel().indexOf(us);
 								}
 							}
-							OpenWorkload inActiveWorkLoad = (OpenWorkload) usageModel.getUsageScenario_UsageModel().get(usIndex).getWorkload_UsageScenario();
-							inActiveWorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("0.0");
+							inActiveWorkLoad = (OpenWorkload) usageModel.getUsageScenario_UsageModel().get(usIndex).getWorkload_UsageScenario();
+							inActiveWorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("Exp(0.01)");
 						}
 
 						for (TimeDependentWorkFunctionContainer activeTdwfc : activeWorkLoadList) {
@@ -97,10 +99,11 @@ public class UsageEvolver {
 							for (UsageScenario us : usageModel.getUsageScenario_UsageModel()) {
 								if (us.getId().equalsIgnoreCase(activeTdwfc.getWork().getId())) {
 									usIndex = usageModel.getUsageScenario_UsageModel().indexOf(us);
+									break;
 								}
 							}
 							UsageScenario activeScenario = usageModel.getUsageScenario_UsageModel().get(usIndex);
-							OpenWorkload activeScenario_WorkLoad = null;
+
 							if (activeScenario.getWorkload_UsageScenario() != null) {
 								activeScenario_WorkLoad = (OpenWorkload) activeScenario.getWorkload_UsageScenario();
 							} else {
@@ -110,18 +113,20 @@ public class UsageEvolver {
 								activeScenario.setWorkload_UsageScenario(activeScenario_WorkLoad);
 							}
 
-							ModelEvaluator evaluator = null;
 							if (activeTdwfc.getLoadSequence() != null) {
 								evaluator = new ModelEvaluator(activeTdwfc.getLoadSequence(), 5, IGeneratorConstants.EVALUATION);
-							} else if (activeTdwfc.getMutualLoadFunction() != null) {
-								evaluator = new ModelEvaluator(activeTdwfc.getMutualLoadFunction().getLoadSequence(), 5, IGeneratorConstants.EVALUATION);
+							} else {
+								if (activeTdwfc.getMutualLoadFunction() != null)
+									evaluator = new ModelEvaluator(activeTdwfc.getMutualLoadFunction().getLoadSequence(), 5, IGeneratorConstants.EVALUATION);
 							}
 
 							double loadTimeSample = 0.0;
-							double y = 0.0;
+							double y = 0.01;
 							if (evaluator != null) {
 								loadTimeSample = i - activeTdwfc.getWorkStartTime();
 								y = evaluator.getArrivalRateAtTime(loadTimeSample);
+								if (y == 0.0)
+									y = 0.01;
 							}
 
 							if (activeTdwfc.getParameterCharaterizationContainers() != null && activeTdwfc.getParameterCharaterizationContainers().size() > 0) {
@@ -143,9 +148,11 @@ public class UsageEvolver {
 								}
 							}
 
-							activeScenario_WorkLoad.getInterArrivalTime_OpenWorkload().setSpecification(String.valueOf(y));
+							activeScenario_WorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("Exp(" + y + ")");
 							LOGGER.info("At sampling time = " + i + " -" + activeTdwfc.getWork().getEntityName() + "- is active with a load = " + y + " (load sampling time = " + loadTimeSample + ")");
 						}
+						activeWorkLoadList.clear();
+						inActiveWorkLoadList.clear();
 
 					}
 
