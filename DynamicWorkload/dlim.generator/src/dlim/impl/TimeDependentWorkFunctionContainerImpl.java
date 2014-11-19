@@ -40,11 +40,8 @@ import org.eclipse.emf.ecore.util.InternalEList;
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getWorkDuration <em>Work Duration</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getTimeSynchronization <em>Time Synchronization</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getMutualLoadFunction <em>Mutual Load Function</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPriority <em>Priority</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getLoadSequence <em>Load Sequence</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getName <em>Name</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
- *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getParameterCharaterizationContainers <em>Parameter Charaterization Containers</em>}</li>
  *   <li>{@link dlim.impl.TimeDependentWorkFunctionContainerImpl#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}</li>
  * </ul>
@@ -124,26 +121,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	protected TimeDependentWorkFunctionContainer mutualLoadFunction;
 
 	/**
-	 * The default value of the '{@link #getPriority() <em>Priority</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPriority()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final int PRIORITY_EDEFAULT = 0;
-
-	/**
-	 * The cached value of the '{@link #getPriority() <em>Priority</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPriority()
-	 * @generated
-	 * @ordered
-	 */
-	protected int priority = PRIORITY_EDEFAULT;
-
-	/**
 	 * The cached value of the '{@link #getLoadSequence() <em>Load Sequence</em>}' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -172,36 +149,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * @ordered
 	 */
 	protected String name = NAME_EDEFAULT;
-
-	/**
-	 * The cached value of the '{@link #getPointOfReferenceClockObject() <em>Point Of Reference Clock Object</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPointOfReferenceClockObject()
-	 * @generated
-	 * @ordered
-	 */
-	protected ReferenceClockObject pointOfReferenceClockObject;
-
-	/**
-	 * The default value of the '{@link #getPointOfReferenceClockType() <em>Point Of Reference Clock Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPointOfReferenceClockType()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final ClockType POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT = ClockType.CONTAINER_CLOCK;
-
-	/**
-	 * The cached value of the '{@link #getPointOfReferenceClockType() <em>Point Of Reference Clock Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getPointOfReferenceClockType()
-	 * @generated
-	 * @ordered
-	 */
-	protected ClockType pointOfReferenceClockType = POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
 
 	/**
 	 * The cached value of the '{@link #getParameterCharaterizationContainers() <em>Parameter Charaterization Containers</em>}' containment reference list.
@@ -393,27 +340,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public int getPriority() {
-		return priority;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setPriority(int newPriority) {
-		int oldPriority = priority;
-		priority = newPriority;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY, oldPriority, priority));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public Sequence getLoadSequence() {
 		return loadSequence;
 	}
@@ -471,65 +397,6 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 		name = newName;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME, oldName, name));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ReferenceClockObject getPointOfReferenceClockObject() {
-		if (pointOfReferenceClockObject != null && pointOfReferenceClockObject.eIsProxy()) {
-			InternalEObject oldPointOfReferenceClockObject = (InternalEObject)pointOfReferenceClockObject;
-			pointOfReferenceClockObject = (ReferenceClockObject)eResolveProxy(oldPointOfReferenceClockObject);
-			if (pointOfReferenceClockObject != oldPointOfReferenceClockObject) {
-				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT, oldPointOfReferenceClockObject, pointOfReferenceClockObject));
-			}
-		}
-		return pointOfReferenceClockObject;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ReferenceClockObject basicGetPointOfReferenceClockObject() {
-		return pointOfReferenceClockObject;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setPointOfReferenceClockObject(ReferenceClockObject newPointOfReferenceClockObject) {
-		ReferenceClockObject oldPointOfReferenceClockObject = pointOfReferenceClockObject;
-		pointOfReferenceClockObject = newPointOfReferenceClockObject;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT, oldPointOfReferenceClockObject, pointOfReferenceClockObject));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public ClockType getPointOfReferenceClockType() {
-		return pointOfReferenceClockType;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setPointOfReferenceClockType(ClockType newPointOfReferenceClockType) {
-		ClockType oldPointOfReferenceClockType = pointOfReferenceClockType;
-		pointOfReferenceClockType = newPointOfReferenceClockType == null ? POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT : newPointOfReferenceClockType;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE, oldPointOfReferenceClockType, pointOfReferenceClockType));
 	}
 
 	/**
@@ -657,17 +524,10 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
 				if (resolve) return getMutualLoadFunction();
 				return basicGetMutualLoadFunction();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
-				return getPriority();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
 				return getLoadSequence();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				return getName();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
-				if (resolve) return getPointOfReferenceClockObject();
-				return basicGetPointOfReferenceClockObject();
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
-				return getPointOfReferenceClockType();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
 				return getParameterCharaterizationContainers();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
@@ -700,20 +560,11 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
 				setMutualLoadFunction((TimeDependentWorkFunctionContainer)newValue);
 				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
-				setPriority((Integer)newValue);
-				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
 				setLoadSequence((Sequence)newValue);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				setName((String)newValue);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
-				setPointOfReferenceClockObject((ReferenceClockObject)newValue);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
-				setPointOfReferenceClockType((ClockType)newValue);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
 				getParameterCharaterizationContainers().clear();
@@ -749,20 +600,11 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
 				setMutualLoadFunction((TimeDependentWorkFunctionContainer)null);
 				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
-				setPriority(PRIORITY_EDEFAULT);
-				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
 				setLoadSequence((Sequence)null);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				setName(NAME_EDEFAULT);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
-				setPointOfReferenceClockObject((ReferenceClockObject)null);
-				return;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
-				setPointOfReferenceClockType(POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT);
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
 				getParameterCharaterizationContainers().clear();
@@ -792,16 +634,10 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 				return timeSynchronization != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__MUTUAL_LOAD_FUNCTION:
 				return mutualLoadFunction != null;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
-				return priority != PRIORITY_EDEFAULT;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:
 				return loadSequence != null;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
 				return NAME_EDEFAULT == null ? name != null : !NAME_EDEFAULT.equals(name);
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT:
-				return pointOfReferenceClockObject != null;
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
-				return pointOfReferenceClockType != POINT_OF_REFERENCE_CLOCK_TYPE_EDEFAULT;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PARAMETER_CHARATERIZATION_CONTAINERS:
 				return parameterCharaterizationContainers != null && !parameterCharaterizationContainers.isEmpty();
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_LOAD_SEQUENCE_WORK_FUNCTION_CONTAINERS:
@@ -824,12 +660,8 @@ public class TimeDependentWorkFunctionContainerImpl extends MinimalEObjectImpl.C
 		result.append(workStartTime);
 		result.append(", workDuration: ");
 		result.append(workDuration);
-		result.append(", priority: ");
-		result.append(priority);
 		result.append(", name: ");
 		result.append(name);
-		result.append(", pointOfReferenceClockType: ");
-		result.append(pointOfReferenceClockType);
 		result.append(')');
 		return result.toString();
 	}

@@ -187,15 +187,9 @@
         defaultValueLiteral="1.0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="timeSynchronization" eType="#//TimeDependentWorkFunctionContainer"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="mutualLoadFunction" eType="#//TimeDependentWorkFunctionContainer"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="0"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="loadSequence" eType="#//Sequence"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="pointOfReferenceClockObject"
-        eType="#//ReferenceClockObject"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="pointOfReferenceClockType"
-        eType="#//ClockType" defaultValueLiteral="CONTAINERCLOCK"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="parameterCharaterizationContainers"
         upperBound="-1" eType="#//InputParameterCharacterizationContainer" containment="true"
         eOpposite="#//InputParameterCharacterizationContainer/tDWFC_ParameterCharacterizationContainers"/>
@@ -207,19 +201,6 @@
         lowerBound="1" upperBound="-1" eType="#//TimeDependentWorkFunctionContainer"
         containment="true" eOpposite="#//TimeDependentWorkFunctionContainer/workLoadSequence_WorkFunctionContainers"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="terminateAfterTime" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="referenceClock" eType="#//ReferenceClockObject"
-        containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="terminateAfterLoops" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"
-        defaultValueLiteral="-1"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstIterationStart" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="firstIterationEnd" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="loopDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="finalDuration" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
-        derived="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="InputParameterCharacterizationContainer">
     <eStructuralFeatures xsi:type="ecore:EReference" name="variableUsage" lowerBound="1"

@@ -19,11 +19,8 @@ import org.eclipse.emf.ecore.EObject;
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getWorkDuration <em>Work Duration</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getTimeSynchronization <em>Time Synchronization</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getMutualLoadFunction <em>Mutual Load Function</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPriority <em>Priority</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getLoadSequence <em>Load Sequence</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getName <em>Name</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}</li>
- *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getParameterCharaterizationContainers <em>Parameter Charaterization Containers</em>}</li>
  *   <li>{@link dlim.TimeDependentWorkFunctionContainer#getWorkLoadSequence_WorkFunctionContainers <em>Work Load Sequence Work Function Containers</em>}</li>
  * </ul>
@@ -167,33 +164,6 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	void setMutualLoadFunction(TimeDependentWorkFunctionContainer value);
 
 	/**
-	 * Returns the value of the '<em><b>Priority</b></em>' attribute.
-	 * The default value is <code>"0"</code>.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Priority</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Priority</em>' attribute.
-	 * @see #setPriority(int)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_Priority()
-	 * @model default="0"
-	 * @generated
-	 */
-	int getPriority();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getPriority <em>Priority</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Priority</em>' attribute.
-	 * @see #getPriority()
-	 * @generated
-	 */
-	void setPriority(int value);
-
-	/**
 	 * Returns the value of the '<em><b>Load Sequence</b></em>' containment reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
@@ -244,62 +214,6 @@ public interface TimeDependentWorkFunctionContainer extends EObject {
 	 * @generated
 	 */
 	void setName(String value);
-
-	/**
-	 * Returns the value of the '<em><b>Point Of Reference Clock Object</b></em>' reference.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Point Of Reference Clock Object</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Point Of Reference Clock Object</em>' reference.
-	 * @see #setPointOfReferenceClockObject(ReferenceClockObject)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_PointOfReferenceClockObject()
-	 * @model
-	 * @generated
-	 */
-	ReferenceClockObject getPointOfReferenceClockObject();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockObject <em>Point Of Reference Clock Object</em>}' reference.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Point Of Reference Clock Object</em>' reference.
-	 * @see #getPointOfReferenceClockObject()
-	 * @generated
-	 */
-	void setPointOfReferenceClockObject(ReferenceClockObject value);
-
-	/**
-	 * Returns the value of the '<em><b>Point Of Reference Clock Type</b></em>' attribute.
-	 * The default value is <code>"CONTAINERCLOCK"</code>.
-	 * The literals are from the enumeration {@link dlim.ClockType}.
-	 * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Point Of Reference Clock Type</em>' attribute isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Point Of Reference Clock Type</em>' attribute.
-	 * @see dlim.ClockType
-	 * @see #setPointOfReferenceClockType(ClockType)
-	 * @see dlim.DlimPackage#getTimeDependentWorkFunctionContainer_PointOfReferenceClockType()
-	 * @model default="CONTAINERCLOCK"
-	 * @generated
-	 */
-	ClockType getPointOfReferenceClockType();
-
-	/**
-	 * Sets the value of the '{@link dlim.TimeDependentWorkFunctionContainer#getPointOfReferenceClockType <em>Point Of Reference Clock Type</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Point Of Reference Clock Type</em>' attribute.
-	 * @see dlim.ClockType
-	 * @see #getPointOfReferenceClockType()
-	 * @generated
-	 */
-	void setPointOfReferenceClockType(ClockType value);
 
 	/**
 	 * Returns the value of the '<em><b>Parameter Charaterization Containers</b></em>' containment reference list.
