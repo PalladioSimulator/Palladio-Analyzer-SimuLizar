@@ -61,8 +61,6 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 			addTimeSynchronizationPropertyDescriptor(object);
 			addMutualLoadFunctionPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addPointOfReferenceClockObjectPropertyDescriptor(object);
-			addPointOfReferenceClockTypePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -200,50 +198,6 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Point Of Reference Clock Object feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addPointOfReferenceClockObjectPropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockObject_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockObject_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_OBJECT,
-				 true,
-				 false,
-				 true,
-				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Point Of Reference Clock Type feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addPointOfReferenceClockTypePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_TimeDependentWorkFunctionContainer_pointOfReferenceClockType_feature", "_UI_TimeDependentWorkFunctionContainer_type"),
-				 DlimPackage.Literals.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.GENERIC_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -314,9 +268,7 @@ public class TimeDependentWorkFunctionContainerItemProvider extends ItemProvider
 		switch (notification.getFeatureID(TimeDependentWorkFunctionContainer.class)) {
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_START_TIME:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__WORK_DURATION:
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__PRIORITY:
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__NAME:
-			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__POINT_OF_REFERENCE_CLOCK_TYPE:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case DlimPackage.TIME_DEPENDENT_WORK_FUNCTION_CONTAINER__LOAD_SEQUENCE:

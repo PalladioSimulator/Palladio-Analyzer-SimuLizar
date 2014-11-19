@@ -37,14 +37,14 @@ public class CustomDlimEditor extends DlimEditor {
 							for (int i = 0; i < references.length; i++) {
 								if (references[i].getId().equals("dlim.generator.editor.views.PlotView")) {
 									PlotView view = (PlotView)(references[i].getView(true));
-									if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof Sequence)
+//									if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof Sequence)
 										view.updatePlot((editingDomain.getResourceSet().getResources().get(0).getContents().get(0)));
-									else if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof WorkLoadSequence) {
-										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getLoadSequence());
+//									else if (editingDomain.getResourceSet().getResources().get(0).getContents().get(0) instanceof WorkLoadSequence) {
+//										view.updatePlot(((WorkLoadSequence)editingDomain.getResourceSet().getResources().get(0).getContents().get(0)).getWorkFunctionContainers().get(0).getLoadSequence());
 									}
 								}
 							}
-						}
+						
 					};
 			}
 

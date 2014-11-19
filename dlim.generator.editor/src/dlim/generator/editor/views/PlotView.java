@@ -16,6 +16,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 import dlim.Sequence;
+import dlim.TimeDependentWorkFunctionContainer;
+import dlim.WorkLoadSequence;
 import dlim.generator.ArrivalRateTuple;
 
 
@@ -54,7 +56,12 @@ public class PlotView extends ViewPart {
 	}
 	
 	public void updatePlot(EObject eObject) {
-		this.rootSequence = (Sequence)eObject;
+		if (eObject instanceof Sequence)
+			this.rootSequence = (Sequence)eObject;
+		else if (eObject instanceof TimeDependentWorkFunctionContainer)
+			this.rootSequence = ((TimeDependentWorkFunctionContainer) eObject).getLoadSequence();
+		else if (eObject instanceof WorkLoadSequence)
+			this.rootSequence = ((WorkLoadSequence) eObject).getWorkFunctionContainers().get(0).getLoadSequence();
 		updatePlot();
 	}
 	

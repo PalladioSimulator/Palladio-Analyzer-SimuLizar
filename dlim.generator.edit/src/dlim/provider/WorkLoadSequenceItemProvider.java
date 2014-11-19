@@ -65,7 +65,6 @@ public class WorkLoadSequenceItemProvider
 
 			addWorkFunctionContainersPropertyDescriptor(object);
 			addNamePropertyDescriptor(object);
-			addTerminateAfterTimePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -115,28 +114,6 @@ public class WorkLoadSequenceItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Terminate After Time feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addTerminateAfterTimePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_WorkLoadSequence_terminateAfterTime_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_WorkLoadSequence_terminateAfterTime_feature", "_UI_WorkLoadSequence_type"),
-				 DlimPackage.Literals.WORK_LOAD_SEQUENCE__TERMINATE_AFTER_TIME,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
-				 null,
-				 null));
-	}
-
-	/**
 	 * This specifies how to implement {@link #getChildren} and is used to deduce an appropriate feature for an
 	 * {@link org.eclipse.emf.edit.command.AddCommand}, {@link org.eclipse.emf.edit.command.RemoveCommand} or
 	 * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}.
@@ -149,7 +126,6 @@ public class WorkLoadSequenceItemProvider
 		if (childrenFeatures == null) {
 			super.getChildrenFeatures(object);
 			childrenFeatures.add(DlimPackage.Literals.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS);
-			childrenFeatures.add(DlimPackage.Literals.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK);
 		}
 		return childrenFeatures;
 	}
@@ -206,16 +182,9 @@ public class WorkLoadSequenceItemProvider
 
 		switch (notification.getFeatureID(WorkLoadSequence.class)) {
 			case DlimPackage.WORK_LOAD_SEQUENCE__NAME:
-			case DlimPackage.WORK_LOAD_SEQUENCE__TERMINATE_AFTER_TIME:
-			case DlimPackage.WORK_LOAD_SEQUENCE__TERMINATE_AFTER_LOOPS:
-			case DlimPackage.WORK_LOAD_SEQUENCE__FIRST_ITERATION_START:
-			case DlimPackage.WORK_LOAD_SEQUENCE__FIRST_ITERATION_END:
-			case DlimPackage.WORK_LOAD_SEQUENCE__LOOP_DURATION:
-			case DlimPackage.WORK_LOAD_SEQUENCE__FINAL_DURATION:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
 				return;
 			case DlimPackage.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS:
-			case DlimPackage.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK:
 				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
 				return;
 		}
@@ -237,11 +206,6 @@ public class WorkLoadSequenceItemProvider
 			(createChildParameter
 				(DlimPackage.Literals.WORK_LOAD_SEQUENCE__WORK_FUNCTION_CONTAINERS,
 				 DlimFactory.eINSTANCE.createTimeDependentWorkFunctionContainer()));
-
-		newChildDescriptors.add
-			(createChildParameter
-				(DlimPackage.Literals.WORK_LOAD_SEQUENCE__REFERENCE_CLOCK,
-				 DlimFactory.eINSTANCE.createReferenceClockObject()));
 	}
 
 	/**
