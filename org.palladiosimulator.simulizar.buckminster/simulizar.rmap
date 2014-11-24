@@ -30,7 +30,7 @@
   
   <rm:locator pattern="^org\.scaledl\.usageevolution.*" searchPathRef="UsageEvolution" failOnError="false"/>
   
-  <rm:locator pattern="^dlim.*" searchPathRef="Limbo" failOnError="false"/>
+  <rm:locator pattern="^tools.descartes.dlim.*" searchPathRef="Limbo" failOnError="false"/>
   
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   
