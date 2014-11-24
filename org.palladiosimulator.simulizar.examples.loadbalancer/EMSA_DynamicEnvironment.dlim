@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ASCII"?>
+<dlim:WorkLoadSequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:dlim="http://sdq.ipd.uka.de/dlimm/0.1">
+  <workFunctionContainers name="secureLoginUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_CuQU4HQhEeSK-_whxGSJsg"/>
+    <loadSequence name="secureLoginUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+  <workFunctionContainers name="uploadMediaUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_raW7IHQhEeSK-_whxGSJsg"/>
+    <loadSequence name="uploadMediaUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+  <workFunctionContainers name="downloadMediaUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_FvXgAHQiEeSK-_whxGSJsg"/>
+    <loadSequence name="downloadMediaUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+  <workFunctionContainers name="shareMediaUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_b8b_IHQiEeSK-_whxGSJsg"/>
+    <loadSequence name="shareMediaUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+  <workFunctionContainers name="browseMediaUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_vRIi8HQiEeSK-_whxGSJsg"/>
+    <loadSequence name="browseMediaUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+  <workFunctionContainers name="removeMediaUsageScenario_wfContainer">
+    <work href="/org.palladiosimulator.simulizar.examples.loadbalancer/EMSA.usagemodel#_IrUeUHQjEeSK-_whxGSJsg"/>
+    <loadSequence name="removeMediaUsageScenario_loadSequence"/>
+  </workFunctionContainers>
+</dlim:WorkLoadSequence>
