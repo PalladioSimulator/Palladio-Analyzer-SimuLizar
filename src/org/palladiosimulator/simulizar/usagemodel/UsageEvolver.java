@@ -6,13 +6,13 @@ import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSim
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
 
+import tools.descartes.dlim.Sequence;
+import tools.descartes.dlim.generator.ModelEvaluator;
 import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
-import dlim.Sequence;
-import dlim.generator.ModelEvaluator;
 
 public class UsageEvolver {
 
