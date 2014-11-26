@@ -34,6 +34,7 @@
 <booleanAttribute key="simulateLinkingResources" value="false"/>
 <stringAttribute key="simulatorId" value="de.uka.ipd.sdq.codegen.simucontroller.simucom"/>
 <stringAttribute key="stepwidth" value=""/>
+<stringAttribute key="usageEvolutionFile" value=""/>
 <stringAttribute key="usageFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.znncom/clients_overload.usagemodel"/>
 <booleanAttribute key="useConfidenceStopCondition" value="false"/>
 <booleanAttribute key="useFixedSeed" value="false"/>
