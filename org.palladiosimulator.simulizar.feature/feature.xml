@@ -328,14 +328,7 @@ litigation.
          unpack="false"/>
 
    <plugin
-         id="org.palladiosimulator.simulizar.ui.wizard.loadbalancer"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.simulizar.ui.wizard.znncom"
+         id="org.palladiosimulator.simulizar.ui.wizards"
          download-size="0"
          install-size="0"
          version="0.0.0"
