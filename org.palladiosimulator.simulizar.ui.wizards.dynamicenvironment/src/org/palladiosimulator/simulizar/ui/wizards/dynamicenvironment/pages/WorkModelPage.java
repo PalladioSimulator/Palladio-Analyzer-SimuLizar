@@ -85,12 +85,12 @@ public class WorkModelPage extends WizardPage {
 //		setPageComplete(validatePage());
 		setControl(composite);
 		
-		Label lblTotalDuration = new Label(composite, SWT.NONE);
-		lblTotalDuration.setBounds(10, 10, 87, 15);
-		lblTotalDuration.setText("Total Duration:");
-		
-		text_1 = new Text(composite, SWT.BORDER);
-		text_1.setBounds(94, 10, 87, 21);
+//		Label lblTotalDuration = new Label(composite, SWT.NONE);
+//		lblTotalDuration.setBounds(10, 10, 87, 15);
+//		lblTotalDuration.setText("Total Duration:");
+//		
+//		text_1 = new Text(composite, SWT.BORDER);
+//		text_1.setBounds(94, 10, 87, 21);
 		
 //		Group grpWork = new Group(composite, SWT.NONE);
 //		grpWork.setText("grp 1");
