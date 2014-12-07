@@ -74,19 +74,15 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
 		UsageScenario notifiedUsageScenario = notifiedEntryLevelSystemCall.getScenarioBehaviour_AbstractUserAction().getUsageScenario_SenarioBehaviour();
 		UsageModel runtimeUsageModel = this.runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel();
 		for (UsageScenario us : runtimeUsageModel.getUsageScenario_UsageModel()) {
-			LOGGER.info("Here 3");
 			if (us.getId().equalsIgnoreCase(notifiedUsageScenario.getId())) {
 				for (AbstractUserAction aua : us.getScenarioBehaviour_UsageScenario().getActions_ScenarioBehaviour()) {
-					LOGGER.info("Here 2");
 					if (aua instanceof EntryLevelSystemCall) {
 						if (((EntryLevelSystemCall) aua).getId().equalsIgnoreCase(notifiedEntryLevelSystemCall.getId())) {
 							for (VariableUsage vu : ((EntryLevelSystemCall) aua).getInputParameterUsages_EntryLevelSystemCall()) {
-								LOGGER.info("Here 1");
 								if (vu.getNamedReference__VariableUsage().getReferenceName().equalsIgnoreCase(notifiedVariableUsage.getNamedReference__VariableUsage().getReferenceName())) {
-									LOGGER.info("Setting VariableUsage: " + vu.getNamedReference__VariableUsage().getReferenceName() + " with a new changed value = "
+									LOGGER.debug("Setting VariableUsage: " + vu.getNamedReference__VariableUsage().getReferenceName() + " with a new changed value = "
 											+ notification.getNewStringValue());
 									for (VariableCharacterisation vc : vu.getVariableCharacterisation_VariableUsage()) {
-										LOGGER.info("Here 0");
 										if (vc.getType().compareTo(notifiedVariableCharacterisation.getType()) == 0) {
 											vu.getVariableCharacterisation_VariableUsage().get(0).getSpecification_VariableCharacterisation().setSpecification(notification.getNewStringValue());
 
