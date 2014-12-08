@@ -6,6 +6,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
+import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
@@ -79,7 +80,8 @@ public final class PMSUtil {
         if (eobject == null) {
             eobject = getEObjectFromGeneralMeasuringPoint(mp);
             if (eobject == null) {
-                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint");
+                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
+                        + MeasuringPointUtility.measuringPointToString(mp) + "\"");
             }
         }
         return eobject;
