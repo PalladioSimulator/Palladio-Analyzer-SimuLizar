@@ -129,9 +129,9 @@
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_J930gAEmEeS7FKokKTKFow" entityName="IApplicationServer">
-    <signatures__OperationInterface id="_f0xPUAEmEeS7FKokKTKFow" entityName="processRequest">
-      <parameters__OperationSignature parameterName="payload">
-        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+    <signatures__OperationInterface id="_f0xPUAEmEeS7FKokKTKFow" entityName="login">
+      <parameters__OperationSignature parameterName="user">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
     <signatures__OperationInterface id="_8zgs0H_pEeSeWo-ok8k5xw" entityName="upload">
