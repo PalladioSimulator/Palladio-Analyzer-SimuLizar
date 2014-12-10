@@ -8,46 +8,45 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractSyncer.class);
+	private static final Logger LOGGER = Logger.getLogger(AbstractSyncer.class);
 
-    protected final SimuLizarRuntimeState runtimeModel;
-    protected final T model;
+	protected final SimuLizarRuntimeState runtimeModel;
+	protected final T model;
 
-    private final EContentAdapter adapter;
+	private final EContentAdapter adapter;
 
-    /**
-     * @param simuComModel
-     */
-    protected AbstractSyncer(final SimuLizarRuntimeState simuComModel, final T model) {
-        super();
-        this.runtimeModel = simuComModel;
-        this.model = model;
-        this.adapter = new EContentAdapter() {
+	/**
+	 * @param simuComModel
+	 */
+	protected AbstractSyncer(final SimuLizarRuntimeState simuComModel, final T model) {
+		super();
+		this.runtimeModel = simuComModel;
+		this.model = model;
+		this.adapter = new EContentAdapter() {
 
-            @Override
-            public void notifyChanged(final Notification notification) {
-                super.notifyChanged(notification);
-                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
-                    LOGGER.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
-                            + notification);
-                    synchronizeSimulationEntities(notification);
-                }
-            }
+			@Override
+			public void notifyChanged(final Notification notification) {
+				super.notifyChanged(notification);
+				if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
+					LOGGER.debug(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: " + notification);
+					synchronizeSimulationEntities(notification);
+				}
+			}
 
-        };
-        model.eAdapters().add(adapter);
-    }
+		};
+		model.eAdapters().add(adapter);
+	}
 
-    protected abstract void synchronizeSimulationEntities(final Notification notification);
+	protected abstract void synchronizeSimulationEntities(final Notification notification);
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#stopSyncer()
-     */
-    @Override
-    public void stopSyncer() {
-        model.eAdapters().remove(adapter);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#stopSyncer()
+	 */
+	@Override
+	public void stopSyncer() {
+		model.eAdapters().remove(adapter);
+	}
 
 }
