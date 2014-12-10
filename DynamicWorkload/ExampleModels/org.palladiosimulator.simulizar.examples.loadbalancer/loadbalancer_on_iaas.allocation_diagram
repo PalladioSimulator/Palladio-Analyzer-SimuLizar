@@ -7,11 +7,11 @@
         <children xmi:type="notation:DecorationNode" xmi:id="_DcDUAgErEeS7FKokKTKFow" type="5006"/>
         <children xmi:type="notation:DecorationNode" xmi:id="_DcDUAwErEeS7FKokKTKFow" type="5007"/>
         <element xmi:type="allocation:AllocationContext" href="loadbalancer_on_iaas.allocation#_C-3BsAErEeS7FKokKTKFow"/>
-        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DcDUAQErEeS7FKokKTKFow" x="30" y="28"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_DcDUAQErEeS7FKokKTKFow" x="13" y="12"/>
       </children>
     </children>
     <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_xISeMAEpEeS7FKokKTKFow"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Cabe8QErEeS7FKokKTKFow" x="30" y="30"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Cabe8QErEeS7FKokKTKFow" x="30" y="24" width="235" height="97"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_CacGAgErEeS7FKokKTKFow" type="2003" fontName="Segoe UI">
     <children xmi:type="notation:DecorationNode" xmi:id="_CacGBAErEeS7FKokKTKFow" type="5008"/>
@@ -24,7 +24,7 @@
       </children>
     </children>
     <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_yaTfsAEpEeS7FKokKTKFow"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGAwErEeS7FKokKTKFow" x="545" y="30"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGAwErEeS7FKokKTKFow" x="300" y="24"/>
   </children>
   <children xmi:type="notation:Shape" xmi:id="_CacGBgErEeS7FKokKTKFow" type="2003" fontName="Segoe UI">
     <children xmi:type="notation:DecorationNode" xmi:id="_CacGCAErEeS7FKokKTKFow" type="5008"/>
@@ -37,7 +37,7 @@
       </children>
     </children>
     <element xmi:type="resourceenvironment:ResourceContainer" href="iaas.resourceenvironment#_3uVlIAEpEeS7FKokKTKFow"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGBwErEeS7FKokKTKFow" x="880" y="30"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_CacGBwErEeS7FKokKTKFow" x="588" y="24"/>
   </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_CX1d8gErEeS7FKokKTKFow"/>
   <element xmi:type="allocation:Allocation" href="loadbalancer_on_iaas.allocation#_CX1d8AErEeS7FKokKTKFow"/>
