@@ -96,7 +96,7 @@ public class UsageEvolver {
 				for (UsageScenario inactiveWork : usageModel.getUsageScenario_UsageModel()) {
 					if (!(activeWorkList.contains(inactiveWork))) {
 						inActiveWorkLoad = (OpenWorkload) inactiveWork.getWorkload_UsageScenario();
-						inActiveWorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("1");
+						inActiveWorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("Exp(1)");
 					}
 
 				}
@@ -120,13 +120,13 @@ public class UsageEvolver {
 						}
 
 						double loadTimeSample = 0.0;
-						double loadValue = 0.01;
+						double loadValue = 1;
 						if (evaluator != null) {
 							loadTimeSample = currentSimulationTime - activeTdwfc.getWorkStartTime();
 							loadValue = evaluator.getArrivalRateAtTime(loadTimeSample);
-							LOGGER.info("load value = " + loadValue);
+							LOGGER.debug("load value = " + loadValue);
 							if (loadValue == 0.0)
-								loadValue = 0.01;
+								loadValue = 1;
 						}
 
 						// activeScenario =
@@ -135,8 +135,8 @@ public class UsageEvolver {
 						// currentSimulationTime);
 
 						activeScenario_WorkLoad.getInterArrivalTime_OpenWorkload().setSpecification("Exp(" + loadValue + ")");
-						LOGGER.info("At sampling time = " + currentSimulationTime + " -" + activeTdwfc.getWork().getEntityName() + "- is active with a load = " + loadValue + " (load sampling time = "
-								+ loadTimeSample + ")");
+						LOGGER.debug("At sampling time = " + currentSimulationTime + " -" + activeTdwfc.getWork().getEntityName() + "- is active with a load = " + loadValue
+								+ " (load sampling time = " + loadTimeSample + ")");
 					}
 				}
 			}
@@ -163,7 +163,7 @@ public class UsageEvolver {
 											ModelEvaluator paramEvalutor = new ModelEvaluator(iPcc.getParameterValue(), 5, IGeneratorConstants.EVALUATION);
 											vu.getVariableCharacterisation_VariableUsage().get(0).getSpecification_VariableCharacterisation()
 													.setSpecification("Exp(" + paramEvalutor.getArrivalRateAtTime(loadTimeSample) + ")");
-											LOGGER.info("At sampling time = " + currentSimulationTime + " - IPCC with value = " + String.valueOf(paramEvalutor.getArrivalRateAtTime(loadTimeSample)));
+											LOGGER.debug("At sampling time = " + currentSimulationTime + " - IPCC with value = " + String.valueOf(paramEvalutor.getArrivalRateAtTime(loadTimeSample)));
 
 										}
 									}
