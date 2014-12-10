@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/2.2" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0">
+<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0">
   <usageScenario_UsageModel id="_YtqF4AEqEeS7FKokKTKFow" entityName="overloadUsageScenario">
     <scenarioBehaviour_UsageScenario id="_YtqF4QEqEeS7FKokKTKFow" entityName="defaultUsageScenarioBehaviour">
       <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_Ytqs8AEqEeS7FKokKTKFow" successor="_cYRWcAEqEeS7FKokKTKFow"/>
@@ -10,19 +10,33 @@
       </actions_ScenarioBehaviour>
     </scenarioBehaviour_UsageScenario>
   </usageScenario_UsageModel>
-  <usageScenario_UsageModel id="_H0gkYG88EeSQpfdtqlhhfQ" entityName="anoSce">
+  <usageScenario_UsageModel id="_H0gkYG88EeSQpfdtqlhhfQ" entityName="uploadUsageScenario">
     <scenarioBehaviour_UsageScenario id="_LgV88G88EeSQpfdtqlhhfQ">
-      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_LgfG4G88EeSQpfdtqlhhfQ" successor="_NqhVgG88EeSQpfdtqlhhfQ"/>
-      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Lgft8G88EeSQpfdtqlhhfQ" predecessor="_NqhVgG88EeSQpfdtqlhhfQ"/>
-      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_NqhVgG88EeSQpfdtqlhhfQ" successor="_Lgft8G88EeSQpfdtqlhhfQ" predecessor="_LgfG4G88EeSQpfdtqlhhfQ">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_LgfG4G88EeSQpfdtqlhhfQ" successor="_gQkwcH_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Lgft8G88EeSQpfdtqlhhfQ" predecessor="_gQkwcH_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_gQkwcH_sEeSeWo-ok8k5xw" successor="_Lgft8G88EeSQpfdtqlhhfQ" predecessor="_LgfG4G88EeSQpfdtqlhhfQ">
         <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
-        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_f0xPUAEmEeS7FKokKTKFow"/>
-        <inputParameterUsages_EntryLevelSystemCall>
-          <variableCharacterisation_VariableUsage type="BYTESIZE">
-            <specification_VariableCharacterisation specification="1"/>
-          </variableCharacterisation_VariableUsage>
-          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="payload"/>
-        </inputParameterUsages_EntryLevelSystemCall>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_8zgs0H_pEeSeWo-ok8k5xw"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_jhXLwH_sEeSeWo-ok8k5xw" entityName="downloadUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_kw9ycH_sEeSeWo-ok8k5xw">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_kxCq8H_sEeSeWo-ok8k5xw" successor="_nG2rwH_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_kxCq8X_sEeSeWo-ok8k5xw" predecessor="_nG2rwH_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_nG2rwH_sEeSeWo-ok8k5xw" successor="_kxCq8X_sEeSeWo-ok8k5xw" predecessor="_kxCq8H_sEeSeWo-ok8k5xw">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_KAqqoH_qEeSeWo-ok8k5xw"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_sJW8UH_sEeSeWo-ok8k5xw" entityName="shareUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_tZ9okH_sEeSeWo-ok8k5xw">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_tZ-PoH_sEeSeWo-ok8k5xw" successor="_vYfx0H_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_tZ-PoX_sEeSeWo-ok8k5xw" predecessor="_vYfx0H_sEeSeWo-ok8k5xw"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_vYfx0H_sEeSeWo-ok8k5xw" successor="_tZ-PoX_sEeSeWo-ok8k5xw" predecessor="_tZ-PoH_sEeSeWo-ok8k5xw">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_QxjIkH_qEeSeWo-ok8k5xw"/>
       </actions_ScenarioBehaviour>
     </scenarioBehaviour_UsageScenario>
   </usageScenario_UsageModel>
