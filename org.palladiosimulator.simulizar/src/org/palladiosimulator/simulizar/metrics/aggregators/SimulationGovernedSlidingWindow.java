@@ -3,10 +3,9 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
+import javax.measure.unit.Unit;
 
-import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
-import org.palladiosimulator.experimentanalysis.SlidingWindowAggregator;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
@@ -136,15 +135,16 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
     @Override
     public Measure<Double, Duration> getCurrentUpperBound() {
         double lowerBoundValue = this.getCurrentLowerBound().getValue();
-
+        Unit<Duration> unit = this.getCurrentLowerBound().getUnit();
+        
         // in the end smaller than leftBound + windowLength in case overall
         // simulation time
         // isn't a multiple of windowLength
         double upperBoundValue = Math.min(
-                lowerBoundValue + this.getSpecifiedWindowLength().doubleValue(this.getCurrentLowerBound().getUnit()),
+                lowerBoundValue + this.getSpecifiedWindowLength().doubleValue(unit),
                 this.simControl.getCurrentSimulationTime());
 
-        return Measure.valueOf(upperBoundValue, this.getCurrentLowerBound().getUnit());
+        return Measure.valueOf(upperBoundValue, unit);
     }
 
     /**
@@ -162,9 +162,10 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
      */
     @Override
     public Measure<Double, Duration> getEffectiveWindowLength() {
+        Unit<Duration> unit = this.getCurrentLowerBound().getUnit();
         // effective window length, might be smaller at the
         // end of simulation
-        return Measure.valueOf(getCurrentUpperBound().doubleValue(this.getCurrentLowerBound().getUnit())
-                - this.getCurrentLowerBound().getValue(), this.getCurrentLowerBound().getUnit());
+        return Measure.valueOf(getCurrentUpperBound().doubleValue(unit)
+                - this.getCurrentLowerBound().getValue(), unit);
     }
 }
