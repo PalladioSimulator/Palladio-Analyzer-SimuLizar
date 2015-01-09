@@ -1,42 +1,11 @@
 package org.palladiosimulator.simulizar.syncer;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
-import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
-import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
-import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
-import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
-import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
-import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
-import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
-import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
-import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
-import org.palladiosimulator.simulizar.pms.DelayedIntervall;
-import org.palladiosimulator.simulizar.pms.Intervall;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
-import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
@@ -199,16 +168,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         return scheduledResource != null;
     }
 
-    /**
-     * @param measurementSpecification
-     *            the measurement specification to check
-     * @return true if it is monitored
-     */
-    private boolean isMonitored(final MeasurementSpecification measurementSpecification) {
-        return measurementSpecification != null;
-    }
-
-    /**
+     /**
      * 
      * @param resourceContainer
      * @param simulatedResourceContainer
@@ -226,108 +186,5 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }
-
-        MeasurementSpecification measurementSpecification = PMSUtil.isMonitored(pms, processingResource,
-                PerformanceMetricEnum.UTILIZATION);
-
-        if (measurementSpecification != null) {
-            // get created active resource
-            for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
-                    .getActiveResources()) {
-                if (abstractScheduledResource.getName().equals(processingResource.getId())) {
-
-                    PerformanceMeasurement pm = (PerformanceMeasurement) measurementSpecification.eContainer();
-                    MeasuringPoint mp = pm.getMeasuringPoint();
-                    RegisterCalculatorFactoryDecorator actualCalculatorFactory = RegisterCalculatorFactoryDecorator.class
-                            .cast(this.runtimeModel.getModel().getProbeFrameworkContext().getCalculatorFactory());
-
-                    Calculator calculator = actualCalculatorFactory.getCalculatorByMeasuringPointAndMetricDescription(
-                            mp, MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE);
-
-                    setupUtilizationRecorder(calculator, measurementSpecification);
-                    break;
-                }
-
-            }
-        }
     }
-
-    private Calculator setupUtilizationRecorder(Calculator calculator,
-            MeasurementSpecification utilizationMeasurementSpec) {
-
-        TemporalCharacterization temporalRestriction = utilizationMeasurementSpec.getTemporalRestriction();
-        Measure<Double, Duration> windowLength = null;
-        Measure<Double, Duration> windowIncrement = null;
-        if (temporalRestriction instanceof DelayedIntervall) {
-            DelayedIntervall interval = (DelayedIntervall) temporalRestriction;
-            windowLength = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            windowIncrement = Measure.valueOf(interval.getDelay(), SI.SECOND);
-
-        } else if (temporalRestriction instanceof Intervall) {
-            Intervall interval = (Intervall) temporalRestriction;
-            windowLength = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            windowIncrement = windowLength;
-        } else {
-            throw new IllegalStateException(
-                    "Temporal characterization for utilization measurement must be either Intervall or DelayedIntervall.");
-        }
-
-        Map<String, Object> recorderConfigurationMap = new HashMap<String, Object>();
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC,
-                MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
-                createMeasuringPointFromCalculator(calculator));
-
-        IRecorder baseRecorder = createBaseRecorder(recorderConfigurationMap);
-
-        SimulationGovernedSlidingWindow window = createUtilizationSlidingWindow(windowLength, windowIncrement);
-
-        org.palladiosimulator.experimentanalysis.ISlidingWindowListener aggregator = new SlidingWindowUtilizationAggregator(
-                baseRecorder);
-        SlidingWindowRecorder windowRecorder = createSlidingWindowRecorder(window, aggregator);
-        // register recorder at calculator
-        calculator.addObserver(windowRecorder);
-        return calculator;
-    }
-
-    private SimulationGovernedSlidingWindow createUtilizationSlidingWindow(Measure<Double, Duration> windowLength,
-            Measure<Double, Duration> windowIncrement) {
-        ISlidingWindowMoveOnStrategy strategy = new KeepLastElementPriorToLowerBoundStrategy();
-
-        return new SimulationGovernedSlidingWindow(windowLength, windowIncrement,
-                MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, strategy,
-                this.runtimeModel.getModel());
-
-    }
-
-    private static MeasuringPoint createMeasuringPointFromCalculator(Calculator calc) {
-        assert calc != null;
-
-        StringMeasuringPoint result = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
-        result.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(calc.getMeasuringPoint()));
-
-        return result;
-    }
-
-    private IRecorder createBaseRecorder(Map<String, Object> recorderConfigurationMap) {
-
-        IRecorder result = RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(this.runtimeModel
-                .getModel().getConfiguration().getRecorderName());
-        result.initialize(retrieveRecorderConfiguration(recorderConfigurationMap));
-        return result;
-    }
-
-    private IRecorderConfiguration retrieveRecorderConfiguration(Map<String, Object> recorderConfigurationMap) {
-        return this.runtimeModel.getModel().getConfiguration().getRecorderConfigurationFactory()
-                .createRecorderConfiguration(recorderConfigurationMap);
-    }
-
-    private SlidingWindowRecorder createSlidingWindowRecorder(SimulationGovernedSlidingWindow window,
-            ISlidingWindowListener windowListener) {
-
-        SlidingWindowRecorder result = new SlidingWindowRecorder(window, windowListener);
-
-        return result;
-    }
-
 }
