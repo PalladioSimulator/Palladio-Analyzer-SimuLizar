@@ -1,7 +1,10 @@
 package org.palladiosimulator.simulizar.metrics.powerconsumption;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -11,6 +14,7 @@ import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
+import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
@@ -22,7 +26,6 @@ import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregat
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.measurementframework.Measurement;
-import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
@@ -37,26 +40,24 @@ import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSli
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 
 import de.fzi.power.infrastructure.PowerConsumingEntity;
 import de.fzi.power.infrastructure.PowerConsumingResource;
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.infrastructure.util.InfrastructureSwitch;
+import de.fzi.power.interpreter.AbstractEvaluationScope;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
-//TODO inherit from EvaluationScope or some joint subclass
-public class SimulationTimeEvaluationScope {
+public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
     private final PowerProvidingEntity entityUnderMeasurement;
-    private final MeasurementSpecification powerMeasurmentSpec;
     private final Set<ProcessingResourceSpecification> processingResourceSpecs;
     private final Measure<Double, Duration> windowLength;
     private final Measure<Double, Duration> windowIncrement;
     private final SimuComModel simModel;
-    private final IRecorder powerDataRecorder;
-    private final UtilizationMeasurementsCollector measurementsCollector;
 
     private final InfrastructureSwitch<Void> processingResourcesCollector = new InfrastructureSwitch<Void>() {
 
@@ -78,34 +79,18 @@ public class SimulationTimeEvaluationScope {
     };
 
     private static final MetricDescription UTILIZATION_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
-    private static final MetricDescription RESOURCE_STATE_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC;
-    private static final MetricDescription POWER_METRIC = MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
+    private static final MetricDescription RESOURCE_STATE_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
-    private static final MeasuringpointSwitch<PowerProvidingEntity> MEASURING_POINT_SWITCH = new MeasuringpointSwitch<PowerProvidingEntity>() {
-
-        private final InfrastructureSwitch<PowerProvidingEntity> infSwitch = new InfrastructureSwitch<PowerProvidingEntity>() {
-            public PowerProvidingEntity casePowerProvidingEntity(PowerProvidingEntity ppe) {
-                return ppe;
-            }
-        };
-
-        public PowerProvidingEntity caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint mp) {
-            EObject modeObject = EMFLoadHelper.loadModel(mp.getResourceURI());
-            return infSwitch.doSwitch(modeObject);
-        }
-    };
-
-    public SimulationTimeEvaluationScope(MeasurementSpecification powerMeasurementSpec, MeasuringPoint measuringPoint,
+    public SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, MeasurementSpecification powerMeasurementSpec,
             SimuComModel model) {
-        if (powerMeasurementSpec == null) { //TODO add check for metric (once the metric has been added)
-            throw new IllegalArgumentException("Given measurement specification must be a valid power measurement specifiction.");
+        if (powerMeasurementSpec == null || powerMeasurementSpec.getPerformanceMetric() != PerformanceMetricEnum.POWER_CONSUMPTION) {
+            throw new IllegalArgumentException(
+                    "Given measurement specification must be a valid power measurement specifiction.");
         }
-        this.powerMeasurmentSpec = powerMeasurementSpec;
-        this.entityUnderMeasurement = MEASURING_POINT_SWITCH.doSwitch(measuringPoint);
-        this.processingResourceSpecs = new HashSet<ProcessingResourceSpecification>();
-
-        this.simModel = model;
-
+        if (entityUnderMeasurement == null) {
+            throw new IllegalArgumentException("Given PowerProvidingEntity must not be null.");
+        }
+        
         TemporalCharacterization temporalRestriction = powerMeasurementSpec.getTemporalRestriction();
         if (temporalRestriction instanceof DelayedIntervall) {
             DelayedIntervall interval = (DelayedIntervall) temporalRestriction;
@@ -119,26 +104,20 @@ public class SimulationTimeEvaluationScope {
             throw new IllegalStateException(
                     "Temporal characterization for utilization measurement must be either Intervall or DelayedIntervall.");
         }
+        
+        this.entityUnderMeasurement = entityUnderMeasurement;
+        this.processingResourceSpecs = new HashSet<ProcessingResourceSpecification>();
+
+        this.simModel = model;
 
         this.processingResourcesCollector.doSwitch(this.entityUnderMeasurement);
-
-        Map<String, Object> recorderConfigurationMap = new HashMap<String, Object>();
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC, POWER_METRIC);
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
-
-        this.powerDataRecorder = RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(this.simModel
-                .getConfiguration().getRecorderName());
-        this.powerDataRecorder.initialize(this.simModel.getConfiguration().getRecorderConfigurationFactory()
-                .createRecorderConfiguration(recorderConfigurationMap));
-
-        this.measurementsCollector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
     }
 
     public void initialize() {
         ISlidingWindowMoveOnStrategy moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
         PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
         MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
-        
+
         RegisterCalculatorFactoryDecorator actualCalculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(this.simModel.getProbeFrameworkContext().getCalculatorFactory());
 
@@ -147,84 +126,64 @@ public class SimulationTimeEvaluationScope {
             mp.setActiveResource(proc);
             Calculator resourceStateCalculator = actualCalculatorFactory
                     .getCalculatorByMeasuringPointAndMetricDescription(mp, RESOURCE_STATE_METRIC);
-            
+
             StringMeasuringPoint calcMeasuringPoint = measuringpointFactory.createStringMeasuringPoint();
             calcMeasuringPoint.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(resourceStateCalculator
                     .getMeasuringPoint()));
 
+            UtilizationMeasurementsDataStream utilizationDataStream = new UtilizationMeasurementsDataStream();
+            super.utilizationMeasurements.put(proc, utilizationDataStream);
+
             SimulationGovernedSlidingWindow slidingWindow = new SimulationGovernedSlidingWindow(this.windowLength,
                     this.windowIncrement, RESOURCE_STATE_METRIC, moveOnStrategy, this.simModel);
             SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
-                    new SlidingWindowUtilizationAggregator(new ScopeRecorder(proc, this.measurementsCollector)));
+                    new SlidingWindowUtilizationAggregator(new ScopeRecorder(utilizationDataStream)));
 
             resourceStateCalculator.addObserver(windowRecorder);
         }
     }
 
-    public Measurement getMeasurement(ProcessingResourceSpecification proc) {
-        return this.measurementsCollector.getMeasurement(proc);
-    }
+    private static class UtilizationMeasurementsDataStream implements IDataStream<Measurement> {
 
-    public void reset() {
-        this.measurementsCollector.clear();
-    }
+        private final List<Measurement> data = new ArrayList<Measurement>();
 
-    private static class UtilizationMeasurementsCollector {
-
-        private final Map<ProcessingResourceSpecification, TupleMeasurement> currentUtilizationMeasurements;
-
-        public UtilizationMeasurementsCollector(int size) {
-            this.currentUtilizationMeasurements = new HashMap<ProcessingResourceSpecification, TupleMeasurement>(size);
+        public void addUtilizationMeasurement(Measurement m) {
+            this.data.add(m);
         }
 
-        public void collectMeasurementFromProcessingResourceSpec(ProcessingResourceSpecification proc,
-                TupleMeasurement newUtilMeasurement) {
-            // TODO synchronization or blocking map etc needed?
-            TupleMeasurement lastMeasurementForResource = this.currentUtilizationMeasurements.get(proc);
-            if (lastMeasurementForResource != null) {
-                // there is already one utilization measurement for this processing resource
-                // collected, so the underlying window has moved once
-                // as all windows have same length and increment, we can process the current
-                // measurements and clear the data
-                // this assumes that this happens exactly once per window increment/"round"
-                forwardCurrentMeasurements();
-                clear();
-            }
-            this.currentUtilizationMeasurements.put(proc, newUtilMeasurement);
+        @Override
+        public Iterator<Measurement> iterator() {
+            return this.data.iterator();
         }
 
-        private void forwardCurrentMeasurements() {
+        @Override
+        public MetricDescription getMetricDesciption() {
+            return UTILIZATION_METRIC;
+        }
+
+        @Override
+        public boolean isCompatibleWith(MetricDescription other) {
+            return getMetricDesciption().equals(other);
+        }
+
+        @Override
+        public void close() {
 
         }
 
-        public Measurement getMeasurement(ProcessingResourceSpecification processingResourceSpecification) {
-
-            Measurement result = this.currentUtilizationMeasurements.get(processingResourceSpecification);
-            if (result == null) {
-                for (ProcessingResourceSpecification p : this.currentUtilizationMeasurements.keySet()) {
-                    if (p.getId().equals(processingResourceSpecification.getId())) {
-                        result = this.currentUtilizationMeasurements.get(p);
-                        break;
-                    }
-                }
-            }
-            return result;
+        @Override
+        public int size() {
+            return this.data.size();
         }
 
-        public void clear() {
-            this.currentUtilizationMeasurements.clear();
-        }
     }
 
     private static class ScopeRecorder implements IRecorder {
 
-        private final ProcessingResourceSpecification correspondingResourceSpec;
-        private final UtilizationMeasurementsCollector measurementsCollector;
+        private final UtilizationMeasurementsDataStream outputStream;
 
-        public ScopeRecorder(ProcessingResourceSpecification resourceSpec,
-                UtilizationMeasurementsCollector measurementsCollector) {
-            this.correspondingResourceSpec = resourceSpec;
-            this.measurementsCollector = measurementsCollector;
+        public ScopeRecorder(UtilizationMeasurementsDataStream outputStream) {
+            this.outputStream = outputStream;
         }
 
         @Override
@@ -246,9 +205,7 @@ public class SimulationTimeEvaluationScope {
         public void writeData(Measurement measurement) {
             // we receive a new utilization measurement now
             if (measurement.isCompatibleWith(UTILIZATION_METRIC))
-                //the following downcast is safe now since UTILIZATION_METRIC represents a tuple
-                this.measurementsCollector.collectMeasurementFromProcessingResourceSpec(this.correspondingResourceSpec,
-                        (TupleMeasurement) measurement);
+                this.outputStream.addUtilizationMeasurement(measurement);
         }
 
         @Override
@@ -257,5 +214,4 @@ public class SimulationTimeEvaluationScope {
         }
 
     }
-
 }
