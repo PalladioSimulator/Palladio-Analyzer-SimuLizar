@@ -31,7 +31,9 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  tools.descartes.dlim.generator;bundle-version="0.14.10",
  org.palladiosimulator.experimentanalysis;bundle-version="1.0.0",
  de.fzi.power,
- de.fzi.power.interpreter
+ de.fzi.power.interpreter,
+ org.palladiosimulator.edp2.datastream,
+ org.apache.commons.collections15;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar,
