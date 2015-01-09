@@ -34,7 +34,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  * Per simulation run, there should be exactly one instance of this class and all of its managed
  * information objects.
  * 
- * @author Steffen Becker
+ * @author Steffen Becker, slightly adapted by Florian Rosenthal
  *
  */
 public class SimuLizarRuntimeState {
@@ -67,9 +67,11 @@ public class SimuLizarRuntimeState {
         LOGGER.debug("Initialise simucom framework's workload drivers");
         this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
 
-        initializeInterpreterListeners();
         initializeReconfiguratorEngines(configuration);
         initializeModelSyncers();
+        //ensure to initialize model syncers (in particular ResourceEnvironmentSyncer) prior to interpreter listeners
+        //(in particular ProbeFrameworkListener) as ProbeFrameworkListener uses calculators of resources created in ResourceEnvironmentSyncer!
+        initializeInterpreterListeners();
         initializeUsageEvolver();
     }
 
