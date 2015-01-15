@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
-  <emfprofile:Profile xmi:id="_I4y5IElvEeS1dM2y1CxjcQ" name="mpProfile" nsURI="mpNS" nsPrefix="myprofile">
+  <emfprofile:Profile xmi:id="_I4y5IElvEeS1dM2y1CxjcQ" name="SimulizarMeasuringPointProfile" nsURI="http://sdqweb.ipd.kit.edu/SimuLizar/emf-profiles/measuringPoint" nsPrefix="measuringPoint">
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_M_jTIElvEeS1dM2y1CxjcQ" name="MeasuringPoint" iconPath="">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
-      <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_QjAy0ElvEeS1dM2y1CxjcQ" name="mpURI" defaultValueLiteral="">
+      <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_QjAy0ElvEeS1dM2y1CxjcQ" name="measuringPointURI" defaultValueLiteral="">
         <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eStructuralFeatures>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_UpT50ElvEeS1dM2y1CxjcQ" lowerBound="1">
