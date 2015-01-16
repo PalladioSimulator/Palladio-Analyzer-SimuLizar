@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -15,10 +14,8 @@ import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
 import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.Transformer;
 import org.apache.commons.collections15.functors.NotNullPredicate;
-import org.apache.commons.collections15.functors.TransformedPredicate;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.jscience.physics.amount.Amount;
@@ -31,10 +28,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitc
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
+import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
-import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -55,6 +51,7 @@ import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
+import org.palladiosimulator.simulizar.metrics.powerconsumption.ISimulationEvaluationScopeListener;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEvaluationScope;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
@@ -75,14 +72,12 @@ import de.fzi.power.interpreter.PowerModelUpdaterSwitch;
 import de.fzi.power.interpreter.calculators.CalculatorInstantiator;
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
-import de.uka.ipd.sdq.simulation.ISimulationListener;
 
 /**
  * Class for listening to interpreter events in order to store collected data using the
@@ -269,35 +264,24 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 powerDataRecorder.initialize(this.simuComModel.getConfiguration().getRecorderConfigurationFactory()
                         .createRecorderConfiguration(recorderConfigurationMap));
 
-                this.simuComModel.getConfiguration().addListener(new ISimulationListener() {
-
-                    //TODO make power data available during simulation runs
-                    //use listener?
+                PowerModelRegistry reg = new PowerModelRegistry();
+                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
+                        .getDistributionPowerAssemblyContext().getPowerBindingRepository(), scope, reg);
+                final PowerConsumptionSwitch powerSwitch = PowerConsumptionSwitch
+                        .createPowerConsumptionSwitch(context);
+                new PowerModelUpdaterSwitch(reg, new CalculatorInstantiator()).doSwitch(ppe);
+                
+                scope.addScopeListener(new ISimulationEvaluationScopeListener() {
+                    
                     @Override
-                    public void simulationStop() {
-                        PowerModelRegistry reg = new PowerModelRegistry();
-                        ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
-                                .getDistributionPowerAssemblyContext().getPowerBindingRepository(), scope, reg);
-                        PowerConsumptionSwitch powerSwitch = PowerConsumptionSwitch
-                                .createPowerConsumptionSwitch(context);
-                        new PowerModelUpdaterSwitch(reg, new CalculatorInstantiator()).doSwitch(ppe);
-
-                        scope.reset();
-                        for (Map<?, Measurement> m : scope) {
-                            scope.next();
-                            Amount<Power> powerAmount = powerSwitch.doSwitch(ppe);
-                            Measure<Double, ? extends Quantity> powerMeasure = Measure.valueOf(
-                                    powerAmount.doubleValue(SI.WATT), SI.WATT);
-                            powerDataRecorder.writeData(new TupleMeasurement(
-                                    MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE, m.values().iterator().next()
-                                            .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC),
-                                    powerMeasure));
-                        }
-                    }
-
-                    @Override
-                    public void simulationStart() {
-                        // don't do nothing here
+                    public void next(Measure<Double, Duration> currentPointInTime) {
+                        Amount<Power> powerAmount = powerSwitch.doSwitch(ppe);
+                        Measure<Double, ? extends Quantity> powerMeasure = Measure.valueOf(
+                                powerAmount.doubleValue(SI.WATT), SI.WATT);
+                        powerDataRecorder.writeData(new TupleMeasurement(
+                                MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE, currentPointInTime,
+                                powerMeasure));
+                        
                     }
                 });
             }

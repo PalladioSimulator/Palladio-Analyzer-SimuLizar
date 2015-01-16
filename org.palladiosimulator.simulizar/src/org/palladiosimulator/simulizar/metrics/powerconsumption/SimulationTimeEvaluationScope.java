@@ -1,10 +1,7 @@
 package org.palladiosimulator.simulizar.metrics.powerconsumption;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,18 +10,14 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
-import org.palladiosimulator.edp2.datastream.IDataStream;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
-import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
-import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
+import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -33,15 +26,14 @@ import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
-import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
+import org.palladiosimulator.simulizar.pms.util.PmsSwitch;
 
 import de.fzi.power.infrastructure.PowerConsumingEntity;
 import de.fzi.power.infrastructure.PowerConsumingResource;
@@ -58,6 +50,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     private final Measure<Double, Duration> windowLength;
     private final Measure<Double, Duration> windowIncrement;
     private final SimuComModel simModel;
+    private final UtilizationMeasurementsCollector collector;
 
     private final InfrastructureSwitch<Void> processingResourcesCollector = new InfrastructureSwitch<Void>() {
 
@@ -78,6 +71,33 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
     };
 
+    private static final PmsSwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH = new PmsSwitch<Measure<Double, Duration>[]>() {
+        
+        @Override
+        public Measure<Double, Duration>[] caseDelayedIntervall(DelayedIntervall interval) {
+            @SuppressWarnings("unchecked")
+            Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
+            result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
+            result[1] = Measure.valueOf(interval.getDelay(), SI.SECOND);
+            return result;
+        }
+        
+        @Override
+        public Measure<Double, Duration>[] caseIntervall(Intervall interval) {
+            @SuppressWarnings("unchecked")
+            Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
+            result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
+            result[1] = result[0];
+            
+            return result;
+        }
+        
+        public Measure<Double, Duration>[] defaultCase(EObject obj) {
+            throw new IllegalStateException(
+                    "Temporal characterization for utilization measurement must be either Intervall or DelayedIntervall.");
+        }
+    };
+    
     private static final MetricDescription UTILIZATION_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
     private static final MetricDescription RESOURCE_STATE_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
@@ -91,26 +111,15 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             throw new IllegalArgumentException("Given PowerProvidingEntity must not be null.");
         }
         
-        TemporalCharacterization temporalRestriction = powerMeasurementSpec.getTemporalRestriction();
-        if (temporalRestriction instanceof DelayedIntervall) {
-            DelayedIntervall interval = (DelayedIntervall) temporalRestriction;
-            this.windowLength = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            this.windowIncrement = Measure.valueOf(interval.getDelay(), SI.SECOND);
-        } else if (temporalRestriction instanceof Intervall) {
-            Intervall interval = (Intervall) temporalRestriction;
-            windowLength = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            windowIncrement = windowLength;
-        } else {
-            throw new IllegalStateException(
-                    "Temporal characterization for utilization measurement must be either Intervall or DelayedIntervall.");
-        }
+        Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(powerMeasurementSpec.getTemporalRestriction());
+        this.windowLength = windowProperties[0];
+        this.windowIncrement = windowProperties[1];
         
         this.entityUnderMeasurement = entityUnderMeasurement;
         this.processingResourceSpecs = new HashSet<ProcessingResourceSpecification>();
-
         this.simModel = model;
-
         this.processingResourcesCollector.doSwitch(this.entityUnderMeasurement);
+        this.collector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
     }
 
     public void initialize() {
@@ -131,59 +140,57 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             calcMeasuringPoint.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(resourceStateCalculator
                     .getMeasuringPoint()));
 
-            UtilizationMeasurementsDataStream utilizationDataStream = new UtilizationMeasurementsDataStream();
-            super.utilizationMeasurements.put(proc, utilizationDataStream);
 
             SimulationGovernedSlidingWindow slidingWindow = new SimulationGovernedSlidingWindow(this.windowLength,
                     this.windowIncrement, RESOURCE_STATE_METRIC, moveOnStrategy, this.simModel);
             SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
-                    new SlidingWindowUtilizationAggregator(new ScopeRecorder(utilizationDataStream)));
+                    new SlidingWindowUtilizationAggregator(new ScopeRecorder(proc)));
 
             resourceStateCalculator.addObserver(windowRecorder);
         }
     }
-
-    private static class UtilizationMeasurementsDataStream implements IDataStream<Measurement> {
-
-        private final List<Measurement> data = new ArrayList<Measurement>();
-
-        public void addUtilizationMeasurement(Measurement m) {
-            this.data.add(m);
-        }
-
-        @Override
-        public Iterator<Measurement> iterator() {
-            return this.data.iterator();
-        }
-
-        @Override
-        public MetricDescription getMetricDesciption() {
-            return UTILIZATION_METRIC;
-        }
-
-        @Override
-        public boolean isCompatibleWith(MetricDescription other) {
-            return getMetricDesciption().equals(other);
-        }
-
-        @Override
-        public void close() {
-
-        }
-
-        @Override
-        public int size() {
-            return this.data.size();
-        }
-
+    
+    public void addScopeListener(ISimulationEvaluationScopeListener listener) {
+        this.collector.addObserver(listener);
     }
+    
+   private class UtilizationMeasurementsCollector extends AbstractObservable<ISimulationEvaluationScopeListener> {
+       
+       private Map<ProcessingResourceSpecification, Measurement> collectedMeasurements;
+       private final int measurementsToCollect;
+       
+       public UtilizationMeasurementsCollector(int measurementsToCollect) {
+           this.collectedMeasurements = new HashMap<>(measurementsToCollect);
+           this.measurementsToCollect = measurementsToCollect;
+       }
+  
+       public void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec, Measurement utilMeasurement) {
+           if (this.collectedMeasurements.put(spec, utilMeasurement) == null || !SimulationTimeEvaluationScope.this.simModel.getSimulationControl().isRunning()) {
+                if (this.collectedMeasurements.size() == measurementsToCollect) {
+                    //one "round" is complete: windows of all specs have produced their utilization measurement
+                    //so forward data to power calculator, then clear
+                    SimulationTimeEvaluationScope.this.updateCurrentElement(this.collectedMeasurements);
+                    Measure<Double, Duration> currentPointInTime = utilMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+                    informListeners(currentPointInTime);
+                    this.collectedMeasurements = new HashMap<>(measurementsToCollect);
+               }
+           } else {
+               //TODO is this correct?
+               throw new AssertionError("This should not happen");
+           }
+       }
+       
+       private void informListeners(Measure<Double, Duration> pointInTime) {
+           this.getEventDispatcher().next(pointInTime);
+       }
+   }
+    
+    private class ScopeRecorder implements IRecorder {
 
-    private static class ScopeRecorder implements IRecorder {
-
-        private final UtilizationMeasurementsDataStream outputStream;
-
-        public ScopeRecorder(UtilizationMeasurementsDataStream outputStream) {
-            this.outputStream = outputStream;
+        private final ProcessingResourceSpecification spec;
+        
+        public ScopeRecorder(ProcessingResourceSpecification spec) {
+            this.spec = spec;
         }
 
         @Override
@@ -205,7 +212,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         public void writeData(Measurement measurement) {
             // we receive a new utilization measurement now
             if (measurement.isCompatibleWith(UTILIZATION_METRIC))
-                this.outputStream.addUtilizationMeasurement(measurement);
+                SimulationTimeEvaluationScope.this.collector.addUtilizationMeasurementForProcessingResource(spec, measurement);
         }
 
         @Override
@@ -214,4 +221,5 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
     }
+
 }
