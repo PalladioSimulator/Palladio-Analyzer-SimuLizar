@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:system="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" id="_V5MT4KjTEeSevOHdCiUaXQ" entityName="defaultSystem">
+  <assemblyContexts__ComposedStructure id="_azV5sKjTEeSevOHdCiUaXQ" entityName="Assembly_LoadBalancer &lt;LoadBalancer>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="tripplanner.repository#_eTGk4KIfEeSI8vSe5jYNQg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_gD7CgKjTEeSevOHdCiUaXQ" entityName="Assembly_GeneratedOrchestrator &lt;GeneratedOrchestrator>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="tripplanner.repository#_JZttcKIaEeSI8vSe5jYNQg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_lYhIoKjTEeSevOHdCiUaXQ" entityName="Assembly_GeneratedOrchestrator &lt;GeneratedOrchestrator>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="tripplanner.repository#_JZttcKIaEeSI8vSe5jYNQg"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_ko6QoKjTEeSevOHdCiUaXQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_GeneratedOrchestrator &lt;GeneratedOrchestrator>" requiringAssemblyContext_AssemblyConnector="_azV5sKjTEeSevOHdCiUaXQ" providingAssemblyContext_AssemblyConnector="_gD7CgKjTEeSevOHdCiUaXQ">
+    <providedRole_AssemblyConnector href="tripplanner.repository#_Md4CAKIaEeSI8vSe5jYNQg"/>
+    <requiredRole_AssemblyConnector href="tripplanner.repository#_ir80cKIfEeSI8vSe5jYNQg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_m73xwKjTEeSevOHdCiUaXQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_GeneratedOrchestrator &lt;GeneratedOrchestrator>" requiringAssemblyContext_AssemblyConnector="_azV5sKjTEeSevOHdCiUaXQ" providingAssemblyContext_AssemblyConnector="_lYhIoKjTEeSevOHdCiUaXQ">
+    <providedRole_AssemblyConnector href="tripplanner.repository#_Md4CAKIaEeSI8vSe5jYNQg"/>
+    <requiredRole_AssemblyConnector href="tripplanner.repository#_h93mcKIfEeSI8vSe5jYNQg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_nxRIsKjTEeSevOHdCiUaXQ" entityName="ProvDelegation Provided_ITripPlanner -> Provided_ITripPlanner_LoadBalancer" outerProvidedRole_ProvidedDelegationConnector="_XoGFsKjTEeSevOHdCiUaXQ" assemblyContext_ProvidedDelegationConnector="_azV5sKjTEeSevOHdCiUaXQ">
+    <innerProvidedRole_ProvidedDelegationConnector href="tripplanner.repository#_gfpU8KIfEeSI8vSe5jYNQg"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_XoGFsKjTEeSevOHdCiUaXQ" entityName="Provided_ITripPlanner">
+    <providedInterface__OperationProvidedRole href="tripplanner.repository#_Ficg8KIaEeSI8vSe5jYNQg"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>
