@@ -1,7 +1,9 @@
 package org.palladiosimulator.simulizar.metrics.powerconsumption;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -9,8 +11,10 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import org.apache.commons.collections15.IteratorUtils;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
+import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
@@ -32,7 +36,6 @@ import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
-import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 import org.palladiosimulator.simulizar.pms.util.PmsSwitch;
 
 import de.fzi.power.infrastructure.PowerConsumingEntity;
@@ -120,8 +123,17 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         this.simModel = model;
         this.processingResourcesCollector.doSwitch(this.entityUnderMeasurement);
         this.collector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
+        
+        
+        for (ProcessingResourceSpecification spec : this.processingResourceSpecs) {
+            IDataStream<Measurement> stream = new DataStream();
+           
+            this.resourceMeasurements.put(spec, Collections.singleton(stream));
+        }
     }
 
+    
+    
     public void initialize() {
         ISlidingWindowMoveOnStrategy moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
         PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
@@ -150,9 +162,55 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
     }
     
+    @Override
+    public void reset() {
+        this.iterator = iterator();
+    }
+    
     public void addScopeListener(ISimulationEvaluationScopeListener listener) {
         this.collector.addObserver(listener);
     }
+    
+    /**
+     * This implementation does nothing.
+     */
+    @Override
+    public void setResourceMetricsToEvaluate(Map<ProcessingResourceSpecification, Set<MetricDescription>> metricsMap) {
+        //implementation is not required here, so do nothing at all
+    }
+    
+    private static class DataStream implements IDataStream<Measurement> {
+       private Measurement innerElement;
+        
+        @Override
+        public Iterator<Measurement> iterator() {
+            return IteratorUtils.singletonListIterator(innerElement);
+        }
+
+        @Override
+        public MetricDescription getMetricDesciption() {
+            return UTILIZATION_METRIC;
+        }
+
+        @Override
+        public boolean isCompatibleWith(MetricDescription other) {
+            return getMetricDesciption().equals(other);
+        }
+
+        @Override
+        public void close() {
+        }
+
+        @Override
+        public int size() {
+            return 1;
+        }
+        
+        public void add(Measurement m) {
+            this.innerElement = m;
+        }
+    }
+    
     
    private class UtilizationMeasurementsCollector extends AbstractObservable<ISimulationEvaluationScopeListener> {
        
@@ -164,12 +222,15 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
            this.measurementsToCollect = measurementsToCollect;
        }
   
-       public void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec, Measurement utilMeasurement) {
+       private void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec, Measurement utilMeasurement) {
            if (this.collectedMeasurements.put(spec, utilMeasurement) == null || !SimulationTimeEvaluationScope.this.simModel.getSimulationControl().isRunning()) {
                 if (this.collectedMeasurements.size() == measurementsToCollect) {
                     //one "round" is complete: windows of all specs have produced their utilization measurement
                     //so forward data to power calculator, then clear
-                    SimulationTimeEvaluationScope.this.updateCurrentElement(this.collectedMeasurements);
+                    for (ProcessingResourceSpecification proc : SimulationTimeEvaluationScope.this.processingResourceSpecs) {
+                        DataStream procMeasurements = (DataStream) SimulationTimeEvaluationScope.this.resourceMeasurements.get(proc).iterator().next();
+                        procMeasurements.add(this.collectedMeasurements.get(proc));
+                    }
                     Measure<Double, Duration> currentPointInTime = utilMeasurement.getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
                     informListeners(currentPointInTime);
                     this.collectedMeasurements = new HashMap<>(measurementsToCollect);
@@ -211,8 +272,9 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         @Override
         public void writeData(Measurement measurement) {
             // we receive a new utilization measurement now
-            if (measurement.isCompatibleWith(UTILIZATION_METRIC))
+            if (measurement.isCompatibleWith(UTILIZATION_METRIC)) {
                 SimulationTimeEvaluationScope.this.collector.addUtilizationMeasurementForProcessingResource(spec, measurement);
+            }
         }
 
         @Override
@@ -221,5 +283,4 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
     }
-
 }
