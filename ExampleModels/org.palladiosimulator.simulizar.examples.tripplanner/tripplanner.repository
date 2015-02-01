@@ -50,17 +50,39 @@
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_RAn0cKIaEeSI8vSe5jYNQg" entityName="Required_IPointOfInterestService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_RzIPcKIaEeSI8vSe5jYNQg" entityName="Required_IPublicTransportService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_pLVW4KIYEeSI8vSe5jYNQg"/>
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_I0jPAKVIEeSJhPDYNMsTFg" describedService__SEFF="_krD6kKIhEeSI8vSe5jYNQg">
-      <steps_Behaviour xsi:type="seff:StartAction" id="_JKtFMKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_JKtFMaVIEeSJhPDYNMsTFg"/>
-      <steps_Behaviour xsi:type="seff:StopAction" id="_JKtFMaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_JKtFMKVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StartAction" id="_JKtFMKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_29EI4KpREeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_JKtFMaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_29EI4KpREeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_29EI4KpREeSHPfe6rtAd3w" entityName="doProcessing" predecessor_AbstractAction="_JKtFMKVIEeSJhPDYNMsTFg" successor_AbstractAction="_JKtFMaVIEeSJhPDYNMsTFg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="Exp(5.0*2.67E+9)"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <components__Repository xsi:type="repository:BasicComponent" id="_eTGk4KIfEeSI8vSe5jYNQg" entityName="LoadBalancer">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_gfpU8KIfEeSI8vSe5jYNQg" entityName="Provided_ITripPlanner_LoadBalancer" providedInterface__OperationProvidedRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
-    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_h93mcKIfEeSI8vSe5jYNQg" entityName="Required_ITripPlanner_LoadBalancer" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
-    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_ir80cKIfEeSI8vSe5jYNQg" entityName="Required_ITripPlanner_LoadBalancer" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_h93mcKIfEeSI8vSe5jYNQg" entityName="AC_Server2" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_ir80cKIfEeSI8vSe5jYNQg" entityName="AC_Server1" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_H5y28KVIEeSJhPDYNMsTFg" describedService__SEFF="_krD6kKIhEeSI8vSe5jYNQg">
-      <steps_Behaviour xsi:type="seff:StartAction" id="_IMRHAKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_IMRHAaVIEeSJhPDYNMsTFg"/>
-      <steps_Behaviour xsi:type="seff:StopAction" id="_IMRHAaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_IMRHAKVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StartAction" id="_IMRHAKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_JLJC4KpSEeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_IMRHAaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_JLJC4KpSEeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_JLJC4KpSEeSHPfe6rtAd3w" entityName="balanceLoadProbabilistic" predecessor_AbstractAction="_IMRHAKVIEeSJhPDYNMsTFg" successor_AbstractAction="_IMRHAaVIEeSJhPDYNMsTFg">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_QbJs0KpSEeSHPfe6rtAd3w" entityName="delegateToServer1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_QbMwIKpSEeSHPfe6rtAd3w">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_QbNXMKpSEeSHPfe6rtAd3w" successor_AbstractAction="_xAfnUKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_QbN-QKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_xAfnUKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_xAfnUKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_QbNXMKpSEeSHPfe6rtAd3w" successor_AbstractAction="_QbN-QKpSEeSHPfe6rtAd3w" calledService_ExternalService="_krD6kKIhEeSI8vSe5jYNQg" role_ExternalService="_ir80cKIfEeSI8vSe5jYNQg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_TYSzYKpSEeSHPfe6rtAd3w" entityName="delegateToServer2">
+          <branchBehaviour_BranchTransition id="_TYTacKpSEeSHPfe6rtAd3w">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_TYTacapSEeSHPfe6rtAd3w" successor_AbstractAction="_03JIwKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_TYUBgKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_03JIwKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_03JIwKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_TYTacapSEeSHPfe6rtAd3w" successor_AbstractAction="_TYUBgKpSEeSHPfe6rtAd3w" calledService_ExternalService="_krD6kKIhEeSI8vSe5jYNQg" role_ExternalService="_h93mcKIfEeSI8vSe5jYNQg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_iWtocKIYEeSI8vSe5jYNQg" entityName="IRatingService">
