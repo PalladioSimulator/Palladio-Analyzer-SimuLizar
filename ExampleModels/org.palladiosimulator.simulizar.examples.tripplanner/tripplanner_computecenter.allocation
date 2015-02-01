@@ -2,7 +2,7 @@
 <allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="__FOCIKpZEeSHPfe6rtAd3w" entityName="defaultAllocation">
   <targetResourceEnvironment_Allocation href="computecenter.resourceenvironment#/"/>
   <system_Allocation href="tripplanner_composition.system#_V5MT4KjTEeSevOHdCiUaXQ"/>
-  <allocationContexts_Allocation id="_DbMj4KpaEeSHPfe6rtAd3w" entityName="Allocation_LoadBalancer &lt;LoadBalancer>">
+  <allocationContexts_Allocation id="_DbMj4KpaEeSHPfe6rtAd3w" entityName="Allocation_LoadBalancer">
     <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_JIODIKjQEeSevOHdCiUaXQ"/>
     <assemblyContext_AllocationContext href="tripplanner_composition.system#_azV5sKjTEeSevOHdCiUaXQ"/>
   </allocationContexts_Allocation>
