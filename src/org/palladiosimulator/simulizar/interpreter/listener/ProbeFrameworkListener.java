@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -12,32 +13,27 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
-import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
-import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
+import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.pms.Monitor;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.utils.PMSUtil;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 
 /**
  * Class for listening to interpreter events in order to store collected data using the
@@ -51,7 +47,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
-    private final PMSModel pmsModel;
+    private final MonitorRepository monitorRepositoryModel;
     private final PRMModel prmModel;
     private final SimuComModel simuComModel;
     private final ICalculatorFactory calculatorFactory;
@@ -61,9 +57,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     /** Default EMF factory for measuring points. */
     private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
-    private final PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
     /**
+     * Default constructor. Initializes relevant calculators.
+     * 
      * @param modelAccessFactory
      *            Provides access to simulated models
      * @param simuComModel
@@ -71,13 +68,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     public ProbeFrameworkListener(final IModelAccess modelAccessFactory, final SimuComModel simuComModel) {
         super();
-        this.pmsModel = modelAccessFactory.getPMSModel();
+        this.monitorRepositoryModel = modelAccessFactory.getMonitorRepositoryModel();
         this.prmModel = modelAccessFactory.getPRMModel();
         this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfTimeProbe = null;
 
-        initReponseTimeMeasurement();
+        if (this.monitorRepositoryModel != null) {
+            initCalculators();
+        }
     }
 
     /*
@@ -161,26 +160,17 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initialize the response time measurements. First gets the monitored elements from the PMS
-     * model, create according calculators, and aggregators.
-     * 
+     * Initializes calculators, e.g., for response time measurements. First gets the monitors from
+     * the monitor repository model, create according calculators, and aggregators.
      */
-    private void initReponseTimeMeasurement() {
+    private void initCalculators() {
+        for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
+            for (final MeasurementSpecification measurementSpecification : monitor.getMeasurementSpecification()) {
+                final MeasuringPoint measuringPoint = monitor.getMeasuringPoint();
+                final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
+                final String metricDescriptionID = measurementSpecification.getMetricDescription().getId();
 
-        if (pmsModel != null) {
-
-            for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
-                MeasurementSpecification measurementSpecification = null;
-                for (final MeasurementSpecification measurementSpec : performanceMeasurement
-                        .getMeasurementSpecification()) {
-                    if (measurementSpec.getPerformanceMetric() == PerformanceMetricEnum.RESPONSE_TIME) {
-                        measurementSpecification = measurementSpec;
-                    }
-                }
-
-                if (measurementSpecification != null) {
-                    final MeasuringPoint measuringPoint = performanceMeasurement.getMeasuringPoint();
-                    final EObject modelElement = PMSUtil.getMonitoredElement(measuringPoint);
+                if (metricDescriptionID.equals(MetricDescriptionConstants.RESPONSE_TIME_METRIC.getId())) {
                     final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
                     final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint,
                             probeList);
@@ -193,73 +183,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                         LOGGER.error(e);
                         throw new RuntimeException(e);
                     }
+                } else if (metricDescriptionID.equals(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS.getId())) {
+                    final Probe probe = new EventProbeList(new TakeNumberOfResourceContainersProbe(
+                            simuComModel.getResourceRegistry()),
+                            Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel
+                                    .getSimulationControl())));
+                    calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
                 }
+
             }
         }
-
-    }
-
-    /**
-     * FIXME This method is not required anymore IF all types measuring points can be modeled
-     * 
-     * @param modelElement
-     *            for which a MeasuringPoint shall be created
-     * @param <T>
-     *            extends Entity
-     * @return MeasuringPoint for modelElement
-     */
-    private <T extends Entity> MeasuringPoint createMeasuringPoint(EObject modelElement) {
-
-        MeasuringPoint result;
-        if (modelElement == null) {
-            throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
-        } else if (modelElement instanceof ResourceContainer) {
-            final ResourceContainer resourceContainer = (ResourceContainer) modelElement;
-
-            // FIXME Always takes the first active resource of a given container. That should be
-            // more flexible. [Lehrig]
-            final ActiveResourceMeasuringPoint mp = this.pcmMeasuringpointFactory.createActiveResourceMeasuringPoint();
-            mp.setActiveResource(resourceContainer.getActiveResourceSpecifications_ResourceContainer().get(0));
-            mp.setReplicaID(0);
-            result = mp;
-        } else if (modelElement instanceof ExternalCallAction) {
-            final ExternalCallAction externalCallAction = (ExternalCallAction) modelElement;
-
-            AssemblyOperationMeasuringPoint mp = this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
-            // FIXME How can I get the AssemblyContext from the monitored Element in advanced
-            // (before running the simulation)
-            // mp.setAssembly(((RDSEFFElementPassedEvent<ExternalCallAction>)
-            // event).getAssemblyContext());
-            mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
-            mp.setRole(externalCallAction.getRole_ExternalService());
-            result = mp;
-        } else if (modelElement instanceof EntryLevelSystemCall) {
-            final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) modelElement;
-
-            final SystemOperationMeasuringPoint mp = this.pcmMeasuringpointFactory
-                    .createSystemOperationMeasuringPoint();
-            final InterfaceProvidingEntity providingEntity = entryLevelSystemCall
-                    .getProvidedRole_EntryLevelSystemCall().getProvidingEntity_ProvidedRole();
-            if (providingEntity instanceof de.uka.ipd.sdq.pcm.system.System) {
-                de.uka.ipd.sdq.pcm.system.System system = (de.uka.ipd.sdq.pcm.system.System) providingEntity;
-                mp.setSystem(system);
-            } else {
-                throw new IllegalArgumentException("EntryLevelSystemCall \"" + entryLevelSystemCall.getEntityName()
-                        + "\" does not reference a system.");
-            }
-            mp.setOperationSignature(entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall());
-            mp.setRole(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
-            result = mp;
-        } else if (modelElement instanceof UsageScenario) {
-            final UsageScenario usageScenario = (UsageScenario) modelElement;
-
-            final UsageScenarioMeasuringPoint mp = this.pcmMeasuringpointFactory.createUsageScenarioMeasuringPoint();
-            mp.setUsageScenario(usageScenario);
-            result = mp;
-        } else {
-            throw new IllegalArgumentException("Unknown model element  (" + modelElement.toString() + ")");
-        }
-        return result;
     }
 
     /**
@@ -274,15 +207,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
         return probeList;
-    }
-
-    /**
-     * @param measurementSpecification
-     *            the measurement specification to check
-     * @return true if it is monitored
-     */
-    private boolean isMonitored(final MeasurementSpecification measurementSpecification) {
-        return measurementSpecification != null;
     }
 
     /**
@@ -342,8 +266,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
         measuringPoint.setMeasuringPoint("Reconfiguration");
-        // this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint,
-        // this.reconfTimeProbe);
     }
 
     private Boolean simulationIsRunning() {
