@@ -2,14 +2,14 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="pms" nsURI="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0"
     nsPrefix="pms">
-  <eClassifiers xsi:type="ecore:EClass" name="PMSModel" eSuperTypes="#//UniqueElement">
+  <eClassifiers xsi:type="ecore:EClass" name="MonitorRepository" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Base class representing the pms model."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="performanceMeasurements"
-        upperBound="-1" eType="#//PerformanceMeasurement" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitors" upperBound="-1"
+        eType="#//Monitor" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="PerformanceMeasurement" eSuperTypes="#//UniqueElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Monitor" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="A performance measurement for a pcm element (type level)."/>
     </eAnnotations>
@@ -18,19 +18,19 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="measuringPoint" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="MeasurementSpecification" eSuperTypes="#//UniqueElement">
+  <eClassifiers xsi:type="ecore:EClass" name="MeasurementSpecification" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="A measurement specification for a pcm element including the performance metric and the statistical charaterization."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="temporalRestriction" lowerBound="1"
         eType="#//TemporalCharacterization" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="performanceMetric" lowerBound="1"
-        eType="#//PerformanceMetricEnum"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="statisticalCharacterization"
         lowerBound="1" eType="#//StatisticalCharacterizationEnum"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="metricDescription" lowerBound="1"
+        eType="ecore:EClass platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TemporalCharacterization" abstract="true"
-      eSuperTypes="#//UniqueElement">
+      eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="Abstract base class for the intervall of the measurement specification."/>
     </eAnnotations>
@@ -58,29 +58,11 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="stop" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
         defaultValueLiteral="0.0"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EEnum" name="PerformanceMetricEnum">
-    <eLiterals name="WaitingTime"/>
-    <eLiterals name="ResponseTime" value="1"/>
-    <eLiterals name="Utilization" value="2"/>
-    <eLiterals name="ArrivalRate" value="3"/>
-    <eLiterals name="Throughput" value="4"/>
-  </eClassifiers>
   <eClassifiers xsi:type="ecore:EEnum" name="StatisticalCharacterizationEnum">
     <eLiterals name="None"/>
     <eLiterals name="Median" value="1"/>
     <eLiterals name="ArithmeticMean" value="2"/>
     <eLiterals name="GeometricMean" value="3"/>
     <eLiterals name="HarmonicMean" value="4"/>
-  </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="UniqueElement">
-    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-      <details key="documentation" value="Superclass of all classes to store unique identifier."/>
-    </eAnnotations>
-    <eOperations name="createAndSetGuid">
-      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-        <details key="body" value="if(this.getGuid() == null) this.setGuid(org.eclipse.emf.ecore.util.EcoreUtil.generateUUID());"/>
-      </eAnnotations>
-    </eOperations>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="guid" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
 </ecore:EPackage>

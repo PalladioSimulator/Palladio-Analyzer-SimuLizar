@@ -11,13 +11,13 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
-import org.palladiosimulator.simulizar.launcher.jobs.LoadPMSModelIntoBlackboardJob;
+import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.PMSResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
-import org.palladiosimulator.simulizar.pms.PMSModel;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
@@ -59,7 +59,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.prmModel = PrmFactory.eINSTANCE.createPRMModel();
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
-        this.pmsPartition = getResourceSetPartition(blackboard, LoadPMSModelIntoBlackboardJob.PMS_MODEL_PARTITION_ID);
+        this.pmsPartition = getResourceSetPartition(blackboard, LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
         this.uePartititon = getResourceSetPartition(blackboard, LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
@@ -107,8 +107,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      * @return the global pms model.
      */
     @Override
-    public PMSModel getPMSModel() {
-        return pmsPartition.getPMSModel();
+    public MonitorRepository getMonitorRepositoryModel() {
+        return pmsPartition.getMonitorRepositoryModel();
     }
 
     /**

@@ -32,7 +32,7 @@ public interface Intervall extends TemporalCharacterization {
      * of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Intervall</em>' attribute.
      * @see #setIntervall(double)
      * @see org.palladiosimulator.simulizar.pms.PmsPackage#getIntervall_Intervall()
@@ -44,7 +44,7 @@ public interface Intervall extends TemporalCharacterization {
     /**
      * Sets the value of the '{@link org.palladiosimulator.simulizar.pms.Intervall#getIntervall
      * <em>Intervall</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Intervall</em>' attribute.
      * @see #getIntervall()

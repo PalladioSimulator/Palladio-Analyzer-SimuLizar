@@ -29,7 +29,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The default value of the '{@link #getStart() <em>Start</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStart()
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The cached value of the '{@link #getStart() <em>Start</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStart()
      * @generated
      * @ordered
@@ -49,7 +49,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The default value of the '{@link #getStop() <em>Stop</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStop()
      * @generated
      * @ordered
@@ -59,7 +59,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The cached value of the '{@link #getStop() <em>Stop</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getStop()
      * @generated
      * @ordered
@@ -68,7 +68,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TimeFrameImpl() {
@@ -77,7 +77,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -87,75 +87,82 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public double getStart() {
-        return start;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setStart(double newStart) {
-        double oldStart = start;
-        start = newStart;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.TIME_FRAME__START, oldStart, start));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public double getStop() {
-        return stop;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setStop(double newStop) {
-        double oldStop = stop;
-        stop = newStop;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.TIME_FRAME__STOP, oldStop, stop));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public double getStart() {
+        return this.start;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStart(final double newStart) {
+        final double oldStart = this.start;
+        this.start = newStart;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.TIME_FRAME__START, oldStart,
+                    this.start));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public double getStop() {
+        return this.stop;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStop(final double newStop) {
+        final double oldStop = this.stop;
+        this.stop = newStop;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.TIME_FRAME__STOP, oldStop, this.stop));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PmsPackage.TIME_FRAME__START:
-            return getStart();
+            return this.getStart();
         case PmsPackage.TIME_FRAME__STOP:
-            return getStop();
+            return this.getStop();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PmsPackage.TIME_FRAME__START:
-            setStart((Double) newValue);
+            this.setStart((Double) newValue);
             return;
         case PmsPackage.TIME_FRAME__STOP:
-            setStop((Double) newValue);
+            this.setStop((Double) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -163,17 +170,17 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PmsPackage.TIME_FRAME__START:
-            setStart(START_EDEFAULT);
+            this.setStart(START_EDEFAULT);
             return;
         case PmsPackage.TIME_FRAME__STOP:
-            setStop(STOP_EDEFAULT);
+            this.setStop(STOP_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -181,35 +188,36 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PmsPackage.TIME_FRAME__START:
-            return start != START_EDEFAULT;
+            return this.start != START_EDEFAULT;
         case PmsPackage.TIME_FRAME__STOP:
-            return stop != STOP_EDEFAULT;
+            return this.stop != STOP_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (start: ");
-        result.append(start);
+        result.append(this.start);
         result.append(", stop: ");
-        result.append(stop);
+        result.append(this.stop);
         result.append(')');
         return result.toString();
     }

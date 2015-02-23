@@ -2,13 +2,13 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.PMSUtil;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
-    private final PMSModel pms;
+    private final MonitorRepository monitorRepository;
     private final PRMModel prm;
 
     /**
@@ -40,7 +40,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
         super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
-        this.pms = runtimeState.getModelAccess().getPMSModel();
+        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.prm = runtimeState.getModelAccess().getPRMModel();
     }
 
@@ -189,8 +189,9 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }
 
-        MeasurementSpecification measurementSpecification = PMSUtil.isMonitored(pms, resourceContainer,
-                PerformanceMetricEnum.UTILIZATION);
+        final MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
+                this.monitorRepository, resourceContainer,
+                MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
         if (isMonitored(measurementSpecification)) {
 
             // get created active resource

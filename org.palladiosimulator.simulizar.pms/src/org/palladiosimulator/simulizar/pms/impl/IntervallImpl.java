@@ -29,7 +29,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
     /**
      * The default value of the '{@link #getIntervall() <em>Intervall</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getIntervall()
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
     /**
      * The cached value of the '{@link #getIntervall() <em>Intervall</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getIntervall()
      * @generated
      * @ordered
@@ -48,7 +48,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IntervallImpl() {
@@ -57,7 +57,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -67,50 +67,53 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public double getIntervall() {
-        return intervall;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setIntervall(double newIntervall) {
-        double oldIntervall = intervall;
-        intervall = newIntervall;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.INTERVALL__INTERVALL, oldIntervall,
-                    intervall));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public double getIntervall() {
+        return this.intervall;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setIntervall(final double newIntervall) {
+        final double oldIntervall = this.intervall;
+        this.intervall = newIntervall;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.INTERVALL__INTERVALL, oldIntervall,
+                    this.intervall));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PmsPackage.INTERVALL__INTERVALL:
-            return getIntervall();
+            return this.getIntervall();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PmsPackage.INTERVALL__INTERVALL:
-            setIntervall((Double) newValue);
+            this.setIntervall((Double) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -118,14 +121,14 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PmsPackage.INTERVALL__INTERVALL:
-            setIntervall(INTERVALL_EDEFAULT);
+            this.setIntervall(INTERVALL_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -133,31 +136,32 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PmsPackage.INTERVALL__INTERVALL:
-            return intervall != INTERVALL_EDEFAULT;
+            return this.intervall != INTERVALL_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (intervall: ");
-        result.append(intervall);
+        result.append(this.intervall);
         result.append(')');
         return result.toString();
     }

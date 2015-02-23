@@ -10,6 +10,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
  * <em><b>Temporal Characterization</b></em>'. <!-- end-user-doc -->
@@ -18,10 +20,10 @@ import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
  *
  * @generated
  */
-public abstract class TemporalCharacterizationImpl extends UniqueElementImpl implements TemporalCharacterization {
+public abstract class TemporalCharacterizationImpl extends IdentifierImpl implements TemporalCharacterization {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TemporalCharacterizationImpl() {
@@ -30,7 +32,7 @@ public abstract class TemporalCharacterizationImpl extends UniqueElementImpl imp
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

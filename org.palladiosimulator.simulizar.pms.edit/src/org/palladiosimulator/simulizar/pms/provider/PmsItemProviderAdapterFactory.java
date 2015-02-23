@@ -31,7 +31,7 @@ import org.palladiosimulator.simulizar.pms.util.PmsAdapterFactory;
  * {@link #fireNotifyChanged fireNotifyChanged}. The adapters also support Eclipse property sheets.
  * Note that most of the adapters are shared among multiple instances. <!-- begin-user-doc --> <!--
  * end-user-doc -->
- * 
+ *
  * @generated
  */
 public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements ComposeableAdapterFactory,
@@ -39,7 +39,7 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -47,7 +47,7 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -55,78 +55,77 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This keeps track of all the supported types checked by {@link #isFactoryForType
      * isFactoryForType}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public PmsItemProviderAdapterFactory() {
-        supportedTypes.add(IEditingDomainItemProvider.class);
-        supportedTypes.add(IStructuredItemContentProvider.class);
-        supportedTypes.add(ITreeItemContentProvider.class);
-        supportedTypes.add(IItemLabelProvider.class);
-        supportedTypes.add(IItemPropertySource.class);
+        this.supportedTypes.add(IEditingDomainItemProvider.class);
+        this.supportedTypes.add(IStructuredItemContentProvider.class);
+        this.supportedTypes.add(ITreeItemContentProvider.class);
+        this.supportedTypes.add(IItemLabelProvider.class);
+        this.supportedTypes.add(IItemPropertySource.class);
     }
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.pms.PMSModel} instances. <!-- begin-user-doc --> <!--
+     * {@link org.palladiosimulator.simulizar.pms.MonitorRepository} instances. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected MonitorRepositoryItemProvider monitorRepositoryItemProvider;
+
+    /**
+     * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.MonitorRepository}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Adapter createMonitorRepositoryAdapter() {
+        if (this.monitorRepositoryItemProvider == null) {
+            this.monitorRepositoryItemProvider = new MonitorRepositoryItemProvider(this);
+        }
+
+        return this.monitorRepositoryItemProvider;
+    }
+
+    /**
+     * This keeps track of the one adapter used for all
+     * {@link org.palladiosimulator.simulizar.pms.Monitor} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
-    protected PMSModelItemProvider pmsModelItemProvider;
+    protected MonitorItemProvider monitorItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.PMSModel}. <!--
+     * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.Monitor}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Adapter createPMSModelAdapter() {
-        if (pmsModelItemProvider == null) {
-            pmsModelItemProvider = new PMSModelItemProvider(this);
+    public Adapter createMonitorAdapter() {
+        if (this.monitorItemProvider == null) {
+            this.monitorItemProvider = new MonitorItemProvider(this);
         }
 
-        return pmsModelItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMeasurement} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    protected PerformanceMeasurementItemProvider performanceMeasurementItemProvider;
-
-    /**
-     * This creates an adapter for a
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMeasurement}. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
-    public Adapter createPerformanceMeasurementAdapter() {
-        if (performanceMeasurementItemProvider == null) {
-            performanceMeasurementItemProvider = new PerformanceMeasurementItemProvider(this);
-        }
-
-        return performanceMeasurementItemProvider;
+        return this.monitorItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MeasurementSpecificationItemProvider measurementSpecificationItemProvider;
@@ -135,23 +134,23 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createMeasurementSpecificationAdapter() {
-        if (measurementSpecificationItemProvider == null) {
-            measurementSpecificationItemProvider = new MeasurementSpecificationItemProvider(this);
+        if (this.measurementSpecificationItemProvider == null) {
+            this.measurementSpecificationItemProvider = new MeasurementSpecificationItemProvider(this);
         }
 
-        return measurementSpecificationItemProvider;
+        return this.measurementSpecificationItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.pms.Intervall} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IntervallItemProvider intervallItemProvider;
@@ -159,23 +158,23 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.Intervall}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createIntervallAdapter() {
-        if (intervallItemProvider == null) {
-            intervallItemProvider = new IntervallItemProvider(this);
+        if (this.intervallItemProvider == null) {
+            this.intervallItemProvider = new IntervallItemProvider(this);
         }
 
-        return intervallItemProvider;
+        return this.intervallItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.pms.DelayedIntervall} instances. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected DelayedIntervallItemProvider delayedIntervallItemProvider;
@@ -183,23 +182,23 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.DelayedIntervall}.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createDelayedIntervallAdapter() {
-        if (delayedIntervallItemProvider == null) {
-            delayedIntervallItemProvider = new DelayedIntervallItemProvider(this);
+        if (this.delayedIntervallItemProvider == null) {
+            this.delayedIntervallItemProvider = new DelayedIntervallItemProvider(this);
         }
 
-        return delayedIntervallItemProvider;
+        return this.delayedIntervallItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.pms.TimeFrame} instances. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TimeFrameItemProvider timeFrameItemProvider;
@@ -207,92 +206,70 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
     /**
      * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.TimeFrame}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createTimeFrameAdapter() {
-        if (timeFrameItemProvider == null) {
-            timeFrameItemProvider = new TimeFrameItemProvider(this);
+        if (this.timeFrameItemProvider == null) {
+            this.timeFrameItemProvider = new TimeFrameItemProvider(this);
         }
 
-        return timeFrameItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.pms.UniqueElement} instances. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    protected UniqueElementItemProvider uniqueElementItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.palladiosimulator.simulizar.pms.UniqueElement}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
-    public Adapter createUniqueElementAdapter() {
-        if (uniqueElementItemProvider == null) {
-            uniqueElementItemProvider = new UniqueElementItemProvider(this);
-        }
-
-        return uniqueElementItemProvider;
+        return this.timeFrameItemProvider;
     }
 
     /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
     }
 
     /**
      * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
+    @Override
+    public void setParentAdapterFactory(final ComposedAdapterFactory parentAdapterFactory) {
         this.parentAdapterFactory = parentAdapterFactory;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean isFactoryForType(Object type) {
-        return supportedTypes.contains(type) || super.isFactoryForType(type);
+    public boolean isFactoryForType(final Object type) {
+        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
     }
 
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Adapter adapt(Notifier notifier, Object type) {
+    public Adapter adapt(final Notifier notifier, final Object type) {
         return super.adapt(notifier, this);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object adapt(Object object, Object type) {
-        if (isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
+    public Object adapt(final Object object, final Object type) {
+        if (this.isFactoryForType(type)) {
+            final Object adapter = super.adapt(object, type);
             if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
                 return adapter;
             }
@@ -303,57 +280,65 @@ public class PmsItemProviderAdapterFactory extends PmsAdapterFactory implements 
 
     /**
      * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public void addListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.addListener(notifyChangedListener);
+    @Override
+    public void addListener(final INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.addListener(notifyChangedListener);
     }
 
     /**
      * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public void removeListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.removeListener(notifyChangedListener);
+    @Override
+    public void removeListener(final INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.removeListener(notifyChangedListener);
     }
 
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public void fireNotifyChanged(Notification notification) {
-        changeNotifier.fireNotifyChanged(notification);
+    @Override
+    public void fireNotifyChanged(final Notification notification) {
+        this.changeNotifier.fireNotifyChanged(notification);
 
-        if (parentAdapterFactory != null) {
-            parentAdapterFactory.fireNotifyChanged(notification);
+        if (this.parentAdapterFactory != null) {
+            this.parentAdapterFactory.fireNotifyChanged(notification);
         }
     }
 
     /**
      * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public void dispose() {
-        if (pmsModelItemProvider != null)
-            pmsModelItemProvider.dispose();
-        if (performanceMeasurementItemProvider != null)
-            performanceMeasurementItemProvider.dispose();
-        if (measurementSpecificationItemProvider != null)
-            measurementSpecificationItemProvider.dispose();
-        if (intervallItemProvider != null)
-            intervallItemProvider.dispose();
-        if (delayedIntervallItemProvider != null)
-            delayedIntervallItemProvider.dispose();
-        if (timeFrameItemProvider != null)
-            timeFrameItemProvider.dispose();
-        if (uniqueElementItemProvider != null)
-            uniqueElementItemProvider.dispose();
+        if (this.monitorRepositoryItemProvider != null) {
+            this.monitorRepositoryItemProvider.dispose();
+        }
+        if (this.monitorItemProvider != null) {
+            this.monitorItemProvider.dispose();
+        }
+        if (this.measurementSpecificationItemProvider != null) {
+            this.measurementSpecificationItemProvider.dispose();
+        }
+        if (this.intervallItemProvider != null) {
+            this.intervallItemProvider.dispose();
+        }
+        if (this.delayedIntervallItemProvider != null) {
+            this.delayedIntervallItemProvider.dispose();
+        }
+        if (this.timeFrameItemProvider != null) {
+            this.timeFrameItemProvider.dispose();
+        }
     }
 
 }

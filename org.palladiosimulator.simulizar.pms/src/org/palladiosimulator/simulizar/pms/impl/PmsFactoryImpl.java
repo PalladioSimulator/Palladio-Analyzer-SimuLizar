@@ -15,33 +15,31 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.pms.Monitor;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.pms.PmsFactory;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum;
 import org.palladiosimulator.simulizar.pms.TimeFrame;
-import org.palladiosimulator.simulizar.pms.UniqueElement;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static PmsFactory init() {
         try {
-            PmsFactory thePmsFactory = (PmsFactory) EPackage.Registry.INSTANCE.getEFactory(PmsPackage.eNS_URI);
+            final PmsFactory thePmsFactory = (PmsFactory) EPackage.Registry.INSTANCE.getEFactory(PmsPackage.eNS_URI);
             if (thePmsFactory != null) {
                 return thePmsFactory;
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new PmsFactoryImpl();
@@ -49,7 +47,7 @@ public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public PmsFactoryImpl() {
@@ -58,26 +56,24 @@ public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public EObject create(EClass eClass) {
+    public EObject create(final EClass eClass) {
         switch (eClass.getClassifierID()) {
-        case PmsPackage.PMS_MODEL:
-            return createPMSModel();
-        case PmsPackage.PERFORMANCE_MEASUREMENT:
-            return createPerformanceMeasurement();
+        case PmsPackage.MONITOR_REPOSITORY:
+            return this.createMonitorRepository();
+        case PmsPackage.MONITOR:
+            return this.createMonitor();
         case PmsPackage.MEASUREMENT_SPECIFICATION:
-            return createMeasurementSpecification();
+            return this.createMeasurementSpecification();
         case PmsPackage.INTERVALL:
-            return createIntervall();
+            return this.createIntervall();
         case PmsPackage.DELAYED_INTERVALL:
-            return createDelayedIntervall();
+            return this.createDelayedIntervall();
         case PmsPackage.TIME_FRAME:
-            return createTimeFrame();
-        case PmsPackage.UNIQUE_ELEMENT:
-            return createUniqueElement();
+            return this.createTimeFrame();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -85,16 +81,14 @@ public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object createFromString(EDataType eDataType, String initialValue) {
+    public Object createFromString(final EDataType eDataType, final String initialValue) {
         switch (eDataType.getClassifierID()) {
-        case PmsPackage.PERFORMANCE_METRIC_ENUM:
-            return createPerformanceMetricEnumFromString(eDataType, initialValue);
         case PmsPackage.STATISTICAL_CHARACTERIZATION_ENUM:
-            return createStatisticalCharacterizationEnumFromString(eDataType, initialValue);
+            return this.createStatisticalCharacterizationEnumFromString(eDataType, initialValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -102,16 +96,14 @@ public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public String convertToString(EDataType eDataType, Object instanceValue) {
+    public String convertToString(final EDataType eDataType, final Object instanceValue) {
         switch (eDataType.getClassifierID()) {
-        case PmsPackage.PERFORMANCE_METRIC_ENUM:
-            return convertPerformanceMetricEnumToString(eDataType, instanceValue);
         case PmsPackage.STATISTICAL_CHARACTERIZATION_ENUM:
-            return convertStatisticalCharacterizationEnumToString(eDataType, instanceValue);
+            return this.convertStatisticalCharacterizationEnumToString(eDataType, instanceValue);
         default:
             throw new IllegalArgumentException("The datatype '" + eDataType.getName() + "' is not a valid classifier");
         }
@@ -119,131 +111,107 @@ public class PmsFactoryImpl extends EFactoryImpl implements PmsFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public PMSModel createPMSModel() {
-        PMSModelImpl pmsModel = new PMSModelImpl();
-        return pmsModel;
+    @Override
+    public MonitorRepository createMonitorRepository() {
+        final MonitorRepositoryImpl monitorRepository = new MonitorRepositoryImpl();
+        return monitorRepository;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public PerformanceMeasurement createPerformanceMeasurement() {
-        PerformanceMeasurementImpl performanceMeasurement = new PerformanceMeasurementImpl();
-        return performanceMeasurement;
+    @Override
+    public Monitor createMonitor() {
+        final MonitorImpl monitor = new MonitorImpl();
+        return monitor;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public MeasurementSpecification createMeasurementSpecification() {
-        MeasurementSpecificationImpl measurementSpecification = new MeasurementSpecificationImpl();
+        final MeasurementSpecificationImpl measurementSpecification = new MeasurementSpecificationImpl();
         return measurementSpecification;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public Intervall createIntervall() {
-        IntervallImpl intervall = new IntervallImpl();
+        final IntervallImpl intervall = new IntervallImpl();
         return intervall;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public DelayedIntervall createDelayedIntervall() {
-        DelayedIntervallImpl delayedIntervall = new DelayedIntervallImpl();
+        final DelayedIntervallImpl delayedIntervall = new DelayedIntervallImpl();
         return delayedIntervall;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public TimeFrame createTimeFrame() {
-        TimeFrameImpl timeFrame = new TimeFrameImpl();
+        final TimeFrameImpl timeFrame = new TimeFrameImpl();
         return timeFrame;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public UniqueElement createUniqueElement() {
-        UniqueElementImpl uniqueElement = new UniqueElementImpl();
-        return uniqueElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public PerformanceMetricEnum createPerformanceMetricEnumFromString(EDataType eDataType, String initialValue) {
-        PerformanceMetricEnum result = PerformanceMetricEnum.get(initialValue);
-        if (result == null)
+    public StatisticalCharacterizationEnum createStatisticalCharacterizationEnumFromString(final EDataType eDataType,
+            final String initialValue) {
+        final StatisticalCharacterizationEnum result = StatisticalCharacterizationEnum.get(initialValue);
+        if (result == null) {
             throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
                     + eDataType.getName() + "'");
+        }
         return result;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public String convertPerformanceMetricEnumToString(EDataType eDataType, Object instanceValue) {
+    public String convertStatisticalCharacterizationEnumToString(final EDataType eDataType, final Object instanceValue) {
         return instanceValue == null ? null : instanceValue.toString();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public StatisticalCharacterizationEnum createStatisticalCharacterizationEnumFromString(EDataType eDataType,
-            String initialValue) {
-        StatisticalCharacterizationEnum result = StatisticalCharacterizationEnum.get(initialValue);
-        if (result == null)
-            throw new IllegalArgumentException("The value '" + initialValue + "' is not a valid enumerator of '"
-                    + eDataType.getName() + "'");
-        return result;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public String convertStatisticalCharacterizationEnumToString(EDataType eDataType, Object instanceValue) {
-        return instanceValue == null ? null : instanceValue.toString();
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
+    @Override
     public PmsPackage getPmsPackage() {
-        return (PmsPackage) getEPackage();
+        return (PmsPackage) this.getEPackage();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @deprecated
      * @generated
      */

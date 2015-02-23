@@ -21,41 +21,40 @@ import de.uka.ipd.sdq.units.provider.UnitsEditPlugin;
 /**
  * This is the central singleton for the Pms edit plugin. <!-- begin-user-doc --> <!-- end-user-doc
  * -->
- * 
+ *
  * @generated
  */
 public final class PmsEditPlugin extends EMFPlugin {
     /**
      * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static final PmsEditPlugin INSTANCE = new PmsEditPlugin();
 
     /**
      * Keep track of the singleton. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private static Implementation plugin;
 
     /**
      * Create the instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public PmsEditPlugin() {
-        super(new ResourceLocator[] {
-                EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE, MetricSpecEditPlugin.INSTANCE,
-                PalladioComponentModelEditPlugin.INSTANCE, ProbabilityFunctionEditPlugin.INSTANCE,
-                StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE, EDP2EditPlugin.INSTANCE,
-        });
+        super(new ResourceLocator[] { EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE,
+                MetricSpecEditPlugin.INSTANCE, PalladioComponentModelEditPlugin.INSTANCE,
+                ProbabilityFunctionEditPlugin.INSTANCE, StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE,
+                EDP2EditPlugin.INSTANCE, });
     }
 
     /**
      * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the singleton instance.
      * @generated
      */
@@ -67,7 +66,7 @@ public final class PmsEditPlugin extends EMFPlugin {
     /**
      * Returns the singleton instance of the Eclipse plugin. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the singleton instance.
      * @generated
      */
@@ -78,13 +77,13 @@ public final class PmsEditPlugin extends EMFPlugin {
     /**
      * The actual implementation of the Eclipse <b>Plugin</b>. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static class Implementation extends EclipsePlugin {
         /**
          * Creates an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         public Implementation() {

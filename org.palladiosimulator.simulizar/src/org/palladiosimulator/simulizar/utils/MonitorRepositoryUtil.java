@@ -7,22 +7,24 @@ import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoin
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.pms.Monitor;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -34,7 +36,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
  * 
  */
 
-public final class PMSUtil {
+public final class MonitorRepositoryUtil {
 
     /**
      * Method checks if given element should be monitored with given performance metric. If yes, it
@@ -49,14 +51,14 @@ public final class PMSUtil {
      * @return the MeasurementSpecification, if element should be monitored according to given
      *         performance metric, otherwise null
      */
-    public static MeasurementSpecification isMonitored(final PMSModel pmsModel, final EObject element,
-            final PerformanceMetricEnum performanceMetric) {
+    public static MeasurementSpecification isMonitored(final MonitorRepository pmsModel, final EObject element,
+            final MetricDescription metricDescription) {
         if (pmsModel != null) {
-            for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
+            for (final Monitor performanceMeasurement : pmsModel.getMonitors()) {
                 if (elementConformingToMeasuringPoint(element, performanceMeasurement.getMeasuringPoint())) {
                     for (final MeasurementSpecification measurementSpecification : performanceMeasurement
                             .getMeasurementSpecification()) {
-                        if (measurementSpecification.getPerformanceMetric() == performanceMetric) {
+                        if (measurementSpecification.getMetricDescription().getId().equals(metricDescription.getId())) {
                             return measurementSpecification;
                         }
                     }
@@ -123,6 +125,11 @@ public final class PMSUtil {
             public EObject caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
                 return object.getUsageScenario();
             }
+
+            @Override
+            public EObject caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
+                return object.getResourceEnvironment();
+            };
 
         }.doSwitch(measuringPoint);
     }
@@ -224,6 +231,16 @@ public final class PMSUtil {
 
                 return false;
             }
+
+            @Override
+            public Boolean caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
+                if (element instanceof ResourceEnvironment) {
+                    ResourceEnvironment resourceEnvironment = (ResourceEnvironment) element;
+                    return resourceEnvironment.getEntityName().equals(object.getResourceEnvironment().getEntityName());
+                }
+
+                return false;
+            };
 
         }
 

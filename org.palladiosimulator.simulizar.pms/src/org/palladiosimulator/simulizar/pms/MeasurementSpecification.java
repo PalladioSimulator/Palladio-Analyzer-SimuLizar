@@ -6,6 +6,11 @@
  */
 package org.palladiosimulator.simulizar.pms;
 
+import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.metricspec.MetricDescription;
+
+import de.uka.ipd.sdq.identifier.Identifier;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Measurement Specification</b></em>'. <!-- end-user-doc -->
@@ -18,11 +23,11 @@ package org.palladiosimulator.simulizar.pms;
  * <ul>
  * <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction
  * <em>Temporal Restriction</em>}</li>
- * <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric <em>
- * Performance Metric</em>}</li>
  * <li>
  * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization
  * <em>Statistical Characterization</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getMetricDescription <em>
+ * Metric Description</em>}</li>
  * </ul>
  * </p>
  *
@@ -30,7 +35,7 @@ package org.palladiosimulator.simulizar.pms;
  * @model
  * @generated
  */
-public interface MeasurementSpecification extends UniqueElement {
+public interface MeasurementSpecification extends EObject, Identifier {
     /**
      * Returns the value of the '<em><b>Temporal Restriction</b></em>' containment reference. <!--
      * begin-user-doc -->
@@ -39,7 +44,7 @@ public interface MeasurementSpecification extends UniqueElement {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Temporal Restriction</em>' containment reference.
      * @see #setTemporalRestriction(TemporalCharacterization)
      * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMeasurementSpecification_TemporalRestriction()
@@ -53,45 +58,13 @@ public interface MeasurementSpecification extends UniqueElement {
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction
      * <em>Temporal Restriction</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Temporal Restriction</em>' containment reference.
      * @see #getTemporalRestriction()
      * @generated
      */
     void setTemporalRestriction(TemporalCharacterization value);
-
-    /**
-     * Returns the value of the '<em><b>Performance Metric</b></em>' attribute. The literals are
-     * from the enumeration {@link org.palladiosimulator.simulizar.pms.PerformanceMetricEnum}. <!--
-     * begin-user-doc -->
-     * <p>
-     * If the meaning of the '<em>Performance Metric</em>' attribute isn't clear, there really
-     * should be more of a description here...
-     * </p>
-     * <!-- end-user-doc -->
-     * 
-     * @return the value of the '<em>Performance Metric</em>' attribute.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * @see #setPerformanceMetric(PerformanceMetricEnum)
-     * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMeasurementSpecification_PerformanceMetric()
-     * @model required="true"
-     * @generated
-     */
-    PerformanceMetricEnum getPerformanceMetric();
-
-    /**
-     * Sets the value of the '
-     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric
-     * <em>Performance Metric</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @param value
-     *            the new value of the '<em>Performance Metric</em>' attribute.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * @see #getPerformanceMetric()
-     * @generated
-     */
-    void setPerformanceMetric(PerformanceMetricEnum value);
 
     /**
      * Returns the value of the '<em><b>Statistical Characterization</b></em>' attribute. The
@@ -103,7 +76,7 @@ public interface MeasurementSpecification extends UniqueElement {
      * really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Statistical Characterization</em>' attribute.
      * @see org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
      * @see #setStatisticalCharacterization(StatisticalCharacterizationEnum)
@@ -118,7 +91,7 @@ public interface MeasurementSpecification extends UniqueElement {
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Statistical Characterization</em>' attribute.
      * @see org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
@@ -126,5 +99,34 @@ public interface MeasurementSpecification extends UniqueElement {
      * @generated
      */
     void setStatisticalCharacterization(StatisticalCharacterizationEnum value);
+
+    /**
+     * Returns the value of the '<em><b>Metric Description</b></em>' reference. <!-- begin-user-doc
+     * -->
+     * <p>
+     * If the meaning of the '<em>Metric Description</em>' reference isn't clear, there really
+     * should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Metric Description</em>' reference.
+     * @see #setMetricDescription(MetricDescription)
+     * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMeasurementSpecification_MetricDescription()
+     * @model required="true"
+     * @generated
+     */
+    MetricDescription getMetricDescription();
+
+    /**
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getMetricDescription
+     * <em>Metric Description</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Metric Description</em>' reference.
+     * @see #getMetricDescription()
+     * @generated
+     */
+    void setMetricDescription(MetricDescription value);
 
 } // MeasurementSpecification

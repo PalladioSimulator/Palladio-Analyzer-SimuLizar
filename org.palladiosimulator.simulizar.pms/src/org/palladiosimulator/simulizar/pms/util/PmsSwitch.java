@@ -12,12 +12,15 @@ import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
+import org.palladiosimulator.simulizar.pms.Monitor;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 import org.palladiosimulator.simulizar.pms.TimeFrame;
-import org.palladiosimulator.simulizar.pms.UniqueElement;
+
+import de.uka.ipd.sdq.identifier.Identifier;
+import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the
@@ -25,21 +28,21 @@ import org.palladiosimulator.simulizar.pms.UniqueElement;
  * each class of the model, starting with the actual class of the object and proceeding up the
  * inheritance hierarchy until a non-null result is returned, which is the result of the switch.
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.pms.PmsPackage
  * @generated
  */
 public class PmsSwitch<T> extends Switch<T> {
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected static PmsPackage modelPackage;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public PmsSwitch() {
@@ -51,137 +54,160 @@ public class PmsSwitch<T> extends Switch<T> {
     /**
      * Checks whether this is a switch for the given package. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @parameter ePackage the package in question.
      * @return whether this is a switch for the given package.
      * @generated
      */
     @Override
-    protected boolean isSwitchFor(EPackage ePackage) {
+    protected boolean isSwitchFor(final EPackage ePackage) {
         return ePackage == modelPackage;
     }
 
     /**
      * Calls <code>caseXXX</code> for each class of the model until one returns a non null result;
      * it yields that result. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the first non-null result returned by a <code>caseXXX</code> call.
      * @generated
      */
     @Override
-    protected T doSwitch(int classifierID, EObject theEObject) {
+    protected T doSwitch(final int classifierID, final EObject theEObject) {
         switch (classifierID) {
-        case PmsPackage.PMS_MODEL: {
-            PMSModel pmsModel = (PMSModel) theEObject;
-            T result = casePMSModel(pmsModel);
-            if (result == null)
-                result = caseUniqueElement(pmsModel);
-            if (result == null)
-                result = defaultCase(theEObject);
+        case PmsPackage.MONITOR_REPOSITORY: {
+            final MonitorRepository monitorRepository = (MonitorRepository) theEObject;
+            T result = this.caseMonitorRepository(monitorRepository);
+            if (result == null) {
+                result = this.caseEntity(monitorRepository);
+            }
+            if (result == null) {
+                result = this.caseIdentifier(monitorRepository);
+            }
+            if (result == null) {
+                result = this.caseNamedElement(monitorRepository);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
-        case PmsPackage.PERFORMANCE_MEASUREMENT: {
-            PerformanceMeasurement performanceMeasurement = (PerformanceMeasurement) theEObject;
-            T result = casePerformanceMeasurement(performanceMeasurement);
-            if (result == null)
-                result = caseUniqueElement(performanceMeasurement);
-            if (result == null)
-                result = defaultCase(theEObject);
+        case PmsPackage.MONITOR: {
+            final Monitor monitor = (Monitor) theEObject;
+            T result = this.caseMonitor(monitor);
+            if (result == null) {
+                result = this.caseEntity(monitor);
+            }
+            if (result == null) {
+                result = this.caseIdentifier(monitor);
+            }
+            if (result == null) {
+                result = this.caseNamedElement(monitor);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         case PmsPackage.MEASUREMENT_SPECIFICATION: {
-            MeasurementSpecification measurementSpecification = (MeasurementSpecification) theEObject;
-            T result = caseMeasurementSpecification(measurementSpecification);
-            if (result == null)
-                result = caseUniqueElement(measurementSpecification);
-            if (result == null)
-                result = defaultCase(theEObject);
+            final MeasurementSpecification measurementSpecification = (MeasurementSpecification) theEObject;
+            T result = this.caseMeasurementSpecification(measurementSpecification);
+            if (result == null) {
+                result = this.caseIdentifier(measurementSpecification);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         case PmsPackage.TEMPORAL_CHARACTERIZATION: {
-            TemporalCharacterization temporalCharacterization = (TemporalCharacterization) theEObject;
-            T result = caseTemporalCharacterization(temporalCharacterization);
-            if (result == null)
-                result = caseUniqueElement(temporalCharacterization);
-            if (result == null)
-                result = defaultCase(theEObject);
+            final TemporalCharacterization temporalCharacterization = (TemporalCharacterization) theEObject;
+            T result = this.caseTemporalCharacterization(temporalCharacterization);
+            if (result == null) {
+                result = this.caseIdentifier(temporalCharacterization);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         case PmsPackage.INTERVALL: {
-            Intervall intervall = (Intervall) theEObject;
-            T result = caseIntervall(intervall);
-            if (result == null)
-                result = caseTemporalCharacterization(intervall);
-            if (result == null)
-                result = caseUniqueElement(intervall);
-            if (result == null)
-                result = defaultCase(theEObject);
+            final Intervall intervall = (Intervall) theEObject;
+            T result = this.caseIntervall(intervall);
+            if (result == null) {
+                result = this.caseTemporalCharacterization(intervall);
+            }
+            if (result == null) {
+                result = this.caseIdentifier(intervall);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         case PmsPackage.DELAYED_INTERVALL: {
-            DelayedIntervall delayedIntervall = (DelayedIntervall) theEObject;
-            T result = caseDelayedIntervall(delayedIntervall);
-            if (result == null)
-                result = caseIntervall(delayedIntervall);
-            if (result == null)
-                result = caseTemporalCharacterization(delayedIntervall);
-            if (result == null)
-                result = caseUniqueElement(delayedIntervall);
-            if (result == null)
-                result = defaultCase(theEObject);
+            final DelayedIntervall delayedIntervall = (DelayedIntervall) theEObject;
+            T result = this.caseDelayedIntervall(delayedIntervall);
+            if (result == null) {
+                result = this.caseIntervall(delayedIntervall);
+            }
+            if (result == null) {
+                result = this.caseTemporalCharacterization(delayedIntervall);
+            }
+            if (result == null) {
+                result = this.caseIdentifier(delayedIntervall);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         case PmsPackage.TIME_FRAME: {
-            TimeFrame timeFrame = (TimeFrame) theEObject;
-            T result = caseTimeFrame(timeFrame);
-            if (result == null)
-                result = caseTemporalCharacterization(timeFrame);
-            if (result == null)
-                result = caseUniqueElement(timeFrame);
-            if (result == null)
-                result = defaultCase(theEObject);
-            return result;
-        }
-        case PmsPackage.UNIQUE_ELEMENT: {
-            UniqueElement uniqueElement = (UniqueElement) theEObject;
-            T result = caseUniqueElement(uniqueElement);
-            if (result == null)
-                result = defaultCase(theEObject);
+            final TimeFrame timeFrame = (TimeFrame) theEObject;
+            T result = this.caseTimeFrame(timeFrame);
+            if (result == null) {
+                result = this.caseTemporalCharacterization(timeFrame);
+            }
+            if (result == null) {
+                result = this.caseIdentifier(timeFrame);
+            }
+            if (result == null) {
+                result = this.defaultCase(theEObject);
+            }
             return result;
         }
         default:
-            return defaultCase(theEObject);
+            return this.defaultCase(theEObject);
         }
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>PMS Model</em>'. <!--
-     * begin-user-doc --> This implementation returns null; returning a non-null result will
+     * Returns the result of interpreting the object as an instance of '<em>Monitor Repository</em>
+     * '. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>PMS Model</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Monitor Repository</em>
+     *         '.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T casePMSModel(PMSModel object) {
+    public T caseMonitorRepository(final MonitorRepository object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '
-     * <em>Performance Measurement</em>'. <!-- begin-user-doc --> This implementation returns null;
-     * returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     * 
+     * Returns the result of interpreting the object as an instance of '<em>Monitor</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '
-     *         <em>Performance Measurement</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Monitor</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T casePerformanceMeasurement(PerformanceMeasurement object) {
+    public T caseMonitor(final Monitor object) {
         return null;
     }
 
@@ -189,7 +215,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '
      * <em>Measurement Specification</em>'. <!-- begin-user-doc --> This implementation returns
      * null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '
@@ -197,7 +223,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseMeasurementSpecification(MeasurementSpecification object) {
+    public T caseMeasurementSpecification(final MeasurementSpecification object) {
         return null;
     }
 
@@ -205,7 +231,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '
      * <em>Temporal Characterization</em>'. <!-- begin-user-doc --> This implementation returns
      * null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '
@@ -213,7 +239,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseTemporalCharacterization(TemporalCharacterization object) {
+    public T caseTemporalCharacterization(final TemporalCharacterization object) {
         return null;
     }
 
@@ -221,14 +247,14 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '<em>Intervall</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Intervall</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseIntervall(Intervall object) {
+    public T caseIntervall(final Intervall object) {
         return null;
     }
 
@@ -236,14 +262,14 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '<em>Delayed Intervall</em>'.
      * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Delayed Intervall</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseDelayedIntervall(DelayedIntervall object) {
+    public T caseDelayedIntervall(final DelayedIntervall object) {
         return null;
     }
 
@@ -251,29 +277,59 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '<em>Time Frame</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>Time Frame</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseTimeFrame(TimeFrame object) {
+    public T caseTimeFrame(final TimeFrame object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>Unique Element</em>'.
-     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * Returns the result of interpreting the object as an instance of '<em>Identifier</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Unique Element</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Identifier</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUniqueElement(UniqueElement object) {
+    public T caseIdentifier(final Identifier object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
+     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Named Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseNamedElement(final NamedElement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '<em>Entity</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '<em>Entity</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseEntity(final Entity object) {
         return null;
     }
 
@@ -281,7 +337,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * Returns the result of interpreting the object as an instance of '<em>EObject</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch, but this is the last case anyway. <!-- end-user-doc -->
-     * 
+     *
      * @param object
      *            the target of the switch.
      * @return the result of interpreting the object as an instance of '<em>EObject</em>'.
@@ -289,7 +345,7 @@ public class PmsSwitch<T> extends Switch<T> {
      * @generated
      */
     @Override
-    public T defaultCase(EObject object) {
+    public T defaultCase(final EObject object) {
         return null;
     }
 

@@ -17,14 +17,14 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
- * Job for loading pms model into blackboard. Resolving proxies to pcm.
+ * Job for loading monitor repository model into blackboard. Resolving proxies to pcm.
  * 
  * @author Joachim Meyer
  * 
  */
-public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
+public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String PMS_MODEL_PARTITION_ID = "de.upb.pcm.pms";
+    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "de.upb.pcm.pms";
 
     private MDSDBlackboard blackboard;
 
@@ -36,7 +36,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public LoadPMSModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
+    public LoadMonitorRepositoryModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
         this.path = (String) configuration.getAttributes().get(SimulizarConstants.PMS_FILE);
     }
 
@@ -61,7 +61,7 @@ public class LoadPMSModelIntoBlackboardJob implements IJob, IBlackboardInteracti
             pmsPartition.loadModel(URI.createURI(filePath));
 
         }
-        this.getBlackboard().addPartition(PMS_MODEL_PARTITION_ID, pmsPartition);
+        this.getBlackboard().addPartition(MONITOR_REPOSITORY_MODEL_PARTITION_ID, pmsPartition);
         // now resolve all cross references from current resource to PCM
         pmsPartition.resolveAllProxies();
 

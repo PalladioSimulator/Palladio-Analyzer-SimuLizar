@@ -16,91 +16,80 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
 import org.palladiosimulator.edp2.models.Repository.RepositoryPackage;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
+import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.pms.Monitor;
+import org.palladiosimulator.simulizar.pms.MonitorRepository;
 import org.palladiosimulator.simulizar.pms.PmsFactory;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
 import org.palladiosimulator.simulizar.pms.TimeFrame;
-import org.palladiosimulator.simulizar.pms.UniqueElement;
+
+import de.uka.ipd.sdq.identifier.IdentifierPackage;
+import de.uka.ipd.sdq.pcm.PcmPackage;
+import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    private EClass pmsModelEClass = null;
+    private EClass monitorRepositoryEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    private EClass performanceMeasurementEClass = null;
+    private EClass monitorEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass measurementSpecificationEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass temporalCharacterizationEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass intervallEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass delayedIntervallEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass timeFrameEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    private EClass uniqueElementEClass = null;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    private EEnum performanceMetricEnumEEnum = null;
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EEnum statisticalCharacterizationEnumEEnum = null;
@@ -113,7 +102,7 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
      * Note: the correct way to create the package is via the static factory method {@link #init
      * init()}, which also performs initialization of the package, or returns the registered
      * package, if one already exists. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.palladiosimulator.simulizar.pms.PmsPackage#eNS_URI
      * @see #init()
@@ -125,7 +114,7 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private static boolean isInited = false;
@@ -133,29 +122,31 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
     /**
      * Creates, registers, and initializes the <b>Package</b> for this model, and for any others
      * upon which it depends.
-     * 
+     *
      * <p>
      * This method is used to initialize {@link PmsPackage#eINSTANCE} when that field is accessed.
      * Clients should not invoke it directly. Instead, they should simply access that field to
      * obtain the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
      * @generated
      */
     public static PmsPackage init() {
-        if (isInited)
+        if (isInited) {
             return (PmsPackage) EPackage.Registry.INSTANCE.getEPackage(PmsPackage.eNS_URI);
+        }
 
         // Obtain or create and register package
-        PmsPackageImpl thePmsPackage = (PmsPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof PmsPackageImpl ? EPackage.Registry.INSTANCE
+        final PmsPackageImpl thePmsPackage = (PmsPackageImpl) (EPackage.Registry.INSTANCE.get(eNS_URI) instanceof PmsPackageImpl ? EPackage.Registry.INSTANCE
                 .get(eNS_URI) : new PmsPackageImpl());
 
         isInited = true;
 
         // Initialize simple dependencies
         EcorePackage.eINSTANCE.eClass();
+        PcmPackage.eINSTANCE.eClass();
         ExperimentDataPackage.eINSTANCE.eClass();
         RepositoryPackage.eINSTANCE.eClass();
         MeasuringpointPackage.eINSTANCE.eClass();
@@ -176,205 +167,197 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EClass getPMSModel() {
-        return pmsModelEClass;
+    @Override
+    public EClass getMonitorRepository() {
+        return this.monitorRepositoryEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EReference getPMSModel_PerformanceMeasurements() {
-        return (EReference) pmsModelEClass.getEStructuralFeatures().get(0);
+    @Override
+    public EReference getMonitorRepository_Monitors() {
+        return (EReference) this.monitorRepositoryEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EClass getPerformanceMeasurement() {
-        return performanceMeasurementEClass;
+    @Override
+    public EClass getMonitor() {
+        return this.monitorEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EReference getPerformanceMeasurement_MeasurementSpecification() {
-        return (EReference) performanceMeasurementEClass.getEStructuralFeatures().get(0);
+    @Override
+    public EReference getMonitor_MeasurementSpecification() {
+        return (EReference) this.monitorEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EReference getPerformanceMeasurement_MeasuringPoint() {
-        return (EReference) performanceMeasurementEClass.getEStructuralFeatures().get(1);
+    @Override
+    public EReference getMonitor_MeasuringPoint() {
+        return (EReference) this.monitorEClass.getEStructuralFeatures().get(1);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EClass getMeasurementSpecification() {
-        return measurementSpecificationEClass;
+        return this.measurementSpecificationEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EReference getMeasurementSpecification_TemporalRestriction() {
-        return (EReference) measurementSpecificationEClass.getEStructuralFeatures().get(0);
+        return (EReference) this.measurementSpecificationEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EAttribute getMeasurementSpecification_PerformanceMetric() {
-        return (EAttribute) measurementSpecificationEClass.getEStructuralFeatures().get(1);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
+    @Override
     public EAttribute getMeasurementSpecification_StatisticalCharacterization() {
-        return (EAttribute) measurementSpecificationEClass.getEStructuralFeatures().get(2);
+        return (EAttribute) this.measurementSpecificationEClass.getEStructuralFeatures().get(1);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
+    public EReference getMeasurementSpecification_MetricDescription() {
+        return (EReference) this.measurementSpecificationEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTemporalCharacterization() {
-        return temporalCharacterizationEClass;
+        return this.temporalCharacterizationEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EClass getIntervall() {
-        return intervallEClass;
+        return this.intervallEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EAttribute getIntervall_Intervall() {
-        return (EAttribute) intervallEClass.getEStructuralFeatures().get(0);
+        return (EAttribute) this.intervallEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EClass getDelayedIntervall() {
-        return delayedIntervallEClass;
+        return this.delayedIntervallEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EAttribute getDelayedIntervall_Delay() {
-        return (EAttribute) delayedIntervallEClass.getEStructuralFeatures().get(0);
+        return (EAttribute) this.delayedIntervallEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EClass getTimeFrame() {
-        return timeFrameEClass;
+        return this.timeFrameEClass;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EAttribute getTimeFrame_Start() {
-        return (EAttribute) timeFrameEClass.getEStructuralFeatures().get(0);
+        return (EAttribute) this.timeFrameEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EAttribute getTimeFrame_Stop() {
-        return (EAttribute) timeFrameEClass.getEStructuralFeatures().get(1);
+        return (EAttribute) this.timeFrameEClass.getEStructuralFeatures().get(1);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public EClass getUniqueElement() {
-        return uniqueElementEClass;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public EAttribute getUniqueElement_Guid() {
-        return (EAttribute) uniqueElementEClass.getEStructuralFeatures().get(0);
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public EEnum getPerformanceMetricEnum() {
-        return performanceMetricEnumEEnum;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
+    @Override
     public EEnum getStatisticalCharacterizationEnum() {
-        return statisticalCharacterizationEnumEEnum;
+        return this.statisticalCharacterizationEnumEEnum;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public PmsFactory getPmsFactory() {
-        return (PmsFactory) getEFactoryInstance();
+        return (PmsFactory) this.getEFactoryInstance();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private boolean isCreated = false;
@@ -382,50 +365,48 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
     /**
      * Creates the meta-model objects for the package. This method is guarded to have no affect on
      * any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public void createPackageContents() {
-        if (isCreated)
+        if (this.isCreated) {
             return;
-        isCreated = true;
+        }
+        this.isCreated = true;
 
         // Create classes and their features
-        pmsModelEClass = createEClass(PMS_MODEL);
-        createEReference(pmsModelEClass, PMS_MODEL__PERFORMANCE_MEASUREMENTS);
+        this.monitorRepositoryEClass = this.createEClass(MONITOR_REPOSITORY);
+        this.createEReference(this.monitorRepositoryEClass, MONITOR_REPOSITORY__MONITORS);
 
-        performanceMeasurementEClass = createEClass(PERFORMANCE_MEASUREMENT);
-        createEReference(performanceMeasurementEClass, PERFORMANCE_MEASUREMENT__MEASUREMENT_SPECIFICATION);
-        createEReference(performanceMeasurementEClass, PERFORMANCE_MEASUREMENT__MEASURING_POINT);
+        this.monitorEClass = this.createEClass(MONITOR);
+        this.createEReference(this.monitorEClass, MONITOR__MEASUREMENT_SPECIFICATION);
+        this.createEReference(this.monitorEClass, MONITOR__MEASURING_POINT);
 
-        measurementSpecificationEClass = createEClass(MEASUREMENT_SPECIFICATION);
-        createEReference(measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION);
-        createEAttribute(measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC);
-        createEAttribute(measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION);
+        this.measurementSpecificationEClass = this.createEClass(MEASUREMENT_SPECIFICATION);
+        this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION);
+        this.createEAttribute(this.measurementSpecificationEClass,
+                MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION);
+        this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION);
 
-        temporalCharacterizationEClass = createEClass(TEMPORAL_CHARACTERIZATION);
+        this.temporalCharacterizationEClass = this.createEClass(TEMPORAL_CHARACTERIZATION);
 
-        intervallEClass = createEClass(INTERVALL);
-        createEAttribute(intervallEClass, INTERVALL__INTERVALL);
+        this.intervallEClass = this.createEClass(INTERVALL);
+        this.createEAttribute(this.intervallEClass, INTERVALL__INTERVALL);
 
-        delayedIntervallEClass = createEClass(DELAYED_INTERVALL);
-        createEAttribute(delayedIntervallEClass, DELAYED_INTERVALL__DELAY);
+        this.delayedIntervallEClass = this.createEClass(DELAYED_INTERVALL);
+        this.createEAttribute(this.delayedIntervallEClass, DELAYED_INTERVALL__DELAY);
 
-        timeFrameEClass = createEClass(TIME_FRAME);
-        createEAttribute(timeFrameEClass, TIME_FRAME__START);
-        createEAttribute(timeFrameEClass, TIME_FRAME__STOP);
-
-        uniqueElementEClass = createEClass(UNIQUE_ELEMENT);
-        createEAttribute(uniqueElementEClass, UNIQUE_ELEMENT__GUID);
+        this.timeFrameEClass = this.createEClass(TIME_FRAME);
+        this.createEAttribute(this.timeFrameEClass, TIME_FRAME__START);
+        this.createEAttribute(this.timeFrameEClass, TIME_FRAME__STOP);
 
         // Create enums
-        performanceMetricEnumEEnum = createEEnum(PERFORMANCE_METRIC_ENUM);
-        statisticalCharacterizationEnumEEnum = createEEnum(STATISTICAL_CHARACTERIZATION_ENUM);
+        this.statisticalCharacterizationEnumEEnum = this.createEEnum(STATISTICAL_CHARACTERIZATION_ENUM);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private boolean isInitialized = false;
@@ -433,110 +414,108 @@ public class PmsPackageImpl extends EPackageImpl implements PmsPackage {
     /**
      * Complete the initialization of the package and its meta-model. This method is guarded to have
      * no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public void initializePackageContents() {
-        if (isInitialized)
+        if (this.isInitialized) {
             return;
-        isInitialized = true;
+        }
+        this.isInitialized = true;
 
         // Initialize package
-        setName(eNAME);
-        setNsPrefix(eNS_PREFIX);
-        setNsURI(eNS_URI);
+        this.setName(eNAME);
+        this.setNsPrefix(eNS_PREFIX);
+        this.setNsURI(eNS_URI);
 
         // Obtain other dependent packages
-        MeasuringpointPackage theMeasuringpointPackage = (MeasuringpointPackage) EPackage.Registry.INSTANCE
+        final EntityPackage theEntityPackage = (EntityPackage) EPackage.Registry.INSTANCE
+                .getEPackage(EntityPackage.eNS_URI);
+        final MeasuringpointPackage theMeasuringpointPackage = (MeasuringpointPackage) EPackage.Registry.INSTANCE
                 .getEPackage(MeasuringpointPackage.eNS_URI);
+        final IdentifierPackage theIdentifierPackage = (IdentifierPackage) EPackage.Registry.INSTANCE
+                .getEPackage(IdentifierPackage.eNS_URI);
+        final MetricSpecPackage theMetricSpecPackage = (MetricSpecPackage) EPackage.Registry.INSTANCE
+                .getEPackage(MetricSpecPackage.eNS_URI);
 
         // Create type parameters
 
         // Set bounds for type parameters
 
         // Add supertypes to classes
-        pmsModelEClass.getESuperTypes().add(this.getUniqueElement());
-        performanceMeasurementEClass.getESuperTypes().add(this.getUniqueElement());
-        measurementSpecificationEClass.getESuperTypes().add(this.getUniqueElement());
-        temporalCharacterizationEClass.getESuperTypes().add(this.getUniqueElement());
-        intervallEClass.getESuperTypes().add(this.getTemporalCharacterization());
-        delayedIntervallEClass.getESuperTypes().add(this.getIntervall());
-        timeFrameEClass.getESuperTypes().add(this.getTemporalCharacterization());
+        this.monitorRepositoryEClass.getESuperTypes().add(theEntityPackage.getEntity());
+        this.monitorEClass.getESuperTypes().add(theEntityPackage.getEntity());
+        this.measurementSpecificationEClass.getESuperTypes().add(theIdentifierPackage.getIdentifier());
+        this.temporalCharacterizationEClass.getESuperTypes().add(theIdentifierPackage.getIdentifier());
+        this.intervallEClass.getESuperTypes().add(this.getTemporalCharacterization());
+        this.delayedIntervallEClass.getESuperTypes().add(this.getIntervall());
+        this.timeFrameEClass.getESuperTypes().add(this.getTemporalCharacterization());
 
         // Initialize classes and features; add operations and parameters
-        initEClass(pmsModelEClass, PMSModel.class, "PMSModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getPMSModel_PerformanceMeasurements(), this.getPerformanceMeasurement(), null,
-                "performanceMeasurements", null, 0, -1, PMSModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(performanceMeasurementEClass, PerformanceMeasurement.class, "PerformanceMeasurement", !IS_ABSTRACT,
+        this.initEClass(this.monitorRepositoryEClass, MonitorRepository.class, "MonitorRepository", !IS_ABSTRACT,
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getPerformanceMeasurement_MeasurementSpecification(), this.getMeasurementSpecification(), null,
-                "measurementSpecification", null, 1, -1, PerformanceMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEReference(getPerformanceMeasurement_MeasuringPoint(), theMeasuringpointPackage.getMeasuringPoint(), null,
-                "measuringPoint", null, 1, 1, PerformanceMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMonitorRepository_Monitors(), this.getMonitor(), null, "monitors", null, 0, -1,
+                MonitorRepository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
+                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(measurementSpecificationEClass, MeasurementSpecification.class, "MeasurementSpecification",
-                !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        initEReference(getMeasurementSpecification_TemporalRestriction(), this.getTemporalCharacterization(), null,
-                "temporalRestriction", null, 1, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
+        this.initEClass(this.monitorEClass, Monitor.class, "Monitor", !IS_ABSTRACT, !IS_INTERFACE,
+                IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getMonitor_MeasurementSpecification(), this.getMeasurementSpecification(), null,
+                "measurementSpecification", null, 1, -1, Monitor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
+                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMonitor_MeasuringPoint(), theMeasuringpointPackage.getMeasuringPoint(), null,
+                "measuringPoint", null, 1, 1, Monitor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+        this.initEClass(this.measurementSpecificationEClass, MeasurementSpecification.class,
+                "MeasurementSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEReference(this.getMeasurementSpecification_TemporalRestriction(), this.getTemporalCharacterization(),
+                null, "temporalRestriction", null, 1, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getMeasurementSpecification_PerformanceMetric(), this.getPerformanceMetricEnum(),
-                "performanceMetric", null, 1, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getMeasurementSpecification_StatisticalCharacterization(),
+        this.initEAttribute(this.getMeasurementSpecification_StatisticalCharacterization(),
                 this.getStatisticalCharacterizationEnum(), "statisticalCharacterization", null, 1, 1,
                 MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMeasurementSpecification_MetricDescription(),
+                theMetricSpecPackage.getMetricDescription(), null, "metricDescription", null, 1, 1,
+                MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+                IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        initEClass(temporalCharacterizationEClass, TemporalCharacterization.class, "TemporalCharacterization",
-                IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEClass(this.temporalCharacterizationEClass, TemporalCharacterization.class,
+                "TemporalCharacterization", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
-        initEClass(intervallEClass, Intervall.class, "Intervall", !IS_ABSTRACT, !IS_INTERFACE,
+        this.initEClass(this.intervallEClass, Intervall.class, "Intervall", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getIntervall_Intervall(), ecorePackage.getEDouble(), "intervall", "0.0", 1, 1, Intervall.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getIntervall_Intervall(), this.ecorePackage.getEDouble(), "intervall", "0.0", 1, 1,
+                Intervall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
-        initEClass(delayedIntervallEClass, DelayedIntervall.class, "DelayedIntervall", !IS_ABSTRACT, !IS_INTERFACE,
-                IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getDelayedIntervall_Delay(), ecorePackage.getEDouble(), "delay", "0.0", 1, 1,
+        this.initEClass(this.delayedIntervallEClass, DelayedIntervall.class, "DelayedIntervall", !IS_ABSTRACT,
+                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+        this.initEAttribute(this.getDelayedIntervall_Delay(), this.ecorePackage.getEDouble(), "delay", "0.0", 1, 1,
                 DelayedIntervall.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
                 !IS_DERIVED, IS_ORDERED);
 
-        initEClass(timeFrameEClass, TimeFrame.class, "TimeFrame", !IS_ABSTRACT, !IS_INTERFACE,
+        this.initEClass(this.timeFrameEClass, TimeFrame.class, "TimeFrame", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getTimeFrame_Start(), ecorePackage.getEDouble(), "start", "0.0", 1, 1, TimeFrame.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        initEAttribute(getTimeFrame_Stop(), ecorePackage.getEDouble(), "stop", "0.0", 1, 1, TimeFrame.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        initEClass(uniqueElementEClass, UniqueElement.class, "UniqueElement", !IS_ABSTRACT, !IS_INTERFACE,
-                IS_GENERATED_INSTANCE_CLASS);
-        initEAttribute(getUniqueElement_Guid(), ecorePackage.getEString(), "guid", null, 0, 1, UniqueElement.class,
-                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-
-        addEOperation(uniqueElementEClass, null, "createAndSetGuid", 0, 1, IS_UNIQUE, IS_ORDERED);
+        this.initEAttribute(this.getTimeFrame_Start(), this.ecorePackage.getEDouble(), "start", "0.0", 1, 1,
+                TimeFrame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getTimeFrame_Stop(), this.ecorePackage.getEDouble(), "stop", "0.0", 1, 1,
+                TimeFrame.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         // Initialize enums and add enum literals
-        initEEnum(performanceMetricEnumEEnum, PerformanceMetricEnum.class, "PerformanceMetricEnum");
-        addEEnumLiteral(performanceMetricEnumEEnum, PerformanceMetricEnum.WAITING_TIME);
-        addEEnumLiteral(performanceMetricEnumEEnum, PerformanceMetricEnum.RESPONSE_TIME);
-        addEEnumLiteral(performanceMetricEnumEEnum, PerformanceMetricEnum.UTILIZATION);
-        addEEnumLiteral(performanceMetricEnumEEnum, PerformanceMetricEnum.ARRIVAL_RATE);
-        addEEnumLiteral(performanceMetricEnumEEnum, PerformanceMetricEnum.THROUGHPUT);
-
-        initEEnum(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.class,
+        this.initEEnum(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.class,
                 "StatisticalCharacterizationEnum");
-        addEEnumLiteral(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.NONE);
-        addEEnumLiteral(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.MEDIAN);
-        addEEnumLiteral(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
-        addEEnumLiteral(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.GEOMETRIC_MEAN);
-        addEEnumLiteral(statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.HARMONIC_MEAN);
+        this.addEEnumLiteral(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.NONE);
+        this.addEEnumLiteral(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.MEDIAN);
+        this.addEEnumLiteral(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
+        this.addEEnumLiteral(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.GEOMETRIC_MEAN);
+        this.addEEnumLiteral(this.statisticalCharacterizationEnumEEnum, StatisticalCharacterizationEnum.HARMONIC_MEAN);
 
         // Create resource
-        createResource(eNS_URI);
+        this.createResource(eNS_URI);
     }
 
 } // PmsPackageImpl

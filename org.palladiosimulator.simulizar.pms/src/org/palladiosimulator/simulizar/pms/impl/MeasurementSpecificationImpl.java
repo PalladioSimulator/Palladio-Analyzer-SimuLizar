@@ -11,11 +11,13 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.pms.PmsPackage;
 import org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum;
 import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
+
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -27,21 +29,21 @@ import org.palladiosimulator.simulizar.pms.TemporalCharacterization;
  * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl#getTemporalRestriction
  * <em>Temporal Restriction</em>}</li>
  * <li>
- * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl#getPerformanceMetric
- * <em>Performance Metric</em>}</li>
- * <li>
  * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl#getStatisticalCharacterization
  * <em>Statistical Characterization</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl#getMetricDescription
+ * <em>Metric Description</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class MeasurementSpecificationImpl extends UniqueElementImpl implements MeasurementSpecification {
+public class MeasurementSpecificationImpl extends IdentifierImpl implements MeasurementSpecification {
     /**
      * The cached value of the '{@link #getTemporalRestriction() <em>Temporal Restriction</em>}'
      * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getTemporalRestriction()
      * @generated
      * @ordered
@@ -49,30 +51,10 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
     protected TemporalCharacterization temporalRestriction;
 
     /**
-     * The default value of the '{@link #getPerformanceMetric() <em>Performance Metric</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see #getPerformanceMetric()
-     * @generated
-     * @ordered
-     */
-    protected static final PerformanceMetricEnum PERFORMANCE_METRIC_EDEFAULT = PerformanceMetricEnum.WAITING_TIME;
-
-    /**
-     * The cached value of the '{@link #getPerformanceMetric() <em>Performance Metric</em>}'
-     * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see #getPerformanceMetric()
-     * @generated
-     * @ordered
-     */
-    protected PerformanceMetricEnum performanceMetric = PERFORMANCE_METRIC_EDEFAULT;
-
-    /**
      * The default value of the '{@link #getStatisticalCharacterization()
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getStatisticalCharacterization()
      * @generated
      * @ordered
@@ -83,7 +65,7 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
      * The cached value of the '{@link #getStatisticalCharacterization()
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getStatisticalCharacterization()
      * @generated
      * @ordered
@@ -91,8 +73,18 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
     protected StatisticalCharacterizationEnum statisticalCharacterization = STATISTICAL_CHARACTERIZATION_EDEFAULT;
 
     /**
+     * The cached value of the '{@link #getMetricDescription() <em>Metric Description</em>}'
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getMetricDescription()
+     * @generated
+     * @ordered
+     */
+    protected MetricDescription metricDescription;
+
+    /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MeasurementSpecificationImpl() {
@@ -101,7 +93,7 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -111,151 +103,189 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public TemporalCharacterization getTemporalRestriction() {
-        return temporalRestriction;
+        return this.temporalRestriction;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public NotificationChain basicSetTemporalRestriction(TemporalCharacterization newTemporalRestriction,
+    public NotificationChain basicSetTemporalRestriction(final TemporalCharacterization newTemporalRestriction,
             NotificationChain msgs) {
-        TemporalCharacterization oldTemporalRestriction = temporalRestriction;
-        temporalRestriction = newTemporalRestriction;
-        if (eNotificationRequired()) {
-            ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
+        final TemporalCharacterization oldTemporalRestriction = this.temporalRestriction;
+        this.temporalRestriction = newTemporalRestriction;
+        if (this.eNotificationRequired()) {
+            final ENotificationImpl notification = new ENotificationImpl(this, Notification.SET,
                     PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, oldTemporalRestriction,
                     newTemporalRestriction);
-            if (msgs == null)
+            if (msgs == null) {
                 msgs = notification;
-            else
+            } else {
                 msgs.add(notification);
+            }
         }
         return msgs;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setTemporalRestriction(TemporalCharacterization newTemporalRestriction) {
-        if (newTemporalRestriction != temporalRestriction) {
-            NotificationChain msgs = null;
-            if (temporalRestriction != null)
-                msgs = ((InternalEObject) temporalRestriction).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
-                        - PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, null, msgs);
-            if (newTemporalRestriction != null)
-                msgs = ((InternalEObject) newTemporalRestriction).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
-                        - PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, null, msgs);
-            msgs = basicSetTemporalRestriction(newTemporalRestriction, msgs);
-            if (msgs != null)
-                msgs.dispatch();
-        } else if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, newTemporalRestriction,
-                    newTemporalRestriction));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public PerformanceMetricEnum getPerformanceMetric() {
-        return performanceMetric;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setPerformanceMetric(PerformanceMetricEnum newPerformanceMetric) {
-        PerformanceMetricEnum oldPerformanceMetric = performanceMetric;
-        performanceMetric = newPerformanceMetric == null ? PERFORMANCE_METRIC_EDEFAULT : newPerformanceMetric;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PmsPackage.MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC, oldPerformanceMetric, performanceMetric));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public StatisticalCharacterizationEnum getStatisticalCharacterization() {
-        return statisticalCharacterization;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setStatisticalCharacterization(StatisticalCharacterizationEnum newStatisticalCharacterization) {
-        StatisticalCharacterizationEnum oldStatisticalCharacterization = statisticalCharacterization;
-        statisticalCharacterization = newStatisticalCharacterization == null ? STATISTICAL_CHARACTERIZATION_EDEFAULT
-                : newStatisticalCharacterization;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION, oldStatisticalCharacterization,
-                    statisticalCharacterization));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    public void setTemporalRestriction(final TemporalCharacterization newTemporalRestriction) {
+        if (newTemporalRestriction != this.temporalRestriction) {
+            NotificationChain msgs = null;
+            if (this.temporalRestriction != null) {
+                msgs = ((InternalEObject) this.temporalRestriction).eInverseRemove(this, EOPPOSITE_FEATURE_BASE
+                        - PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, null, msgs);
+            }
+            if (newTemporalRestriction != null) {
+                msgs = ((InternalEObject) newTemporalRestriction).eInverseAdd(this, EOPPOSITE_FEATURE_BASE
+                        - PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, null, msgs);
+            }
+            msgs = this.basicSetTemporalRestriction(newTemporalRestriction, msgs);
+            if (msgs != null) {
+                msgs.dispatch();
+            }
+        } else if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION, newTemporalRestriction,
+                    newTemporalRestriction));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public StatisticalCharacterizationEnum getStatisticalCharacterization() {
+        return this.statisticalCharacterization;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setStatisticalCharacterization(final StatisticalCharacterizationEnum newStatisticalCharacterization) {
+        final StatisticalCharacterizationEnum oldStatisticalCharacterization = this.statisticalCharacterization;
+        this.statisticalCharacterization = newStatisticalCharacterization == null ? STATISTICAL_CHARACTERIZATION_EDEFAULT
+                : newStatisticalCharacterization;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION, oldStatisticalCharacterization,
+                    this.statisticalCharacterization));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MetricDescription getMetricDescription() {
+        if (this.metricDescription != null && this.metricDescription.eIsProxy()) {
+            final InternalEObject oldMetricDescription = (InternalEObject) this.metricDescription;
+            this.metricDescription = (MetricDescription) this.eResolveProxy(oldMetricDescription);
+            if (this.metricDescription != oldMetricDescription) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION, oldMetricDescription,
+                            this.metricDescription));
+                }
+            }
+        }
+        return this.metricDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public MetricDescription basicGetMetricDescription() {
+        return this.metricDescription;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMetricDescription(final MetricDescription newMetricDescription) {
+        final MetricDescription oldMetricDescription = this.metricDescription;
+        this.metricDescription = newMetricDescription;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION, oldMetricDescription,
+                    this.metricDescription));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
         switch (featureID) {
         case PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
-            return basicSetTemporalRestriction(null, msgs);
+            return this.basicSetTemporalRestriction(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
-            return getTemporalRestriction();
-        case PmsPackage.MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC:
-            return getPerformanceMetric();
+            return this.getTemporalRestriction();
         case PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION:
-            return getStatisticalCharacterization();
+            return this.getStatisticalCharacterization();
+        case PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
+            if (resolve) {
+                return this.getMetricDescription();
+            }
+            return this.basicGetMetricDescription();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
-            setTemporalRestriction((TemporalCharacterization) newValue);
-            return;
-        case PmsPackage.MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC:
-            setPerformanceMetric((PerformanceMetricEnum) newValue);
+            this.setTemporalRestriction((TemporalCharacterization) newValue);
             return;
         case PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION:
-            setStatisticalCharacterization((StatisticalCharacterizationEnum) newValue);
+            this.setStatisticalCharacterization((StatisticalCharacterizationEnum) newValue);
+            return;
+        case PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
+            this.setMetricDescription((MetricDescription) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -263,20 +293,20 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
-            setTemporalRestriction((TemporalCharacterization) null);
-            return;
-        case PmsPackage.MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC:
-            setPerformanceMetric(PERFORMANCE_METRIC_EDEFAULT);
+            this.setTemporalRestriction((TemporalCharacterization) null);
             return;
         case PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION:
-            setStatisticalCharacterization(STATISTICAL_CHARACTERIZATION_EDEFAULT);
+            this.setStatisticalCharacterization(STATISTICAL_CHARACTERIZATION_EDEFAULT);
+            return;
+        case PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
+            this.setMetricDescription((MetricDescription) null);
             return;
         }
         super.eUnset(featureID);
@@ -284,37 +314,36 @@ public class MeasurementSpecificationImpl extends UniqueElementImpl implements M
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PmsPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
-            return temporalRestriction != null;
-        case PmsPackage.MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC:
-            return performanceMetric != PERFORMANCE_METRIC_EDEFAULT;
+            return this.temporalRestriction != null;
         case PmsPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION:
-            return statisticalCharacterization != STATISTICAL_CHARACTERIZATION_EDEFAULT;
+            return this.statisticalCharacterization != STATISTICAL_CHARACTERIZATION_EDEFAULT;
+        case PmsPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
+            return this.metricDescription != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
-        result.append(" (performanceMetric: ");
-        result.append(performanceMetric);
-        result.append(", statisticalCharacterization: ");
-        result.append(statisticalCharacterization);
+        final StringBuffer result = new StringBuffer(super.toString());
+        result.append(" (statisticalCharacterization: ");
+        result.append(this.statisticalCharacterization);
         result.append(')');
         return result.toString();
     }

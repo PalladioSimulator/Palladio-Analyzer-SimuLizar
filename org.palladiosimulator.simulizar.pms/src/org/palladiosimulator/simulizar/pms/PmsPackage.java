@@ -12,6 +12,9 @@ import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 
+import de.uka.ipd.sdq.identifier.IdentifierPackage;
+import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
+
 /**
  * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta
  * objects to represent
@@ -22,7 +25,7 @@ import org.eclipse.emf.ecore.EReference;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.pms.PmsFactory
  * @model kind="package"
  * @generated
@@ -30,150 +33,139 @@ import org.eclipse.emf.ecore.EReference;
 public interface PmsPackage extends EPackage {
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNAME = "pms";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_URI = "http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_PREFIX = "pms";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     PmsPackage eINSTANCE = org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl.init();
 
     /**
      * The meta object id for the '
-     * {@link org.palladiosimulator.simulizar.pms.impl.UniqueElementImpl <em>Unique Element</em>}'
-     * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see org.palladiosimulator.simulizar.pms.impl.UniqueElementImpl
-     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getUniqueElement()
+     * {@link org.palladiosimulator.simulizar.pms.impl.MonitorRepositoryImpl
+     * <em>Monitor Repository</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.palladiosimulator.simulizar.pms.impl.MonitorRepositoryImpl
+     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMonitorRepository()
      * @generated
      */
-    int UNIQUE_ELEMENT = 7;
+    int MONITOR_REPOSITORY = 0;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int UNIQUE_ELEMENT__GUID = 0;
+    int MONITOR_REPOSITORY__ID = EntityPackage.ENTITY__ID;
 
     /**
-     * The number of structural features of the '<em>Unique Element</em>' class. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     * 
-     * @generated
-     * @ordered
-     */
-    int UNIQUE_ELEMENT_FEATURE_COUNT = 1;
-
-    /**
-     * The meta object id for the '{@link org.palladiosimulator.simulizar.pms.impl.PMSModelImpl
-     * <em>PMS Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see org.palladiosimulator.simulizar.pms.impl.PMSModelImpl
-     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPMSModel()
-     * @generated
-     */
-    int PMS_MODEL = 0;
-
-    /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int PMS_MODEL__GUID = UNIQUE_ELEMENT__GUID;
+    int MONITOR_REPOSITORY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
 
     /**
-     * The feature id for the '<em><b>Performance Measurements</b></em>' containment reference list.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The feature id for the '<em><b>Monitors</b></em>' containment reference list. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
-    int PMS_MODEL__PERFORMANCE_MEASUREMENTS = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
+    int MONITOR_REPOSITORY__MONITORS = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
     /**
-     * The number of structural features of the '<em>PMS Model</em>' class. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * 
+     * The number of structural features of the '<em>Monitor Repository</em>' class. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
-    int PMS_MODEL_FEATURE_COUNT = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
+    int MONITOR_REPOSITORY_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
     /**
-     * The meta object id for the '
-     * {@link org.palladiosimulator.simulizar.pms.impl.PerformanceMeasurementImpl
-     * <em>Performance Measurement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see org.palladiosimulator.simulizar.pms.impl.PerformanceMeasurementImpl
-     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPerformanceMeasurement()
+     * The meta object id for the '{@link org.palladiosimulator.simulizar.pms.impl.MonitorImpl
+     * <em>Monitor</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see org.palladiosimulator.simulizar.pms.impl.MonitorImpl
+     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMonitor()
      * @generated
      */
-    int PERFORMANCE_MEASUREMENT = 1;
+    int MONITOR = 1;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int PERFORMANCE_MEASUREMENT__GUID = UNIQUE_ELEMENT__GUID;
+    int MONITOR__ID = EntityPackage.ENTITY__ID;
+
+    /**
+     * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MONITOR__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
 
     /**
      * The feature id for the '<em><b>Measurement Specification</b></em>' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int PERFORMANCE_MEASUREMENT__MEASUREMENT_SPECIFICATION = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
+    int MONITOR__MEASUREMENT_SPECIFICATION = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Measuring Point</b></em>' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int PERFORMANCE_MEASUREMENT__MEASURING_POINT = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
+    int MONITOR__MEASURING_POINT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
     /**
-     * The number of structural features of the '<em>Performance Measurement</em>' class. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The number of structural features of the '<em>Monitor</em>' class. <!-- begin-user-doc -->
+     * <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
-    int PERFORMANCE_MEASUREMENT_FEATURE_COUNT = UNIQUE_ELEMENT_FEATURE_COUNT + 2;
+    int MONITOR_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 2;
 
     /**
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl
      * <em>Measurement Specification</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMeasurementSpecification()
      * @generated
@@ -181,55 +173,55 @@ public interface PmsPackage extends EPackage {
     int MEASUREMENT_SPECIFICATION = 2;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int MEASUREMENT_SPECIFICATION__GUID = UNIQUE_ELEMENT__GUID;
+    int MEASUREMENT_SPECIFICATION__ID = IdentifierPackage.IDENTIFIER__ID;
 
     /**
      * The feature id for the '<em><b>Temporal Restriction</b></em>' containment reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
-
-    /**
-     * The feature id for the '<em><b>Performance Metric</b></em>' attribute. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     * 
-     * @generated
-     * @ordered
-     */
-    int MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
+    int MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 0;
 
     /**
      * The feature id for the '<em><b>Statistical Characterization</b></em>' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION = UNIQUE_ELEMENT_FEATURE_COUNT + 2;
+    int MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 1;
+
+    /**
+     * The feature id for the '<em><b>Metric Description</b></em>' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 2;
 
     /**
      * The number of structural features of the '<em>Measurement Specification</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int MEASUREMENT_SPECIFICATION_FEATURE_COUNT = UNIQUE_ELEMENT_FEATURE_COUNT + 3;
+    int MEASUREMENT_SPECIFICATION_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 3;
 
     /**
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.pms.impl.TemporalCharacterizationImpl
      * <em>Temporal Characterization</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.impl.TemporalCharacterizationImpl
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getTemporalCharacterization()
      * @generated
@@ -237,27 +229,27 @@ public interface PmsPackage extends EPackage {
     int TEMPORAL_CHARACTERIZATION = 3;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int TEMPORAL_CHARACTERIZATION__GUID = UNIQUE_ELEMENT__GUID;
+    int TEMPORAL_CHARACTERIZATION__ID = IdentifierPackage.IDENTIFIER__ID;
 
     /**
      * The number of structural features of the '<em>Temporal Characterization</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int TEMPORAL_CHARACTERIZATION_FEATURE_COUNT = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
+    int TEMPORAL_CHARACTERIZATION_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 0;
 
     /**
      * The meta object id for the '{@link org.palladiosimulator.simulizar.pms.impl.IntervallImpl
      * <em>Intervall</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.impl.IntervallImpl
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getIntervall()
      * @generated
@@ -265,18 +257,18 @@ public interface PmsPackage extends EPackage {
     int INTERVALL = 4;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int INTERVALL__GUID = TEMPORAL_CHARACTERIZATION__GUID;
+    int INTERVALL__ID = TEMPORAL_CHARACTERIZATION__ID;
 
     /**
      * The feature id for the '<em><b>Intervall</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -285,7 +277,7 @@ public interface PmsPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Intervall</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -295,7 +287,7 @@ public interface PmsPackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.pms.impl.DelayedIntervallImpl
      * <em>Delayed Intervall</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.impl.DelayedIntervallImpl
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getDelayedIntervall()
      * @generated
@@ -303,18 +295,18 @@ public interface PmsPackage extends EPackage {
     int DELAYED_INTERVALL = 5;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int DELAYED_INTERVALL__GUID = INTERVALL__GUID;
+    int DELAYED_INTERVALL__ID = INTERVALL__ID;
 
     /**
      * The feature id for the '<em><b>Intervall</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -323,7 +315,7 @@ public interface PmsPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Delay</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -332,7 +324,7 @@ public interface PmsPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Delayed Intervall</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -341,7 +333,7 @@ public interface PmsPackage extends EPackage {
     /**
      * The meta object id for the '{@link org.palladiosimulator.simulizar.pms.impl.TimeFrameImpl
      * <em>Time Frame</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.impl.TimeFrameImpl
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getTimeFrame()
      * @generated
@@ -349,18 +341,18 @@ public interface PmsPackage extends EPackage {
     int TIME_FRAME = 6;
 
     /**
-     * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
-    int TIME_FRAME__GUID = TEMPORAL_CHARACTERIZATION__GUID;
+    int TIME_FRAME__ID = TEMPORAL_CHARACTERIZATION__ID;
 
     /**
      * The feature id for the '<em><b>Start</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -369,7 +361,7 @@ public interface PmsPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Stop</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -378,98 +370,87 @@ public interface PmsPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Time Frame</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
     int TIME_FRAME_FEATURE_COUNT = TEMPORAL_CHARACTERIZATION_FEATURE_COUNT + 2;
 
     /**
-     * The meta object id for the '{@link org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * <em>Performance Metric Enum</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPerformanceMetricEnum()
-     * @generated
-     */
-    int PERFORMANCE_METRIC_ENUM = 8;
-
-    /**
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
      * <em>Statistical Characterization Enum</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
      * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getStatisticalCharacterizationEnum()
      * @generated
      */
-    int STATISTICAL_CHARACTERIZATION_ENUM = 9;
-
-    /**
-     * Returns the meta object for class '{@link org.palladiosimulator.simulizar.pms.PMSModel
-     * <em>PMS Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for class '<em>PMS Model</em>'.
-     * @see org.palladiosimulator.simulizar.pms.PMSModel
-     * @generated
-     */
-    EClass getPMSModel();
-
-    /**
-     * Returns the meta object for the containment reference list '
-     * {@link org.palladiosimulator.simulizar.pms.PMSModel#getPerformanceMeasurements
-     * <em>Performance Measurements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for the containment reference list '<em>Performance Measurements</em>
-     *         '.
-     * @see org.palladiosimulator.simulizar.pms.PMSModel#getPerformanceMeasurements()
-     * @see #getPMSModel()
-     * @generated
-     */
-    EReference getPMSModel_PerformanceMeasurements();
+    int STATISTICAL_CHARACTERIZATION_ENUM = 7;
 
     /**
      * Returns the meta object for class '
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMeasurement
-     * <em>Performance Measurement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for class '<em>Performance Measurement</em>'.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMeasurement
+     * {@link org.palladiosimulator.simulizar.pms.MonitorRepository <em>Monitor Repository</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Monitor Repository</em>'.
+     * @see org.palladiosimulator.simulizar.pms.MonitorRepository
      * @generated
      */
-    EClass getPerformanceMeasurement();
+    EClass getMonitorRepository();
 
     /**
      * Returns the meta object for the containment reference list '
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMeasurement#getMeasurementSpecification
-     * <em>Measurement Specification</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for the containment reference list '
-     *         <em>Measurement Specification</em>'.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMeasurement#getMeasurementSpecification()
-     * @see #getPerformanceMeasurement()
+     * {@link org.palladiosimulator.simulizar.pms.MonitorRepository#getMonitors <em>Monitors</em>}'.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '<em>Monitors</em>'.
+     * @see org.palladiosimulator.simulizar.pms.MonitorRepository#getMonitors()
+     * @see #getMonitorRepository()
      * @generated
      */
-    EReference getPerformanceMeasurement_MeasurementSpecification();
+    EReference getMonitorRepository_Monitors();
+
+    /**
+     * Returns the meta object for class '{@link org.palladiosimulator.simulizar.pms.Monitor
+     * <em>Monitor</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for class '<em>Monitor</em>'.
+     * @see org.palladiosimulator.simulizar.pms.Monitor
+     * @generated
+     */
+    EClass getMonitor();
+
+    /**
+     * Returns the meta object for the containment reference list '
+     * {@link org.palladiosimulator.simulizar.pms.Monitor#getMeasurementSpecification
+     * <em>Measurement Specification</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the containment reference list '
+     *         <em>Measurement Specification</em>'.
+     * @see org.palladiosimulator.simulizar.pms.Monitor#getMeasurementSpecification()
+     * @see #getMonitor()
+     * @generated
+     */
+    EReference getMonitor_MeasurementSpecification();
 
     /**
      * Returns the meta object for the reference '
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMeasurement#getMeasuringPoint
+     * {@link org.palladiosimulator.simulizar.pms.Monitor#getMeasuringPoint
      * <em>Measuring Point</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Measuring Point</em>'.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMeasurement#getMeasuringPoint()
-     * @see #getPerformanceMeasurement()
+     * @see org.palladiosimulator.simulizar.pms.Monitor#getMeasuringPoint()
+     * @see #getMonitor()
      * @generated
      */
-    EReference getPerformanceMeasurement_MeasuringPoint();
+    EReference getMonitor_MeasuringPoint();
 
     /**
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification
      * <em>Measurement Specification</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Measurement Specification</em>'.
      * @see org.palladiosimulator.simulizar.pms.MeasurementSpecification
      * @generated
@@ -480,7 +461,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for the containment reference '
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction
      * <em>Temporal Restriction</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the containment reference '<em>Temporal Restriction</em>'.
      * @see org.palladiosimulator.simulizar.pms.MeasurementSpecification#getTemporalRestriction()
      * @see #getMeasurementSpecification()
@@ -490,21 +471,9 @@ public interface PmsPackage extends EPackage {
 
     /**
      * Returns the meta object for the attribute '
-     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric
-     * <em>Performance Metric</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for the attribute '<em>Performance Metric</em>'.
-     * @see org.palladiosimulator.simulizar.pms.MeasurementSpecification#getPerformanceMetric()
-     * @see #getMeasurementSpecification()
-     * @generated
-     */
-    EAttribute getMeasurementSpecification_PerformanceMetric();
-
-    /**
-     * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization
      * <em>Statistical Characterization</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Statistical Characterization</em>'.
      * @see org.palladiosimulator.simulizar.pms.MeasurementSpecification#getStatisticalCharacterization()
      * @see #getMeasurementSpecification()
@@ -513,10 +482,22 @@ public interface PmsPackage extends EPackage {
     EAttribute getMeasurementSpecification_StatisticalCharacterization();
 
     /**
+     * Returns the meta object for the reference '
+     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification#getMetricDescription
+     * <em>Metric Description</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Metric Description</em>'.
+     * @see org.palladiosimulator.simulizar.pms.MeasurementSpecification#getMetricDescription()
+     * @see #getMeasurementSpecification()
+     * @generated
+     */
+    EReference getMeasurementSpecification_MetricDescription();
+
+    /**
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.pms.TemporalCharacterization
      * <em>Temporal Characterization</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Temporal Characterization</em>'.
      * @see org.palladiosimulator.simulizar.pms.TemporalCharacterization
      * @generated
@@ -526,7 +507,7 @@ public interface PmsPackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.simulizar.pms.Intervall
      * <em>Intervall</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Intervall</em>'.
      * @see org.palladiosimulator.simulizar.pms.Intervall
      * @generated
@@ -537,7 +518,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.pms.Intervall#getIntervall <em>Intervall</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Intervall</em>'.
      * @see org.palladiosimulator.simulizar.pms.Intervall#getIntervall()
      * @see #getIntervall()
@@ -549,7 +530,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.pms.DelayedIntervall <em>Delayed Intervall</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Delayed Intervall</em>'.
      * @see org.palladiosimulator.simulizar.pms.DelayedIntervall
      * @generated
@@ -560,7 +541,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.pms.DelayedIntervall#getDelay <em>Delay</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Delay</em>'.
      * @see org.palladiosimulator.simulizar.pms.DelayedIntervall#getDelay()
      * @see #getDelayedIntervall()
@@ -571,7 +552,7 @@ public interface PmsPackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.simulizar.pms.TimeFrame
      * <em>Time Frame</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Time Frame</em>'.
      * @see org.palladiosimulator.simulizar.pms.TimeFrame
      * @generated
@@ -582,7 +563,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.pms.TimeFrame#getStart <em>Start</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Start</em>'.
      * @see org.palladiosimulator.simulizar.pms.TimeFrame#getStart()
      * @see #getTimeFrame()
@@ -594,7 +575,7 @@ public interface PmsPackage extends EPackage {
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.pms.TimeFrame#getStop <em>Stop</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Stop</em>'.
      * @see org.palladiosimulator.simulizar.pms.TimeFrame#getStop()
      * @see #getTimeFrame()
@@ -603,43 +584,10 @@ public interface PmsPackage extends EPackage {
     EAttribute getTimeFrame_Stop();
 
     /**
-     * Returns the meta object for class '{@link org.palladiosimulator.simulizar.pms.UniqueElement
-     * <em>Unique Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for class '<em>Unique Element</em>'.
-     * @see org.palladiosimulator.simulizar.pms.UniqueElement
-     * @generated
-     */
-    EClass getUniqueElement();
-
-    /**
-     * Returns the meta object for the attribute '
-     * {@link org.palladiosimulator.simulizar.pms.UniqueElement#getGuid <em>Guid</em>}'. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for the attribute '<em>Guid</em>'.
-     * @see org.palladiosimulator.simulizar.pms.UniqueElement#getGuid()
-     * @see #getUniqueElement()
-     * @generated
-     */
-    EAttribute getUniqueElement_Guid();
-
-    /**
-     * Returns the meta object for enum '
-     * {@link org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * <em>Performance Metric Enum</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for enum '<em>Performance Metric Enum</em>'.
-     * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-     * @generated
-     */
-    EEnum getPerformanceMetricEnum();
-
-    /**
      * Returns the meta object for enum '
      * {@link org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
      * <em>Statistical Characterization Enum</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for enum '<em>Statistical Characterization Enum</em>'.
      * @see org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
      * @generated
@@ -649,7 +597,7 @@ public interface PmsPackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -664,62 +612,61 @@ public interface PmsPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     interface Literals {
         /**
          * The meta object literal for the '
-         * {@link org.palladiosimulator.simulizar.pms.impl.PMSModelImpl <em>PMS Model</em>}' class.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @see org.palladiosimulator.simulizar.pms.impl.PMSModelImpl
-         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPMSModel()
+         * {@link org.palladiosimulator.simulizar.pms.impl.MonitorRepositoryImpl
+         * <em>Monitor Repository</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.palladiosimulator.simulizar.pms.impl.MonitorRepositoryImpl
+         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMonitorRepository()
          * @generated
          */
-        EClass PMS_MODEL = eINSTANCE.getPMSModel();
+        EClass MONITOR_REPOSITORY = eINSTANCE.getMonitorRepository();
 
         /**
-         * The meta object literal for the '<em><b>Performance Measurements</b></em>' containment
-         * reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em><b>Monitors</b></em>' containment reference list
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
          * @generated
          */
-        EReference PMS_MODEL__PERFORMANCE_MEASUREMENTS = eINSTANCE.getPMSModel_PerformanceMeasurements();
+        EReference MONITOR_REPOSITORY__MONITORS = eINSTANCE.getMonitorRepository_Monitors();
 
         /**
          * The meta object literal for the '
-         * {@link org.palladiosimulator.simulizar.pms.impl.PerformanceMeasurementImpl
-         * <em>Performance Measurement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @see org.palladiosimulator.simulizar.pms.impl.PerformanceMeasurementImpl
-         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPerformanceMeasurement()
+         * {@link org.palladiosimulator.simulizar.pms.impl.MonitorImpl <em>Monitor</em>}' class.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @see org.palladiosimulator.simulizar.pms.impl.MonitorImpl
+         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMonitor()
          * @generated
          */
-        EClass PERFORMANCE_MEASUREMENT = eINSTANCE.getPerformanceMeasurement();
+        EClass MONITOR = eINSTANCE.getMonitor();
 
         /**
          * The meta object literal for the '<em><b>Measurement Specification</b></em>' containment
          * reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
-        EReference PERFORMANCE_MEASUREMENT__MEASUREMENT_SPECIFICATION = eINSTANCE
-                .getPerformanceMeasurement_MeasurementSpecification();
+        EReference MONITOR__MEASUREMENT_SPECIFICATION = eINSTANCE.getMonitor_MeasurementSpecification();
 
         /**
          * The meta object literal for the '<em><b>Measuring Point</b></em>' reference feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
-        EReference PERFORMANCE_MEASUREMENT__MEASURING_POINT = eINSTANCE.getPerformanceMeasurement_MeasuringPoint();
+        EReference MONITOR__MEASURING_POINT = eINSTANCE.getMonitor_MeasuringPoint();
 
         /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl
          * <em>Measurement Specification</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.impl.MeasurementSpecificationImpl
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getMeasurementSpecification()
          * @generated
@@ -729,35 +676,35 @@ public interface PmsPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Temporal Restriction</b></em>' containment
          * reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION = eINSTANCE
                 .getMeasurementSpecification_TemporalRestriction();
 
         /**
-         * The meta object literal for the '<em><b>Performance Metric</b></em>' attribute feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @generated
-         */
-        EAttribute MEASUREMENT_SPECIFICATION__PERFORMANCE_METRIC = eINSTANCE
-                .getMeasurementSpecification_PerformanceMetric();
-
-        /**
          * The meta object literal for the '<em><b>Statistical Characterization</b></em>' attribute
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION = eINSTANCE
                 .getMeasurementSpecification_StatisticalCharacterization();
 
         /**
+         * The meta object literal for the '<em><b>Metric Description</b></em>' reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EReference MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION = eINSTANCE
+                .getMeasurementSpecification_MetricDescription();
+
+        /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.impl.TemporalCharacterizationImpl
          * <em>Temporal Characterization</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.impl.TemporalCharacterizationImpl
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getTemporalCharacterization()
          * @generated
@@ -768,7 +715,7 @@ public interface PmsPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.impl.IntervallImpl <em>Intervall</em>}' class.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.impl.IntervallImpl
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getIntervall()
          * @generated
@@ -778,7 +725,7 @@ public interface PmsPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Intervall</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute INTERVALL__INTERVALL = eINSTANCE.getIntervall_Intervall();
@@ -787,7 +734,7 @@ public interface PmsPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.impl.DelayedIntervallImpl
          * <em>Delayed Intervall</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.impl.DelayedIntervallImpl
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getDelayedIntervall()
          * @generated
@@ -797,7 +744,7 @@ public interface PmsPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Delay</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute DELAYED_INTERVALL__DELAY = eINSTANCE.getDelayedIntervall_Delay();
@@ -806,7 +753,7 @@ public interface PmsPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.impl.TimeFrameImpl <em>Time Frame</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.impl.TimeFrameImpl
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getTimeFrame()
          * @generated
@@ -816,7 +763,7 @@ public interface PmsPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Start</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute TIME_FRAME__START = eINSTANCE.getTimeFrame_Start();
@@ -824,47 +771,17 @@ public interface PmsPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Stop</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute TIME_FRAME__STOP = eINSTANCE.getTimeFrame_Stop();
 
         /**
          * The meta object literal for the '
-         * {@link org.palladiosimulator.simulizar.pms.impl.UniqueElementImpl
-         * <em>Unique Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @see org.palladiosimulator.simulizar.pms.impl.UniqueElementImpl
-         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getUniqueElement()
-         * @generated
-         */
-        EClass UNIQUE_ELEMENT = eINSTANCE.getUniqueElement();
-
-        /**
-         * The meta object literal for the '<em><b>Guid</b></em>' attribute feature. <!--
-         * begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @generated
-         */
-        EAttribute UNIQUE_ELEMENT__GUID = eINSTANCE.getUniqueElement_Guid();
-
-        /**
-         * The meta object literal for the '
-         * {@link org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-         * <em>Performance Metric Enum</em>}' enum. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
-         * @see org.palladiosimulator.simulizar.pms.PerformanceMetricEnum
-         * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getPerformanceMetricEnum()
-         * @generated
-         */
-        EEnum PERFORMANCE_METRIC_ENUM = eINSTANCE.getPerformanceMetricEnum();
-
-        /**
-         * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
          * <em>Statistical Characterization Enum</em>}' enum. <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.pms.StatisticalCharacterizationEnum
          * @see org.palladiosimulator.simulizar.pms.impl.PmsPackageImpl#getStatisticalCharacterizationEnum()
          * @generated

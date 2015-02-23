@@ -46,11 +46,10 @@ public final class PmsEditorPlugin extends EMFPlugin {
      * @generated
      */
     public PmsEditorPlugin() {
-        super(new ResourceLocator[] {
-                EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE, MetricSpecEditPlugin.INSTANCE,
-                PalladioComponentModelEditPlugin.INSTANCE, ProbabilityFunctionEditPlugin.INSTANCE,
-                StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE, EDP2EditPlugin.INSTANCE,
-        });
+        super(new ResourceLocator[] { EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE,
+                MetricSpecEditPlugin.INSTANCE, PalladioComponentModelEditPlugin.INSTANCE,
+                ProbabilityFunctionEditPlugin.INSTANCE, StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE,
+                EDP2EditPlugin.INSTANCE, });
     }
 
     /**

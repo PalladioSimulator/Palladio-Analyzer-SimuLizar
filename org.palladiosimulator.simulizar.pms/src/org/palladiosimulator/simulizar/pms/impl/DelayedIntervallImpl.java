@@ -29,7 +29,7 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
     /**
      * The default value of the '{@link #getDelay() <em>Delay</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getDelay()
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
     /**
      * The cached value of the '{@link #getDelay() <em>Delay</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getDelay()
      * @generated
      * @ordered
@@ -48,7 +48,7 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected DelayedIntervallImpl() {
@@ -57,7 +57,7 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -67,49 +67,53 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public double getDelay() {
-        return delay;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setDelay(double newDelay) {
-        double oldDelay = delay;
-        delay = newDelay;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.DELAYED_INTERVALL__DELAY, oldDelay, delay));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public double getDelay() {
+        return this.delay;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setDelay(final double newDelay) {
+        final double oldDelay = this.delay;
+        this.delay = newDelay;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PmsPackage.DELAYED_INTERVALL__DELAY, oldDelay,
+                    this.delay));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PmsPackage.DELAYED_INTERVALL__DELAY:
-            return getDelay();
+            return this.getDelay();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PmsPackage.DELAYED_INTERVALL__DELAY:
-            setDelay((Double) newValue);
+            this.setDelay((Double) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -117,14 +121,14 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PmsPackage.DELAYED_INTERVALL__DELAY:
-            setDelay(DELAY_EDEFAULT);
+            this.setDelay(DELAY_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -132,31 +136,32 @@ public class DelayedIntervallImpl extends IntervallImpl implements DelayedInterv
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PmsPackage.DELAYED_INTERVALL__DELAY:
-            return delay != DELAY_EDEFAULT;
+            return this.delay != DELAY_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (delay: ");
-        result.append(delay);
+        result.append(this.delay);
         result.append(')');
         return result.toString();
     }

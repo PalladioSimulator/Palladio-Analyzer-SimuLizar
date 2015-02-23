@@ -6,6 +6,10 @@
  */
 package org.palladiosimulator.simulizar.pms;
 
+import org.eclipse.emf.ecore.EObject;
+
+import de.uka.ipd.sdq.identifier.Identifier;
+
 /**
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>Temporal Characterization</b></em>'. <!-- end-user-doc -->
@@ -18,5 +22,5 @@ package org.palladiosimulator.simulizar.pms;
  * @model abstract="true"
  * @generated
  */
-public interface TemporalCharacterization extends UniqueElement {
+public interface TemporalCharacterization extends EObject, Identifier {
 } // TemporalCharacterization
