@@ -14,7 +14,7 @@ import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.partitions.PMSResourceSetPartition;
+import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
@@ -43,7 +43,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
-    private final PMSResourceSetPartition pmsPartition;
+    private final MonitorRepositoryResourceSetPartition pmsPartition;
     private final SDMResourceSetPartition sdmPartition;
     private final UEResourceSetPartition uePartititon;
     private final PRMModel prmModel;
