@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.pms;
+package org.palladiosimulator.simulizar.monitorrepository;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -18,14 +18,14 @@ import de.uka.ipd.sdq.pcm.core.entity.Entity;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.palladiosimulator.simulizar.pms.Monitor#getMeasurementSpecification <em>
- * Measurement Specification</em>}</li>
- * <li>{@link org.palladiosimulator.simulizar.pms.Monitor#getMeasuringPoint <em>Measuring Point
- * </em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.monitorrepository.Monitor#getMeasurementSpecification
+ * <em>Measurement Specification</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.monitorrepository.Monitor#getMeasuringPoint <em>
+ * Measuring Point</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMonitor()
+ * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMonitor()
  * @model
  * @generated
  */
@@ -33,15 +33,16 @@ public interface Monitor extends EObject, Entity {
     /**
      * Returns the value of the '<em><b>Measurement Specification</b></em>' containment reference
      * list. The list contents are of type
-     * {@link org.palladiosimulator.simulizar.pms.MeasurementSpecification}. <!-- begin-user-doc -->
+     * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification}. <!--
+     * begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Measurement Specification</em>' containment reference list isn't
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Measurement Specification</em>' containment reference list.
-     * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMonitor_MeasurementSpecification()
+     * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMonitor_MeasurementSpecification()
      * @model containment="true" required="true"
      * @generated
      */
@@ -54,19 +55,20 @@ public interface Monitor extends EObject, Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Measuring Point</em>' reference.
      * @see #setMeasuringPoint(MeasuringPoint)
-     * @see org.palladiosimulator.simulizar.pms.PmsPackage#getMonitor_MeasuringPoint()
+     * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMonitor_MeasuringPoint()
      * @model required="true"
      * @generated
      */
     MeasuringPoint getMeasuringPoint();
 
     /**
-     * Sets the value of the '{@link org.palladiosimulator.simulizar.pms.Monitor#getMeasuringPoint
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.monitorrepository.Monitor#getMeasuringPoint
      * <em>Measuring Point</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Measuring Point</em>' reference.
      * @see #getMeasuringPoint()

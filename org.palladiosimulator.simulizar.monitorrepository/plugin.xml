@@ -11,16 +11,17 @@
 <plugin>
 
    <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated monitorrepository -->
       <package
             uri="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0"
-            class="org.palladiosimulator.simulizar.pms.PmsPackage"
+            class="org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage"
             genModel="model/monitorrepository.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated monitorrepository -->
       <parser
-            type="pms"
-            class="org.palladiosimulator.simulizar.pms.util.PmsResourceFactoryImpl"/>
+            type="monitorrepository"
+            class="org.palladiosimulator.simulizar.monitorrepository.util.MonitorrepositoryResourceFactoryImpl"/>
    </extension>
-
 </plugin>
