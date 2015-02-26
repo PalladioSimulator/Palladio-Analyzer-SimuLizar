@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.ArrayList;
 
-import org.palladiosimulator.simulizar.pms.Intervall;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Intervall;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;

@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.launcher.partitions;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.pms.MonitorRepository;
-import org.palladiosimulator.simulizar.pms.PmsPackage;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.PmsPackage;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
