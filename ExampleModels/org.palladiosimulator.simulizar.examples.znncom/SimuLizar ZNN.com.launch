@@ -26,7 +26,7 @@
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="outpath" value="org.palladiosimulator.temporary"/>
 <stringAttribute key="persistenceFramework" value="Experiment Data Persistency &amp; Presentation (EDP2)"/>
-<stringAttribute key="pmsFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.znncom/monitor/monitoring.pms"/>
+<stringAttribute key="monitorRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.znncom/monitor/monitoring.pms"/>
 <stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/org.palladiosimulator.simulizar.examples.znncom/rules_active"/>
 <stringAttribute key="simTime" value="150000"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>

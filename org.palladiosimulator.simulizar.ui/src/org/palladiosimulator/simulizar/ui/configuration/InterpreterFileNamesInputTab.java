@@ -13,14 +13,14 @@ import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 
 /**
- * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input fields for PMS
- * models and SDM models.
+ * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input fields for Monitor
+ * Repository models and SDM models.
  */
 public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
     // input fields
-    /** Text field for path to pms file. */
-    protected Text pmsFile;
+    /** Text field for path to Monitor Repository file. */
+    protected Text monitorRepositoryFile;
     /** Text field for path to reconfiguration rules folder. */
     protected Text reconfigurationRulesFolder;
     /** Text field for path to usage evolution file. */
@@ -34,13 +34,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.createControl(parent);
 
         /**
-         * Create PMS file section
+         * Create Monitor Repository file section
          */
-        pmsFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener,
-                "Optional: Palladio Monitoring Specification Model (PMS) File",
-                SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, pmsFile, "Select PMS File", getShell(),
-                SimulizarConstants.DEFAULT_PMS_FILE);
+        monitorRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+        TabHelper.createFileInputSection(container, modifyListener, "Optional: Monitor Repository File",
+                SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, monitorRepositoryFile,
+                "Select Monitor Repository File", getShell(), SimulizarConstants.DEFAULT_MONITORE_REPOSITORY_FILE);
 
         /**
          * Create reconfiguration rules folder section
@@ -50,16 +49,13 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
 
-
-    
         /**
          * Create UsageEvolution file section
          */
         usageEvolutionFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener,
-                "Optional: Usage Evolution File",
-                SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File", getShell(),
-                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+        TabHelper.createFileInputSection(container, modifyListener, "Optional: Usage Evolution File",
+                SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File",
+                getShell(), SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
 
     }
 
@@ -70,10 +66,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     public void initializeFrom(final ILaunchConfiguration configuration) {
         super.initializeFrom(configuration);
         try {
-            pmsFile.setText(configuration
-                    .getAttribute(SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE));
+            monitorRepositoryFile.setText(configuration.getAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE,
+                    SimulizarConstants.DEFAULT_MONITORE_REPOSITORY_FILE));
         } catch (final CoreException e) {
-            LaunchConfigPlugin.errorLogger(getName(), "PMS File", e.getMessage());
+            LaunchConfigPlugin.errorLogger(getName(), "Monitor Repository File", e.getMessage());
         }
 
         try {
@@ -85,8 +81,8 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         }
 
         try {
-            usageEvolutionFile.setText(configuration
-                    .getAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE));
+            usageEvolutionFile.setText(configuration.getAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
+                    SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE));
         } catch (final CoreException e) {
             LaunchConfigPlugin.errorLogger(getName(), "Usage Evolution File", e.getMessage());
         }
@@ -101,7 +97,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     @Override
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         super.performApply(configuration);
-        configuration.setAttribute(SimulizarConstants.PMS_FILE, pmsFile.getText());
+        configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE, monitorRepositoryFile.getText());
         configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 reconfigurationRulesFolder.getText());
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
@@ -116,10 +112,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     @Override
     public void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
         super.setDefaults(configuration);
-        configuration.setAttribute(SimulizarConstants.PMS_FILE, SimulizarConstants.DEFAULT_PMS_FILE);
+        configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE,
+                SimulizarConstants.DEFAULT_MONITORE_REPOSITORY_FILE);
         configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
-        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
+                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
     }
 
     /**

@@ -40,7 +40,7 @@ public class UEResourceSetPartition extends ResourceSetPartition {
     }
 
     /**
-     * @return return the PMSModel element
+     * @return return the usage evolution element
      */
     private UsageEvolution loadUEModel() {
         try {

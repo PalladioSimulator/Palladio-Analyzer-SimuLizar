@@ -42,7 +42,7 @@ public final class MonitorRepositoryUtil {
      * Method checks if given element should be monitored with given performance metric. If yes, it
      * will return the corresponding MeasurementSpecification, otherwise null.
      * 
-     * @param pmsModel
+     * @param monitorRepositoryModel
      *            the monitoring model
      * @param element
      *            the element to be checked.
@@ -51,10 +51,10 @@ public final class MonitorRepositoryUtil {
      * @return the MeasurementSpecification, if element should be monitored according to given
      *         performance metric, otherwise null
      */
-    public static MeasurementSpecification isMonitored(final MonitorRepository pmsModel, final EObject element,
+    public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel, final EObject element,
             final MetricDescription metricDescription) {
-        if (pmsModel != null) {
-            for (final Monitor performanceMeasurement : pmsModel.getMonitors()) {
+        if (monitorRepositoryModel != null) {
+            for (final Monitor performanceMeasurement : monitorRepositoryModel.getMonitors()) {
                 if (elementConformingToMeasuringPoint(element, performanceMeasurement.getMeasuringPoint())) {
                     for (final MeasurementSpecification measurementSpecification : performanceMeasurement
                             .getMeasurementSpecification()) {
