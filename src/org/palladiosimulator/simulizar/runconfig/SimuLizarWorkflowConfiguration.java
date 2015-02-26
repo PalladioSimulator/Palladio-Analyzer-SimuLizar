@@ -6,7 +6,7 @@ import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfigurat
 
 public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration {
 
-    protected String pmsFile;
+    protected String monitorRepositoryFile;
     protected String reconfigurationRulesFolder;
     protected String usageEvolutionFile;
 
@@ -14,12 +14,12 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
         super(attributes);
     }
 
-    public String getPmsFile() {
-        return pmsFile;
+    public String getMonitorRepositoryFile() {
+        return monitorRepositoryFile;
     }
 
-    public void setPmsFile(String pmsFile) {
-        this.pmsFile = pmsFile;
+    public void setMonitorRepositoryFile(String monitorRepositoryFile) {
+        this.monitorRepositoryFile = monitorRepositoryFile;
     }
 
     public String getReconfigurationRulesFolder() {
@@ -46,7 +46,7 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
     @Override
     protected Object clone() throws CloneNotSupportedException {
         SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) super.clone();
-        config.pmsFile = this.pmsFile;
+        config.monitorRepositoryFile = this.monitorRepositoryFile;
         config.reconfigurationRulesFolder = this.reconfigurationRulesFolder;
         config.usageEvolutionFile = this.usageEvolutionFile;
         return config;

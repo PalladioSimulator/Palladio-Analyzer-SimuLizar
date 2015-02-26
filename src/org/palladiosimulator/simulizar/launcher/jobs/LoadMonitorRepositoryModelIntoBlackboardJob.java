@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.exceptions.PMSModelLoadException;
+import org.palladiosimulator.simulizar.exceptions.MonitorRepositoryModelLoadException;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 
@@ -24,7 +24,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "de.upb.pcm.pms";
+    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "org.palladiosimulator.simulizar.monitorrepository";
 
     private MDSDBlackboard blackboard;
 
@@ -37,7 +37,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      *            the SimuCom workflow configuration.
      */
     public LoadMonitorRepositoryModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.PMS_FILE);
+        this.path = (String) configuration.getAttributes().get(SimulizarConstants.MONITOR_REPOSITORY_FILE);
     }
 
     /**
@@ -46,10 +46,11 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
         if (this.getPCMResourceSetPartition() == null) {
-            throw new PMSModelLoadException("The PCM models must be loaded first");
+            throw new MonitorRepositoryModelLoadException("The PCM models must be loaded first");
         }
 
-        final MonitorRepositoryResourceSetPartition pmsPartition = new MonitorRepositoryResourceSetPartition(this.getPCMResourceSetPartition());
+        final MonitorRepositoryResourceSetPartition monitorRepositoryPartition = new MonitorRepositoryResourceSetPartition(
+                this.getPCMResourceSetPartition());
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
@@ -58,12 +59,12 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
                 filePath = "file:///" + filePath;
             }
 
-            pmsPartition.loadModel(URI.createURI(filePath));
+            monitorRepositoryPartition.loadModel(URI.createURI(filePath));
 
         }
-        this.getBlackboard().addPartition(MONITOR_REPOSITORY_MODEL_PARTITION_ID, pmsPartition);
+        this.getBlackboard().addPartition(MONITOR_REPOSITORY_MODEL_PARTITION_ID, monitorRepositoryPartition);
         // now resolve all cross references from current resource to PCM
-        pmsPartition.resolveAllProxies();
+        monitorRepositoryPartition.resolveAllProxies();
 
     }
 
@@ -79,7 +80,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      */
     @Override
     public String getName() {
-        return "Perform PMS Model Load";
+        return "Perform Monitor Repository Load";
     }
 
     /**

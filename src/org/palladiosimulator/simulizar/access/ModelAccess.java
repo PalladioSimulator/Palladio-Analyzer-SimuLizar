@@ -31,8 +31,8 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
- * Helper to access the PCM model (global and local), the prm model, the pms model, the usage
- * evolution model and all SD models.
+ * Helper to access the PCM model (global and local), the prm model, the Monitor Repository model,
+ * the usage evolution model and all SD models.
  * 
  * @author Joachim Meyer, Steffen Becker, Erlend Stav
  */
@@ -43,7 +43,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
-    private final MonitorRepositoryResourceSetPartition pmsPartition;
+    private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
     private final SDMResourceSetPartition sdmPartition;
     private final UEResourceSetPartition uePartititon;
     private final PRMModel prmModel;
@@ -59,7 +59,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.prmModel = PrmFactory.eINSTANCE.createPRMModel();
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
-        this.pmsPartition = getResourceSetPartition(blackboard, LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
+        this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
+                LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
         this.uePartititon = getResourceSetPartition(blackboard, LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
@@ -69,7 +70,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.prmModel = copy.prmModel;
         this.pcmPartition = copy.pcmPartition;
         this.sdmPartition = copy.sdmPartition;
-        this.pmsPartition = copy.pmsPartition;
+        this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
         this.uePartititon = copy.uePartititon;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
@@ -104,11 +105,11 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     /**
      * 
-     * @return the global pms model.
+     * @return the global Monitor Repository model.
      */
     @Override
     public MonitorRepository getMonitorRepositoryModel() {
-        return pmsPartition.getMonitorRepositoryModel();
+        return monitorRepositoryPartition.getMonitorRepositoryModel();
     }
 
     /**
@@ -151,12 +152,12 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     }
 
     /**
-     * Checks whether pms model exists.
+     * Checks whether Monitor Repository exists.
      * 
      * @return true if yes, otherwise false;
      */
-    public boolean pmsModelExists() {
-        return pmsPartition.getResourceSet().getResources().size() > 0;
+    public boolean monitorRepositoryExists() {
+        return monitorRepositoryPartition.getResourceSet().getResources().size() > 0;
     }
 
     @SuppressWarnings("unchecked")

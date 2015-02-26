@@ -7,8 +7,8 @@ import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * Composite job loading pcm and pms model, as well as all sdm models and usage evolution model and
- * starting pcm interpretation.
+ * Composite job loading pcm and Monitor Repository model, as well as all sdm models and usage
+ * evolution model and starting pcm interpretation.
  * 
  * @author Joachim Meyer
  * 
