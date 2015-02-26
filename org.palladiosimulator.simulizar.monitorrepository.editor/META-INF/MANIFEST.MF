@@ -4,11 +4,11 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.monitorrepository.editor;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: org.palladiosimulator.simulizar.pms.presentation.PmsEditorPlugin$Implementation
+Bundle-Activator: org.palladiosimulator.simulizar.monitorrepository.presentation.MonitorrepositoryEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.palladiosimulator.simulizar.pms.presentation
+Export-Package: org.palladiosimulator.simulizar.monitorrepository.presentation
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  org.eclipse.core.resources;bundle-version="3.9.0";visibility:=reexport,
  org.palladiosimulator.simulizar.monitorrepository.edit;bundle-version="2.0.0";visibility:=reexport,
