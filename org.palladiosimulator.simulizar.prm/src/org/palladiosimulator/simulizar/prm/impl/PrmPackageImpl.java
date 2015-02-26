@@ -168,7 +168,7 @@ public class PrmPackageImpl extends EPackageImpl implements PrmPackage {
      * @generated
      */
     @Override
-    public EReference getPCMModelElementMeasurement_MonitorRepository() {
+    public EReference getPCMModelElementMeasurement_MeasurementSpecification() {
         return (EReference) this.pcmModelElementMeasurementEClass.getEStructuralFeatures().get(1);
     }
 
@@ -257,7 +257,8 @@ public class PrmPackageImpl extends EPackageImpl implements PrmPackage {
 
         this.pcmModelElementMeasurementEClass = this.createEClass(PCM_MODEL_ELEMENT_MEASUREMENT);
         this.createEReference(this.pcmModelElementMeasurementEClass, PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT);
-        this.createEReference(this.pcmModelElementMeasurementEClass, PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY);
+        this.createEReference(this.pcmModelElementMeasurementEClass,
+                PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION);
         this.createEAttribute(this.pcmModelElementMeasurementEClass, PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE);
 
         this.uniqueElementEClass = this.createEClass(UNIQUE_ELEMENT);
@@ -319,9 +320,9 @@ public class PrmPackageImpl extends EPackageImpl implements PrmPackage {
         this.initEReference(this.getPCMModelElementMeasurement_PcmModelElement(), this.ecorePackage.getEObject(), null,
                 "pcmModelElement", null, 0, 1, PCMModelElementMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-        this.initEReference(this.getPCMModelElementMeasurement_MonitorRepository(),
-                theMonitorrepositoryPackage.getMonitorRepository(), null, "monitorRepository", null, 0, 1,
-                PCMModelElementMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
+        this.initEReference(this.getPCMModelElementMeasurement_MeasurementSpecification(),
+                theMonitorrepositoryPackage.getMeasurementSpecification(), null, "measurementSpecification", null, 0,
+                1, PCMModelElementMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getPCMModelElementMeasurement_MeasurementValue(), this.ecorePackage.getEDouble(),
                 "measurementValue", "0.0", 0, 1, PCMModelElementMeasurement.class, !IS_TRANSIENT, !IS_VOLATILE,

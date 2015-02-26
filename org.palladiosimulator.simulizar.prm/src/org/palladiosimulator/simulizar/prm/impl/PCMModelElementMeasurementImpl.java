@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
 
@@ -25,8 +25,8 @@ import org.palladiosimulator.simulizar.prm.PrmPackage;
  * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getPcmModelElement
  * <em>Pcm Model Element</em>}</li>
  * <li>
- * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMonitorRepository
- * <em>Monitor Repository</em>}</li>
+ * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMeasurementSpecification
+ * <em>Measurement Specification</em>}</li>
  * <li>
  * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMeasurementValue
  * <em>Measurement Value</em>}</li>
@@ -47,14 +47,14 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
     protected EObject pcmModelElement;
 
     /**
-     * The cached value of the '{@link #getMonitorRepository() <em>Monitor Repository</em>}'
-     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getMeasurementSpecification()
+     * <em>Measurement Specification</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getMonitorRepository()
+     * @see #getMeasurementSpecification()
      * @generated
      * @ordered
      */
-    protected MonitorRepository monitorRepository;
+    protected MeasurementSpecification measurementSpecification;
 
     /**
      * The default value of the '{@link #getMeasurementValue() <em>Measurement Value</em>}'
@@ -147,19 +147,19 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
      * @generated
      */
     @Override
-    public MonitorRepository getMonitorRepository() {
-        if (this.monitorRepository != null && this.monitorRepository.eIsProxy()) {
-            final InternalEObject oldMonitorRepository = (InternalEObject) this.monitorRepository;
-            this.monitorRepository = (MonitorRepository) this.eResolveProxy(oldMonitorRepository);
-            if (this.monitorRepository != oldMonitorRepository) {
+    public MeasurementSpecification getMeasurementSpecification() {
+        if (this.measurementSpecification != null && this.measurementSpecification.eIsProxy()) {
+            final InternalEObject oldMeasurementSpecification = (InternalEObject) this.measurementSpecification;
+            this.measurementSpecification = (MeasurementSpecification) this.eResolveProxy(oldMeasurementSpecification);
+            if (this.measurementSpecification != oldMeasurementSpecification) {
                 if (this.eNotificationRequired()) {
                     this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY, oldMonitorRepository,
-                            this.monitorRepository));
+                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION,
+                            oldMeasurementSpecification, this.measurementSpecification));
                 }
             }
         }
-        return this.monitorRepository;
+        return this.measurementSpecification;
     }
 
     /**
@@ -167,8 +167,8 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
      *
      * @generated
      */
-    public MonitorRepository basicGetMonitorRepository() {
-        return this.monitorRepository;
+    public MeasurementSpecification basicGetMeasurementSpecification() {
+        return this.measurementSpecification;
     }
 
     /**
@@ -177,13 +177,13 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
      * @generated
      */
     @Override
-    public void setMonitorRepository(final MonitorRepository newMonitorRepository) {
-        final MonitorRepository oldMonitorRepository = this.monitorRepository;
-        this.monitorRepository = newMonitorRepository;
+    public void setMeasurementSpecification(final MeasurementSpecification newMeasurementSpecification) {
+        final MeasurementSpecification oldMeasurementSpecification = this.measurementSpecification;
+        this.measurementSpecification = newMeasurementSpecification;
         if (this.eNotificationRequired()) {
             this.eNotify(new ENotificationImpl(this, Notification.SET,
-                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY, oldMonitorRepository,
-                    this.monitorRepository));
+                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION, oldMeasurementSpecification,
+                    this.measurementSpecification));
         }
     }
 
@@ -226,11 +226,11 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
                 return this.getPcmModelElement();
             }
             return this.basicGetPcmModelElement();
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
             if (resolve) {
-                return this.getMonitorRepository();
+                return this.getMeasurementSpecification();
             }
-            return this.basicGetMonitorRepository();
+            return this.basicGetMeasurementSpecification();
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
             return this.getMeasurementValue();
         }
@@ -248,8 +248,8 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
             this.setPcmModelElement((EObject) newValue);
             return;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
-            this.setMonitorRepository((MonitorRepository) newValue);
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
+            this.setMeasurementSpecification((MeasurementSpecification) newValue);
             return;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
             this.setMeasurementValue((Double) newValue);
@@ -269,8 +269,8 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
             this.setPcmModelElement((EObject) null);
             return;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
-            this.setMonitorRepository((MonitorRepository) null);
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
+            this.setMeasurementSpecification((MeasurementSpecification) null);
             return;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
             this.setMeasurementValue(MEASUREMENT_VALUE_EDEFAULT);
@@ -289,8 +289,8 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
         switch (featureID) {
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
             return this.pcmModelElement != null;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
-            return this.monitorRepository != null;
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
+            return this.measurementSpecification != null;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
             return this.measurementValue != MEASUREMENT_VALUE_EDEFAULT;
         }

@@ -48,7 +48,7 @@ public class PCMModelElementMeasurementItemProvider extends UniqueElementItemPro
             super.getPropertyDescriptors(object);
 
             this.addPcmModelElementPropertyDescriptor(object);
-            this.addMonitorRepositoryPropertyDescriptor(object);
+            this.addMeasurementSpecificationPropertyDescriptor(object);
             this.addMeasurementValuePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
@@ -71,20 +71,20 @@ public class PCMModelElementMeasurementItemProvider extends UniqueElementItemPro
     }
 
     /**
-     * This adds a property descriptor for the Monitor Repository feature. <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * This adds a property descriptor for the Measurement Specification feature. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated
      */
-    protected void addMonitorRepositoryPropertyDescriptor(final Object object) {
+    protected void addMeasurementSpecificationPropertyDescriptor(final Object object) {
         this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
-                this.getString("_UI_PCMModelElementMeasurement_monitorRepository_feature"), this.getString(
+                this.getString("_UI_PCMModelElementMeasurement_measurementSpecification_feature"), this.getString(
                         "_UI_PropertyDescriptor_description",
-                        "_UI_PCMModelElementMeasurement_monitorRepository_feature",
+                        "_UI_PCMModelElementMeasurement_measurementSpecification_feature",
                         "_UI_PCMModelElementMeasurement_type"),
-                        PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY, true, false, true, null, null,
-                        null));
+                        PrmPackage.Literals.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION, true, false, true, null,
+                        null, null));
     }
 
     /**

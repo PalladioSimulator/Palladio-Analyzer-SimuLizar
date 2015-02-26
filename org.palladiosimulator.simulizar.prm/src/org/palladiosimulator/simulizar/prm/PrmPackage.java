@@ -151,13 +151,13 @@ public interface PrmPackage extends EPackage {
     int PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Monitor Repository</b></em>' reference. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Measurement Specification</b></em>' reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
+    int PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Measurement Value</b></em>' attribute. <!-- begin-user-doc -->
@@ -208,13 +208,13 @@ public interface PrmPackage extends EPackage {
     int RESOURCE_CONTAINER_MEASUREMENT__PCM_MODEL_ELEMENT = PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT;
 
     /**
-     * The feature id for the '<em><b>Monitor Repository</b></em>' reference. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * The feature id for the '<em><b>Measurement Specification</b></em>' reference. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int RESOURCE_CONTAINER_MEASUREMENT__MONITOR_REPOSITORY = PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY;
+    int RESOURCE_CONTAINER_MEASUREMENT__MEASUREMENT_SPECIFICATION = PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION;
 
     /**
      * The feature id for the '<em><b>Measurement Value</b></em>' attribute. <!-- begin-user-doc -->
@@ -291,15 +291,15 @@ public interface PrmPackage extends EPackage {
 
     /**
      * Returns the meta object for the reference '
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository
-     * <em>Monitor Repository</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification
+     * <em>Measurement Specification</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @return the meta object for the reference '<em>Monitor Repository</em>'.
-     * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository()
+     * @return the meta object for the reference '<em>Measurement Specification</em>'.
+     * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification()
      * @see #getPCMModelElementMeasurement()
      * @generated
      */
-    EReference getPCMModelElementMeasurement_MonitorRepository();
+    EReference getPCMModelElementMeasurement_MeasurementSpecification();
 
     /**
      * Returns the meta object for the attribute '
@@ -421,13 +421,13 @@ public interface PrmPackage extends EPackage {
                 .getPCMModelElementMeasurement_PcmModelElement();
 
         /**
-         * The meta object literal for the '<em><b>Monitor Repository</b></em>' reference feature.
-         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         * The meta object literal for the '<em><b>Measurement Specification</b></em>' reference
+         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
          *
          * @generated
          */
-        EReference PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY = eINSTANCE
-                .getPCMModelElementMeasurement_MonitorRepository();
+        EReference PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION = eINSTANCE
+                .getPCMModelElementMeasurement_MeasurementSpecification();
 
         /**
          * The meta object literal for the '<em><b>Measurement Value</b></em>' attribute feature.
