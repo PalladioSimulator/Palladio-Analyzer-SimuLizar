@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJo
 import org.palladiosimulator.simulizar.launcher.partitions.PMSResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
-import org.palladiosimulator.simulizar.pms.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;

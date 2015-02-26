@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.access;
 
 import java.util.Collection;
 
-import org.palladiosimulator.simulizar.pms.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;

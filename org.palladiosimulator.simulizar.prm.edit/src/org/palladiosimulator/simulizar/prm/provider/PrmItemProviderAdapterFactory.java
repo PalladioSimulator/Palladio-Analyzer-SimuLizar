@@ -35,11 +35,11 @@ import org.palladiosimulator.simulizar.prm.util.PrmAdapterFactory;
  * @generated
  */
 public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements ComposeableAdapterFactory,
-        IChangeNotifier, IDisposable {
+IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -47,7 +47,7 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -66,11 +66,11 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * @generated
      */
     public PrmItemProviderAdapterFactory() {
-        supportedTypes.add(IEditingDomainItemProvider.class);
-        supportedTypes.add(IStructuredItemContentProvider.class);
-        supportedTypes.add(ITreeItemContentProvider.class);
-        supportedTypes.add(IItemLabelProvider.class);
-        supportedTypes.add(IItemPropertySource.class);
+        this.supportedTypes.add(IEditingDomainItemProvider.class);
+        this.supportedTypes.add(IStructuredItemContentProvider.class);
+        this.supportedTypes.add(ITreeItemContentProvider.class);
+        this.supportedTypes.add(IItemLabelProvider.class);
+        this.supportedTypes.add(IItemPropertySource.class);
     }
 
     /**
@@ -85,23 +85,23 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
     /**
      * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.PRMModel}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createPRMModelAdapter() {
-        if (prmModelItemProvider == null) {
-            prmModelItemProvider = new PRMModelItemProvider(this);
+        if (this.prmModelItemProvider == null) {
+            this.prmModelItemProvider = new PRMModelItemProvider(this);
         }
 
-        return prmModelItemProvider;
+        return this.prmModelItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected PCMModelElementMeasurementItemProvider pcmModelElementMeasurementItemProvider;
@@ -115,11 +115,11 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      */
     @Override
     public Adapter createPCMModelElementMeasurementAdapter() {
-        if (pcmModelElementMeasurementItemProvider == null) {
-            pcmModelElementMeasurementItemProvider = new PCMModelElementMeasurementItemProvider(this);
+        if (this.pcmModelElementMeasurementItemProvider == null) {
+            this.pcmModelElementMeasurementItemProvider = new PCMModelElementMeasurementItemProvider(this);
         }
 
-        return pcmModelElementMeasurementItemProvider;
+        return this.pcmModelElementMeasurementItemProvider;
     }
 
     /**
@@ -134,23 +134,23 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
     /**
      * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.UniqueElement}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Adapter createUniqueElementAdapter() {
-        if (uniqueElementItemProvider == null) {
-            uniqueElementItemProvider = new UniqueElementItemProvider(this);
+        if (this.uniqueElementItemProvider == null) {
+            this.uniqueElementItemProvider = new UniqueElementItemProvider(this);
         }
 
-        return uniqueElementItemProvider;
+        return this.uniqueElementItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ResourceContainerMeasurementItemProvider resourceContainerMeasurementItemProvider;
@@ -164,11 +164,11 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      */
     @Override
     public Adapter createResourceContainerMeasurementAdapter() {
-        if (resourceContainerMeasurementItemProvider == null) {
-            resourceContainerMeasurementItemProvider = new ResourceContainerMeasurementItemProvider(this);
+        if (this.resourceContainerMeasurementItemProvider == null) {
+            this.resourceContainerMeasurementItemProvider = new ResourceContainerMeasurementItemProvider(this);
         }
 
-        return resourceContainerMeasurementItemProvider;
+        return this.resourceContainerMeasurementItemProvider;
     }
 
     /**
@@ -177,8 +177,9 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * 
      * @generated
      */
+    @Override
     public ComposeableAdapterFactory getRootAdapterFactory() {
-        return parentAdapterFactory == null ? this : parentAdapterFactory.getRootAdapterFactory();
+        return this.parentAdapterFactory == null ? this : this.parentAdapterFactory.getRootAdapterFactory();
     }
 
     /**
@@ -187,7 +188,8 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * 
      * @generated
      */
-    public void setParentAdapterFactory(ComposedAdapterFactory parentAdapterFactory) {
+    @Override
+    public void setParentAdapterFactory(final ComposedAdapterFactory parentAdapterFactory) {
         this.parentAdapterFactory = parentAdapterFactory;
     }
 
@@ -197,18 +199,18 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * @generated
      */
     @Override
-    public boolean isFactoryForType(Object type) {
-        return supportedTypes.contains(type) || super.isFactoryForType(type);
+    public boolean isFactoryForType(final Object type) {
+        return this.supportedTypes.contains(type) || super.isFactoryForType(type);
     }
 
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Adapter adapt(Notifier notifier, Object type) {
+    public Adapter adapt(final Notifier notifier, final Object type) {
         return super.adapt(notifier, this);
     }
 
@@ -218,9 +220,9 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * @generated
      */
     @Override
-    public Object adapt(Object object, Object type) {
-        if (isFactoryForType(type)) {
-            Object adapter = super.adapt(object, type);
+    public Object adapt(final Object object, final Object type) {
+        if (this.isFactoryForType(type)) {
+            final Object adapter = super.adapt(object, type);
             if (!(type instanceof Class<?>) || (((Class<?>) type).isInstance(adapter))) {
                 return adapter;
             }
@@ -234,8 +236,9 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * 
      * @generated
      */
-    public void addListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.addListener(notifyChangedListener);
+    @Override
+    public void addListener(final INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.addListener(notifyChangedListener);
     }
 
     /**
@@ -243,21 +246,23 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * 
      * @generated
      */
-    public void removeListener(INotifyChangedListener notifyChangedListener) {
-        changeNotifier.removeListener(notifyChangedListener);
+    @Override
+    public void removeListener(final INotifyChangedListener notifyChangedListener) {
+        this.changeNotifier.removeListener(notifyChangedListener);
     }
 
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
-    public void fireNotifyChanged(Notification notification) {
-        changeNotifier.fireNotifyChanged(notification);
+    @Override
+    public void fireNotifyChanged(final Notification notification) {
+        this.changeNotifier.fireNotifyChanged(notification);
 
-        if (parentAdapterFactory != null) {
-            parentAdapterFactory.fireNotifyChanged(notification);
+        if (this.parentAdapterFactory != null) {
+            this.parentAdapterFactory.fireNotifyChanged(notification);
         }
     }
 
@@ -267,15 +272,20 @@ public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements 
      * 
      * @generated
      */
+    @Override
     public void dispose() {
-        if (prmModelItemProvider != null)
-            prmModelItemProvider.dispose();
-        if (pcmModelElementMeasurementItemProvider != null)
-            pcmModelElementMeasurementItemProvider.dispose();
-        if (uniqueElementItemProvider != null)
-            uniqueElementItemProvider.dispose();
-        if (resourceContainerMeasurementItemProvider != null)
-            resourceContainerMeasurementItemProvider.dispose();
+        if (this.prmModelItemProvider != null) {
+            this.prmModelItemProvider.dispose();
+        }
+        if (this.pcmModelElementMeasurementItemProvider != null) {
+            this.pcmModelElementMeasurementItemProvider.dispose();
+        }
+        if (this.uniqueElementItemProvider != null) {
+            this.uniqueElementItemProvider.dispose();
+        }
+        if (this.resourceContainerMeasurementItemProvider != null) {
+            this.resourceContainerMeasurementItemProvider.dispose();
+        }
     }
 
 }

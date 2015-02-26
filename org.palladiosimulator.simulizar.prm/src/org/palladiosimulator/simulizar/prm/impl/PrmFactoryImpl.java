@@ -20,22 +20,22 @@ import org.palladiosimulator.simulizar.prm.UniqueElement;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static PrmFactory init() {
         try {
-            PrmFactory thePrmFactory = (PrmFactory) EPackage.Registry.INSTANCE.getEFactory(PrmPackage.eNS_URI);
+            final PrmFactory thePrmFactory = (PrmFactory) EPackage.Registry.INSTANCE.getEFactory(PrmPackage.eNS_URI);
             if (thePrmFactory != null) {
                 return thePrmFactory;
             }
-        } catch (Exception exception) {
+        } catch (final Exception exception) {
             EcorePlugin.INSTANCE.log(exception);
         }
         return new PrmFactoryImpl();
@@ -43,7 +43,7 @@ public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public PrmFactoryImpl() {
@@ -52,20 +52,20 @@ public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public EObject create(EClass eClass) {
+    public EObject create(final EClass eClass) {
         switch (eClass.getClassifierID()) {
         case PrmPackage.PRM_MODEL:
-            return createPRMModel();
+            return this.createPRMModel();
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT:
-            return createPCMModelElementMeasurement();
+            return this.createPCMModelElementMeasurement();
         case PrmPackage.UNIQUE_ELEMENT:
-            return createUniqueElement();
+            return this.createUniqueElement();
         case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT:
-            return createResourceContainerMeasurement();
+            return this.createResourceContainerMeasurement();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -73,56 +73,61 @@ public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public PRMModel createPRMModel() {
-        PRMModelImpl prmModel = new PRMModelImpl();
+        final PRMModelImpl prmModel = new PRMModelImpl();
         return prmModel;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public PCMModelElementMeasurement createPCMModelElementMeasurement() {
-        PCMModelElementMeasurementImpl pcmModelElementMeasurement = new PCMModelElementMeasurementImpl();
+        final PCMModelElementMeasurementImpl pcmModelElementMeasurement = new PCMModelElementMeasurementImpl();
         return pcmModelElementMeasurement;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public UniqueElement createUniqueElement() {
-        UniqueElementImpl uniqueElement = new UniqueElementImpl();
+        final UniqueElementImpl uniqueElement = new UniqueElementImpl();
         return uniqueElement;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public ResourceContainerMeasurement createResourceContainerMeasurement() {
-        ResourceContainerMeasurementImpl resourceContainerMeasurement = new ResourceContainerMeasurementImpl();
+        final ResourceContainerMeasurementImpl resourceContainerMeasurement = new ResourceContainerMeasurementImpl();
         return resourceContainerMeasurement;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public PrmPackage getPrmPackage() {
-        return (PrmPackage) getEPackage();
+        return (PrmPackage) this.getEPackage();
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @deprecated
      * @generated
      */

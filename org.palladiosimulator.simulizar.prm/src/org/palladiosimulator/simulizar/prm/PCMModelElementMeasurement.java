@@ -7,27 +7,26 @@
 package org.palladiosimulator.simulizar.prm;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '
  * <em><b>PCM Model Element Measurement</b></em>'. <!-- end-user-doc -->
- * 
+ *
  * <!-- begin-model-doc --> Measurement for a pcm model element. <!-- end-model-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
  * <li>{@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getPcmModelElement <em>
  * Pcm Model Element</em>}</li>
- * <li>
- * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification
- * <em>Measurement Specification</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository
+ * <em>Monitor Repository</em>}</li>
  * <li>{@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementValue
  * <em>Measurement Value</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPCMModelElementMeasurement()
  * @model
  * @generated
@@ -41,7 +40,7 @@ public interface PCMModelElementMeasurement extends UniqueElement {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Pcm Model Element</em>' reference.
      * @see #setPcmModelElement(EObject)
      * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPCMModelElementMeasurement_PcmModelElement()
@@ -54,7 +53,7 @@ public interface PCMModelElementMeasurement extends UniqueElement {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getPcmModelElement
      * <em>Pcm Model Element</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Pcm Model Element</em>' reference.
      * @see #getPcmModelElement()
@@ -63,33 +62,33 @@ public interface PCMModelElementMeasurement extends UniqueElement {
     void setPcmModelElement(EObject value);
 
     /**
-     * Returns the value of the '<em><b>Measurement Specification</b></em>' reference. <!--
-     * begin-user-doc -->
+     * Returns the value of the '<em><b>Monitor Repository</b></em>' reference. <!-- begin-user-doc
+     * -->
      * <p>
-     * If the meaning of the '<em>Measurement Specification</em>' reference isn't clear, there
-     * really should be more of a description here...
+     * If the meaning of the '<em>Monitor Repository</em>' reference isn't clear, there really
+     * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
-     * @return the value of the '<em>Measurement Specification</em>' reference.
-     * @see #setMeasurementSpecification(MeasurementSpecification)
-     * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPCMModelElementMeasurement_MeasurementSpecification()
+     *
+     * @return the value of the '<em>Monitor Repository</em>' reference.
+     * @see #setMonitorRepository(MonitorRepository)
+     * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPCMModelElementMeasurement_MonitorRepository()
      * @model
      * @generated
      */
-    MeasurementSpecification getMeasurementSpecification();
+    MonitorRepository getMonitorRepository();
 
     /**
      * Sets the value of the '
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification
-     * <em>Measurement Specification</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository
+     * <em>Monitor Repository</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @param value
-     *            the new value of the '<em>Measurement Specification</em>' reference.
-     * @see #getMeasurementSpecification()
+     *            the new value of the '<em>Monitor Repository</em>' reference.
+     * @see #getMonitorRepository()
      * @generated
      */
-    void setMeasurementSpecification(MeasurementSpecification value);
+    void setMonitorRepository(MonitorRepository value);
 
     /**
      * Returns the value of the '<em><b>Measurement Value</b></em>' attribute. The default value is
@@ -99,7 +98,7 @@ public interface PCMModelElementMeasurement extends UniqueElement {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Measurement Value</em>' attribute.
      * @see #setMeasurementValue(double)
      * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPCMModelElementMeasurement_MeasurementValue()
@@ -112,7 +111,7 @@ public interface PCMModelElementMeasurement extends UniqueElement {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementValue
      * <em>Measurement Value</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Measurement Value</em>' attribute.
      * @see #getMeasurementValue()

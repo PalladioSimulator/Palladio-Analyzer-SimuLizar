@@ -28,7 +28,7 @@ import org.palladiosimulator.simulizar.prm.PrmPackage;
  * <em>Pcm Model Element Measurements</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
@@ -36,7 +36,7 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
      * The cached value of the '{@link #getPcmModelElementMeasurements()
      * <em>Pcm Model Element Measurements</em>}' containment reference list. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getPcmModelElementMeasurements()
      * @generated
      * @ordered
@@ -45,7 +45,7 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected PRMModelImpl() {
@@ -54,7 +54,7 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -64,57 +64,59 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
+    @Override
     public EList<PCMModelElementMeasurement> getPcmModelElementMeasurements() {
-        if (pcmModelElementMeasurements == null) {
-            pcmModelElementMeasurements = new EObjectContainmentEList<PCMModelElementMeasurement>(
+        if (this.pcmModelElementMeasurements == null) {
+            this.pcmModelElementMeasurements = new EObjectContainmentEList<PCMModelElementMeasurement>(
                     PCMModelElementMeasurement.class, this, PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS);
         }
-        return pcmModelElementMeasurements;
+        return this.pcmModelElementMeasurements;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+    public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
         switch (featureID) {
         case PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS:
-            return ((InternalEList<?>) getPcmModelElementMeasurements()).basicRemove(otherEnd, msgs);
+            return ((InternalEList<?>) this.getPcmModelElementMeasurements()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS:
-            return getPcmModelElementMeasurements();
+            return this.getPcmModelElementMeasurements();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS:
-            getPcmModelElementMeasurements().clear();
-            getPcmModelElementMeasurements().addAll((Collection<? extends PCMModelElementMeasurement>) newValue);
+            this.getPcmModelElementMeasurements().clear();
+            this.getPcmModelElementMeasurements().addAll((Collection<? extends PCMModelElementMeasurement>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -122,14 +124,14 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS:
-            getPcmModelElementMeasurements().clear();
+            this.getPcmModelElementMeasurements().clear();
             return;
         }
         super.eUnset(featureID);
@@ -137,14 +139,14 @@ public class PRMModelImpl extends UniqueElementImpl implements PRMModel {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PrmPackage.PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS:
-            return pcmModelElementMeasurements != null && !pcmModelElementMeasurements.isEmpty();
+            return this.pcmModelElementMeasurements != null && !this.pcmModelElementMeasurements.isEmpty();
         }
         return super.eIsSet(featureID);
     }

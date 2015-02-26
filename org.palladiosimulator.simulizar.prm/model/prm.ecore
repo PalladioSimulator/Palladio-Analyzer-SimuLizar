@@ -14,8 +14,7 @@
       <details key="documentation" value="Measurement for a pcm model element."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="pcmModelElement" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="measurementSpecification"
-        eType="ecore:EClass ../../org.palladiosimulator.simulizar.pms/model/pms.ecore#//MeasurementSpecification"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitorRepository" eType="ecore:EClass ../../org.palladiosimulator.simulizar.monitorrepository/model/monitorrepository.ecore#//MonitorRepository"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="measurementValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
         defaultValueLiteral="0.0"/>
   </eClassifiers>

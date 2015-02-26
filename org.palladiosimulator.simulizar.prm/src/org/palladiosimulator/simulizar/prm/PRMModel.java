@@ -11,9 +11,9 @@ import org.eclipse.emf.common.util.EList;
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>PRM Model</b></em>'. <!--
  * end-user-doc -->
- * 
+ *
  * <!-- begin-model-doc --> Base class representing the prm model. <!-- end-model-doc -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
@@ -21,7 +21,7 @@ import org.eclipse.emf.common.util.EList;
  * Model Element Measurements</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPRMModel()
  * @model
  * @generated
@@ -37,7 +37,7 @@ public interface PRMModel extends UniqueElement {
      * isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Pcm Model Element Measurements</em>' containment reference
      *         list.
      * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPRMModel_PcmModelElementMeasurements()

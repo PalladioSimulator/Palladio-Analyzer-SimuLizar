@@ -11,17 +11,17 @@ import org.eclipse.emf.ecore.EObject;
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Unique Element</b></em>'.
  * <!-- end-user-doc -->
- * 
+ *
  * <!-- begin-model-doc --> Superclass of all classes to store unique identifier. <!-- end-model-doc
  * -->
- * 
+ *
  * <p>
  * The following features are supported:
  * <ul>
  * <li>{@link org.palladiosimulator.simulizar.prm.UniqueElement#getGuid <em>Guid</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @see org.palladiosimulator.simulizar.prm.PrmPackage#getUniqueElement()
  * @model
  * @generated
@@ -34,7 +34,7 @@ public interface UniqueElement extends EObject {
      * description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Guid</em>' attribute.
      * @see #setGuid(String)
      * @see org.palladiosimulator.simulizar.prm.PrmPackage#getUniqueElement_Guid()
@@ -46,7 +46,7 @@ public interface UniqueElement extends EObject {
     /**
      * Sets the value of the '{@link org.palladiosimulator.simulizar.prm.UniqueElement#getGuid
      * <em>Guid</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Guid</em>' attribute.
      * @see #getGuid()
@@ -56,7 +56,7 @@ public interface UniqueElement extends EObject {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @model annotation=
      *        "http://www.eclipse.org/emf/2002/GenModel body='if(this.getGuid() == null) this.setGuid(org.eclipse.emf.ecore.util.EcoreUtil.generateUUID());'"
      * @generated

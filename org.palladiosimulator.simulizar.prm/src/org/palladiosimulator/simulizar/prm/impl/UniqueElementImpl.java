@@ -22,14 +22,14 @@ import org.palladiosimulator.simulizar.prm.UniqueElement;
  * <li>{@link org.palladiosimulator.simulizar.prm.impl.UniqueElementImpl#getGuid <em>Guid</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
     /**
      * The default value of the '{@link #getGuid() <em>Guid</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getGuid()
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
     /**
      * The cached value of the '{@link #getGuid() <em>Guid</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getGuid()
      * @generated
      * @ordered
@@ -48,7 +48,7 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated NOT
      */
     protected UniqueElementImpl() {
@@ -58,7 +58,7 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -68,59 +68,65 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public String getGuid() {
-        return guid;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setGuid(String newGuid) {
-        String oldGuid = guid;
-        guid = newGuid;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET, PrmPackage.UNIQUE_ELEMENT__GUID, oldGuid, guid));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void createAndSetGuid() {
-        if (this.getGuid() == null)
-            this.setGuid(org.eclipse.emf.ecore.util.EcoreUtil.generateUUID());
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public String getGuid() {
+        return this.guid;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setGuid(final String newGuid) {
+        final String oldGuid = this.guid;
+        this.guid = newGuid;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET, PrmPackage.UNIQUE_ELEMENT__GUID, oldGuid,
+                    this.guid));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void createAndSetGuid() {
+        if (this.getGuid() == null) {
+            this.setGuid(org.eclipse.emf.ecore.util.EcoreUtil.generateUUID());
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PrmPackage.UNIQUE_ELEMENT__GUID:
-            return getGuid();
+            return this.getGuid();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PrmPackage.UNIQUE_ELEMENT__GUID:
-            setGuid((String) newValue);
+            this.setGuid((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -128,14 +134,14 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PrmPackage.UNIQUE_ELEMENT__GUID:
-            setGuid(GUID_EDEFAULT);
+            this.setGuid(GUID_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -143,31 +149,32 @@ public class UniqueElementImpl extends EObjectImpl implements UniqueElement {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PrmPackage.UNIQUE_ELEMENT__GUID:
-            return GUID_EDEFAULT == null ? guid != null : !GUID_EDEFAULT.equals(guid);
+            return GUID_EDEFAULT == null ? this.guid != null : !GUID_EDEFAULT.equals(this.guid);
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (guid: ");
-        result.append(guid);
+        result.append(this.guid);
         result.append(')');
         return result.toString();
     }

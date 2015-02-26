@@ -18,9 +18,9 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.Monitor;
-import org.palladiosimulator.simulizar.pms.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Monitor;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;

@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
 
@@ -25,21 +25,21 @@ import org.palladiosimulator.simulizar.prm.PrmPackage;
  * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getPcmModelElement
  * <em>Pcm Model Element</em>}</li>
  * <li>
- * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMeasurementSpecification
- * <em>Measurement Specification</em>}</li>
+ * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMonitorRepository
+ * <em>Monitor Repository</em>}</li>
  * <li>
  * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl#getMeasurementValue
  * <em>Measurement Value</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements PCMModelElementMeasurement {
     /**
      * The cached value of the '{@link #getPcmModelElement() <em>Pcm Model Element</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getPcmModelElement()
      * @generated
      * @ordered
@@ -47,19 +47,19 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
     protected EObject pcmModelElement;
 
     /**
-     * The cached value of the '{@link #getMeasurementSpecification()
-     * <em>Measurement Specification</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @see #getMeasurementSpecification()
+     * The cached value of the '{@link #getMonitorRepository() <em>Monitor Repository</em>}'
+     * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getMonitorRepository()
      * @generated
      * @ordered
      */
-    protected MeasurementSpecification measurementSpecification;
+    protected MonitorRepository monitorRepository;
 
     /**
      * The default value of the '{@link #getMeasurementValue() <em>Measurement Value</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getMeasurementValue()
      * @generated
      * @ordered
@@ -69,7 +69,7 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
     /**
      * The cached value of the '{@link #getMeasurementValue() <em>Measurement Value</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getMeasurementValue()
      * @generated
      * @ordered
@@ -78,7 +78,7 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected PCMModelElementMeasurementImpl() {
@@ -87,7 +87,7 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -97,147 +97,162 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public EObject getPcmModelElement() {
-        if (pcmModelElement != null && pcmModelElement.eIsProxy()) {
-            InternalEObject oldPcmModelElement = (InternalEObject) pcmModelElement;
-            pcmModelElement = eResolveProxy(oldPcmModelElement);
-            if (pcmModelElement != oldPcmModelElement) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT, oldPcmModelElement,
-                            pcmModelElement));
-            }
-        }
-        return pcmModelElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public EObject basicGetPcmModelElement() {
-        return pcmModelElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setPcmModelElement(EObject newPcmModelElement) {
-        EObject oldPcmModelElement = pcmModelElement;
-        pcmModelElement = newPcmModelElement;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT, oldPcmModelElement, pcmModelElement));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public MeasurementSpecification getMeasurementSpecification() {
-        if (measurementSpecification != null && measurementSpecification.eIsProxy()) {
-            InternalEObject oldMeasurementSpecification = (InternalEObject) measurementSpecification;
-            measurementSpecification = (MeasurementSpecification) eResolveProxy(oldMeasurementSpecification);
-            if (measurementSpecification != oldMeasurementSpecification) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION,
-                            oldMeasurementSpecification, measurementSpecification));
-            }
-        }
-        return measurementSpecification;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public MeasurementSpecification basicGetMeasurementSpecification() {
-        return measurementSpecification;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setMeasurementSpecification(MeasurementSpecification newMeasurementSpecification) {
-        MeasurementSpecification oldMeasurementSpecification = measurementSpecification;
-        measurementSpecification = newMeasurementSpecification;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION, oldMeasurementSpecification,
-                    measurementSpecification));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public double getMeasurementValue() {
-        return measurementValue;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setMeasurementValue(double newMeasurementValue) {
-        double oldMeasurementValue = measurementValue;
-        measurementValue = newMeasurementValue;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE, oldMeasurementValue, measurementValue));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public EObject getPcmModelElement() {
+        if (this.pcmModelElement != null && this.pcmModelElement.eIsProxy()) {
+            final InternalEObject oldPcmModelElement = (InternalEObject) this.pcmModelElement;
+            this.pcmModelElement = this.eResolveProxy(oldPcmModelElement);
+            if (this.pcmModelElement != oldPcmModelElement) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT, oldPcmModelElement,
+                            this.pcmModelElement));
+                }
+            }
+        }
+        return this.pcmModelElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public EObject basicGetPcmModelElement() {
+        return this.pcmModelElement;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setPcmModelElement(final EObject newPcmModelElement) {
+        final EObject oldPcmModelElement = this.pcmModelElement;
+        this.pcmModelElement = newPcmModelElement;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT, oldPcmModelElement,
+                    this.pcmModelElement));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MonitorRepository getMonitorRepository() {
+        if (this.monitorRepository != null && this.monitorRepository.eIsProxy()) {
+            final InternalEObject oldMonitorRepository = (InternalEObject) this.monitorRepository;
+            this.monitorRepository = (MonitorRepository) this.eResolveProxy(oldMonitorRepository);
+            if (this.monitorRepository != oldMonitorRepository) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY, oldMonitorRepository,
+                            this.monitorRepository));
+                }
+            }
+        }
+        return this.monitorRepository;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public MonitorRepository basicGetMonitorRepository() {
+        return this.monitorRepository;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMonitorRepository(final MonitorRepository newMonitorRepository) {
+        final MonitorRepository oldMonitorRepository = this.monitorRepository;
+        this.monitorRepository = newMonitorRepository;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY, oldMonitorRepository,
+                    this.monitorRepository));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public double getMeasurementValue() {
+        return this.measurementValue;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMeasurementValue(final double newMeasurementValue) {
+        final double oldMeasurementValue = this.measurementValue;
+        this.measurementValue = newMeasurementValue;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE, oldMeasurementValue,
+                    this.measurementValue));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
-            if (resolve)
-                return getPcmModelElement();
-            return basicGetPcmModelElement();
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            if (resolve)
-                return getMeasurementSpecification();
-            return basicGetMeasurementSpecification();
+            if (resolve) {
+                return this.getPcmModelElement();
+            }
+            return this.basicGetPcmModelElement();
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
+            if (resolve) {
+                return this.getMonitorRepository();
+            }
+            return this.basicGetMonitorRepository();
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
-            return getMeasurementValue();
+            return this.getMeasurementValue();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
-            setPcmModelElement((EObject) newValue);
+            this.setPcmModelElement((EObject) newValue);
             return;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            setMeasurementSpecification((MeasurementSpecification) newValue);
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
+            this.setMonitorRepository((MonitorRepository) newValue);
             return;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
-            setMeasurementValue((Double) newValue);
+            this.setMeasurementValue((Double) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -245,20 +260,20 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
-            setPcmModelElement((EObject) null);
+            this.setPcmModelElement((EObject) null);
             return;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            setMeasurementSpecification((MeasurementSpecification) null);
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
+            this.setMonitorRepository((MonitorRepository) null);
             return;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
-            setMeasurementValue(MEASUREMENT_VALUE_EDEFAULT);
+            this.setMeasurementValue(MEASUREMENT_VALUE_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
@@ -266,35 +281,36 @@ public class PCMModelElementMeasurementImpl extends UniqueElementImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT:
-            return pcmModelElement != null;
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            return measurementSpecification != null;
+            return this.pcmModelElement != null;
+        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY:
+            return this.monitorRepository != null;
         case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE:
-            return measurementValue != MEASUREMENT_VALUE_EDEFAULT;
+            return this.measurementValue != MEASUREMENT_VALUE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (measurementValue: ");
-        result.append(measurementValue);
+        result.append(this.measurementValue);
         result.append(')');
         return result.toString();
     }

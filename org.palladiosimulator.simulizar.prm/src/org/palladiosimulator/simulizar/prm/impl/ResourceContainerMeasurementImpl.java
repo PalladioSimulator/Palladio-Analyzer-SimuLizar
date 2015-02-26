@@ -8,6 +8,7 @@ package org.palladiosimulator.simulizar.prm.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
@@ -26,7 +27,7 @@ import de.uka.ipd.sdq.pcm.resourcetype.ProcessingResourceType;
  * <em>Processing Resource Type</em>}</li>
  * </ul>
  * </p>
- * 
+ *
  * @generated
  */
 public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurementImpl implements
@@ -34,7 +35,7 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
     /**
      * The cached value of the '{@link #getProcessingResourceType()
      * <em>Processing Resource Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getProcessingResourceType()
      * @generated
      * @ordered
@@ -43,7 +44,7 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ResourceContainerMeasurementImpl() {
@@ -52,7 +53,7 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -62,72 +63,77 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public ProcessingResourceType getProcessingResourceType() {
-        if (processingResourceType != null && processingResourceType.eIsProxy()) {
-            InternalEObject oldProcessingResourceType = (InternalEObject) processingResourceType;
-            processingResourceType = (ProcessingResourceType) eResolveProxy(oldProcessingResourceType);
-            if (processingResourceType != oldProcessingResourceType) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE,
-                            oldProcessingResourceType, processingResourceType));
-            }
-        }
-        return processingResourceType;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public ProcessingResourceType basicGetProcessingResourceType() {
-        return processingResourceType;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    public void setProcessingResourceType(ProcessingResourceType newProcessingResourceType) {
-        ProcessingResourceType oldProcessingResourceType = processingResourceType;
-        processingResourceType = newProcessingResourceType;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE, oldProcessingResourceType,
-                    processingResourceType));
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public ProcessingResourceType getProcessingResourceType() {
+        if (this.processingResourceType != null && ((EObject) this.processingResourceType).eIsProxy()) {
+            final InternalEObject oldProcessingResourceType = (InternalEObject) this.processingResourceType;
+            this.processingResourceType = (ProcessingResourceType) this.eResolveProxy(oldProcessingResourceType);
+            if (this.processingResourceType != oldProcessingResourceType) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE,
+                            oldProcessingResourceType, this.processingResourceType));
+                }
+            }
+        }
+        return this.processingResourceType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public ProcessingResourceType basicGetProcessingResourceType() {
+        return this.processingResourceType;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setProcessingResourceType(final ProcessingResourceType newProcessingResourceType) {
+        final ProcessingResourceType oldProcessingResourceType = this.processingResourceType;
+        this.processingResourceType = newProcessingResourceType;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE, oldProcessingResourceType,
+                    this.processingResourceType));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE:
-            if (resolve)
-                return getProcessingResourceType();
-            return basicGetProcessingResourceType();
+            if (resolve) {
+                return this.getProcessingResourceType();
+            }
+            return this.basicGetProcessingResourceType();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE:
-            setProcessingResourceType((ProcessingResourceType) newValue);
+            this.setProcessingResourceType((ProcessingResourceType) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -135,14 +141,14 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE:
-            setProcessingResourceType((ProcessingResourceType) null);
+            this.setProcessingResourceType((ProcessingResourceType) null);
             return;
         }
         super.eUnset(featureID);
@@ -150,14 +156,14 @@ public class ResourceContainerMeasurementImpl extends PCMModelElementMeasurement
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE:
-            return processingResourceType != null;
+            return this.processingResourceType != null;
         }
         return super.eIsSet(featureID);
     }

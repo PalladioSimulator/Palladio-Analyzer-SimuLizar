@@ -21,7 +21,7 @@ import org.eclipse.emf.ecore.EReference;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.prm.PrmFactory
  * @model kind="package"
  * @generated
@@ -29,28 +29,28 @@ import org.eclipse.emf.ecore.EReference;
 public interface PrmPackage extends EPackage {
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNAME = "prm";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_URI = "http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_PREFIX = "prm";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     PrmPackage eINSTANCE = org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl.init();
@@ -59,7 +59,7 @@ public interface PrmPackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.prm.impl.UniqueElementImpl <em>Unique Element</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.prm.impl.UniqueElementImpl
      * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getUniqueElement()
      * @generated
@@ -69,7 +69,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -78,7 +78,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Unique Element</em>' class. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -87,7 +87,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The meta object id for the '{@link org.palladiosimulator.simulizar.prm.impl.PRMModelImpl
      * <em>PRM Model</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.prm.impl.PRMModelImpl
      * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getPRMModel()
      * @generated
@@ -97,7 +97,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -106,7 +106,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Pcm Model Element Measurements</b></em>' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -115,7 +115,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The number of structural features of the '<em>PRM Model</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -125,7 +125,7 @@ public interface PrmPackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl
      * <em>PCM Model Element Measurement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl
      * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getPCMModelElementMeasurement()
      * @generated
@@ -135,7 +135,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -144,25 +144,25 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Pcm Model Element</b></em>' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
     int PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT = UNIQUE_ELEMENT_FEATURE_COUNT + 0;
 
     /**
-     * The feature id for the '<em><b>Measurement Specification</b></em>' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The feature id for the '<em><b>Monitor Repository</b></em>' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
-    int PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
+    int PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY = UNIQUE_ELEMENT_FEATURE_COUNT + 1;
 
     /**
      * The feature id for the '<em><b>Measurement Value</b></em>' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -171,7 +171,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The number of structural features of the '<em>PCM Model Element Measurement</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -182,7 +182,7 @@ public interface PrmPackage extends EPackage {
      * {@link org.palladiosimulator.simulizar.prm.impl.ResourceContainerMeasurementImpl
      * <em>Resource Container Measurement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.prm.impl.ResourceContainerMeasurementImpl
      * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getResourceContainerMeasurement()
      * @generated
@@ -192,7 +192,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Guid</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -201,25 +201,25 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Pcm Model Element</b></em>' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
     int RESOURCE_CONTAINER_MEASUREMENT__PCM_MODEL_ELEMENT = PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT;
 
     /**
-     * The feature id for the '<em><b>Measurement Specification</b></em>' reference. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     * The feature id for the '<em><b>Monitor Repository</b></em>' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
      * @generated
      * @ordered
      */
-    int RESOURCE_CONTAINER_MEASUREMENT__MEASUREMENT_SPECIFICATION = PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION;
+    int RESOURCE_CONTAINER_MEASUREMENT__MONITOR_REPOSITORY = PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY;
 
     /**
      * The feature id for the '<em><b>Measurement Value</b></em>' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -228,7 +228,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Processing Resource Type</b></em>' reference. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -237,7 +237,7 @@ public interface PrmPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Resource Container Measurement</em>' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -246,7 +246,7 @@ public interface PrmPackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.simulizar.prm.PRMModel
      * <em>PRM Model</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>PRM Model</em>'.
      * @see org.palladiosimulator.simulizar.prm.PRMModel
      * @generated
@@ -257,7 +257,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for the containment reference list '
      * {@link org.palladiosimulator.simulizar.prm.PRMModel#getPcmModelElementMeasurements
      * <em>Pcm Model Element Measurements</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the containment reference list '
      *         <em>Pcm Model Element Measurements</em>'.
      * @see org.palladiosimulator.simulizar.prm.PRMModel#getPcmModelElementMeasurements()
@@ -270,7 +270,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement
      * <em>PCM Model Element Measurement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>PCM Model Element Measurement</em>'.
      * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement
      * @generated
@@ -281,7 +281,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getPcmModelElement
      * <em>Pcm Model Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Pcm Model Element</em>'.
      * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getPcmModelElement()
      * @see #getPCMModelElementMeasurement()
@@ -291,21 +291,21 @@ public interface PrmPackage extends EPackage {
 
     /**
      * Returns the meta object for the reference '
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification
-     * <em>Measurement Specification</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @return the meta object for the reference '<em>Measurement Specification</em>'.
-     * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementSpecification()
+     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository
+     * <em>Monitor Repository</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the reference '<em>Monitor Repository</em>'.
+     * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMonitorRepository()
      * @see #getPCMModelElementMeasurement()
      * @generated
      */
-    EReference getPCMModelElementMeasurement_MeasurementSpecification();
+    EReference getPCMModelElementMeasurement_MonitorRepository();
 
     /**
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementValue
      * <em>Measurement Value</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Measurement Value</em>'.
      * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement#getMeasurementValue()
      * @see #getPCMModelElementMeasurement()
@@ -316,7 +316,7 @@ public interface PrmPackage extends EPackage {
     /**
      * Returns the meta object for class '{@link org.palladiosimulator.simulizar.prm.UniqueElement
      * <em>Unique Element</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Unique Element</em>'.
      * @see org.palladiosimulator.simulizar.prm.UniqueElement
      * @generated
@@ -327,7 +327,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for the attribute '
      * {@link org.palladiosimulator.simulizar.prm.UniqueElement#getGuid <em>Guid</em>}'. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the attribute '<em>Guid</em>'.
      * @see org.palladiosimulator.simulizar.prm.UniqueElement#getGuid()
      * @see #getUniqueElement()
@@ -339,7 +339,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement
      * <em>Resource Container Measurement</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Resource Container Measurement</em>'.
      * @see org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement
      * @generated
@@ -350,7 +350,7 @@ public interface PrmPackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement#getProcessingResourceType
      * <em>Processing Resource Type</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Processing Resource Type</em>'.
      * @see org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement#getProcessingResourceType()
      * @see #getResourceContainerMeasurement()
@@ -361,7 +361,7 @@ public interface PrmPackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -376,7 +376,7 @@ public interface PrmPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     interface Literals {
@@ -384,7 +384,7 @@ public interface PrmPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.prm.impl.PRMModelImpl <em>PRM Model</em>}' class.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.prm.impl.PRMModelImpl
          * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getPRMModel()
          * @generated
@@ -394,7 +394,7 @@ public interface PrmPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Pcm Model Element Measurements</b></em>'
          * containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference PRM_MODEL__PCM_MODEL_ELEMENT_MEASUREMENTS = eINSTANCE.getPRMModel_PcmModelElementMeasurements();
@@ -404,7 +404,7 @@ public interface PrmPackage extends EPackage {
          * {@link org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl
          * <em>PCM Model Element Measurement</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
          * -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.prm.impl.PCMModelElementMeasurementImpl
          * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getPCMModelElementMeasurement()
          * @generated
@@ -414,25 +414,25 @@ public interface PrmPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Pcm Model Element</b></em>' reference feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference PCM_MODEL_ELEMENT_MEASUREMENT__PCM_MODEL_ELEMENT = eINSTANCE
                 .getPCMModelElementMeasurement_PcmModelElement();
 
         /**
-         * The meta object literal for the '<em><b>Measurement Specification</b></em>' reference
-         * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         * The meta object literal for the '<em><b>Monitor Repository</b></em>' reference feature.
+         * <!-- begin-user-doc --> <!-- end-user-doc -->
+         *
          * @generated
          */
-        EReference PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_SPECIFICATION = eINSTANCE
-                .getPCMModelElementMeasurement_MeasurementSpecification();
+        EReference PCM_MODEL_ELEMENT_MEASUREMENT__MONITOR_REPOSITORY = eINSTANCE
+                .getPCMModelElementMeasurement_MonitorRepository();
 
         /**
          * The meta object literal for the '<em><b>Measurement Value</b></em>' attribute feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute PCM_MODEL_ELEMENT_MEASUREMENT__MEASUREMENT_VALUE = eINSTANCE
@@ -442,7 +442,7 @@ public interface PrmPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.prm.impl.UniqueElementImpl
          * <em>Unique Element</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.prm.impl.UniqueElementImpl
          * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getUniqueElement()
          * @generated
@@ -452,7 +452,7 @@ public interface PrmPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Guid</b></em>' attribute feature. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EAttribute UNIQUE_ELEMENT__GUID = eINSTANCE.getUniqueElement_Guid();
@@ -462,7 +462,7 @@ public interface PrmPackage extends EPackage {
          * {@link org.palladiosimulator.simulizar.prm.impl.ResourceContainerMeasurementImpl
          * <em>Resource Container Measurement</em>}' class. <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.prm.impl.ResourceContainerMeasurementImpl
          * @see org.palladiosimulator.simulizar.prm.impl.PrmPackageImpl#getResourceContainerMeasurement()
          * @generated
@@ -472,7 +472,7 @@ public interface PrmPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Processing Resource Type</b></em>' reference
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference RESOURCE_CONTAINER_MEASUREMENT__PROCESSING_RESOURCE_TYPE = eINSTANCE
