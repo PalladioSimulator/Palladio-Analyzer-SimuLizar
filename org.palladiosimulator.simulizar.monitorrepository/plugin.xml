@@ -12,7 +12,7 @@
 
    <extension point="org.eclipse.emf.ecore.generated_package">
       <package
-            uri="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0"
+            uri="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0"
             class="org.palladiosimulator.simulizar.pms.PmsPackage"
             genModel="model/monitorrepository.genmodel"/>
    </extension>
