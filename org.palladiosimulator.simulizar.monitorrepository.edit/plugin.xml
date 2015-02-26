@@ -11,9 +11,10 @@
 <plugin>
 
    <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated monitorrepository -->
       <factory
-            uri="http:///de/upb/pcm/pms/model/pms.ecore"
-            class="org.palladiosimulator.simulizar.pms.provider.PmsItemProviderAdapterFactory"
+            uri="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0"
+            class="org.palladiosimulator.simulizar.monitorrepository.provider.MonitorrepositoryItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
