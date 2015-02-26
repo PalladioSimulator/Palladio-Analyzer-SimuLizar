@@ -14,7 +14,7 @@
       <package
             uri="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0"
             class="org.palladiosimulator.simulizar.pms.PmsPackage"
-            genModel="model/pms.genmodel"/>
+            genModel="model/monitorrepository.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
