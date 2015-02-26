@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
@@ -179,7 +178,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
             final AbstractSimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
         ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(
-                EMFLoadHelper.getResourceURI(processingResource), new String[] {}, resourceContainer.getId(),
+                processingResource, new String[] {}, resourceContainer.getId(),
                 schedulingStrategy);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: "
