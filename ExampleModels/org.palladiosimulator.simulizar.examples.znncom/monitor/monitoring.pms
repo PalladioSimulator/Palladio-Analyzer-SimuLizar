@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pms="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0" guid="_6wCIABxmEeS4r6bYaQZ1eg">
+<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pms="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0" guid="_6wCIABxmEeS4r6bYaQZ1eg">
   <performanceMeasurements guid="_AsccEBxnEeS4r6bYaQZ1eg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint usagescenario.measuringpoint#/">
     <measurementSpecification guid="_YDyggBxoEeS4r6bYaQZ1eg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="pms:Intervall" guid="_hYBsABxoEeS4r6bYaQZ1eg" intervall="10.0"/>

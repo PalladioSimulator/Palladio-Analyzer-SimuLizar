@@ -77,7 +77,7 @@
         <constraint>
           <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
             <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
-              <attribute href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification/performanceMetric"/>
+              <attribute href="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0#//MeasurementSpecification/performanceMetric"/>
             </leftExpression>
             <rightExpression xsi:type="expr:TextualExpression" expressionText="PerformanceMetricEnum::ResponseTime" language="OCL" languageVersion="1.0"/>
           </constraintExpression>
@@ -85,12 +85,12 @@
         <constraint>
           <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
             <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
-              <attribute href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification/statisticalCharacterization"/>
+              <attribute href="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0#//MeasurementSpecification/statisticalCharacterization"/>
             </leftExpression>
             <rightExpression xsi:type="expr:TextualExpression" expressionText="StatisticalCharacterizationEnum::ArithmeticMean" language="OCL" languageVersion="1.0"/>
           </constraintExpression>
         </constraint>
-        <classifier href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification"/>
+        <classifier href="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0#//MeasurementSpecification"/>
       </variable>
       <linkVariable xsi:type="sdp:LinkVariable" name="a" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
         <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel/pcmModelElementMeasurements"/>
