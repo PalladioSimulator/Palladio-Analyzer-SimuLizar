@@ -12,6 +12,7 @@ import javax.measure.quantity.Duration;
 import org.apache.commons.collections15.IteratorUtils;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.datastream.IDataStream;
+import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
@@ -45,11 +46,48 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     private static final MetricDescription RESOURCE_STATE_METRIC = 
             MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
 
-    public SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
+    /**
+     * Gets a {@link SimulationTimeEvaluationScope} instance initialized with the given parameters. 
+     * @param entityUnderMeasurement The {@link PowerProvidingEntity} that shall be evaluated.
+     * @param model 
+     *           A reference indicating the {@link SimuComModel} that is used for the current simulation run.
+     * @param windowLength
+     *            The length of the underlying sliding window, given in any arbitrary {@link Duration}.
+     * @param windowIncrement
+     *            This {@link Measure} indicates the increment by what the underlying sliding window is moved on, given
+     *            in any arbitrary {@link Duration}.
+     * @return A valid {@link SimulationTimeEvaluationScope} instance with the given properties.
+     * @throws IllegalArgumentException In one of the following cases:
+     *  <ul>
+     *  <li>{@code windowLength} or {@code windowIncrement} are {@code null} or denote a negative duration</li>
+     *  <li>{@code entityUnderMeasurement} or {@code model} are {@code null}</li>
+     *  </ul>
+     *  @throws IllegalStateException This exception is thrown, if any of the {@link ProcessingResourceSpecification}s
+     *  subsumed by the given {@code entityUnderMeasurement} is not associated with
+     *  {@link MetricDescriptionConstants#STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE} measurements.
+     */
+    public static SimulationTimeEvaluationScope createScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model,
+            Measure<Double, Duration> windowLength, Measure<Double, Duration> windowIncrement) {
+        
+        SimulationTimeEvaluationScope scope = new SimulationTimeEvaluationScope(entityUnderMeasurement, model);
+        scope.initialize(windowLength, windowIncrement);
+        
+        return scope;
+    }
+    
+    /**
+     * Initializes a new instance of the {@link SimulationTimeEvaluationScope} with the given properties.
+     * @param entityUnderMeasurement The {@link PowerProvidingEntity} that shall be evaluated.
+     * @param model 
+     *           A reference indicating the {@link SimuComModel} that is used for the current simulation run.
+     * @throws IllegalArgumentException If either of the arguments is {@code null}, an {@link IllegalArgumentException} is thrown.
+     * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
+     * @see #initialize(Measure, Measure)
+     */
+    private SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
         if (entityUnderMeasurement == null) {
             throw new IllegalArgumentException("Given PowerProvidingEntity must not be null.");
         }
-
         if (model == null) {
             throw new IllegalArgumentException("Given SimuComModel must not be null.");
         }
@@ -64,7 +102,17 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
     }
 
-    public void initialize(Measure<Double, Duration> windowLength, Measure<Double, Duration> windowIncrement) {
+    /**
+     * Initializes the current instance by instantiating the underlying {@link SlidingWindow} and respective aggregator and recorder. 
+      * @param windowLength
+     *            The length of the underlying sliding window, given in any arbitrary {@link Duration}.
+     * @param windowIncrement
+     *            This {@link Measure} indicates the increment by what the underlying sliding window is moved on, given
+     *            in any arbitrary {@link Duration}.
+     * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
+     * @see #SimulationTimeEvaluationScope(PowerProvidingEntity, SimuComModel)            
+     */
+    private void initialize(Measure<Double, Duration> windowLength, Measure<Double, Duration> windowIncrement) {
         ISlidingWindowMoveOnStrategy moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
         PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
@@ -77,6 +125,14 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             Calculator resourceStateCalculator = actualCalculatorFactory
                     .getCalculatorByMeasuringPointAndMetricDescription(mp, RESOURCE_STATE_METRIC);
 
+            if (resourceStateCalculator == null) {
+                throw new IllegalStateException("Simulation time evaluation scope (sliding window based) cannot be initialized.\n"
+                        + "No state of active resource calculator available for: " 
+                        + MeasuringPointUtility.measuringPointToString(mp) + "\n"
+                        + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
+                        + "to initializeInterpreterListeners()!"); 
+            }
+            
             SlidingWindow slidingWindow = new SimulationGovernedSlidingWindow(windowLength,
                     windowIncrement, RESOURCE_STATE_METRIC, moveOnStrategy, this.simModel);
             SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
@@ -88,6 +144,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
     @Override
     public void reset() {
+        super.reset();
         this.iterator = iterator();
     }
 
@@ -103,12 +160,34 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         // implementation is not required here
     }
 
-    private static class SingletonDataStream implements IDataStream<Measurement> {
+    /**
+     * Implementation of the {@link IDataStream} interface that is internally used 
+     * to manage the collected output data per resource.
+     * This stream is exceptional in that it does contain at most one element at a time.<br>
+     * @author Florian Rosenthal
+     *
+     */
+    private static final class SingletonDataStream implements IDataStream<Measurement> {
         private Measurement innerElement;
-
+        private boolean isClosed;
+        
+        private static final Iterator<Measurement> EMPTY_ITERATOR = Collections.emptyIterator();
+        
+        /**
+         * Initializes a new instance of the class.
+         */
+        private SingletonDataStream() {
+            this.isClosed = false;
+            this.innerElement = null;
+        }
+        
         @Override
         public Iterator<Measurement> iterator() {
-            return IteratorUtils.singletonListIterator(innerElement);
+            throwExceptionIfClosed();
+            if (this.innerElement == null) {
+                return EMPTY_ITERATOR;
+            }
+            return IteratorUtils.singletonListIterator(this.innerElement);
         }
 
         @Override
@@ -123,17 +202,34 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
         @Override
         public void close() {
+            this.isClosed = true;
             this.innerElement = null;
         }
 
         @Override
         public int size() {
+            throwExceptionIfClosed();
             return 1;
         }
 
+        /**
+         * Exchanges the currently contained sole element by the given {@link Measurement}. 
+         * @param m The {@link Measurement} to be stored in the stream.
+         */
         public void exchangeElement(Measurement m) {
             assert m != null;
+            
+            throwExceptionIfClosed();
             this.innerElement = m;
+        }
+        
+        /**
+         * Convenience method to check whether instance is closed (i.e., close() was called) and throw exception if so.
+         */
+        private void throwExceptionIfClosed() {
+            if (this.isClosed) {
+                throw new IllegalStateException("This stream is already closed.");
+            }
         }
     }
 
@@ -164,6 +260,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                     }
                     Measure<Double, Duration> currentPointInTime = utilMeasurement
                             .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+                    SimulationTimeEvaluationScope.this.reset();
                     informListeners(currentPointInTime);
                     //start anew
                     this.collectedMeasurements.clear();
