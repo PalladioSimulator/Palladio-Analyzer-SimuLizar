@@ -84,7 +84,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
      * @see #initialize(Measure, Measure)
      */
-    private SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
+    protected SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
         if (entityUnderMeasurement == null) {
             throw new IllegalArgumentException("Given PowerProvidingEntity must not be null.");
         }
@@ -148,11 +148,16 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         this.iterator = iterator();
     }
 
+    /**
+     * Adds the given listener to collection of scope observers.
+     * @param listener The {@link ISimulationEvaluationScopeListener} to observe this scope.
+     * @throws IllegalArgumentException In case the given listener is {@code null} or already attached.
+     */
     public void addScopeListener(ISimulationEvaluationScopeListener listener) {
         this.collector.addObserver(listener);
     }
 
-    /**
+     /**
      * This implementation does nothing.
      */
     @Override
@@ -163,7 +168,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     /**
      * Implementation of the {@link IDataStream} interface that is internally used 
      * to manage the collected output data per resource.
-     * This stream is exceptional in that it does contain at most one element at a time.<br>
+     * This stream is exceptional in that it does contain at most one element at a time.
      * @author Florian Rosenthal
      *
      */
@@ -246,6 +251,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
         private void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec,
                 Measurement utilMeasurement) {
+            assert spec != null && utilMeasurement != null;
+            
             if (this.collectedMeasurements.put(spec, utilMeasurement) == null
                     || !SimulationTimeEvaluationScope.this.simModel.getSimulationControl().isRunning()) {
                 if (this.collectedMeasurements.size() == this.measurementsToCollect) {
@@ -258,10 +265,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                         SingletonDataStream procMeasurements = (SingletonDataStream) dataset.iterator().next();
                         procMeasurements.exchangeElement(this.collectedMeasurements.get(proc));
                     }
-                    Measure<Double, Duration> currentPointInTime = utilMeasurement
-                            .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-                    SimulationTimeEvaluationScope.this.reset();
-                    informListeners(currentPointInTime);
+                    resetScope();
+                    informScopeListeners();
                     //start anew
                     this.collectedMeasurements.clear();
                 }
@@ -270,8 +275,12 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             }
         }
 
-        private void informListeners(Measure<Double, Duration> pointInTime) {
-            this.getEventDispatcher().next(pointInTime);
+        private void resetScope() {
+            SimulationTimeEvaluationScope.this.reset();
+        }
+        
+        private void informScopeListeners() {
+            this.getEventDispatcher().newElementAvailable();
         }
     }
 
