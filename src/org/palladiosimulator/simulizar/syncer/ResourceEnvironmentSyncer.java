@@ -16,6 +16,7 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourcetype.SchedulingPolicy;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.SchedulingStrategy;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
@@ -181,8 +182,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final AbstractSimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(processingResource,
-                new String[] {}, resourceContainer.getId(), schedulingStrategy);
+        final ScheduledResource scheduledResource = ((SimulatedResourceContainer) simulatedResourceContainer)
+                .addActiveResourceWithoutCalculators(processingResource, new String[] {}, resourceContainer.getId(),
+                        schedulingStrategy);
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
@@ -192,18 +195,42 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
                 this.monitorRepository, resourceContainer,
                 MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
+
         if (isMonitored(measurementSpecification)) {
+            new ResourceStateListener(processingResource, scheduledResource, runtimeModel.getModel()
+                    .getSimulationControl(), measurementSpecification, resourceContainer, prm);
+            initCalculator(schedulingStrategy, scheduledResource);
+        }
+    }
 
-            // get created active resource
-            for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
-                    .getActiveResources()) {
-                if (abstractScheduledResource.getName().equals(processingResource.getId())) {
-                    new ResourceStateListener(processingResource, abstractScheduledResource, runtimeModel.getModel()
-                            .getSimulationControl(), measurementSpecification, resourceContainer, prm);
-                    break;
-                }
+    /**
+     * Sets up calculators for active resources.
+     * 
+     * TODO setup waiting time calculator [Lehrig]
+     * 
+     * @param schedulingStrategy
+     * @param scheduledResource
+     */
+    private void initCalculator(String schedulingStrategy, final ScheduledResource scheduledResource) {
+        // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel);
+        CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel());
 
+        // setup utilization calculators depending on their scheduling strategy
+        // and number of cores
+        if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
+            if (scheduledResource.getNumberOfInstances() == 1) {
+                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel());
+            } else {
+                CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel());
             }
+        } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
+                || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
+            assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
+                    + "have exactly one core";
+            CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel());
+        } else {
+            // Use an OverallUtilizationCalculator by default.
+            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel());
         }
     }
 

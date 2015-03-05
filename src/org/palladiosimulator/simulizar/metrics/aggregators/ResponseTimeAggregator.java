@@ -9,7 +9,7 @@ import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -101,7 +101,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * @see org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener#newMeasurementAvailable(AbstractMeasureProvider)
      */
     @Override
-    public void newMeasurementAvailable(final Measurement measurement) {
+    public void newMeasurementAvailable(final MeasuringValue measurement) {
         final Measure<Double, Duration> responseTimeMeasure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
