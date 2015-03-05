@@ -54,9 +54,9 @@ public final class MonitorRepositoryUtil {
     public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel, final EObject element,
             final MetricDescription metricDescription) {
         if (monitorRepositoryModel != null) {
-            for (final Monitor performanceMeasurement : monitorRepositoryModel.getMonitors()) {
-                if (elementConformingToMeasuringPoint(element, performanceMeasurement.getMeasuringPoint())) {
-                    for (final MeasurementSpecification measurementSpecification : performanceMeasurement
+            for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
+                if (elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
+                    for (final MeasurementSpecification measurementSpecification : monitor
                             .getMeasurementSpecification()) {
                         if (measurementSpecification.getMetricDescription().getId().equals(metricDescription.getId())) {
                             return measurementSpecification;

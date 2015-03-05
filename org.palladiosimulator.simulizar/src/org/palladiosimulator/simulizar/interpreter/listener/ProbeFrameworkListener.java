@@ -190,7 +190,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                                     .getSimulationControl())));
                     calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
                 }
-
             }
         }
     }
