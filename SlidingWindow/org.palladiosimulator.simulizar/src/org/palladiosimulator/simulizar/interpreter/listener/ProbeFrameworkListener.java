@@ -9,32 +9,24 @@ import java.util.Map;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
-import javax.measure.quantity.Energy;
-import javax.measure.quantity.Power;
-import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
 import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.PredicateUtils;
 import org.apache.commons.collections15.Transformer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.jscience.physics.amount.Amount;
-import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
-import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
@@ -52,8 +44,9 @@ import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
-import org.palladiosimulator.simulizar.metrics.powerconsumption.ISimulationEvaluationScopeListener;
+import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEnergyConsumptionCalculator;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEvaluationScope;
+import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimePowerConsumptionCalculator;
 import org.palladiosimulator.simulizar.pms.DelayedIntervall;
 import org.palladiosimulator.simulizar.pms.Intervall;
 import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
@@ -61,13 +54,14 @@ import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.pms.util.PmsSwitch;
+import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.fzi.power.infrastructure.PowerProvidingEntity;
-import de.fzi.power.infrastructure.util.InfrastructureSwitch;
 import de.fzi.power.interpreter.ConsumptionContext;
-import de.fzi.power.interpreter.PowerConsumptionSwitch;
+import de.fzi.power.interpreter.InterpreterUtils;
 import de.fzi.power.interpreter.PowerModelRegistry;
 import de.fzi.power.interpreter.PowerModelUpdaterSwitch;
 import de.fzi.power.interpreter.calculators.ExtensibleCalculatorInstantiatorImpl;
@@ -95,8 +89,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
-    private static final Predicate<MeasurementSpecification> MEASUREMENT_SPEC_NOT_NULL_PREDICATE = 
-            PredicateUtils.notNullPredicate();
+    private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC =
+            MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
+    private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC =
+            MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
 
     private final PMSModel pmsModel;
     private final PRMModel prmModel;
@@ -212,8 +208,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private Collection<MeasurementSpecification> getMeasurementSpecificationsForPerformanceMetric(
             final PerformanceMetricEnum metric) {
         if (this.pmsModel != null) {
-            
-            Transformer<PerformanceMeasurement, MeasurementSpecification> transformer = 
+
+            Transformer<PerformanceMeasurement, MeasurementSpecification> transformer =
                     new Transformer<PerformanceMeasurement, MeasurementSpecification>() {
 
                 @Override
@@ -228,15 +224,17 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             };
             return CollectionUtils.select(
                     CollectionUtils.collect(this.pmsModel.getPerformanceMeasurements(), transformer),
-                    MEASUREMENT_SPEC_NOT_NULL_PREDICATE);
+                    PredicateUtils.notNullPredicate());
 
         }
         return Collections.emptyList();
     }
 
-    /** returns a two-element array: sliding window length is returned at index 0, window increment at index 1
-    */
-    private static final PmsSwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH = 
+    /**
+     * returns a two-element array: sliding window length is returned at index 0, window increment
+     * at index 1
+     */
+    private static final PmsSwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH =
             new PmsSwitch<Measure<Double, Duration>[]>() {
 
         @Override
@@ -265,23 +263,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     };
 
-    private static final MeasuringpointSwitch<PowerProvidingEntity> MEASURING_POINT_SWITCH = 
-            new MeasuringpointSwitch<PowerProvidingEntity>() {
-
-        private final InfrastructureSwitch<PowerProvidingEntity> infSwitch = new InfrastructureSwitch<PowerProvidingEntity>() {
-            @Override
-            public PowerProvidingEntity casePowerProvidingEntity(PowerProvidingEntity ppe) {
-                return ppe;
-            }
-        };
-
-        @Override
-        public PowerProvidingEntity caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint mp) {
-            EObject modeObject = EMFLoadHelper.loadModel(mp.getResourceURI());
-            return infSwitch.doSwitch(modeObject);
-        }
-    };
-
     private static Map<String, Object> createRecorderConfigMapWithAcceptedMetric(
             MetricDescription recorderAcceptedMetric) {
         assert recorderAcceptedMetric != null;
@@ -293,96 +274,98 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     private IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
-        
+
         SimuComConfig config = this.simuComModel.getConfiguration();
-        IRecorder recorder = RecorderExtensionHelper
-                .instantiateRecorderImplementationForRecorder(config.getRecorderName());
+        IRecorder recorder = RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config
+                .getRecorderName());
         recorder.initialize(config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap));
-        
+
         return recorder;
+    }
+
+   
+    private static MeasuringPoint createStringMeasuringPointFromMeasuringPoint(MeasuringPoint mp, String nameSuffix) {
+        assert mp != null && nameSuffix != null;
+        
+        StringMeasuringPoint result = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
+        String mpName = !nameSuffix.isEmpty() ? MeasuringPointUtility.measuringPointToString(mp) + nameSuffix 
+                : MeasuringPointUtility.measuringPointToString(mp);
+        result.setMeasuringPoint(mpName);
+        
+        return result;
     }
     
     private void initPowerMeasurements() {
-        Collection<MeasurementSpecification> powerMeasurementSpecs = 
+        Collection<MeasurementSpecification> powerMeasurementSpecs =
                 getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.POWER_CONSUMPTION);
         if (!powerMeasurementSpecs.isEmpty()) {
-            Map<String, Object> powerRecorderConfigurationMap = 
-                    createRecorderConfigMapWithAcceptedMetric(MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE);
-            Map<String, Object> energyRecorderConfigurationMap = 
-                    createRecorderConfigMapWithAcceptedMetric(MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE);
+            Map<String, Object> powerRecorderConfigurationMap =
+                    createRecorderConfigMapWithAcceptedMetric(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
+            Map<String, Object> energyRecorderConfigurationMap =
+                    createRecorderConfigMapWithAcceptedMetric(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
             PowerModelRegistry reg = new PowerModelRegistry();
-            PowerModelUpdaterSwitch modelUpdaterSwitch = 
-                    new PowerModelUpdaterSwitch(reg, new ExtensibleCalculatorInstantiatorImpl());
+            PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
+                    new ExtensibleCalculatorInstantiatorImpl());
+            final Collection<PCMModelElementMeasurement> pcmModelElementMeasurements =
+                    this.prmModel.getPcmModelElementMeasurements();
             final List<ConsumptionContext> createdContexts = new ArrayList<>(powerMeasurementSpecs.size());
+            
             for (MeasurementSpecification measurementSpec : powerMeasurementSpecs) {
                 MeasuringPoint mp = ((PerformanceMeasurement) measurementSpec.eContainer()).getMeasuringPoint();
-                StringMeasuringPoint powerMeasuringPoint = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
-                powerMeasuringPoint.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(mp) + " [Power]");
-                StringMeasuringPoint energyMeasuringPoint = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
-                energyMeasuringPoint.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(mp) + " [Energy]");
-                
-                final PowerProvidingEntity ppe = MEASURING_POINT_SWITCH.doSwitch(mp);
+                final PowerProvidingEntity ppe = InterpreterUtils.getPowerProvindingEntityFromMeasuringPoint(mp);
                 if (ppe == null) {
                     throw new IllegalStateException("PerformanceMeasurement of type PowerConsumption has"
                             + " to be related to a PowerProvidingEntity!");
                 }
-                final SimulationTimeEvaluationScope scope = new SimulationTimeEvaluationScope(ppe, this.simuComModel);
+
+                energyRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
+                        createStringMeasuringPointFromMeasuringPoint(mp, " [Energy]"));
+                powerRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
+                        createStringMeasuringPointFromMeasuringPoint(mp, " [Power]"));
+
+                final IRecorder energyDataRecorder = initializeRecorder(energyRecorderConfigurationMap);
+                final IRecorder powerDataRecorder = initializeRecorder(powerRecorderConfigurationMap);
 
                 Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(measurementSpec
                         .getTemporalRestriction());
                 Measure<Double, Duration> windowLength = windowProperties[0];
                 Measure<Double, Duration> windowIncrement = windowProperties[1];
-                scope.initialize(windowLength, windowIncrement);
+                final SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(ppe,
+                        this.simuComModel, windowLength, windowIncrement);
 
-                energyRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, energyMeasuringPoint);
-                powerRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, powerMeasuringPoint);
-
-                final IRecorder energyDataRecorder = initializeRecorder(energyRecorderConfigurationMap);
-                final IRecorder powerDataRecorder = initializeRecorder(powerRecorderConfigurationMap);
-               
                 modelUpdaterSwitch.doSwitch(ppe);
-                final ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
+                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
                         .getDistributionPowerAssemblyContext().getPowerBindingRepository(), scope, reg);
-                final PowerConsumptionSwitch powerSwitch = PowerConsumptionSwitch.createPowerConsumptionSwitch(context);
 
                 final AbstractCumulativeEnergyCalculator energyCalculator = new SimpsonRuleCumulativeEnergyCalculator();
-                energyCalculator.setOffset(Amount.valueOf(windowLength.getValue(), windowLength.getUnit()));
-                energyCalculator.setSamplingPeriod(Amount.valueOf(windowIncrement.getValue(), windowIncrement.getUnit()));
+                energyCalculator.setOffset(windowLength);
+                energyCalculator.setSamplingPeriod(windowIncrement);
 
+                final PCMModelElementMeasurement ppeMeasurement = PrmFactory.eINSTANCE.createPCMModelElementMeasurement();
+                ppeMeasurement.setPcmModelElement(ppe);
+                ppeMeasurement.setMeasurementSpecification(measurementSpec);
+                pcmModelElementMeasurements.add(ppeMeasurement);
+                
                 createdContexts.add(context);
-                scope.addScopeListener(new ISimulationEvaluationScopeListener() {
-                   
-                    @Override
-                    public void next(Measure<Double, Duration> currentPointInTime) {
-                        scope.reset();
-                        if (scope.hasNext()) {
-                            scope.next();
-                            assert !scope.hasNext();
-                            Amount<Power> powerAmount = powerSwitch.doSwitch(ppe);
-                            Measure<Double, ? extends Quantity> powerMeasure = Measure.valueOf(
-                                    powerAmount.doubleValue(SI.WATT), SI.WATT);
-                            powerDataRecorder.writeData(new TupleMeasurement(
-                                    MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE, currentPointInTime,
-                                    powerMeasure));
+                SimulationTimePowerConsumptionCalculator powerConsumptionCalculator =
+                        new SimulationTimePowerConsumptionCalculator(context, scope, ppe);
+                SimulationTimeEnergyConsumptionCalculator energyConsumptionCalculator =
+                        new SimulationTimeEnergyConsumptionCalculator(energyCalculator);
+                
+                scope.addScopeListener(powerConsumptionCalculator);
+                powerConsumptionCalculator.addObserver(powerDataRecorder);
+                powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
+                energyConsumptionCalculator.addObserver(energyDataRecorder);
+                //TODO PRMRecorder has to be attached so that changes can be propagated
 
-                            Amount<Energy> energySample = energyCalculator.calculateNext(powerAmount);
-                            Measure<Double, Energy> energyMeasure = Measure.valueOf(
-                                    energySample.doubleValue(energySample.getUnit()), energySample.getUnit());
-                            energyDataRecorder.writeData(new TupleMeasurement(
-                                    MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE, currentPointInTime,
-                                    energyMeasure));
-
-                        }
-                    }
-                });
             }
-           triggerAfterSimConsumptionContextCleanup(createdContexts);
+            triggerAfterSimConsumptionContextCleanup(createdContexts);
         }
     }
 
     private void triggerAfterSimConsumptionContextCleanup(final Collection<ConsumptionContext> contextsToCleanup) {
         assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
-        
+
         this.simuComModel.getConfiguration().addListener(new ISimulationListener() {
             @Override
             public void simulationStop() {
@@ -390,16 +373,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                     context.cleanUp();
                 }
             }
-            
             @Override
             public void simulationStart() {
             }
         });
     }
-    
+
     private void initUntilizationMeasurements() {
 
-        Collection<MeasurementSpecification> utilMeasurementSpecs = 
+        Collection<MeasurementSpecification> utilMeasurementSpecs =
                 getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.UTILIZATION);
         if (!utilMeasurementSpecs.isEmpty()) {
             RegisterCalculatorFactoryDecorator calculatorFactory = RegisterCalculatorFactoryDecorator.class
@@ -411,7 +393,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
                 Calculator calculator = calculatorFactory.getCalculatorByMeasuringPointAndMetricDescription(mp,
                         MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE);
-
+                if (calculator == null) {
+                    throw new IllegalStateException(
+                            "Utilization measurements (sliding window based) cannot be initialized.\n"
+                                    + "No state of active resource calculator available for: "
+                                    + MeasuringPointUtility.measuringPointToString(mp) + "\n"
+                                    + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
+                                    + "to initializeInterpreterListeners()!");
+                }
                 setupUtilizationRecorder(calculator, spec, strategy);
             }
         }
@@ -423,12 +412,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(utilizationMeasurementSpec
                 .getTemporalRestriction());
 
-        StringMeasuringPoint measuringPoint = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
-        measuringPoint.setMeasuringPoint(MeasuringPointUtility.measuringPointToString(calculator.getMeasuringPoint()));
-        
-        Map<String, Object> recorderConfigurationMap = 
+        Map<String, Object> recorderConfigurationMap =
                 createRecorderConfigMapWithAcceptedMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
+        recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
+                createStringMeasuringPointFromMeasuringPoint(calculator.getMeasuringPoint(), ""));
 
         IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
 
@@ -451,8 +438,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private void initReponseTimeMeasurement() {
 
-        for (MeasurementSpecification responseTimeMeasurementSpec 
-                : getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.RESPONSE_TIME)) {
+        for (MeasurementSpecification responseTimeMeasurementSpec :
+                getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.RESPONSE_TIME)) {
             MeasuringPoint measuringPoint = ((PerformanceMeasurement) responseTimeMeasurementSpec.eContainer())
                     .getMeasuringPoint();
             EObject modelElement = PMSUtil.getMonitoredElement(measuringPoint);
