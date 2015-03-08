@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.syncer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
@@ -199,7 +200,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         if (isMonitored(measurementSpecification)) {
             new ResourceStateListener(processingResource, scheduledResource, runtimeModel.getModel()
                     .getSimulationControl(), measurementSpecification, resourceContainer, prm);
-            initCalculator(schedulingStrategy, scheduledResource);
+            initCalculator(schedulingStrategy, scheduledResource,
+                    (ActiveResourceMeasuringPoint) measurementSpecification.getMonitor().getMeasuringPoint());
         }
     }
 
@@ -211,26 +213,31 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param schedulingStrategy
      * @param scheduledResource
      */
-    private void initCalculator(String schedulingStrategy, final ScheduledResource scheduledResource) {
+    private void initCalculator(String schedulingStrategy, final ScheduledResource scheduledResource,
+            final ActiveResourceMeasuringPoint measuringPoint) {
         // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel);
-        CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel());
+        CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(), measuringPoint);
 
         // setup utilization calculators depending on their scheduling strategy
         // and number of cores
         if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
             if (scheduledResource.getNumberOfInstances() == 1) {
-                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel());
+                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        measuringPoint);
             } else {
-                CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel());
+                CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        measuringPoint);
             }
         } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
                 || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
             assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                     + "have exactly one core";
-            CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel());
+            CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
+                    measuringPoint);
         } else {
             // Use an OverallUtilizationCalculator by default.
-            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel());
+            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
+                    measuringPoint);
         }
     }
 
