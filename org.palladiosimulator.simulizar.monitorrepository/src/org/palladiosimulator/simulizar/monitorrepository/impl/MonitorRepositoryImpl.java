@@ -8,7 +8,7 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-import org.eclipse.emf.ecore.util.EObjectContainmentEList;
+import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.palladiosimulator.simulizar.monitorrepository.Monitor;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
@@ -34,7 +34,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
     /**
      * The cached value of the '{@link #getMonitors() <em>Monitors</em>}' containment reference
      * list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getMonitors()
      * @generated
      * @ordered
@@ -43,7 +43,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MonitorRepositoryImpl() {
@@ -52,7 +52,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -62,21 +62,38 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public EList<Monitor> getMonitors() {
         if (this.monitors == null) {
-            this.monitors = new EObjectContainmentEList<Monitor>(Monitor.class, this,
-                    MonitorrepositoryPackage.MONITOR_REPOSITORY__MONITORS);
+            this.monitors = new EObjectContainmentWithInverseEList<Monitor>(Monitor.class, this,
+                    MonitorrepositoryPackage.MONITOR_REPOSITORY__MONITORS,
+                    MonitorrepositoryPackage.MONITOR__MONITOR_REPOSITORY);
         }
         return this.monitors;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * @generated
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID,
+            final NotificationChain msgs) {
+        switch (featureID) {
+        case MonitorrepositoryPackage.MONITOR_REPOSITORY__MONITORS:
+            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getMonitors()).basicAdd(otherEnd, msgs);
+        }
+        return super.eInverseAdd(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -91,7 +108,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -105,7 +122,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -122,7 +139,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -137,7 +154,7 @@ public class MonitorRepositoryImpl extends EntityImpl implements MonitorReposito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

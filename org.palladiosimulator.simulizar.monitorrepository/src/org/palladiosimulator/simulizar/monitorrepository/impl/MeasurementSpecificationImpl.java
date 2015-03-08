@@ -7,8 +7,10 @@ import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Monitor;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage;
 import org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum;
 import org.palladiosimulator.simulizar.monitorrepository.TemporalCharacterization;
@@ -30,6 +32,9 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  * <li>
  * {@link org.palladiosimulator.simulizar.monitorrepository.impl.MeasurementSpecificationImpl#getMetricDescription
  * <em>Metric Description</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.monitorrepository.impl.MeasurementSpecificationImpl#getMonitor
+ * <em>Monitor</em>}</li>
  * </ul>
  * </p>
  *
@@ -39,7 +44,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
     /**
      * The cached value of the '{@link #getTemporalRestriction() <em>Temporal Restriction</em>}'
      * containment reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getTemporalRestriction()
      * @generated
      * @ordered
@@ -50,7 +55,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
      * The default value of the '{@link #getStatisticalCharacterization()
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getStatisticalCharacterization()
      * @generated
      * @ordered
@@ -61,7 +66,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
      * The cached value of the '{@link #getStatisticalCharacterization()
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #getStatisticalCharacterization()
      * @generated
      * @ordered
@@ -71,7 +76,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
     /**
      * The cached value of the '{@link #getMetricDescription() <em>Metric Description</em>}'
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getMetricDescription()
      * @generated
      * @ordered
@@ -80,7 +85,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MeasurementSpecificationImpl() {
@@ -89,7 +94,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -99,7 +104,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -109,7 +114,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetTemporalRestriction(final TemporalCharacterization newTemporalRestriction,
@@ -131,7 +136,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -159,7 +164,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -169,7 +174,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -186,7 +191,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -207,7 +212,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public MetricDescription basicGetMetricDescription() {
@@ -216,7 +221,7 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -232,7 +237,78 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * @generated
+     */
+    @Override
+    public Monitor getMonitor() {
+        if (this.eContainerFeatureID() != MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR) {
+            return null;
+        }
+        return (Monitor) this.eInternalContainer();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public NotificationChain basicSetMonitor(final Monitor newMonitor, NotificationChain msgs) {
+        msgs = this.eBasicSetContainer((InternalEObject) newMonitor,
+                MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR, msgs);
+        return msgs;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMonitor(final Monitor newMonitor) {
+        if (newMonitor != this.eInternalContainer()
+                || (this.eContainerFeatureID() != MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR && newMonitor != null)) {
+            if (EcoreUtil.isAncestor(this, newMonitor)) {
+                throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
+            }
+            NotificationChain msgs = null;
+            if (this.eInternalContainer() != null) {
+                msgs = this.eBasicRemoveFromContainer(msgs);
+            }
+            if (newMonitor != null) {
+                msgs = ((InternalEObject) newMonitor).eInverseAdd(this,
+                        MonitorrepositoryPackage.MONITOR__MEASUREMENT_SPECIFICATIONS, Monitor.class, msgs);
+            }
+            msgs = this.basicSetMonitor(newMonitor, msgs);
+            if (msgs != null) {
+                msgs.dispatch();
+            }
+        } else if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR, newMonitor, newMonitor));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
+        switch (featureID) {
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            if (this.eInternalContainer() != null) {
+                msgs = this.eBasicRemoveFromContainer(msgs);
+            }
+            return this.basicSetMonitor((Monitor) otherEnd, msgs);
+        }
+        return super.eInverseAdd(otherEnd, featureID, msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -241,13 +317,30 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
         switch (featureID) {
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
             return this.basicSetTemporalRestriction(null, msgs);
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            return this.basicSetMonitor(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * @generated
+     */
+    @Override
+    public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
+        switch (this.eContainerFeatureID()) {
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            return this.eInternalContainer().eInverseRemove(this,
+                    MonitorrepositoryPackage.MONITOR__MEASUREMENT_SPECIFICATIONS, Monitor.class, msgs);
+        }
+        return super.eBasicRemoveFromContainerFeature(msgs);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -262,13 +355,15 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
                 return this.getMetricDescription();
             }
             return this.basicGetMetricDescription();
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            return this.getMonitor();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -283,13 +378,16 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
             this.setMetricDescription((MetricDescription) newValue);
             return;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            this.setMonitor((Monitor) newValue);
+            return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -304,13 +402,16 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
             this.setMetricDescription((MetricDescription) null);
             return;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            this.setMonitor((Monitor) null);
+            return;
         }
         super.eUnset(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -322,13 +423,15 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
             return this.statisticalCharacterization != STATISTICAL_CHARACTERIZATION_EDEFAULT;
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION:
             return this.metricDescription != null;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
+            return this.getMonitor() != null;
         }
         return super.eIsSet(featureID);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

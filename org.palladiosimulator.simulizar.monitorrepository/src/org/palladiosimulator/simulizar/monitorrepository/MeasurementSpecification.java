@@ -26,6 +26,8 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * <li>
  * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getMetricDescription
  * <em>Metric Description</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getMonitor
+ * <em>Monitor</em>}</li>
  * </ul>
  * </p>
  *
@@ -42,7 +44,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Temporal Restriction</em>' containment reference.
      * @see #setTemporalRestriction(TemporalCharacterization)
      * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_TemporalRestriction()
@@ -56,7 +58,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getTemporalRestriction
      * <em>Temporal Restriction</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Temporal Restriction</em>' containment reference.
      * @see #getTemporalRestriction()
@@ -74,7 +76,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Statistical Characterization</em>' attribute.
      * @see org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum
      * @see #setStatisticalCharacterization(StatisticalCharacterizationEnum)
@@ -89,7 +91,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getStatisticalCharacterization
      * <em>Statistical Characterization</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Statistical Characterization</em>' attribute.
      * @see org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum
@@ -106,7 +108,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Metric Description</em>' reference.
      * @see #setMetricDescription(MetricDescription)
      * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_MetricDescription()
@@ -119,12 +121,44 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getMetricDescription
      * <em>Metric Description</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Metric Description</em>' reference.
      * @see #getMetricDescription()
      * @generated
      */
     void setMetricDescription(MetricDescription value);
+
+    /**
+     * Returns the value of the '<em><b>Monitor</b></em>' container reference. It is bidirectional
+     * and its opposite is '
+     * {@link org.palladiosimulator.simulizar.monitorrepository.Monitor#getMeasurementSpecifications
+     * <em>Measurement Specifications</em>}'. <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Monitor</em>' container reference isn't clear, there really should
+     * be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Monitor</em>' container reference.
+     * @see #setMonitor(Monitor)
+     * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_Monitor()
+     * @see org.palladiosimulator.simulizar.monitorrepository.Monitor#getMeasurementSpecifications
+     * @model opposite="measurementSpecifications" required="true" transient="false"
+     * @generated
+     */
+    Monitor getMonitor();
+
+    /**
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getMonitor
+     * <em>Monitor</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Monitor</em>' container reference.
+     * @see #getMonitor()
+     * @generated
+     */
+    void setMonitor(Monitor value);
 
 } // MeasurementSpecification

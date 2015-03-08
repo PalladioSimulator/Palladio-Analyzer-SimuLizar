@@ -25,7 +25,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
     /**
      * The default value of the '{@link #getIntervall() <em>Intervall</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getIntervall()
      * @generated
      * @ordered
@@ -35,7 +35,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
     /**
      * The cached value of the '{@link #getIntervall() <em>Intervall</em>}' attribute. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getIntervall()
      * @generated
      * @ordered
@@ -44,7 +44,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IntervallImpl() {
@@ -53,7 +53,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -63,7 +63,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -73,7 +73,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -88,7 +88,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -102,7 +102,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -117,7 +117,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -132,7 +132,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -146,7 +146,7 @@ public class IntervallImpl extends TemporalCharacterizationImpl implements Inter
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

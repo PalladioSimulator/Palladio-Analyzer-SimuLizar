@@ -150,7 +150,7 @@ import de.uka.ipd.sdq.units.provider.UnitsItemProviderAdapterFactory;
 /**
  * This is an example of a Monitorrepository model editor. <!-- begin-user-doc --> <!-- end-user-doc
  * -->
- * 
+ *
  * @generated
  */
 public class MonitorrepositoryEditor extends MultiPageEditorPart implements IEditingDomainProvider, ISelectionProvider,
@@ -158,7 +158,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This keeps track of the editing domain that is used to track all changes to the model. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected AdapterFactoryEditingDomain editingDomain;
@@ -233,7 +233,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This shows how a table view works. A table can be used as a list with icons. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TableViewer tableViewer;
@@ -295,7 +295,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This listens for when the outline becomes active <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     protected IPartListener partListener = new IPartListener() {
@@ -382,7 +382,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * Adapter used to update the problem indication when resources are demanded loaded. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected EContentAdapter problemIndicationAdapter = new EContentAdapter() {
@@ -915,7 +915,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This returns the viewer as required by the {@link IViewerProvider} interface. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -1411,7 +1411,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This deals with how we want selection in the outliner to affect the other views. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public void handleContentOutlineSelection(final ISelection selection) {
@@ -1450,7 +1450,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This is for implementing {@link IEditorPart} and simply tests the command stack. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -1461,7 +1461,7 @@ IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This is for implementing {@link IEditorPart} and simply saves the model file. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

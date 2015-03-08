@@ -18,14 +18,14 @@ import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackag
  * This is the item provider adapter for a
  * {@link org.palladiosimulator.simulizar.monitorrepository.DelayedIntervall} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class DelayedIntervallItemProvider extends IntervallItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     public DelayedIntervallItemProvider(final AdapterFactory adapterFactory) {
@@ -35,7 +35,7 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -51,7 +51,7 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
     /**
      * This adds a property descriptor for the Delay feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addDelayPropertyDescriptor(final Object object) {
@@ -60,12 +60,12 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
                 this.getString("_UI_DelayedIntervall_delay_feature"), this.getString(
                         "_UI_PropertyDescriptor_description", "_UI_DelayedIntervall_delay_feature",
                         "_UI_DelayedIntervall_type"), MonitorrepositoryPackage.Literals.DELAYED_INTERVALL__DELAY, true,
-                        false, false, ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
+                false, false, ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
     }
 
     /**
      * This returns DelayedIntervall.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -89,7 +89,7 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -107,7 +107,7 @@ public class DelayedIntervallItemProvider extends IntervallItemProvider {
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that
      * can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

@@ -20,13 +20,13 @@ import org.palladiosimulator.simulizar.monitorrepository.TimeFrame;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements MonitorrepositoryFactory {
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static MonitorrepositoryFactory init() {
@@ -44,7 +44,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public MonitorrepositoryFactoryImpl() {
@@ -53,7 +53,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -78,7 +78,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -93,7 +93,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -108,7 +108,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -119,7 +119,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -130,7 +130,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -141,7 +141,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -163,7 +163,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -174,7 +174,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public StatisticalCharacterizationEnum createStatisticalCharacterizationEnumFromString(final EDataType eDataType,
@@ -189,7 +189,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public String convertStatisticalCharacterizationEnumToString(final EDataType eDataType, final Object instanceValue) {
@@ -198,7 +198,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -208,7 +208,7 @@ public class MonitorrepositoryFactoryImpl extends EFactoryImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @deprecated
      * @generated
      */

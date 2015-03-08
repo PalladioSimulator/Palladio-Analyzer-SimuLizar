@@ -7,14 +7,14 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each
  * non-abstract class of the model. <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage
  * @generated
  */
 public interface MonitorrepositoryFactory extends EFactory {
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     MonitorrepositoryFactory eINSTANCE = org.palladiosimulator.simulizar.monitorrepository.impl.MonitorrepositoryFactoryImpl
@@ -23,7 +23,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Monitor Repository</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Monitor Repository</em>'.
      * @generated
      */
@@ -32,7 +32,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Monitor</em>'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @return a new object of class '<em>Monitor</em>'.
      * @generated
      */
@@ -41,7 +41,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Measurement Specification</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Measurement Specification</em>'.
      * @generated
      */
@@ -50,7 +50,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Intervall</em>'. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @return a new object of class '<em>Intervall</em>'.
      * @generated
      */
@@ -59,7 +59,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Delayed Intervall</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Delayed Intervall</em>'.
      * @generated
      */
@@ -68,7 +68,7 @@ public interface MonitorrepositoryFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Time Frame</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Time Frame</em>'.
      * @generated
      */
@@ -76,7 +76,7 @@ public interface MonitorrepositoryFactory extends EFactory {
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the package supported by this factory.
      * @generated
      */

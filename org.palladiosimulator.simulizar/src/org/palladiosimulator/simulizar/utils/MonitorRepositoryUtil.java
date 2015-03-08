@@ -51,13 +51,13 @@ public final class MonitorRepositoryUtil {
      * @return the MeasurementSpecification, if element should be monitored according to given
      *         performance metric, otherwise null
      */
-    public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel, final EObject element,
-            final MetricDescription metricDescription) {
+    public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel,
+            final EObject element, final MetricDescription metricDescription) {
         if (monitorRepositoryModel != null) {
             for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
                 if (elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
                     for (final MeasurementSpecification measurementSpecification : monitor
-                            .getMeasurementSpecification()) {
+                            .getMeasurementSpecifications()) {
                         if (measurementSpecification.getMetricDescription().getId().equals(metricDescription.getId())) {
                             return measurementSpecification;
                         }
@@ -83,7 +83,10 @@ public final class MonitorRepositoryUtil {
             eobject = getEObjectFromGeneralMeasuringPoint(mp);
             if (eobject == null) {
                 throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
-                        + MeasuringPointUtility.measuringPointToString(mp) + "\"");
+                        + MeasuringPointUtility.measuringPointToString(mp)
+                        + "\" -- most likely this type of measuruing point is "
+                        + "not yet implemented within in getEObjectFromPCMMeasuringPoint "
+                        + "or getEObjectFromGeneralMeasuringPoint methods.");
             }
         }
         return eobject;
@@ -130,6 +133,14 @@ public final class MonitorRepositoryUtil {
             public EObject caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
                 return object.getResourceEnvironment();
             };
+
+            /**
+             * FIXME Different replica IDs are not supported here. [Lehrig]
+             */
+            @Override
+            public EObject caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
+                return object.getActiveResource();
+            }
 
         }.doSwitch(measuringPoint);
     }

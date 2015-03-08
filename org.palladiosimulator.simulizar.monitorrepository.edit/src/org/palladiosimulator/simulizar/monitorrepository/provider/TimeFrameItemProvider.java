@@ -18,14 +18,14 @@ import org.palladiosimulator.simulizar.monitorrepository.TimeFrame;
  * This is the item provider adapter for a
  * {@link org.palladiosimulator.simulizar.monitorrepository.TimeFrame} object. <!-- begin-user-doc
  * --> <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     public TimeFrameItemProvider(final AdapterFactory adapterFactory) {
@@ -35,7 +35,7 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -52,7 +52,7 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
     /**
      * This adds a property descriptor for the Start feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addStartPropertyDescriptor(final Object object) {
@@ -60,14 +60,14 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_TimeFrame_start_feature"), this.getString("_UI_PropertyDescriptor_description",
                         "_UI_TimeFrame_start_feature", "_UI_TimeFrame_type"),
-                MonitorrepositoryPackage.Literals.TIME_FRAME__START, true, false, false,
-                ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
+                        MonitorrepositoryPackage.Literals.TIME_FRAME__START, true, false, false,
+                        ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
     }
 
     /**
      * This adds a property descriptor for the Stop feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addStopPropertyDescriptor(final Object object) {
@@ -75,13 +75,13 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
                 ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
                 this.getString("_UI_TimeFrame_stop_feature"), this.getString("_UI_PropertyDescriptor_description",
                         "_UI_TimeFrame_stop_feature", "_UI_TimeFrame_type"),
-                MonitorrepositoryPackage.Literals.TIME_FRAME__STOP, true, false, false,
-                ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
+                        MonitorrepositoryPackage.Literals.TIME_FRAME__STOP, true, false, false,
+                        ItemPropertyDescriptor.REAL_VALUE_IMAGE, null, null));
     }
 
     /**
      * This returns TimeFrame.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -92,7 +92,7 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -124,7 +124,7 @@ public class TimeFrameItemProvider extends TemporalCharacterizationItemProvider 
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that
      * can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

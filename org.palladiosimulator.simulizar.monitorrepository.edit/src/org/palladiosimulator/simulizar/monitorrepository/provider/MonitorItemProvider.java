@@ -22,14 +22,14 @@ import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
  * This is the item provider adapter for a
  * {@link org.palladiosimulator.simulizar.monitorrepository.Monitor} object. <!-- begin-user-doc -->
  * <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class MonitorItemProvider extends EntityItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     public MonitorItemProvider(final AdapterFactory adapterFactory) {
@@ -39,7 +39,7 @@ public class MonitorItemProvider extends EntityItemProvider {
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -55,7 +55,7 @@ public class MonitorItemProvider extends EntityItemProvider {
     /**
      * This adds a property descriptor for the Measuring Point feature. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addMeasuringPointPropertyDescriptor(final Object object) {
@@ -64,7 +64,7 @@ public class MonitorItemProvider extends EntityItemProvider {
                 this.getString("_UI_Monitor_measuringPoint_feature"),
                 this.getString("_UI_PropertyDescriptor_description", "_UI_Monitor_measuringPoint_feature",
                         "_UI_Monitor_type"), MonitorrepositoryPackage.Literals.MONITOR__MEASURING_POINT, true, false,
-                        true, null, null, null));
+                true, null, null, null));
     }
 
     /**
@@ -73,21 +73,21 @@ public class MonitorItemProvider extends EntityItemProvider {
      * {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(final Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(MonitorrepositoryPackage.Literals.MONITOR__MEASUREMENT_SPECIFICATION);
+            this.childrenFeatures.add(MonitorrepositoryPackage.Literals.MONITOR__MEASUREMENT_SPECIFICATIONS);
         }
         return this.childrenFeatures;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -100,7 +100,7 @@ public class MonitorItemProvider extends EntityItemProvider {
 
     /**
      * This returns Monitor.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -111,7 +111,7 @@ public class MonitorItemProvider extends EntityItemProvider {
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -125,7 +125,7 @@ public class MonitorItemProvider extends EntityItemProvider {
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -133,7 +133,7 @@ public class MonitorItemProvider extends EntityItemProvider {
         this.updateChildren(notification);
 
         switch (notification.getFeatureID(Monitor.class)) {
-        case MonitorrepositoryPackage.MONITOR__MEASUREMENT_SPECIFICATION:
+        case MonitorrepositoryPackage.MONITOR__MEASUREMENT_SPECIFICATIONS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -143,7 +143,7 @@ public class MonitorItemProvider extends EntityItemProvider {
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that
      * can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -151,14 +151,14 @@ public class MonitorItemProvider extends EntityItemProvider {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
         newChildDescriptors.add(this.createChildParameter(
-                MonitorrepositoryPackage.Literals.MONITOR__MEASUREMENT_SPECIFICATION,
+                MonitorrepositoryPackage.Literals.MONITOR__MEASUREMENT_SPECIFICATIONS,
                 MonitorrepositoryFactory.eINSTANCE.createMeasurementSpecification()));
     }
 
     /**
      * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

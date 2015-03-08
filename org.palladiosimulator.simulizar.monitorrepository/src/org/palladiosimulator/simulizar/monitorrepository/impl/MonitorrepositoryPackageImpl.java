@@ -30,62 +30,62 @@ import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class MonitorrepositoryPackageImpl extends EPackageImpl implements MonitorrepositoryPackage {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass monitorRepositoryEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass monitorEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass measurementSpecificationEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass temporalCharacterizationEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass intervallEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass delayedIntervallEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EClass timeFrameEClass = null;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private EEnum statisticalCharacterizationEnumEEnum = null;
@@ -98,7 +98,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
      * Note: the correct way to create the package is via the static factory method {@link #init
      * init()}, which also performs initialization of the package, or returns the registered
      * package, if one already exists. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.eclipse.emf.ecore.EPackage.Registry
      * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#eNS_URI
      * @see #init()
@@ -110,7 +110,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private static boolean isInited = false;
@@ -123,7 +123,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
      * This method is used to initialize {@link MonitorrepositoryPackage#eINSTANCE} when that field
      * is accessed. Clients should not invoke it directly. Instead, they should simply access that
      * field to obtain the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #eNS_URI
      * @see #createPackageContents()
      * @see #initializePackageContents()
@@ -164,7 +164,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -174,7 +174,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -184,7 +184,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -194,17 +194,17 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
-    public EReference getMonitor_MeasurementSpecification() {
+    public EReference getMonitor_MeasurementSpecifications() {
         return (EReference) this.monitorEClass.getEStructuralFeatures().get(0);
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -214,7 +214,17 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMonitor_MonitorRepository() {
+        return (EReference) this.monitorEClass.getEStructuralFeatures().get(2);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -224,7 +234,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -234,7 +244,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -244,7 +254,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -254,7 +264,17 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
+     * @generated
+     */
+    @Override
+    public EReference getMeasurementSpecification_Monitor() {
+        return (EReference) this.measurementSpecificationEClass.getEStructuralFeatures().get(3);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -264,7 +284,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -274,7 +294,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -284,7 +304,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -294,7 +314,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -304,7 +324,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -314,7 +334,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -324,7 +344,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -334,7 +354,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -344,7 +364,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -354,7 +374,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private boolean isCreated = false;
@@ -362,7 +382,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
     /**
      * Creates the meta-model objects for the package. This method is guarded to have no affect on
      * any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public void createPackageContents() {
@@ -376,14 +396,16 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
         this.createEReference(this.monitorRepositoryEClass, MONITOR_REPOSITORY__MONITORS);
 
         this.monitorEClass = this.createEClass(MONITOR);
-        this.createEReference(this.monitorEClass, MONITOR__MEASUREMENT_SPECIFICATION);
+        this.createEReference(this.monitorEClass, MONITOR__MEASUREMENT_SPECIFICATIONS);
         this.createEReference(this.monitorEClass, MONITOR__MEASURING_POINT);
+        this.createEReference(this.monitorEClass, MONITOR__MONITOR_REPOSITORY);
 
         this.measurementSpecificationEClass = this.createEClass(MEASUREMENT_SPECIFICATION);
         this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION);
         this.createEAttribute(this.measurementSpecificationEClass,
                 MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION);
         this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION);
+        this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__MONITOR);
 
         this.temporalCharacterizationEClass = this.createEClass(TEMPORAL_CHARACTERIZATION);
 
@@ -403,7 +425,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private boolean isInitialized = false;
@@ -411,7 +433,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
     /**
      * Complete the initialization of the package and its meta-model. This method is guarded to have
      * no affect on any invocation but its first. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public void initializePackageContents() {
@@ -451,18 +473,24 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
         // Initialize classes and features; add operations and parameters
         this.initEClass(this.monitorRepositoryEClass, MonitorRepository.class, "MonitorRepository", !IS_ABSTRACT,
                 !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getMonitorRepository_Monitors(), this.getMonitor(), null, "monitors", null, 0, -1,
-                MonitorRepository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES,
-                !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMonitorRepository_Monitors(), this.getMonitor(),
+                this.getMonitor_MonitorRepository(), "monitors", null, 0, -1, MonitorRepository.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED,
+                IS_ORDERED);
 
         this.initEClass(this.monitorEClass, Monitor.class, "Monitor", !IS_ABSTRACT, !IS_INTERFACE,
                 IS_GENERATED_INSTANCE_CLASS);
-        this.initEReference(this.getMonitor_MeasurementSpecification(), this.getMeasurementSpecification(), null,
-                "measurementSpecification", null, 1, -1, Monitor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE,
-                IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMonitor_MeasurementSpecifications(), this.getMeasurementSpecification(),
+                this.getMeasurementSpecification_Monitor(), "measurementSpecifications", null, 1, -1, Monitor.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMonitor_MeasuringPoint(), theMeasuringpointPackage.getMeasuringPoint(), null,
                 "measuringPoint", null, 1, 1, Monitor.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMonitor_MonitorRepository(), this.getMonitorRepository(),
+                this.getMonitorRepository_Monitors(), "monitorRepository", null, 1, 1, Monitor.class, !IS_TRANSIENT,
+                !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE,
+                !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.measurementSpecificationEClass, MeasurementSpecification.class,
                 "MeasurementSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -477,6 +505,10 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
                 theMetricSpecPackage.getMetricDescription(), null, "metricDescription", null, 1, 1,
                 MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE,
                 IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEReference(this.getMeasurementSpecification_Monitor(), this.getMonitor(),
+                this.getMonitor_MeasurementSpecifications(), "monitor", null, 1, 1, MeasurementSpecification.class,
+                !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
+                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.temporalCharacterizationEClass, TemporalCharacterization.class,
                 "TemporalCharacterization", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

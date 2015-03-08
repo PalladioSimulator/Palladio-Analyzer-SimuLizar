@@ -19,7 +19,7 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
 public abstract class TemporalCharacterizationImpl extends IdentifierImpl implements TemporalCharacterization {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TemporalCharacterizationImpl() {
@@ -28,7 +28,7 @@ public abstract class TemporalCharacterizationImpl extends IdentifierImpl implem
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

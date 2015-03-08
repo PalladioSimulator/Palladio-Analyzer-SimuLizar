@@ -165,7 +165,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     private void initCalculators() {
         for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
-            for (final MeasurementSpecification measurementSpecification : monitor.getMeasurementSpecification()) {
+            for (final MeasurementSpecification measurementSpecification : monitor.getMeasurementSpecifications()) {
                 final MeasuringPoint measuringPoint = monitor.getMeasuringPoint();
                 final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
                 final String metricDescriptionID = measurementSpecification.getMetricDescription().getId();

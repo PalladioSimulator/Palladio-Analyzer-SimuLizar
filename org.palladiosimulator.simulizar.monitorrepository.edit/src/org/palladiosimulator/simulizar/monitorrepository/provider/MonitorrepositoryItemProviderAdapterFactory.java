@@ -27,15 +27,15 @@ import org.palladiosimulator.simulizar.monitorrepository.util.MonitorrepositoryA
  * {@link #fireNotifyChanged fireNotifyChanged}. The adapters also support Eclipse property sheets.
  * Note that most of the adapters are shared among multiple instances. <!-- begin-user-doc --> <!--
  * end-user-doc -->
- * 
+ *
  * @generated
  */
 public class MonitorrepositoryItemProviderAdapterFactory extends MonitorrepositoryAdapterFactory implements
-ComposeableAdapterFactory, IChangeNotifier, IDisposable {
+        ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -43,7 +43,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -51,14 +51,14 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of all the supported types checked by {@link #isFactoryForType
      * isFactoryForType}. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected Collection<Object> supportedTypes = new ArrayList<Object>();
 
     /**
      * This constructs an instance. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public MonitorrepositoryItemProviderAdapterFactory() {
@@ -73,7 +73,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.MonitorRepository} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MonitorRepositoryItemProvider monitorRepositoryItemProvider;
@@ -82,7 +82,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.MonitorRepository}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -98,7 +98,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.Monitor} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MonitorItemProvider monitorItemProvider;
@@ -107,7 +107,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.Monitor}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -123,7 +123,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification} instances.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MeasurementSpecificationItemProvider measurementSpecificationItemProvider;
@@ -132,7 +132,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -148,7 +148,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.Intervall} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IntervallItemProvider intervallItemProvider;
@@ -157,7 +157,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.Intervall}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -173,7 +173,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.DelayedIntervall} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected DelayedIntervallItemProvider delayedIntervallItemProvider;
@@ -182,7 +182,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.DelayedIntervall}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -198,7 +198,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.simulizar.monitorrepository.TimeFrame} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TimeFrameItemProvider timeFrameItemProvider;
@@ -207,7 +207,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This creates an adapter for a
      * {@link org.palladiosimulator.simulizar.monitorrepository.TimeFrame}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -222,7 +222,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This returns the root adapter factory that contains this factory. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -233,7 +233,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This sets the composed adapter factory that contains this factory. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -243,7 +243,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -254,7 +254,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -264,7 +264,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -281,7 +281,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 
     /**
      * This adds a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -291,7 +291,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
 
     /**
      * This removes a listener. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -302,7 +302,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -317,7 +317,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This disposes all of the item providers created by this factory. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

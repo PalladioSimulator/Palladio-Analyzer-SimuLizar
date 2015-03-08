@@ -12,7 +12,7 @@ import org.eclipse.emf.common.util.Enumerator;
  * <!-- begin-user-doc --> A representation of the literals of the enumeration '
  * <em><b>Statistical Characterization Enum</b></em>', and utility methods for working with them.
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getStatisticalCharacterizationEnum()
  * @model
  * @generated
@@ -20,7 +20,7 @@ import org.eclipse.emf.common.util.Enumerator;
 public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * The '<em><b>None</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #NONE_VALUE
      * @generated
      * @ordered
@@ -29,7 +29,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
 
     /**
      * The '<em><b>Median</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #MEDIAN_VALUE
      * @generated
      * @ordered
@@ -39,7 +39,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * The '<em><b>Arithmetic Mean</b></em>' literal object. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @see #ARITHMETIC_MEAN_VALUE
      * @generated
      * @ordered
@@ -49,7 +49,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * The '<em><b>Geometric Mean</b></em>' literal object. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @see #GEOMETRIC_MEAN_VALUE
      * @generated
      * @ordered
@@ -59,7 +59,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * The '<em><b>Harmonic Mean</b></em>' literal object. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @see #HARMONIC_MEAN_VALUE
      * @generated
      * @ordered
@@ -73,7 +73,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #NONE
      * @model name="None"
      * @generated
@@ -88,7 +88,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #MEDIAN
      * @model name="Median"
      * @generated
@@ -103,7 +103,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #ARITHMETIC_MEAN
      * @model name="ArithmeticMean"
      * @generated
@@ -118,7 +118,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #GEOMETRIC_MEAN
      * @model name="GeometricMean"
      * @generated
@@ -133,7 +133,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #HARMONIC_MEAN
      * @model name="HarmonicMean"
      * @generated
@@ -144,7 +144,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * An array of all the '<em><b>Statistical Characterization Enum</b></em>' enumerators. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private static final StatisticalCharacterizationEnum[] VALUES_ARRAY = new StatisticalCharacterizationEnum[] { NONE,
@@ -153,7 +153,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * A public read-only list of all the '<em><b>Statistical Characterization Enum</b></em>'
      * enumerators. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static final List<StatisticalCharacterizationEnum> VALUES = Collections.unmodifiableList(Arrays
@@ -162,7 +162,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * Returns the '<em><b>Statistical Characterization Enum</b></em>' literal with the specified
      * literal value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static StatisticalCharacterizationEnum get(final String literal) {
@@ -177,7 +177,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * Returns the '<em><b>Statistical Characterization Enum</b></em>' literal with the specified
      * name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static StatisticalCharacterizationEnum getByName(final String name) {
@@ -192,7 +192,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * Returns the '<em><b>Statistical Characterization Enum</b></em>' literal with the specified
      * integer value. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public static StatisticalCharacterizationEnum get(final int value) {
@@ -213,28 +213,28 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private final int value;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private final String name;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private final String literal;
 
     /**
      * Only this class can construct instances. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     private StatisticalCharacterizationEnum(final int value, final String name, final String literal) {
@@ -245,7 +245,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -255,7 +255,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -265,7 +265,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -276,7 +276,7 @@ public enum StatisticalCharacterizationEnum implements Enumerator {
     /**
      * Returns the literal value of the enumerator, which is its string representation. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

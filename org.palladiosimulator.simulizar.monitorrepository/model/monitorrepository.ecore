@@ -7,16 +7,19 @@
       <details key="documentation" value="Base class representing the monitor repository model."/>
     </eAnnotations>
     <eStructuralFeatures xsi:type="ecore:EReference" name="monitors" upperBound="-1"
-        eType="#//Monitor" containment="true"/>
+        eType="#//Monitor" containment="true" eOpposite="#//Monitor/monitorRepository"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Monitor" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="A performance measurement for a pcm element (type level)."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="measurementSpecification"
-        lowerBound="1" upperBound="-1" eType="#//MeasurementSpecification" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measurementSpecifications"
+        lowerBound="1" upperBound="-1" eType="#//MeasurementSpecification" containment="true"
+        eOpposite="#//MeasurementSpecification/monitor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="measuringPoint" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitorRepository" lowerBound="1"
+        eType="#//MonitorRepository" eOpposite="#//MonitorRepository/monitors"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="MeasurementSpecification" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
@@ -28,6 +31,8 @@
         lowerBound="1" eType="#//StatisticalCharacterizationEnum"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metricDescription" lowerBound="1"
         eType="ecore:EClass platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="monitor" lowerBound="1"
+        eType="#//Monitor" eOpposite="#//Monitor/measurementSpecifications"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="TemporalCharacterization" abstract="true"
       eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">

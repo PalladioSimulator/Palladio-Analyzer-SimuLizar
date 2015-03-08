@@ -27,7 +27,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The default value of the '{@link #getStart() <em>Start</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStart()
      * @generated
      * @ordered
@@ -37,7 +37,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The cached value of the '{@link #getStart() <em>Start</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStart()
      * @generated
      * @ordered
@@ -47,7 +47,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The default value of the '{@link #getStop() <em>Stop</em>}' attribute. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getStop()
      * @generated
      * @ordered
@@ -57,7 +57,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
     /**
      * The cached value of the '{@link #getStop() <em>Stop</em>}' attribute. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getStop()
      * @generated
      * @ordered
@@ -66,7 +66,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected TimeFrameImpl() {
@@ -75,7 +75,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -85,7 +85,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -95,7 +95,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -110,7 +110,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -120,7 +120,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -135,7 +135,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -151,7 +151,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -169,7 +169,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -187,7 +187,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -203,7 +203,7 @@ public class TimeFrameImpl extends TemporalCharacterizationImpl implements TimeF
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

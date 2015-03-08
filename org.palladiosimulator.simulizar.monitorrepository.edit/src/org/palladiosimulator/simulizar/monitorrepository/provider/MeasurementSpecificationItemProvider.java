@@ -24,14 +24,14 @@ import de.uka.ipd.sdq.identifier.provider.IdentifierItemProvider;
  * This is the item provider adapter for a
  * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification} object. <!--
  * begin-user-doc --> <!-- end-user-doc -->
- * 
+ *
  * @generated
  */
 public class MeasurementSpecificationItemProvider extends IdentifierItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     public MeasurementSpecificationItemProvider(final AdapterFactory adapterFactory) {
@@ -41,7 +41,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
     /**
      * This returns the property descriptors for the adapted class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -58,7 +58,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
     /**
      * This adds a property descriptor for the Statistical Characterization feature. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addStatisticalCharacterizationPropertyDescriptor(final Object object) {
@@ -68,14 +68,14 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
                         "_UI_PropertyDescriptor_description",
                         "_UI_MeasurementSpecification_statisticalCharacterization_feature",
                         "_UI_MeasurementSpecification_type"),
-                        MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION, true, false,
-                        false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
+                MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION, true, false,
+                false, ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
      * This adds a property descriptor for the Metric Description feature. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected void addMetricDescriptionPropertyDescriptor(final Object object) {
@@ -84,8 +84,8 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
                 this.getString("_UI_MeasurementSpecification_metricDescription_feature"), this.getString(
                         "_UI_PropertyDescriptor_description", "_UI_MeasurementSpecification_metricDescription_feature",
                         "_UI_MeasurementSpecification_type"),
-                        MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION, true, false, true,
-                        null, null, null));
+                MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION, true, false, true,
+                null, null, null));
     }
 
     /**
@@ -94,7 +94,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
      * {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -102,14 +102,14 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
             this.childrenFeatures
-                    .add(MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION);
+            .add(MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION);
         }
         return this.childrenFeatures;
     }
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
 
     /**
      * This returns MeasurementSpecification.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -133,7 +133,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -149,7 +149,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
      * This handles model notifications by calling {@link #updateChildren} to update any cached
      * children and by creating a viewer notification, which it passes to {@link #fireNotifyChanged}
      * . <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -170,7 +170,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
     /**
      * This adds {@link org.eclipse.emf.edit.command.CommandParameter}s describing the children that
      * can be created under this object. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -193,7 +193,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
     /**
      * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
