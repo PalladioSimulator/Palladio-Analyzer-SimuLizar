@@ -1,11 +1,14 @@
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
+import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
+import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
+import org.palladiosimulator.experimentanalysis.SlidingWindowAggregator;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
@@ -50,7 +53,7 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
      *             <li>{@code acceptedMetrics}, {@code moveOnStrategy} or {@code model} is
      *             {@code null}</li>
      *             </ul>
-     * @see SimulationGovernedSlidingWindow#SlidingWindow(Measure, Measure, MetricDescription,
+     * @see #SlidingWindow(Measure, Measure, MetricDescription,
      *      ISlidingWindowMoveOnStrategy)
      */
     public SimulationGovernedSlidingWindow(Measure<Double, Duration> windowLength, MetricDescription acceptedMetrics,
@@ -110,7 +113,7 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
 
             @Override
             public void simulationStop() {
-                onWindowFullEvent();
+                onSimulationStop();
             }
 
             @Override
@@ -119,18 +122,27 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
         });
     }
 
+    private void onSimulationStop() {
+        Measurable<Duration> effectiveWindowLength = getEffectiveWindowLength();
+        //only trigger event and move on if window is effective
+        //effective window length might be equivalent to 0s if simulation time is integer multiple of window length 
+        if (Double.compare(effectiveWindowLength.doubleValue(SI.SECOND), 0d) != 0) {
+            onWindowFullEvent();
+        }
+    }
+    
     /**
      * Gets the current upper bound of the window. Note that the bound might be smaller than
      * {@code getCurrentLowerBound() + windowLength} as defined in
-     * {@link SimulationGovernedSlidingWindow#SimulationGovernedSlidingWindow(Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
+     * {@link #SimulationGovernedSlidingWindow(Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
      * or
-     * {@link SimulationGovernedSlidingWindow#SimulationGovernedSlidingWindow(Measure, Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
+     * {@link #SimulationGovernedSlidingWindow(Measure, Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
      * .<br>
      * More precisely, this particular case occurs if the total simulation time is not an integer
      * multiple of the specified length.
      * 
      * @return A {@link Measure} denoting the current upper bound.
-     * @see SimulationGovernedSlidingWindow#getEffectiveWindowLength()
+     * @see #getEffectiveWindowLength()
      */
     @Override
     public Measure<Double, Duration> getCurrentUpperBound() {
@@ -150,15 +162,15 @@ public class SimulationGovernedSlidingWindow extends SlidingWindow {
     /**
      * Gets the current, effective window length. Note that the effective window length might be
      * smaller than specified in
-     * {@link SimulationGovernedSlidingWindow#SimulationGovernedSlidingWindow(Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
+     * {@link #SimulationGovernedSlidingWindow(Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
      * or
-     * {@link SimulationGovernedSlidingWindow#SimulationGovernedSlidingWindow(Measure, Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
+     * {@link #SimulationGovernedSlidingWindow(Measure, Measure, MetricDescription, ISlidingWindowMoveOnStrategy)}
      * .<br>
      * More precisely, this particular case occurs if the total simulation time is not an integer
      * multiple of the specified length.
      * 
      * @return A {@link Measure} denoting the instantaneous effective window length.
-     * @see SimulationGovernedSlidingWindow#getCurrentUpperBound()
+     * @see #getCurrentUpperBound()
      */
     @Override
     public Measure<Double, Duration> getEffectiveWindowLength() {
