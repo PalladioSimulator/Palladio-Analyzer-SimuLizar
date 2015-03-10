@@ -44,6 +44,7 @@ import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
+import org.palladiosimulator.simulizar.metrics.powerconsumption.PowerConsumptionPrmRecorder;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEnergyConsumptionCalculator;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEvaluationScope;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimePowerConsumptionCalculator;
@@ -54,9 +55,7 @@ import org.palladiosimulator.simulizar.pms.PMSModel;
 import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
 import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
 import org.palladiosimulator.simulizar.pms.util.PmsSwitch;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.utils.PMSUtil;
 
 import de.fzi.power.infrastructure.PowerProvidingEntity;
@@ -306,9 +305,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             PowerModelRegistry reg = new PowerModelRegistry();
             PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
                     new ExtensibleCalculatorInstantiatorImpl());
-            final Collection<PCMModelElementMeasurement> pcmModelElementMeasurements =
-                    this.prmModel.getPcmModelElementMeasurements();
-            final List<ConsumptionContext> createdContexts = new ArrayList<>(powerMeasurementSpecs.size());
+            List<ConsumptionContext> createdContexts = new ArrayList<>(powerMeasurementSpecs.size());
+            List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<>(powerMeasurementSpecs.size());
             
             for (MeasurementSpecification measurementSpec : powerMeasurementSpecs) {
                 MeasuringPoint mp = ((PerformanceMeasurement) measurementSpec.eContainer()).getMeasuringPoint();
@@ -323,54 +321,50 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 powerRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
                         createStringMeasuringPointFromMeasuringPoint(mp, " [Power]"));
 
-                final IRecorder energyDataRecorder = initializeRecorder(energyRecorderConfigurationMap);
-                final IRecorder powerDataRecorder = initializeRecorder(powerRecorderConfigurationMap);
-
                 Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(measurementSpec
                         .getTemporalRestriction());
-                Measure<Double, Duration> windowLength = windowProperties[0];
-                Measure<Double, Duration> windowIncrement = windowProperties[1];
-                final SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(ppe,
-                        this.simuComModel, windowLength, windowIncrement);
+                Measure<Double, Duration> initialOffset = windowProperties[0];
+                Measure<Double, Duration> samplingPeriod = windowProperties[1];
+                SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(ppe,
+                        this.simuComModel, initialOffset, samplingPeriod);
 
                 modelUpdaterSwitch.doSwitch(ppe);
                 ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
                         .getDistributionPowerAssemblyContext().getPowerBindingRepository(), scope, reg);
 
-                final AbstractCumulativeEnergyCalculator energyCalculator = new SimpsonRuleCumulativeEnergyCalculator();
-                energyCalculator.setOffset(windowLength);
-                energyCalculator.setSamplingPeriod(windowIncrement);
+                AbstractCumulativeEnergyCalculator energyCalculator =
+                        new SimpsonRuleCumulativeEnergyCalculator(samplingPeriod, initialOffset);
 
-                final PCMModelElementMeasurement ppeMeasurement = PrmFactory.eINSTANCE.createPCMModelElementMeasurement();
-                ppeMeasurement.setPcmModelElement(ppe);
-                ppeMeasurement.setMeasurementSpecification(measurementSpec);
-                pcmModelElementMeasurements.add(ppeMeasurement);
-                
                 createdContexts.add(context);
+                createdScopes.add(scope);
                 SimulationTimePowerConsumptionCalculator powerConsumptionCalculator =
                         new SimulationTimePowerConsumptionCalculator(context, scope, ppe);
                 SimulationTimeEnergyConsumptionCalculator energyConsumptionCalculator =
                         new SimulationTimeEnergyConsumptionCalculator(energyCalculator);
                 
-                scope.addScopeListener(powerConsumptionCalculator);
-                powerConsumptionCalculator.addObserver(powerDataRecorder);
+                scope.addListener(powerConsumptionCalculator);
+                powerConsumptionCalculator.addObserver(initializeRecorder(powerRecorderConfigurationMap));
+                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, measurementSpec, ppe));
                 powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
-                energyConsumptionCalculator.addObserver(energyDataRecorder);
-                //TODO PRMRecorder has to be attached so that changes can be propagated
-
+                energyConsumptionCalculator.addObserver(initializeRecorder(energyRecorderConfigurationMap));
             }
-            triggerAfterSimConsumptionContextCleanup(createdContexts);
+            triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
     }
 
-    private void triggerAfterSimConsumptionContextCleanup(final Collection<ConsumptionContext> contextsToCleanup) {
+    private void triggerAfterSimulationCleanup(final Collection<ConsumptionContext> contextsToCleanup,
+            final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
         assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
+        assert scopesToCleanup != null && !scopesToCleanup.isEmpty();
 
         this.simuComModel.getConfiguration().addListener(new ISimulationListener() {
             @Override
             public void simulationStop() {
                 for (ConsumptionContext context : contextsToCleanup) {
                     context.cleanUp();
+                }
+                for (SimulationTimeEvaluationScope scope : scopesToCleanup) {
+                    scope.removeAllListeners();
                 }
             }
             @Override
@@ -380,7 +374,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     private void initUntilizationMeasurements() {
-
         Collection<MeasurementSpecification> utilMeasurementSpecs =
                 getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.UTILIZATION);
         if (!utilMeasurementSpecs.isEmpty()) {
