@@ -25,7 +25,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.AbstractRecorder;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
 
@@ -153,10 +153,33 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @param listener The {@link ISimulationEvaluationScopeListener} to observe this scope.
      * @throws IllegalArgumentException In case the given listener is {@code null} or already attached.
      */
-    public void addScopeListener(ISimulationEvaluationScopeListener listener) {
+    public void addListener(ISimulationEvaluationScopeListener listener) {
         this.collector.addObserver(listener);
     }
 
+    /**
+     * Detaches the given listener from the scope.
+     * Prior to that, the listener's {@link ISimulationEvaluationScopeListener#preUnregister()}
+     * callback implementation is invoked.
+     * @param listener The {@link ISimulationEvaluationScopeListener} to detach.
+     * @throws IllegalArgumentException In case the given listener has not been attached or is {@code null}.
+     * @see #addListener(ISimulationEvaluationScopeListener)
+     */
+    public void removeListener(ISimulationEvaluationScopeListener listener) {
+        listener.preUnregister();
+        this.collector.removeObserver(listener);
+    }
+
+    /**
+     * Removes all currently attached listeners, i.e., {@link #removeListener(ISimulationEvaluationScopeListener)} 
+     * is invoked once per per attached listener.
+     */
+    public void removeAllListeners() {
+        for (ISimulationEvaluationScopeListener listener : this.collector.getObservers()) {
+            removeListener(listener);
+        }
+    }
+    
      /**
      * This implementation does nothing.
      */
@@ -284,22 +307,12 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
     }
 
-    private class ScopeRecorder implements IRecorder {
+    private class ScopeRecorder extends AbstractRecorder {
 
         private final ProcessingResourceSpecification spec;
 
         public ScopeRecorder(ProcessingResourceSpecification spec) {
             this.spec = spec;
-        }
-
-        @Override
-        public void newMeasurementAvailable(Measurement newMeasurement) {
-            // implementation is not required
-        }
-
-        @Override
-        public void preUnregister() {
-            // implementation is not required
         }
 
         @Override
@@ -323,6 +336,5 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         public void flush() {
             // implementation is not required
         }
-
     }
 }

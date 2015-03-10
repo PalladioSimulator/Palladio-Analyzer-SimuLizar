@@ -6,7 +6,6 @@ import javax.measure.quantity.Energy;
 import javax.measure.quantity.Power;
 import javax.measure.unit.Unit;
 
-import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.Measurement;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
@@ -36,11 +35,15 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
 
     public SimulationTimeEnergyConsumptionCalculator(AbstractCumulativeEnergyCalculator energyCalculator) {
         super(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
+        if (energyCalculator == null) {
+            throw new IllegalArgumentException("Given calculator must not be null.");
+        }
         this.energyCalculator = energyCalculator;
     }
 
     private void informListeners(Measurement newEnergyMeasurement) {
         assert newEnergyMeasurement != null;
+        assert newEnergyMeasurement.isCompatibleWith(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
 
         super.notifyMeasurementSourceListener(newEnergyMeasurement);
     }
@@ -52,18 +55,21 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
         }
         Measurable<Power> powerSample = newInputMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POWER_CONSUMPTION);
-        Amount<Energy> energySample = this.energyCalculator.calculateNext(powerSample);
+        Measurable<Energy> energySample = this.energyCalculator.calculateNext(powerSample);
         Measure<?, ?> energyMeasure = Measure.valueOf(energySample.doubleValue(DEFAULT_ENERGY_UNIT), DEFAULT_ENERGY_UNIT);
         Measure<?, ?> pointInTimeMeasure = newInputMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
-        Measurement newPowerMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
+        Measurement newEnergyMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
                 pointInTimeMeasure, energyMeasure);
-        informListeners(newPowerMeasurement);
+        informListeners(newEnergyMeasurement);
     }
 
     @Override
     public void preUnregister() {
+        for (IMeasurementSourceListener listener: super.getMeasurementSourceListeners()) {
+            listener.preUnregister();
+            super.removeObserver(listener);
+        }
     }
-
 }

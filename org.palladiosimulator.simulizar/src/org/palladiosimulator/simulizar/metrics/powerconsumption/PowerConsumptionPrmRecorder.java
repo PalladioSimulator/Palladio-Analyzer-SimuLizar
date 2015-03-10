@@ -63,7 +63,7 @@ public class PowerConsumptionPrmRecorder extends PRMRecorder implements IMeasure
     
     private void setMeasurementValue(double newValue) {
         assert !Double.isInfinite(newValue) && !Double.isNaN(newValue);
-        
+                
         super.getPCMModelElementMeasurement().setMeasurementValue(newValue);
     }
 }
