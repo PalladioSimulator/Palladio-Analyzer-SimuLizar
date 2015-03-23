@@ -6,7 +6,7 @@ import javax.measure.quantity.Power;
 import javax.measure.unit.Unit;
 
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
@@ -57,7 +57,7 @@ public class SimulationTimePowerConsumptionCalculator extends MeasurementSource 
         if (this.scope.hasNext()) {
             this.scope.next();
             Measurable<Power> calulatedConsumption = this.consumptionSwitch.doSwitch(this.ppe);
-            Measurement newPowerMeasurement = new TupleMeasurement(POWER_CONSUMPTION_TUPLE_METRIC_DESC,
+            MeasuringValue newPowerMeasurement = new TupleMeasurement(POWER_CONSUMPTION_TUPLE_METRIC_DESC,
                     this.scope.getCurrentPointInTime(), Measure.valueOf(
                             calulatedConsumption.doubleValue(DEFAULT_POWER_UNIT), DEFAULT_POWER_UNIT));
             informListeners(newPowerMeasurement);
@@ -68,7 +68,7 @@ public class SimulationTimePowerConsumptionCalculator extends MeasurementSource 
         
     }
 
-    private void informListeners(Measurement newPowerMeasurement) {
+    private void informListeners(MeasuringValue newPowerMeasurement) {
         assert newPowerMeasurement != null;
         assert newPowerMeasurement.isCompatibleWith(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
 

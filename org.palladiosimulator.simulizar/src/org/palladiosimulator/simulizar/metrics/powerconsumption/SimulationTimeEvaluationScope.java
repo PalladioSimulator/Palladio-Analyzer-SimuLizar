@@ -18,7 +18,7 @@ import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
@@ -97,7 +97,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         this.collector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
 
         for (ProcessingResourceSpecification spec : this.processingResourceSpecs) {
-            IDataStream<Measurement> stream = new SingletonDataStream();
+            IDataStream<MeasuringValue> stream = new SingletonDataStream();
             this.resourceMeasurements.put(spec, Collections.singleton(stream));
         }
     }
@@ -195,11 +195,11 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @author Florian Rosenthal
      *
      */
-    private static final class SingletonDataStream implements IDataStream<Measurement> {
-        private Measurement innerElement;
+    private static final class SingletonDataStream implements IDataStream<MeasuringValue> {
+        private MeasuringValue innerElement;
         private boolean isClosed;
         
-        private static final Iterator<Measurement> EMPTY_ITERATOR = Collections.emptyIterator();
+        private static final Iterator<MeasuringValue> EMPTY_ITERATOR = Collections.emptyIterator();
         
         /**
          * Initializes a new instance of the class.
@@ -210,7 +210,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
         
         @Override
-        public Iterator<Measurement> iterator() {
+        public Iterator<MeasuringValue> iterator() {
             throwExceptionIfClosed();
             if (this.innerElement == null) {
                 return EMPTY_ITERATOR;
@@ -241,10 +241,10 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
         /**
-         * Exchanges the currently contained sole element by the given {@link Measurement}. 
-         * @param m The {@link Measurement} to be stored in the stream.
+         * Exchanges the currently contained sole element by the given {@link MeasuringValue}. 
+         * @param m The {@link MeasuringValue} to be stored in the stream.
          */
-        public void exchangeElement(Measurement m) {
+        public void exchangeElement(MeasuringValue m) {
             assert m != null;
             
             throwExceptionIfClosed();
@@ -263,7 +263,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
     private class UtilizationMeasurementsCollector extends AbstractObservable<ISimulationEvaluationScopeListener> {
 
-        private Map<ProcessingResourceSpecification, Measurement> collectedMeasurements;
+        private Map<ProcessingResourceSpecification, MeasuringValue> collectedMeasurements;
         private final int measurementsToCollect;
 
         public UtilizationMeasurementsCollector(int measurementsToCollect) {
@@ -273,7 +273,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
         private void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec,
-                Measurement utilMeasurement) {
+                MeasuringValue utilMeasurement) {
             assert spec != null && utilMeasurement != null;
             
             if (this.collectedMeasurements.put(spec, utilMeasurement) == null
@@ -282,7 +282,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                     // one "round" is complete: windows of all specs have produced their utilization measurement
                     // so forward data to listeners (e.g., power calculators, consumption contexts), then clear
                     for (ProcessingResourceSpecification proc : SimulationTimeEvaluationScope.this.processingResourceSpecs) {
-                        Set<IDataStream<Measurement>> dataset = SimulationTimeEvaluationScope.this.resourceMeasurements.get(proc);
+                        Set<IDataStream<MeasuringValue>> dataset = SimulationTimeEvaluationScope.this.resourceMeasurements.get(proc);
                         assert dataset.size() == 1;
                         //this cast is safe as we insert only SingletonDataStream instances (cf. ctor)
                         SingletonDataStream procMeasurements = (SingletonDataStream) dataset.iterator().next();
@@ -321,7 +321,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
         @Override
-        public void writeData(Measurement measurement) {
+        public void writeData(MeasuringValue measurement) {
             if (measurement == null) {
                 throw new IllegalStateException("Somehow 'null' measurement was passed to recorder.");
             }
