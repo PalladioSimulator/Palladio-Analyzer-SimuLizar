@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
@@ -28,7 +28,7 @@ public class ReconfigurationAggregator extends PRMRecorder implements IMeasureme
     }
 
     @Override
-    public void newMeasurementAvailable(Measurement measurement) {
+    public void newMeasurementAvailable(MeasuringValue measurement) {
         // TODO Auto-generated method stub
 
     }

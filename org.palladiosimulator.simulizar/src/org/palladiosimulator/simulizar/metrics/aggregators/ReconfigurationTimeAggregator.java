@@ -10,7 +10,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
@@ -37,7 +37,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
      * (org.palladiosimulator.measurementframework.AbstractMeasureProvider)
      */
     @Override
-    public void newMeasurementAvailable(Measurement measurement) {
+    public void newMeasurementAvailable(MeasuringValue measurement) {
         final Measure<Double, Duration> currentSimulationTimeMeasure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
