@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.metrics.powerconsumption;
 import javax.measure.Measure;
 import javax.measure.quantity.Power;
 
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
@@ -29,7 +29,7 @@ public class PowerConsumptionPrmRecorder extends PRMRecorder implements IMeasure
     }
 
     @Override
-    public void newMeasurementAvailable(Measurement newMeasurement) {
+    public void newMeasurementAvailable(MeasuringValue newMeasurement) {
         if (newMeasurement == null || !newMeasurement.isCompatibleWith(MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE)) {
             throw new IllegalArgumentException("New available measurement is not a power consumption tuple!");
         }

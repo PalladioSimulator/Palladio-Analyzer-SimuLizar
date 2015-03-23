@@ -7,7 +7,7 @@ import javax.measure.quantity.Power;
 import javax.measure.unit.Unit;
 
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.measurementframework.Measurement;
+import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
@@ -41,7 +41,7 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
         this.energyCalculator = energyCalculator;
     }
 
-    private void informListeners(Measurement newEnergyMeasurement) {
+    private void informListeners(MeasuringValue newEnergyMeasurement) {
         assert newEnergyMeasurement != null;
         assert newEnergyMeasurement.isCompatibleWith(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
 
@@ -49,7 +49,7 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
     }
 
     @Override
-    public void newMeasurementAvailable(Measurement newInputMeasurement) {
+    public void newMeasurementAvailable(MeasuringValue newInputMeasurement) {
         if (newInputMeasurement == null || !newInputMeasurement.isCompatibleWith(POWER_CONSUMPTION_TUPLE_METRIC_DESC)) {
             throw new IllegalStateException("Somehow a wrong measurement kind was passed.");
         }
@@ -60,7 +60,7 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
         Measure<?, ?> pointInTimeMeasure = newInputMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
-        Measurement newEnergyMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
+        MeasuringValue newEnergyMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
                 pointInTimeMeasure, energyMeasure);
         informListeners(newEnergyMeasurement);
     }
