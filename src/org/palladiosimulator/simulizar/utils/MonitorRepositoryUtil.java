@@ -6,7 +6,6 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
@@ -83,8 +82,7 @@ public final class MonitorRepositoryUtil {
             eobject = getEObjectFromGeneralMeasuringPoint(mp);
             if (eobject == null) {
                 throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
-                        + MeasuringPointUtility.measuringPointToString(mp)
-                        + "\" -- most likely this type of measuruing point is "
+                        + mp.getStringRepresentation() + "\" -- most likely this type of measuring point is "
                         + "not yet implemented within in getEObjectFromPCMMeasuringPoint "
                         + "or getEObjectFromGeneralMeasuringPoint methods.");
             }
