@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
@@ -24,7 +24,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
-    private final PMSModel pms;
+    private final MonitorRepository monitorRepository;
     private final PRMModel prm;
 
     /**
@@ -36,7 +36,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
         super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
-        this.pms = runtimeState.getModelAccess().getPMSModel();
+        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();;
         this.prm = runtimeState.getModelAccess().getPRMModel();
     }
 
