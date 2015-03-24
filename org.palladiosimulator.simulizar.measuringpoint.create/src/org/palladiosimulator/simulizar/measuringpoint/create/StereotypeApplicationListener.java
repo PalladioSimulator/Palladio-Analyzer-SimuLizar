@@ -167,7 +167,7 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
      *            list of resourceURIs.
      */
     private void createMeasuringPoints(Set<String> resourceURIs) {
-        for (String resourceURI : resourceURIs) {
+        for (final String resourceURI : resourceURIs) {
             if (elementIDs.contains(resourceURI)) {
                 continue;
             }
@@ -267,7 +267,7 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
      * @param resource
      *            resource to be deleted.
      */
-    public void deleteResource(IResource resource) {
+    public void deleteResource(final IResource resource) {
         WorkspaceJob deleteJob = new WorkspaceJob(DELETE_RESOURCE_JOB_NAME) {
 
             @Override
@@ -293,8 +293,8 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
      *         created
      */
     private String getMeasuringPointName(String resourceURI) {
-        String fileName = resourceURI.replace(ELEMENT_ID_PREFIX, ""); //$NON-NLS-2$
-        fileName = fileName.replace(REPOSITORY_FILE_EXTENSION, ""); //$NON-NLS-2$
+        String fileName = resourceURI.replace(ELEMENT_ID_PREFIX, ""); 
+        fileName = fileName.replace(REPOSITORY_FILE_EXTENSION, ""); 
         fileName = fileName + MEASURING_POINT_FILE_EXTENSION;
         return fileName;
     }
