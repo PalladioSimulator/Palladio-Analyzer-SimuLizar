@@ -7,8 +7,8 @@ import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * Composite job loading pcm and pms model, as well as all sdm models and starting pcm
- * interpretation.
+ * Composite job loading pcm and pms model, as well as all sdm models and usage evolution model and
+ * starting pcm interpretation.
  * 
  * @author Joachim Meyer
  * 
@@ -27,7 +27,9 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
 
         this.addJob(new LoadPCMModelsIntoBlackboardInterpreterJob(configuration));
 
-        this.addJob(new LoadPMSModelIntoBlackboardJob(configuration));
+        this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
+
+        this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
 
         this.addJob(new LoadSDMModelsIntoBlackboardJob(configuration));
 
