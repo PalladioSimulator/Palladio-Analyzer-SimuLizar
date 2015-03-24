@@ -223,7 +223,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
             if (scheduledResource.getNumberOfInstances() == 1) {
                 CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
-                        measuringPoint);
+                        measuringPoint, measuringPoint.getReplicaID());
             } else {
                 CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
                         measuringPoint);
@@ -233,7 +233,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
             assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                     + "have exactly one core";
             CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
-                    measuringPoint);
+                    measuringPoint, 0);
         } else {
             // Use an OverallUtilizationCalculator by default.
             CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
