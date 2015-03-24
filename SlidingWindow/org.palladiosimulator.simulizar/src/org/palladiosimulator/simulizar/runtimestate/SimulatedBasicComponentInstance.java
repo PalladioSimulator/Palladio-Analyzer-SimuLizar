@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.pcm.repository.PassiveResource;
@@ -26,17 +29,40 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
         for (PassiveResource passiveResource : passiveResources) {
-            final long initialCount = StackContext.evaluateStatic(
-                    passiveResource.getCapacity_PassiveResource().getSpecification(),
-                    Integer.class,
-                    context.getStack().currentStackFrame());
+            final long initialCount = StackContext.evaluateStatic(passiveResource.getCapacity_PassiveResource()
+                    .getSpecification(), Integer.class, context.getStack().currentStackFrame());
             final IPassiveResource simulatedResource = new SimSimpleFairPassiveResource(passiveResource, myAssCtx,
                     getRuntimeState().getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
-            CalculatorHelper.setupPassiveResourceStateCalculator(simulatedResource, getRuntimeState().getModel());
-            CalculatorHelper.setupWaitingTimeCalculator(simulatedResource, getRuntimeState().getModel());
-            CalculatorHelper.setupHoldTimeCalculator(simulatedResource, getRuntimeState().getModel());
+
+            MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(context
+                    .getRuntimeState().getModelAccess().getMonitorRepositoryModel(), passiveResource,
+                    MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
+            if (isMonitored(measurementSpecification)) {
+                CalculatorHelper.setupPassiveResourceStateCalculator(simulatedResource, getRuntimeState().getModel());
+            }
+
+            measurementSpecification = MonitorRepositoryUtil.isMonitored(context.getRuntimeState().getModelAccess()
+                    .getMonitorRepositoryModel(), passiveResource, MetricDescriptionConstants.WAITING_TIME_METRIC);
+            if (isMonitored(measurementSpecification)) {
+                CalculatorHelper.setupWaitingTimeCalculator(simulatedResource, getRuntimeState().getModel());
+            }
+
+            measurementSpecification = MonitorRepositoryUtil.isMonitored(context.getRuntimeState().getModelAccess()
+                    .getMonitorRepositoryModel(), passiveResource, MetricDescriptionConstants.HOLDING_TIME_METRIC);
+            if (isMonitored(measurementSpecification)) {
+                CalculatorHelper.setupHoldTimeCalculator(simulatedResource, getRuntimeState().getModel());
+            }
         }
+    }
+
+    /**
+     * @param measurementSpecification
+     *            the measurement specification to check
+     * @return true if it is monitored
+     */
+    private boolean isMonitored(final MeasurementSpecification measurementSpecification) {
+        return measurementSpecification != null;
     }
 
     public void acquirePassiveResource(final PassiveResource passiveResource, final InterpreterDefaultContext context,
