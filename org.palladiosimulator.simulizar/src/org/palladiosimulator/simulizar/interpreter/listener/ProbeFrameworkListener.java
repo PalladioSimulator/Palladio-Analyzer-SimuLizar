@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.util.MeasuringPointUtility;
+import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
@@ -28,14 +30,10 @@ import org.palladiosimulator.measurementframework.listener.IMeasurementSourceLis
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
-import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.recorderframework.IRecorder;
@@ -44,19 +42,19 @@ import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.metrics.aggregators.SimulationGovernedSlidingWindow;
+import org.palladiosimulator.simulizar.metrics.powerconsumption.EnergyConsumptionPrmRecorder;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.PowerConsumptionPrmRecorder;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEnergyConsumptionCalculator;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimeEvaluationScope;
 import org.palladiosimulator.simulizar.metrics.powerconsumption.SimulationTimePowerConsumptionCalculator;
-import org.palladiosimulator.simulizar.pms.DelayedIntervall;
-import org.palladiosimulator.simulizar.pms.Intervall;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
-import org.palladiosimulator.simulizar.pms.util.PmsSwitch;
+import org.palladiosimulator.simulizar.monitorrepository.DelayedIntervall;
+import org.palladiosimulator.simulizar.monitorrepository.Intervall;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Monitor;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
+import org.palladiosimulator.simulizar.monitorrepository.util.MonitorrepositorySwitch;
 import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.utils.PMSUtil;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.interpreter.ConsumptionContext;
@@ -67,14 +65,13 @@ import de.fzi.power.interpreter.calculators.ExtensibleCalculatorInstantiatorImpl
 import de.fzi.power.interpreter.calculators.energy.AbstractCumulativeEnergyCalculator;
 import de.fzi.power.interpreter.calculators.energy.SimpsonRuleCumulativeEnergyCalculator;
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.ISimulationListener;
 
 /**
@@ -92,8 +89,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
     private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC =
             MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
+    private static final MetricSetDescription UTILIZATION_TUPLE_METRIC_DESC = 
+            MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
 
-    private final PMSModel pmsModel;
+    private final MonitorRepository monitorRepositoryModel;
     private final PRMModel prmModel;
     private final SimuComModel simuComModel;
     private final ICalculatorFactory calculatorFactory;
@@ -103,7 +102,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     /** Default EMF factory for measuring points. */
     private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
-    private final PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
     /**
      * @param modelAccessFactory
@@ -113,14 +111,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      */
     public ProbeFrameworkListener(final IModelAccess modelAccessFactory, final SimuComModel simuComModel) {
         super();
-        this.pmsModel = modelAccessFactory.getPMSModel();
+        this.monitorRepositoryModel = modelAccessFactory.getMonitorRepositoryModel();
         this.prmModel = modelAccessFactory.getPRMModel();
         this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfTimeProbe = null;
 
         initReponseTimeMeasurement();
-        initUntilizationMeasurements();
+        initNumberOfResourceContainersMeasurements();
+        initUtilizationMeasurements();
         initPowerMeasurements();
     }
 
@@ -204,37 +203,35 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
     }
 
-    private Collection<MeasurementSpecification> getMeasurementSpecificationsForPerformanceMetric(
-            final PerformanceMetricEnum metric) {
-        if (this.pmsModel != null) {
+    private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(final MetricDescription metric) {
+        assert metric != null;
+        if (this.monitorRepositoryModel != null) {
+            Transformer<Monitor, MeasurementSpecification> transformer =
+                    new Transformer<Monitor, MeasurementSpecification>() {
 
-            Transformer<PerformanceMeasurement, MeasurementSpecification> transformer =
-                    new Transformer<PerformanceMeasurement, MeasurementSpecification>() {
-
-                @Override
-                public MeasurementSpecification transform(PerformanceMeasurement performanceMeasurement) {
-                    for (MeasurementSpecification m : performanceMeasurement.getMeasurementSpecification()) {
-                        if (m.getPerformanceMetric() == metric) {
-                            return m;
+                        @Override
+                        public MeasurementSpecification transform(Monitor monitor) {
+                            for (MeasurementSpecification m : monitor.getMeasurementSpecifications()) {
+                                if (m.getMetricDescription().equals(metric)) {
+                                    return m;
+                                }
+                            }
+                            return null;
                         }
-                    }
-                    return null;
-                }
-            };
+                    };
             return CollectionUtils.select(
-                    CollectionUtils.collect(this.pmsModel.getPerformanceMeasurements(), transformer),
+                    CollectionUtils.collect(this.monitorRepositoryModel.getMonitors(), transformer),
                     PredicateUtils.notNullPredicate());
-
         }
         return Collections.emptyList();
     }
-
+    
     /**
      * returns a two-element array: sliding window length is returned at index 0, window increment
      * at index 1
      */
-    private static final PmsSwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH =
-            new PmsSwitch<Measure<Double, Duration>[]>() {
+    private static final MonitorrepositorySwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH =
+            new MonitorrepositorySwitch<Measure<Double, Duration>[]>() {
 
         @Override
         public Measure<Double, Duration>[] caseDelayedIntervall(DelayedIntervall interval) {
@@ -283,20 +280,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
    
-    private static MeasuringPoint createStringMeasuringPointFromMeasuringPoint(MeasuringPoint mp, String nameSuffix) {
-        assert mp != null && nameSuffix != null;
-        
-        StringMeasuringPoint result = MeasuringpointFactory.eINSTANCE.createStringMeasuringPoint();
-        String mpName = !nameSuffix.isEmpty() ? MeasuringPointUtility.measuringPointToString(mp) + nameSuffix 
-                : MeasuringPointUtility.measuringPointToString(mp);
-        result.setMeasuringPoint(mpName);
-        
-        return result;
-    }
-    
-    private void initPowerMeasurements() {
+   private void initPowerMeasurements() {
         Collection<MeasurementSpecification> powerMeasurementSpecs =
-                getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.POWER_CONSUMPTION);
+               getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
         if (!powerMeasurementSpecs.isEmpty()) {
             Map<String, Object> powerRecorderConfigurationMap =
                     createRecorderConfigMapWithAcceptedMetric(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
@@ -309,17 +295,17 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<>(powerMeasurementSpecs.size());
             
             for (MeasurementSpecification measurementSpec : powerMeasurementSpecs) {
-                MeasuringPoint mp = ((PerformanceMeasurement) measurementSpec.eContainer()).getMeasuringPoint();
+                MeasuringPoint mp = measurementSpec.getMonitor().getMeasuringPoint();
                 final PowerProvidingEntity ppe = InterpreterUtils.getPowerProvindingEntityFromMeasuringPoint(mp);
                 if (ppe == null) {
-                    throw new IllegalStateException("PerformanceMeasurement of type PowerConsumption has"
-                            + " to be related to a PowerProvidingEntity!");
+                    throw new IllegalStateException("MeasurementSpeciifcation for metric " 
+                            + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName() + " has to be related to a PowerProvidingEntity!");
                 }
 
                 energyRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
-                        createStringMeasuringPointFromMeasuringPoint(mp, " [Energy]"));
+                        MeasuringPointUtility.createStringMeasuringPointFromMeasuringPoint(mp, " [Energy]"));
                 powerRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
-                        createStringMeasuringPointFromMeasuringPoint(mp, " [Power]"));
+                        MeasuringPointUtility.createStringMeasuringPointFromMeasuringPoint(mp, " [Power]"));
 
                 Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(measurementSpec
                         .getTemporalRestriction());
@@ -329,8 +315,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                         this.simuComModel, initialOffset, samplingPeriod);
 
                 modelUpdaterSwitch.doSwitch(ppe);
-                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe
-                        .getDistributionPowerAssemblyContext().getPowerBindingRepository(), scope, reg);
+                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe, scope, reg);
 
                 AbstractCumulativeEnergyCalculator energyCalculator =
                         new SimpsonRuleCumulativeEnergyCalculator(samplingPeriod, initialOffset);
@@ -347,6 +332,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, measurementSpec, ppe));
                 powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
                 energyConsumptionCalculator.addObserver(initializeRecorder(energyRecorderConfigurationMap));
+                energyConsumptionCalculator.addObserver(new EnergyConsumptionPrmRecorder(this.prmModel, measurementSpec, ppe));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
@@ -373,16 +359,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         });
     }
 
-    private void initUntilizationMeasurements() {
+    private void initUtilizationMeasurements() {
         Collection<MeasurementSpecification> utilMeasurementSpecs =
-                getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.UTILIZATION);
+                getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
         if (!utilMeasurementSpecs.isEmpty()) {
             RegisterCalculatorFactoryDecorator calculatorFactory = RegisterCalculatorFactoryDecorator.class
                     .cast(this.calculatorFactory);
             ISlidingWindowMoveOnStrategy strategy = new KeepLastElementPriorToLowerBoundStrategy();
 
             for (MeasurementSpecification spec : utilMeasurementSpecs) {
-                MeasuringPoint mp = ((PerformanceMeasurement) spec.eContainer()).getMeasuringPoint();
+                MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
 
                 Calculator calculator = calculatorFactory.getCalculatorByMeasuringPointAndMetricDescription(mp,
                         MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE);
@@ -406,9 +392,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 .getTemporalRestriction());
 
         Map<String, Object> recorderConfigurationMap =
-                createRecorderConfigMapWithAcceptedMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
+                createRecorderConfigMapWithAcceptedMetric(UTILIZATION_TUPLE_METRIC_DESC);
         recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT,
-                createStringMeasuringPointFromMeasuringPoint(calculator.getMeasuringPoint(), ""));
+                MeasuringPointUtility.createStringMeasuringPointFromMeasuringPoint(calculator.getMeasuringPoint(), ""));
 
         IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
 
@@ -416,8 +402,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 windowProperties[1], MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, moveOnStrategy,
                 this.simuComModel);
 
-        org.palladiosimulator.experimentanalysis.ISlidingWindowListener aggregator = new SlidingWindowUtilizationAggregator(
-                baseRecorder);
+        ISlidingWindowListener aggregator = new SlidingWindowUtilizationAggregator(baseRecorder);
         SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(window, aggregator);
         // register recorder at calculator
         calculator.addObserver(windowRecorder);
@@ -432,10 +417,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private void initReponseTimeMeasurement() {
 
         for (MeasurementSpecification responseTimeMeasurementSpec :
-                getMeasurementSpecificationsForPerformanceMetric(PerformanceMetricEnum.RESPONSE_TIME)) {
-            MeasuringPoint measuringPoint = ((PerformanceMeasurement) responseTimeMeasurementSpec.eContainer())
-                    .getMeasuringPoint();
-            EObject modelElement = PMSUtil.getMonitoredElement(measuringPoint);
+                getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
+            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+            EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
 
             List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
             Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
@@ -451,91 +435,32 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
-    /**
-     * FIXME This method is not required anymore IF all types measuring points can be modeled
-     * 
-     * @param modelElement
-     *            for which a MeasuringPoint shall be created
-     * @param <T>
-     *            extends Entity
-     * @return MeasuringPoint for modelElement
-     */
-    private <T extends Entity> MeasuringPoint createMeasuringPoint(EObject modelElement) {
+    private void initNumberOfResourceContainersMeasurements() {
+        for (MeasurementSpecification numberOfResourceContainersMeasurementSpec :
+            getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
+            MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec.getMonitor().getMeasuringPoint();
 
-        MeasuringPoint result;
-        if (modelElement == null) {
-            throw new IllegalArgumentException("ModelElementPassedEvent cannot be null");
-        } else if (modelElement instanceof ResourceContainer) {
-            final ResourceContainer resourceContainer = (ResourceContainer) modelElement;
-
-            // FIXME Always takes the first active resource of a given container. That should be
-            // more flexible. [Lehrig]
-            final ActiveResourceMeasuringPoint mp = this.pcmMeasuringpointFactory.createActiveResourceMeasuringPoint();
-            mp.setActiveResource(resourceContainer.getActiveResourceSpecifications_ResourceContainer().get(0));
-            mp.setReplicaID(0);
-            result = mp;
-        } else if (modelElement instanceof ExternalCallAction) {
-            final ExternalCallAction externalCallAction = (ExternalCallAction) modelElement;
-
-            AssemblyOperationMeasuringPoint mp = this.pcmMeasuringpointFactory.createAssemblyOperationMeasuringPoint();
-            // FIXME How can I get the AssemblyContext from the monitored Element in advanced
-            // (before running the simulation)
-            // mp.setAssembly(((RDSEFFElementPassedEvent<ExternalCallAction>)
-            // event).getAssemblyContext());
-            mp.setOperationSignature(externalCallAction.getCalledService_ExternalService());
-            mp.setRole(externalCallAction.getRole_ExternalService());
-            result = mp;
-        } else if (modelElement instanceof EntryLevelSystemCall) {
-            final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) modelElement;
-
-            final SystemOperationMeasuringPoint mp = this.pcmMeasuringpointFactory
-                    .createSystemOperationMeasuringPoint();
-            final InterfaceProvidingEntity providingEntity = entryLevelSystemCall
-                    .getProvidedRole_EntryLevelSystemCall().getProvidingEntity_ProvidedRole();
-            if (providingEntity instanceof de.uka.ipd.sdq.pcm.system.System) {
-                de.uka.ipd.sdq.pcm.system.System system = (de.uka.ipd.sdq.pcm.system.System) providingEntity;
-                mp.setSystem(system);
-            } else {
-                throw new IllegalArgumentException("EntryLevelSystemCall \"" + entryLevelSystemCall.getEntityName()
-                        + "\" does not reference a system.");
-            }
-            mp.setOperationSignature(entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall());
-            mp.setRole(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
-            result = mp;
-        } else if (modelElement instanceof UsageScenario) {
-            final UsageScenario usageScenario = (UsageScenario) modelElement;
-
-            final UsageScenarioMeasuringPoint mp = this.pcmMeasuringpointFactory.createUsageScenarioMeasuringPoint();
-            mp.setUsageScenario(usageScenario);
-            result = mp;
-        } else {
-            throw new IllegalArgumentException("Unknown model element  (" + modelElement.toString() + ")");
+            final Probe probe = new EventProbeList(new TakeNumberOfResourceContainersProbe(
+                    simuComModel.getResourceRegistry()),
+            Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel
+                        .getSimulationControl())));
+            calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
         }
-        return result;
     }
-
-    /**
-     * @param modelElement
-     * @param simuComModel
-     * @return list with start and stop probe
-     */
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
-        final List probeList = new ArrayList<TriggeredProbe>(2);
-        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-        currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
-        return probeList;
-    }
-
-    /**
-     * @param measurementSpecification
-     *            the measurement specification to check
-     * @return true if it is monitored
-     */
-    private boolean isMonitored(final MeasurementSpecification measurementSpecification) {
-        return measurementSpecification != null;
-    }
+    
+        /**
+         * @param modelElement
+         * @param simuComModel
+         * @return list with start and stop probe
+         */
+        @SuppressWarnings({ "rawtypes", "unchecked" })
+        protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
+            final List probeList = new ArrayList<TriggeredProbe>(2);
+            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+            currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
+            return probeList;
+        }
 
     /**
      * @param modelElement
