@@ -1,12 +1,12 @@
 package org.palladiosimulator.simulizar.exceptions;
 
 /**
- * Class for exceptions while loading a pms model
+ * Class for exceptions while loading a Monitor Repository model
  * 
  * @author Joachim Meyer
  * 
  */
-public class PMSModelLoadException extends RuntimeException {
+public class MonitorRepositoryModelLoadException extends RuntimeException {
 
     /**
     * 
@@ -17,7 +17,7 @@ public class PMSModelLoadException extends RuntimeException {
      * @param message
      *            the exception message.
      */
-    public PMSModelLoadException(final String message) {
+    public MonitorRepositoryModelLoadException(final String message) {
         super(message);
     }
 
