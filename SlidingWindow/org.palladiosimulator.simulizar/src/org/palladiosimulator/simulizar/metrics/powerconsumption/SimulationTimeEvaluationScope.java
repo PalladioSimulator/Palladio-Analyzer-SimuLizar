@@ -171,8 +171,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     }
 
     /**
-     * Removes all currently attached listeners, i.e., {@link #removeListener(ISimulationEvaluationScopeListener)} 
-     * is invoked once per per attached listener.
+     * Removes all currently attached listeners, i.e., call is equivalent to invocation of 
+     * {@link #removeListener(ISimulationEvaluationScopeListener)} once per attached listener.
      */
     public void removeAllListeners() {
         for (ISimulationEvaluationScopeListener listener : this.collector.getObservers()) {
