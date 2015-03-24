@@ -14,8 +14,8 @@ import org.palladiosimulator.measurementframework.listener.IMeasurementSourceLis
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
-import org.palladiosimulator.simulizar.pms.Intervall;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Intervall;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
