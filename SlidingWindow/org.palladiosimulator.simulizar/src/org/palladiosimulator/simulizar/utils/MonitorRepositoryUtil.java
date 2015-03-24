@@ -6,6 +6,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
@@ -13,10 +14,9 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
-import org.palladiosimulator.simulizar.pms.MeasurementSpecification;
-import org.palladiosimulator.simulizar.pms.PMSModel;
-import org.palladiosimulator.simulizar.pms.PerformanceMeasurement;
-import org.palladiosimulator.simulizar.pms.PerformanceMetricEnum;
+import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.monitorrepository.Monitor;
+import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
@@ -30,16 +30,17 @@ import de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch;
 /**
  * Util methods for the monitoring model
  * 
- * @author Steffen Becker, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
+ * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
  * 
  */
-public final class PMSUtil {
+
+public final class MonitorRepositoryUtil {
 
     /**
      * Method checks if given element should be monitored with given performance metric. If yes, it
      * will return the corresponding MeasurementSpecification, otherwise null.
      * 
-     * @param pmsModel
+     * @param monitorRepositoryModel
      *            the monitoring model
      * @param element
      *            the element to be checked.
@@ -48,14 +49,14 @@ public final class PMSUtil {
      * @return the MeasurementSpecification, if element should be monitored according to given
      *         performance metric, otherwise null
      */
-    public static MeasurementSpecification isMonitored(final PMSModel pmsModel, final EObject element,
-            final PerformanceMetricEnum performanceMetric) {
-        if (pmsModel != null) {
-            for (final PerformanceMeasurement performanceMeasurement : pmsModel.getPerformanceMeasurements()) {
-                if (elementConformingToMeasuringPoint(element, performanceMeasurement.getMeasuringPoint())) {
-                    for (final MeasurementSpecification measurementSpecification : performanceMeasurement
-                            .getMeasurementSpecification()) {
-                        if (measurementSpecification.getPerformanceMetric() == performanceMetric) {
+    public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel,
+            final EObject element, final MetricDescription metricDescription) {
+        if (monitorRepositoryModel != null) {
+            for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
+                if (elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
+                    for (final MeasurementSpecification measurementSpecification : monitor
+                            .getMeasurementSpecifications()) {
+                        if (measurementSpecification.getMetricDescription().getId().equals(metricDescription.getId())) {
                             return measurementSpecification;
                         }
                     }
@@ -274,5 +275,4 @@ public final class PMSUtil {
 
         }.doSwitch(measuringPoint);
     }
-
 }
