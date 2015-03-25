@@ -14,33 +14,43 @@ import org.palladiosimulator.simulizar.prm.PrmFactory;
  * @author Joachim Meyer TODO: Should be a _Real_ Recorder, i.e., Recorder from ProbeFramework
  */
 public abstract class PRMRecorder {
+
+    private static final PrmFactory PRM_FACTORY = PrmFactory.eINSTANCE;
+
     private final PCMModelElementMeasurement pcmModelElementMeasurement;
-
-    private final MeasurementSpecification measurementSpecification;
-
-    private final TemporalCharacterization temporalCharacterization;
-
     private final PRMModel prmAccess;
 
     /**
      * Constructor
      * 
+     * @param prmModel
+     *            the model helper.
      * @param measurementSpecification
      *            the measurement specification.
      * @param monitoredElement
-     * @param modelHelper
-     *            the model helper.
-     * @param pcmModelElementMeasurement
-     *            the prm PCMModelElementMeasurement.
+     *            The model object under consideration, e.g., the {@link EObject} associated with
+     *            the given measurement specification.
+     * 
      */
-    public PRMRecorder(final PRMModel prmAccess2, final MeasurementSpecification measurementSpecification,
-            EObject monitoredElement) {
+    public PRMRecorder(PRMModel prmModel, MeasurementSpecification measurementSpecification, EObject monitoredElement) {
         super();
-        this.pcmModelElementMeasurement = PrmFactory.eINSTANCE.createPCMModelElementMeasurement();
+        this.pcmModelElementMeasurement = PRM_FACTORY.createPCMModelElementMeasurement();
         this.pcmModelElementMeasurement.setPcmModelElement(monitoredElement);
-        this.measurementSpecification = measurementSpecification;
-        this.temporalCharacterization = measurementSpecification.getTemporalRestriction();
-        this.prmAccess = prmAccess2;
+        this.pcmModelElementMeasurement.setMeasurementSpecification(measurementSpecification);
+        this.prmAccess = prmModel;
+        attachToPRM();
+    }
+
+    private void attachToPRM() {
+        if (!this.prmAccess.getPcmModelElementMeasurements().contains(this.pcmModelElementMeasurement)) {
+            this.prmAccess.getPcmModelElementMeasurements().add(this.pcmModelElementMeasurement);
+        }
+    }
+
+    protected final void detachFromPRM() {
+        if (this.prmAccess.getPcmModelElementMeasurements().contains(this.pcmModelElementMeasurement)) {
+            this.prmAccess.getPcmModelElementMeasurements().remove(this.pcmModelElementMeasurement);
+        }
     }
 
     /**
@@ -49,18 +59,18 @@ public abstract class PRMRecorder {
      * @param value
      *            the measurement value.
      */
-    protected void addToPRM(final double value) {
-        this.getPrmModel().getPcmModelElementMeasurements().remove(this.pcmModelElementMeasurement);
+    protected void updateMeasurementValue(final double value) {
+        // this has the corresponding PRM instance trigger a notification
+        // all attached adapters (such as the Reconfigurator class) are informed
+        // event type of notification: Notification.SET
         this.pcmModelElementMeasurement.setMeasurementValue(value);
-        this.pcmModelElementMeasurement.setMeasurementSpecification(this.measurementSpecification);
-        this.getPrmModel().getPcmModelElementMeasurements().add(this.pcmModelElementMeasurement);
     }
 
     /**
      * @return returns the measurementSpecification.
      */
     protected MeasurementSpecification getMeasurementSpecification() {
-        return this.measurementSpecification;
+        return this.pcmModelElementMeasurement.getMeasurementSpecification();
     }
 
     /**
@@ -81,7 +91,7 @@ public abstract class PRMRecorder {
      * @return returns the temporalCharacterization.
      */
     protected TemporalCharacterization getTemporalCharacterization() {
-        return this.temporalCharacterization;
+        return getMeasurementSpecification().getTemporalRestriction();
     }
 
 }
