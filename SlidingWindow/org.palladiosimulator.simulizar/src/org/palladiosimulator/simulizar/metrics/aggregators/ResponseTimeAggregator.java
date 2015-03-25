@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.activation.UnsupportedDataTypeException;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
@@ -38,22 +37,15 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * 
      * @param measurementSpecification
      *            the measurement specification.
-     * @param responseTimeCalculator
-     *            the response time calculator of ProbeFramework.
-     * @param measurementId
      *            id of the measurement.
      * @param monitoredElement
      *            the pcm model element to be monitored.
-     * @param modelHelper
-     *            the model helper.
-     * @param pcmModelElementMeasurement
-     *            the PCMModelElementMeasurement from the prm model.
-     * @throws UnsupportedDataTypeException
-     *             if statistical characterization is not supported. TODO: This class should not
+     * @throws UnsupportedOperationException
+     *             if temporal characterization is not supported. TODO: This class should not
      *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
-    public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
-            final MeasurementSpecification measurementSpecification, final EObject monitoredElement) {
+    public ResponseTimeAggregator(SimuComModel model, PRMModel prmAccess,
+            MeasurementSpecification measurementSpecification, EObject monitoredElement) {
         super(prmAccess, measurementSpecification, monitoredElement);
         this.responseTimes = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
@@ -92,7 +84,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         if (responseTimes.size() > 0) {
             // calculate StatisticalCharacterization
             final double statisticalCharacterization = aggregator.calculateStatisticalCharaterization(responseTimes);
-            addToPRM(statisticalCharacterization);
+            updateMeasurementValue(statisticalCharacterization);
             responseTimes.clear();
         }
     }
