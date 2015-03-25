@@ -15,7 +15,7 @@ public interface ISimulationEvaluationScopeListener {
     /**
      * An observed {@link SimulationTimeEvaluationScope} invokes this callback method once a new
      * measurement has been collected. The new measurement can be retrieved by means of the scope's
-     * {@link SimulationTimeEvaluationScope#next()} method.
+     * {@link SimulationTimeEvaluationScope#next()} method or by using the scope's {@code iterator}.
      */
     public void newElementAvailable();
 
