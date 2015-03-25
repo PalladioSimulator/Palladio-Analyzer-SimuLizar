@@ -34,6 +34,19 @@ import de.fzi.power.interpreter.InterpreterUtils;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
+/**
+ * This class is an implementation of an evaluation scope to gather utilization measurements required for power 
+ * consumption measurements at runtime, i.e., during runs of SimuLizar.<br>
+ * In the current implementation, the utilization is evaluated for all 
+ * {@link ProcessingResourceSpecification}s that are supplied by a given {@link PowerProvidingEntity}.
+ * That is, the utilization of a {@code ProcessingResourceSpecification} is evaluated if it corresponds 
+ * to {@code PowerConsumingResource} subsumed by the given {@code PowerProvidingEntity}.
+ * In order to keep track of new measurements (i.e., to obtain a new power consumption measurement)
+ * client have to attach themselves by calling<br> {@link #addListener(ISimulationEvaluationScopeListener)}.
+ * @author Florian Rosenthal
+ * @see SimulationTimePowerConsumptionCalculator
+ * @see ISimulationEvaluationScopeListener
+ */
 public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
     private final Set<ProcessingResourceSpecification> processingResourceSpecs;
@@ -76,10 +89,12 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     
     /**
      * Initializes a new instance of the {@link SimulationTimeEvaluationScope} with the given properties.
-     * @param entityUnderMeasurement The {@link PowerProvidingEntity} that shall be evaluated.
+     * @param entityUnderMeasurement 
+     *            The {@link PowerProvidingEntity} that shall be evaluated.
      * @param model 
-     *           A reference indicating the {@link SimuComModel} that is used for the current simulation run.
-     * @throws IllegalArgumentException If either of the arguments is {@code null}, an {@link IllegalArgumentException} is thrown.
+     *            A reference indicating the {@link SimuComModel} that is used for the current simulation run.
+     * @throws IllegalArgumentException 
+     *            If either of the arguments is {@code null}, an {@link IllegalArgumentException} is thrown.
      * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
      * @see #initialize(Measure, Measure)
      */
@@ -151,6 +166,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * Adds the given listener to collection of scope observers.
      * @param listener The {@link ISimulationEvaluationScopeListener} to observe this scope.
      * @throws IllegalArgumentException In case the given listener is {@code null} or already attached.
+     * @see #removeListener(ISimulationEvaluationScopeListener)
+     * @see #removeAllListeners()
      */
     public void addListener(ISimulationEvaluationScopeListener listener) {
         this.collector.addObserver(listener);
@@ -163,6 +180,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @param listener The {@link ISimulationEvaluationScopeListener} to detach.
      * @throws IllegalArgumentException In case the given listener has not been attached or is {@code null}.
      * @see #addListener(ISimulationEvaluationScopeListener)
+     * @see #removeAllListeners()
      */
     public void removeListener(ISimulationEvaluationScopeListener listener) {
         listener.preUnregister();
