@@ -36,11 +36,21 @@
   
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   
+  <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
+  
   <rm:locator searchPathRef="pcm" failOnError="false" />
   
   <rm:locator searchPathRef="luna" failOnError="true" pattern="^org\.eclipse\..*" />
   
   <rm:locator searchPathRef="orbit" failOnError="false" />  
+  
+  <rm:searchPath name="xtext">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases/"/>
+    </rm:provider>
+  </rm:searchPath>
   
   <rm:searchPath name="edp2">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
