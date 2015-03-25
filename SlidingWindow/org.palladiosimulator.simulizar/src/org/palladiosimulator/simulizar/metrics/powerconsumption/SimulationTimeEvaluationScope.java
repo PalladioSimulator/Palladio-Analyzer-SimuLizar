@@ -12,7 +12,6 @@ import javax.measure.quantity.Duration;
 import org.apache.commons.collections15.IteratorUtils;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.datastream.IDataStream;
-import org.palladiosimulator.edp2.util.MeasuringPointUtility;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
@@ -128,7 +127,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             if (resourceStateCalculator == null) {
                 throw new IllegalStateException("Simulation time evaluation scope (sliding window based) cannot be initialized.\n"
                         + "No state of active resource calculator available for: " 
-                        + MeasuringPointUtility.measuringPointToString(mp) + "\n"
+                        + mp.getStringRepresentation() + "\n"
                         + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
                         + "to initializeInterpreterListeners()!"); 
             }
