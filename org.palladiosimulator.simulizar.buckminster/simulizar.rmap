@@ -37,6 +37,7 @@
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   
   <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
+  <rm:locator pattern="^org\.eclipse\.xtext.*" searchPathRef="xtext" failOnError="false"/>
   
   <rm:locator searchPathRef="pcm" failOnError="false" />
   
