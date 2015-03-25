@@ -41,7 +41,7 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
         this.energyCalculator = energyCalculator;
     }
 
-    private void informListeners(MeasuringValue newEnergyMeasurement) {
+    private void informListeners(TupleMeasurement newEnergyMeasurement) {
         assert newEnergyMeasurement != null;
         assert newEnergyMeasurement.isCompatibleWith(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
 
@@ -60,7 +60,7 @@ public class SimulationTimeEnergyConsumptionCalculator extends MeasurementSource
         Measure<?, ?> pointInTimeMeasure = newInputMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
 
-        MeasuringValue newEnergyMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
+        TupleMeasurement newEnergyMeasurement = new TupleMeasurement(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC,
                 pointInTimeMeasure, energyMeasure);
         informListeners(newEnergyMeasurement);
     }
