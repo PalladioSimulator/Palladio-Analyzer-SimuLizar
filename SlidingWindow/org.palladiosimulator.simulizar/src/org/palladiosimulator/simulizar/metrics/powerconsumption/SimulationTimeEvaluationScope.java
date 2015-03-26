@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.metrics.powerconsumption;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -49,7 +50,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  */
 public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
-    private final Set<ProcessingResourceSpecification> processingResourceSpecs;
+    private final Collection<ProcessingResourceSpecification> processingResourceSpecs;
     private final SimuComModel simModel;
     private final UtilizationMeasurementsCollector collector;
 
@@ -247,6 +248,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
         @Override
         public void close() {
+            throwExceptionIfClosed();
             this.isClosed = true;
             this.innerElement = null;
         }
@@ -254,6 +256,9 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         @Override
         public int size() {
             throwExceptionIfClosed();
+            if (this.innerElement == null) {
+                return 0;
+            }
             return 1;
         }
 
@@ -280,7 +285,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
     private class UtilizationMeasurementsCollector extends AbstractObservable<ISimulationEvaluationScopeListener> {
 
-        private Map<ProcessingResourceSpecification, MeasuringValue> collectedMeasurements;
+        private final Map<ProcessingResourceSpecification, MeasuringValue> collectedMeasurements;
         private final int measurementsToCollect;
 
         public UtilizationMeasurementsCollector(int measurementsToCollect) {
@@ -299,7 +304,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                     // one "round" is complete: windows of all specs have produced their utilization measurement
                     // so forward data to listeners (e.g., power calculators, consumption contexts), then clear
                     for (ProcessingResourceSpecification proc : SimulationTimeEvaluationScope.this.processingResourceSpecs) {
-                        Set<IDataStream<MeasuringValue>> dataset = SimulationTimeEvaluationScope.this.resourceMeasurements.get(proc);
+                        Set<IDataStream<MeasuringValue>> dataset =
+                                SimulationTimeEvaluationScope.this.resourceMeasurements.get(proc);
                         assert dataset.size() == 1;
                         //this cast is safe as we insert only SingletonDataStream instances (cf. ctor)
                         SingletonDataStream procMeasurements = (SingletonDataStream) dataset.iterator().next();
