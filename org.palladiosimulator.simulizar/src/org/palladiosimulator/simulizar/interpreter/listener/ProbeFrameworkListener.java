@@ -208,7 +208,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * Gets all {@link MeasurementSpecification}s within the current {@code monitorRepositoryModel}
      * that adhere to the given metric.
      * @param soughtFor A {@link MetricDescription} denoting the target metric to look for.
-     * @return An UNMIDIFIABLE {@link Collection} containing all found measurement Specifications, which might be empty but never {@code null}.
+     * @return An UNMODIFIABLE {@link Collection} containing all found measurement Specifications, which might be empty but never {@code null}.
      */
     private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
             final MetricDescription soughtFor) {
@@ -300,7 +300,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         return recorder;
     }
 
-   
+    /**
+     * Initializes the sliding window based <i>power</i> and <i>energy</i> measurements.
+     * First gets the monitored elements from the monitor repository,
+     * then creates corresponding calculators and recorders.
+     * 
+     */
    private void initPowerMeasurements() {
         Collection<MeasurementSpecification> powerMeasurementSpecs =
                getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
@@ -389,6 +394,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         });
     }
 
+    /**
+     * Initializes the sliding window based <i>utilization</i> measurements.
+     * First gets the monitored elements from the monitor repository,
+     * then creates corresponding calculators and recorders.
+     * 
+     */
     private void initUtilizationMeasurements() {
         Collection<MeasurementSpecification> utilMeasurementSpecs =
                 getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
@@ -439,8 +450,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initialize the response time measurements. First get the monitored elements from the monitor repository,
-     * then create corresponding calculators and aggregators.
+     * Initializes the <i>response time</i> measurements.
+     * First gets the monitored elements from the monitor repository,
+     * then creates corresponding calculators and aggregators.
      * 
      */
     private void initReponseTimeMeasurement() {
@@ -463,6 +475,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
+    /**
+     * Initializes the <i> number of resource containers</i> measurements.
+     * First gets the monitored elements from the monitor repository,
+     * then creates corresponding calculators.
+     * 
+     */
     private void initNumberOfResourceContainersMeasurements() {
         for (MeasurementSpecification numberOfResourceContainersMeasurementSpec :
             getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
