@@ -204,7 +204,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
     }
 
-    private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(final MetricDescription soughtFor) {
+    /**
+     * Gets all {@link MeasurementSpecification}s within the current {@code monitorRepositoryModel}
+     * that adhere to the given metric.
+     * @param soughtFor A {@link MetricDescription} denoting the target metric to look for.
+     * @return An UNMIDIFIABLE {@link Collection} containing all found measurement Specifications, which might be empty but never {@code null}.
+     */
+    private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
+            final MetricDescription soughtFor) {
         assert soughtFor != null;
         if (this.monitorRepositoryModel != null) {
             Transformer<Monitor, MeasurementSpecification> transformer =
@@ -220,9 +227,9 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                             return null;
                         }
                     };
-            return CollectionUtils.select(
+            return Collections.unmodifiableCollection(CollectionUtils.select(
                     CollectionUtils.collect(this.monitorRepositoryModel.getMonitors(), transformer),
-                    PredicateUtils.notNullPredicate());
+                    PredicateUtils.notNullPredicate()));
         }
         return Collections.emptyList();
     }
@@ -260,6 +267,13 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     };
 
+    /**
+     * Convenience method to created a recorder configuration map which has the
+     * {@link AbstractRecorderConfiguration#RECORDER_ACCEPTED_METRIC} attribute (key) set to the given
+     * metric description.
+     * @param recorderAcceptedMetric The {@link MetricDescription} to be put in the map.
+     * @return A recorder configuration {@link Map} initialized as described.
+     */
     private static Map<String, Object> createRecorderConfigMapWithAcceptedMetric(
             MetricDescription recorderAcceptedMetric) {
         assert recorderAcceptedMetric != null;
@@ -269,6 +283,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         return result;
     }
 
+    /**
+     * Instantiates and initializes a {@link IRecorder} implementation based on the {@link SimuComConfig} of the current
+     * SimuLizar run.
+     * @param recorderConfigMap A {@link Map} which contains the recorder configuration attributes.
+     * @return An {@link IRecorder} initialized with the given configuration.
+     */
     private IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
 
@@ -299,7 +319,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 MeasuringPoint mp = powerSpec.getMonitor().getMeasuringPoint();
                 PowerProvidingEntity ppe = InterpreterUtils.getPowerProvindingEntityFromMeasuringPoint(mp);
                 if (ppe == null) {
-                    throw new IllegalStateException("MeasurementSpeciifcation for metric " 
+                    throw new IllegalStateException("MeasurementSpecification for metric " 
                             + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName() + " has to be related to a PowerProvidingEntity!");
                 }
 
