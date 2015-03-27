@@ -94,13 +94,15 @@ public class Activator extends AbstractUIPlugin implements IStartup {
             IWorkspace ws = ResourcesPlugin.getWorkspace();
             IProject[] projects = ws.getRoot().getProjects();
             for (IProject project : projects) {
-                IResource[] resources = project.members();
-                for (IResource r : resources) {
-                    if (r.getFullPath().lastSegment() != null
-                            && r.getFullPath().lastSegment().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
-                        String resourceURI = getResourceUriOfTheElement(r);
-                        if (elements.contains(resourceURI)) {
-                            elements.add(resourceURI);
+                if (project.isOpen()) {
+                    IResource[] resources = project.members();
+                    for (IResource r : resources) {
+                        if (r.getFullPath().lastSegment() != null
+                                && r.getFullPath().lastSegment().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
+                            String resourceURI = getResourceUriOfTheElement(r);
+                            if (elements.contains(resourceURI)) {
+                                elements.add(resourceURI);
+                            }
                         }
                     }
                 }
