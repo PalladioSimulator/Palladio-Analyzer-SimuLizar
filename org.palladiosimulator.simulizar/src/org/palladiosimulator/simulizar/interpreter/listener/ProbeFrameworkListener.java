@@ -21,12 +21,12 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregator;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
+import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -263,23 +263,29 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         @Override
         public Measure<Double, Duration>[] defaultCase(EObject obj) {
             throw new IllegalStateException(
-                    "Temporal characterization for utilization or measurement must be either Intervall or DelayedIntervall.");
+                    "Temporal characterization for utilization or power and energy measurements"
+                    + "must be either Intervall or DelayedIntervall.");
         }
     };
 
     /**
-     * Convenience method to created a recorder configuration map which has the
+     * Convenience method to create a recorder configuration map which has the
      * {@link AbstractRecorderConfiguration#RECORDER_ACCEPTED_METRIC} attribute (key) set to the given
-     * metric description.
+     * metric description and the {@link AbstractRecorderConfiguration#MEASURING_POINT} attribute (key) set to the given
+     * measuring point.
      * @param recorderAcceptedMetric The {@link MetricDescription} to be put in the map.
+     * @param measuringPoint The {@link MeasuringPoint} to be put in the map.
      * @return A recorder configuration {@link Map} initialized as described.
+     * @see #initializeRecorder(Map)
      */
-    private static Map<String, Object> createRecorderConfigMapWithAcceptedMetric(
-            MetricDescription recorderAcceptedMetric) {
+    private static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+            MetricDescription recorderAcceptedMetric, MeasuringPoint measuringPoint) {
         assert recorderAcceptedMetric != null;
+        assert measuringPoint != null;
 
         Map<String, Object> result = new HashMap<>();
         result.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC, recorderAcceptedMetric);
+        result.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
         return result;
     }
 
@@ -288,6 +294,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * SimuLizar run.
      * @param recorderConfigMap A {@link Map} which contains the recorder configuration attributes.
      * @return An {@link IRecorder} initialized with the given configuration.
+     * @see #createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(MetricDescription, MeasuringPoint)
      */
     private IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
@@ -301,6 +308,25 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
+     * Registers the given recorder at the given measurement source, i.e., adds it to the list of observers.
+     * @param measurementSource The {@link MeasurementSource} whose measurements shall be recorded.
+     * @param recorder The {@link IRecorder} to record new measurements produced by the given source.
+     */
+    private void registerMeasurementsRecorder(MeasurementSource measurementSource, IRecorder recorder) {
+        assert measurementSource != null && recorder != null;
+        measurementSource.addObserver(recorder);
+    }
+    
+    private void triggerMeasurementsRecording(MeasurementSource measurementSource, MeasuringPoint mp,
+            MetricDescription recorderAcceptedMetric) {
+        assert measurementSource != null && mp != null && recorderAcceptedMetric != null;
+        
+        Map<String, Object> recorderConfigurationMap =
+                createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(recorderAcceptedMetric, mp);
+        registerMeasurementsRecorder(measurementSource, initializeRecorder(recorderConfigurationMap));
+    }
+    
+    /**
      * Initializes the sliding window based <i>power</i> and <i>energy</i> measurements.
      * First gets the monitored elements from the monitor repository,
      * then creates corresponding calculators and recorders.
@@ -310,10 +336,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         Collection<MeasurementSpecification> powerMeasurementSpecs =
                getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
         if (!powerMeasurementSpecs.isEmpty()) {
-            Map<String, Object> powerRecorderConfigurationMap =
-                    createRecorderConfigMapWithAcceptedMetric(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
-            Map<String, Object> energyRecorderConfigurationMap =
-                    createRecorderConfigMapWithAcceptedMetric(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
             PowerModelRegistry reg = new PowerModelRegistry();
             PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
                     new ExtensibleCalculatorInstantiatorImpl());
@@ -327,9 +349,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                     throw new IllegalStateException("MeasurementSpecification for metric " 
                             + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName() + " has to be related to a PowerProvidingEntity!");
                 }
-
-                energyRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, mp);
-                powerRecorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, mp);
 
                 Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(powerSpec
                         .getTemporalRestriction());
@@ -351,27 +370,31 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 SimulationTimeEnergyConsumptionCalculator energyConsumptionCalculator =
                         new SimulationTimeEnergyConsumptionCalculator(energyCalculator);
                 
-                scope.addListener(powerConsumptionCalculator);
-                powerConsumptionCalculator.addObserver(initializeRecorder(powerRecorderConfigurationMap));
-                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, powerSpec, ppe));
-                powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
-                energyConsumptionCalculator.addObserver(initializeRecorder(energyRecorderConfigurationMap));
                 MeasurementSpecification energySpec = MonitorrepositoryFactory.eINSTANCE.createMeasurementSpecification();
                 energySpec.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
                 energySpec.setMonitor(powerSpec.getMonitor());
-                powerSpec.getMonitor().getMeasurementSpecifications().add(energySpec);
                 energySpec.setTemporalRestriction(powerSpec.getTemporalRestriction());
+                
+                // calculate power and energy consumption
+                scope.addListener(powerConsumptionCalculator);
+                powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
+                // the following two lines are optional: measurements are recorded (e.g., by an EDP2 recorder)
+                triggerMeasurementsRecording(powerConsumptionCalculator, mp, POWER_CONSUMPTION_TUPLE_METRIC_DESC);
+                triggerMeasurementsRecording(energyConsumptionCalculator, mp, ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
+                // write measurements to PRM (both power and energy measurements are forwarded)
+                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, powerSpec, ppe));
                 energyConsumptionCalculator.addObserver(new EnergyConsumptionPrmRecorder(this.prmModel, energySpec, ppe));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
     }
-
-   /**
+   
+    /**
     * Method to clean up {@link ConsumptionContext}s and {@link SimulationTimeEvaluationScope}s required
     * for power and energy measurements. The clean-up operations are done once the simulation has stopped.
     * @param contextsToCleanup {@link Collection} of contexts to clean up.
     * @param scopesToCleanup {@link Collection} of scopes to clean up.
+    * @see #initPowerMeasurements()
     */
     private void triggerAfterSimulationCleanup(final Collection<ConsumptionContext> contextsToCleanup,
             final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
@@ -426,15 +449,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
-    private Calculator setupUtilizationRecorder(Calculator calculator,
+    private void setupUtilizationRecorder(Calculator calculator,
             MeasurementSpecification utilizationMeasurementSpec, ISlidingWindowMoveOnStrategy moveOnStrategy) {
 
         Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(utilizationMeasurementSpec
                 .getTemporalRestriction());
 
         Map<String, Object> recorderConfigurationMap =
-                createRecorderConfigMapWithAcceptedMetric(UTILIZATION_TUPLE_METRIC_DESC);
-        recorderConfigurationMap.put(AbstractRecorderConfiguration.MEASURING_POINT, calculator.getMeasuringPoint());
+                createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(UTILIZATION_TUPLE_METRIC_DESC,
+                        calculator.getMeasuringPoint());
         
         IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
 
@@ -442,11 +465,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 windowProperties[1], MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, moveOnStrategy,
                 this.simuComModel);
 
-        ISlidingWindowListener aggregator = new SlidingWindowUtilizationAggregator(baseRecorder);
-        SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(window, aggregator);
+        SlidingWindowRecorder windowRecorder =
+                new SlidingWindowRecorder(window, new SlidingWindowUtilizationAggregator(baseRecorder));
         // register recorder at calculator
-        calculator.addObserver(windowRecorder);
-        return calculator;
+        registerMeasurementsRecorder(calculator, windowRecorder);
     }
 
     /**
@@ -500,8 +522,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
          * @return list with start and stop probe
          */
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
-            final List probeList = new ArrayList<TriggeredProbe>(2);
+        protected List<Probe> createStartAndStopProbe(EObject modelElement, SimuComModel simuComModel) {
+            List probeList = new ArrayList<TriggeredProbe>(2);
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
             currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
