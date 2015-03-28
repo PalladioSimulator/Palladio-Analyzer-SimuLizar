@@ -50,7 +50,8 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      *            the PCMModelElementMeasurement from the prm model.
      * @throws UnsupportedDataTypeException
      *             if statistical characterization is not supported. TODO: This class should not
-     *             know about PRM, it should publish its results to a AbstractRecorder, e.g., a PRM AbstractRecorder
+     *             know about PRM, it should publish its results to a AbstractRecorder, e.g., a PRM
+     *             AbstractRecorder
      */
     public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
             final MeasurementSpecification measurementSpecification, final EObject monitoredElement) {
@@ -69,11 +70,18 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         case HARMONIC_MEAN:
             this.aggregator = new HarmonicMean();
             break;
+        case NONE:
+            this.aggregator = null;
+            break;
         default:
             throw new UnsupportedOperationException("This aggregator is currently not supported");
         }
+        if (measurementSpecification.getTemporalRestriction() == null) {
+            return;
+        }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
-            throw new UnsupportedOperationException("Only Intervall is currently supported");
+            throw new UnsupportedOperationException(
+                    "Only Intervall and no temporal restriction are currently supported");
         }
         new PeriodicallyTriggeredSimulationEntity(model, 0.0,
                 ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall()) {
