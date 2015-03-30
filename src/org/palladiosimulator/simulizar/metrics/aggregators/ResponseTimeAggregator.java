@@ -8,7 +8,7 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
@@ -42,20 +42,20 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      *            the response time calculator of ProbeFramework.
      * @param measurementId
      *            id of the measurement.
-     * @param monitoredElement
-     *            the pcm model element to be monitored.
+     * @param measuringPoint
+     *            the measuring point to be monitored.
      * @param modelHelper
      *            the model helper.
-     * @param pcmModelElementMeasurement
-     *            the PCMModelElementMeasurement from the prm model.
+     * @param measuringPoint
+     *            the measuring point from the prm model.
      * @throws UnsupportedDataTypeException
      *             if statistical characterization is not supported. TODO: This class should not
      *             know about PRM, it should publish its results to a AbstractRecorder, e.g., a PRM
      *             AbstractRecorder
      */
     public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
-            final MeasurementSpecification measurementSpecification, final EObject monitoredElement) {
-        super(prmAccess, measurementSpecification, monitoredElement);
+            final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
+        super(prmAccess, measurementSpecification, measuringPoint);
         this.responseTimes = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
         case ARITHMETIC_MEAN:

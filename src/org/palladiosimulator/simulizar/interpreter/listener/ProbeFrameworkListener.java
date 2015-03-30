@@ -167,17 +167,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
             for (final MeasurementSpecification measurementSpecification : monitor.getMeasurementSpecifications()) {
                 final MeasuringPoint measuringPoint = monitor.getMeasuringPoint();
-                final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
                 final String metricDescriptionID = measurementSpecification.getMetricDescription().getId();
 
                 if (metricDescriptionID.equals(MetricDescriptionConstants.RESPONSE_TIME_METRIC.getId())) {
-                    final List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
+                    final List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
                     final Calculator calculator = calculatorFactory.buildResponseTimeCalculator(measuringPoint,
                             probeList);
 
                     try {
                         final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(simuComModel,
-                                this.prmModel, measurementSpecification, modelElement);
+                                this.prmModel, measurementSpecification, measuringPoint);
                         calculator.addObserver(aggregator);
                     } catch (final UnsupportedOperationException e) {
                         LOGGER.error(e);
@@ -195,25 +194,19 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * @param modelElement
+     * @param measuringPoint
      * @param simuComModel
      * @return list with start and stop probe
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected List<Probe> createStartAndStopProbe(final EObject modelElement, final SimuComModel simuComModel) {
+    protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+
+        final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
         currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
         return probeList;
-    }
-
-    /**
-     * @param modelElement
-     * @return
-     */
-    protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
-        return this.currentTimeProbes.containsKey(((Entity) modelElement).getId());
     }
 
     /**
@@ -221,6 +214,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
+
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
             this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());

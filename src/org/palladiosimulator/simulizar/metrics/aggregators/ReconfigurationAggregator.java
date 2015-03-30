@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
-import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -15,9 +15,9 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
 public class ReconfigurationAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
     public ReconfigurationAggregator(final PRMModel prmAccess, final MeasurementSpecification measurementSpecification,
-            final Calculator responseTimeCalculator, final String measurementId, final EObject monitoredElement,
+            final Calculator responseTimeCalculator, final String measurementId, final MeasuringPoint measuringPoint,
             final double baseSimulationTime) {
-        super(prmAccess, measurementSpecification, monitoredElement);
+        super(prmAccess, measurementSpecification, measuringPoint);
         // TODO Auto-generated constructor stub
     }
 
