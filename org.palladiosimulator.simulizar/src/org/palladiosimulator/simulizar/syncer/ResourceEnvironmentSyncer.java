@@ -198,8 +198,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
 
         if (isMonitored(measurementSpecification)) {
-            new ResourceStateListener(processingResource, scheduledResource, runtimeModel.getModel()
-                    .getSimulationControl(), measurementSpecification, resourceContainer, prm);
+            new ResourceStateListener(scheduledResource, runtimeModel.getModel().getSimulationControl(),
+                    measurementSpecification, resourceContainer, prm);
             initCalculator(schedulingStrategy, scheduledResource,
                     (ActiveResourceMeasuringPoint) measurementSpecification.getMonitor().getMeasuringPoint());
         }

@@ -2,13 +2,13 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.ArrayList;
 
+import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.simulizar.monitorrepository.Intervall;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
-import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 
-import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
@@ -32,9 +32,7 @@ public class ResourceStateListener implements IStateListener {
 
     private final double timeIntervall;
 
-    private final ResourceContainerMeasurement resourceContainerMeasurement;
-
-    private final ProcessingResourceSpecification processingResource;
+    private final PRMMeasurement measurement;
 
     private final ISimulationControl simulationControl;
 
@@ -47,33 +45,24 @@ public class ResourceStateListener implements IStateListener {
      *            the corresponding SimuCom simulated resource of the resource.
      * @param measurementSpecification
      *            the measurement specification of the resource container of the resource.
-     * @param resourceContainerMeasurement
+     * @param measurement
      *            the resource container measurement of the prm.
-     * @param processingResource
-     *            the pcm processing resource specification of the resource.
      */
-    public ResourceStateListener(final ProcessingResourceSpecification processingResource,
-            final AbstractScheduledResource abstractScheduledResource, final ISimulationControl iSimulationControl,
-            final MeasurementSpecification measurementSpecification, final ResourceContainer resourceContainer,
-            final PRMModel prm) {
+    public ResourceStateListener(final AbstractScheduledResource abstractScheduledResource,
+            final ISimulationControl iSimulationControl, final MeasurementSpecification measurementSpecification,
+            final ResourceContainer resourceContainer, final PRMModel prm) {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
         this.simulationControl = iSimulationControl;
         this.lastSimulationTime = simulationControl.getCurrentSimulationTime();
 
-        this.resourceContainerMeasurement = PrmFactory.eINSTANCE.createResourceContainerMeasurement();
-        resourceContainerMeasurement.setMeasurementSpecification(measurementSpecification);
-        resourceContainerMeasurement.setPcmModelElement(resourceContainer);
-        resourceContainerMeasurement.setProcessingResourceType(processingResource
-                .getActiveResourceType_ActiveResourceSpecification());
-        prm.getPcmModelElementMeasurements().add(this.resourceContainerMeasurement);
+        this.measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        this.measurement.setMeasurementSpecification(measurementSpecification);
+        this.measurement.setMeasuringPoint(measurementSpecification.getMonitor().getMeasuringPoint());
+        prm.getMeasurements().add(this.measurement);
 
-        this.processingResource = processingResource;
-        // FIXME: Instance should be variable
-        abstractScheduledResource.addStateListener(this, 0);
-
-        this.resourceContainerMeasurement.setProcessingResourceType(this.processingResource
-                .getActiveResourceType_ActiveResourceSpecification());
+        abstractScheduledResource.addStateListener(this,
+                ((ActiveResourceMeasuringPoint) this.measurement.getMeasuringPoint()).getReplicaID());
     }
 
     /**
@@ -84,7 +73,7 @@ public class ResourceStateListener implements IStateListener {
      *            the measurement value.
      */
     private void addToPRM(final double value) {
-        this.resourceContainerMeasurement.setMeasurementValue(value);
+        this.measurement.setMeasuringValue(value);
     }
 
     /**

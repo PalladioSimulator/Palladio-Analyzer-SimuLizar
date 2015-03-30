@@ -33,31 +33,13 @@ public interface PrmFactory extends EFactory {
     PRMModel createPRMModel();
 
     /**
-     * Returns a new object of class '<em>PCM Model Element Measurement</em>'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>PCM Model Element Measurement</em>'.
-     * @generated
-     */
-    PCMModelElementMeasurement createPCMModelElementMeasurement();
-
-    /**
-     * Returns a new object of class '<em>Unique Element</em>'. <!-- begin-user-doc --> <!--
+     * Returns a new object of class '<em>PRM Measurement</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @return a new object of class '<em>Unique Element</em>'.
+     * @return a new object of class '<em>PRM Measurement</em>'.
      * @generated
      */
-    UniqueElement createUniqueElement();
-
-    /**
-     * Returns a new object of class '<em>Resource Container Measurement</em>'. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     *
-     * @return a new object of class '<em>Resource Container Measurement</em>'.
-     * @generated
-     */
-    ResourceContainerMeasurement createResourceContainerMeasurement();
+    PRMMeasurement createPRMMeasurement();
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->

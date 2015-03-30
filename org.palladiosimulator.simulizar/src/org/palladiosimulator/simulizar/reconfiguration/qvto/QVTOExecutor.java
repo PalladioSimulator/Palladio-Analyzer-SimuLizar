@@ -20,7 +20,7 @@ import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
@@ -167,7 +167,7 @@ public class QVTOExecutor {
     private boolean execute(final TransformationExecutor executor) {
 
         // define the transformation input and outputs
-        List<PCMModelElementMeasurement> runtimeModel = this.modelAccess.getPRMModel().getPcmModelElementMeasurements();
+        List<PRMMeasurement> runtimeModel = this.modelAccess.getPRMModel().getMeasurements();
         List<EObject> pcmAllocation = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel().getAllocation());
 
         // create the input and inout extents with its initial contents

@@ -10,11 +10,11 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
-import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
-import org.palladiosimulator.simulizar.prm.UniqueElement;
+
+import de.uka.ipd.sdq.identifier.Identifier;
 
 /**
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter
@@ -74,18 +74,13 @@ public class PrmAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
-        public Adapter casePCMModelElementMeasurement(final PCMModelElementMeasurement object) {
-            return PrmAdapterFactory.this.createPCMModelElementMeasurementAdapter();
+        public Adapter casePRMMeasurement(final PRMMeasurement object) {
+            return PrmAdapterFactory.this.createPRMMeasurementAdapter();
         }
 
         @Override
-        public Adapter caseUniqueElement(final UniqueElement object) {
-            return PrmAdapterFactory.this.createUniqueElementAdapter();
-        }
-
-        @Override
-        public Adapter caseResourceContainerMeasurement(final ResourceContainerMeasurement object) {
-            return PrmAdapterFactory.this.createResourceContainerMeasurementAdapter();
+        public Adapter caseIdentifier(final Identifier object) {
+            return PrmAdapterFactory.this.createIdentifierAdapter();
         }
 
         @Override
@@ -123,46 +118,30 @@ public class PrmAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement
-     * <em>PCM Model Element Measurement</em>}'. <!-- begin-user-doc --> This default implementation
-     * returns null so that we can easily ignore cases; it's useful to ignore a case when
-     * inheritance will catch all the cases anyway. <!-- end-user-doc -->
-     *
-     * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement
-     * @generated
-     */
-    public Adapter createPCMModelElementMeasurementAdapter() {
-        return null;
-    }
-
-    /**
-     * Creates a new adapter for an object of class '
-     * {@link org.palladiosimulator.simulizar.prm.UniqueElement <em>Unique Element</em>}'. <!--
+     * {@link org.palladiosimulator.simulizar.prm.PRMMeasurement <em>PRM Measurement</em>}'. <!--
      * begin-user-doc --> This default implementation returns null so that we can easily ignore
      * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
      * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.prm.UniqueElement
+     * @see org.palladiosimulator.simulizar.prm.PRMMeasurement
      * @generated
      */
-    public Adapter createUniqueElementAdapter() {
+    public Adapter createPRMMeasurementAdapter() {
         return null;
     }
 
     /**
-     * Creates a new adapter for an object of class '
-     * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement
-     * <em>Resource Container Measurement</em>}'. <!-- begin-user-doc --> This default
-     * implementation returns null so that we can easily ignore cases; it's useful to ignore a case
-     * when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * Creates a new adapter for an object of class '{@link de.uka.ipd.sdq.identifier.Identifier
+     * <em>Identifier</em>}'. <!-- begin-user-doc --> This default implementation returns null so
+     * that we can easily ignore cases; it's useful to ignore a case when inheritance will catch all
+     * the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement
+     * @see de.uka.ipd.sdq.identifier.Identifier
      * @generated
      */
-    public Adapter createResourceContainerMeasurementAdapter() {
+    public Adapter createIdentifierAdapter() {
         return null;
     }
 

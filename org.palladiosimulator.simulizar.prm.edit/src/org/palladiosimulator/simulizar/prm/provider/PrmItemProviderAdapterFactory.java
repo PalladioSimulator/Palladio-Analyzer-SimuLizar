@@ -99,76 +99,26 @@ IChangeNotifier, IDisposable {
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected PCMModelElementMeasurementItemProvider pcmModelElementMeasurementItemProvider;
-
-    /**
-     * This creates an adapter for a
-     * {@link org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
-    @Override
-    public Adapter createPCMModelElementMeasurementAdapter() {
-        if (this.pcmModelElementMeasurementItemProvider == null) {
-            this.pcmModelElementMeasurementItemProvider = new PCMModelElementMeasurementItemProvider(this);
-        }
-
-        return this.pcmModelElementMeasurementItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.prm.UniqueElement} instances. <!-- begin-user-doc -->
+     * {@link org.palladiosimulator.simulizar.prm.PRMMeasurement} instances. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @generated
      */
-    protected UniqueElementItemProvider uniqueElementItemProvider;
+    protected PRMMeasurementItemProvider prmMeasurementItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.UniqueElement}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Adapter createUniqueElementAdapter() {
-        if (this.uniqueElementItemProvider == null) {
-            this.uniqueElementItemProvider = new UniqueElementItemProvider(this);
-        }
-
-        return this.uniqueElementItemProvider;
-    }
-
-    /**
-     * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement} instances. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected ResourceContainerMeasurementItemProvider resourceContainerMeasurementItemProvider;
-
-    /**
-     * This creates an adapter for a
-     * {@link org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement}. <!-- begin-user-doc
-     * --> <!-- end-user-doc -->
+     * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.PRMMeasurement}.
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated
      */
     @Override
-    public Adapter createResourceContainerMeasurementAdapter() {
-        if (this.resourceContainerMeasurementItemProvider == null) {
-            this.resourceContainerMeasurementItemProvider = new ResourceContainerMeasurementItemProvider(this);
+    public Adapter createPRMMeasurementAdapter() {
+        if (this.prmMeasurementItemProvider == null) {
+            this.prmMeasurementItemProvider = new PRMMeasurementItemProvider(this);
         }
 
-        return this.resourceContainerMeasurementItemProvider;
+        return this.prmMeasurementItemProvider;
     }
 
     /**
@@ -277,14 +227,8 @@ IChangeNotifier, IDisposable {
         if (this.prmModelItemProvider != null) {
             this.prmModelItemProvider.dispose();
         }
-        if (this.pcmModelElementMeasurementItemProvider != null) {
-            this.pcmModelElementMeasurementItemProvider.dispose();
-        }
-        if (this.uniqueElementItemProvider != null) {
-            this.uniqueElementItemProvider.dispose();
-        }
-        if (this.resourceContainerMeasurementItemProvider != null) {
-            this.resourceContainerMeasurementItemProvider.dispose();
+        if (this.prmMeasurementItemProvider != null) {
+            this.prmMeasurementItemProvider.dispose();
         }
     }
 

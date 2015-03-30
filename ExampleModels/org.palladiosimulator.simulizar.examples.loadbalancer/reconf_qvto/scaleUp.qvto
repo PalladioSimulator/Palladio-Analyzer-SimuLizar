@@ -51,13 +51,13 @@ transformation ScaleUp(		in prm : PRM,
 
 		log('SimuLizar ScaleUp Rule Transformation started');
 		
-		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
+		assert fatal(prm.rootObjects()[PRMMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		
-		var runtimeMeasurements = prm.rootObjects()[PCMModelElementMeasurement];
+		var runtimeMeasurements = prm.rootObjects()[PRMMeasurement];
 		// Scale up processing speed for all Resources
 		pcmAllocation.rootObjects()[Allocation]->forAll(
 			allocation : Allocation | 
@@ -66,7 +66,7 @@ transformation ScaleUp(		in prm : PRM,
 
 	}
 	
-	helper checkCondition(runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
+	helper checkCondition(runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
 		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
 			if (pcmModelElementsMeasurement.measurementValue > threshold) {
 				return true;
@@ -78,7 +78,7 @@ transformation ScaleUp(		in prm : PRM,
 	/**
 	 * Scale up ProcessingResources.
 	 */
-	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PCMModelElementMeasurement)) : Boolean {
+	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
 		if (checkCondition(runtimeMeasurements)) then {
 			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
 				scaleUpProcessingResourcesRecursively(resourceContainer);

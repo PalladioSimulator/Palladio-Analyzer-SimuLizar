@@ -9,11 +9,11 @@ package org.palladiosimulator.simulizar.prm.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
-import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
-import org.palladiosimulator.simulizar.prm.UniqueElement;
+
+import de.uka.ipd.sdq.identifier.Identifier;
 
 /**
  * <!-- begin-user-doc --> The <b>Switch</b> for the model's inheritance hierarchy. It supports the
@@ -71,40 +71,18 @@ public class PrmSwitch<T> extends Switch<T> {
             final PRMModel prmModel = (PRMModel) theEObject;
             T result = this.casePRMModel(prmModel);
             if (result == null) {
-                result = this.caseUniqueElement(prmModel);
+                result = this.caseIdentifier(prmModel);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
             }
             return result;
         }
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT: {
-            final PCMModelElementMeasurement pcmModelElementMeasurement = (PCMModelElementMeasurement) theEObject;
-            T result = this.casePCMModelElementMeasurement(pcmModelElementMeasurement);
+        case PrmPackage.PRM_MEASUREMENT: {
+            final PRMMeasurement prmMeasurement = (PRMMeasurement) theEObject;
+            T result = this.casePRMMeasurement(prmMeasurement);
             if (result == null) {
-                result = this.caseUniqueElement(pcmModelElementMeasurement);
-            }
-            if (result == null) {
-                result = this.defaultCase(theEObject);
-            }
-            return result;
-        }
-        case PrmPackage.UNIQUE_ELEMENT: {
-            final UniqueElement uniqueElement = (UniqueElement) theEObject;
-            T result = this.caseUniqueElement(uniqueElement);
-            if (result == null) {
-                result = this.defaultCase(theEObject);
-            }
-            return result;
-        }
-        case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT: {
-            final ResourceContainerMeasurement resourceContainerMeasurement = (ResourceContainerMeasurement) theEObject;
-            T result = this.caseResourceContainerMeasurement(resourceContainerMeasurement);
-            if (result == null) {
-                result = this.casePCMModelElementMeasurement(resourceContainerMeasurement);
-            }
-            if (result == null) {
-                result = this.caseUniqueElement(resourceContainerMeasurement);
+                result = this.caseIdentifier(prmMeasurement);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
@@ -132,49 +110,32 @@ public class PrmSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '
-     * <em>PCM Model Element Measurement</em>'. <!-- begin-user-doc --> This implementation returns
-     * null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
-     *
-     * @param object
-     *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '
-     *         <em>PCM Model Element Measurement</em>'.
-     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-     * @generated
-     */
-    public T casePCMModelElementMeasurement(final PCMModelElementMeasurement object) {
-        return null;
-    }
-
-    /**
-     * Returns the result of interpreting the object as an instance of '<em>Unique Element</em>'.
+     * Returns the result of interpreting the object as an instance of '<em>PRM Measurement</em>'.
      * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>Unique Element</em>'.
+     * @return the result of interpreting the object as an instance of '<em>PRM Measurement</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseUniqueElement(final UniqueElement object) {
+    public T casePRMMeasurement(final PRMMeasurement object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '
-     * <em>Resource Container Measurement</em>'. <!-- begin-user-doc --> This implementation returns
-     * null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     * Returns the result of interpreting the object as an instance of '<em>Identifier</em>'. <!--
+     * begin-user-doc --> This implementation returns null; returning a non-null result will
+     * terminate the switch. <!-- end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '
-     *         <em>Resource Container Measurement</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Identifier</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T caseResourceContainerMeasurement(final ResourceContainerMeasurement object) {
+    public T caseIdentifier(final Identifier object) {
         return null;
     }
 

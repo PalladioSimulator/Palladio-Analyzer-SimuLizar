@@ -11,12 +11,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.prm.PrmPackage;
-import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
-import org.palladiosimulator.simulizar.prm.UniqueElement;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
@@ -60,12 +58,8 @@ public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
         switch (eClass.getClassifierID()) {
         case PrmPackage.PRM_MODEL:
             return this.createPRMModel();
-        case PrmPackage.PCM_MODEL_ELEMENT_MEASUREMENT:
-            return this.createPCMModelElementMeasurement();
-        case PrmPackage.UNIQUE_ELEMENT:
-            return this.createUniqueElement();
-        case PrmPackage.RESOURCE_CONTAINER_MEASUREMENT:
-            return this.createResourceContainerMeasurement();
+        case PrmPackage.PRM_MEASUREMENT:
+            return this.createPRMMeasurement();
         default:
             throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
         }
@@ -88,31 +82,9 @@ public class PrmFactoryImpl extends EFactoryImpl implements PrmFactory {
      * @generated
      */
     @Override
-    public PCMModelElementMeasurement createPCMModelElementMeasurement() {
-        final PCMModelElementMeasurementImpl pcmModelElementMeasurement = new PCMModelElementMeasurementImpl();
-        return pcmModelElementMeasurement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public UniqueElement createUniqueElement() {
-        final UniqueElementImpl uniqueElement = new UniqueElementImpl();
-        return uniqueElement;
-    }
-
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ResourceContainerMeasurement createResourceContainerMeasurement() {
-        final ResourceContainerMeasurementImpl resourceContainerMeasurement = new ResourceContainerMeasurementImpl();
-        return resourceContainerMeasurement;
+    public PRMMeasurement createPRMMeasurement() {
+        final PRMMeasurementImpl prmMeasurement = new PRMMeasurementImpl();
+        return prmMeasurement;
     }
 
     /**

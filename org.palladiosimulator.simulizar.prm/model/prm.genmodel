@@ -8,19 +8,12 @@
   <genPackages prefix="Prm" basePackage="org.palladiosimulator.simulizar" resource="XML"
       disposableProviderFactory="true" ecorePackage="prm.ecore#/">
     <genClasses ecoreClass="prm.ecore#//PRMModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference prm.ecore#//PRMModel/pcmModelElementMeasurements"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference prm.ecore#//PRMModel/measurements"/>
     </genClasses>
-    <genClasses ecoreClass="prm.ecore#//PCMModelElementMeasurement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference prm.ecore#//PCMModelElementMeasurement/pcmModelElement"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference prm.ecore#//PCMModelElementMeasurement/monitorRepository"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute prm.ecore#//PCMModelElementMeasurement/measurementValue"/>
-    </genClasses>
-    <genClasses ecoreClass="prm.ecore#//UniqueElement">
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute prm.ecore#//UniqueElement/guid"/>
-      <genOperations ecoreOperation="prm.ecore#//UniqueElement/createAndSetGuid"/>
-    </genClasses>
-    <genClasses ecoreClass="prm.ecore#//ResourceContainerMeasurement">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference prm.ecore#//ResourceContainerMeasurement/processingResourceType"/>
+    <genClasses ecoreClass="prm.ecore#//PRMMeasurement">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference prm.ecore#//PRMMeasurement/measuringPoint"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference prm.ecore#//PRMMeasurement/measurementSpecification"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute prm.ecore#//PRMMeasurement/measuringValue"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
