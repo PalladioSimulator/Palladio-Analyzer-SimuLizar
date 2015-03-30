@@ -7,12 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -38,6 +39,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.XMLResource;
+import org.eclipse.osgi.service.resolver.StateDelta;
+import org.modelversioning.emfprofile.IProfileFacade;
+import org.modelversioning.emfprofile.Profile;
+import org.modelversioning.emfprofile.Stereotype;
+import org.modelversioning.emfprofile.application.registry.ProfileApplicationDecorator;
+import org.modelversioning.emfprofile.impl.ProfileFacadeImpl;
+import org.modelversioning.emfprofileapplication.ProfileApplication;
+import org.modelversioning.emfprofileapplication.ProfileImport;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import org.w3c.dom.Document;
@@ -46,55 +55,91 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import edu.kit.ipd.sdq.mdsd.profiles.registry.ProfileApplicationFileRegistry;
+import edu.kit.ipd.sdq.mdsd.profiles.util.helper.Helper;
+
 public class StereotypeApplicationListener implements IResourceChangeListener {
 
-    private static final String RESOURCE_URI_ATTRIBUTE_NAME = "resourceURI";
-    private static final String RESOURCE_URI_DELIMITER = "/";
-    private static final int PROJECT_NAME_POSITION_INSIDE_RESOURCE_URI = 2;
-    private static final String CREATE_MEASURING_POINT_FILE_JOB_NAME = "Add a measuring point";
-    private static final String APPLIED_TO_ELEMENT_TAG_NAME = "appliedTo";
-    private static final String ELEMENT_ID_PREFIX = "platform:/resource";
-    private static final String HREF_ATTRIBUTE_NAME = "href";
-    private static final String MEASURING_POINT_FILE_EXTENSION = ".measuringpoint";
-    private static final String MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION = ".SimulizarMeasuringPointProfile.pa.xmi";
-    private static final String REPOSITORY_FILE_EXTENSION = ".repository#";
-    private static final String UTF8_ENCODING = "UTF-8";
-    private static final String DELETE_RESOURCE_JOB_NAME = "Delete resource job";
+	private final Logger logger = Logger.getLogger(StereotypeApplicationListener.class.getName());
+	private static final String RESOURCE_URI_ATTRIBUTE_NAME = "resourceURI";
+	private static final String RESOURCE_URI_DELIMITER = "/";
+	private static final int PROJECT_NAME_POSITION_INSIDE_RESOURCE_URI = 2;
+	private static final String CREATE_MEASURING_POINT_FILE_JOB_NAME = "Add a measuring point";
+	private static final String APPLIED_TO_ELEMENT_TAG_NAME = "appliedTo";
+	private static final String ELEMENT_ID_PREFIX = "platform:/resource";
+	private static final String HREF_ATTRIBUTE_NAME = "href";
+	private static final String MEASURING_POINT_FILE_EXTENSION = ".measuringpoint";
+	private static final String MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION = ".SimulizarProfile.pa.xmi";
+	private static final String REPOSITORY_FILE_EXTENSION = ".repository#";
+	private static final String UTF8_ENCODING = "UTF-8";
+	private static final String DELETE_RESOURCE_JOB_NAME = "Delete resource job";
 
-    private List<String> elementIDs;
+	private Set<String> oldResourceURIs;
 
-    public StereotypeApplicationListener(List<String> elementIDs) {
-        this.elementIDs = elementIDs;
-    }
+	public StereotypeApplicationListener(Set<String> currentIds) {
+		this.oldResourceURIs = currentIds;
+	}
 
-    /**
-     * Responding to the change of a resource. In this case we find all the profile application
-     * files concerning measuring point stereotypes. We create a measuring point per measuring point
-     * stereotype application. After those measuring points are created, the respective profile
-     * application files are deleted.
-     */
-    @Override
-    public void resourceChanged(IResourceChangeEvent event) {
-        Map<String, IProject> ids = getElementsForMeasuringPoints(event.getDelta());
-        if (!ids.isEmpty()) {
-            createMeasuringPoints(ids.keySet());
-            List<String> resourceURIsToDelete = new ArrayList<>();
-            for (final String element : elementIDs) {
-                if (ids.containsKey(element)) {
-                    continue;
-                }
-                resourceURIsToDelete.add(element);
-            }
-            deleteMeasuringPoints(resourceURIsToDelete);
-            elementIDs = new ArrayList<String>(ids.keySet());
-        }
-        Set<IProject> projects = getProjectsOfDeletedMeasuringPoints(event.getDelta());
-        if (!projects.isEmpty()) {
-            for (IProject p : projects) {
-                adaptPaXmisToDeletedMeasuringPoints(p);
-            }
-        }
-    }
+	/**
+	 * Responding to the change of a resource. In this case we find all the
+	 * profile application files concerning measuring point stereotypes. We
+	 * create a measuring point per measuring point stereotype application.
+	 */
+	@Override
+	public void resourceChanged(IResourceChangeEvent event) {
+		try {
+			IProject[] allWorkspaceProjects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
+			Set<String> newResourceURIs;
+
+			newResourceURIs = getMonitoredElementsForMeasuringPoints(allWorkspaceProjects);
+
+			if (!newResourceURIs.isEmpty()) {
+				/*
+				 * new resourceURIs that are not contained in old resourceURIs
+				 * are collected to be created
+				 */
+				Set<String> resourceURIsToCreate = new HashSet<>();
+				for (final String resourceURI : newResourceURIs) {
+					if (oldResourceURIs.contains(resourceURI)) {
+						continue;
+					}
+					resourceURIsToCreate.add(resourceURI);
+				}
+				/*
+				 * old resourceURIs that are not contained in new resourceURIs
+				 * are collected to be removed
+				 */
+				List<String> resourceURIsToDelete = new ArrayList<>();
+				for (final String resourceURI : oldResourceURIs) {
+					if (newResourceURIs.contains(resourceURI)) {
+						continue;
+					}
+					resourceURIsToDelete.add(resourceURI);
+				}
+				createMeasuringPoints(resourceURIsToCreate);
+				deleteMeasuringPoints(resourceURIsToDelete);
+				// new IDs become old IDs
+				oldResourceURIs = new HashSet<>(newResourceURIs);
+			}
+			Set<IProject> projectsOfDeletedMPs = getProjectsOfCreatedOrDeletedMeasuringPoints(event.getDelta(),
+					IResourceDelta.REMOVED);
+			if (projectsOfDeletedMPs != null) {
+				for (IProject p : projectsOfDeletedMPs) {
+					adaptPaXmisToDeletedMeasuringPoints(p);
+				}
+			}
+			Set<IProject> projectsOfCreatedMPs = getProjectsOfCreatedOrDeletedMeasuringPoints(event.getDelta(),
+					IResourceDelta.ADDED);
+			if (projectsOfCreatedMPs != null) {
+				for (IProject p : projectsOfCreatedMPs) {
+					adaptPaXmisToDeletedMeasuringPoints(p);
+				}
+			}
+		} catch (CoreException | ParserConfigurationException | SAXException | IOException | TransformerException e) {
+			logger.log(Level.SEVERE, "An error occured while handling measuring point stereotype appliciont!");
+			e.printStackTrace();
+		}
+	}
 
     /**
      * If there are some .measuringpoint files within the delta that are removed, the project to
@@ -105,346 +150,462 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
      * @return set of projects in which some .measuringpoint files have beed deleted.
      */
 
-    private Set<IProject> getProjectsOfDeletedMeasuringPoints(IResourceDelta delta) {
-        Set<IProject> res = new HashSet<>();
-        if (delta.getResource() != null) {
-            IResource r = delta.getResource();
-            String fileName = r.getFullPath().toString();
-            if (fileName.endsWith(MEASURING_POINT_FILE_EXTENSION) && delta.getKind() == IResourceDelta.REMOVED) {
-                res.add(r.getProject());
-                return res;
-            }
-        }
-        // if the delta contains some children they have to be checked as
-        // well
-        for (IResourceDelta d : delta.getAffectedChildren()) {
-            res.addAll(getProjectsOfDeletedMeasuringPoints(d));
-        }
-        return res;
-    }
+	private Set<IProject> getProjectsOfCreatedOrDeletedMeasuringPoints(IResourceDelta delta, int status) {
+		Set<IProject> res = new HashSet<>();
+		if (delta != null && delta.getResource() != null) {
+			IResource r = delta.getResource();
+			String fileName = r.getFullPath().toString();
+			if (fileName.endsWith(MEASURING_POINT_FILE_EXTENSION) && delta.getKind() == status) {
+				res.add(r.getProject());
+				return res;
+			}
+		}
+		// if the delta contains some children they have to be checked too
+		if (delta != null) {
+			for (IResourceDelta d : delta.getAffectedChildren()) {
+				res.addAll(getProjectsOfCreatedOrDeletedMeasuringPoints(d, status));
+			}
+		}
+		return res;
+	}
 
-    /**
-     * Deletes all the measuring points whose resourceURI matches an element of the
-     * elementsToDelete.
-     * 
-     * @param elementsToDelete
-     *            list of resourceURIs for which .measuringPoint files have to be deleted.
-     */
-    private void deleteMeasuringPoints(List<String> elementsToDelete) {
-        try {
-            IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
-            for (String element : elementsToDelete) {
-                String[] res = element.split(RESOURCE_URI_DELIMITER);
-                IProject project = wsRoot.getProject(res[PROJECT_NAME_POSITION_INSIDE_RESOURCE_URI]);
+	/**
+	 * Deletes all the measuring points whose resourceURI matches an element of
+	 * the elementsToDelete.
+	 * 
+	 * @param measuringPointsToDelete
+	 *            list of resourceURIs for which .measuringPoint files have to
+	 *            be deleted.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws CoreException
+	 *             indicates a problem with accessing projects resources.
+	 */
+	private void deleteMeasuringPoints(List<String> measuringPointsToDelete) throws CoreException,
+			ParserConfigurationException, SAXException, IOException {
+		IWorkspaceRoot wsRoot = ResourcesPlugin.getWorkspace().getRoot();
 
-                for (IResource r : project.members()) {
-                    if (r.getFullPath().toString().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(r.getLocation().toFile());
-                        String resourceURI = doc.getDocumentElement().getAttribute(RESOURCE_URI_ATTRIBUTE_NAME);
-                        if (elementsToDelete.contains(resourceURI)) {
-                            deleteResource(r);
-                        }
-                    }
-                }
-            }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CoreException e) {
-            e.printStackTrace();
-        }
-    }
+		// mapping from project to list of measuring points to be deleted within
+		// the project
+		Map<IProject, List<String>> projectsWithMPsToDelete = new HashMap<>();
+		for (String mp : measuringPointsToDelete) {
+			String[] res = mp.split(RESOURCE_URI_DELIMITER);
+			IProject project = wsRoot.getProject(res[PROJECT_NAME_POSITION_INSIDE_RESOURCE_URI]);
+			List<String> mps = projectsWithMPsToDelete.get(project);
+			if (mps == null) {
+				mps = new ArrayList<>();
+			}
+			mps.add(mp);
+			projectsWithMPsToDelete.put(project, mps);
+		}
 
-    /**
-     * Creates a measuring point for every resourceURI in the list.
-     * 
-     * @param resourceURIs
-     *            list of resourceURIs.
-     */
-    private void createMeasuringPoints(Set<String> resourceURIs) {
-        for (final String resourceURI : resourceURIs) {
-            if (elementIDs.contains(resourceURI)) {
-                continue;
-            }
-            WorkspaceJob mpCreateJob = new WorkspaceJob(CREATE_MEASURING_POINT_FILE_JOB_NAME) {
-                @Override
-                public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-                    createAMeasuringPoint(resourceURI);
-                    return Status.OK_STATUS;
-                }
-            };
-            mpCreateJob.schedule();
-        }
-    }
+		for (Map.Entry<IProject, List<String>> entry : projectsWithMPsToDelete.entrySet()) {
+			for (IResource r : entry.getKey().members()) {
+				if (r.getFullPath().toString().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
+					Document doc = getParsedDocument(r);
+					String resourceURI = doc.getDocumentElement().getAttribute(RESOURCE_URI_ATTRIBUTE_NAME);
+					if (entry.getValue().contains(resourceURI)) {
+						deleteResource(r);
+					}
+				}
+			}
+		}
+	}
 
-    /**
-     * If there are some .measuringpoint files that have been deleted, the respective .pa.xmi file
-     * will be updated accordingly, i.e. respective stereotypeApplication elements will be removed
-     * from the file.
-     * 
-     * @param delta
-     *            IResourceDelta that represents the change in the project.
-     */
-    private void adaptPaXmisToDeletedMeasuringPoints(IProject project) {
-        if (project.isOpen()) {
-            try {
-                List<String> existingMeasuringPointElements = new ArrayList<>();
-                Map<String, IResource> existingProfileApplications = new HashMap<>();
-                for (IResource r : project.members()) {
-                    if (r.getFullPath().toString().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(r.getLocation().toFile());
-                        String resourceURI = doc.getDocumentElement().getAttribute(RESOURCE_URI_ATTRIBUTE_NAME);
-                        existingMeasuringPointElements.add(resourceURI);
-                    } else if (r.getFullPath().toString()
-                            .endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
-                        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-                        DocumentBuilder builder = factory.newDocumentBuilder();
-                        Document doc = builder.parse(r.getLocation().toFile());
-                        NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
-                        for (int i = 0; i < appliedToList.getLength(); i++) {
-                            Element appliedTo = (Element) appliedToList.item(i);
-                            String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
-                            existingProfileApplications.put(href, r);
-                        }
-                    }
-                }
-                for (Map.Entry<String, IResource> entry : existingProfileApplications.entrySet()) {
-                    if (!existingMeasuringPointElements.contains(entry.getKey())) {
-                        deleteElementFromPaXmi(entry.getKey(), entry.getValue());
-                        elementIDs.remove(entry.getKey());
-                    }
-                }
-            } catch (CoreException | ParserConfigurationException | SAXException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
+	/**
+	 * Creates a measuring point for every resourceURI in the list.
+	 * 
+	 * @param resourceURIs
+	 *            list of resourceURIs.
+	 */
+	private void createMeasuringPoints(Set<String> resourceURIs) {
+		for (final String resourceURI : resourceURIs) {
+			WorkspaceJob mpCreateJob = new WorkspaceJob(CREATE_MEASURING_POINT_FILE_JOB_NAME) {
+				@Override
+				public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+					try {
+						createAMeasuringPoint(resourceURI);
+					} catch (IOException e) {
+						logger.log(Level.SEVERE, "Measuring point for \"" + resourceURI + "\" could not be created!");
+						e.printStackTrace();
+						return Status.CANCEL_STATUS;
+					}
+					return Status.OK_STATUS;
+				}
+			};
+			mpCreateJob.schedule();
+		}
+	}
 
-    private void deleteElementFromPaXmi(String elementURI, IResource resource) {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            Document doc = builder.parse(resource.getLocation().toFile());
-            NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
-            for (int i = 0; i < appliedToList.getLength(); i++) {
-                Element appliedTo = (Element) appliedToList.item(i);
-                String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
-                if (href.equals(elementURI)) {
-                    Node stereotypeApplication = appliedTo.getParentNode();
-                    Node rootNode = stereotypeApplication.getParentNode();
-                    rootNode.removeChild(stereotypeApplication);
+	/**
+	 * If there are some .measuringpoint files that have been created, the their
+	 * resourceURIs will be only added to the oldResourceURIs.
+	 * .SimulizarProfile.pa.xmi file is not updated because it is not necessary.
+	 * 
+	 * 
+	 * @param delta
+	 *            IResourceDelta that represents the change in the project.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws TransformerException
+	 *             indicates that the XML document represented by the resource
+	 *             could not be transformed.
+	 */
+	private void adaptOldResourceURIsToCreatedMeasuringPoints(IProject project) throws ParserConfigurationException,
+			SAXException, IOException, TransformerException {
 
-                    TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                    Transformer transformer = transformerFactory.newTransformer();
-                    DOMSource source = new DOMSource(doc);
-                    StreamResult result = new StreamResult(resource.getLocation().toFile());
-                    transformer.transform(source, result);
-                }
-            }
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (TransformerConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
-            e.printStackTrace();
-        }
-    }
+		List<Object> listMPsAndSAs = getExistingSAsAndMPs(project);
+		List<String> existingMPs = (List<String>) listMPsAndSAs.get(0);
+		Map<String, IResource> existingSAs = (Map<String, IResource>) listMPsAndSAs.get(1);
 
-    /**
-     * Deleting the resource from the workspace.
-     * 
-     * @param resource
-     *            resource to be deleted.
-     */
-    public void deleteResource(final IResource resource) {
-        WorkspaceJob deleteJob = new WorkspaceJob(DELETE_RESOURCE_JOB_NAME) {
+		for (String existingMP : existingMPs) {
+			if (!existingSAs.containsKey(existingMP)) {
+				oldResourceURIs.add(existingMP);
+			}
+		}
+	}
 
-            @Override
-            public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-                // IResource resource =
-                // ResourcesPlugin.getWorkspace().getRoot().findMember(resourcePath);
-                resource.delete(true, monitor);
-                return Status.OK_STATUS;
-            }
-        };
-        deleteJob.schedule();
-    }
+	/**
+	 * If there are some .measuringpoint files that have been deleted, the
+	 * respective .pa.xmi file will be updated accordingly, i.e. respective
+	 * stereotypeApplication elements will be removed from the file.
+	 * 
+	 * @param delta
+	 *            IResourceDelta that represents the change in the project.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws TransformerException
+	 *             indicates that the XML document represented by the resource
+	 *             could not be transformed.
+	 */
+	private void adaptPaXmisToDeletedMeasuringPoints(IProject project) throws ParserConfigurationException,
+			SAXException, IOException, TransformerException {
 
-    /**
-     * Given the changes in the resource tree (IResourceDelta) it finds those that are concerning
-     * stereotype applications. From these changes it extracts IDs of components to which
-     * stereotypes are applied and returns map with file names element IDs for the measuring points
-     * that should be created based on the respective stereotype applications.
-     * 
-     * @param delta
-     *            the root of the resource tree which represents the changes
-     * @return map with element ID (key) and file name (value) for the measuring points to be
-     *         created
-     */
-    private String getMeasuringPointName(String resourceURI) {
-        String fileName = resourceURI.replace(ELEMENT_ID_PREFIX, ""); 
-        fileName = fileName.replace(REPOSITORY_FILE_EXTENSION, ""); 
-        fileName = fileName + MEASURING_POINT_FILE_EXTENSION;
-        return fileName;
-    }
+		List<Object> listMPsAndSAs = getExistingSAsAndMPs(project);
+		List<String> existingMPs = (List<String>) listMPsAndSAs.get(0);
+		Map<String, IResource> existingSAs = (Map<String, IResource>) listMPsAndSAs.get(1);
 
-    /**
-     * Takes those changes in the resource tree (IResourceDelta) concerning .pa.xmi files and
-     * resourceURIs of elements to which the stereotype has been applied and projects in which the
-     * respective .pa.xmi file resides.
-     * 
-     * @param delta
-     *            the root of the resource tree which represents the changes
-     * @return map of resourceIDs of elements stereotypes are applied to and projects where the
-     *         respective .pa.xmi files reside.
-     */
-    private Map<String, IProject> getElementsForMeasuringPoints(IResourceDelta delta) {
-        // search delta's children in case the delta is folder
-        if (delta.getAffectedChildren() != null && delta.getAffectedChildren().length > 0) {
-            Map<String, IProject> res = new HashMap<>();
-            for (IResourceDelta d : delta.getAffectedChildren()) {
-                res.putAll(getElementsForMeasuringPoints(d));
-            }
-            return res;
-        }
+		for (Map.Entry<String, IResource> entry : existingSAs.entrySet()) {
+			if (!existingMPs.contains(entry.getKey())) {
+				deleteElementFromPaXmi(entry.getKey(), entry.getValue());
+				oldResourceURIs.remove(entry.getKey());
+			}
+		}
+	}
 
-        // delta for "profile application file" change is handled right away
-        if (delta.getKind() == IResourceDelta.CHANGED
-                && delta.getFullPath().toString().endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setIgnoringElementContentWhitespace(true);
-            try {
-                DocumentBuilder builder = factory.newDocumentBuilder();
-                // check for the delta's resource or location
-                if (delta.getResource() == null && delta.getResource().getLocation() == null) {
-                    return new HashMap<>();
-                } else {
-                    Map<String, IProject> res = new HashMap<>();
-                    // creating a DOM for the representative of the change
-                    Document doc = builder.parse(delta.getResource().getLocation().toFile());
-                    NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
-                    for (int i = 0; i < appliedToList.getLength(); i++) {
-                        Element appliedTo = (Element) appliedToList.item(i);
-                        String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
-                        IProject duplicate = res.put(href, delta.getResource().getProject());
-                        if (duplicate != null) {
-                            Node stereotypeApplication = appliedTo.getParentNode();
-                            Node rootNode = stereotypeApplication.getParentNode();
-                            rootNode.removeChild(stereotypeApplication);
+	/**
+	 * Retrieves resourceURIs of measuring points and stereotype applications in
+	 * this project.
+	 * 
+	 * @param project
+	 *            project inside which measuring points and stereotype
+	 *            applications are searched.
+	 * @return list that contains two element. The first one is of type
+	 *         List<String>. It contains resourceURIs of the existing measuring
+	 *         points. The second element is of type Map<String, IResource>. It
+	 *         contains resourceURIs of the existing stereotype applications and
+	 *         the corresponding resources, i.e. the files that contain the
+	 *         stereotype application.
+	 * 
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 */
+	private List<Object> getExistingSAsAndMPs(IProject project) throws ParserConfigurationException, SAXException,
+			IOException {
+		List<String> existingMPs = new ArrayList<>();
+		Map<String, IResource> existingSAs = new HashMap<>();
+		try {
+			for (IResource r : project.members()) {
+				if (r.getFullPath().toString().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
+					Document doc = getParsedDocument(r);
+					String resourceURI = doc.getDocumentElement().getAttribute(RESOURCE_URI_ATTRIBUTE_NAME);
+					existingMPs.add(resourceURI);
+				} else if (r.getFullPath().toString().endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
+					Document doc = getParsedDocument(r);
+					NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
+					for (int i = 0; i < appliedToList.getLength(); i++) {
+						Element appliedTo = (Element) appliedToList.item(i);
+						String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
+						existingSAs.put(href, r);
+					}
+				}
+			}
+			List<Object> result = new ArrayList<>();
+			result.add(existingMPs);
+			result.add(existingSAs);
+			return result;
+		} catch (CoreException e) {
+			logger.log(Level.INFO, "Tried to access the project that was not opened yet.");
+			return new ArrayList<>();
+		}
+	}
 
-                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-                            Transformer transformer = transformerFactory.newTransformer();
-                            DOMSource source = new DOMSource(doc);
-                            StreamResult result = new StreamResult(delta.getResource().getLocation().toFile());
-                            transformer.transform(source, result);
-                        }
-                    }
-                    return res;
-                }
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-                return new HashMap<>();
-            } catch (SAXException e) {
-                e.printStackTrace();
-                return new HashMap<>();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return new HashMap<>();
-            } catch (TransformerConfigurationException e) {
-                e.printStackTrace();
-                return new HashMap<>();
-            } catch (TransformerException e) {
-                e.printStackTrace();
-                return new HashMap<>();
-            }
+	/**
+	 * Parses the document represented by the resource.
+	 * 
+	 * @param r
+	 *            the resource that represents the document which should be
+	 *            parsed.
+	 * @return parsed document.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 */
+	public static Document getParsedDocument(IResource r) throws ParserConfigurationException, SAXException, IOException {
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		DocumentBuilder builder = factory.newDocumentBuilder();
+		Document doc = builder.parse(r.getLocation().toFile());
+		return doc;
+	}
 
-        } else {
-            return new HashMap<>();
-        }
-    }
+	/**
+	 * Removes the XML element from the resource. Resource should represent
+	 * stereotype application MeasuringPoint.
+	 * 
+	 * @param resourceURI
+	 *            resourceURI of the element to be deleted from MeasuringPoint
+	 *            stereotype application.
+	 * @param resource
+	 *            MeasuringPoint stereotype application file from which the XML
+	 *            element should be deleted.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws TransformerException
+	 *             indicates that the XML document represented by the resource
+	 *             could not be transformed.
+	 */
+	private void deleteElementFromPaXmi(String resourceURI, IResource resource) throws ParserConfigurationException,
+			SAXException, IOException, TransformerException {
+		Document doc = getParsedDocument(resource);
+		NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
+		for (int i = 0; i < appliedToList.getLength(); i++) {
+			Element appliedTo = (Element) appliedToList.item(i);
+			String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
+			if (href.equals(resourceURI)) {
+				Node stereotypeApplication = appliedTo.getParentNode();
+				Node rootNode = stereotypeApplication.getParentNode();
+				rootNode.removeChild(stereotypeApplication);
 
-    // private void moveProfileApplicationFile(IResource resource) {
-    // IProject project = resource.getProject();
-    // IPath paFileName = resource.getProjectRelativePath();
-    //
-    // IFile paFileOld = project.getFile(paFileName);
-    // IFolder paFolderNew = project.getFolder("profile_applications");
-    //
-    // WorkspaceJob moveFile = new WorkspaceJob("Move profile application file")
-    // {
-    //
-    // @Override
-    // public IStatus runInWorkspace(IProgressMonitor monitor) throws
-    // CoreException {
-    // if (!paFolderNew.exists()) {
-    // paFolderNew.create(true, true, null);
-    // }
-    // IPath paFilePathNew = paFolderNew.getFullPath().append(paFileName);
-    // paFileOld.move(paFilePathNew, false, null);
-    // return Status.OK_STATUS;
-    // }
-    // };
-    // moveFile.schedule();
-    // }
+				TransformerFactory transformerFactory = TransformerFactory.newInstance();
+				Transformer transformer = transformerFactory.newTransformer();
+				DOMSource source = new DOMSource(doc);
+				StreamResult result = new StreamResult(resource.getLocation().toFile());
+				transformer.transform(source, result);
+			}
+		}
 
-    /**
-     * Creating a ResourceURIMeasuringPoint file with the specified file name and the URI of the
-     * element for which we want to create a measuring point.
-     * 
-     * @param fileName
-     *            name of the file to created that represents the measuring point.
-     * @param resourceURI
-     *            URI of the element for which we create a measuring point.
-     */
-    public void createAMeasuringPoint(String resourceURI) {
-        try {
-            // Create a resource set
-            //
-            final ResourceSet resourceSet = new ResourceSetImpl();
+	}
 
-            // Get the URI of the model file.
-            //
-            String fileName = getMeasuringPointName(resourceURI);
-            final URI fileURI = URI.createPlatformResourceURI(fileName, true);
+	/**
+	 * Deleting the resource from the workspace.
+	 * 
+	 * @param resource
+	 *            resource to be deleted.
+	 */
+	private void deleteResource(final IResource resource) {
+		WorkspaceJob deleteJob = new WorkspaceJob(DELETE_RESOURCE_JOB_NAME) {
 
-            // Create a resource for this file.
-            //
-            final Resource resource = resourceSet.createResource(fileURI);
+			@Override
+			public IStatus runInWorkspace(IProgressMonitor monitor) {
+				try {
+					resource.delete(true, monitor);
+				} catch (CoreException ex) {
+					logger.log(Level.SEVERE, "The resourece \"" + resource.getName() + "\" could not be deleted!");
+					ex.printStackTrace();
+					return Status.CANCEL_STATUS;
+				}
 
-            // Add the initial model object to the contents.
-            //
-            MeasuringpointPackage measuringpointPackage = MeasuringpointPackage.eINSTANCE;
-            MeasuringpointFactory measuringpointFactory = measuringpointPackage.getMeasuringpointFactory();
+				return Status.OK_STATUS;
+			}
+		};
+		deleteJob.schedule();
+	}
 
-            EClass measuringPoint = measuringpointPackage.getResourceURIMeasuringPoint();
+	/**
+	 * Given a resourceURI in a form
+	 * "platform:/resource/ui/loadbalancer.repository#_7FXSsAEma34" it extracts
+	 * the file name for measuring point. In this case it would be
+	 * "/ui/loadbalancer.measuringpoint".
+	 * 
+	 * @param resourceURI
+	 *            resourceURI from which measuring point file name should be
+	 *            extracted.
+	 * @return file name for measuring point.
+	 */
+	private String getMeasuringPointName(String resourceURI) {
+		String fileName = resourceURI.replace(ELEMENT_ID_PREFIX, ""); //$NON-NLS-2$
+		fileName = fileName.replace(REPOSITORY_FILE_EXTENSION, ""); //$NON-NLS-2$
+		fileName = fileName + MEASURING_POINT_FILE_EXTENSION;
+		return fileName;
+	}
 
-            final EObject rootObject = measuringpointFactory.create(measuringPoint);
-            EAttribute resourceURIAttribute = measuringpointPackage.getResourceURIMeasuringPoint_ResourceURI();
-            rootObject.eSet(resourceURIAttribute, resourceURI);
+	/**
+	 * Collects resourceURIs of all the elements in the projects to which
+	 * MeasuringPoint stereotype was applied. It is done by examining
+	 * .SimulizarProfile.pa.xmi files.
+	 * 
+	 * @param projects
+	 *            projects whose .SimulizarProfile.pa.xmi files are examined.
+	 * @return
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws TransformerException
+	 *             indicates that the XML document represented by the resource
+	 *             could not be transformed.
+	 * @throws CoreException
+	 *             indicates a problem with accessing projects resources.
+	 */
+	private Set<String> getMonitoredElementsForMeasuringPoints(IProject[] projects)
+			throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Map<String, IProject> map = new HashMap<>();
+		for (IProject project : projects) {
+			map.putAll(getElementsAndProjectsForMeasuringPoints(project));
+		}
+		return map.keySet();
+	}
 
-            if (rootObject != null) {
-                resource.getContents().add(rootObject);
-            }
+	/**
+	 * Collects resourceURIs of all the elements in the project to which
+	 * MeasuringPoint stereotype was applied. It is done by examining
+	 * .SimulizarProfile.pa.xmi files.
+	 * 
+	 * @param project
+	 *            projects whose .SimulizarProfile.pa.xmi are examined.
+	 * @return map of resourceURIs of elements MeasuringPoint stereotype is
+	 *         applied to and projects where the respective
+	 *         .SimulizarProfile.pa.xmi files reside.
+	 * @throws ParserConfigurationException
+	 *             exception thrown if the document could not be parsed.
+	 * @throws SAXException
+	 *             an exception thrown by the SAX.
+	 * @throws IOException
+	 *             an exception indicating some IO operation on the resource
+	 *             could not be performed correctly.
+	 * @throws TransformerException
+	 *             indicates that the XML document represented by the resource
+	 *             could not be transformed.
+	 */
+	private Map<String, IProject> getElementsAndProjectsForMeasuringPoints(IProject project)
+			throws ParserConfigurationException, SAXException, IOException, TransformerException {
+		Map<String, IProject> res = new HashMap<>();
+		try {
+			for (IResource resource : project.members()) {
+				if (resource.getFullPath().toString().endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
+					DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+					factory.setIgnoringElementContentWhitespace(true);
 
-            // Save the contents of the resource to the file system.
-            //
-            final Map<Object, Object> options = new HashMap<Object, Object>();
-            options.put(XMLResource.OPTION_ENCODING, UTF8_ENCODING);
-            resource.save(options);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+					DocumentBuilder builder = factory.newDocumentBuilder();
+					Document doc = builder.parse(resource.getLocation().toFile());
+					NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
+					for (int i = 0; i < appliedToList.getLength(); i++) {
+						Element appliedTo = (Element) appliedToList.item(i);
+						String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
+						// check if encountered the element that already exists
+						IProject duplicate = res.put(href, project);
+						// if yes, delete the element from the stereotype
+						// application file
+						if (duplicate != null) {
+							Node stereotypeApplication = appliedTo.getParentNode();
+							Node rootNode = stereotypeApplication.getParentNode();
+							rootNode.removeChild(stereotypeApplication);
+
+							TransformerFactory transformerFactory = TransformerFactory.newInstance();
+							Transformer transformer = transformerFactory.newTransformer();
+							DOMSource source = new DOMSource(doc);
+							StreamResult result = new StreamResult(resource.getLocation().toFile());
+							transformer.transform(source, result);
+						}
+					}
+
+				}
+			}
+		} catch (CoreException e) {
+			logger.log(Level.INFO, "Tried to access the project that was not opened yet.");
+		}
+
+		return res;
+	}
+
+	/**
+	 * Creating a ResourceURIMeasuringPoint file with the specified file name
+	 * and the resourceURI of the element for which we want to create a
+	 * measuring point.
+	 * 
+	 * @param fileName
+	 *            name of the file to created that represents the measuring
+	 *            point.
+	 * @param resourceURI
+	 *            resourceURI of the element for which we create a measuring
+	 *            point.
+	 * @throws IOException
+	 *             indicates that there was a problem with saving the resource.
+	 */
+	public void createAMeasuringPoint(String resourceURI) throws IOException {
+		// Create a resource set
+		//
+		final ResourceSet resourceSet = new ResourceSetImpl();
+
+		// Get the URI of the model file.
+		//
+		String fileName = getMeasuringPointName(resourceURI);
+		final URI fileURI = URI.createPlatformResourceURI(fileName, true);
+
+		// Create a resource for this file.
+		//
+		final Resource resource = resourceSet.createResource(fileURI);
+
+		// Add the initial model object to the contents.
+		MeasuringpointPackage measuringpointPackage = MeasuringpointPackage.eINSTANCE;
+		MeasuringpointFactory measuringpointFactory = measuringpointPackage.getMeasuringpointFactory();
+
+		EClass measuringPoint = measuringpointPackage.getResourceURIMeasuringPoint();
+
+		final EObject rootObject = measuringpointFactory.create(measuringPoint);
+		EAttribute resourceURIAttribute = measuringpointPackage.getResourceURIMeasuringPoint_ResourceURI();
+		rootObject.eSet(resourceURIAttribute, resourceURI);
+
+		if (rootObject != null) {
+			resource.getContents().add(rootObject);
+		}
+
+		// Save the contents of the resource to the file system.
+		final Map<Object, Object> options = new HashMap<Object, Object>();
+		options.put(XMLResource.OPTION_ENCODING, UTF8_ENCODING);
+		resource.save(options);
+	}
 
 }
