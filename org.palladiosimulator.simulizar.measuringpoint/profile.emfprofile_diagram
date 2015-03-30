@@ -1,35 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
-  <emfprofile:Profile xmi:id="_I4y5IElvEeS1dM2y1CxjcQ" name="SimulizarMeasuringPointProfile" nsURI="http://sdqweb.ipd.kit.edu/SimuLizar/emf-profiles/measuringPoint" nsPrefix="measuringPoint">
+  <emfprofile:Profile xmi:id="_I4y5IElvEeS1dM2y1CxjcQ" name="SimulizarProfile" nsURI="http://sdqweb.ipd.kit.edu/SimuLizar/emf-profiles/measuringPoint" nsPrefix="measuringPoint">
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_M_jTIElvEeS1dM2y1CxjcQ" name="MeasuringPoint" iconPath="">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
       <eStructuralFeatures xmi:type="ecore:EAttribute" xmi:id="_QjAy0ElvEeS1dM2y1CxjcQ" name="measuringPointURI" defaultValueLiteral="">
         <eType xmi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       </eStructuralFeatures>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_UpT50ElvEeS1dM2y1CxjcQ" lowerBound="1">
-        <target xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/InternalAction"/>
+        <target xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/Entity"/>
       </extensions>
     </eClassifiers>
   </emfprofile:Profile>
   <notation:Diagram xmi:id="_I4zgMElvEeS1dM2y1CxjcQ" type="EMFProfile" element="_I4y5IElvEeS1dM2y1CxjcQ" name="profile.emfprofile_diagram" measurementUnit="Pixel">
-    <children xmi:type="notation:Node" xmi:id="_Me1LsElvEeS1dM2y1CxjcQ" type="2002">
-      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_Me2Z10lvEeS1dM2y1CxjcQ" source="Shortcut">
-        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_Me2Z2ElvEeS1dM2y1CxjcQ" key="modelID" value="EMFProfile"/>
-      </eAnnotations>
-      <children xmi:type="notation:DecorationNode" xmi:id="_Me2Z0ElvEeS1dM2y1CxjcQ" type="5002"/>
-      <children xmi:type="notation:BasicCompartment" xmi:id="_Me2Z0UlvEeS1dM2y1CxjcQ" type="7004">
-        <styles xmi:type="notation:SortingStyle" xmi:id="_Me2Z0klvEeS1dM2y1CxjcQ"/>
-        <styles xmi:type="notation:FilteringStyle" xmi:id="_Me2Z00lvEeS1dM2y1CxjcQ"/>
-      </children>
-      <children xmi:type="notation:BasicCompartment" xmi:id="_Me2Z1ElvEeS1dM2y1CxjcQ" type="7005">
-        <styles xmi:type="notation:SortingStyle" xmi:id="_Me2Z1UlvEeS1dM2y1CxjcQ"/>
-        <styles xmi:type="notation:FilteringStyle" xmi:id="_Me2Z1klvEeS1dM2y1CxjcQ"/>
-      </children>
-      <styles xmi:type="notation:DescriptionStyle" xmi:id="_Me1LsUlvEeS1dM2y1CxjcQ"/>
-      <styles xmi:type="notation:FontStyle" xmi:id="_Me1LsklvEeS1dM2y1CxjcQ" fontName="Lucida Grande"/>
-      <element xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/InternalAction"/>
-      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Me1Ls0lvEeS1dM2y1CxjcQ" x="162" y="108" height="75"/>
-    </children>
     <children xmi:type="notation:Node" xmi:id="_M_j6MElvEeS1dM2y1CxjcQ" type="2006" element="_M_jTIElvEeS1dM2y1CxjcQ">
       <children xmi:type="notation:DecorationNode" xmi:id="_M_j6NElvEeS1dM2y1CxjcQ" type="5008"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_M_khQElvEeS1dM2y1CxjcQ" type="7008">
@@ -43,15 +25,32 @@
       <styles xmi:type="notation:FontStyle" xmi:id="_M_j6MklvEeS1dM2y1CxjcQ" fontName="Lucida Grande"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_M_j6M0lvEeS1dM2y1CxjcQ" x="441" y="117"/>
     </children>
+    <children xmi:type="notation:Node" xmi:id="_wR3IoNalEeSFUYF-N0yI-Q" type="2002">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_wR6zANalEeSFUYF-N0yI-Q" source="Shortcut">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_wR6zAdalEeSFUYF-N0yI-Q" key="modelID" value="EMFProfile"/>
+      </eAnnotations>
+      <children xmi:type="notation:DecorationNode" xmi:id="_wR5k4NalEeSFUYF-N0yI-Q" type="5002"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_wR5k4dalEeSFUYF-N0yI-Q" type="7004">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_wR5k4talEeSFUYF-N0yI-Q"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_wR5k49alEeSFUYF-N0yI-Q"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_wR5k5NalEeSFUYF-N0yI-Q" type="7005">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_wR5k5dalEeSFUYF-N0yI-Q"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_wR5k5talEeSFUYF-N0yI-Q"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_wR3vsNalEeSFUYF-N0yI-Q"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_wR3vsdalEeSFUYF-N0yI-Q" fontName=".Helvetica Neue DeskInterface"/>
+      <element xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/Entity"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_wR3vstalEeSFUYF-N0yI-Q" x="207" y="117"/>
+    </children>
     <styles xmi:type="notation:DiagramStyle" xmi:id="_I4zgMUlvEeS1dM2y1CxjcQ"/>
-    <edges xmi:type="notation:Edge" xmi:id="_UpWWEElvEeS1dM2y1CxjcQ" type="4005" element="_UpT50ElvEeS1dM2y1CxjcQ" source="_M_j6MElvEeS1dM2y1CxjcQ" target="_Me1LsElvEeS1dM2y1CxjcQ">
+    <edges xmi:type="notation:Edge" xmi:id="_UpWWEElvEeS1dM2y1CxjcQ" type="4005" element="_UpT50ElvEeS1dM2y1CxjcQ" source="_M_j6MElvEeS1dM2y1CxjcQ" target="_wR3IoNalEeSFUYF-N0yI-Q">
       <children xmi:type="notation:DecorationNode" xmi:id="_UpW9IElvEeS1dM2y1CxjcQ" type="6004">
         <layoutConstraint xmi:type="notation:Location" xmi:id="_UpW9IUlvEeS1dM2y1CxjcQ" x="10" y="10"/>
       </children>
       <styles xmi:type="notation:RoutingStyle" xmi:id="_UpWWEUlvEeS1dM2y1CxjcQ"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_UpWWEklvEeS1dM2y1CxjcQ" fontName="Lucida Grande"/>
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_UpWWE0lvEeS1dM2y1CxjcQ" points="[-43, 5, 225, -25]$[-266, 17, 2, -13]"/>
-      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_UpZZYElvEeS1dM2y1CxjcQ" id="(0.7549019607843137,0.3333333333333333)"/>
     </edges>
   </notation:Diagram>
 </xmi:XMI>
