@@ -21,8 +21,8 @@ import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecificatio
 import org.palladiosimulator.simulizar.monitorrepository.Monitor;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
+import de.uka.ipd.sdq.pcm.repository.PassiveResource;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
@@ -181,11 +181,9 @@ public final class MonitorRepositoryUtil {
 
             @Override
             public Boolean caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
-                final ProcessingResourceSpecification activeResource = object.getActiveResource();
-                if (element instanceof ResourceContainer) {
-                    ResourceContainer resourceContainer = (ResourceContainer) element;
-                    return resourceContainer.getId().equals(
-                            activeResource.getResourceContainer_ProcessingResourceSpecification().getId());
+                if (element instanceof ProcessingResourceSpecification) {
+                    final ProcessingResourceSpecification processingResourceSpecification = (ProcessingResourceSpecification) element;
+                    return processingResourceSpecification.getId().equals(object.getActiveResource().getId());
                 }
 
                 return false;
@@ -205,7 +203,12 @@ public final class MonitorRepositoryUtil {
 
             @Override
             public Boolean caseAssemblyPassiveResourceMeasuringPoint(AssemblyPassiveResourceMeasuringPoint object) {
-                throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
+                if (element instanceof PassiveResource) {
+                    final PassiveResource passiveResource = (PassiveResource) element;
+                    return passiveResource.getId().equals(object.getPassiveResource().getId());
+                }
+
+                return false;
             }
 
             @Override
