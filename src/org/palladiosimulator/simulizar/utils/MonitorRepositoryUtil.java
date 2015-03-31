@@ -140,6 +140,21 @@ public final class MonitorRepositoryUtil {
                 return object.getActiveResource();
             }
 
+            /**
+             * FIXME We stick to single model elements here even though several would be needed to
+             * uniquely identify the measuring point of interest (system + role + signature).
+             * [Lehrig]
+             */
+            @Override
+            public EObject caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
+                return object.getOperationSignature();
+            };
+
+            @Override
+            public EObject caseExternalCallActionMeasuringPoint(ExternalCallActionMeasuringPoint object) {
+                return object.getExternalCall();
+            };
+
         }.doSwitch(measuringPoint);
     }
 

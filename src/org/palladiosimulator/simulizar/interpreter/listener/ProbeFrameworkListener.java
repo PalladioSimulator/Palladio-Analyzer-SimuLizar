@@ -28,6 +28,7 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -214,7 +215,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
-
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
             this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
@@ -225,6 +225,22 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param event
      */
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
+                    .takeMeasurement(event.getThread().getRequestContext());
+        }
+    }
+
+    @Override
+    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
+                    .takeMeasurement(event.getThread().getRequestContext());
+        }
+    }
+
+    @Override
+    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
             this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
