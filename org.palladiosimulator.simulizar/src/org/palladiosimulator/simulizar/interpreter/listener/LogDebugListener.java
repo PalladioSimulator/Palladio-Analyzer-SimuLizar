@@ -6,6 +6,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -103,6 +104,16 @@ public class LogDebugListener extends AbstractInterpreterListener {
 
     @Override
     public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
+        this.logEvent(event);
+    }
+
+    @Override
+    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        this.logEvent(event);
+    }
+
+    @Override
+    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
         this.logEvent(event);
     }
 

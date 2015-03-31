@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction;
 import de.uka.ipd.sdq.pcm.usagemodel.Branch;
 import de.uka.ipd.sdq.pcm.usagemodel.BranchTransition;
@@ -98,6 +99,16 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                         new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.BEGIN,
                                 this.context.getThread()));
 
+        // FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
+        this.context
+                .getRuntimeState()
+                .getEventNotificationHelper()
+                .firePassedEvent(
+                        new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
+                                .getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN, this.context
+                                .getThread()));
+
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                 entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
@@ -110,6 +121,15 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 .firePassedEvent(
                         new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
                                 this.context.getThread()));
+
+        // FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
+        this.context
+                .getRuntimeState()
+                .getEventNotificationHelper()
+                .firePassedEvent(
+                        new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
+                                .getOperationSignature__EntryLevelSystemCall(), EventType.END, this.context.getThread()));
 
         return super.caseEntryLevelSystemCall(entryLevelSystemCall);
     }
