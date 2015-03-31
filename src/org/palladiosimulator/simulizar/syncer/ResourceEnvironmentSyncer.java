@@ -194,8 +194,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         }
 
         final MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                this.monitorRepository, resourceContainer,
-                MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
+                this.monitorRepository, processingResource, MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
 
         if (isMonitored(measurementSpecification)) {
             new ResourceStateListener(scheduledResource, runtimeModel.getModel().getSimulationControl(),
