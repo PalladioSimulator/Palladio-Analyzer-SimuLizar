@@ -5,6 +5,7 @@ package org.palladiosimulator.simulizar.monitorrepository.impl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
@@ -35,6 +36,9 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  * <li>
  * {@link org.palladiosimulator.simulizar.monitorrepository.impl.MeasurementSpecificationImpl#getMonitor
  * <em>Monitor</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.monitorrepository.impl.MeasurementSpecificationImpl#getName
+ * <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -82,6 +86,17 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
      * @ordered
      */
     protected MetricDescription metricDescription;
+
+    /**
+     * The cached setting delegate for the '{@link #getName() <em>Name</em>}' attribute. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @see #getName()
+     * @generated
+     * @ordered
+     */
+    protected EStructuralFeature.Internal.SettingDelegate NAME__ESETTING_DELEGATE = ((EStructuralFeature.Internal) MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__NAME)
+            .getSettingDelegate();
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -295,6 +310,26 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
      * @generated
      */
     @Override
+    public String getName() {
+        return (String) this.NAME__ESETTING_DELEGATE.dynamicGet(this, null, 0, true, false);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setName(final String newName) {
+        this.NAME__ESETTING_DELEGATE.dynamicSet(this, null, 0, newName);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
         switch (featureID) {
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
@@ -357,6 +392,8 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
             return this.basicGetMetricDescription();
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
             return this.getMonitor();
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__NAME:
+            return this.getName();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -380,6 +417,9 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
             return;
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
             this.setMonitor((Monitor) newValue);
+            return;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__NAME:
+            this.setName((String) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -405,6 +445,9 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
             this.setMonitor((Monitor) null);
             return;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__NAME:
+            this.NAME__ESETTING_DELEGATE.dynamicUnset(this, null, 0);
+            return;
         }
         super.eUnset(featureID);
     }
@@ -425,6 +468,8 @@ public class MeasurementSpecificationImpl extends IdentifierImpl implements Meas
             return this.metricDescription != null;
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__MONITOR:
             return this.getMonitor() != null;
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__NAME:
+            return this.NAME__ESETTING_DELEGATE.dynamicIsSet(this, null, 0);
         }
         return super.eIsSet(featureID);
     }

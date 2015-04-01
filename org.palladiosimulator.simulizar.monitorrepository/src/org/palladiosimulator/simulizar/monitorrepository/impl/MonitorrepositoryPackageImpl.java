@@ -278,6 +278,16 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
      * @generated
      */
     @Override
+    public EAttribute getMeasurementSpecification_Name() {
+        return (EAttribute) this.measurementSpecificationEClass.getEStructuralFeatures().get(4);
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
     public EClass getTemporalCharacterization() {
         return this.temporalCharacterizationEClass;
     }
@@ -406,6 +416,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
                 MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION);
         this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION);
         this.createEReference(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__MONITOR);
+        this.createEAttribute(this.measurementSpecificationEClass, MEASUREMENT_SPECIFICATION__NAME);
 
         this.temporalCharacterizationEClass = this.createEClass(TEMPORAL_CHARACTERIZATION);
 
@@ -498,7 +509,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
                 null, "temporalRestriction", null, 1, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMeasurementSpecification_StatisticalCharacterization(),
-                this.getStatisticalCharacterizationEnum(), "statisticalCharacterization", null, 1, 1,
+                this.getStatisticalCharacterizationEnum(), "statisticalCharacterization", "None", 1, 1,
                 MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEReference(this.getMeasurementSpecification_MetricDescription(),
@@ -509,6 +520,9 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
                 this.getMonitor_MeasurementSpecifications(), "monitor", null, 1, 1, MeasurementSpecification.class,
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+        this.initEAttribute(this.getMeasurementSpecification_Name(), this.ecorePackage.getEString(), "name", "", 0, 1,
+                MeasurementSpecification.class, !IS_TRANSIENT, IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+                IS_UNIQUE, IS_DERIVED, IS_ORDERED);
 
         this.initEClass(this.temporalCharacterizationEClass, TemporalCharacterization.class,
                 "TemporalCharacterization", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
@@ -545,6 +559,59 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
 
         // Create resource
         this.createResource(eNS_URI);
+
+        // Create annotations
+        // http://www.eclipse.org/OCL/Import
+        this.createImportAnnotations();
+        // http://www.eclipse.org/emf/2002/Ecore
+        this.createEcoreAnnotations();
+        // http://www.eclipse.org/emf/2002/Ecore/OCL
+        this.createOCLAnnotations();
+    }
+
+    /**
+     * Initializes the annotations for <b>http://www.eclipse.org/OCL/Import</b>. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void createImportAnnotations() {
+        final String source = "http://www.eclipse.org/OCL/Import";
+        this.addAnnotation(this, source, new String[] { "ecore", "http://www.eclipse.org/emf/2002/Ecore", "edp2",
+                "../../../plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint", "entity",
+                "../../../plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity", "identifier",
+                "../../../plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#/", "metricspec",
+        "../../../plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#/" });
+    }
+
+    /**
+     * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore</b>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void createEcoreAnnotations() {
+        final String source = "http://www.eclipse.org/emf/2002/Ecore";
+        this.addAnnotation(this, source, new String[] { "invocationDelegates",
+                "http://www.eclipse.org/emf/2002/Ecore/OCL", "settingDelegates",
+                "http://www.eclipse.org/emf/2002/Ecore/OCL", "validationDelegates",
+        "http://www.eclipse.org/emf/2002/Ecore/OCL" });
+    }
+
+    /**
+     * Initializes the annotations for <b>http://www.eclipse.org/emf/2002/Ecore/OCL</b>. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected void createOCLAnnotations() {
+        final String source = "http://www.eclipse.org/emf/2002/Ecore/OCL";
+        this.addAnnotation(
+                this.getMeasurementSpecification_Name(),
+                source,
+                new String[] {
+                    "derivation",
+                "self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name" });
     }
 
 } // MonitorrepositoryPackageImpl

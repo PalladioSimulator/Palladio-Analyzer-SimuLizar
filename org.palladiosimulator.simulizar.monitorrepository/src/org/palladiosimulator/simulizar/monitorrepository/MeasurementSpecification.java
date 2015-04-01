@@ -28,6 +28,8 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * <em>Metric Description</em>}</li>
  * <li>{@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getMonitor
  * <em>Monitor</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getName
+ * <em>Name</em>}</li>
  * </ul>
  * </p>
  *
@@ -68,7 +70,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
 
     /**
      * Returns the value of the '<em><b>Statistical Characterization</b></em>' attribute. The
-     * literals are from the enumeration
+     * default value is <code>"None"</code>. The literals are from the enumeration
      * {@link org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum}.
      * <!-- begin-user-doc -->
      * <p>
@@ -81,7 +83,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * @see org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum
      * @see #setStatisticalCharacterization(StatisticalCharacterizationEnum)
      * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_StatisticalCharacterization()
-     * @model required="true"
+     * @model default="None" required="true"
      * @generated
      */
     StatisticalCharacterizationEnum getStatisticalCharacterization();
@@ -160,5 +162,35 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * @generated
      */
     void setMonitor(Monitor value);
+
+    /**
+     * Returns the value of the '<em><b>Name</b></em>' attribute. The default value is
+     * <code>""</code>. <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Name</em>' attribute isn't clear, there really should be more of a
+     * description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
+     * @return the value of the '<em>Name</em>' attribute.
+     * @see #setName(String)
+     * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_Name()
+     * @model default="" volatile="true" derived="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/Ecore/OCL derivation='self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name'"
+     * @generated
+     */
+    String getName();
+
+    /**
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getName
+     * <em>Name</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Name</em>' attribute.
+     * @see #getName()
+     * @generated
+     */
+    void setName(String value);
 
 } // MeasurementSpecification

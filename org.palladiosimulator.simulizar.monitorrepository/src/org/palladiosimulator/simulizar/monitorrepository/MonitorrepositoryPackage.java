@@ -23,7 +23,10 @@ import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
  * <!-- end-user-doc -->
  *
  * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryFactory
- * @model kind="package"
+ * @model kind="package" annotation=
+ *        "http://www.eclipse.org/OCL/Import ecore='http://www.eclipse.org/emf/2002/Ecore' edp2='../../../plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint' entity='../../../plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity' identifier='../../../plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#/' metricspec='../../../plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#/'"
+ *        annotation=
+ *        "http://www.eclipse.org/emf/2002/Ecore invocationDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL' settingDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL' validationDelegates='http://www.eclipse.org/emf/2002/Ecore/OCL'"
  * @generated
  */
 public interface MonitorrepositoryPackage extends EPackage {
@@ -225,13 +228,22 @@ public interface MonitorrepositoryPackage extends EPackage {
     int MEASUREMENT_SPECIFICATION__MONITOR = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 3;
 
     /**
+     * The feature id for the '<em><b>Name</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int MEASUREMENT_SPECIFICATION__NAME = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 4;
+
+    /**
      * The number of structural features of the '<em>Measurement Specification</em>' class. <!--
      * begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      * @ordered
      */
-    int MEASUREMENT_SPECIFICATION_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 4;
+    int MEASUREMENT_SPECIFICATION_FEATURE_COUNT = IdentifierPackage.IDENTIFIER_FEATURE_COUNT + 5;
 
     /**
      * The meta object id for the '
@@ -537,6 +549,18 @@ public interface MonitorrepositoryPackage extends EPackage {
     EReference getMeasurementSpecification_Monitor();
 
     /**
+     * Returns the meta object for the attribute '
+     * {@link org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getName
+     * <em>Name</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @return the meta object for the attribute '<em>Name</em>'.
+     * @see org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification#getName()
+     * @see #getMeasurementSpecification()
+     * @generated
+     */
+    EAttribute getMeasurementSpecification_Name();
+
+    /**
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.monitorrepository.TemporalCharacterization
      * <em>Temporal Characterization</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
@@ -760,6 +784,14 @@ public interface MonitorrepositoryPackage extends EPackage {
          * @generated
          */
         EReference MEASUREMENT_SPECIFICATION__MONITOR = eINSTANCE.getMeasurementSpecification_Monitor();
+
+        /**
+         * The meta object literal for the '<em><b>Name</b></em>' attribute feature. <!--
+         * begin-user-doc --> <!-- end-user-doc -->
+         *
+         * @generated
+         */
+        EAttribute MEASUREMENT_SPECIFICATION__NAME = eINSTANCE.getMeasurementSpecification_Name();
 
         /**
          * The meta object literal for the '
