@@ -32,10 +32,7 @@ modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
  * type and namespace notation are used in operational QVT (: and :: respectively).
  */
 transformation ScaleUp(		in prm : PRM,
-							in pcmRepository : PCM_REP,
-							in pcmSystem : PCM_SYS,
-							in pcmAllocation : PCM_ALLOC,
-							inout pcmResources : PCM_RES_ENV ) {
+							in pcmAllocation : PCM_ALLOC ) {
 							
 							
 	// Define Threshold and Scale Up
