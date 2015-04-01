@@ -16,7 +16,6 @@ import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryFactory;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage;
-import org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProvider;
 
@@ -51,6 +50,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
 
             this.addStatisticalCharacterizationPropertyDescriptor(object);
             this.addMetricDescriptionPropertyDescriptor(object);
+            this.addNamePropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
     }
@@ -86,6 +86,22 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
                         "_UI_MeasurementSpecification_type"),
                 MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__METRIC_DESCRIPTION, true, false, true,
                 null, null, null));
+    }
+
+    /**
+     * This adds a property descriptor for the Name feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addNamePropertyDescriptor(final Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_MeasurementSpecification_name_feature"), this.getString(
+                        "_UI_PropertyDescriptor_description", "_UI_MeasurementSpecification_name_feature",
+                        "_UI_MeasurementSpecification_type"),
+                MonitorrepositoryPackage.Literals.MEASUREMENT_SPECIFICATION__NAME, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -138,9 +154,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
      */
     @Override
     public String getText(final Object object) {
-        final StatisticalCharacterizationEnum labelValue = ((MeasurementSpecification) object)
-                .getStatisticalCharacterization();
-        final String label = labelValue == null ? null : labelValue.toString();
+        final String label = ((MeasurementSpecification) object).getName();
         return label == null || label.length() == 0 ? this.getString("_UI_MeasurementSpecification_type") : this
                 .getString("_UI_MeasurementSpecification_type") + " " + label;
     }
@@ -158,6 +172,7 @@ public class MeasurementSpecificationItemProvider extends IdentifierItemProvider
 
         switch (notification.getFeatureID(MeasurementSpecification.class)) {
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__STATISTICAL_CHARACTERIZATION:
+        case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__NAME:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
             return;
         case MonitorrepositoryPackage.MEASUREMENT_SPECIFICATION__TEMPORAL_RESTRICTION:
