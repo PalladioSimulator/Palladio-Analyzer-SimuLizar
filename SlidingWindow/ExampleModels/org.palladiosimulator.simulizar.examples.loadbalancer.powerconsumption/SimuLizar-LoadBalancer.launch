@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
-<stringAttribute key="EDP2RepositoryID" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/experiments"/>
+<stringAttribute key="EDP2RepositoryID" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/results"/>
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
 <stringAttribute key="allocationFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/loadbalancer_on_iaas.allocation"/>
 <booleanAttribute key="clear" value="false"/>
@@ -25,7 +25,7 @@
 <stringAttribute key="fixedSeed4" value="4"/>
 <stringAttribute key="fixedSeed5" value="5"/>
 <stringAttribute key="maximum" value=""/>
-<stringAttribute key="maximumMeasurementCount" value="100000"/>
+<stringAttribute key="maximumMeasurementCount" value="10000"/>
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="monitorRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/monitors/monitor.monitorrepository"/>
 <stringAttribute key="mwRepositoryFile" value="pathmap://PCM_MODELS/Glassfish.repository"/>
@@ -34,7 +34,7 @@
 <stringAttribute key="pmsFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/monitors/monitoring_extended.pms"/>
 <stringAttribute key="reconfigurationRulesFolder" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/rules_active"/>
 <stringAttribute key="sdmFolder" value="platform:/resource/Simulizar Example"/>
-<stringAttribute key="simTime" value="1500"/>
+<stringAttribute key="simTime" value="15000"/>
 <booleanAttribute key="simulateAccuracy" value="false"/>
 <booleanAttribute key="simulateFailures" value="false"/>
 <booleanAttribute key="simulateLinkingResources" value="false"/>
