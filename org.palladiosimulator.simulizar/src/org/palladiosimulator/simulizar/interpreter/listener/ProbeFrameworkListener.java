@@ -333,7 +333,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
    private void initPowerMeasurements() {
-        Collection<MeasurementSpecification> powerMeasurementSpecs =
+	   Collection<MeasurementSpecification> powerMeasurementSpecs =
                getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
         if (!powerMeasurementSpecs.isEmpty()) {
             PowerModelRegistry reg = new PowerModelRegistry();
@@ -382,8 +382,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 triggerMeasurementsRecording(powerConsumptionCalculator, mp, POWER_CONSUMPTION_TUPLE_METRIC_DESC);
                 triggerMeasurementsRecording(energyConsumptionCalculator, mp, ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
                 // write measurements to PRM (both power and energy measurements are forwarded)
-                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, powerSpec, ppe));
-                energyConsumptionCalculator.addObserver(new EnergyConsumptionPrmRecorder(this.prmModel, energySpec, ppe));
+                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, powerSpec, mp));
+                energyConsumptionCalculator.addObserver(new EnergyConsumptionPrmRecorder(this.prmModel, energySpec, mp));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
@@ -488,7 +488,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
             try {
                 IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel, this.prmModel,
-                        responseTimeMeasurementSpec, modelElement);
+                        responseTimeMeasurementSpec, measuringPoint);
                 calculator.addObserver(aggregator);
             } catch (final UnsupportedOperationException e) {
                 LOGGER.error(e);

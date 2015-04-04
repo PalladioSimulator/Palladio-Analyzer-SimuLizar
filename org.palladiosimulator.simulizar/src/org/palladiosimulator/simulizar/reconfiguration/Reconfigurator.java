@@ -9,10 +9,10 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.ResourceContainerMeasurement;
 import org.palladiosimulator.simulizar.prm.util.PrmSwitch;
 
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
@@ -151,21 +151,17 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     /**
      * Visitor singleton which is used to query the monitored PCM object from a PRM notification
-     * (which is a change in a {@link PCMModelElementMeasurement}).
+     * (which is a change in a {@link PRMMeasurement}).
      */
-    private static final PrmSwitch<EObject> MONITORED_ELEMENT_RETRIEVER = new PrmSwitch<EObject>() {
+    private static final PrmSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new PrmSwitch<MeasuringPoint>() {
 
         @Override
-        public EObject casePCMModelElementMeasurement(final PCMModelElementMeasurement object) {
-            return object.getPcmModelElement();
-        }
-
-        @Override
-        public EObject caseResourceContainerMeasurement(final ResourceContainerMeasurement object) {
-            return object.getPcmModelElement();
-        }
+        public MeasuringPoint casePRMMeasurement(final PRMMeasurement object) {
+            return object.getMeasuringPoint();
+        };
 
     };
+
 
     /**
      * Retrieve the monitored PCM element from the PRM change event.

@@ -1,9 +1,10 @@
 package org.palladiosimulator.simulizar.metrics;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.monitorrepository.TemporalCharacterization;
-import org.palladiosimulator.simulizar.prm.PCMModelElementMeasurement;
+import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
@@ -17,7 +18,7 @@ public abstract class PRMRecorder {
 
     private static final PrmFactory PRM_FACTORY = PrmFactory.eINSTANCE;
 
-    private final PCMModelElementMeasurement pcmModelElementMeasurement;
+    private final PRMMeasurement measurement;
     private final PRMModel prmAccess;
 
     /**
@@ -32,24 +33,25 @@ public abstract class PRMRecorder {
      *            the given measurement specification.
      * 
      */
-    public PRMRecorder(PRMModel prmModel, MeasurementSpecification measurementSpecification, EObject monitoredElement) {
+    public PRMRecorder(final PRMModel prmAccess, final MeasurementSpecification measurementSpecification,
+            MeasuringPoint measuringPoint) {
         super();
-        this.pcmModelElementMeasurement = PRM_FACTORY.createPCMModelElementMeasurement();
-        this.pcmModelElementMeasurement.setPcmModelElement(monitoredElement);
-        this.pcmModelElementMeasurement.setMeasurementSpecification(measurementSpecification);
-        this.prmAccess = prmModel;
+        this.measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        this.measurement.setMeasuringPoint(measuringPoint);
+        this.measurement.setMeasurementSpecification(measurementSpecification);
+        this.prmAccess = prmAccess;
         attachToPRM();
     }
 
     private void attachToPRM() {
-        if (!this.prmAccess.getPcmModelElementMeasurements().contains(this.pcmModelElementMeasurement)) {
-            this.prmAccess.getPcmModelElementMeasurements().add(this.pcmModelElementMeasurement);
+        if (!this.prmAccess.getMeasurements().contains(this.measurement)) {
+            this.prmAccess.getMeasurements().add(this.measurement);
         }
     }
 
     protected final void detachFromPRM() {
-        if (this.prmAccess.getPcmModelElementMeasurements().contains(this.pcmModelElementMeasurement)) {
-            this.prmAccess.getPcmModelElementMeasurements().remove(this.pcmModelElementMeasurement);
+        if (this.prmAccess.getMeasurements().contains(this.measurement)) {
+            this.prmAccess.getMeasurements().remove(this.measurement);
         }
     }
 
@@ -63,21 +65,21 @@ public abstract class PRMRecorder {
         // this has the corresponding PRM instance trigger a notification
         // all attached adapters (such as the Reconfigurator class) are informed
         // event type of notification: Notification.SET
-        this.pcmModelElementMeasurement.setMeasurementValue(value);
+        this.measurement.setMeasuringValue(value);
     }
 
     /**
      * @return returns the measurementSpecification.
      */
     protected MeasurementSpecification getMeasurementSpecification() {
-        return this.pcmModelElementMeasurement.getMeasurementSpecification();
+        return this.measurement.getMeasurementSpecification();
     }
 
     /**
      * @return returns the pcmModelElementMeasurement.
      */
-    protected final PCMModelElementMeasurement getPCMModelElementMeasurement() {
-        return this.pcmModelElementMeasurement;
+    protected final PRMMeasurement getPRMMeasurement() {
+        return this.measurement;
     }
 
     /**
