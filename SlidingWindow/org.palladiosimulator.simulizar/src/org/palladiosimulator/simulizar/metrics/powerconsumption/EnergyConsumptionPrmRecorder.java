@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.metrics.powerconsumption;
 import javax.measure.Measure;
 import javax.measure.quantity.Energy;
 
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
@@ -42,10 +43,10 @@ public class EnergyConsumptionPrmRecorder extends PRMRecorder implements IMeasur
      *             In case one of the arguments is {@code null}.
      */
     public EnergyConsumptionPrmRecorder(PRMModel prmAccess, MeasurementSpecification measurementSpecification,
-            PowerProvidingEntity monitoredElement) {
-        super(prmAccess, measurementSpecification, monitoredElement);
+            MeasuringPoint measuringPoint) {
+        super(prmAccess, measurementSpecification, measuringPoint);
 
-        if (prmAccess == null || measurementSpecification == null || monitoredElement == null) {
+        if (prmAccess == null || measurementSpecification == null || measuringPoint == null) {
             throw new IllegalArgumentException("At least one argument is null.");
         }
         if (!MetricDescriptionUtility.metricDescriptionIdsEqual(measurementSpecification.getMetricDescription(),
