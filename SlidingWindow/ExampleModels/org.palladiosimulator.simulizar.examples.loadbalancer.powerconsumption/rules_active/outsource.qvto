@@ -58,22 +58,22 @@ transformation outsource(	in prm : PRM,
 	
 		log('SimuLizar Outsource Rule Transformation started');
 	
-		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
+		assert fatal(prm.rootObjects()[PRMMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 			
-		//prm.rootObjects()[PCMModelElementMeasurement][measurementSpecification.metricDescription.name = responseTimeMetricName]->checkResponseTimeThresholdExceeded();
+		//prm.rootObjects()[PRMMeasurement][measurementSpecification.metricDescription.name = responseTimeMetricName]->checkResponseTimeThresholdExceeded();
 		
-		prm.rootObjects()[PCMModelElementMeasurement][measurementSpecification.metricDescription.name = powerConsumptionMetricName]->checkPowerConsumptionThresholdExceeded();
+		prm.rootObjects()[PRMMeasurement][measurementSpecification.metricDescription.name = powerConsumptionMetricName]->checkPowerConsumptionThresholdExceeded();
 	}
 	
-	helper Set(PCMModelElementMeasurement) :: checkPowerConsumptionThresholdExceeded() : Boolean {
+	helper Set(PRMMeasurement) :: checkPowerConsumptionThresholdExceeded() : Boolean {
 		log('Number of power consumption measurements is ' + self->size().toString());
 		self->forEach(measurement) {
-			var measurementValue : Real = measurement.measurementValue;
-			log(measurement.pcmModelElement.toString() + ': Measured power consumption is ' 
+			var measurementValue : Real = measurement.measuringValue;
+			log(measurement.measuringPoint.stringRepresentation + ': Measured power consumption is ' 
 				+ measurementValue.toString() + 'W');
 			if (measurementValue > powerConsumptionThreshold) {
 				log('Power consumption threshold is exceeded');
@@ -86,11 +86,11 @@ transformation outsource(	in prm : PRM,
 		return false;
 	}
 	
-	helper Set(PCMModelElementMeasurement) :: checkResponseTimeThresholdExceeded() : Boolean {
+	helper Set(PRMMeasurement) :: checkResponseTimeThresholdExceeded() : Boolean {
 		log('Number of response time measurements is ' + self->size().toString());
 		self->forEach(measurement) {
-			var measurementValue : Real = measurement.measurementValue;
-			log(measurement.pcmModelElement.toString() + ': Measured response time is ' 
+			var measurementValue : Real = measurement.measuringValue;
+			log(measurement.measuringPoint.stringRepresentation + ': Measured response time is ' 
 				+ measurementValue.toString() + 's');
 			if (measurementValue > responseTimeThreshold) {
 				log('Response time threshold is exceeded');
