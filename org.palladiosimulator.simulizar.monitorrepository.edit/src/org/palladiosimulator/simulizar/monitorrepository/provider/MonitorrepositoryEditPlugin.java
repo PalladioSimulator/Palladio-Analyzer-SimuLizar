@@ -4,7 +4,6 @@ package org.palladiosimulator.simulizar.monitorrepository.provider;
 
 import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
 import org.palladiosimulator.edp2.models.ExperimentData.provider.EDP2EditPlugin;
 import org.palladiosimulator.metricspec.provider.MetricSpecEditPlugin;
 
@@ -41,10 +40,9 @@ public final class MonitorrepositoryEditPlugin extends EMFPlugin {
      * @generated
      */
     public MonitorrepositoryEditPlugin() {
-        super(new ResourceLocator[] { EcoreEditPlugin.INSTANCE, IdentifierEditPlugin.INSTANCE,
-                MetricSpecEditPlugin.INSTANCE, PalladioComponentModelEditPlugin.INSTANCE,
-                ProbabilityFunctionEditPlugin.INSTANCE, StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE,
-                EDP2EditPlugin.INSTANCE, });
+        super(new ResourceLocator[] { IdentifierEditPlugin.INSTANCE, MetricSpecEditPlugin.INSTANCE,
+                PalladioComponentModelEditPlugin.INSTANCE, ProbabilityFunctionEditPlugin.INSTANCE,
+                StoexEditPlugin.INSTANCE, UnitsEditPlugin.INSTANCE, EDP2EditPlugin.INSTANCE, });
     }
 
     /**

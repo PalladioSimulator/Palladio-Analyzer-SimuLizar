@@ -7,7 +7,6 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
 import org.palladiosimulator.edp2.models.Repository.RepositoryPackage;
@@ -142,7 +141,6 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
         isInited = true;
 
         // Initialize simple dependencies
-        EcorePackage.eINSTANCE.eClass();
         PcmPackage.eINSTANCE.eClass();
         ExperimentDataPackage.eINSTANCE.eClass();
         RepositoryPackage.eINSTANCE.eClass();
@@ -611,7 +609,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
                 source,
                 new String[] {
                     "derivation",
-                "self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name" });
+                "if self.temporalRestriction->notEmpty() then self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name else self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() endif" });
     }
 
 } // MonitorrepositoryPackageImpl

@@ -176,7 +176,7 @@ public interface MeasurementSpecification extends EObject, Identifier {
      * @see #setName(String)
      * @see org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage#getMeasurementSpecification_Name()
      * @model default="" volatile="true" derived="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/Ecore/OCL derivation='self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name'"
+     *        "http://www.eclipse.org/emf/2002/Ecore/OCL derivation='if self.temporalRestriction->notEmpty() then self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() + \' of \' + self.temporalRestriction.oclAsType(ecore::EObject).eClass().name else self.monitor.entityName + \': \' + self.statisticalCharacterization.toString() endif'"
      * @generated
      */
     String getName();

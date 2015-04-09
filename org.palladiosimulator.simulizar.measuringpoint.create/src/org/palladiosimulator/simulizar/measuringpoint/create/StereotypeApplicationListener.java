@@ -502,6 +502,9 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
     private Map<String, IProject> getElementsAndProjectsForMeasuringPoints(IProject project)
             throws ParserConfigurationException, SAXException, IOException, TransformerException {
         Map<String, IProject> res = new HashMap<>();
+        if (!project.isOpen()) {
+            return res;
+        }
         try {
             for (IResource resource : project.members()) {
                 if (resource.getFullPath().toString().endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
