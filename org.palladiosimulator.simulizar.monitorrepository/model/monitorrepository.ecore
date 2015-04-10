@@ -37,8 +37,8 @@
     <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
       <details key="documentation" value="A measurement specification for a pcm element including the performance metric and the statistical charaterization."/>
     </eAnnotations>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="temporalRestriction" lowerBound="1"
-        eType="#//TemporalCharacterization" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="temporalRestriction" eType="#//TemporalCharacterization"
+        containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="statisticalCharacterization"
         lowerBound="1" eType="#//StatisticalCharacterizationEnum" defaultValueLiteral="None"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metricDescription" lowerBound="1"

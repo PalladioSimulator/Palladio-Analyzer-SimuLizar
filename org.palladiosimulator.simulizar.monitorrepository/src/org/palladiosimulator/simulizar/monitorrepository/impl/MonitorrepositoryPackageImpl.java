@@ -504,7 +504,7 @@ public class MonitorrepositoryPackageImpl extends EPackageImpl implements Monito
         this.initEClass(this.measurementSpecificationEClass, MeasurementSpecification.class,
                 "MeasurementSpecification", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         this.initEReference(this.getMeasurementSpecification_TemporalRestriction(), this.getTemporalCharacterization(),
-                null, "temporalRestriction", null, 1, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
+                null, "temporalRestriction", null, 0, 1, MeasurementSpecification.class, !IS_TRANSIENT, !IS_VOLATILE,
                 IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         this.initEAttribute(this.getMeasurementSpecification_StatisticalCharacterization(),
                 this.getStatisticalCharacterizationEnum(), "statisticalCharacterization", "None", 1, 1,
