@@ -21,7 +21,7 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations
  * respectively.
  * 
- * @author snowball
+ * @author snowball, adapted by Florian Rosenthal
  *
  */
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
@@ -162,6 +162,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     };
 
+
     /**
      * Retrieve the monitored PCM element from the PRM change event.
      * 
@@ -177,6 +178,9 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
             return null;
         case Notification.REMOVING_ADAPTER:
             return null;
+        case Notification.SET:
+            //in this case, one feature such as value of notifier PcmModelElementMeasurement could have been set/changed 
+            return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNotifier());
         default:
             LOGGER.warn("Unsupported PRM Notification: " + notification);
             return null;

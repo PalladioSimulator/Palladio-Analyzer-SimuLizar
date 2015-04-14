@@ -9,6 +9,7 @@ import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
+import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
@@ -45,8 +46,10 @@ public class ResourceStateListener implements IStateListener {
      *            the corresponding SimuCom simulated resource of the resource.
      * @param measurementSpecification
      *            the measurement specification of the resource container of the resource.
-     * @param measurement
+     * @param resourceContainerMeasurement
      *            the resource container measurement of the prm.
+     * @param processingResource
+     *            the pcm processing resource specification of the resource.
      */
     public ResourceStateListener(final AbstractScheduledResource abstractScheduledResource,
             final ISimulationControl iSimulationControl, final MeasurementSpecification measurementSpecification,
@@ -73,7 +76,7 @@ public class ResourceStateListener implements IStateListener {
      *            the measurement value.
      */
     private void addToPRM(final double value) {
-        this.measurement.setMeasuringValue(value);
+    	this.measurement.setMeasuringValue(value);
     }
 
     /**

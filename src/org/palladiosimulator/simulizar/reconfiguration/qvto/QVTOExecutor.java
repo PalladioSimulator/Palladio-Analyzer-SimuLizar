@@ -167,7 +167,7 @@ public class QVTOExecutor {
     private boolean execute(final TransformationExecutor executor) {
 
         // define the transformation input and outputs
-        List<PRMMeasurement> runtimeModel = this.modelAccess.getPRMModel().getMeasurements();
+    	List<PRMMeasurement> runtimeModel = this.modelAccess.getPRMModel().getMeasurements();
         List<EObject> pcmAllocation = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel().getAllocation());
 
         // create the input and inout extents with its initial contents
