@@ -50,17 +50,17 @@ transformation scaleIn(	in prm : PRM,
 	
 		log('SimuLizar Outsource Rule Transformation started');
 		
-		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
+		assert fatal(prm.rootObjects()[PRMMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 			
-		prm.rootObjects()[PCMModelElementMeasurement]->checkCondition();	
+		prm.rootObjects()[PRMMeasurement]->checkCondition();	
 
 	}
 	
-	helper Set(PCMModelElementMeasurement) :: checkCondition() : Boolean {
+	helper Set(PRMMeasurement) :: checkCondition() : Boolean {
 	
 		self->forEach(measurement) {
 		log('Measured value is ' + measurement.measurementValue.toString());
