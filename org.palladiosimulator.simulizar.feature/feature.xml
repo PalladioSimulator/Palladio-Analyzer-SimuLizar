@@ -269,6 +269,9 @@ litigation.
       <import plugin="org.eclipse.ui.navigator.resources" version="3.4.700" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.ui" version="1.0.0" match="greaterOrEqual"/>
       <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="de.fzi.power"/>
+      <import plugin="de.fzi.power.interpreter"/>
+      <import plugin="de.fzi.power.interpreter.calculators.energy"/>
    </requires>
 
    <plugin

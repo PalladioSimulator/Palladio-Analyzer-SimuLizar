@@ -10,9 +10,6 @@ import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
@@ -21,12 +18,14 @@ import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecificatio
 import org.palladiosimulator.simulizar.monitorrepository.Monitor;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
-import de.uka.ipd.sdq.pcm.repository.PassiveResource;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
+import de.uka.ipd.sdq.pcm.resourceenvironment.util.ResourceenvironmentSwitch;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
+import de.uka.ipd.sdq.pcm.seff.util.SeffSwitch;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
+import de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch;
 
 /**
  * Util methods for the monitoring model
@@ -81,10 +80,7 @@ public final class MonitorRepositoryUtil {
         if (eobject == null) {
             eobject = getEObjectFromGeneralMeasuringPoint(mp);
             if (eobject == null) {
-                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
-                        + mp.getStringRepresentation() + "\" -- most likely this type of measuring point is "
-                        + "not yet implemented within in getEObjectFromPCMMeasuringPoint "
-                        + "or getEObjectFromGeneralMeasuringPoint methods.");
+                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint");
             }
         }
         return eobject;
@@ -118,47 +114,22 @@ public final class MonitorRepositoryUtil {
         return new PcmmeasuringpointSwitch<EObject>() {
 
             @Override
-            public EObject caseEntryLevelSystemCallMeasuringPoint(EntryLevelSystemCallMeasuringPoint object) {
-                return object.getEntryLevelSystemCall();
-            }
-
-            @Override
             public EObject caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
                 return object.getUsageScenario();
             }
 
             @Override
-            public EObject caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
-                return object.getResourceEnvironment();
-            };
-
-            /**
-             * FIXME Different replica IDs are not supported here. [Lehrig]
-             */
-            @Override
             public EObject caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
-                return object.getActiveResource();
+                EObject result = null;
+                if (object != null) {
+                    result = object.getActiveResource();
+                }
+                return result;
             }
-
-            /**
-             * FIXME We stick to single model elements here even though several would be needed to
-             * uniquely identify the measuring point of interest (system + role + signature).
-             * [Lehrig]
-             */
-            @Override
-            public EObject caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
-                return object.getOperationSignature();
-            };
-
-            @Override
-            public EObject caseExternalCallActionMeasuringPoint(ExternalCallActionMeasuringPoint object) {
-                return object.getExternalCall();
-            };
-
         }.doSwitch(measuringPoint);
     }
 
-    public static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
+    private static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
         }
@@ -179,56 +150,61 @@ public final class MonitorRepositoryUtil {
     private static Boolean checkPCMMeasuringPoints(final EObject element, final MeasuringPoint measuringPoint) {
         return new PcmmeasuringpointSwitch<Boolean>() {
 
-            @Override
-            public Boolean caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
-                if (element instanceof ProcessingResourceSpecification) {
-                    final ProcessingResourceSpecification processingResourceSpecification = (ProcessingResourceSpecification) element;
-                    return processingResourceSpecification.getId().equals(object.getActiveResource().getId());
-                }
+            private boolean checkActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint mp) {
+                final ProcessingResourceSpecification activeResource = mp.getActiveResource();
 
-                return false;
+                return new ResourceenvironmentSwitch<Boolean>() {
+
+                    @Override
+                    public Boolean caseResourceContainer(ResourceContainer resourceContainer) {
+                        return resourceContainer.getId().equals(
+                                activeResource.getResourceContainer_ProcessingResourceSpecification().getId());
+                    }
+
+                    @Override
+                    public Boolean caseProcessingResourceSpecification(ProcessingResourceSpecification spec) {
+                        return activeResource.getId().equals(spec.getId());
+                    }
+
+                    @Override
+                    public Boolean defaultCase(EObject obj) {
+                        return false;
+                    }
+
+                }.doSwitch(element);
             }
 
             @Override
-            public Boolean caseAssemblyOperationMeasuringPoint(AssemblyOperationMeasuringPoint object) {
-                if (element instanceof ExternalCallAction) {
-                    final ExternalCallAction externalCallAction = (ExternalCallAction) element;
-                    return externalCallAction.getCalledService_ExternalService().getId()
-                            .equals(object.getOperationSignature().getId())
-                            && externalCallAction.getRole_ExternalService().getId().equals(object.getRole().getId());
-                }
+            public Boolean caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
+                return this.checkActiveResourceMeasuringPoint(object);
+            }
 
-                return false;
+            private boolean checkAssemblyOperationMeasuringPoint(final AssemblyOperationMeasuringPoint mp) {
+                return new SeffSwitch<Boolean>() {
+                    
+                    @Override
+                    public Boolean caseExternalCallAction(ExternalCallAction externalCallAction) {
+                        return externalCallAction.getCalledService_ExternalService().getId()
+                                .equals(mp.getOperationSignature().getId())
+                                && externalCallAction.getRole_ExternalService().getId().equals(mp.getRole().getId());
+                    }
+                    
+                    @Override
+                    public Boolean defaultCase(EObject object) {
+                        return false;
+                    }
+                    
+                }.doSwitch(element);
+            }
+            
+            @Override
+            public Boolean caseAssemblyOperationMeasuringPoint(AssemblyOperationMeasuringPoint object) {
+                return this.checkAssemblyOperationMeasuringPoint(object);
             }
 
             @Override
             public Boolean caseAssemblyPassiveResourceMeasuringPoint(AssemblyPassiveResourceMeasuringPoint object) {
-                if (element instanceof PassiveResource) {
-                    final PassiveResource passiveResource = (PassiveResource) element;
-                    return passiveResource.getId().equals(object.getPassiveResource().getId());
-                }
-
-                return false;
-            }
-
-            @Override
-            public Boolean caseEntryLevelSystemCallMeasuringPoint(EntryLevelSystemCallMeasuringPoint object) {
-                if (element instanceof EntryLevelSystemCall) {
-                    final EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) element;
-                    return entryLevelSystemCall.getId().equals(object.getEntryLevelSystemCall().getId());
-                }
-
-                return false;
-            }
-
-            @Override
-            public Boolean caseExternalCallActionMeasuringPoint(ExternalCallActionMeasuringPoint object) {
-                if (element instanceof ExternalCallAction) {
-                    final ExternalCallAction externalCallAction = (ExternalCallAction) element;
-                    return externalCallAction.getId().equals(object.getExternalCall().getId());
-                }
-
-                return false;
+                throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
             }
 
             @Override
@@ -236,42 +212,50 @@ public final class MonitorRepositoryUtil {
                 throw new IllegalArgumentException("Subsystems are currently unsupported by SimuLizar");
             }
 
+            private boolean checkSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint mp) {
+                return new UsagemodelSwitch<Boolean>() {
+                    
+                    @Override
+                    public Boolean caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
+                        return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
+                                .equals(mp.getOperationSignature().getId())
+                                && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
+                                        .equals(mp.getRole().getId());
+                    }
+                    
+                    @Override
+                    public Boolean defaultCase(EObject object) {
+                        return false;
+                    }
+                }.doSwitch(element);
+            }
+            
             @Override
             public Boolean caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
-                if (element instanceof EntryLevelSystemCall) {
-                    EntryLevelSystemCall entryLevelSystemCall = (EntryLevelSystemCall) element;
-                    return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
-                            .equals(object.getOperationSignature().getId())
-                            && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
-                                    .equals(object.getRole().getId());
-                }
-
-                return false;
+                return this.checkSystemOperationMeasuringPoint(object);
             }
 
+            private boolean checkUsageScenarioMeasuringPoint(final UsageScenarioMeasuringPoint mp) {
+                return new UsagemodelSwitch<Boolean>() {
+
+                    @Override
+                    public Boolean caseUsageScenario(UsageScenario usageScenario) {
+                        return usageScenario.getId().equals(mp.getUsageScenario().getId());
+                    }
+                    
+                    @Override
+                    public Boolean defaultCase(EObject object) {
+                        return false;
+                    }
+                }.doSwitch(element);
+            }
+            
             @Override
             public Boolean caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
-                if (element instanceof UsageScenario) {
-                    UsageScenario usageScenario = (UsageScenario) element;
-                    return usageScenario.getId().equals(object.getUsageScenario().getId());
-                }
-
-                return false;
+               return this.checkUsageScenarioMeasuringPoint(object);
             }
 
-            @Override
-            public Boolean caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
-                if (element instanceof ResourceEnvironment) {
-                    ResourceEnvironment resourceEnvironment = (ResourceEnvironment) element;
-                    return resourceEnvironment.getEntityName().equals(object.getResourceEnvironment().getEntityName());
-                }
-
-                return false;
-            };
-
-        }
-
-        .doSwitch(measuringPoint);
+        }.doSwitch(measuringPoint);
     }
 
     private static Boolean checkGeneralMeasuringPoints(final EObject element, final MeasuringPoint measuringPoint) {
@@ -289,9 +273,6 @@ public final class MonitorRepositoryUtil {
                 throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
             };
 
-        }
-
-        .doSwitch(measuringPoint);
+        }.doSwitch(measuringPoint);
     }
-
 }

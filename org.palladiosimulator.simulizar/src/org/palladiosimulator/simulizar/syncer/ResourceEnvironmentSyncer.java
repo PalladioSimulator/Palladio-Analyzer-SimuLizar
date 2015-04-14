@@ -2,15 +2,9 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.monitorrepository.Monitor;
 import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
@@ -18,7 +12,6 @@ import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourcetype.SchedulingPolicy;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.SchedulingStrategy;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
@@ -43,7 +36,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
         super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
-        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
+        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();;
         this.prm = runtimeState.getModelAccess().getPRMModel();
     }
 
@@ -174,7 +167,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         return scheduledResource != null;
     }
 
-    /**
+     /**
      * 
      * @param resourceContainer
      * @param simulatedResourceContainer
@@ -184,85 +177,13 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final AbstractSimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        final ScheduledResource scheduledResource = ((SimulatedResourceContainer) simulatedResourceContainer)
-                .addActiveResourceWithoutCalculators(processingResource, new String[] {}, resourceContainer.getId(),
-                        schedulingStrategy);
-
+        ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(
+                processingResource, new String[] {}, resourceContainer.getId(),
+                schedulingStrategy);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
-        }
-
-        if (this.monitorRepository != null) {
-            for (final Monitor monitor : this.monitorRepository.getMonitors()) {
-                if (MonitorRepositoryUtil.elementConformingToMeasuringPoint(processingResource,
-                        monitor.getMeasuringPoint())) {
-                    for (final MeasurementSpecification measurementSpecification : monitor
-                            .getMeasurementSpecifications()) {
-
-                        final String metricID = measurementSpecification.getMetricDescription().getId();
-                        if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
-                                || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-                            new ResourceStateListener(scheduledResource,
-                                    runtimeModel.getModel().getSimulationControl(), measurementSpecification,
-                                    resourceContainer, prm);
-                            initCalculator(schedulingStrategy, scheduledResource, measurementSpecification);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * Sets up calculators for active resources.
-     * 
-     * TODO setup waiting time calculator [Lehrig]
-     * 
-     * TODO setup holding time calculator (actually, should be renamed to service time for active
-     * resources) [Lehrig]
-     * 
-     * @param schedulingStrategy
-     * @param scheduledResource
-     * @param metricID
-     */
-    private void initCalculator(String schedulingStrategy, final ScheduledResource scheduledResource,
-            final MeasurementSpecification measurementSpecification) {
-        final ActiveResourceMeasuringPoint measuringPoint = (ActiveResourceMeasuringPoint) measurementSpecification
-                .getMonitor().getMeasuringPoint();
-        final String metricID = measurementSpecification.getMetricDescription().getId();
-
-        if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
-                || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
-            // setup utilization calculators depending on their scheduling strategy
-            // and number of cores (e.g., more than 1 cores requires overall utilization)
-            if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
-                if (scheduledResource.getNumberOfInstances() == 1) {
-                    CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                            this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
-                } else {
-                    CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
-                            measuringPoint);
-                }
-            } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
-                    || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
-                assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
-                        + "have exactly one core";
-                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
-                        measuringPoint, 0);
-            } else {
-                throw new IllegalArgumentException("Unknown active resource type instrumented with state metric");
-            }
-        } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
-            // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
-        } else if (metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())) {
-            // CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
-        } else if (metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-            CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(), measuringPoint);
         }
     }
 }

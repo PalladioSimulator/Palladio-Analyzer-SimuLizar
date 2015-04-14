@@ -3,11 +3,11 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.activation.UnsupportedDataTypeException;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
+import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
@@ -38,20 +38,12 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * 
      * @param measurementSpecification
      *            the measurement specification.
-     * @param responseTimeCalculator
-     *            the response time calculator of ProbeFramework.
-     * @param measurementId
      *            id of the measurement.
-     * @param measuringPoint
-     *            the measuring point to be monitored.
-     * @param modelHelper
-     *            the model helper.
-     * @param measuringPoint
-     *            the measuring point from the prm model.
-     * @throws UnsupportedDataTypeException
-     *             if statistical characterization is not supported. TODO: This class should not
-     *             know about PRM, it should publish its results to a AbstractRecorder, e.g., a PRM
-     *             AbstractRecorder
+     * @param monitoredElement
+     *            the pcm model element to be monitored.
+     * @throws UnsupportedOperationException
+     *             if temporal characterization is not supported. TODO: This class should not
+     *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
     public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
             final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
@@ -70,18 +62,11 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         case HARMONIC_MEAN:
             this.aggregator = new HarmonicMean();
             break;
-        case NONE:
-            this.aggregator = null;
-            break;
         default:
             throw new UnsupportedOperationException("This aggregator is currently not supported");
         }
-        if (measurementSpecification.getTemporalRestriction() == null) {
-            return;
-        }
         if (!(measurementSpecification.getTemporalRestriction() instanceof Intervall)) {
-            throw new UnsupportedOperationException(
-                    "Only Intervall and no temporal restriction are currently supported");
+            throw new UnsupportedOperationException("Only Intervall is currently supported");
         }
         new PeriodicallyTriggeredSimulationEntity(model, 0.0,
                 ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall()) {
@@ -100,7 +85,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
         if (responseTimes.size() > 0) {
             // calculate StatisticalCharacterization
             final double statisticalCharacterization = aggregator.calculateStatisticalCharaterization(responseTimes);
-            addToPRM(statisticalCharacterization);
+            updateMeasurementValue(statisticalCharacterization);
             responseTimes.clear();
         }
     }

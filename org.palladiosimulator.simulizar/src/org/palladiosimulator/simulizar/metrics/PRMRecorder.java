@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.metrics;
 
+import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.monitorrepository.TemporalCharacterization;
@@ -8,28 +9,29 @@ import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.prm.PrmFactory;
 
 /**
- * AbstractRecorder for saving measurement of a measurement specification and pcm model element in
- * prm model. Can be used as base class for aggregators or performance metrics.
+ * Recorder for saving measurement of a measurement specification and pcm model element in prm
+ * model. Can be used as base class for aggregators or performance metrics.
  * 
- * TODO: Should be a _Real_ AbstractRecorder, i.e., AbstractRecorder from ProbeFramework
- * 
- * @author Joachim Meyer, Sebastian Lehrig
+ * @author Joachim Meyer TODO: Should be a _Real_ Recorder, i.e., Recorder from ProbeFramework
  */
 public abstract class PRMRecorder {
-    private final PRMMeasurement measurement;
 
+    private static final PrmFactory PRM_FACTORY = PrmFactory.eINSTANCE;
+
+    private final PRMMeasurement measurement;
     private final PRMModel prmAccess;
 
     /**
      * Constructor
      * 
+     * @param prmModel
+     *            the model helper.
      * @param measurementSpecification
      *            the measurement specification.
      * @param monitoredElement
-     * @param modelHelper
-     *            the model helper.
-     * @param measuringPoint
-     *            the measuring point.
+     *            The model object under consideration, e.g., the {@link EObject} associated with
+     *            the given measurement specification.
+     * 
      */
     public PRMRecorder(final PRMModel prmAccess, final MeasurementSpecification measurementSpecification,
             MeasuringPoint measuringPoint) {
@@ -38,18 +40,32 @@ public abstract class PRMRecorder {
         this.measurement.setMeasuringPoint(measuringPoint);
         this.measurement.setMeasurementSpecification(measurementSpecification);
         this.prmAccess = prmAccess;
+        attachToPRM();
+    }
+
+    private void attachToPRM() {
+        if (!this.prmAccess.getMeasurements().contains(this.measurement)) {
+            this.prmAccess.getMeasurements().add(this.measurement);
+        }
+    }
+
+    protected final void detachFromPRM() {
+        if (this.prmAccess.getMeasurements().contains(this.measurement)) {
+            this.prmAccess.getMeasurements().remove(this.measurement);
+        }
     }
 
     /**
-     * Add measurement for measurement specification and PRMMeasurement to prm model.
+     * Add measurement for measurement specification and PCMModelElementMeasurement to prm model.
      * 
      * @param value
      *            the measurement value.
      */
-    protected void addToPRM(final double value) {
-        this.getPrmModel().getMeasurements().remove(this.measurement);
+    protected void updateMeasurementValue(final double value) {
+        // this has the corresponding PRM instance trigger a notification
+        // all attached adapters (such as the Reconfigurator class) are informed
+        // event type of notification: Notification.SET
         this.measurement.setMeasuringValue(value);
-        this.getPrmModel().getMeasurements().add(this.measurement);
     }
 
     /**
@@ -77,7 +93,7 @@ public abstract class PRMRecorder {
      * @return returns the temporalCharacterization.
      */
     protected TemporalCharacterization getTemporalCharacterization() {
-        return this.measurement.getMeasurementSpecification().getTemporalRestriction();
+        return getMeasurementSpecification().getTemporalRestriction();
     }
 
 }

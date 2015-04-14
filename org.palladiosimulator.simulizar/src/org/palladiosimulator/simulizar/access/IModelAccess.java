@@ -35,7 +35,7 @@ public interface IModelAccess extends Cloneable {
     public PRMModel getPRMModel();
 
     public UsageEvolution getUsageEvolutionModel();
-
+    
     public Collection<Activity> getStoryDiagrams();
 
     public IModelAccess clone();
