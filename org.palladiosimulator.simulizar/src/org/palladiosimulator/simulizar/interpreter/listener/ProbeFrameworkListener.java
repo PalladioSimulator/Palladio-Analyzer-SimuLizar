@@ -77,539 +77,647 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProb
 import de.uka.ipd.sdq.simulation.ISimulationListener;
 
 /**
- * Class for listening to interpreter events in order to store collected data using the
- * ProbeFramework
+ * Class for listening to interpreter events in order to store collected data
+ * using the ProbeFramework
  * 
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
 public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
-    private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
-    private static final int START_PROBE_INDEX = 0;
-    private static final int STOP_PROBE_INDEX = 1;
-    private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC =
-            MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
-    private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC =
-            MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
-    private static final MetricSetDescription UTILIZATION_TUPLE_METRIC_DESC = 
-            MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
+	private static final Logger LOGGER = Logger
+			.getLogger(ProbeFrameworkListener.class);
+	private static final int START_PROBE_INDEX = 0;
+	private static final int STOP_PROBE_INDEX = 1;
+	private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
+	private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
+	private static final MetricSetDescription UTILIZATION_TUPLE_METRIC_DESC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
 
-    private final MonitorRepository monitorRepositoryModel;
-    private final PRMModel prmModel;
-    private final SimuComModel simuComModel;
-    private final ICalculatorFactory calculatorFactory;
+	private final MonitorRepository monitorRepositoryModel;
+	private final PRMModel prmModel;
+	private final SimuComModel simuComModel;
+	private final ICalculatorFactory calculatorFactory;
 
-    private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
-    private TriggeredProbe reconfTimeProbe;
+	private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
+	private TriggeredProbe reconfTimeProbe;
 
-    /** Default EMF factory for measuring points. */
-    private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
+	/** Default EMF factory for measuring points. */
+	private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
 
-    /**
-     * @param modelAccessFactory
-     *            Provides access to simulated models
-     * @param simuComModel
-     *            Provides access to the central simulation
-     */
-    public ProbeFrameworkListener(IModelAccess modelAccessFactory, SimuComModel simuComModel) {
-        super();
-        this.monitorRepositoryModel = modelAccessFactory.getMonitorRepositoryModel();
-        this.prmModel = modelAccessFactory.getPRMModel();
-        this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
-        this.simuComModel = simuComModel;
-        this.reconfTimeProbe = null;
+	/**
+	 * @param modelAccessFactory
+	 *            Provides access to simulated models
+	 * @param simuComModel
+	 *            Provides access to the central simulation
+	 */
+	public ProbeFrameworkListener(IModelAccess modelAccessFactory,
+			SimuComModel simuComModel) {
+		super();
+		this.monitorRepositoryModel = modelAccessFactory
+				.getMonitorRepositoryModel();
+		this.prmModel = modelAccessFactory.getPRMModel();
+		this.calculatorFactory = simuComModel.getProbeFrameworkContext()
+				.getCalculatorFactory();
+		this.simuComModel = simuComModel;
+		this.reconfTimeProbe = null;
 
-        initReponseTimeMeasurement();
-        initNumberOfResourceContainersMeasurements();
-        initUtilizationMeasurements();
-        initPowerMeasurements();
-    }
+		initReponseTimeMeasurement();
+		initNumberOfResourceContainersMeasurements();
+		initUtilizationMeasurements();
+		initPowerMeasurements();
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
-     * beginUsageScenarioInterpretation
-     * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void beginUsageScenarioInterpretation(final ModelElementPassedEvent<UsageScenario> event) {
-        this.startMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
+	 * beginUsageScenarioInterpretation
+	 * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void beginUsageScenarioInterpretation(
+			final ModelElementPassedEvent<UsageScenario> event) {
+		this.startMeasurement(event);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
-     * endUsageScenarioInterpretation
-     * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void endUsageScenarioInterpretation(final ModelElementPassedEvent<UsageScenario> event) {
-        this.endMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
+	 * endUsageScenarioInterpretation
+	 * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void endUsageScenarioInterpretation(
+			final ModelElementPassedEvent<UsageScenario> event) {
+		this.endMeasurement(event);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
-     * beginEntryLevelSystemCallInterpretation
-     * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void beginEntryLevelSystemCallInterpretation(final ModelElementPassedEvent<EntryLevelSystemCall> event) {
-        this.startMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
+	 * beginEntryLevelSystemCallInterpretation
+	 * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void beginEntryLevelSystemCallInterpretation(
+			final ModelElementPassedEvent<EntryLevelSystemCall> event) {
+		this.startMeasurement(event);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
-     * endEntryLevelSystemCallInterpretation
-     * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void endEntryLevelSystemCallInterpretation(final ModelElementPassedEvent<EntryLevelSystemCall> event) {
-        this.endMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.interpreter.interpreter.listener.AbstractInterpreterListener#
+	 * endEntryLevelSystemCallInterpretation
+	 * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void endEntryLevelSystemCallInterpretation(
+			final ModelElementPassedEvent<EntryLevelSystemCall> event) {
+		this.endMeasurement(event);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#
-     * beginExternalCallInterpretation
-     * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void beginExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
-        this.startMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#
+	 * beginExternalCallInterpretation
+	 * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void beginExternalCallInterpretation(
+			final RDSEFFElementPassedEvent<ExternalCallAction> event) {
+		this.startMeasurement(event);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#
-     * endExternalCallInterpretation
-     * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
-     */
-    @Override
-    public void endExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
-        this.endMeasurement(event);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.upb.pcm.simulizar.interpreter.listener.AbstractInterpreterListener#
+	 * endExternalCallInterpretation
+	 * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
+	 */
+	@Override
+	public void endExternalCallInterpretation(
+			final RDSEFFElementPassedEvent<ExternalCallAction> event) {
+		this.endMeasurement(event);
+	}
 
-    @Override
-    public <T extends EObject> void beginUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
-    }
+	@Override
+	public <T extends EObject> void beginUnknownElementInterpretation(
+			ModelElementPassedEvent<T> event) {
+	}
 
-    @Override
-    public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
-    }
+	@Override
+	public <T extends EObject> void endUnknownElementInterpretation(
+			ModelElementPassedEvent<T> event) {
+	}
 
-    /**
-     * Gets all {@link MeasurementSpecification}s within the current {@code monitorRepositoryModel}
-     * that adhere to the given metric.
-     * @param soughtFor A {@link MetricDescription} denoting the target metric to look for.
-     * @return An UNMODIFIABLE {@link Collection} containing all found measurement Specifications, which might be empty but never {@code null}.
-     */
-    private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
-            final MetricDescription soughtFor) {
-        assert soughtFor != null;
-        if (this.monitorRepositoryModel != null) {
-            Transformer<Monitor, MeasurementSpecification> transformer =
-                    new Transformer<Monitor, MeasurementSpecification>() {
+	/**
+	 * Gets all {@link MeasurementSpecification}s within the current
+	 * {@code monitorRepositoryModel} that adhere to the given metric.
+	 * 
+	 * @param soughtFor
+	 *            A {@link MetricDescription} denoting the target metric to look
+	 *            for.
+	 * @return An UNMODIFIABLE {@link Collection} containing all found
+	 *         measurement Specifications, which might be empty but never
+	 *         {@code null}.
+	 */
+	private Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
+			final MetricDescription soughtFor) {
+		assert soughtFor != null;
+		if (this.monitorRepositoryModel != null) {
+			Transformer<Monitor, MeasurementSpecification> transformer = new Transformer<Monitor, MeasurementSpecification>() {
 
-                        @Override
-                        public MeasurementSpecification transform(Monitor monitor) {
-                            for (MeasurementSpecification m : monitor.getMeasurementSpecifications()) {
-                                if (MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor)) {
-                                    return m;
-                                }
-                            }
-                            return null;
-                        }
-                    };
-            return Collections.unmodifiableCollection(CollectionUtils.select(
-                    CollectionUtils.collect(this.monitorRepositoryModel.getMonitors(), transformer),
-                    PredicateUtils.notNullPredicate()));
-        }
-        return Collections.emptyList();
-    }
-    
-    /**
-     * returns a two-element array: sliding window length is returned at index 0, window increment
-     * at index 1
-     */
-    private static final MonitorrepositorySwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH =
-            new MonitorrepositorySwitch<Measure<Double, Duration>[]>() {
+				@Override
+				public MeasurementSpecification transform(Monitor monitor) {
+					for (MeasurementSpecification m : monitor
+							.getMeasurementSpecifications()) {
+						if (MetricDescriptionUtility.metricDescriptionIdsEqual(
+								m.getMetricDescription(), soughtFor)) {
+							return m;
+						}
+					}
+					return null;
+				}
+			};
+			return Collections.unmodifiableCollection(CollectionUtils.select(
+					CollectionUtils.collect(
+							this.monitorRepositoryModel.getMonitors(),
+							transformer), PredicateUtils.notNullPredicate()));
+		}
+		return Collections.emptyList();
+	}
 
-        @Override
-        public Measure<Double, Duration>[] caseDelayedIntervall(DelayedIntervall interval) {
-            @SuppressWarnings("unchecked")
-            Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
-            result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            result[1] = Measure.valueOf(interval.getDelay(), SI.SECOND);
-            return result;
-        }
+	/**
+	 * returns a two-element array: sliding window length is returned at index
+	 * 0, window increment at index 1
+	 */
+	private static final MonitorrepositorySwitch<Measure<Double, Duration>[]> WINDOW_PROPERTIES_SWITCH = new MonitorrepositorySwitch<Measure<Double, Duration>[]>() {
 
-        @Override
-        public Measure<Double, Duration>[] caseIntervall(Intervall interval) {
-            @SuppressWarnings("unchecked")
-            Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
-            result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
-            result[1] = result[0];
+		@Override
+		public Measure<Double, Duration>[] caseDelayedIntervall(
+				DelayedIntervall interval) {
+			@SuppressWarnings("unchecked")
+			Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
+			result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
+			result[1] = Measure.valueOf(interval.getDelay(), SI.SECOND);
+			return result;
+		}
 
-            return result;
-        }
+		@Override
+		public Measure<Double, Duration>[] caseIntervall(Intervall interval) {
+			@SuppressWarnings("unchecked")
+			Measure<Double, Duration>[] result = (Measure<Double, Duration>[]) new Measure<?, ?>[2];
+			result[0] = Measure.valueOf(interval.getIntervall(), SI.SECOND);
+			result[1] = result[0];
 
-        @Override
-        public Measure<Double, Duration>[] defaultCase(EObject obj) {
-            throw new IllegalStateException(
-                    "Temporal characterization for utilization or power and energy measurements"
-                    + "must be either Intervall or DelayedIntervall.");
-        }
-    };
+			return result;
+		}
 
-    /**
-     * Convenience method to create a recorder configuration map which has the
-     * {@link AbstractRecorderConfiguration#RECORDER_ACCEPTED_METRIC} attribute (key) set to the given
-     * metric description and the {@link AbstractRecorderConfiguration#MEASURING_POINT} attribute (key) set to the given
-     * measuring point.
-     * @param recorderAcceptedMetric The {@link MetricDescription} to be put in the map.
-     * @param measuringPoint The {@link MeasuringPoint} to be put in the map.
-     * @return A recorder configuration {@link Map} initialized as described.
-     * @see #initializeRecorder(Map)
-     */
-    private static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
-            MetricDescription recorderAcceptedMetric, MeasuringPoint measuringPoint) {
-        assert recorderAcceptedMetric != null;
-        assert measuringPoint != null;
+		@Override
+		public Measure<Double, Duration>[] defaultCase(EObject obj) {
+			throw new IllegalStateException(
+					"Temporal characterization for utilization or power and energy measurements"
+							+ "must be either Intervall or DelayedIntervall.");
+		}
+	};
 
-        Map<String, Object> result = new HashMap<>();
-        result.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC, recorderAcceptedMetric);
-        result.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
-        return result;
-    }
+	/**
+	 * Convenience method to create a recorder configuration map which has the
+	 * {@link AbstractRecorderConfiguration#RECORDER_ACCEPTED_METRIC} attribute
+	 * (key) set to the given metric description and the
+	 * {@link AbstractRecorderConfiguration#MEASURING_POINT} attribute (key) set
+	 * to the given measuring point.
+	 * 
+	 * @param recorderAcceptedMetric
+	 *            The {@link MetricDescription} to be put in the map.
+	 * @param measuringPoint
+	 *            The {@link MeasuringPoint} to be put in the map.
+	 * @return A recorder configuration {@link Map} initialized as described.
+	 * @see #initializeRecorder(Map)
+	 */
+	private static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+			MetricDescription recorderAcceptedMetric,
+			MeasuringPoint measuringPoint) {
+		assert recorderAcceptedMetric != null;
+		assert measuringPoint != null;
 
-    /**
-     * Instantiates and initializes a {@link IRecorder} implementation based on the {@link SimuComConfig} of the current
-     * SimuLizar run.
-     * @param recorderConfigMap A {@link Map} which contains the recorder configuration attributes.
-     * @return An {@link IRecorder} initialized with the given configuration.
-     * @see #createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(MetricDescription, MeasuringPoint)
-     */
-    private IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
-        assert recorderConfigMap != null;
+		Map<String, Object> result = new HashMap<String, Object>();
+		result.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC,
+				recorderAcceptedMetric);
+		result.put(AbstractRecorderConfiguration.MEASURING_POINT,
+				measuringPoint);
+		return result;
+	}
 
-        SimuComConfig config = this.simuComModel.getConfiguration();
-        IRecorder recorder = RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config
-                .getRecorderName());
-        recorder.initialize(config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap));
+	/**
+	 * Instantiates and initializes a {@link IRecorder} implementation based on
+	 * the {@link SimuComConfig} of the current SimuLizar run.
+	 * 
+	 * @param recorderConfigMap
+	 *            A {@link Map} which contains the recorder configuration
+	 *            attributes.
+	 * @return An {@link IRecorder} initialized with the given configuration.
+	 * @see #createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(MetricDescription,
+	 *      MeasuringPoint)
+	 */
+	private IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
+		assert recorderConfigMap != null;
 
-        return recorder;
-    }
+		SimuComConfig config = this.simuComModel.getConfiguration();
+		IRecorder recorder = RecorderExtensionHelper
+				.instantiateRecorderImplementationForRecorder(config
+						.getRecorderName());
+		recorder.initialize(config.getRecorderConfigurationFactory()
+				.createRecorderConfiguration(recorderConfigMap));
 
-    /**
-     * Registers the given recorder at the given measurement source, i.e., adds it to the list of observers.
-     * @param measurementSource The {@link MeasurementSource} whose measurements shall be recorded.
-     * @param recorder The {@link IRecorder} to record new measurements produced by the given source.
-     */
-    private void registerMeasurementsRecorder(MeasurementSource measurementSource, IRecorder recorder) {
-        assert measurementSource != null && recorder != null;
-        measurementSource.addObserver(recorder);
-    }
-    
-    private void triggerMeasurementsRecording(MeasurementSource measurementSource, MeasuringPoint mp,
-            MetricDescription recorderAcceptedMetric) {
-        assert measurementSource != null && mp != null && recorderAcceptedMetric != null;
-        
-        Map<String, Object> recorderConfigurationMap =
-                createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(recorderAcceptedMetric, mp);
-        registerMeasurementsRecorder(measurementSource, initializeRecorder(recorderConfigurationMap));
-    }
-    
-    /**
-     * Initializes the sliding window based <i>power</i> and <i>energy</i> measurements.
-     * First gets the monitored elements from the monitor repository,
-     * then creates corresponding calculators and recorders.
-     * 
-     */
-   private void initPowerMeasurements() {
-	   Collection<MeasurementSpecification> powerMeasurementSpecs =
-               getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
-        if (!powerMeasurementSpecs.isEmpty()) {
-            PowerModelRegistry reg = new PowerModelRegistry();
-            PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
-                    new ExtensibleCalculatorInstantiatorImpl());
-            List<ConsumptionContext> createdContexts = new ArrayList<>(powerMeasurementSpecs.size());
-            List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<>(powerMeasurementSpecs.size());
-            
-            for (MeasurementSpecification powerSpec : powerMeasurementSpecs) {
-                MeasuringPoint mp = powerSpec.getMonitor().getMeasuringPoint();
-                PowerProvidingEntity ppe = InterpreterUtils.getPowerProvindingEntityFromMeasuringPoint(mp);
-                if (ppe == null) {
-                    throw new IllegalStateException("MeasurementSpecification for metric " 
-                            + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName() + " has to be related to a PowerProvidingEntity!");
-                }
+		return recorder;
+	}
 
-                Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(powerSpec
-                        .getTemporalRestriction());
-                Measure<Double, Duration> initialOffset = windowProperties[0];
-                Measure<Double, Duration> samplingPeriod = windowProperties[1];
-                SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(ppe,
-                        this.simuComModel, initialOffset, samplingPeriod);
+	/**
+	 * Registers the given recorder at the given measurement source, i.e., adds
+	 * it to the list of observers.
+	 * 
+	 * @param measurementSource
+	 *            The {@link MeasurementSource} whose measurements shall be
+	 *            recorded.
+	 * @param recorder
+	 *            The {@link IRecorder} to record new measurements produced by
+	 *            the given source.
+	 */
+	private void registerMeasurementsRecorder(
+			MeasurementSource measurementSource, IRecorder recorder) {
+		assert measurementSource != null && recorder != null;
+		measurementSource.addObserver(recorder);
+	}
 
-                modelUpdaterSwitch.doSwitch(ppe);
-                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe, scope, reg);
+	private void triggerMeasurementsRecording(
+			MeasurementSource measurementSource, MeasuringPoint mp,
+			MetricDescription recorderAcceptedMetric) {
+		assert measurementSource != null && mp != null
+				&& recorderAcceptedMetric != null;
 
-                AbstractCumulativeEnergyCalculator energyCalculator =
-                        new SimpsonRuleCumulativeEnergyCalculator(samplingPeriod, initialOffset);
+		Map<String, Object> recorderConfigurationMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+				recorderAcceptedMetric, mp);
+		registerMeasurementsRecorder(measurementSource,
+				initializeRecorder(recorderConfigurationMap));
+	}
 
-                createdContexts.add(context);
-                createdScopes.add(scope);
-                SimulationTimePowerConsumptionCalculator powerConsumptionCalculator =
-                        new SimulationTimePowerConsumptionCalculator(context, scope, ppe);
-                SimulationTimeEnergyConsumptionCalculator energyConsumptionCalculator =
-                        new SimulationTimeEnergyConsumptionCalculator(energyCalculator);
-                
-                MeasurementSpecification energySpec = MonitorrepositoryFactory.eINSTANCE.createMeasurementSpecification();
-                energySpec.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
-                energySpec.setMonitor(powerSpec.getMonitor());
-                energySpec.setTemporalRestriction(powerSpec.getTemporalRestriction());
-                
-                // calculate power and energy consumption
-                scope.addListener(powerConsumptionCalculator);
-                powerConsumptionCalculator.addObserver(energyConsumptionCalculator);
-                // the following two lines are optional: measurements are recorded (e.g., by an EDP2 recorder)
-                triggerMeasurementsRecording(powerConsumptionCalculator, mp, POWER_CONSUMPTION_TUPLE_METRIC_DESC);
-                triggerMeasurementsRecording(energyConsumptionCalculator, mp, ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
-                // write measurements to PRM (both power and energy measurements are forwarded)
-                powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.prmModel, powerSpec, mp));
-                energyConsumptionCalculator.addObserver(new EnergyConsumptionPrmRecorder(this.prmModel, energySpec, mp));
-            }
-            triggerAfterSimulationCleanup(createdContexts, createdScopes);
-        }
-    }
-   
-    /**
-    * Method to clean up {@link ConsumptionContext}s and {@link SimulationTimeEvaluationScope}s required
-    * for power and energy measurements. The clean-up operations are done once the simulation has stopped.
-    * @param contextsToCleanup {@link Collection} of contexts to clean up.
-    * @param scopesToCleanup {@link Collection} of scopes to clean up.
-    * @see #initPowerMeasurements()
-    */
-    private void triggerAfterSimulationCleanup(final Collection<ConsumptionContext> contextsToCleanup,
-            final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
-        assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
-        assert scopesToCleanup != null && !scopesToCleanup.isEmpty();
+	/**
+	 * Initializes the sliding window based <i>power</i> and <i>energy</i>
+	 * measurements. First gets the monitored elements from the monitor
+	 * repository, then creates corresponding calculators and recorders.
+	 * 
+	 */
+	private void initPowerMeasurements() {
+		Collection<MeasurementSpecification> powerMeasurementSpecs = getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
+		if (!powerMeasurementSpecs.isEmpty()) {
+			PowerModelRegistry reg = new PowerModelRegistry();
+			PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(
+					reg, new ExtensibleCalculatorInstantiatorImpl());
+			List<ConsumptionContext> createdContexts = new ArrayList<ConsumptionContext>(
+					powerMeasurementSpecs.size());
+			List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<SimulationTimeEvaluationScope>(
+					powerMeasurementSpecs.size());
 
-        this.simuComModel.getConfiguration().addListener(new ISimulationListener() {
-            @Override
-            public void simulationStop() {
-                for (ConsumptionContext context : contextsToCleanup) {
-                    context.cleanUp();
-                }
-                for (SimulationTimeEvaluationScope scope : scopesToCleanup) {
-                    scope.removeAllListeners();
-                }
-            }
-            @Override
-            public void simulationStart() {
-            }
-        });
-    }
+			for (MeasurementSpecification powerSpec : powerMeasurementSpecs) {
+				MeasuringPoint mp = powerSpec.getMonitor().getMeasuringPoint();
+				PowerProvidingEntity ppe = InterpreterUtils
+						.getPowerProvindingEntityFromMeasuringPoint(mp);
+				if (ppe == null) {
+					throw new IllegalStateException(
+							"MeasurementSpecification for metric "
+									+ POWER_CONSUMPTION_TUPLE_METRIC_DESC
+											.getName()
+									+ " has to be related to a PowerProvidingEntity!");
+				}
 
-    /**
-     * Initializes the sliding window based <i>utilization</i> measurements.
-     * First gets the monitored elements from the monitor repository,
-     * then creates corresponding calculators and recorders.
-     * 
-     */
-    private void initUtilizationMeasurements() {
-        Collection<MeasurementSpecification> utilMeasurementSpecs =
-                getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
-        if (!utilMeasurementSpecs.isEmpty()) {
-            RegisterCalculatorFactoryDecorator calcFactory = RegisterCalculatorFactoryDecorator.class
-                    .cast(this.calculatorFactory);
-            ISlidingWindowMoveOnStrategy strategy = new KeepLastElementPriorToLowerBoundStrategy();
+				Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH
+						.doSwitch(powerSpec.getTemporalRestriction());
+				Measure<Double, Duration> initialOffset = windowProperties[0];
+				Measure<Double, Duration> samplingPeriod = windowProperties[1];
+				SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope
+						.createScope(ppe, this.simuComModel, initialOffset,
+								samplingPeriod);
 
-            for (MeasurementSpecification spec : utilMeasurementSpecs) {
-                MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
+				modelUpdaterSwitch.doSwitch(ppe);
+				ConsumptionContext context = ConsumptionContext
+						.createConsumptionContext(ppe, scope, reg);
 
-                Calculator calculator = calcFactory.getCalculatorByMeasuringPointAndMetricDescription(mp,
-                        MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE);
-                if (calculator == null) {
-                    throw new IllegalStateException(
-                            "Utilization measurements (sliding window based) cannot be initialized.\n"
-                                    + "No state of active resource calculator available for: "
-                                    + mp.getStringRepresentation() + "\n"
-                                    + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
-                                    + "to initializeInterpreterListeners()!");
-                }
-                setupUtilizationRecorder(calculator, spec, strategy);
-            }
-        }
-    }
+				AbstractCumulativeEnergyCalculator energyCalculator = new SimpsonRuleCumulativeEnergyCalculator(
+						samplingPeriod, initialOffset);
 
-    private void setupUtilizationRecorder(Calculator calculator,
-            MeasurementSpecification utilizationMeasurementSpec, ISlidingWindowMoveOnStrategy moveOnStrategy) {
+				createdContexts.add(context);
+				createdScopes.add(scope);
+				SimulationTimePowerConsumptionCalculator powerConsumptionCalculator = new SimulationTimePowerConsumptionCalculator(
+						context, scope, ppe);
+				SimulationTimeEnergyConsumptionCalculator energyConsumptionCalculator = new SimulationTimeEnergyConsumptionCalculator(
+						energyCalculator);
 
-        Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH.doSwitch(utilizationMeasurementSpec
-                .getTemporalRestriction());
+				MeasurementSpecification energySpec = MonitorrepositoryFactory.eINSTANCE
+						.createMeasurementSpecification();
+				energySpec
+						.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
+				energySpec.setMonitor(powerSpec.getMonitor());
+				energySpec.setTemporalRestriction(powerSpec
+						.getTemporalRestriction());
 
-        Map<String, Object> recorderConfigurationMap =
-                createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(UTILIZATION_TUPLE_METRIC_DESC,
-                        calculator.getMeasuringPoint());
-        
-        IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
+				// calculate power and energy consumption
+				scope.addListener(powerConsumptionCalculator);
+				powerConsumptionCalculator
+						.addObserver(energyConsumptionCalculator);
+				// the following two lines are optional: measurements are
+				// recorded (e.g., by an EDP2 recorder)
+				triggerMeasurementsRecording(powerConsumptionCalculator, mp,
+						POWER_CONSUMPTION_TUPLE_METRIC_DESC);
+				triggerMeasurementsRecording(energyConsumptionCalculator, mp,
+						ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
+				// write measurements to PRM (both power and energy measurements
+				// are forwarded)
+				powerConsumptionCalculator
+						.addObserver(new PowerConsumptionPrmRecorder(
+								this.prmModel, powerSpec, mp));
+				energyConsumptionCalculator
+						.addObserver(new EnergyConsumptionPrmRecorder(
+								this.prmModel, energySpec, mp));
+			}
+			triggerAfterSimulationCleanup(createdContexts, createdScopes);
+		}
+	}
 
-        SimulationGovernedSlidingWindow window = new SimulationGovernedSlidingWindow(windowProperties[0],
-                windowProperties[1], MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE, moveOnStrategy,
-                this.simuComModel);
+	/**
+	 * Method to clean up {@link ConsumptionContext}s and
+	 * {@link SimulationTimeEvaluationScope}s required for power and energy
+	 * measurements. The clean-up operations are done once the simulation has
+	 * stopped.
+	 * 
+	 * @param contextsToCleanup
+	 *            {@link Collection} of contexts to clean up.
+	 * @param scopesToCleanup
+	 *            {@link Collection} of scopes to clean up.
+	 * @see #initPowerMeasurements()
+	 */
+	private void triggerAfterSimulationCleanup(
+			final Collection<ConsumptionContext> contextsToCleanup,
+			final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
+		assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
+		assert scopesToCleanup != null && !scopesToCleanup.isEmpty();
 
-        SlidingWindowRecorder windowRecorder =
-                new SlidingWindowRecorder(window, new SlidingWindowUtilizationAggregator(baseRecorder));
-        // register recorder at calculator
-        registerMeasurementsRecorder(calculator, windowRecorder);
-    }
+		this.simuComModel.getConfiguration().addListener(
+				new ISimulationListener() {
+					@Override
+					public void simulationStop() {
+						for (ConsumptionContext context : contextsToCleanup) {
+							context.cleanUp();
+						}
+						for (SimulationTimeEvaluationScope scope : scopesToCleanup) {
+							scope.removeAllListeners();
+						}
+					}
 
-    /**
-     * Initializes the <i>response time</i> measurements.
-     * First gets the monitored elements from the monitor repository,
-     * then creates corresponding calculators and aggregators.
-     * 
-     */
-    private void initReponseTimeMeasurement() {
-        for (MeasurementSpecification responseTimeMeasurementSpec :
-                getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-            EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
+					@Override
+					public void simulationStart() {
+					}
+				});
+	}
 
-            List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
-            Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+	/**
+	 * Initializes the sliding window based <i>utilization</i> measurements.
+	 * First gets the monitored elements from the monitor repository, then
+	 * creates corresponding calculators and recorders.
+	 * 
+	 */
+	private void initUtilizationMeasurements() {
+		Collection<MeasurementSpecification> utilMeasurementSpecs = getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
+		if (!utilMeasurementSpecs.isEmpty()) {
+			RegisterCalculatorFactoryDecorator calcFactory = RegisterCalculatorFactoryDecorator.class
+					.cast(this.calculatorFactory);
+			ISlidingWindowMoveOnStrategy strategy = new KeepLastElementPriorToLowerBoundStrategy();
 
-            try {
-                IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel, this.prmModel,
-                        responseTimeMeasurementSpec, measuringPoint);
-                calculator.addObserver(aggregator);
-            } catch (final UnsupportedOperationException e) {
-                LOGGER.error(e);
-                throw new RuntimeException(e);
-            }
-        }
-    }
+			for (MeasurementSpecification spec : utilMeasurementSpecs) {
+				MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
 
-    /**
-     * Initializes the <i> number of resource containers</i> measurements.
-     * First gets the monitored elements from the monitor repository,
-     * then creates corresponding calculators.
-     * 
-     */
-    private void initNumberOfResourceContainersMeasurements() {
-        for (MeasurementSpecification numberOfResourceContainersMeasurementSpec :
-            getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
-            MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec.getMonitor().getMeasuringPoint();
+				Calculator calculator = calcFactory
+						.getCalculatorByMeasuringPointAndMetricDescription(
+								mp,
+								MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE);
+				if (calculator == null) {
+					throw new IllegalStateException(
+							"Utilization measurements (sliding window based) cannot be initialized.\n"
+									+ "No state of active resource calculator available for: "
+									+ mp.getStringRepresentation()
+									+ "\n"
+									+ "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
+									+ "to initializeInterpreterListeners()!");
+				}
+				setupUtilizationRecorder(calculator, spec, strategy);
+			}
+		}
+	}
 
-            final Probe probe = new EventProbeList(new TakeNumberOfResourceContainersProbe(
-                    simuComModel.getResourceRegistry()),
-            Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel
-                        .getSimulationControl())));
-            calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
-        }
-    }
-    
-        /**
-         * @param measuringPoint
-         * @param simuComModel
-         * @return list with start and stop probe
-         */
-        @SuppressWarnings({ "rawtypes", "unchecked" })
-        protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
-            List probeList = new ArrayList<TriggeredProbe>(2);
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
-            currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
-            return probeList;
-        }
+	private void setupUtilizationRecorder(Calculator calculator,
+			MeasurementSpecification utilizationMeasurementSpec,
+			ISlidingWindowMoveOnStrategy moveOnStrategy) {
 
-    /**
-     * @param modelElement
-     * @return
-     */
-    protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
-        return this.currentTimeProbes.containsKey(((Entity) modelElement).getId());
-    }
+		Measure<Double, Duration>[] windowProperties = WINDOW_PROPERTIES_SWITCH
+				.doSwitch(utilizationMeasurementSpec.getTemporalRestriction());
 
-    /**
-     * @param <T>
-     * @param event
-     */
-    private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
-        }
-    }
+		Map<String, Object> recorderConfigurationMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+				UTILIZATION_TUPLE_METRIC_DESC, calculator.getMeasuringPoint());
 
-    /**
-     * @param event
-     */
-    private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
-        }
-    }
+		IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
 
-    @Override
-    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
-        }
-    }
+		SimulationGovernedSlidingWindow window = new SimulationGovernedSlidingWindow(
+				windowProperties[0],
+				windowProperties[1],
+				MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE,
+				moveOnStrategy, this.simuComModel);
 
-    @Override
-    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
-        }
-    }
-    
-    @Override
-    public void reconfigurationInterpretation(final ReconfigurationEvent event) {
-        if (this.reconfTimeProbe == null) {
-            initReconfTimeMeasurement(event);
-        }
+		SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(
+				window, new SlidingWindowUtilizationAggregator(baseRecorder));
+		// register recorder at calculator
+		registerMeasurementsRecorder(calculator, windowRecorder);
+	}
 
-        this.reconfTimeProbe.takeMeasurement();
-    }
+	/**
+	 * Initializes the <i>response time</i> measurements. First gets the
+	 * monitored elements from the monitor repository, then creates
+	 * corresponding calculators and aggregators.
+	 * 
+	 */
+	private void initReponseTimeMeasurement() {
+		for (MeasurementSpecification responseTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
+			MeasuringPoint measuringPoint = responseTimeMeasurementSpec
+					.getMonitor().getMeasuringPoint();
+			EObject modelElement = MonitorRepositoryUtil
+					.getMonitoredElement(measuringPoint);
 
-    /**
-     * Initializes reconfiguration time measurement.
-     * 
-     * TODO StringMeasuringPoint should not be used by SimuLizar. Create something better! I could
-     * imagine an EDP2 extension that introduces dedicated reconfiguration measuring points.
-     * [Lehrig]
-     * 
-     * FIXME Dead code; no measurements taken here! Needs some more refactorings. [Lehrig]
-     * 
-     * @param event
-     *            which was fired
-     * @param <T>
-     *            extends Entity
-     */
-    private <T extends Entity> void initReconfTimeMeasurement(final ReconfigurationEvent event) {
-        this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(this.simuComModel.getSimulationControl());
+			List<Probe> probeList = createStartAndStopProbe(measuringPoint,
+					this.simuComModel);
+			Calculator calculator = this.calculatorFactory
+					.buildResponseTimeCalculator(measuringPoint, probeList);
 
-        final StringMeasuringPoint measuringPoint = measuringpointFactory.createStringMeasuringPoint();
-        measuringPoint.setMeasuringPoint("Reconfiguration");
-        // this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint,
-        // this.reconfTimeProbe);
-    }
+			try {
+				IMeasurementSourceListener aggregator = new ResponseTimeAggregator(
+						this.simuComModel, this.prmModel,
+						responseTimeMeasurementSpec, measuringPoint);
+				calculator.addObserver(aggregator);
+			} catch (final UnsupportedOperationException e) {
+				LOGGER.error(e);
+				throw new RuntimeException(e);
+			}
+		}
+	}
 
-    private Boolean simulationIsRunning() {
-        return this.simuComModel.getSimulationControl().isRunning();
-    }
+	/**
+	 * Initializes the <i> number of resource containers</i> measurements. First
+	 * gets the monitored elements from the monitor repository, then creates
+	 * corresponding calculators.
+	 * 
+	 */
+	private void initNumberOfResourceContainersMeasurements() {
+		for (MeasurementSpecification numberOfResourceContainersMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
+			MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec
+					.getMonitor().getMeasuringPoint();
+
+			final Probe probe = new EventProbeList(
+					new TakeNumberOfResourceContainersProbe(
+							simuComModel.getResourceRegistry()),
+					Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
+							simuComModel.getSimulationControl())));
+			calculatorFactory.buildNumberOfResourceContainersCalculator(
+					measuringPoint, probe);
+		}
+	}
+
+	/**
+	 * @param measuringPoint
+	 * @param simuComModel
+	 * @return list with start and stop probe
+	 */
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected List<Probe> createStartAndStopProbe(
+			final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
+		List probeList = new ArrayList<TriggeredProbe>(2);
+		probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
+				.getSimulationControl()));
+		probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
+				.getSimulationControl()));
+		final EObject modelElement = MonitorRepositoryUtil
+				.getMonitoredElement(measuringPoint);
+		currentTimeProbes.put(((Entity) modelElement).getId(),
+				Collections.unmodifiableList(probeList));
+		return probeList;
+	}
+
+	/**
+	 * @param modelElement
+	 * @return
+	 */
+	protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
+		return this.currentTimeProbes.containsKey(((Entity) modelElement)
+				.getId());
+	}
+
+	/**
+	 * @param <T>
+	 * @param event
+	 */
+	private <T extends Entity> void startMeasurement(
+			final ModelElementPassedEvent<T> event) {
+		if (this.currentTimeProbes.containsKey(((Entity) event
+				.getModelElement()).getId()) && simulationIsRunning()) {
+			this.currentTimeProbes
+					.get(((Entity) event.getModelElement()).getId())
+					.get(START_PROBE_INDEX)
+					.takeMeasurement(event.getThread().getRequestContext());
+		}
+	}
+
+	/**
+	 * @param event
+	 */
+	private <T extends Entity> void endMeasurement(
+			final ModelElementPassedEvent<T> event) {
+		if (this.currentTimeProbes.containsKey(((Entity) event
+				.getModelElement()).getId()) && simulationIsRunning()) {
+			this.currentTimeProbes
+					.get(((Entity) event.getModelElement()).getId())
+					.get(STOP_PROBE_INDEX)
+					.takeMeasurement(event.getThread().getRequestContext());
+		}
+	}
+
+	@Override
+	public void beginSystemOperationCallInterpretation(
+			ModelElementPassedEvent<OperationSignature> event) {
+		if (this.currentTimeProbes.containsKey(((Entity) event
+				.getModelElement()).getId()) && simulationIsRunning()) {
+			this.currentTimeProbes
+					.get(((Entity) event.getModelElement()).getId())
+					.get(START_PROBE_INDEX)
+					.takeMeasurement(event.getThread().getRequestContext());
+		}
+	}
+
+	@Override
+	public void endSystemOperationCallInterpretation(
+			ModelElementPassedEvent<OperationSignature> event) {
+		if (this.currentTimeProbes.containsKey(((Entity) event
+				.getModelElement()).getId()) && simulationIsRunning()) {
+			this.currentTimeProbes
+					.get(((Entity) event.getModelElement()).getId())
+					.get(STOP_PROBE_INDEX)
+					.takeMeasurement(event.getThread().getRequestContext());
+		}
+	}
+
+	@Override
+	public void reconfigurationInterpretation(final ReconfigurationEvent event) {
+		if (this.reconfTimeProbe == null) {
+			initReconfTimeMeasurement(event);
+		}
+
+		this.reconfTimeProbe.takeMeasurement();
+	}
+
+	/**
+	 * Initializes reconfiguration time measurement.
+	 * 
+	 * TODO StringMeasuringPoint should not be used by SimuLizar. Create
+	 * something better! I could imagine an EDP2 extension that introduces
+	 * dedicated reconfiguration measuring points. [Lehrig]
+	 * 
+	 * FIXME Dead code; no measurements taken here! Needs some more
+	 * refactorings. [Lehrig]
+	 * 
+	 * @param event
+	 *            which was fired
+	 * @param <T>
+	 *            extends Entity
+	 */
+	private <T extends Entity> void initReconfTimeMeasurement(
+			final ReconfigurationEvent event) {
+		this.reconfTimeProbe = new TakeCurrentSimulationTimeProbe(
+				this.simuComModel.getSimulationControl());
+
+		final StringMeasuringPoint measuringPoint = measuringpointFactory
+				.createStringMeasuringPoint();
+		measuringPoint.setMeasuringPoint("Reconfiguration");
+		// this.calculatorFactory.buildStateOfActiveResourceCalculator(measuringPoint,
+		// this.reconfTimeProbe);
+	}
+
+	private Boolean simulationIsRunning() {
+		return this.simuComModel.getSimulationControl().isRunning();
+	}
 }
