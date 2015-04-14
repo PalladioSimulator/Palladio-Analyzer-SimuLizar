@@ -66,6 +66,7 @@ import de.fzi.power.interpreter.calculators.ExtensibleCalculatorInstantiatorImpl
 import de.fzi.power.interpreter.calculators.energy.AbstractCumulativeEnergyCalculator;
 import de.fzi.power.interpreter.calculators.energy.SimpsonRuleCumulativeEnergyCalculator;
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -483,7 +484,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
             EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
 
-            List<Probe> probeList = createStartAndStopProbe(modelElement, this.simuComModel);
+            List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
             Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
 
             try {
@@ -517,15 +518,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
     
         /**
-         * @param modelElement
+         * @param measuringPoint
          * @param simuComModel
          * @return list with start and stop probe
          */
         @SuppressWarnings({ "rawtypes", "unchecked" })
-        protected List<Probe> createStartAndStopProbe(EObject modelElement, SimuComModel simuComModel) {
+        protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
             List probeList = new ArrayList<TriggeredProbe>(2);
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
             probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+            final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
             currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
             return probeList;
         }
@@ -559,6 +561,22 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
         }
     }
 
+    @Override
+    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
+                    .takeMeasurement(event.getThread().getRequestContext());
+        }
+    }
+
+    @Override
+    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
+                    .takeMeasurement(event.getThread().getRequestContext());
+        }
+    }
+    
     @Override
     public void reconfigurationInterpretation(final ReconfigurationEvent event) {
         if (this.reconfTimeProbe == null) {

@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
@@ -26,4 +27,7 @@ public interface IInterpreterListener {
 
     public void reconfigurationInterpretation(ReconfigurationEvent event);
 
+    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event);
+
+    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event);
 }
