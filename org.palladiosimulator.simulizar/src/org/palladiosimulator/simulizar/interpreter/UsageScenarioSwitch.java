@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction;
 import de.uka.ipd.sdq.pcm.usagemodel.Branch;
 import de.uka.ipd.sdq.pcm.usagemodel.BranchTransition;
@@ -91,6 +92,8 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
+		// FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context
                 .getRuntimeState()
                 .getEventNotificationHelper()
@@ -104,6 +107,8 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
         this.context.getStack().removeStackFrame();
 
+		// FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context
                 .getRuntimeState()
                 .getEventNotificationHelper()

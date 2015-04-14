@@ -12,6 +12,8 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 
+import de.uka.ipd.sdq.pcm.repository.OperationSignature;
+import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.seff.SeffPackage;
 import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
@@ -46,6 +48,15 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
                 } else {
                     singleListener
                             .endEntryLevelSystemCallInterpretation((ModelElementPassedEvent<EntryLevelSystemCall>) event);
+                }
+                break;
+            case RepositoryPackage.OPERATION_SIGNATURE:
+                if (event.getEventType() == EventType.BEGIN) {
+                    singleListener
+                            .beginSystemOperationCallInterpretation((ModelElementPassedEvent<OperationSignature>) event);
+                } else {
+                    singleListener
+                            .endSystemOperationCallInterpretation((ModelElementPassedEvent<OperationSignature>) event);
                 }
                 break;
             case SeffPackage.EXTERNAL_CALL_ACTION:

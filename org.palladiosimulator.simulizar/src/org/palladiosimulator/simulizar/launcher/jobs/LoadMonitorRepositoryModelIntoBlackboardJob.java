@@ -49,7 +49,8 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             throw new MonitorRepositoryModelLoadException("The PCM models must be loaded first");
         }
 
-        final MonitorRepositoryResourceSetPartition monitorRepositoryPartition = new MonitorRepositoryResourceSetPartition(this.getPCMResourceSetPartition());
+        final MonitorRepositoryResourceSetPartition monitorRepositoryPartition = new MonitorRepositoryResourceSetPartition(
+                this.getPCMResourceSetPartition());
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
@@ -79,7 +80,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      */
     @Override
     public String getName() {
-        return "Perform PMS Model Load";
+        return "Perform Monitor Repository Load";
     }
 
     /**

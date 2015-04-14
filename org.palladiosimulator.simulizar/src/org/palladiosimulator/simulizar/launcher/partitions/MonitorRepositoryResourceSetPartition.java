@@ -10,8 +10,8 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
- * Special ResourceSetPartition for the MonitorRepository, with the functionality to resolve cross references from
- * the PRM to PCM.
+ * Special ResourceSetPartition for the MonitorRepository, with the functionality to resolve cross
+ * references from the PRM to PCM.
  * 
  * @author Joachim Meyer
  * 

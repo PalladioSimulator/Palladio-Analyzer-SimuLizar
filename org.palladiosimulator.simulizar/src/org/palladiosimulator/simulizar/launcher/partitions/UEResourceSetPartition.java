@@ -40,7 +40,7 @@ public class UEResourceSetPartition extends ResourceSetPartition {
     }
 
     /**
-     * @return return the PMSModel element
+     * @return return the usage evolution element
      */
     private UsageEvolution loadUEModel() {
         try {
@@ -48,7 +48,7 @@ public class UEResourceSetPartition extends ResourceSetPartition {
             List<UsageEvolution> result = getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
             return result.get(0);
         } catch (Exception e) {
-            LOGGER.warn("No Usage Evolution model found, so evolution will not be simulated.");
+            LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
             return null;
         }
     }
