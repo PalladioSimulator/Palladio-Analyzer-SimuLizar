@@ -40,6 +40,8 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
         final ArrayList<LoggerAppenderStruct> result = super.setupLogging(logLevel);
         result.add(this.setupLogger("org.palladiosimulator.simulizar", logLevel,
                 Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN : SHORT_LOG_PATTERN));
+        result.add(this.setupLogger("de.uka.ipd.sdq.probfunction.math.apache.impl", logLevel,
+                Level.DEBUG == logLevel ? DETAILED_LOG_PATTERN : SHORT_LOG_PATTERN));
 
         return result;
     }
