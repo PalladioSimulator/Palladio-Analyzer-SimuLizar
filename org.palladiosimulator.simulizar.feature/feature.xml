@@ -272,6 +272,8 @@ litigation.
       <import plugin="de.fzi.power"/>
       <import plugin="de.fzi.power.interpreter"/>
       <import plugin="de.fzi.power.interpreter.calculators.energy"/>
+      <import plugin="org.palladiosimulator.experimentanalysis"/>
+      <import plugin="org.palladiosimulator.experimentanalysis.utilizationfilter"/>
    </requires>
 
    <plugin
