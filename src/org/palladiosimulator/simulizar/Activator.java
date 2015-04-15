@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar;
 
-import org.apache.log4j.BasicConfigurator;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -28,8 +27,6 @@ public class Activator extends AbstractUIPlugin {
      * The constructor.
      */
     public Activator() {
-
-        BasicConfigurator.configure();
     }
 
     /*
