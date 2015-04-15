@@ -203,6 +203,19 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             throw new PCMModelInterpreterException("Empty branch action is not allowed");
         }
 
+        if (LOGGER.isDebugEnabled()) {
+            final StringBuilder sb = new StringBuilder();
+
+            sb.append("Branch \"");
+            sb.append(object.getEntityName());
+            sb.append("\" [ID: ");
+            sb.append(object.getId());
+            sb.append("\"] with ");
+            sb.append(object.getBranches_Branch().size());
+            sb.append(" branches.");
+
+            LOGGER.debug(sb.toString());
+        }
         final AbstractBranchTransition branchTransition = this.transitionDeterminer
                 .determineTransition(abstractBranchTransitions);
 
