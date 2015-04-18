@@ -21,7 +21,9 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * Class whose objects will listen on changes in the PCM@Runtime and trigger reconfigurations
  * respectively.
  * 
- * @author snowball, adapted by Florian Rosenthal
+ * @author Steffen Becker
+ * @author Sebastian Lehrig
+ * @author Florian Rosenthal
  *
  */
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
@@ -31,6 +33,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      */
     private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
 
+    /**
+     * After executing a reconfiguration, current model changes within the PCM blackboard partition
+     * are tracked here.
+     */
     private final Collection<Notification> modelChanges = new LinkedList<Notification>();
 
     /**
@@ -61,8 +67,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
             super.notifyChanged(notification);
             if (notification.getEventType() != Notification.REMOVING_ADAPTER) {
                 modelChanges.add(notification);
-                LOGGER.debug("Detected change in global PCM model. Changed object: " + notification.getNotifier());
-                LOGGER.debug(notification.toString());
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Detected change in global PCM model. Changed object: " + notification.getNotifier());
+                    LOGGER.debug(notification.toString());
+                }
             }
         }
 
@@ -103,9 +111,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      * Setup all listeners to listen for their respective model changes.
      */
     public void startListening() {
-        if (LOGGER.isInfoEnabled()) {
-            pcmResourceSetPartition.getResourceSet().eAdapters().add(this.globalPCMChangeListener);
-        }
+        pcmResourceSetPartition.getResourceSet().eAdapters().add(this.globalPCMChangeListener);
         this.prmModel.eAdapters().add(this.prmListener);
     }
 
@@ -114,9 +120,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      */
     public void stopListening() {
         this.prmModel.eAdapters().remove(this.prmListener);
-        if (LOGGER.isInfoEnabled()) {
-            pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.globalPCMChangeListener);
-        }
+        pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.globalPCMChangeListener);
     }
 
     /**
