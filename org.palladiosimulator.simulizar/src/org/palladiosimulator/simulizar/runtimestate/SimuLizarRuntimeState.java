@@ -13,6 +13,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListen
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.henshin.HenshinReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -69,8 +70,10 @@ public class SimuLizarRuntimeState {
 
         initializeReconfiguratorEngines(configuration);
         initializeModelSyncers();
-        //ensure to initialize model syncers (in particular ResourceEnvironmentSyncer) prior to interpreter listeners
-        //(in particular ProbeFrameworkListener) as ProbeFrameworkListener uses calculators of resources created in ResourceEnvironmentSyncer!
+        // ensure to initialize model syncers (in particular ResourceEnvironmentSyncer) prior to
+        // interpreter listeners
+        // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses calculators of
+        // resources created in ResourceEnvironmentSyncer!
         initializeInterpreterListeners();
         initializeUsageEvolver();
     }
@@ -132,9 +135,9 @@ public class SimuLizarRuntimeState {
 
     private void initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
-        reconfigurator = new Reconfigurator(modelAccess, new IReconfigurator[] {
-                new SDReconfigurator(modelAccess), new QVTOReconfigurator(modelAccess, configuration)
-        });
+        reconfigurator = new Reconfigurator(modelAccess, new IReconfigurator[] { new SDReconfigurator(modelAccess),
+                new QVTOReconfigurator(modelAccess, configuration),
+                new HenshinReconfigurator(modelAccess, configuration) });
         reconfigurator.addObserver(new IReconfigurationListener() {
 
             @Override
@@ -149,9 +152,7 @@ public class SimuLizarRuntimeState {
 
     private void initializeModelSyncers() {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
-        this.modelSyncers = new IModelSyncer[] {
-                new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this)
-        };
+        this.modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
         for (IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
