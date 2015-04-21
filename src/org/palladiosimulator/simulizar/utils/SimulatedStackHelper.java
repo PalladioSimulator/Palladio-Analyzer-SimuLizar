@@ -6,7 +6,6 @@ import org.eclipse.emf.common.util.EList;
 import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
 import de.uka.ipd.sdq.pcm.parameter.VariableCharacterisation;
 import de.uka.ipd.sdq.pcm.parameter.VariableUsage;
-import de.uka.ipd.sdq.pcm.stochasticexpressions.PCMStoExPrettyPrintVisitor;
 import de.uka.ipd.sdq.simucomframework.variables.EvaluationProxy;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
@@ -43,8 +42,7 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-                final String id = new PCMStoExPrettyPrintVisitor().prettyPrint(namedReference) + "."
-                        + variableCharacterisation.getType().getLiteral();
+                final String id = namedReference + "." + variableCharacterisation.getType().getLiteral();
 
                 Object value;
 

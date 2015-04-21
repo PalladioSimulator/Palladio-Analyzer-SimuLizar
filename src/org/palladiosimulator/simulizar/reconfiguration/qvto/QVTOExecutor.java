@@ -1,16 +1,12 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -22,6 +18,7 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.prm.PRMMeasurement;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.
@@ -48,7 +45,7 @@ public class QVTOExecutor {
         super();
         this.modelAccess = modelAccess;
         this.qvtoRuleSet = new LinkedList<TransformationExecutor>();
-        this.loadQvtoRules(configuration);
+        this.loadQvtFiles(configuration);
     }
 
     /**
@@ -71,14 +68,14 @@ public class QVTOExecutor {
      * @param configuration
      *            Simulation configuration
      */
-    private void loadQvtoRules(final SimuLizarWorkflowConfiguration configuration) {
+    private void loadQvtFiles(final SimuLizarWorkflowConfiguration configuration) {
         final String path = configuration.getReconfigurationRulesFolder();
 
         if (!path.equals("")) {
 
-            final File folder = getFolder(path);
-            final File[] files = getQVToFiles(folder);
-            loadQVTRules(files);
+            final File folder = FileUtil.getFolder(path);
+            final File[] files = FileUtil.getFiles(folder, QVTO_FILE_EXTENSION);
+            createTransformationExecutors(files);
         }
     }
 
@@ -90,7 +87,7 @@ public class QVTOExecutor {
      * @param files
      *            that contain the QVTo reconfiguration rules
      */
-    private void loadQVTRules(final File[] files) {
+    private void createTransformationExecutors(final File[] files) {
         if (files != null && files.length > 0) {
             for (final File file : files) {
                 LOGGER.info("Found reconfiguration rule \"" + file.getPath() + "\"");
@@ -104,60 +101,6 @@ public class QVTOExecutor {
     }
 
     /**
-     * Get the reconfiguration rule files.
-     * 
-     * FIXME: Remove this and load reconfiguration rules into a blackboard.
-     * 
-     * @param folder
-     *            Filepath to the reconfiguration rules
-     * @return folder of the QVTo reconfiguration rules
-     */
-    private File[] getQVToFiles(File folder) {
-        if (folder == null || !folder.exists()) {
-            LOGGER.warn("Folder " + folder + " does not exist. No reconfiguration rules will be loaded.");
-            return new File[0];
-        }
-        final File[] files = folder.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.endsWith(QVTO_FILE_EXTENSION);
-            }
-        });
-        return files;
-    }
-
-    /**
-     * Get the reconfiguration rule folder.
-     * 
-     * FIXME: Remove this and load reconfiguration rules into a blackboard.
-     * 
-     * @param path
-     *            String to the reconfiguration rules
-     * @return folder of the QVTo reconfiguration rules
-     */
-    private File getFolder(String path) {
-        // add file protocol only if necessary
-        String filePath = path;
-        File folder = null;
-        if (!path.startsWith("platform:")) {
-            filePath = "file:///" + filePath;
-
-            URI pathToQvtoRules = URI.createURI(filePath);
-            folder = new File(pathToQvtoRules.toFileString());
-        } else {
-            try {
-                URL pathURL = FileLocator.resolve(new URL(path));
-                String folderString = pathURL.toExternalForm().replace("file:", "");
-                folder = new File(folderString);
-            } catch (IOException e) {
-                LOGGER.warn("No QVTo rules found, QVTo reconfigurations disabled.", e);
-            }
-        }
-        return folder;
-    }
-
-    /**
      * Executes the QVTo rule given as a parameter
      * 
      * @param executor
@@ -167,7 +110,7 @@ public class QVTOExecutor {
     private boolean execute(final TransformationExecutor executor) {
 
         // define the transformation input and outputs
-    	List<PRMMeasurement> runtimeModel = this.modelAccess.getPRMModel().getMeasurements();
+        List<PRMMeasurement> runtimeModel = this.modelAccess.getPRMModel().getMeasurements();
         List<EObject> pcmAllocation = Arrays.asList((EObject) this.modelAccess.getGlobalPCMModel().getAllocation());
 
         // create the input and inout extents with its initial contents
