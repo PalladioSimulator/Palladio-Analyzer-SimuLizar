@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.palladiosimulator.simulizar.monitorrepository.edit;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.monitorrepository.edit;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.palladiosimulator.simulizar.monitorrepository.provider.MonitorrepositoryEditPlugin$Implementation
@@ -10,7 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar.monitorrepository.provider
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
- org.palladiosimulator.simulizar.monitorrepository;bundle-version="2.0.0";visibility:=reexport,
+ org.palladiosimulator.monitorrepository;bundle-version="2.0.0";visibility:=reexport,
  org.eclipse.emf.edit;bundle-version="2.10.0";visibility:=reexport,
  org.eclipse.emf.ecore;bundle-version="2.10.0";visibility:=reexport,
  org.eclipse.emf.ecore.edit;bundle-version="2.9.0";visibility:=reexport,
