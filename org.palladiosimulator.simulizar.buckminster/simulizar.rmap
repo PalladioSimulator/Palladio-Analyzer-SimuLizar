@@ -37,6 +37,8 @@
     <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="false"/>
   <rm:locator pattern="^de\.fzi\.power.*" searchPathRef="PowerConsumptionAnalyzer" failOnError="false"/>
   
+  <rm:locator pattern="^org\.eclipse\.emf\.henshin.*" searchPathRef="Henshin" failOnError="false"/>
+  
   <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
   
   <rm:locator pattern="^org\.eclipse\.xtend.*" searchPathRef="xtext" failOnError="false"/>
@@ -158,6 +160,14 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="Henshin">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="http://download.eclipse.org/modeling/emft/henshin/updates/release/"/>
     </rm:provider>
   </rm:searchPath>
   
