@@ -6,8 +6,8 @@
     copyrightFields="false" usedGenPackages="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.genmodel#//metricspec platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.genmodel#//pcm platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel#//units platform:/plugin/org.palladiosimulator.edp2/model/EDP2.genmodel#//models"
     cleanup="true">
   <foreignModel>monitorrepository.ecore</foreignModel>
-  <genPackages prefix="Monitorrepository" basePackage="org.palladiosimulator.simulizar"
-      resource="XML" disposableProviderFactory="true" ecorePackage="monitorrepository.ecore#/">
+  <genPackages prefix="Monitorrepository" basePackage="org.palladiosimulator" resource="XML"
+      disposableProviderFactory="true" ecorePackage="monitorrepository.ecore#/">
     <genEnums typeSafeEnumCompatible="false" ecoreEnum="monitorrepository.ecore#//StatisticalCharacterizationEnum">
       <genEnumLiterals ecoreEnumLiteral="monitorrepository.ecore#//StatisticalCharacterizationEnum/None"/>
       <genEnumLiterals ecoreEnumLiteral="monitorrepository.ecore#//StatisticalCharacterizationEnum/Median"/>

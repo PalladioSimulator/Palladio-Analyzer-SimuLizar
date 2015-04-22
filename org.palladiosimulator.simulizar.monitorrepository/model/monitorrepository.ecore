@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="monitorrepository" nsURI="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="monitorrepository" nsURI="http://palladiosimulator.org/MonitorRepository/1.0"
     nsPrefix="monitorrepository">
   <eAnnotations source="http://www.eclipse.org/OCL/Import">
     <details key="ecore" value="http://www.eclipse.org/emf/2002/Ecore"/>
@@ -29,7 +29,7 @@
         lowerBound="1" upperBound="-1" eType="#//MeasurementSpecification" containment="true"
         eOpposite="#//MeasurementSpecification/monitor"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="measuringPoint" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"/>
+        eType="ecore:EClass ../../org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="monitorRepository" lowerBound="1"
         eType="#//MonitorRepository" eOpposite="#//MonitorRepository/monitors"/>
   </eClassifiers>
@@ -42,7 +42,7 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="statisticalCharacterization"
         lowerBound="1" eType="#//StatisticalCharacterizationEnum" defaultValueLiteral="None"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="metricDescription" lowerBound="1"
-        eType="ecore:EClass platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
+        eType="ecore:EClass ../../org.palladiosimulator.metricspec/model/metricspec.ecore#//MetricDescription"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="monitor" lowerBound="1"
         eType="#//Monitor" eOpposite="#//Monitor/measurementSpecifications"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
