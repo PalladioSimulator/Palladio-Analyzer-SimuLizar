@@ -5,8 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
@@ -29,8 +29,9 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
         for (PassiveResource passiveResource : passiveResources) {
-            final long initialCount = StackContext.evaluateStatic(passiveResource.getCapacity_PassiveResource()
-                    .getSpecification(), Integer.class, context.getStack().currentStackFrame()).intValue();
+            final long initialCount = StackContext.evaluateStatic(
+                    passiveResource.getCapacity_PassiveResource().getSpecification(), Integer.class,
+                    context.getStack().currentStackFrame()).intValue();
             final IPassiveResource simulatedResource = new SimSimpleFairPassiveResource(passiveResource, myAssCtx,
                     getRuntimeState().getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);

@@ -2,14 +2,13 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.ArrayList;
 
+import org.palladiosimulator.monitorrepository.Intervall;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.simulizar.monitorrepository.Intervall;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
-import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
@@ -33,7 +32,7 @@ public class ResourceStateListener implements IStateListener {
 
     private final double timeIntervall;
 
-    private final PRMMeasurement measurement;
+    private final RuntimeMeasurement measurement;
 
     private final ISimulationControl simulationControl;
 
@@ -53,13 +52,13 @@ public class ResourceStateListener implements IStateListener {
      */
     public ResourceStateListener(final AbstractScheduledResource abstractScheduledResource,
             final ISimulationControl iSimulationControl, final MeasurementSpecification measurementSpecification,
-            final ResourceContainer resourceContainer, final PRMModel prm) {
+            final ResourceContainer resourceContainer, final RuntimeMeasurementModel prm) {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
         this.simulationControl = iSimulationControl;
         this.lastSimulationTime = simulationControl.getCurrentSimulationTime();
 
-        this.measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         this.measurement.setMeasurementSpecification(measurementSpecification);
         this.measurement.setMeasuringPoint(measurementSpecification.getMonitor().getMeasuringPoint());
         prm.getMeasurements().add(this.measurement);
@@ -76,7 +75,7 @@ public class ResourceStateListener implements IStateListener {
      *            the measurement value.
      */
     private void addToPRM(final double value) {
-    	this.measurement.setMeasuringValue(value);
+        this.measurement.setMeasuringValue(value);
     }
 
     /**

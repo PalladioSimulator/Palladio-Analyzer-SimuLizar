@@ -1,18 +1,22 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 public class ReconfigurationEvent {
 
     private final double passageTime;
     private final EventType eventType;
-    private final SimuComModel simuComModel;
 
-    public ReconfigurationEvent(final EventType eventType, final SimuComModel simuComModel) {
+    public ReconfigurationEvent(final EventType eventType, final ISimulationControl simulationcontrol) {
         super();
-        this.simuComModel = simuComModel;
         this.eventType = eventType;
-        this.passageTime = simuComModel.getSimulationControl().getCurrentSimulationTime();
+        this.passageTime = simulationcontrol.getCurrentSimulationTime();
+    }
+
+    public ReconfigurationEvent(final EventType eventType, final Double simulationTime) {
+        super();
+        this.eventType = eventType;
+        this.passageTime = simulationTime;
     }
 
     /**
@@ -20,13 +24,6 @@ public class ReconfigurationEvent {
      */
     public double getPassageTime() {
         return this.passageTime;
-    }
-
-    /**
-     * @return the thread
-     */
-    public SimuComModel getModel() {
-        return this.simuComModel;
     }
 
     public EventType getEventType() {

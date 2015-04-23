@@ -25,8 +25,6 @@ public interface IInterpreterListener {
 
     public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event);
 
-    public void reconfigurationInterpretation(ReconfigurationEvent event);
-
     public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event);
 
     public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event);

@@ -7,16 +7,15 @@ import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 import javax.measure.unit.SI;
 
-import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.Intervall;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
-import org.palladiosimulator.simulizar.monitorrepository.Intervall;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.prm.PRMModel;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -37,15 +36,14 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      * Constructor
      * 
      * @param measurementSpecification
-     *            the measurement specification.
-     *            id of the measurement.
+     *            the measurement specification. id of the measurement.
      * @param monitoredElement
      *            the pcm model element to be monitored.
      * @throws UnsupportedOperationException
-     *             if temporal characterization is not supported. TODO: This class should not
-     *             know about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
+     *             if temporal characterization is not supported. TODO: This class should not know
+     *             about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
-    public ResponseTimeAggregator(final SimuComModel model, final PRMModel prmAccess,
+    public ResponseTimeAggregator(final SimuComModel model, final RuntimeMeasurementModel prmAccess,
             final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
         super(prmAccess, measurementSpecification, measuringPoint);
         this.responseTimes = new LinkedList<Double>();

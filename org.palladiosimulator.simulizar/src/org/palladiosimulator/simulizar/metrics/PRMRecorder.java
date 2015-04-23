@@ -2,11 +2,11 @@ package org.palladiosimulator.simulizar.metrics;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.monitorrepository.TemporalCharacterization;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.TemporalCharacterization;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
 /**
  * Recorder for saving measurement of a measurement specification and pcm model element in prm
@@ -16,10 +16,10 @@ import org.palladiosimulator.simulizar.prm.PrmFactory;
  */
 public abstract class PRMRecorder {
 
-    private static final PrmFactory PRM_FACTORY = PrmFactory.eINSTANCE;
+    private static final RuntimeMeasurementFactory PRM_FACTORY = RuntimeMeasurementFactory.eINSTANCE;
 
-    private final PRMMeasurement measurement;
-    private final PRMModel prmAccess;
+    private final RuntimeMeasurement measurement;
+    private final RuntimeMeasurementModel prmAccess;
 
     /**
      * Constructor
@@ -33,10 +33,10 @@ public abstract class PRMRecorder {
      *            the given measurement specification.
      * 
      */
-    public PRMRecorder(final PRMModel prmAccess, final MeasurementSpecification measurementSpecification,
-            MeasuringPoint measuringPoint) {
+    public PRMRecorder(final RuntimeMeasurementModel prmAccess,
+            final MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
         super();
-        this.measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         this.measurement.setMeasuringPoint(measuringPoint);
         this.measurement.setMeasurementSpecification(measurementSpecification);
         this.prmAccess = prmAccess;
@@ -78,14 +78,14 @@ public abstract class PRMRecorder {
     /**
      * @return returns the pcmModelElementMeasurement.
      */
-    protected final PRMMeasurement getPRMMeasurement() {
+    protected final RuntimeMeasurement getPRMMeasurement() {
         return this.measurement;
     }
 
     /**
      * @return returns the prmModel.
      */
-    protected PRMModel getPrmModel() {
+    protected RuntimeMeasurementModel getPrmModel() {
         return this.prmAccess;
     }
 

@@ -7,6 +7,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoin
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
 import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
@@ -14,9 +17,6 @@ import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.monitorrepository.Monitor;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
@@ -181,22 +181,22 @@ public final class MonitorRepositoryUtil {
 
             private boolean checkAssemblyOperationMeasuringPoint(final AssemblyOperationMeasuringPoint mp) {
                 return new SeffSwitch<Boolean>() {
-                    
+
                     @Override
                     public Boolean caseExternalCallAction(ExternalCallAction externalCallAction) {
                         return externalCallAction.getCalledService_ExternalService().getId()
                                 .equals(mp.getOperationSignature().getId())
                                 && externalCallAction.getRole_ExternalService().getId().equals(mp.getRole().getId());
                     }
-                    
+
                     @Override
                     public Boolean defaultCase(EObject object) {
                         return false;
                     }
-                    
+
                 }.doSwitch(element);
             }
-            
+
             @Override
             public Boolean caseAssemblyOperationMeasuringPoint(AssemblyOperationMeasuringPoint object) {
                 return this.checkAssemblyOperationMeasuringPoint(object);
@@ -214,7 +214,7 @@ public final class MonitorRepositoryUtil {
 
             private boolean checkSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint mp) {
                 return new UsagemodelSwitch<Boolean>() {
-                    
+
                     @Override
                     public Boolean caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
                         return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
@@ -222,14 +222,14 @@ public final class MonitorRepositoryUtil {
                                 && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
                                         .equals(mp.getRole().getId());
                     }
-                    
+
                     @Override
                     public Boolean defaultCase(EObject object) {
                         return false;
                     }
                 }.doSwitch(element);
             }
-            
+
             @Override
             public Boolean caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
                 return this.checkSystemOperationMeasuringPoint(object);
@@ -242,17 +242,17 @@ public final class MonitorRepositoryUtil {
                     public Boolean caseUsageScenario(UsageScenario usageScenario) {
                         return usageScenario.getId().equals(mp.getUsageScenario().getId());
                     }
-                    
+
                     @Override
                     public Boolean defaultCase(EObject object) {
                         return false;
                     }
                 }.doSwitch(element);
             }
-            
+
             @Override
             public Boolean caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
-               return this.checkUsageScenarioMeasuringPoint(object);
+                return this.checkUsageScenarioMeasuringPoint(object);
             }
 
         }.doSwitch(measuringPoint);

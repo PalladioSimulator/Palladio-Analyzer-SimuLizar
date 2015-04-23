@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.launcher.partitions;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryPackage;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
@@ -45,7 +45,7 @@ public class MonitorRepositoryResourceSetPartition extends ResourceSetPartition 
     private MonitorRepository loadMonitorRepositoryModel() {
         try {
             LOGGER.debug("Retrieving Monitor Repository Model from blackboard partition");
-            List<MonitorRepository> result = getElement(MonitorrepositoryPackage.eINSTANCE.getMonitorRepository());
+            List<MonitorRepository> result = getElement(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
             return result.get(0);
         } catch (Exception e) {
             LOGGER.warn("No Monitor Repository found, no requests will be measured.");
