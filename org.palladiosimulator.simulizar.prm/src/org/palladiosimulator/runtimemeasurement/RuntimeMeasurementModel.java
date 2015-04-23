@@ -1,10 +1,6 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
-package org.palladiosimulator.simulizar.prm;
+package org.palladiosimulator.runtimemeasurement;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -12,7 +8,7 @@ import org.eclipse.emf.ecore.EObject;
 import de.uka.ipd.sdq.identifier.Identifier;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>PRM Model</b></em>'. <!--
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Model</b></em>'. <!--
  * end-user-doc -->
  *
  * <!-- begin-model-doc --> Base class representing the prm model. <!-- end-model-doc -->
@@ -20,19 +16,20 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * <p>
  * The following features are supported:
  * <ul>
- * <li>{@link org.palladiosimulator.simulizar.prm.PRMModel#getMeasurements <em>Measurements</em>}</li>
+ * <li>{@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel#getMeasurements <em>
+ * Measurements</em>}</li>
  * </ul>
  * </p>
  *
- * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPRMModel()
+ * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage#getRuntimeMeasurementModel()
  * @model
  * @generated
  */
-public interface PRMModel extends EObject, Identifier {
+public interface RuntimeMeasurementModel extends EObject, Identifier {
     /**
      * Returns the value of the '<em><b>Measurements</b></em>' containment reference list. The list
-     * contents are of type {@link org.palladiosimulator.simulizar.prm.PRMMeasurement}. <!--
-     * begin-user-doc -->
+     * contents are of type {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement}.
+     * <!-- begin-user-doc -->
      * <p>
      * If the meaning of the '<em>Measurements</em>' containment reference list isn't clear, there
      * really should be more of a description here...
@@ -40,10 +37,10 @@ public interface PRMModel extends EObject, Identifier {
      * <!-- end-user-doc -->
      *
      * @return the value of the '<em>Measurements</em>' containment reference list.
-     * @see org.palladiosimulator.simulizar.prm.PrmPackage#getPRMModel_Measurements()
+     * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage#getRuntimeMeasurementModel_Measurements()
      * @model containment="true"
      * @generated
      */
-    EList<PRMMeasurement> getMeasurements();
+    EList<RuntimeMeasurement> getMeasurements();
 
-} // PRMModel
+} // RuntimeMeasurementModel

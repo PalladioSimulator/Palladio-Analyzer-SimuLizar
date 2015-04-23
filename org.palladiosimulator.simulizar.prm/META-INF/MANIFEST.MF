@@ -1,15 +1,15 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.palladiosimulator.simulizar.prm;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.simulizar.runtimemeasurement;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.palladiosimulator.simulizar.prm,
- org.palladiosimulator.simulizar.prm.impl,
- org.palladiosimulator.simulizar.prm.util
+Export-Package: org.palladiosimulator.runtimemeasurement,
+ org.palladiosimulator.runtimemeasurement.impl,
+ org.palladiosimulator.runtimemeasurement.util
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  org.eclipse.emf.ecore;bundle-version="2.10.0";visibility:=reexport,
  org.eclipse.emf.ecore.xmi;bundle-version="2.10.0";visibility:=reexport,

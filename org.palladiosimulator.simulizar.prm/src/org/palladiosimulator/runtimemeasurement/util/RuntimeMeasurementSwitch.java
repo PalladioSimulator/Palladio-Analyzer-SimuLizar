@@ -1,17 +1,13 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
-package org.palladiosimulator.simulizar.prm.util;
+package org.palladiosimulator.runtimemeasurement.util;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmPackage;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 
@@ -22,25 +18,25 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * inheritance hierarchy until a non-null result is returned, which is the result of the switch.
  * <!-- end-user-doc -->
  *
- * @see org.palladiosimulator.simulizar.prm.PrmPackage
+ * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage
  * @generated
  */
-public class PrmSwitch<T> extends Switch<T> {
+public class RuntimeMeasurementSwitch<T> extends Switch<T> {
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected static PrmPackage modelPackage;
+    protected static RuntimeMeasurementPackage modelPackage;
 
     /**
      * Creates an instance of the switch. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public PrmSwitch() {
+    public RuntimeMeasurementSwitch() {
         if (modelPackage == null) {
-            modelPackage = PrmPackage.eINSTANCE;
+            modelPackage = RuntimeMeasurementPackage.eINSTANCE;
         }
     }
 
@@ -67,22 +63,22 @@ public class PrmSwitch<T> extends Switch<T> {
     @Override
     protected T doSwitch(final int classifierID, final EObject theEObject) {
         switch (classifierID) {
-        case PrmPackage.PRM_MODEL: {
-            final PRMModel prmModel = (PRMModel) theEObject;
-            T result = this.casePRMModel(prmModel);
+        case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT_MODEL: {
+            final RuntimeMeasurementModel runtimeMeasurementModel = (RuntimeMeasurementModel) theEObject;
+            T result = this.caseRuntimeMeasurementModel(runtimeMeasurementModel);
             if (result == null) {
-                result = this.caseIdentifier(prmModel);
+                result = this.caseIdentifier(runtimeMeasurementModel);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
             }
             return result;
         }
-        case PrmPackage.PRM_MEASUREMENT: {
-            final PRMMeasurement prmMeasurement = (PRMMeasurement) theEObject;
-            T result = this.casePRMMeasurement(prmMeasurement);
+        case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT: {
+            final RuntimeMeasurement runtimeMeasurement = (RuntimeMeasurement) theEObject;
+            T result = this.caseRuntimeMeasurement(runtimeMeasurement);
             if (result == null) {
-                result = this.caseIdentifier(prmMeasurement);
+                result = this.caseIdentifier(runtimeMeasurement);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
@@ -95,32 +91,33 @@ public class PrmSwitch<T> extends Switch<T> {
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>PRM Model</em>'. <!--
+     * Returns the result of interpreting the object as an instance of '<em>Model</em>'. <!--
      * begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>PRM Model</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Model</em>'.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T casePRMModel(final PRMModel object) {
+    public T caseRuntimeMeasurementModel(final RuntimeMeasurementModel object) {
         return null;
     }
 
     /**
-     * Returns the result of interpreting the object as an instance of '<em>PRM Measurement</em>'.
-     * <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
+     * Returns the result of interpreting the object as an instance of '<em>Runtime Measurement</em>
+     * '. <!-- begin-user-doc --> This implementation returns null; returning a non-null result will
      * terminate the switch. <!-- end-user-doc -->
      *
      * @param object
      *            the target of the switch.
-     * @return the result of interpreting the object as an instance of '<em>PRM Measurement</em>'.
+     * @return the result of interpreting the object as an instance of '<em>Runtime Measurement</em>
+     *         '.
      * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
      * @generated
      */
-    public T casePRMMeasurement(final PRMMeasurement object) {
+    public T caseRuntimeMeasurement(final RuntimeMeasurement object) {
         return null;
     }
 
@@ -155,4 +152,4 @@ public class PrmSwitch<T> extends Switch<T> {
         return null;
     }
 
-} // PrmSwitch
+} // RuntimeMeasurementSwitch

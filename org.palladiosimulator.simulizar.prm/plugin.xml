@@ -14,7 +14,7 @@
       <package
             uri="http:///de/upb/pcm/prm/model/prm.ecore"
             class="org.palladiosimulator.simulizar.prm.PrmPackage"
-            genModel="model/prm.genmodel"/>
+            genModel="model/runtimemeasurement.genmodel"/>
    </extension>
 
    <extension point="org.eclipse.emf.ecore.extension_parser">
@@ -24,4 +24,18 @@
             class="org.palladiosimulator.simulizar.prm.util.PrmResourceFactoryImpl"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated runtimemeasurement -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0"
+            class="org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage"
+            genModel="model/runtimemeasurement.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated runtimemeasurement -->
+      <parser
+            type="runtimemeasurement"
+            class="org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementResourceFactoryImpl"/>
+   </extension>
 </plugin>

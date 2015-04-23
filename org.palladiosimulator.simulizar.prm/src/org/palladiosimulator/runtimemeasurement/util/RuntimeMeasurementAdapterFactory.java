@@ -1,18 +1,14 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
-package org.palladiosimulator.simulizar.prm.util;
+package org.palladiosimulator.runtimemeasurement.util;
 
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmPackage;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 
@@ -20,25 +16,25 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * <!-- begin-user-doc --> The <b>Adapter Factory</b> for the model. It provides an adapter
  * <code>createXXX</code> method for each class of the model. <!-- end-user-doc -->
  *
- * @see org.palladiosimulator.simulizar.prm.PrmPackage
+ * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage
  * @generated
  */
-public class PrmAdapterFactory extends AdapterFactoryImpl {
+public class RuntimeMeasurementAdapterFactory extends AdapterFactoryImpl {
     /**
      * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected static PrmPackage modelPackage;
+    protected static RuntimeMeasurementPackage modelPackage;
 
     /**
      * Creates an instance of the adapter factory. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    public PrmAdapterFactory() {
+    public RuntimeMeasurementAdapterFactory() {
         if (modelPackage == null) {
-            modelPackage = PrmPackage.eINSTANCE;
+            modelPackage = RuntimeMeasurementPackage.eINSTANCE;
         }
     }
 
@@ -67,25 +63,25 @@ public class PrmAdapterFactory extends AdapterFactoryImpl {
      *
      * @generated
      */
-    protected PrmSwitch<Adapter> modelSwitch = new PrmSwitch<Adapter>() {
+    protected RuntimeMeasurementSwitch<Adapter> modelSwitch = new RuntimeMeasurementSwitch<Adapter>() {
         @Override
-        public Adapter casePRMModel(final PRMModel object) {
-            return PrmAdapterFactory.this.createPRMModelAdapter();
+        public Adapter caseRuntimeMeasurementModel(final RuntimeMeasurementModel object) {
+            return RuntimeMeasurementAdapterFactory.this.createRuntimeMeasurementModelAdapter();
         }
 
         @Override
-        public Adapter casePRMMeasurement(final PRMMeasurement object) {
-            return PrmAdapterFactory.this.createPRMMeasurementAdapter();
+        public Adapter caseRuntimeMeasurement(final RuntimeMeasurement object) {
+            return RuntimeMeasurementAdapterFactory.this.createRuntimeMeasurementAdapter();
         }
 
         @Override
         public Adapter caseIdentifier(final Identifier object) {
-            return PrmAdapterFactory.this.createIdentifierAdapter();
+            return RuntimeMeasurementAdapterFactory.this.createIdentifierAdapter();
         }
 
         @Override
         public Adapter defaultCase(final EObject object) {
-            return PrmAdapterFactory.this.createEObjectAdapter();
+            return RuntimeMeasurementAdapterFactory.this.createEObjectAdapter();
         }
     };
 
@@ -104,30 +100,31 @@ public class PrmAdapterFactory extends AdapterFactoryImpl {
 
     /**
      * Creates a new adapter for an object of class '
-     * {@link org.palladiosimulator.simulizar.prm.PRMModel <em>PRM Model</em>}'. <!-- begin-user-doc
-     * --> This default implementation returns null so that we can easily ignore cases; it's useful
-     * to ignore a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel <em>Model</em>}'.
+     * <!-- begin-user-doc --> This default implementation returns null so that we can easily ignore
+     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
+     * end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.prm.PRMModel
+     * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel
      * @generated
      */
-    public Adapter createPRMModelAdapter() {
+    public Adapter createRuntimeMeasurementModelAdapter() {
         return null;
     }
 
     /**
      * Creates a new adapter for an object of class '
-     * {@link org.palladiosimulator.simulizar.prm.PRMMeasurement <em>PRM Measurement</em>}'. <!--
-     * begin-user-doc --> This default implementation returns null so that we can easily ignore
-     * cases; it's useful to ignore a case when inheritance will catch all the cases anyway. <!--
-     * end-user-doc -->
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement
+     * <em>Runtime Measurement</em>}'. <!-- begin-user-doc --> This default implementation returns
+     * null so that we can easily ignore cases; it's useful to ignore a case when inheritance will
+     * catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.prm.PRMMeasurement
+     * @see org.palladiosimulator.runtimemeasurement.RuntimeMeasurement
      * @generated
      */
-    public Adapter createPRMMeasurementAdapter() {
+    public Adapter createRuntimeMeasurementAdapter() {
         return null;
     }
 
@@ -156,4 +153,4 @@ public class PrmAdapterFactory extends AdapterFactoryImpl {
         return null;
     }
 
-} // PrmAdapterFactory
+} // RuntimeMeasurementAdapterFactory
