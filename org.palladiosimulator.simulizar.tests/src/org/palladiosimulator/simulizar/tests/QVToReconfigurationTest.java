@@ -16,13 +16,13 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.palladiosimulator.monitorrepository.StatisticalCharacterizationEnum;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorrepositoryFactory;
-import org.palladiosimulator.simulizar.monitorrepository.StatisticalCharacterizationEnum;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -117,14 +117,14 @@ public class QVToReconfigurationTest {
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfServer1Client++;
                 }
 
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server2")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfServer2Client++;
                 }
             }
@@ -150,7 +150,7 @@ public class QVToReconfigurationTest {
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfIServerProviders++;
                 }
             }
@@ -214,7 +214,8 @@ public class QVToReconfigurationTest {
              */
             if (root instanceof AllocationContext) {
                 final AllocationContext serverAllocationContext = (AllocationContext) root;
-                final AssemblyContext serverAssemblyContext = serverAllocationContext.getAssemblyContext_AllocationContext();
+                final AssemblyContext serverAssemblyContext = serverAllocationContext
+                        .getAssemblyContext_AllocationContext();
                 /*
                  * The server that contains our SEFF is of type BasicComponent.
                  */
@@ -273,14 +274,14 @@ public class QVToReconfigurationTest {
         /*
          * Create a measurement.
          */
-        final MeasurementSpecification measurementSpecification = MonitorrepositoryFactory.eINSTANCE
+        final MeasurementSpecification measurementSpecification = MonitorRepositoryFactory.eINSTANCE
                 .createMeasurementSpecification();
         measurementSpecification.setId("_sEx-cMLAEeSZr8oGpigbHA");
         measurementSpecification.setMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         measurementSpecification.setStatisticalCharacterization(StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
         measurementSpecification.setTemporalRestriction(null);
 
-        final PRMMeasurement measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        final RuntimeMeasurement measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         measurement.setMeasuringValue(m);
         measurement.setMeasurementSpecification(measurementSpecification);
 
@@ -331,7 +332,7 @@ public class QVToReconfigurationTest {
         final MDSDBlackboard blackboard = new MDSDBlackboard();
         blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
         final IModelAccess modelAccess = new ModelAccess(blackboard);
-        modelAccess.getPRMModel().getMeasurements().add(measurement);
+        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(measurement);
 
         /*
          * Create the configuration for the QVTo executor.
