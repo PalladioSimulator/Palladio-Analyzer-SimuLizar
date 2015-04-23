@@ -11,15 +11,16 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
@@ -46,7 +47,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
     private final SDMResourceSetPartition sdmPartition;
     private final UEResourceSetPartition uePartititon;
-    private final PRMModel prmModel;
+    private final RuntimeMeasurementModel runtimeMeasurementModel;
 
     /**
      * Constructor
@@ -56,7 +57,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      */
     public ModelAccess(final MDSDBlackboard blackboard) {
         super();
-        this.prmModel = PrmFactory.eINSTANCE.createPRMModel();
+        this.runtimeMeasurementModel = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel();
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
         this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
@@ -67,7 +68,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     private ModelAccess(final ModelAccess copy) {
         super();
-        this.prmModel = copy.prmModel;
+        this.runtimeMeasurementModel = copy.runtimeMeasurementModel;
         this.pcmPartition = copy.pcmPartition;
         this.sdmPartition = copy.sdmPartition;
         this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
@@ -117,8 +118,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      * @return the global prm model.
      */
     @Override
-    public PRMModel getPRMModel() {
-        return this.prmModel;
+    public RuntimeMeasurementModel getRuntimeMeasurementModel() {
+        return this.runtimeMeasurementModel;
     }
 
     /**
@@ -169,6 +170,16 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     public void reconfigurationExecuted(final Collection<Notification> modelChanges) {
         LOGGER.debug("Reconfiguration(s) have been exectuted, taking a new copy of the global PCM for new simulation threads");
         this.currentPCMCopy = copyPCMPartition();
+    }
+
+    @Override
+    public void beginReconfigurationEvent(ReconfigurationEvent event) {
+        // Nothing to do
+    }
+
+    @Override
+    public void endReconfigurationEvent(ReconfigurationEvent event) {
+        // Nothing to do
     }
 
 }

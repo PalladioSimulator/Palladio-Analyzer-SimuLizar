@@ -98,7 +98,7 @@ public class HenshinReconfigurator implements IReconfigurator {
      */
     private boolean analyzeReconfiguration(UnitApplication app, HenshinResourceSet resourceSet, Module module) {
         // Load the example model into an EGraph:
-        EGraph graph = new EGraphImpl(this.modelAccess.getPRMModel());
+        EGraph graph = new EGraphImpl(this.modelAccess.getRuntimeMeasurementModel());
         app.setEGraph(graph);
 
         // Execute analyze step of rule

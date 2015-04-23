@@ -13,7 +13,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.pcm.stochasticexpressions;bundle-version="2.0.0",
  de.uka.ipd.sdq.stoex.analyser;bundle-version="2.0.0",
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
- org.palladiosimulator.simulizar.prm;bundle-version="2.0.0",
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="2.0.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
@@ -35,7 +35,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.apache.commons.collections15;bundle-version="1.0.0",
  org.scaledl.usageevolution;bundle-version="0.1.0",
  org.palladiosimulator.edp2,
- org.eclipse.emf.henshin.interpreter
+ org.eclipse.emf.henshin.interpreter,
+ org.palladiosimulator.simulizar.monitorrepository
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar,

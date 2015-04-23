@@ -5,12 +5,10 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
-import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 
 import de.uka.ipd.sdq.pcm.repository.OperationSignature;
 import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
@@ -74,16 +72,6 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
                     singleListener.endUnknownElementInterpretation(event);
                 }
                 break;
-            }
-        }
-    }
-
-    public void fireReconfigurationEvent(final ReconfigurationEvent event) {
-        for (final IInterpreterListener singleListener : this.getObservers()) {
-            if (event.getEventType() == EventType.RECONFIGURATION) {
-                singleListener.reconfigurationInterpretation(event);
-            } else {
-                throw new PCMModelInterpreterException("Tried to fire unknown event");
             }
         }
     }

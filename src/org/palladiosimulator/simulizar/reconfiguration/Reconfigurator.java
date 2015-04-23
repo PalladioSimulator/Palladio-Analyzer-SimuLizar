@@ -10,11 +10,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.prm.PRMMeasurement;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.util.PrmSwitch;
+import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
@@ -84,12 +88,14 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     /**
      * Access interface to the PRM runtime model.
      */
-    private final PRMModel prmModel;
+    private final RuntimeMeasurementModel prmModel;
 
     /**
      * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
      */
     private final IReconfigurator[] reconfigurators;
+
+    private final ISimulationControl simulationController;
 
     /**
      * Constructor.
@@ -100,11 +106,13 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      *            Set of reconfigurators which will be triggered as soon as new, interesting
      *            monitoring data arrives.
      */
-    public Reconfigurator(final IModelAccess modelAccessFactory, final IReconfigurator[] reconfigurators) {
+    public Reconfigurator(final IModelAccess modelAccessFactory, final ISimulationControl simulationcontrol,
+            final IReconfigurator[] reconfigurators) {
         super();
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-        this.prmModel = modelAccessFactory.getPRMModel();
+        this.prmModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
+        this.simulationController = simulationcontrol;
     }
 
     /**
@@ -136,8 +144,13 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         // Value changed, reconfigure!
         if (isNotificationNewMeasurement(monitoredElement)) {
             for (final IReconfigurator reconfigurator : this.reconfigurators) {
+                double startReconfigurationTime = this.simulationController.getCurrentSimulationTime();
                 if (reconfigurator.checkAndExecute(monitoredElement)) {
+                    this.getEventDispatcher().beginReconfigurationEvent(
+                            new ReconfigurationEvent(EventType.BEGIN, startReconfigurationTime));
                     LOGGER.debug("Successfully executed reconfiguration.");
+                    this.getEventDispatcher().endReconfigurationEvent(
+                            new ReconfigurationEvent(EventType.END, this.simulationController));
                 }
             }
         }
@@ -157,15 +170,26 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      * Visitor singleton which is used to query the monitored PCM object from a PRM notification
      * (which is a change in a {@link PRMMeasurement}).
      */
-    private static final PrmSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new PrmSwitch<MeasuringPoint>() {
+    private static final RuntimeMeasurementSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new RuntimeMeasurementSwitch<MeasuringPoint>() {
 
         @Override
-        public MeasuringPoint casePRMMeasurement(final PRMMeasurement object) {
+        public MeasuringPoint caseRuntimeMeasurement(final RuntimeMeasurement object) {
             return object.getMeasuringPoint();
         };
 
     };
 
+    void fireReconfigurationEvent(final ReconfigurationEvent event) {
+        for (final IReconfigurationListener singleListener : this.getObservers()) {
+            if (event.getEventType() == EventType.BEGIN) {
+                singleListener.beginReconfigurationEvent(event);
+            } else if (event.getEventType() == EventType.END) {
+                singleListener.endReconfigurationEvent(event);
+            } else {
+                throw new PCMModelInterpreterException("Tried to fire unknown event");
+            }
+        }
+    }
 
     /**
      * Retrieve the monitored PCM element from the PRM change event.
@@ -183,7 +207,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         case Notification.REMOVING_ADAPTER:
             return null;
         case Notification.SET:
-            //in this case, one feature such as value of notifier PcmModelElementMeasurement could have been set/changed 
+            // in this case, one feature such as value of notifier PcmModelElementMeasurement could
+            // have been set/changed
             return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNotifier());
         default:
             LOGGER.warn("Unsupported PRM Notification: " + notification);

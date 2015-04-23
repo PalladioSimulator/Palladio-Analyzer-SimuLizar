@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.syncer;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -19,13 +19,13 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 /**
  * Class to sync resource environment model with SimuCom.
  * 
- * @author Joachim Meyer, Sebastian Lehrig
+ * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker
  */
 public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final MonitorRepository monitorRepository;
-    private final PRMModel prm;
+    private final RuntimeMeasurementModel prm;
 
     /**
      * Constructor
@@ -37,7 +37,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
-        this.prm = runtimeState.getModelAccess().getPRMModel();
+        ;
+        this.prm = runtimeState.getModelAccess().getRuntimeMeasurementModel();
     }
 
     /*

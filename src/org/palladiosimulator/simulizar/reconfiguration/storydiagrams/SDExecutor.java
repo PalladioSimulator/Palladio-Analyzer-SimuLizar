@@ -11,10 +11,10 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmPackage;
 import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
 import org.storydriven.storydiagrams.activities.ActivityEdge;
@@ -58,7 +58,8 @@ public class SDExecutor {
     /**
     * 
     */
-    private static final EClass PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS = PrmPackage.eINSTANCE.getPRMModel();
+    private static final EClass PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS = RuntimeMeasurementPackage.eINSTANCE
+            .getRuntimeMeasurementModel();
 
     /**
     * 
@@ -124,7 +125,7 @@ public class SDExecutor {
 
     private final Collection<Activity> storyDiagrams;
     private final PCMResourceSetPartition globalPcmResourceSetPartition;
-    private final PRMModel prmModel;
+    private final RuntimeMeasurementModel prmModel;
 
     /**
      * Constructor of the SD Executor.
@@ -136,7 +137,7 @@ public class SDExecutor {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
         this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-        this.prmModel = modelAccessFactory.getPRMModel();
+        this.prmModel = modelAccessFactory.getRuntimeMeasurementModel();
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
         } catch (final SDMException e) {
@@ -163,13 +164,11 @@ public class SDExecutor {
         final Collection<Activity> result = new LinkedList<Activity>();
 
         for (final Activity activity : ActivitiesFromModels) {
-            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] {
-                    USAGE_MODEL, SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL,
-                    PRM_MODEL, MONITORED_ELEMENT
-            }, new EClassifier[] {
-                    USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS, REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS,
-                    RESOURCE_ENVIRONMENT_MODEL_ECLASS, PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS
-            });
+            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] { USAGE_MODEL,
+                    SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL, PRM_MODEL,
+                    MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
+                    REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
+                    PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS });
 
             result.add(activityWithBindings);
         }

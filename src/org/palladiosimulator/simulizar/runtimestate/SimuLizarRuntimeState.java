@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
@@ -25,6 +26,7 @@ import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
  * This class provides access to all simulation and simulizar related objects. This includes access
@@ -68,13 +70,14 @@ public class SimuLizarRuntimeState {
         LOGGER.debug("Initialise simucom framework's workload drivers");
         this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
 
-        initializeReconfiguratorEngines(configuration);
+        Reconfigurator reconfigurator = initializeReconfiguratorEngines(configuration,
+                this.model.getSimulationControl());
         initializeModelSyncers();
         // ensure to initialize model syncers (in particular ResourceEnvironmentSyncer) prior to
         // interpreter listeners
         // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses calculators of
         // resources created in ResourceEnvironmentSyncer!
-        initializeInterpreterListeners();
+        initializeInterpreterListeners(reconfigurator);
         initializeUsageEvolver();
     }
 
@@ -127,27 +130,42 @@ public class SimuLizarRuntimeState {
         }
     }
 
-    private void initializeInterpreterListeners() {
+    private void initializeInterpreterListeners(Reconfigurator reconfigurator) {
         LOGGER.debug("Adding Debug and monitoring interpreter listeners");
         eventHelper.addObserver(new LogDebugListener());
-        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model));
+        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model, reconfigurator));
     }
 
-    private void initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration) {
+    private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
+            final ISimulationControl simulationControl) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
-        reconfigurator = new Reconfigurator(modelAccess, new IReconfigurator[] { new SDReconfigurator(modelAccess),
-                new QVTOReconfigurator(modelAccess, configuration),
+        reconfigurator = new Reconfigurator(modelAccess, simulationControl, new IReconfigurator[] {
+                new SDReconfigurator(modelAccess), new QVTOReconfigurator(modelAccess, configuration),
                 new HenshinReconfigurator(modelAccess, configuration) });
-        reconfigurator.addObserver(new IReconfigurationListener() {
 
+        reconfigurator.addObserver(new IReconfigurationListener() {
             @Override
             public void reconfigurationExecuted(Collection<Notification> modelChanges) {
-                LOGGER.info("------- System reconfigured at simulation time "
+                // nothing to do
+            }
+
+            @Override
+            public void beginReconfigurationEvent(ReconfigurationEvent event) {
+                LOGGER.info("------- System reconfiguration started at simulation time "
+                        + model.getSimulationControl().getCurrentSimulationTime() + "-------");
+            }
+
+            @Override
+            public void endReconfigurationEvent(ReconfigurationEvent event) {
+                LOGGER.info("------- System reconfiguration finished at simulation time "
                         + model.getSimulationControl().getCurrentSimulationTime() + "-------");
             }
         });
+
         reconfigurator.addObserver(modelAccess);
         reconfigurator.startListening();
+
+        return reconfigurator;
     }
 
     private void initializeModelSyncers() {

@@ -8,18 +8,18 @@ import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
-import org.palladiosimulator.simulizar.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.prm.PRMModel;
 
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 
 /**
  * This class is responsible for propagating {@link MeasurementSpecification}s related to power
  * consumption to the PRM.<br>
- * Being as this class implements the {@link IMeasurementSourceListener} interface, instances can
- * be attached to any object that produces {@link MeasuringValue}s which adhere to the
+ * Being as this class implements the {@link IMeasurementSourceListener} interface, instances can be
+ * attached to any object that produces {@link MeasuringValue}s which adhere to the
  * {@link MetricDescriptionConstants#POWER_CONSUMPTION_TUPLE} metric.
  * 
  * @author Florian Rosenthal
@@ -42,8 +42,8 @@ public class PowerConsumptionPrmRecorder extends PRMRecorder implements IMeasure
      * @throws IllegalArgumentException
      *             In case one of the arguments is {@code null}.
      */
-    public PowerConsumptionPrmRecorder(PRMModel prmAccess, MeasurementSpecification measurementSpecification,
-            MeasuringPoint measuringPoint) {
+    public PowerConsumptionPrmRecorder(RuntimeMeasurementModel prmAccess,
+            MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
         super(prmAccess, measurementSpecification, measuringPoint);
         if (prmAccess == null || measurementSpecification == null || measuringPoint == null) {
             throw new IllegalArgumentException("At least one argument is null.");

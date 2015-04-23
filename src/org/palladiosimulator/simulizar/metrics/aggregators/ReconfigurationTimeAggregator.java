@@ -38,11 +38,9 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
      */
     @Override
     public void newMeasurementAvailable(MeasuringValue measurement) {
-        final Measure<Double, Duration> currentSimulationTimeMeasure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        final double simulationTime = currentSimulationTimeMeasure.doubleValue(SI.SECOND);
-
-        this.reconfigurationTimes.add(simulationTime);
+        final Measure<Double, Duration> reconfigurationTimeMeasure = measurement
+                .getMeasureForMetric(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC);
+        this.reconfigurationTimes.add(reconfigurationTimeMeasure.doubleValue(SI.SECOND));
     }
 
     /*
@@ -52,8 +50,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
      */
     @Override
     public void preUnregister() {
-        // TODO Auto-generated method stub
-
+        // Nothing to do
     }
 
 }

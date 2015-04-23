@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.access;
 
 import java.util.Collection;
 
-import org.palladiosimulator.simulizar.monitorrepository.MonitorRepository;
-import org.palladiosimulator.simulizar.prm.PRMModel;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
 
@@ -32,7 +32,7 @@ public interface IModelAccess extends Cloneable {
 
     public MonitorRepository getMonitorRepositoryModel();
 
-    public PRMModel getPRMModel();
+    public RuntimeMeasurementModel getRuntimeMeasurementModel();
 
     public UsageEvolution getUsageEvolutionModel();
 

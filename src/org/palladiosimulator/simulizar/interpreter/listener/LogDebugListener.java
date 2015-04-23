@@ -139,13 +139,4 @@ public class LogDebugListener extends AbstractInterpreterListener {
         }
     }
 
-    @Override
-    public void reconfigurationInterpretation(ReconfigurationEvent event) {
-        final StringBuilder msgBuilder = new StringBuilder();
-        msgBuilder.append("Reconfiguration ");
-        msgBuilder.append(" at simulation time ");
-        msgBuilder.append(event.getPassageTime());
-        LOGGER.debug(msgBuilder.toString());
-    }
-
 }
