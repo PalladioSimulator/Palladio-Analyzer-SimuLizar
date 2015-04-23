@@ -1,10 +1,6 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
-package org.palladiosimulator.simulizar.prm.provider;
+package org.palladiosimulator.runtimemeasurement.provider;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,7 +19,7 @@ import org.eclipse.emf.edit.provider.IItemPropertySource;
 import org.eclipse.emf.edit.provider.INotifyChangedListener;
 import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
 import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.palladiosimulator.simulizar.prm.util.PrmAdapterFactory;
+import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementAdapterFactory;
 
 /**
  * This is the factory that is used to provide the interfaces needed to support Viewers. The
@@ -34,12 +30,12 @@ import org.palladiosimulator.simulizar.prm.util.PrmAdapterFactory;
  * 
  * @generated
  */
-public class PrmItemProviderAdapterFactory extends PrmAdapterFactory implements ComposeableAdapterFactory,
-IChangeNotifier, IDisposable {
+public class RuntimeMeasurementItemProviderAdapterFactory extends RuntimeMeasurementAdapterFactory implements
+ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -47,7 +43,7 @@ IChangeNotifier, IDisposable {
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -65,7 +61,7 @@ IChangeNotifier, IDisposable {
      * 
      * @generated
      */
-    public PrmItemProviderAdapterFactory() {
+    public RuntimeMeasurementItemProviderAdapterFactory() {
         this.supportedTypes.add(IEditingDomainItemProvider.class);
         this.supportedTypes.add(IStructuredItemContentProvider.class);
         this.supportedTypes.add(ITreeItemContentProvider.class);
@@ -75,50 +71,52 @@ IChangeNotifier, IDisposable {
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.prm.PRMModel} instances. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated
      */
-    protected PRMModelItemProvider prmModelItemProvider;
+    protected RuntimeMeasurementModelItemProvider runtimeMeasurementModelItemProvider;
 
     /**
-     * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.PRMModel}. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * This creates an adapter for a
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel}. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     * 
      * @generated
      */
     @Override
-    public Adapter createPRMModelAdapter() {
-        if (this.prmModelItemProvider == null) {
-            this.prmModelItemProvider = new PRMModelItemProvider(this);
+    public Adapter createRuntimeMeasurementModelAdapter() {
+        if (this.runtimeMeasurementModelItemProvider == null) {
+            this.runtimeMeasurementModelItemProvider = new RuntimeMeasurementModelItemProvider(this);
         }
 
-        return this.prmModelItemProvider;
+        return this.runtimeMeasurementModelItemProvider;
     }
 
     /**
      * This keeps track of the one adapter used for all
-     * {@link org.palladiosimulator.simulizar.prm.PRMMeasurement} instances. <!-- begin-user-doc -->
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement} instances. <!--
+     * begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @generated
+     */
+    protected RuntimeMeasurementItemProvider runtimeMeasurementItemProvider;
+
+    /**
+     * This creates an adapter for a
+     * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement}. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      * 
      * @generated
      */
-    protected PRMMeasurementItemProvider prmMeasurementItemProvider;
-
-    /**
-     * This creates an adapter for a {@link org.palladiosimulator.simulizar.prm.PRMMeasurement}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
-     * @generated
-     */
     @Override
-    public Adapter createPRMMeasurementAdapter() {
-        if (this.prmMeasurementItemProvider == null) {
-            this.prmMeasurementItemProvider = new PRMMeasurementItemProvider(this);
+    public Adapter createRuntimeMeasurementAdapter() {
+        if (this.runtimeMeasurementItemProvider == null) {
+            this.runtimeMeasurementItemProvider = new RuntimeMeasurementItemProvider(this);
         }
 
-        return this.prmMeasurementItemProvider;
+        return this.runtimeMeasurementItemProvider;
     }
 
     /**
@@ -156,7 +154,7 @@ IChangeNotifier, IDisposable {
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -204,7 +202,7 @@ IChangeNotifier, IDisposable {
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -224,11 +222,11 @@ IChangeNotifier, IDisposable {
      */
     @Override
     public void dispose() {
-        if (this.prmModelItemProvider != null) {
-            this.prmModelItemProvider.dispose();
+        if (this.runtimeMeasurementModelItemProvider != null) {
+            this.runtimeMeasurementModelItemProvider.dispose();
         }
-        if (this.prmMeasurementItemProvider != null) {
-            this.prmMeasurementItemProvider.dispose();
+        if (this.runtimeMeasurementItemProvider != null) {
+            this.runtimeMeasurementItemProvider.dispose();
         }
     }
 

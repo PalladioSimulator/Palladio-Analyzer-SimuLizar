@@ -1,10 +1,6 @@
 /**
- * <copyright>
- * </copyright>
- *
- * $Id$
  */
-package org.palladiosimulator.simulizar.prm.provider;
+package org.palladiosimulator.runtimemeasurement.provider;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,26 +11,27 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.palladiosimulator.simulizar.prm.PRMModel;
-import org.palladiosimulator.simulizar.prm.PrmFactory;
-import org.palladiosimulator.simulizar.prm.PrmPackage;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProvider;
 
 /**
- * This is the item provider adapter for a {@link org.palladiosimulator.simulizar.prm.PRMModel}
- * object. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * This is the item provider adapter for a
+ * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  * 
  * @generated
  */
-public class PRMModelItemProvider extends IdentifierItemProvider {
+public class RuntimeMeasurementModelItemProvider extends IdentifierItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      * 
      * @generated
      */
-    public PRMModelItemProvider(final AdapterFactory adapterFactory) {
+    public RuntimeMeasurementModelItemProvider(final AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -59,14 +56,14 @@ public class PRMModelItemProvider extends IdentifierItemProvider {
      * {@link org.eclipse.emf.edit.command.RemoveCommand} or
      * {@link org.eclipse.emf.edit.command.MoveCommand} in {@link #createCommand}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
     public Collection<? extends EStructuralFeature> getChildrenFeatures(final Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(PrmPackage.Literals.PRM_MODEL__MEASUREMENTS);
+            this.childrenFeatures.add(RuntimeMeasurementPackage.Literals.RUNTIME_MEASUREMENT_MODEL__MEASUREMENTS);
         }
         return this.childrenFeatures;
     }
@@ -85,26 +82,26 @@ public class PRMModelItemProvider extends IdentifierItemProvider {
     }
 
     /**
-     * This returns PRMModel.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns RuntimeMeasurementModel.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      * 
      * @generated
      */
     @Override
     public Object getImage(final Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/PRMModel"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RuntimeMeasurementModel"));
     }
 
     /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
-     *
+     * 
      * @generated
      */
     @Override
     public String getText(final Object object) {
-        final String label = ((PRMModel) object).getId();
-        return label == null || label.length() == 0 ? this.getString("_UI_PRMModel_type") : this
-                .getString("_UI_PRMModel_type") + " " + label;
+        final String label = ((RuntimeMeasurementModel) object).getId();
+        return label == null || label.length() == 0 ? this.getString("_UI_RuntimeMeasurementModel_type") : this
+                .getString("_UI_RuntimeMeasurementModel_type") + " " + label;
     }
 
     /**
@@ -118,8 +115,8 @@ public class PRMModelItemProvider extends IdentifierItemProvider {
     public void notifyChanged(final Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(PRMModel.class)) {
-        case PrmPackage.PRM_MODEL__MEASUREMENTS:
+        switch (notification.getFeatureID(RuntimeMeasurementModel.class)) {
+        case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT_MODEL__MEASUREMENTS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -136,8 +133,9 @@ public class PRMModelItemProvider extends IdentifierItemProvider {
     protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(PrmPackage.Literals.PRM_MODEL__MEASUREMENTS,
-                PrmFactory.eINSTANCE.createPRMMeasurement()));
+        newChildDescriptors.add(this.createChildParameter(
+                RuntimeMeasurementPackage.Literals.RUNTIME_MEASUREMENT_MODEL__MEASUREMENTS,
+                RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement()));
     }
 
     /**
@@ -148,7 +146,7 @@ public class PRMModelItemProvider extends IdentifierItemProvider {
      */
     @Override
     public ResourceLocator getResourceLocator() {
-        return PrmEditPlugin.INSTANCE;
+        return RuntimeMeasurementEditPlugin.INSTANCE;
     }
 
 }

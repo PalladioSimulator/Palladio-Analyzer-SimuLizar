@@ -1,16 +1,16 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
-Bundle-SymbolicName: org.palladiosimulator.simulizar.prm.edit;singleton:=true
+Bundle-SymbolicName: org.palladiosimulator.simulizar.runtimemeasurement.edit;singleton:=true
 Bundle-Version: 2.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: org.palladiosimulator.simulizar.prm.provider.PrmEditPlugin$Implementation
+Bundle-Activator: org.palladiosimulator.runtimemeasurement.provider.RuntimeMeasurementEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Export-Package: org.palladiosimulator.simulizar.prm.provider
+Export-Package: org.palladiosimulator.runtimemeasurement.provider
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
- org.palladiosimulator.simulizar.prm;bundle-version="2.0.0";visibility:=reexport,
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="2.0.0";visibility:=reexport,
  org.eclipse.emf.edit;bundle-version="2.10.0";visibility:=reexport,
  org.palladiosimulator.edp2;visibility:=reexport,
  org.palladiosimulator.edp2.edit;visibility:=reexport,
