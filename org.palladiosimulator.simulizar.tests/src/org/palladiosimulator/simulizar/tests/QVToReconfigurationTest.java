@@ -99,32 +99,32 @@ public class QVToReconfigurationTest {
                 addClonedServer(MEASUREMENT_BELOW_THRESHOLD), 0.0);
     }
 
-    private int addNewServer(double m) {
-        PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
+    private int addNewServer(final double m) {
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
                 TRANSFORMATION_RULES_ADD_SERVER_PATH);
 
-        Allocation allocation = pcmResourceSet.getAllocation();
+        final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfServer1Client = 0, numOfServer2Client = 0;
-        for (Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
+        for (final Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
             if (connector instanceof AssemblyConnector) {
 
-                AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
-                AssemblyContext assemblyContextProviding = assemblyConnector
+                final AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
+                final AssemblyContext assemblyContextProviding = assemblyConnector
                         .getProvidingAssemblyContext_AssemblyConnector();
-                AssemblyContext assemblyContextRequiring = assemblyConnector
+                final AssemblyContext assemblyContextRequiring = assemblyConnector
                         .getRequiringAssemblyContext_AssemblyConnector();
 
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                        .equals("client")) {
                     numOfServer1Client++;
                 }
 
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server2")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                        .equals("client")) {
                     numOfServer2Client++;
                 }
             }
@@ -132,25 +132,25 @@ public class QVToReconfigurationTest {
         return numOfServer1Client + numOfServer2Client;
     }
 
-    private int addClonedServer(double m) {
-        PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
+    private int addClonedServer(final double m) {
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
                 TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH);
 
-        Allocation allocation = pcmResourceSet.getAllocation();
+        final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfIServerProviders = 0;
-        for (Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
+        for (final Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
             if (connector instanceof AssemblyConnector) {
 
-                AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
-                AssemblyContext assemblyContextProviding = assemblyConnector
+                final AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
+                final AssemblyContext assemblyContextProviding = assemblyConnector
                         .getProvidingAssemblyContext_AssemblyConnector();
-                AssemblyContext assemblyContextRequiring = assemblyConnector
+                final AssemblyContext assemblyContextRequiring = assemblyConnector
                         .getRequiringAssemblyContext_AssemblyConnector();
 
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                        .equals("client")) {
                     numOfIServerProviders++;
                 }
             }
@@ -161,26 +161,26 @@ public class QVToReconfigurationTest {
     /**
      * Performs scaling up with the measurement passed as parameter. If the measurement is over the
      * threshold the scaling up should be performed, otherwise not.
-     * 
+     *
      * @param m
      *            measurement that defines whether the scaling up is performed or not.
      * @return processing resource of the server that is to be scaled up.
      */
-    private double scaleUp(double m) {
-        PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
+    private double scaleUp(final double m) {
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
                 TRANSFORMATION_RULES_SCALE_UP_PATH);
 
-        Allocation allocation = pcmResourceSet.getAllocation();
-        ResourceEnvironment resourceEnvironment = allocation.getTargetResourceEnvironment_Allocation();
-        Iterator<ResourceContainer> iteratorResourceContainer = resourceEnvironment
+        final Allocation allocation = pcmResourceSet.getAllocation();
+        final ResourceEnvironment resourceEnvironment = allocation.getTargetResourceEnvironment_Allocation();
+        final Iterator<ResourceContainer> iteratorResourceContainer = resourceEnvironment
                 .getResourceContainer_ResourceEnvironment().iterator();
         while (iteratorResourceContainer.hasNext()) {
-            ResourceContainer resourceContainer = iteratorResourceContainer.next();
+            final ResourceContainer resourceContainer = iteratorResourceContainer.next();
             if (resourceContainer.getEntityName().equals(SERVER_RESOURCE_CONTAINER_NAME)) {
-                Iterator<ProcessingResourceSpecification> iteratorProcessingResourceSpecification = resourceContainer
+                final Iterator<ProcessingResourceSpecification> iteratorProcessingResourceSpecification = resourceContainer
                         .getActiveResourceSpecifications_ResourceContainer().iterator();
                 while (iteratorProcessingResourceSpecification.hasNext()) {
-                    ProcessingResourceSpecification processingResourceSpecification = iteratorProcessingResourceSpecification
+                    final ProcessingResourceSpecification processingResourceSpecification = iteratorProcessingResourceSpecification
                             .next();
                     return Double.parseDouble(processingResourceSpecification
                             .getProcessingRate_ProcessingResourceSpecification().getSpecification());
@@ -194,56 +194,56 @@ public class QVToReconfigurationTest {
     /**
      * Performs outsourcing with the measurement passed as parameter. If the measurement is over the
      * threshold the outsourcing should be performed, otherwise not.
-     * 
+     *
      * @param m
      *            measurement that defines whether the outsourcing is performed or not.
      * @return branch probability that is to be increased.
      */
-    private double outsource(double m) {
-        PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
+    private double outsource(final double m) {
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
                 TRANSFORMATION_RULES_OUTSOURCE_PATH);
-        TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
+        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
         /*
          * Iterate over all the elements of the allocation diagram.
          */
         while (pcmModelIterator.hasNext()) {
-            EObject root = pcmModelIterator.next();
+            final EObject root = pcmModelIterator.next();
             /*
              * We are interested in AllocationContexts only because we can get to the server which
              * contains the SEFF that is of our interest.
              */
             if (root instanceof AllocationContext) {
-                AllocationContext serverAllocationContext = (AllocationContext) root;
-                AssemblyContext serverAssemblyContext = serverAllocationContext.getAssemblyContext_AllocationContext();
+                final AllocationContext serverAllocationContext = (AllocationContext) root;
+                final AssemblyContext serverAssemblyContext = serverAllocationContext.getAssemblyContext_AllocationContext();
                 /*
                  * The server that contains our SEFF is of type BasicComponent.
                  */
                 if (serverAssemblyContext.getEncapsulatedComponent__AssemblyContext() instanceof BasicComponent) {
-                    BasicComponent serverBasicComponent = (BasicComponent) serverAssemblyContext
+                    final BasicComponent serverBasicComponent = (BasicComponent) serverAssemblyContext
                             .getEncapsulatedComponent__AssemblyContext();
-                    EList<ServiceEffectSpecification> serverSeffs = serverBasicComponent
+                    final EList<ServiceEffectSpecification> serverSeffs = serverBasicComponent
                             .getServiceEffectSpecifications__BasicComponent();
                     /*
                      * We iterate all the SEFFs within the BasicComponent.
                      */
-                    for (ServiceEffectSpecification seff : serverSeffs) {
+                    for (final ServiceEffectSpecification seff : serverSeffs) {
                         /*
                          * ResourceDemandingSEFF in particular are of our interest.
                          */
                         if (seff instanceof ResourceDemandingSEFF) {
-                            TreeIterator<EObject> seffIterator = seff.eAllContents();
+                            final TreeIterator<EObject> seffIterator = seff.eAllContents();
                             /*
                              * We now iterate every ResourceDemandingSEFF in attempt to find
                              * ProbabilisticBranchTransition.
                              */
                             while (seffIterator.hasNext()) {
-                                EObject seffObject = seffIterator.next();
+                                final EObject seffObject = seffIterator.next();
                                 /*
                                  * Once we find our ProbabilisticBranchTransitions we compare their
                                  * values with the expected ones.
                                  */
                                 if (seffObject instanceof ProbabilisticBranchTransition) {
-                                    ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) seffObject;
+                                    final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) seffObject;
                                     if (branchTransition.getEntityName().equals(BRANCH_2_ENTITY_NAME)) {
                                         return branchTransition.getBranchProbability();
                                     }
@@ -263,32 +263,31 @@ public class QVToReconfigurationTest {
      * "testmodel", performs the QVTo rules that are placed in the folder "testmodel/rules" and
      * returns the resulting PCM model. The PCM model could be changed or not, depending on the
      * parameter "m".
-     * 
+     *
      * @param m
      *            measurement.
      * @return The PCM model after the rules from "testmodel/rules" have been applied.
      */
-    private PCMResourceSetPartition readPcmModelAndApplyTransformationRules(double m,
-            String reconfigurationRulesFolderPath) {
-        MetricDescriptionConstants.init();
+    private PCMResourceSetPartition readPcmModelAndApplyTransformationRules(final double m,
+            final String reconfigurationRulesFolderPath) {
         /*
          * Create a measurement.
          */
-        MeasurementSpecification measurementSpecification = MonitorrepositoryFactory.eINSTANCE
+        final MeasurementSpecification measurementSpecification = MonitorrepositoryFactory.eINSTANCE
                 .createMeasurementSpecification();
         measurementSpecification.setId("_sEx-cMLAEeSZr8oGpigbHA");
         measurementSpecification.setMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
         measurementSpecification.setStatisticalCharacterization(StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
         measurementSpecification.setTemporalRestriction(null);
 
-        PRMMeasurement measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
+        final PRMMeasurement measurement = PrmFactory.eINSTANCE.createPRMMeasurement();
         measurement.setMeasuringValue(m);
         measurement.setMeasurementSpecification(measurementSpecification);
 
-        Resource.Factory repositoryFactory = new RepositoryResourceFactoryImpl();
-        Resource.Factory resourceEnvironmentFactory = new ResourceenvironmentResourceFactoryImpl();
-        Resource.Factory systemFactory = new SystemResourceFactoryImpl();
-        Resource.Factory allocationFactory = new AllocationResourceFactoryImpl();
+        final Resource.Factory repositoryFactory = new RepositoryResourceFactoryImpl();
+        final Resource.Factory resourceEnvironmentFactory = new ResourceenvironmentResourceFactoryImpl();
+        final Resource.Factory systemFactory = new SystemResourceFactoryImpl();
+        final Resource.Factory allocationFactory = new AllocationResourceFactoryImpl();
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION, repositoryFactory);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
                 resourceEnvironmentFactory);
@@ -299,28 +298,28 @@ public class QVToReconfigurationTest {
          * This means that the workspace for running the test should be set to the project
          * directory.
          */
-        URI projectAbsoluteUri = URI.createFileURI(EcorePlugin.getWorkspaceRoot().getLocation().toString() + "/");
+        final URI projectAbsoluteUri = URI.createFileURI(EcorePlugin.getWorkspaceRoot().getLocation().toString() + "/");
         EcorePlugin.getPlatformResourceMap().put(PROJECT_NAME, projectAbsoluteUri);
 
-        URI repositoryURI = EcorePlugin.resolvePlatformResourcePath(REPOSITORY_PATH);
-        URI resourceEnvironmentURI = EcorePlugin.resolvePlatformResourcePath(RESOURCE_ENVIRONMENT_PATH);
-        URI systemURI = EcorePlugin.resolvePlatformResourcePath(SYSTEM_PATH);
-        URI allocationURI = EcorePlugin.resolvePlatformResourcePath(ALLOCATION_PATH);
+        final URI repositoryURI = EcorePlugin.resolvePlatformResourcePath(REPOSITORY_PATH);
+        final URI resourceEnvironmentURI = EcorePlugin.resolvePlatformResourcePath(RESOURCE_ENVIRONMENT_PATH);
+        final URI systemURI = EcorePlugin.resolvePlatformResourcePath(SYSTEM_PATH);
+        final URI allocationURI = EcorePlugin.resolvePlatformResourcePath(ALLOCATION_PATH);
 
         /*
          * Read in the PCM model.
          */
-        PCMResourceSetPartition pcmResourceSet = new PCMResourceSetPartition();
+        final PCMResourceSetPartition pcmResourceSet = new PCMResourceSetPartition();
         pcmResourceSet.loadModel(repositoryURI);
         pcmResourceSet.loadModel(resourceEnvironmentURI);
         pcmResourceSet.loadModel(systemURI);
         pcmResourceSet.loadModel(allocationURI);
-        TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
+        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
         EObject monitoredElement = null;
         while (pcmModelIterator.hasNext()) {
-            EObject element = pcmModelIterator.next();
-            EAttribute id = element.eClass().getEIDAttribute();
-            Object idAttribute = element.eGet(id);
+            final EObject element = pcmModelIterator.next();
+            final EAttribute id = element.eClass().getEIDAttribute();
+            final Object idAttribute = element.eGet(id);
             if (idAttribute.toString().equals("_1P7G0LwGEeSxGbiYbg6Waw")) {
                 monitoredElement = element;
             }
@@ -329,24 +328,24 @@ public class QVToReconfigurationTest {
         /*
          * Put the PCM model into the MDSD blackboard.
          */
-        MDSDBlackboard blackboard = new MDSDBlackboard();
+        final MDSDBlackboard blackboard = new MDSDBlackboard();
         blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
-        IModelAccess modelAccess = new ModelAccess(blackboard);
+        final IModelAccess modelAccess = new ModelAccess(blackboard);
         modelAccess.getPRMModel().getMeasurements().add(measurement);
 
         /*
          * Create the configuration for the QVTo executor.
          */
-        Map<String, Object> configuration = new HashMap<String, Object>();
+        final Map<String, Object> configuration = new HashMap<String, Object>();
         configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, allocationURI.path());
         configuration.put(PMS_CONFIGURATION_KEY, EcorePlugin.resolvePlatformResourcePath(PMS_MODEL_PATH).path());
         configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY,
                 EcorePlugin.resolvePlatformResourcePath(reconfigurationRulesFolderPath).path());
 
-        SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
+        final SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
         swfc.setMonitorRepositoryFile(configuration.get(PMS_CONFIGURATION_KEY).toString());
         swfc.setReconfigurationRulesFolder(configuration.get(RECONFIGURATION_RULES_CONFIGURATION_KEY).toString());
-        QVTOExecutor qvtoExecutor = new QVTOExecutor(modelAccess, swfc);
+        final QVTOExecutor qvtoExecutor = new QVTOExecutor(modelAccess, swfc);
         qvtoExecutor.executeRules(monitoredElement);
         return pcmResourceSet;
     }
