@@ -277,27 +277,6 @@ litigation.
    </requires>
 
    <plugin
-         id="org.palladiosimulator.simulizar.monitorrepository"
-         download-size="0"
-         install-size="0"
-         version="2.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.simulizar.monitorrepository.edit"
-         download-size="0"
-         install-size="0"
-         version="2.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.simulizar.monitorrepository.editor"
-         download-size="0"
-         install-size="0"
-         version="2.0.0.qualifier"
-         unpack="false"/>
-
-   <plugin
          id="org.palladiosimulator.simulizar.prm"
          download-size="0"
          install-size="0"
