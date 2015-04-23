@@ -17,7 +17,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SchedulingStrategy;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 
 /**
- * Class to sync resource environment model with SimuCom. UGLY DRAFT!
+ * Class to sync resource environment model with SimuCom.
  * 
  * @author Joachim Meyer, Sebastian Lehrig
  */
@@ -36,7 +36,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
         super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
-        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();;
+        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.prm = runtimeState.getModelAccess().getPRMModel();
     }
 
@@ -167,7 +167,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         return scheduledResource != null;
     }
 
-     /**
+    /**
      * 
      * @param resourceContainer
      * @param simulatedResourceContainer
@@ -177,9 +177,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private void createSimulatedActiveResource(final ResourceContainer resourceContainer,
             final AbstractSimulatedResourceContainer simulatedResourceContainer,
             final ProcessingResourceSpecification processingResource, String schedulingStrategy) {
-        ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(
-                processingResource, new String[] {}, resourceContainer.getId(),
-                schedulingStrategy);
+        ((SimulatedResourceContainer) simulatedResourceContainer).addActiveResource(processingResource,
+                new String[] {}, resourceContainer.getId(), schedulingStrategy);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: "
                     + processingResource.getActiveResourceType_ActiveResourceSpecification().getId()
