@@ -35,7 +35,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ComposedAdapterFactory parentAdapterFactory;
@@ -43,7 +43,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This is used to implement {@link org.eclipse.emf.edit.provider.IChangeNotifier}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected IChangeNotifier changeNotifier = new ChangeNotifier();
@@ -73,7 +73,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected RuntimeMeasurementModelItemProvider runtimeMeasurementModelItemProvider;
@@ -98,7 +98,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
      * This keeps track of the one adapter used for all
      * {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement} instances. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected RuntimeMeasurementItemProvider runtimeMeasurementItemProvider;
@@ -154,7 +154,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This implementation substitutes the factory itself as the key for the adapter. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -202,7 +202,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This delegates to {@link #changeNotifier} and to {@link #parentAdapterFactory}. <!--
      * begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
