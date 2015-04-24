@@ -36,7 +36,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.scaledl.usageevolution;bundle-version="0.1.0",
  org.palladiosimulator.edp2,
  org.eclipse.emf.henshin.interpreter,
- org.palladiosimulator.simulizar.monitorrepository
+ org.palladiosimulator.monitorrepository
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar,
