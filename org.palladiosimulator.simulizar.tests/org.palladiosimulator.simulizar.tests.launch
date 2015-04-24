@@ -4,6 +4,7 @@
 <booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="true"/>
 <booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bad_container_name" value="/org.palladiosimulator.simuliza.tests"/>
 <stringAttribute key="bootstrap" value=""/>
 <stringAttribute key="checked" value="[NONE]"/>
 <booleanAttribute key="clearConfig" value="true"/>
@@ -29,11 +30,11 @@
 <stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="org.palladiosimulator.simulizar.tests"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Dosgi.requiredJavaVersion=1.6 -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts -XX:MaxPermSize=256m -Xms40m -Xmx1024m -Xdock:icon=../Resources/Eclipse.icns -XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.eclipse.platform.ide"/>
 <booleanAttribute key="run_in_ui_thread" value="true"/>
 <booleanAttribute key="show_selected_only" value="false"/>
+<stringAttribute key="templateConfig" value="${target_home}/configuration/config.ini"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useCustomFeatures" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>
