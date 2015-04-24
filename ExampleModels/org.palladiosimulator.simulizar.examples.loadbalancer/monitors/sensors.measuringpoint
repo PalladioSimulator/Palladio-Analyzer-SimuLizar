@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_3a_GIMltEeSsG6YHnSxiuA">
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_3a_GIMltEeSsG6YHnSxiuA">
   <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint">
     <usageScenario href="../overload.usagemodel#_YtqF4AEqEeS7FKokKTKFow"/>
   </measuringPoints>
   <measuringPoints xsi:type="pcmmeasuringpoint:ResourceEnvironmentMeasuringPoint">
     <resourceEnvironment href="../iaas.resourceenvironment#/"/>
   </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint">
+    <externalCall href="../loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint">
+    <externalCall href="../loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server1" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
+  <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server2" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
+  <measuringPoints xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" measuringPoint="Reconfiguration"/>
 </org.palladiosimulator.edp2.models:MeasuringPointRepository>
