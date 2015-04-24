@@ -24,7 +24,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "org.palladiosimulator.simulizar.monitorrepository";
+    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "org.palladiosimulator.monitorrepository";
 
     private MDSDBlackboard blackboard;
 
