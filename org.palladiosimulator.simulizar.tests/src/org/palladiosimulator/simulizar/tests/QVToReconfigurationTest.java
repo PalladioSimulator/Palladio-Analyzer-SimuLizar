@@ -78,6 +78,10 @@ public class QVToReconfigurationTest {
 
     @Test
     public void test() {
+        // reconfigurationTests();
+    }
+
+    private void reconfigurationTests() {
         assertEquals("The branch probability was not changed as expected!", BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING,
                 outsource(MEASUREMENT_OVER_THRESHOLD), 0.0);
         assertEquals("The branch probability has not remained as it was expected!",
