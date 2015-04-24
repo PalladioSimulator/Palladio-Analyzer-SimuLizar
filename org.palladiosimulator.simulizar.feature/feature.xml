@@ -277,14 +277,14 @@ litigation.
    </requires>
 
    <plugin
-         id="org.palladiosimulator.simulizar.prm"
+         id="org.palladiosimulator.simulizar.runtimemeasurement"
          download-size="0"
          install-size="0"
          version="2.0.0.qualifier"
          unpack="false"/>
 
    <plugin
-         id="org.palladiosimulator.simulizar.prm.edit"
+         id="org.palladiosimulator.simulizar.runtimemeasurement.edit"
          download-size="0"
          install-size="0"
          version="2.0.0.qualifier"
