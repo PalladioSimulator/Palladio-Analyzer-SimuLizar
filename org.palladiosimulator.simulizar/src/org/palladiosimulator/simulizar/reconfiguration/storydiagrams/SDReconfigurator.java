@@ -48,7 +48,7 @@ public class SDReconfigurator implements IReconfigurator {
     @Override
     public boolean checkAndExecute(final EObject monitoredElement) {
         if (!this.sdAccess.isEmpty()) {
-            LOGGER.debug("Checking reconfiguration rules due to PRM change");
+            LOGGER.debug("Checking reconfiguration rules due to RuntimeMeasurement change");
             final boolean result = this.sdExecutor.executeActivities(monitoredElement);
             LOGGER.debug(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");

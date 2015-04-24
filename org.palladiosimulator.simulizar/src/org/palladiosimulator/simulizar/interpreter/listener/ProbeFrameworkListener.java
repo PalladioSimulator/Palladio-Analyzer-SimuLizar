@@ -397,7 +397,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
                 // recorded (e.g., by an EDP2 recorder)
                 triggerMeasurementsRecording(powerConsumptionCalculator, mp, POWER_CONSUMPTION_TUPLE_METRIC_DESC);
                 triggerMeasurementsRecording(energyConsumptionCalculator, mp, ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
-                // write measurements to PRM (both power and energy measurements
+                // write measurements to RuntimeMeasurement (both power and energy measurements
                 // are forwarded)
                 powerConsumptionCalculator.addObserver(new PowerConsumptionPrmRecorder(this.runtimeMeasurementsModel,
                         powerSpec, mp));
