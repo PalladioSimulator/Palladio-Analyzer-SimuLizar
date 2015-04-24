@@ -11,7 +11,8 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Model</b></em>'. <!--
  * end-user-doc -->
  *
- * <!-- begin-model-doc --> Base class representing the prm model. <!-- end-model-doc -->
+ * <!-- begin-model-doc --> Base class representing the RuntimeMeasurement model. <!-- end-model-doc
+ * -->
  *
  * <p>
  * The following features are supported:
