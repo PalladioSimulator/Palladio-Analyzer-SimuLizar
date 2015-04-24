@@ -11,10 +11,10 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Interface which allows access to all models at simulation time. Two classes of models exist:
- * global models like the central PCM model, the MonitorRepository model, the PRM model, or all
- * reconfiguration rules provided in various models. The second class of models are read-only copies
- * of a subset of the global models provided to each simulated process/thread when it starts to
- * execute.
+ * global models like the central PCM model, the MonitorRepository model, the RuntimeMeasurement
+ * model, or all reconfiguration rules provided in various models. The second class of models are
+ * read-only copies of a subset of the global models provided to each simulated process/thread when
+ * it starts to execute.
  * 
  * @author Steffen Becker, Joachim Meyer
  * 

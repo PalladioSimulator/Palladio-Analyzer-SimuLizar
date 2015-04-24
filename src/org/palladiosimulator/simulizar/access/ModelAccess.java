@@ -32,8 +32,8 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
- * Helper to access the PCM model (global and local), the prm model, the Monitor Repository model,
- * the usage evolution model and all SD models.
+ * Helper to access the PCM model (global and local), the RuntimeMeasurement model, the Monitor
+ * Repository model, the usage evolution model and all SD models.
  * 
  * @author Joachim Meyer, Steffen Becker, Erlend Stav
  */
@@ -115,7 +115,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     /**
      * 
-     * @return the global prm model.
+     * @return the global RuntimeMeasurement model.
      */
     @Override
     public RuntimeMeasurementModel getRuntimeMeasurementModel() {

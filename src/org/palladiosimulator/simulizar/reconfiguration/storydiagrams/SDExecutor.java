@@ -90,7 +90,7 @@ public class SDExecutor {
     /**
     * 
     */
-    private static final String PRM_MODEL = "prmModel";
+    private static final String PRM_MODEL = "runtimeMeasurementModel";
 
     /**
     * 
@@ -125,19 +125,20 @@ public class SDExecutor {
 
     private final Collection<Activity> storyDiagrams;
     private final PCMResourceSetPartition globalPcmResourceSetPartition;
-    private final RuntimeMeasurementModel prmModel;
+    private final RuntimeMeasurementModel runtimeMeasurementModel;
 
     /**
      * Constructor of the SD Executor.
      * 
      * @param modelAccessFactory
-     *            the model access factory used to access the SD, PCM@runtime and PRM models.
+     *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
+     *            models.
      */
     public SDExecutor(final IModelAccess modelAccessFactory) {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
         this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-        this.prmModel = modelAccessFactory.getRuntimeMeasurementModel();
+        this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
         } catch (final SDMException e) {
@@ -196,7 +197,7 @@ public class SDExecutor {
                 RESOURCE_ENVIRONMENT_MODEL, RESOURCE_ENVIRONMENT_MODEL_ECLASS, this.globalPcmResourceSetPartition
                         .getAllocation().getTargetResourceEnvironment_Allocation());
         final Variable<EClassifier> prmModelParameter = new Variable<EClassifier>(PRM_MODEL,
-                PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.prmModel);
+                PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, this.runtimeMeasurementModel);
         parameters.add(usageModelParameter);
         parameters.add(systemModelParameter);
         // parameters.add(repositoryModelParameter);

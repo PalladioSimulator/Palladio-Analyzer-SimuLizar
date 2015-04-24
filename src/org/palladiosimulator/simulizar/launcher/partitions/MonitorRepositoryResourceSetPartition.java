@@ -11,7 +11,7 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Special ResourceSetPartition for the MonitorRepository, with the functionality to resolve cross
- * references from the PRM to PCM.
+ * references from the RuntimeMeasurement to PCM.
  * 
  * @author Joachim Meyer
  * 
@@ -25,7 +25,8 @@ public class MonitorRepositoryResourceSetPartition extends ResourceSetPartition 
      * Constructor
      * 
      * @param pcmResourceSetPartition
-     *            the pcm resource set partition to resolve cross references from prm to pcm.
+     *            the pcm resource set partition to resolve cross references from RuntimeMeasurement
+     *            to pcm.
      */
     public MonitorRepositoryResourceSetPartition(final PCMResourceSetPartition pcmResourceSetPartition) {
         super();

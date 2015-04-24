@@ -37,7 +37,7 @@ public class QVTOExecutor {
      * Constructor of the QVTOExecutor
      * 
      * @param modelAccess
-     *            ModelAccessFactory giving access to PCM and PRM models
+     *            ModelAccessFactory giving access to PCM and RuntimeMeasurment models
      * @param configuration
      *            Simulation configuration
      */

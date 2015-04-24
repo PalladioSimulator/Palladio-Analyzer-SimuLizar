@@ -44,10 +44,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     private final Collection<Notification> modelChanges = new LinkedList<Notification>();
 
     /**
-     * Change listener, which will convert selected changes in the PRM instance into reconfiguration
-     * checks.
+     * Change listener, which will convert selected changes in the RuntimeMeasurement instance into
+     * reconfiguration checks.
      */
-    private final Adapter prmListener = new EContentAdapter() {
+    private final Adapter runtimeMeasurementListener = new EContentAdapter() {
 
         @Override
         public void notifyChanged(final Notification notification) {
@@ -86,9 +86,9 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     private final PCMResourceSetPartition pcmResourceSetPartition;
 
     /**
-     * Access interface to the PRM runtime model.
+     * Access interface to the RuntimeMeasurement model.
      */
-    private final RuntimeMeasurementModel prmModel;
+    private final RuntimeMeasurementModel runtimeMeasurementModel;
 
     /**
      * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
@@ -110,7 +110,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
             final IReconfigurator[] reconfigurators) {
         super();
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-        this.prmModel = modelAccessFactory.getRuntimeMeasurementModel();
+        this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
         this.simulationController = simulationcontrol;
     }
@@ -120,23 +120,23 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      */
     public void startListening() {
         pcmResourceSetPartition.getResourceSet().eAdapters().add(this.globalPCMChangeListener);
-        this.prmModel.eAdapters().add(this.prmListener);
+        this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
     }
 
     /**
      * Detach all model listeners.
      */
     public void stopListening() {
-        this.prmModel.eAdapters().remove(this.prmListener);
+        this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
         pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.globalPCMChangeListener);
     }
 
     /**
-     * Method which is called on a change in the PRM. All reconfigurators are informed and can check
-     * for potential reconfigurations.
+     * Method which is called on a change in the RuntimeMeasurement. All reconfigurators are
+     * informed and can check for potential reconfigurations.
      * 
      * @param notification
-     *            The notification event, which describes a change in the PRM.
+     *            The notification event, which describes a change in the RuntimeMeasurement model.
      */
     protected void checkAndExecuteReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
@@ -167,8 +167,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     }
 
     /**
-     * Visitor singleton which is used to query the monitored PCM object from a PRM notification
-     * (which is a change in a {@link PRMMeasurement}).
+     * Visitor singleton which is used to query the monitored PCM object from a RuntimeMeasurement
+     * notification (which is a change in a {@link RuntimeMeasurement}).
      */
     private static final RuntimeMeasurementSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new RuntimeMeasurementSwitch<MeasuringPoint>() {
 
@@ -192,10 +192,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     }
 
     /**
-     * Retrieve the monitored PCM element from the PRM change event.
+     * Retrieve the monitored PCM element from the RuntimeMeasurement change event.
      * 
      * @param notification
-     *            The PRM change event.
+     *            The RuntimeMeasurment change event.
      * @return The PCM element whose monitoring triggered the change event.
      */
     protected EObject getMonitoredElement(final Notification notification) {
@@ -211,7 +211,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
             // have been set/changed
             return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNotifier());
         default:
-            LOGGER.warn("Unsupported PRM Notification: " + notification);
+            LOGGER.warn("Unsupported RuntimeMeasurement Notification: " + notification);
             return null;
         }
     }
