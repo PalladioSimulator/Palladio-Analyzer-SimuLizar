@@ -34,8 +34,9 @@
       <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
       <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
       <discovery label="xText" url="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases"/>
-   	  <discovery label="ExperimentAnalysis" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
-   	  <discovery label="PowerConsumptionAnalyzer" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/power/nightly/"/>
+      <discovery label="ExperimentAnalysis" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
+      <discovery label="PowerConsumptionAnalyzer" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/power/nightly/"/>
+      <discovery label="Henshin" url="http://download.eclipse.org/modeling/emft/henshin/updates/release/"/>
    </url>
 
    <includes
