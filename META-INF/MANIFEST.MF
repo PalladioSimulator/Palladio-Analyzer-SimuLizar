@@ -27,16 +27,16 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.palladiosimulator.edp2.util;bundle-version="1.0.0",
  org.palladiosimulator.recorderframework;bundle-version="2.0.1",
  org.palladiosimulator.pcm.edp2.measuringpoint;bundle-version="1.0.0",
- org.palladiosimulator.experimentanalysis;bundle-version="1.0.0",
+ org.palladiosimulator.experimentanalysis;bundle-version="1.0.0";visibility:=reexport,
  org.palladiosimulator.edp2.datastream,
- de.fzi.power,
- de.fzi.power.interpreter,
- de.fzi.power.interpreter.calculators.energy,
+ de.fzi.power;bundle-version="1.0.0";visibility:=reexport,
+ de.fzi.power.interpreter;bundle-version="1.0.0";visibility:=reexport,
+ de.fzi.power.interpreter.calculators.energy;bundle-version="1.0.0";visibility:=reexport,
  org.apache.commons.collections15;bundle-version="1.0.0",
  org.scaledl.usageevolution;bundle-version="0.1.0",
  org.palladiosimulator.edp2,
  org.eclipse.emf.henshin.interpreter,
- org.palladiosimulator.monitorrepository
+ org.palladiosimulator.monitorrepository;bundle-version="2.0.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.palladiosimulator.simulizar,
