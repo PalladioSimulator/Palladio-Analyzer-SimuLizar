@@ -36,8 +36,8 @@
       <variable xsi:type="sdp:ObjectVariable" name="monitoredElement" bindingState="BOUND">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/Entity"/>
       </variable>
-      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND">
-        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel"/>
+      <variable xsi:type="sdp:ObjectVariable" name="RuntimeMeasurementModel" bindingState="BOUND">
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
       </variable>
       <variable xsi:type="sdp:ObjectVariable" name="systemModel" bindingState="BOUND">
         <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//system/System"/>
@@ -46,19 +46,19 @@
   </ownedActivityNode>
   <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="find and check measurement for monitored element" outgoing="//@ownedActivityEdge.2 //@ownedActivityEdge.5" incoming="//@ownedActivityEdge.1">
     <ownedRule>
-      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
-        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel"/>
+      <variable xsi:type="sdp:ObjectVariable" name="RuntimeMeasurementModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
       </variable>
       <variable xsi:type="sdp:ObjectVariable" name="elementMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1 //@ownedActivityNode.3/@ownedRule/@linkVariable.2">
         <constraint>
           <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="LESS_OR_EQUAL">
             <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
-              <attribute href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/measurementValue"/>
+              <attribute href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//PCMModelElementMeasurement/measurementValue"/>
             </leftExpression>
             <rightExpression xsi:type="sdcec:LiteralExpression" value="1.0"/>
           </constraintExpression>
         </constraint>
-        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement"/>
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//PCMModelElementMeasurement"/>
       </variable>
       <variable xsi:type="sdp:ObjectVariable" name="element" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1">
         <constraint>
@@ -93,13 +93,13 @@
         <classifier href="http://palladiosimulator.org/SimuLizar/MonitorRepository/1.0#//MeasurementSpecification"/>
       </variable>
       <linkVariable xsi:type="sdp:LinkVariable" name="a" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
-        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel/pcmModelElementMeasurements"/>
+        <targetEnd href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel/pcmModelElementMeasurements"/>
       </linkVariable>
       <linkVariable xsi:type="sdp:LinkVariable" name="b" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.2">
-        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/pcmModelElement"/>
+        <targetEnd href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//PCMModelElementMeasurement/pcmModelElement"/>
       </linkVariable>
       <linkVariable xsi:type="sdp:LinkVariable" name="c" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.3">
-        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/measurementSpecification"/>
+        <targetEnd href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//PCMModelElementMeasurement/measurementSpecification"/>
       </linkVariable>
     </ownedRule>
   </ownedActivityNode>
