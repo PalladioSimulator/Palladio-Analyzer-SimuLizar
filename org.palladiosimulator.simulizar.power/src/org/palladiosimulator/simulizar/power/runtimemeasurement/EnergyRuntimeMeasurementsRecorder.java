@@ -13,8 +13,6 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 
-import de.fzi.power.infrastructure.PowerProvidingEntity;
-
 /**
  * This class is responsible for propagating {@link MeasurementSpecification}s related to energy
  * consumption to the RuntimeMeasurementModel (formerly known as PRM).<br>
@@ -36,8 +34,8 @@ public class EnergyRuntimeMeasurementsRecorder extends PRMRecorder implements IM
      *            forwarded to.
      * @param measurementSpecification
      *            The {@link MeasurementSpecification} as defined in a {@link MonitorRepository}.
-     * @param monitoredElement
-     *            The {@link PowerProvidingEntity} that is monitored by the given
+     * @param measuringPoint
+     *            The {@link MeasuringPoint} that is associated with the given
      *            {@code measurementSpecification}.
      * @throws IllegalArgumentException
      *             In case one of the arguments is {@code null}.
@@ -59,7 +57,7 @@ public class EnergyRuntimeMeasurementsRecorder extends PRMRecorder implements IM
     /**
      * {@inheritDoc}<br>
      * When this method is called by the observed subject, the given {@link MeasuringValue} is
-     * propagated to the associated {@link PRMModel} instance.
+     * propagated to the associated {@link RuntimeMeasurementModel} instance.
      * 
      * @throws IllegalArgumentException
      *             In case the passed {@link MeasuringValue} is not compatible with the
