@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.completions.DelegatingExternalCallAction;
 import de.uka.ipd.sdq.pcm.allocation.Allocation;
 import de.uka.ipd.sdq.pcm.allocation.AllocationContext;
 import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
@@ -180,13 +181,22 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
                 externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
-        // create new stack frame for input parameter
-        SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
-                externalCall.getInputVariableUsages__CallAction());
+        if (externalCall instanceof DelegatingExternalCallAction) {
+            final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
+            SimulatedStackframe<Object> callFrame = SimulatedStackHelper.createAndPushNewStackFrame(
+                    this.context.getStack(),
+                    externalCall.getInputVariableUsages__CallAction(), currentFrame);
+            callFrame.addVariables(resultStackFrame);
+        } else {
+            // create new stack frame for input parameter
+            SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
+                    externalCall.getInputVariableUsages__CallAction());
+        }
         final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
         final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
         this.context.getAssemblyContextStack().push(myContext);
         this.context.getStack().removeStackFrame();
+
         SimulatedStackHelper.addParameterToStackFrame(outputFrame,
                 externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
 
