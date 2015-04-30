@@ -7,7 +7,6 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
 
-import de.fzi.power.infrastructure.PowerInfrastructureRepository;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
@@ -35,7 +34,7 @@ public interface IModelAccess extends Cloneable {
 
     public RuntimeMeasurementModel getRuntimeMeasurementModel();
 
-    public PowerInfrastructureRepository getPowerInfrastructureRepository();
+    // public PowerInfrastructureRepository getPowerInfrastructureRepository();
 
     public UsageEvolution getUsageEvolutionModel();
 
