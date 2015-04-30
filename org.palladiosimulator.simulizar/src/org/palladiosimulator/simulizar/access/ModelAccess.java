@@ -16,18 +16,15 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.jobs.LoadPowerInfrastructureRepositoryIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
-import org.palladiosimulator.simulizar.launcher.partitions.PowerInfrastructureRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.storydriven.storydiagrams.activities.Activity;
 
-import de.fzi.power.infrastructure.PowerInfrastructureRepository;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
@@ -51,7 +48,9 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final SDMResourceSetPartition sdmPartition;
     private final UEResourceSetPartition uePartititon;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
-    private final PowerInfrastructureRepositoryResourceSetPartition powerInfrastructureRepositoryPartition;
+
+    // private final PowerInfrastructureRepositoryResourceSetPartition
+    // powerInfrastructureRepositoryPartition;
 
     /**
      * Constructor
@@ -66,8 +65,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
         this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
                 LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
-        this.powerInfrastructureRepositoryPartition = getResourceSetPartition(blackboard,
-                LoadPowerInfrastructureRepositoryIntoBlackboardJob.POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID);
+        // this.powerInfrastructureRepositoryPartition = getResourceSetPartition(blackboard,
+        // LoadPowerInfrastructureRepositoryIntoBlackboardJob.POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID);
         this.uePartititon = getResourceSetPartition(blackboard, LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
@@ -78,7 +77,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.pcmPartition = copy.pcmPartition;
         this.sdmPartition = copy.sdmPartition;
         this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
-        this.powerInfrastructureRepositoryPartition = copy.powerInfrastructureRepositoryPartition;
+        // this.powerInfrastructureRepositoryPartition =
+        // copy.powerInfrastructureRepositoryPartition;
         this.uePartititon = copy.uePartititon;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
@@ -120,10 +120,10 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         return monitorRepositoryPartition.getMonitorRepositoryModel();
     }
 
-    @Override
-    public PowerInfrastructureRepository getPowerInfrastructureRepository() {
-        return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel();
-    }
+    // @Override
+    // public PowerInfrastructureRepository getPowerInfrastructureRepository() {
+    // return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel();
+    // }
 
     /**
      * 
@@ -173,9 +173,10 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         return monitorRepositoryPartition.getResourceSet().getResources().size() > 0;
     }
 
-    public boolean powerInfrastructureRepositoryExists() {
-        return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel() != null;
-    }
+    // public boolean powerInfrastructureRepositoryExists() {
+    // return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel() !=
+    // null;
+    // }
 
     @SuppressWarnings("unchecked")
     private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard, final String id) {
