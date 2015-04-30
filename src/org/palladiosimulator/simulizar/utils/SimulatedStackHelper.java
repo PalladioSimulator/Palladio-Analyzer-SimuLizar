@@ -42,6 +42,8 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
+                // TODO
+                // FIXME This does not seem to work for references like a.b.INNER.BYTESIZE
                 final String id = namedReference.getReferenceName() + "."
                         + variableCharacterisation.getType().getLiteral();
 
