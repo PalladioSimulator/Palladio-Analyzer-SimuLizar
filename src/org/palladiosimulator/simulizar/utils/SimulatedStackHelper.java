@@ -42,7 +42,8 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-                final String id = namedReference + "." + variableCharacterisation.getType().getLiteral();
+                final String id = namedReference.getReferenceName() + "."
+                        + variableCharacterisation.getType().getLiteral();
 
                 Object value;
 
