@@ -2,5 +2,6 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor" name="Simulizar Runtime State Observer" schema="schema/org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor.exsd"/>
+   <extension-point id="org.palladiosimulator.simulizar.interpreter.listener.probeframework" name="Simulizar Probe Framework Listener Decorator" schema="schema/org.palladiosimulator.simulizar.interpreter.listener.probeframework.exsd"/>
 
 </plugin>
