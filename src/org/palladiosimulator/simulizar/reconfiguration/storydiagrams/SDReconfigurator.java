@@ -53,7 +53,8 @@ public class SDReconfigurator implements IReconfigurator {
             LOGGER.debug(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");
             return result;
+        } else {
+            return false;
         }
-        return false;
     }
 }
