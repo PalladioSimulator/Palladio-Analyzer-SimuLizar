@@ -26,6 +26,7 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * respectively.
  * 
  * @author Steffen Becker
+ * @author Matthias Becker
  * @author Sebastian Lehrig
  * @author Florian Rosenthal
  *

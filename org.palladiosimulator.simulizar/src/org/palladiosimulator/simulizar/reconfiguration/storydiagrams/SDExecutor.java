@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
@@ -25,7 +27,6 @@ import org.storydriven.storydiagrams.patterns.AbstractVariable;
 import org.storydriven.storydiagrams.patterns.StoryPattern;
 
 import de.mdelab.sdm.interpreter.core.SDMException;
-import de.mdelab.sdm.interpreter.core.notifications.OutputStreamNotificationReceiver;
 import de.mdelab.sdm.interpreter.core.variables.Variable;
 import de.uka.ipd.sdq.pcm.allocation.AllocationPackage;
 import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
@@ -35,8 +36,13 @@ import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
- * Story diagram executor helper class that supports executing SDs against the PCM model@runtime.
  * 
+ * @author Joachim Meyer
+ * @author Matthias Becker
+ * 
+ *         Story Diagram executor helper class that supports executing StoryDiagram reconfiguration
+ *         rules.
+ *
  */
 public class SDExecutor {
 
@@ -112,6 +118,9 @@ public class SDExecutor {
     */
     private static final String SYSTEM_MODEL = "systemModel";
 
+    private static final String RETURN_VALUE = "returnValue";
+    private static final EClass BOOLEAN_ECLASS = EcorePackage.eINSTANCE.getEBoolean().eClass();
+
     /**
     * 
     */
@@ -126,6 +135,7 @@ public class SDExecutor {
     private final Collection<Activity> storyDiagrams;
     private final PCMResourceSetPartition globalPcmResourceSetPartition;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
+    private final SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression> sdNotificationReceiver;
 
     /**
      * Constructor of the SD Executor.
@@ -144,13 +154,15 @@ public class SDExecutor {
         } catch (final SDMException e) {
             throw new RuntimeException("Unable to inialise SD interpreter engine", e);
         }
-        if (LOGGER.isDebugEnabled()) {
-            this.sdmInterpreter
-                    .getNotificationEmitter()
-                    .addNotificationReceiver(
-                            new OutputStreamNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
-                                    this.sdmInterpreter.getFacadeFactory()));
-        }
+        this.sdNotificationReceiver = new SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
+                this.sdmInterpreter.getFacadeFactory());
+        this.sdmInterpreter.getNotificationEmitter().addNotificationReceiver(this.sdNotificationReceiver);
+        /*
+         * if (LOGGER.isDebugEnabled()) { this.sdmInterpreter .getNotificationEmitter()
+         * .addNotificationReceiver( new OutputStreamNotificationReceiver<Activity, ActivityNode,
+         * ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier,
+         * EStructuralFeature, Expression>( this.sdmInterpreter.getFacadeFactory()));
+         */
         this.staticParameters = this.createParameter();
         this.activities = this.createBindingsForActivities();
     }
@@ -219,9 +231,14 @@ public class SDExecutor {
      *             in case the SD Activity could not be executed
      */
     private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
-        this.sdmInterpreter.executeActivity(activity, parameters);
+        this.sdNotificationReceiver.reset();
+        Map<String, Variable<EClassifier>> result = this.sdmInterpreter.executeActivity(activity, parameters);
         // TODO: Get info on activity success?
-        return false;
+        if (this.sdNotificationReceiver.applicationSuccessful()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -233,11 +250,15 @@ public class SDExecutor {
      *         model.
      */
     public boolean executeActivities(final EObject monitoredElement) {
+        EObject returnvalue = EcoreFactory.eINSTANCE.create(BOOLEAN_ECLASS);
         final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(MONITORED_ELEMENT,
                 EOBJECT_ECLASS, monitoredElement);
+        final Variable<EClassifier> returnValueParameter = new Variable<EClassifier>(RETURN_VALUE, BOOLEAN_ECLASS,
+                returnvalue);
         final List<Variable<EClassifier>> paramterList = new ArrayList<Variable<EClassifier>>();
         paramterList.addAll(this.staticParameters);
         paramterList.add(monitoredElementParameter);
+        paramterList.add(returnValueParameter);
         boolean result = false;
         for (final Activity activity : this.activities) {
             try {
