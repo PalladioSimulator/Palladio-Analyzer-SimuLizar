@@ -1,8 +1,14 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
@@ -14,9 +20,6 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.henshin.HenshinReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.SDReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelSyncer;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
@@ -139,10 +142,27 @@ public class SimuLizarRuntimeState {
     private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
             final ISimulationControl simulationControl) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
-        reconfigurator = new Reconfigurator(modelAccess, simulationControl, new IReconfigurator[] {
-                new SDReconfigurator(modelAccess), new QVTOReconfigurator(modelAccess, configuration),
-                new HenshinReconfigurator(modelAccess, configuration) });
 
+        IExtension[] extensions = Platform.getExtensionRegistry()
+                .getExtensionPoint("org.palladiosimulator.simulizar.reconfigurationengine").getExtensions();
+
+        List<IReconfigurator> engines = new LinkedList<IReconfigurator>();
+        for (IExtension extension : extensions) {
+            for (IConfigurationElement element : extension.getConfigurationElements()) {
+                try {
+                    IReconfigurator reconfigurator = (IReconfigurator) element
+                            .createExecutableExtension("reconfigurationEngine");
+                    reconfigurator.setConfiguration(configuration);
+                    reconfigurator.setModelAccess(modelAccess);
+                    engines.add(reconfigurator);
+                } catch (CoreException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        reconfigurator = new Reconfigurator(modelAccess, simulationControl, engines);
         reconfigurator.addObserver(new IReconfigurationListener() {
             @Override
             public void reconfigurationExecuted(Collection<Notification> modelChanges) {

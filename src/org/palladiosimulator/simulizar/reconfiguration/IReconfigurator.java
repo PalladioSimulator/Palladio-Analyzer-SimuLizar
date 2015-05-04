@@ -1,6 +1,8 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
  * Interface for a component that is able to reconfigure the PCM model@runtime.
@@ -20,5 +22,9 @@ public interface IReconfigurator {
      *         only checked but not executed
      */
     public boolean checkAndExecute(EObject monitoredElement);
+
+    public void setModelAccess(final IModelAccess modelAccess);
+
+    public void setConfiguration(final SimuLizarWorkflowConfiguration configuration);
 
 }
