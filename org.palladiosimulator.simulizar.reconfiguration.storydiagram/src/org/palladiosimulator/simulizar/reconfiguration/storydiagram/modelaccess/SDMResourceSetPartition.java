@@ -14,6 +14,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
  * all sdm models in the sdm model folder.
  * 
  * @author Joachim Meyer
+ * @author Matthias Becker
  * 
  */
 public class SDMResourceSetPartition extends ResourceSetPartition {

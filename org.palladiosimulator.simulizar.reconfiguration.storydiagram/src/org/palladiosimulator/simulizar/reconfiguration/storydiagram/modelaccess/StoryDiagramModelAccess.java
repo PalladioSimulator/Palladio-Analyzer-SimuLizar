@@ -20,6 +20,13 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
+/**
+ * Helper to access all models and specifically the StoryDiagram models from the Story Diagram
+ * reconfiguration engine.
+ * 
+ * @author Matthias Becker
+ *
+ */
 public class StoryDiagramModelAccess implements IModelAccess {
 
     private static final Logger LOGGER = Logger.getLogger(StoryDiagramModelAccess.class);
@@ -55,7 +62,7 @@ public class StoryDiagramModelAccess implements IModelAccess {
 
     @SuppressWarnings("unchecked")
     private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard, final String id) {
-        return (T) modelAccess.getBlackboard().getPartition(id);
+        return (T) blackboard.getPartition(id);
     }
 
     /**

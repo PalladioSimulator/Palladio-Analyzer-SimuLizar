@@ -24,6 +24,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * Job for loading all sdm models in a specific folder into the blackboard.
  * 
  * @author Joachim Meyer
+ * @author Matthias Becker
  * 
  */
 public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
