@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.reconfiguration;
 
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
@@ -94,7 +95,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     /**
      * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
      */
-    private final IReconfigurator[] reconfigurators;
+    private final List<IReconfigurator> reconfigurators;
 
     private final ISimulationControl simulationController;
 
@@ -108,7 +109,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      *            monitoring data arrives.
      */
     public Reconfigurator(final IModelAccess modelAccessFactory, final ISimulationControl simulationcontrol,
-            final IReconfigurator[] reconfigurators) {
+            final List<IReconfigurator> reconfigurators) {
         super();
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
