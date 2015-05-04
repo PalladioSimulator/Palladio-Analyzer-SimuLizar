@@ -43,6 +43,21 @@
          id="org.palladiosimulator.simulizar.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature"
+         version="0.0.0"
+         optional="true"/>
+
+   <includes
+         id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
+         version="0.0.0"
+         optional="true"/>
+
+   <includes
+         id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature"
+         version="0.0.0"
+         optional="true"/>
+
    <requires>
       <import feature="org.eclipse.m2m.qvt.oml" version="3.4.0.v20140610-1621"/>
       <import feature="org.eclipse.m2m.qvt.oml.editor" version="3.4.0.v20140610-1621"/>
