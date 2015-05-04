@@ -12,6 +12,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="2.0.0",
  org.storydriven.storydiagrams.interpreter.eclipse,
  de.uka.ipd.sdq.workflow.pcm,
- de.mdelab.sdm.interpreter.core
+ de.mdelab.sdm.interpreter.core,
+ de.uka.ipd.sdq.workflow.mdsd,
+ de.uka.ipd.sdq.codegen.simucontroller,
+ org.scaledl.usageevolution
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs

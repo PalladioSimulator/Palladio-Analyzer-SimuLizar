@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
@@ -24,30 +25,30 @@ public class SDReconfigurator implements IReconfigurator {
     /**
      * Access interface to access all loaded SDs.
      */
-    private IModelAccess modelAccess;
+    private StoryDiagramModelAccess modelAccess;
 
     /**
      * SD Interpreter used internally to interpret the SDs.
      */
     private SDExecutor sdExecutor;
 
+    private SimuLizarWorkflowConfiguration configuration;
+
     /**
-     * SD Reconfigurator constructor.
+     * Story Diagram Reconfigurator default constructor.
      * 
      * @param modelAccessFactory
      *            Model access factory used to access the SDs.
      */
-    public SDReconfigurator(final IModelAccess modelAccessFactory) {
+    public SDReconfigurator() {
         super();
-        this.modelAccess = modelAccessFactory;
-        this.sdExecutor = new SDExecutor(modelAccessFactory);
     }
 
     @Override
     public boolean checkAndExecute(final EObject monitoredElement) {
         if (!this.modelAccess.getStoryDiagrams().isEmpty()) {
             LOGGER.debug("Checking reconfiguration rules due to RuntimeMeasurement change");
-            final boolean result = this.sdExecutor.executeActivities(monitoredElement);
+            final boolean result = this.getSDExecutor().executeActivities(monitoredElement);
             LOGGER.debug(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");
             return result;
@@ -65,11 +66,11 @@ public class SDReconfigurator implements IReconfigurator {
 
     @Override
     public void setModelAccess(IModelAccess modelAccess) {
-        this.modelAccess = modelAccess;
+        this.modelAccess = new StoryDiagramModelAccess(modelAccess, this.configuration);
     }
 
     @Override
     public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
-        // Nothing to do
+        this.configuration = configuration;
     }
 }

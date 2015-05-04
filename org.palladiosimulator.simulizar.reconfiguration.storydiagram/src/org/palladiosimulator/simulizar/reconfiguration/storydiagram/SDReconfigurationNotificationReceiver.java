@@ -31,7 +31,6 @@ import de.mdelab.sdm.interpreter.core.notifications.StoryPatternMatchingSuccessf
 public class SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, StoryPatternObject, StoryPatternLink, Classifier, Feature, Expression>
         implements NotificationReceiver<Classifier> {
 
-    private PrintStream printStream;
     private IExpressionFacade<Expression> expressionFacade;
     private IStoryPatternObjectFacade<StoryPatternObject, StoryPatternLink, Classifier, Feature, Expression> spoFacade;
     private IStoryPatternFacade<StoryPattern, StoryPatternObject, StoryPatternLink, Expression> spFacade;
@@ -43,9 +42,8 @@ public class SDReconfigurationNotificationReceiver<Activity, ActivityNode, Activ
         assert facadeFactory != null;
 
         if (outputStream == null) {
-            this.printStream = System.out;
         } else {
-            this.printStream = new PrintStream(outputStream);
+            new PrintStream(outputStream);
         }
 
         this.spoFacade = facadeFactory.getStoryPatternObjectFacade();

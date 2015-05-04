@@ -15,8 +15,8 @@ import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
 import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
 import org.storydriven.storydiagrams.activities.ActivityEdge;
@@ -145,7 +145,7 @@ public class SDExecutor {
      *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
      *            models.
      */
-    public SDExecutor(final IModelAccess modelAccessFactory) {
+    public SDExecutor(final StoryDiagramModelAccess modelAccessFactory) {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
         this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
@@ -266,7 +266,7 @@ public class SDExecutor {
         boolean result = false;
         for (final Activity activity : this.activities) {
             try {
-
+                LOGGER.debug("Trying to execute Story Diagram " + activity.getName() + ".");
                 result |= this.execute(activity, paramterList);
 
             } catch (final SDMException e) {
