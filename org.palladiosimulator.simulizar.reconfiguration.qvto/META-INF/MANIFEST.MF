@@ -13,3 +13,4 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.workflow.pcm
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto
