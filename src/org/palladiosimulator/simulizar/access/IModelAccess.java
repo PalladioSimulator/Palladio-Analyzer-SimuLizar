@@ -1,12 +1,10 @@
 package org.palladiosimulator.simulizar.access;
 
-import java.util.Collection;
-
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.scaledl.usageevolution.UsageEvolution;
-import org.storydriven.storydiagrams.activities.Activity;
 
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
@@ -20,6 +18,9 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * 
  */
 public interface IModelAccess extends Cloneable {
+
+    public MDSDBlackboard getBlackboard();
+
     // -----
     // Access to simulated processes local models/local copies of the global model
     // -----
@@ -38,7 +39,7 @@ public interface IModelAccess extends Cloneable {
 
     public UsageEvolution getUsageEvolutionModel();
 
-    public Collection<Activity> getStoryDiagrams();
+    // public Collection<Activity> getStoryDiagrams();
 
     public IModelAccess clone();
 }

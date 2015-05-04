@@ -16,14 +16,11 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
-import org.palladiosimulator.simulizar.launcher.partitions.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
-import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -45,9 +42,9 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
     private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
-    private final SDMResourceSetPartition sdmPartition;
     private final UEResourceSetPartition uePartititon;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
+    private final MDSDBlackboard blackboard;
 
     // private final PowerInfrastructureRepositoryResourceSetPartition
     // powerInfrastructureRepositoryPartition;
@@ -60,9 +57,9 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      */
     public ModelAccess(final MDSDBlackboard blackboard) {
         super();
+        this.blackboard = blackboard;
         this.runtimeMeasurementModel = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel();
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
-        this.sdmPartition = getResourceSetPartition(blackboard, LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
         this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
                 LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
         // this.powerInfrastructureRepositoryPartition = getResourceSetPartition(blackboard,
@@ -73,9 +70,9 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     private ModelAccess(final ModelAccess copy) {
         super();
+        this.blackboard = this.blackboard;
         this.runtimeMeasurementModel = copy.runtimeMeasurementModel;
         this.pcmPartition = copy.pcmPartition;
-        this.sdmPartition = copy.sdmPartition;
         this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
         // this.powerInfrastructureRepositoryPartition =
         // copy.powerInfrastructureRepositoryPartition;
@@ -147,24 +144,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     }
 
     /**
-     * 
-     * @return a list of the sdm models.
-     */
-    @Override
-    public List<Activity> getStoryDiagrams() {
-        return sdmPartition.getActivities();
-    }
-
-    /**
-     * Checks whether sdm models exists, without using any classes from sd interpreter.
-     * 
-     * @return true if yes, otherwise false;
-     */
-    public boolean sdmModelsExists() {
-        return sdmPartition.getResourceSet().getResources().size() > 0;
-    }
-
-    /**
      * Checks whether Monitor Repository exists.
      * 
      * @return true if yes, otherwise false;
@@ -197,6 +176,11 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     @Override
     public void endReconfigurationEvent(ReconfigurationEvent event) {
         // Nothing to do
+    }
+
+    @Override
+    public MDSDBlackboard getBlackboard() {
+        return this.blackboard;
     }
 
 }
