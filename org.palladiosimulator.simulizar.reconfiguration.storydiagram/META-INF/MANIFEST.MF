@@ -13,5 +13,5 @@ Require-Bundle: org.eclipse.core.runtime,
  org.storydriven.storydiagrams.interpreter.eclipse,
  de.uka.ipd.sdq.workflow.pcm,
  de.mdelab.sdm.interpreter.core
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
