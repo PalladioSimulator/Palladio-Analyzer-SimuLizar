@@ -33,6 +33,18 @@ public class QVTOReconfigurator implements IReconfigurator {
     private SimuLizarWorkflowConfiguration configuration;
 
     /**
+     * QVTO Reconfigurator default constructor.
+     * 
+     * @param modelAccessFactory
+     *            ModelAccessFactory giving access to PCM and PRM models
+     * @param configuration
+     *            Simulation configuration
+     */
+    public QVTOReconfigurator() {
+        super();
+    }
+
+    /**
      * QVTO Reconfigurator constructor.
      * 
      * @param modelAccessFactory
