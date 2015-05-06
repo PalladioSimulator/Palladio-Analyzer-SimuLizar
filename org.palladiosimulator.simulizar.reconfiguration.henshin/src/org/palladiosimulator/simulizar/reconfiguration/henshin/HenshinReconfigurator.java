@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.reconfiguration.henshin;
 
-import java.io.File;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -13,18 +11,16 @@ import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
 import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
 import org.eclipse.emf.henshin.interpreter.impl.UnitApplicationImpl;
 import org.eclipse.emf.henshin.model.Module;
-import org.eclipse.emf.henshin.model.resource.HenshinResourceSet;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.utils.FileUtil;
 
 public class HenshinReconfigurator implements IReconfigurator {
 
-    private IModelAccess modelAccess;
-    private static final String HENSHIN_FILE_EXTENSION = ".henshin";
-    private HenshinResourceSet henshinResourceSet;
+    private HenshinModelAccess modelAccess;
     private List<Module> modules;
+    private SimuLizarWorkflowConfiguration configuration;
 
     /**
      * This class' internal LOGGER.
@@ -33,29 +29,13 @@ public class HenshinReconfigurator implements IReconfigurator {
 
     @Override
     public void setModelAccess(final IModelAccess modelAccess) {
-        this.modelAccess = modelAccess;
+        this.modelAccess = new HenshinModelAccess(modelAccess, this.configuration);
+        this.modules = this.modelAccess.getHenshinRules();
     }
 
     @Override
     public void setConfiguration(final SimuLizarWorkflowConfiguration configuration) {
-        final String path = configuration.getReconfigurationRulesFolder();
-
-        this.henshinResourceSet = new HenshinResourceSet(path);
-        this.modules = this.createModules(path);
-    }
-
-    private List<Module> createModules(String path) {
-
-        final File folder = FileUtil.getFolder(path);
-        final File[] files = FileUtil.getFiles(folder, HENSHIN_FILE_EXTENSION);
-
-        List<Module> modules = new LinkedList<Module>();
-        if (files != null && files.length > 0) {
-            for (final File file : files) {
-                modules.add(this.henshinResourceSet.getModule(file.getPath(), false));
-            }
-        }
-        return modules;
+        this.configuration = configuration;
     }
 
     /**
@@ -64,7 +44,7 @@ public class HenshinReconfigurator implements IReconfigurator {
      * @param module
      * @param saveResult
      */
-    private boolean executeReconfiguration(UnitApplication app, HenshinResourceSet resourceSet, Module module) {
+    private boolean executeReconfiguration(UnitApplication app, Module module) {
         // Load the measurement model into an EGraph
         LOGGER.info("Called Henshin reconfiguration engine.");
         EGraph graph = new EGraphImpl(this.modelAccess.getGlobalPCMModel().getAllocation());
@@ -75,21 +55,12 @@ public class HenshinReconfigurator implements IReconfigurator {
         app.setUnit(module.getUnit("execute"));
 
         if (app.execute(null)) {
-            // Saving the result:
-
-            // resourceSet.saveEObject(graph.getRoots().get(0), "loadbalancer-result.repository");
-            // resourceSet.save(null);
             LOGGER.debug("Successfully executed Henshin rule.");
             return true;
         } else {
             LOGGER.debug("Executing Henshin rule failed.");
-            /*
-             * resourceSet.saveEObject( graph.getRoots().get(0),
-             * URI.createFileURI("C:/Users/Matthias/Documents/loadbalancer-result" +
-             * Double.toString(1000 * Math.random()) + ".repository"));
-             */
             return false;
-            // throw new RuntimeException("Error creating outsourcing load");
+
         }
 
     }
@@ -99,7 +70,7 @@ public class HenshinReconfigurator implements IReconfigurator {
      * @param resourceSet
      * @param module
      */
-    private boolean analyzeReconfiguration(UnitApplication app, HenshinResourceSet resourceSet, Module module) {
+    private boolean analyzeReconfiguration(UnitApplication app, Module module) {
         // Load the example model into an EGraph:
         EGraph graph = new EGraphImpl(this.modelAccess.getRuntimeMeasurementModel());
         app.setEGraph(graph);
@@ -119,28 +90,16 @@ public class HenshinReconfigurator implements IReconfigurator {
     @Override
     public boolean checkAndExecute(EObject measuringPoint) {
 
-        /*
-         * // Load Repository Package and register it in the ResourceSet
-         * RepositoryPackage.eINSTANCE.eClass(); PrmPackage.eINSTANCE.eClass();
-         * 
-         * Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE; Map<String, Object> m
-         * = reg.getExtensionToFactoryMap(); m.put("repository", new XMIResourceFactoryImpl());
-         * m.put("prm", new XMIResourceFactoryImpl());
-         * 
-         * // FIX for xtext StoEx: Register xtextbin in the Resource Factory if
-         * (!Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().containsKey("xtextbin"))
-         * Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("xtextbin", new
-         * BinaryGrammarResourceFactoryImpl());
-         */
-
         // Create an engine and a rule application:
         Engine engine = new EngineImpl();
         UnitApplication app = new UnitApplicationImpl(engine);
 
         boolean result = false;
-        for (final Module module : this.modules) {
-            if (analyzeReconfiguration(app, this.henshinResourceSet, module)) {
-                result |= executeReconfiguration(app, this.henshinResourceSet, module);
+        if (!this.modules.isEmpty()) {
+            for (final Module module : modules) {
+                if (analyzeReconfiguration(app, module)) {
+                    result |= executeReconfiguration(app, module);
+                }
             }
         }
         return result;

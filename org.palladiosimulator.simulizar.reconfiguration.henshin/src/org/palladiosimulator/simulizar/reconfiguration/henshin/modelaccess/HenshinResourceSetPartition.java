@@ -18,18 +18,10 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
  */
 public class HenshinResourceSetPartition extends ResourceSetPartition {
 
-    private List<Module> createModules(String path) {
-        /*
-         * 
-         * final File folder = FileUtil.getFolder(path); final File[] files =
-         * FileUtil.getFiles(folder, HENSHIN_FILE_EXTENSION);
-         * 
-         * List<Module> modules = new LinkedList<Module>(); if (files != null && files.length > 0) {
-         * for (final File file : files) {
-         * modules.add(this.henshinResourceSet.getModule(file.getPath(), false)); } } return
-         * modules;
-         */
-        List<Module> modules = new Vector<Module>();
+    List<Module> modules = new Vector<Module>();
+
+    public List<Module> getModules() {
+
         for (final Resource resource : this.rs.getResources()) {
             Module module = null;
 
@@ -41,9 +33,9 @@ public class HenshinResourceSetPartition extends ResourceSetPartition {
                     }
                 }
             }
-            modules.add(module);
+            this.modules.add(module);
         }
-        return modules;
+        return this.modules;
     }
 
 }
