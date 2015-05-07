@@ -31,11 +31,15 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
 
         // this.addJob(new LoadPowerInfrastructureRepositoryIntoBlackboardJob(configuration));
 
+        this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
+
         this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
 
         // this.addJob(new LoadSDMModelsIntoBlackboardJob(configuration));
 
         this.addJob(new PCMStartInterpretationJob(configuration));
+
+        this.addJob(new EvaluateResultsJob(configuration));
 
     }
 

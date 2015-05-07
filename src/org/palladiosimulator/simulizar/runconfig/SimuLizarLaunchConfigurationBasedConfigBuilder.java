@@ -33,6 +33,7 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
 
         config.setMonitorRepositoryFile(getStringAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE));
         config.setReconfigurationRulesFolder(getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER));
+        config.setServiceLevelObjectivesFile(getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
         config.setUsageEvolutionFile(getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
 
         SimuComConfig simuComConfig = new SimuComConfig(properties, config.isDebug());
@@ -53,5 +54,4 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
 
         config.setSimuComConfiguration(simuComConfig);
     }
-
 }
