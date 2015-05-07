@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Tests
-Bundle-SymbolicName: org.palladiosimulator.simulizar.tests
+Bundle-SymbolicName: org.palladiosimulator.simulizar.tests;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Vendor: palladiosimulator.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
