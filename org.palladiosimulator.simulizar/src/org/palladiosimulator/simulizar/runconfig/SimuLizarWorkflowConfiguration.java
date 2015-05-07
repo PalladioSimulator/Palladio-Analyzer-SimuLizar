@@ -9,6 +9,7 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
     protected String monitorRepositoryFile;
     protected String reconfigurationRulesFolder;
     protected String usageEvolutionFile;
+    protected String serviceLevelObjectivesFile;
 
     public SimuLizarWorkflowConfiguration(Map<String, Object> attributes) {
         super(attributes);
@@ -36,6 +37,14 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
 
     public void setUsageEvolutionFile(String usageEvolutionFile) {
         this.usageEvolutionFile = usageEvolutionFile;
+    }
+
+    public String getServiceLevelObjectivesFile() {
+        return serviceLevelObjectivesFile;
+    }
+
+    public void setServiceLevelObjectivesFile(String serviceLevelObjectivesFile) {
+        this.serviceLevelObjectivesFile = serviceLevelObjectivesFile;
     }
 
     @Override
