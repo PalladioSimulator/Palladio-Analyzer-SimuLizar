@@ -9,7 +9,7 @@
  * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
  * in conjunction with mappings defined in the project properties.
  */
-modeltype PRM uses 'http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0';
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
 modeltype PCM_ALLOC uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0';
 modeltype PCM_REP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0';
 modeltype PCM_SEFF uses 'http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0';
@@ -31,8 +31,8 @@ modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
  * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
  * type and namespace notation are used in operational QVT (: and :: respectively).
  */
-transformation addNewServer(in prm : PRM,
-						    in pcmAllocation : PCM_ALLOC) {
+transformation addNewServer(in runtimeMeasurement : RUNTIMEMEASUREMENT,
+					        in pcmAllocation : PCM_ALLOC) {
 							
 							
 	/*
@@ -49,13 +49,13 @@ transformation addNewServer(in prm : PRM,
 
 		log('SimuLizar addServer Rule Transformation started');
 		
-		assert fatal(prm.rootObjects()[PCMModelElementMeasurement]->size() > 0)
+		assert fatal(runtimeMeasurement.rootObjects()[RuntimeMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		
-		var runtimeMeasurements = prm.rootObjects()[PCMModelElementMeasurement];
+		var runtimeMeasurements = runtimeMeasurement.rootObjects()[RuntimeMeasurement];
 
 		var allocations = pcmAllocation.rootObjects()![Allocation];
 		
@@ -63,7 +63,7 @@ transformation addNewServer(in prm : PRM,
 		 * Add a server if one of the measurements is over the threshold.
 		 */
 		runtimeMeasurements->forEach(measurement){
-			if(measurement.measurementValue > threshold){
+			if(measurement.measuringValue > threshold){
 				allocations->forEach(allocation){
 					addServer(allocation);
 				};
@@ -97,10 +97,12 @@ transformation addNewServer(in prm : PRM,
 		 *					  \
 		 *                      RequiredRole  ---  AssemblyConnector  ---  ProvidedRole - Server2 (Right side)
 		 */
+		 log('addNewServer: Iterating over the allocation contexts');
 		allocation.allocationContexts_Allocation->forEach(allocationContext){
-			
+			log('addNewServer: Examining AssemblyContext: ' + allocationContext.assemblyContext_AllocationContext.entityName);
 			// Find the "Client" (AllocationContext) defined in the .allocation diagram.
 			if(allocationContext.assemblyContext_AllocationContext.entityName = "Client") {
+				log('addNewServer: Found AssemblyContext: Client');
 				// Left side of the AssemblyConnector (Client).
 				requiringAssemblyContext := allocationContext.assemblyContext_AllocationContext;
 				
@@ -113,6 +115,7 @@ transformation addNewServer(in prm : PRM,
 				clientAllRequiredRoles->forEach(operationRequiredRole) {
 					// RequiredRole on the left side of the AssemblyConnector.
 					if(operationRequiredRole.entityName = "Required_process_client2"){
+						log('addNewServer: Found the Client\'s required role: Required_process_client2');
 						requiredRole := operationRequiredRole;
 					};
 				};
@@ -123,10 +126,12 @@ transformation addNewServer(in prm : PRM,
 				 */
 				var r : Repository = repositoryComponentClient.repository__RepositoryComponent;
 				r.components__Repository->forEach(repositoryComponent){
+					
 					if(repositoryComponent.entityName = "server2"){
-						
+						log('addNewServer: Found repository component for Server2: server2');
 						// Right side of the AssemblyConnector (Server2).
 						providingAssemblyContext := new AssemblyContext(repositoryComponent);
+						log('addNewServer: Created AssemblyContext for Server2');
 						
 						/*
 						 * Get to the ProvidedRole of the Server2.
@@ -136,6 +141,7 @@ transformation addNewServer(in prm : PRM,
 						serverAllProvidedRoles->forEach(operationProvidedRole) {
 							// ProvidedRole on the right side of the AssemblyConnector.
 							if(operationProvidedRole.entityName = "Provided_process_server_2"){
+								log('addNewServer: Found the Server2\'s provided role: Provided_process_server_2');
 								providedRole := operationProvidedRole;
 							};
 						}
@@ -143,9 +149,27 @@ transformation addNewServer(in prm : PRM,
 				}
 			};
 			
+			if(requiringAssemblyContext <> null){
+				log('addNewServer: requiringAssemblyContext');
+			};
+			if(requiredRole <> null){
+				log('addNewServer: requiredRole');
+			};
+			if(providingAssemblyContext <> null){
+				log('addNewServer: providingAssemblyContext');
+			};
+			if(providedRole <> null){
+				log('addNewServer: providedRole');
+			};
 			// Finally, creating the AssemblyConnector once all the necessary elements are collected and created.
 			if(providingAssemblyContext <> null and requiringAssemblyContext <> null){
+				log('addNewServer: Connecting the newly created AssemblyContext for Server2');
 				new AssemblyConnector(requiringAssemblyContext, requiredRole, providedRole, providingAssemblyContext);
+				// Reseting the values for new iteration
+				requiringAssemblyContext := null;
+				requiredRole := null;
+				providingAssemblyContext := null;
+				providedRole := null;
 			}	
 		}
 	};
