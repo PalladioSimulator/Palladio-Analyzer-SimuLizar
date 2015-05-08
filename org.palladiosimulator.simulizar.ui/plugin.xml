@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension-point id="org.palladiosimulator.simulizar.ui.configuration.fileinput" name="Simulizar Configuration File Input Tab Extension Point" schema="schema/org.palladiosimulator.simulizar.ui.configuration.fileinput.exsd"/>
 	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
 	    <launchConfigurationType
            delegate="org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher"

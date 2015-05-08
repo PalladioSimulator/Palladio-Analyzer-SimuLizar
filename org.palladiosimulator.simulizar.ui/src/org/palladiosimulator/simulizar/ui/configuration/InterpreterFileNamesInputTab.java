@@ -1,12 +1,18 @@
 package org.palladiosimulator.simulizar.ui.configuration;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputHandler;
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
@@ -18,6 +24,9 @@ import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
  */
 public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
+    private static final String EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.ui.configuration.fileinput";
+    private static final String EXTENSION_POINT_ATTRIBUTE = "fileInputHandler";
+
     // input fields
     /** Text field for path to Monitor Repository file. */
     protected Text monitorRepositoryFile;
@@ -28,7 +37,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     /** Text field for service level objectives file. */
     protected Text serviceLevelObjectivesFile;
 
-    protected Text infrastructureModelFileText;
+    protected Map<AbstractExtensionFileInputHandler, Text> extensionFileFolderInputTexts;
 
     /**
      * @see de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab#createControl(org.eclipse.swt.widgets.Composite)
@@ -36,7 +45,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     @Override
     public void createControl(final Composite parent) {
         super.createControl(parent);
-
+        this.extensionFileFolderInputTexts = new HashMap<AbstractExtensionFileInputHandler, Text>();
         /**
          * Create Monitor Repository file section
          */
@@ -70,17 +79,22 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File",
                 getShell(), SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
 
-        /**
-         * Create Infrastructure model file section
-         */
-        this.infrastructureModelFileText = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener,
-                "Optional: Infrastructure Model File (For Power Analyses)",
-                SimulizarConstants.INFRASTRUCTURE_MODEL_FILE_EXTENSIONS, this.infrastructureModelFileText,
-                "Select Infrastructure Model File", getShell(), SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+       createInputSectionsForExtensions();
 
     }
 
+    private void createInputSectionsForExtensions() {
+        Iterable<AbstractExtensionFileInputHandler> extensions = ExtensionHelper.getExecutableExtensions(
+                EXTENSION_POINT_ID, EXTENSION_POINT_ATTRIBUTE);
+        for (AbstractExtensionFileInputHandler extension : extensions) {
+            Text inputText = new Text(container, SWT.SINGLE | SWT.BORDER);
+            this.extensionFileFolderInputTexts.put(extension, inputText);
+            TabHelper.createFileInputSection(container, modifyListener, extension.getGroupLabel(),
+                    extension.getFileExtensionRestrictions(), inputText, extension.getDialogTitle(), getShell(),
+                    extension.getDefaultFileUri());
+        }
+    }
+    
     private void setTextFromConfigAttribute(Text textWidget, ILaunchConfiguration config, String attributeName,
             String defaultValue) {
         try {
@@ -106,8 +120,11 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         setTextFromConfigAttribute(this.usageEvolutionFile, configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        setTextFromConfigAttribute(this.infrastructureModelFileText, configuration,
-                SimulizarConstants.INFRASTRUCTURE_MODEL_FILE, SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+        for (Entry<AbstractExtensionFileInputHandler, Text> entry : this.extensionFileFolderInputTexts
+                .entrySet()) {
+            setTextFromConfigAttribute(entry.getValue(), configuration, entry.getKey().getConfigurationAttributeName(),
+                    entry.getKey().getDefaultFileUri());
+        }
     }
 
     /*
@@ -125,8 +142,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
                 serviceLevelObjectivesFile.getText());
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
-        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
-                this.infrastructureModelFileText.getText());
+        for (Entry<AbstractExtensionFileInputHandler, Text> entry : this.extensionFileFolderInputTexts
+                .entrySet()) {
+           configuration.setAttribute(entry.getKey().getConfigurationAttributeName(), entry.getValue().getText());
+           //trigger callback, so that additional stuff can be done
+           entry.getKey().afterPerformApply(configuration);
+        }
     }
 
     /*
@@ -146,8 +167,13 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
-                SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+        
+        for (AbstractExtensionFileInputHandler extensionFileFolderInputText : this.extensionFileFolderInputTexts.keySet()) {
+            configuration.setAttribute(extensionFileFolderInputText.getConfigurationAttributeName(), 
+                    extensionFileFolderInputText.getDefaultFileUri());
+            //trigger callback, so that additional stuff can be done by client
+            extensionFileFolderInputText.afterSetDefaults(configuration);
+        }
     }
 
     /**
@@ -155,7 +181,11 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
      */
     @Override
     public boolean isValid(final ILaunchConfiguration launchConfig) {
+        for (AbstractExtensionFileInputHandler handler : this.extensionFileFolderInputTexts.keySet()) {
+            if (!handler.isValid(launchConfig)) {
+                return false;
+            }
+        }
         return true;
     }
-
 }
