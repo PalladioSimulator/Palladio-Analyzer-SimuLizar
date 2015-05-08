@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -346,9 +347,9 @@ public class QVToReconfigurationTest {
          * Create the configuration for the QVTo executor.
          */
         Map<String, Object> configuration = new HashMap<String, Object>();
-        configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, allocationURI.path());
-        configuration.put(PMS_CONFIGURATION_KEY, pmsURI.path());
-        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, reconfRulesURI.path());
+        configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, Paths.get(allocationURI.path()).toAbsolutePath().toString());
+        configuration.put(PMS_CONFIGURATION_KEY, Paths.get(pmsURI.path()).toAbsolutePath().toString());
+        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, Paths.get(reconfRulesURI.path()).toAbsolutePath().toString());
 
         SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
         swfc.setMonitorRepositoryFile(configuration.get(PMS_CONFIGURATION_KEY).toString());
