@@ -7,7 +7,6 @@ public class SimulizarConstants {
     public static final String RECONFIGURATION_RULES_FOLDER = "reconfigurationRulesFolder";
     public static final String USAGEEVOLUTION_FILE = "usageEvolutionFile";
     public static final String SERVICELEVELOBJECTIVEREPOSITORY_FILE = "serviceLevelObjectiveRepositoryFile";
-    public static final String INFRASTRUCTURE_MODEL_FILE = "infrastructureModelFile";
 
     /*
      * Set the file extensions which the dialogs will use as selection filter and for file name
@@ -17,7 +16,6 @@ public class SimulizarConstants {
     public static final String[] RECONFIGURATION_RULES_FILE_EXTENSION = new String[] { "*.sdm", ".qvto", ".henshin" };
     public static final String[] USAGEEVOLUTION_FILE_EXTENSION = new String[] { "*.usageevolution" };
     public static final String[] SERVICELEVELOBJECTIVEREPOSITORY_FILE_EXTENSION = new String[] { "*.slo" };
-    public static final String[] INFRASTRUCTURE_MODEL_FILE_EXTENSIONS = new String[] { "*.infrastructure" };
 
     // Default values
     /** Default URI of the Monitor Repository file. */
