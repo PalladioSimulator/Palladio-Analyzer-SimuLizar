@@ -78,8 +78,7 @@ public class QVToReconfigurationTest {
 
     @Test
     public void test() {
-        // TODO: Jenkins runs this test, but doesn't finish or crash. So, I temporary deactivate it.
-        // reconfigurationTests();
+        reconfigurationTests();
     }
 
     private void reconfigurationTests() {
