@@ -1,0 +1,21 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Palladio Simulizar Utilization Analysis Extension
+Bundle-SymbolicName: org.palladiosimulator.simulizar.utilization;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.simulizar.utilization.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.palladiosimulator.simulizar,
+ org.palladiosimulator.monitorrepository,
+ org.palladiosimulator.probeframework,
+ org.palladiosimulator.experimentanalysis,
+ org.palladiosimulator.simulizar.slidingwindow,
+ org.jscience,
+ org.palladiosimulator.recorderframework,
+ de.uka.ipd.sdq.simucomframework,
+ org.palladiosimulator.measurementframework;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.runtimemeasurement,
+ org.palladiosimulator.edp2.util
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: palladiosimulator.org
