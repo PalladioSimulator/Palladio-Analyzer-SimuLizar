@@ -9,5 +9,21 @@
             decorator="org.palladiosimulator.simulizar.power.probeframework.PowerProbeFrameworkListenerDecorator">
       </probeFrameworkListenerDecorator>
    </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
+      <fileInputHandler
+            fileInputHandler="org.palladiosimulator.simulizar.power.ui.configuration.PowerInfrastructureRepositoryFileInputHandler">
+      </fileInputHandler>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.launcher.modelload">
+      <loadJob
+            loadJob="org.palladiosimulator.simulizar.power.jobs.LoadPowerInfrastructureRepositoryIntoBlackboardJob"
+            loadJobConfigBuilder="org.palladiosimulator.simulizar.power.runconfig.LoadPowerInfrastructureRepositoryIntoBlackboardJobConfigBuilder">
+      </loadJob>
+      <blackboardPartitionId
+            blackboardPartitionId="de.fzi.power">
+      </blackboardPartitionId>
+   </extension>
 
 </plugin>

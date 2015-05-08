@@ -23,7 +23,16 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.edp2.util,
  de.fzi.power.interpreter.calculators.energy,
  org.palladiosimulator.simulizar.runtimemeasurement,
- org.palladiosimulator.simulizar.slidingwindow
+ org.palladiosimulator.simulizar.slidingwindow,
+ de.uka.ipd.sdq.workflow.mdsd,
+ de.uka.ipd.sdq.workflow,
+ de.uka.ipd.sdq.codegen.simucontroller,
+ org.palladiosimulator.simulizar.ui,
+ org.eclipse.debug.core,
+ org.eclipse.swt
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: palladiosimulator.org
+Export-Package: org.palladiosimulator.simulizar.power,
+ org.palladiosimulator.simulizar.power.jobs,
+ org.palladiosimulator.simulizar.power.runconfig
