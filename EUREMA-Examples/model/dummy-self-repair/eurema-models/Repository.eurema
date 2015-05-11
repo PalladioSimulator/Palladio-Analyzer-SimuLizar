@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eurema:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eurema="http://www.mdelab.de/EUREMA">
+  <software uid="8590c47f-8aed-42d3-b7de-9aef223e78eb" name="GenericModelOperationImplementation" description="Generic Model Operation Implementation">
+    <modules href="Self-repair-Architecture.eurema#//@layers.1/@modules.2"/>
+    <modules href="Self-repair-Architecture.eurema#//@layers.1/@modules.3"/>
+    <modules href="Self-repair-Architecture.eurema#//@layers.1/@modules.4"/>
+    <modules href="Self-repair-Architecture.eurema#//@layers.1/@modules.5"/>
+    <modules href="Self-repair-Architecture.eurema#//@layers.1/@modules.6"/>
+  </software>
+  <software uid="c7a2c7ac-9fe8-4e0c-881b-0cee723f925d" name="mRUBiS" description="The adaptable software mRUBiS">
+    <modules href="Self-repair-Architecture.eurema#//@layers.0/@modules.0"/>
+  </software>
+</eurema:Repository>

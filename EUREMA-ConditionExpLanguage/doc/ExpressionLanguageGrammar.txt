@@ -1,0 +1,29 @@
+
+<EXP>      ::= <BOOL_EXP> (('AND' | 'OR' ) <BOOL_EXP>)*
+
+<BOOL_EXP> ::= '(' <EXP> ')'
+	    |  'NOT' '(' <EXP> ')'
+	    |  <SUM_EXP> ('=' | '<>' | '>' | '<' | '>=' | '<=') <SUM_EXP>
+		
+<SUM_EXP>  ::= <TERM_EXP> (('+' | '-') <TERM_EXP>)*
+
+<TERM_EXP> ::= <UNARY> (('*' | '/') <UNARY>)*
+
+<UNARY>    ::=	'-' <ELEMENT> | <ELEMENT>
+ 
+<ELEMENT>  ::=	'(' <SUM_EXP> ')'
+	    | <NUMBER>
+	    | 'CURRENT_TIME'
+	    | 'C_SINCE' '(' <ARG> ')'
+	    | 'T_WHEN' '(' <ARG> ')'
+		
+<NUMBER>   ::= ([ "0"-"9" ])+
+
+<ARG>      ::= <ME_NAME> (<SEPARATOR> <ME_NAME>)?
+
+// model element name: alpha-numeric;
+// blanks are allowed but not at the first or last character 
+<ME_NAME>  ::= [ "A"-"Z", "a"-"z", "0"-"9" ] 
+	        (([ " " ])? [ "A"-"Z", "a"-"z", "0"-"9" ])*
+ 
+<SEPARATOR> ::= '::'
