@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="runtimemeasurement" nsURI="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0"
+    nsPrefix="srm">
+  <eClassifiers xsi:type="ecore:EClass" name="RuntimeMeasurementModel" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Base class representing the RuntimeMeasurement model."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measurements" upperBound="-1"
+        eType="#//RuntimeMeasurement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuntimeMeasurement" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier">
+    <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+      <details key="documentation" value="Measurement for a pcm model element."/>
+    </eAnnotations>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measuringPoint" eType="ecore:EClass ../../org.palladiosimulator.edp2/model/EDP2.ecore#//measuringpoint/MeasuringPoint"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="measurementSpecification"
+        eType="ecore:EClass ../../org.palladiosimulator.monitorrepository/model/monitorrepository.ecore#//MeasurementSpecification"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="measuringValue" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"
+        defaultValueLiteral="0.0"/>
+  </eClassifiers>
+</ecore:EPackage>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_4TwBALwCEeSxGbiYbg6Waw" entityName="defaultRepository" repositoryDescription="">
+  <components__Repository xsi:type="repository:BasicComponent" id="_4AAeQLwFEeSxGbiYbg6Waw" entityName="server1">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_mKQvQLwGEeSxGbiYbg6Waw" entityName="Provided_process_server_1" providedInterface__OperationProvidedRole="_gl1dYLwGEeSxGbiYbg6Waw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ueuf0LwGEeSxGbiYbg6Waw" describedService__SEFF="_r_cZ8LwGEeSxGbiYbg6Waw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_vNK6MLwGEeSxGbiYbg6Waw" entityName="start" successor_AbstractAction="_1P7G0LwGEeSxGbiYbg6Waw"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_vNK6MbwGEeSxGbiYbg6Waw" entityName="stop" predecessor_AbstractAction="_1P7G0LwGEeSxGbiYbg6Waw"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_1P7G0LwGEeSxGbiYbg6Waw" entityName="branchProcess" predecessor_AbstractAction="_vNK6MLwGEeSxGbiYbg6Waw" successor_AbstractAction="_vNK6MbwGEeSxGbiYbg6Waw">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_6NNgMLwGEeSxGbiYbg6Waw" entityName="branch1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_6NOHQLwGEeSxGbiYbg6Waw"/>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_-t42ELwGEeSxGbiYbg6Waw" entityName="branch2">
+          <branchBehaviour_BranchTransition id="_-t42EbwGEeSxGbiYbg6Waw"/>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_DlgLAMiZEeSwuLsOH33EQA" entityName="server2">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_GOJoQMiZEeSwuLsOH33EQA" entityName="Provided_process_server_2" providedInterface__OperationProvidedRole="_gl1dYLwGEeSxGbiYbg6Waw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_GOPH0MiZEeSwuLsOH33EQA" describedService__SEFF="_r_cZ8LwGEeSxGbiYbg6Waw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_GOPu4MiZEeSwuLsOH33EQA" entityName="start" successor_AbstractAction="_GOPu4ciZEeSwuLsOH33EQA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_GOPu4ciZEeSwuLsOH33EQA" entityName="stop" predecessor_AbstractAction="_GOPu4MiZEeSwuLsOH33EQA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_LhZqkMiZEeSwuLsOH33EQA" entityName="client">
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_M9_kYMiZEeSwuLsOH33EQA" entityName="Required_proces_client1" requiredInterface__OperationRequiredRole="_gl1dYLwGEeSxGbiYbg6Waw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_iB_SsM1nEeSB6dFjhlvUmg" entityName="Required_process_client2" requiredInterface__OperationRequiredRole="_gl1dYLwGEeSxGbiYbg6Waw"/>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_gl1dYLwGEeSxGbiYbg6Waw" entityName="IServer">
+    <signatures__OperationInterface id="_r_cZ8LwGEeSxGbiYbg6Waw" entityName="process"/>
+  </interfaces__Repository>
+</repository:Repository>
