@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated violations -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="violations.presentation.ViolationsModelWizardID"
+            name="%_UI_ViolationsModelWizard_label"
+            class="violations.presentation.ViolationsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ViolationsModelFile.gif">
+         <description>%_UI_ViolationsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated violations -->
+      <editor
+            id="violations.presentation.ViolationsEditorID"
+            name="%_UI_ViolationsEditor_label"
+            icon="icons/full/obj16/ViolationsModelFile.gif"
+            extensions="violations"
+            class="violations.presentation.ViolationsEditor"
+            contributorClass="violations.presentation.ViolationsActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
