@@ -1,0 +1,148 @@
+================================================================================
+
+							EUREMA v0.02							
+					 		Oct 09, 2013							
+
+
+The following changes adapt EUREMA v0.01 resulting in EUREMA v0.02:
+
+ -  The name of the metaclass 'MegamodelTrigger' has been changed to
+	'MegamodelModuleTrigger'. The reason for the change is that 
+	triggering conditions are specified for modules that are either 
+	instances of 'Software' or 'Megamodel'. Therefore, two types of 
+	triggers exist: 'SoftwareModuleTrigger' & 'MegamodelModuleTrigger'
+
+ -  The multiplicity of the relationship 
+		SoftwareModule --trigger--> SoftwareModuleTrigger
+	has been changed from 0..* to 0..1.
+	Likewise, the multiplicity of the relationship
+		MegamodelModule --triggers--> MegamodelModuleTrigger
+	has been changed from 0..* to 0..1. According to this change, the
+	name of the relationship has been changed from 'triggers' to 
+	'trigger'.
+
+	The reason for these changes is that a module, either a software
+	or megamodel module, may have no or at most one triggering 
+	condition.
+
+ -  The concepts of 'Operation' and 'Transition' are modified by 
+	making the entry and exit compartments of an operation explicit 
+	in the metamodel.
+
+	EUREMA v0.01 defined their relationship as follows:
+
+		Operation --outgoing 0..*--> Transition
+		Transition --source 1--> Operation
+		Operation --incoming 0..*--> Transition
+		Transition --target 1--> Operation
+
+	while an 'Operation' and a 'Transition' have a name attribute.
+
+	In the Feedback Loop Diagram (FLD), an 'Operation' is labeled by 
+	its name. A transition is not labeled (except of outgoing 
+	transitions of a 'DecisionOperation', which are labeled by 
+	conditions) but the transition's name is used to label the exit 
+	compartment of the transition's source operation (each exit 
+	compartment of an 'Operation' is the source of exactly one 
+	'Transition'). This implicitly covers the exit compartments of an 
+	'Operation' in the metamodel. The problem with this definition and 
+	approach is that the entry compartments of an 'Operation' and the 
+	names of the entry compartments are not reflected at all by the 
+	metamodel, neither explicitly nor implicitly. However, entry 
+	compartments are required if more than one entry exist (cf. 
+	Figure 4.3 in [1]).
+
+	Therefore, entry and exit compartments are now made explicit by
+	EUREMA v0.02:
+
+		Operation --exits 0..*--> Exit
+		Exit --operation 1--> Operation
+		Exit --outgoing 1--> Transition
+		Transition --source 1--> Exit
+
+		Operation --entry 0..*--> Entry
+		Entry --operation 1--> Operation
+		Entry --incoming 1..*--> Transition
+		Transition --target 1--> Entry
+
+	Thus, a 'Transition' connects exactly one 'Entry' and one 'Exit' 
+	of different 'Operations'. An 'Entry' has at least one incoming 
+	'Transition' and an 'Exit' has exactly one outgoing 'Transition'.
+	The latter ensures determinism. An 'Entry' or 'Exit' belongs to 
+	exactly one 'Operation'. Moreover, 'Entry' and 'Exit' are 
+	subclassing the 'MegamodelElement'.
+
+	The following constraints apply to these definitions:
+
+	- An 'InitialOperation' has no 'Entry' and exactly one 'Exit'.
+	- A 'FinalOperation' has 1..* 'Entry' and and no 'Exit'.
+	- A 'DecisionOperation' has 1..* 'Entry' and 2..* 'Exit'. 
+	  The at least two exists are motivated by the fact that a 
+	  decision operation branches the control flow in an FLD and thus,
+	  at least two exits as alternatives for continuing the control 
+	  flow are required.
+	- An 'OperationBehavior' ('ModelOperation' and 'MegamodelCall')
+	  has 1..* 'Entry' and 1..* 'Exit'.
+
+
+	This change in the relationships between an 'Operation' and a 
+	'Transition' also affects the mapping of the incoming and outgoing 
+	transitions (that are the 'Entry' and'Exit') of a 'MegamodelCall' 
+	to the 'InitialOperation'/'FinalOperation' of the invoked 
+	megamodel.
+
+	In EUREMA v0.01, incoming (outgoing) 'Transition' of a 
+	'MegamodelCall' invoking a megamodel are mapped to 
+	'InitialOperation' ('FinalOperation') of the invoked megamodel. 
+	This does not work since the name of the transition connecting an 
+	exit compartment of an operation to an entry compartment of 
+	another operation is used to label the related exit compartment 
+	and there is no other name attribute left in the metamodel to 
+	label the entry compartment. Entry compartments are only 
+	implicitly reflected in the metamodel by outgoing transitions of 
+	an operation while entry compartments are not reflected at all.
+
+	In EUREMA v0.02, the 'Entry' ('Exit') of a 'MegamodelCall' 
+	invoking a megamodel are mapped to the 'InitialOperation' 
+	('FinalOperation') of the invoked megamodel by using names:
+
+		'Entry.name' must map to 'InitialOperation.name'
+		'Exit.name' must map to 'FinalOperation.name'
+
+	Explicit references among 'Entry' ('Exit') and 'InitialOperation' 
+	('FinalOperation') are not feasible because it complicates the 
+	instantiation of megamodels to megamodel modules. 
+	Since the instantiation is based on copying a megamodel, 
+	references among elements of different megamodels requires to copy 
+	all interrelated megamodels. This establishes bindings among 
+	modules during instantiation as well as a ono-to-one image of the 
+	megamodel level (that is the type level) to the module level (that 
+	is the instance level), which is not desired. 
+	Bindings should be made explicitly in a Layer Diagram (LD). 
+	However, mappings by names avoids these interrelated megamodels by 
+	implicitly establishing references, which are resolved after a 
+	'MegamodelCall' is bound to a 'MegamodelModule' to be invoked in 
+	the LD.
+	Thus, a megamodel does not contain any reference to any other 
+	megamodel. Thus, it is self-contained and can be instantiated 
+	independently from other megamodels. However, 'Entry' and 'Exit' 
+	names of a 'MegamodelCall' must map to 'InitialOperation' and 
+	'FinalOperation' names of the module, to which the 'MegamodelCall'
+	is bound. This ensures that the 'MegamodelCall' can be properly 
+	executed by invoking the megamodel module in its proper initial 
+	state and by properly continuing execution after the module has 
+	terminated in its final state (Note: The 'InitialOperation' 
+	('FinalOperation') is also called initial (final) sate).
+
+
+	Further implications for the FLD:
+
+	- In the FLD, a 'Transition' is not labeled by its name and this 
+	  name is event not shown in the FLD. To ease modeling, the 
+	  'Transition' can be assigned the same name as the 'Exit' that is
+	  the source of the 'Transition'. The names of 'Entry' and 'Exit' 
+	  are used in the FLD to label the entry and exit compartments of
+	  an 'OperationBehavior' ('ModelOperation' and 'MegamodelCall'). 
+	  For 'InitialOperation', 'FinalOperation', and 
+	  'DecisionOperation' the entry and exit compartments are not 
+	  shown in the FLD.

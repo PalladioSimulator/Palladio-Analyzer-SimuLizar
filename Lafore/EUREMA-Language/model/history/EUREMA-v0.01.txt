@@ -1,0 +1,17 @@
+EUREMA v0.01
+
+This version of the metamodel is described in the following technical report:
+
+Thomas Vogel and Holger Giese. Model-Driven Engineering of Adaptation Engines 
+for Self-Adaptive Software: Executable Runtime Megamodels. Technical Report 66, 
+Hasso Plattner Institute for Software Systems Engineering, University of Potsdam, 
+Germany, 4 2013. http://opus.kobv.de/ubp/volltexte/2013/6382/
+
+while the following changes have been applied to the metamodel:
+
+ - 'MegamodelPoxy' has been changed to 'MegamodelProxy' (typo removed)
+ - A new attribute called 'payload' has been added to the 'Event' metaclass to
+   reflect the content of an event occurring at runtime. The payload is determined
+   at runtime when, for instance, the adaptable software emits an exception event
+   and the payload reflects details of the exception. Thus, the payload is modeled
+   by the engineer. 

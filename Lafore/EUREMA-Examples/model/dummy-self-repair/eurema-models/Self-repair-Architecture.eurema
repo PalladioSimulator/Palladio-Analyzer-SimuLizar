@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eurema:Architecture xmi:version="2.0" 
+		xmlns:xmi="http://www.omg.org/XMI" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:eurema="http://www.mdelab.de/EUREMA">
+  <layers name="Layer-0">
+    <modules xsi:type="eurema:SoftwareModule" uid="5ca7603a-3f74-473f-afdc-06473868c2ab" name="mRUBiS" sensedBy="//@layers.1/@modules.0/@senses.0" effectedBy="//@layers.1/@modules.0/@effects.0">
+      <software href="Repository.eurema#//@software.1"/>
+    </modules>
+  </layers>
+  <layers number="1" name="Layer-1">
+    <modules xsi:type="eurema:MegamodelModule" uid="bab47cdf-89f5-4212-b96a-3bf8b9789efd" name="Self-repair">
+      <senses target="//@layers.0/@modules.0" trigger="//@layers.1/@modules.0/@trigger" name="senses mRUBiS"/>
+      <effects target="//@layers.0/@modules.0" name="effects mRUBiS"/>
+      <megamodel uid="9dc90fb5-1570-472f-8f22-17a8f07e3cd2" name="Self-repair" description="">
+        <initialOperations uid="63d3dd04-0b15-4d16-bbc9-80a575269e66" name="Monitor">
+          <exits uid="0359e3ff-34f7-4951-a7f1-eac03239234e" name="monitor">
+            <outgoing uid="5525a45e-ca68-4120-8e46-bc260104db9a" name="Monitor 2 Update" target="//@layers.1/@modules.0/@megamodel/@behavior.0/@entries.0"/>
+          </exits>
+        </initialOperations>
+        <finalOperations uid="10727e8e-7cbb-41e2-9a42-9b239209d4a2" name="Analyzed">
+          <entries uid="f67b1907-de38-4a52-99ff-2da0ee90b7d0" name="Analyzed Entry" incoming="//@layers.1/@modules.0/@megamodel/@behavior.1/@exits.1/@outgoing"/>
+        </finalOperations>
+        <finalOperations uid="338b8e44-6d6c-46de-a48f-c30d33599aa0" name="Executed">
+          <entries uid="18700b9a-dbed-4d1c-a12a-ee1b7fc46716" name="Executed Entry" incoming="//@layers.1/@modules.0/@megamodel/@behavior.3/@exits.0/@outgoing"/>
+        </finalOperations>
+        <behavior xsi:type="eurema:ModelOperation" uid="82fd111f-ac6a-4607-b672-84aa38bbb585" name="Update" binding="//@layers.1/@modules.2">
+          <entries uid="3646f09a-ff14-442f-af5d-28424553968b" name="Update Entry" incoming="//@layers.1/@modules.0/@megamodel/@initialOperations.0/@exits.0/@outgoing"/>
+          <exits uid="890076f9-672b-4a36-9b56-7fa042b1d8dc" name="updated model" description="">
+            <outgoing uid="c92125e4-39f1-4814-904b-c8717cc35f20" name="Update 2 Analyze" target="//@layers.1/@modules.0/@megamodel/@behavior.1/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="ec5da568-4d11-4008-bf3b-4c231e82d2c8" name="read the TGG Rules" model="//@layers.1/@modules.0/@megamodel/@models.0"/>
+          <modelUsages xsi:type="eurema:Input" uid="623d6c16-d925-4b94-8196-f2ccd48ce4dd" name="read the Architectural Model" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Output" uid="2ec25eb7-32de-4089-a6e5-7cd890e3c777" name="write the Architectural Model" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+        </behavior>
+        <behavior xsi:type="eurema:MegamodelCall" uid="ec3fcdb1-159d-4684-a792-b6f0b728deec" name="Analyze" description="Megamodel call invoking the analysis steps" binding="//@layers.1/@modules.1">
+          <entries uid="3580cce3-fba5-4c1b-8e4d-6cdb63a6ff61" name="Start" incoming="//@layers.1/@modules.0/@megamodel/@behavior.0/@exits.0/@outgoing"/>
+          <exits uid="34f2afdb-47d6-41e7-8b53-5e54988f9db8" name="Failures">
+            <outgoing uid="8cb26b4b-6552-4ba4-9eda-3c3bfc5960a0" name="Analyze 2 Repair" target="//@layers.1/@modules.0/@megamodel/@behavior.2/@entries.0"/>
+          </exits>
+          <exits uid="caa5f07e-69f6-46cd-a1be-ea871a2032fc" name="OK">
+            <outgoing uid="c9573076-e702-40da-a441-db9f5cfa3c34" name="Analyze 2 Analyzed" target="//@layers.1/@modules.0/@megamodel/@finalOperations.0/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="709ca08b-b7f8-4949-8f8a-b4fc0011e4ff" name="read the Architectural Model" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Output" uid="27251469-54ec-469b-b887-db2b8728f5a4" name="annotate the Architectural Model" description="" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="14a74885-c820-4e94-88ee-98fd5a406b7b" name="Repair" binding="//@layers.1/@modules.5">
+          <entries uid="b86382c2-41d5-4064-aa7f-af97d345df44" name="Repair Entry" incoming="//@layers.1/@modules.0/@megamodel/@behavior.1/@exits.0/@outgoing"/>
+          <exits uid="89d6ec71-1061-4dd5-9a93-5201ebc20afb" name="repaired">
+            <outgoing uid="efaf3877-8250-4fc3-8334-b621fffd8925" name="Repair 2 Effect" target="//@layers.1/@modules.0/@megamodel/@behavior.3/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="e1e23f23-c80e-4ffe-b645-253ba044f66c" name="read the Repair strategies" model="//@layers.1/@modules.0/@megamodel/@models.2"/>
+          <modelUsages xsi:type="eurema:Input" uid="e9d0b84d-65c7-44fe-8b73-1c7363a9898c" name="read the Architectural Model" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Output" uid="4656bd45-70d4-488d-b5f5-1f12054f3e65" name="write the Architectural Model" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="6a35378a-7a1c-43d7-8788-84efaa04187d" name="Effect" binding="//@layers.1/@modules.6">
+          <entries uid="a291d89b-c18d-4d9b-ac0b-d8f6593575c1" name="Effect Entry" incoming="//@layers.1/@modules.0/@megamodel/@behavior.2/@exits.0/@outgoing"/>
+          <exits uid="c55f0b0a-0595-46b7-83a7-47df6bda48ed" name="done">
+            <outgoing uid="13b597c2-453b-4334-b1ec-b0f4464f9764" name="Effect 2 Executed" target="//@layers.1/@modules.0/@megamodel/@finalOperations.1/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="d2e45018-9d3b-4559-b9a4-f0be603787c5" name="read the Architectural Model" description="" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Input" uid="4efdd7a2-4167-4946-ae8d-156b4d18f843" name="read the TGG Rules" model="//@layers.1/@modules.0/@megamodel/@models.0"/>
+        </behavior>
+        <models xsi:type="eurema:RuntimeModel" uid="1ec50cf6-d5f5-45c0-a4d4-452c5a9a7220" name="TGG Rules" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.0 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.1" binding="//@modelResourceSet/@resources.3"/>
+        <models xsi:type="eurema:RuntimeModel" uid="2d6f7db5-d8ac-4281-a833-d960f55007f5" name="Architectural Model" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.1 //@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.2 //@layers.1/@modules.0/@megamodel/@behavior.1/@modelUsages.0 //@layers.1/@modules.0/@megamodel/@behavior.1/@modelUsages.1 //@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.1 //@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.2 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.0" binding="//@modelResourceSet/@resources.0"/>
+        <models xsi:type="eurema:RuntimeModel" uid="b03f64fa-3a31-4a35-af09-1169a090e9a4" name="Repair strategies" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.0" binding="//@modelResourceSet/@resources.4"/>
+      </megamodel>
+      <trigger period="10" refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
+        <events name="">
+          <type href="EventTypes.eurema#/"/>
+        </events>
+      </trigger>
+    </modules>
+    <modules xsi:type="eurema:MegamodelModule" uid="0e1b86e1-4276-4538-8299-1c93a406bd4b" name="Self-repair-A">
+      <megamodel uid="90fd4237-0a48-4639-80b4-354a12233d34" name="Self-repair-A" description="The analyze step of the self-repair feedback loop.">
+        <initialOperations uid="ae8856f5-3616-497d-aaf5-41601f08955f" name="Start" description="Initial Operation of the analyze megamodel">
+          <exits uid="f0f7680b-a4da-4c9d-9e9c-fd36ea95a9f8" name="start">
+            <outgoing uid="3fb07fd6-d497-4816-8d04-613b7e1c4cb0" name="Start 2 Check for failures" target="//@layers.1/@modules.1/@megamodel/@behavior.0/@entries.0"/>
+          </exits>
+        </initialOperations>
+        <finalOperations uid="e332c742-7a83-45d2-9cfc-773332e5597d" name="OK" description="No failures identified. Stop the execution of the feedback loop.">
+          <entries uid="52a7bd5a-a224-4aad-bb4a-653f6aa05fdb" name="OK Entry" incoming="//@layers.1/@modules.1/@megamodel/@behavior.0/@exits.1/@outgoing"/>
+        </finalOperations>
+        <finalOperations uid="abc55839-faaa-42c5-9d7e-9fc78939bf1a" name="Failures">
+          <entries uid="75810f67-0dca-4a3a-a8f7-69ea322f9941" name="Failures Entry" incoming="//@layers.1/@modules.1/@megamodel/@decisionOperations.0/@exits.1/@outgoing //@layers.1/@modules.1/@megamodel/@behavior.1/@exits.0/@outgoing"/>
+        </finalOperations>
+        <decisionOperations uid="cce68b77-6868-48a6-9989-95c81711099a" name="More Analysis Required?">
+          <entries uid="f37a7994-4189-457e-bfff-1d173bd320b9" name="More Analysis Required? Entry" incoming="//@layers.1/@modules.1/@megamodel/@behavior.0/@exits.0/@outgoing"/>
+          <exits uid="880fecb7-41dc-483e-97b1-ee8a9343151a" name="Yes">
+            <outgoing uid="077a6c36-2680-41c2-940f-1f431757ab5e" name="More Analysis Required? 2 Deep check for failures" target="//@layers.1/@modules.1/@megamodel/@behavior.1/@entries.0">
+              <condition expr="C_SINCE(Check for failures::no failures) > 5"/>
+            </outgoing>
+          </exits>
+          <exits uid="5978d139-f051-44b4-8b0f-fa6ce65b5c90" name="No">
+            <outgoing uid="b61f5e7c-2a98-4d81-922d-02d3f858819e" name="More Analysis Required? 2 Failures" target="//@layers.1/@modules.1/@megamodel/@finalOperations.1/@entries.0">
+              <condition expr="ELSE"/>
+            </outgoing>
+          </exits>
+        </decisionOperations>
+        <behavior xsi:type="eurema:ModelOperation" uid="09efc9c4-ad85-4612-a82d-8421cba08d98" name="Check for failures" description="Check for failures operation" binding="//@layers.1/@modules.3">
+          <entries uid="f359bf16-1c37-4439-b19e-c0f387f15564" name="Check for failures Entry" description="" incoming="//@layers.1/@modules.1/@megamodel/@initialOperations.0/@exits.0/@outgoing"/>
+          <exits uid="5fb4d1ed-0b7d-466d-91ec-ba433e1243b0" name="failures">
+            <outgoing uid="f7ce4e2d-b7ab-4a19-9eac-b3e64f668c37" name="Check for failures 2 More Analysis Required?" target="//@layers.1/@modules.1/@megamodel/@decisionOperations.0/@entries.0"/>
+          </exits>
+          <exits uid="cbe83a52-ad87-4fce-86f6-446bf477b5ee" name="no failures">
+            <outgoing uid="0310bf96-396f-4e61-997a-9cf220cae6df" name="Check for failures 2 OK" target="//@layers.1/@modules.1/@megamodel/@finalOperations.0/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="1fc5ae4a-fc2b-4228-b9f3-6321cbc2f351" name="read the Architectural Model" model="//@layers.1/@modules.1/@megamodel/@models.0"/>
+          <modelUsages xsi:type="eurema:Input" uid="806240b0-9aae-487b-ab8e-f9e01c20af91" name="read the Failure analysis rules" model="//@layers.1/@modules.1/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Output" uid="5e72f5f5-ea1e-4212-bfcd-750fd4e1d5ac" name="annotate the Architectural Model" model="//@layers.1/@modules.1/@megamodel/@models.0"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="11bfc579-eb37-4c29-9953-fd7b478d1e19" name="Deep check for failures" description="Deep check for failures operation" binding="//@layers.1/@modules.4">
+          <entries uid="0e287276-b845-4182-bde6-9c0718df285b" name="Deep check for failures Entry" incoming="//@layers.1/@modules.1/@megamodel/@decisionOperations.0/@exits.0/@outgoing"/>
+          <exits uid="faa76f26-7551-4047-88b3-208c9a3ce81f" name="detailed results">
+            <outgoing uid="f117a765-b76f-4e2f-bf64-01f56ed29a97" name="Deep check for failures 2 Failures" target="//@layers.1/@modules.1/@megamodel/@finalOperations.1/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="ae017c94-5180-403a-8c8b-c577880425c5" name="read the Architectural Model" model="//@layers.1/@modules.1/@megamodel/@models.0"/>
+          <modelUsages xsi:type="eurema:Input" uid="ceddca98-684b-4d68-9bcc-7015a2a42521" name="read the Deep analysis rules" model="//@layers.1/@modules.1/@megamodel/@models.2"/>
+          <modelUsages xsi:type="eurema:Output" uid="a26023b7-7986-47f6-81be-2a5f0ff5d198" name="annotate the Architectural Model" model="//@layers.1/@modules.1/@megamodel/@models.0"/>
+        </behavior>
+        <models xsi:type="eurema:RuntimeModel" uid="6d380f4b-18a1-433e-a704-92df82f086fd" name="Architectural Model" description="Architectural Model of mRUBiS" usedBy="//@layers.1/@modules.1/@megamodel/@behavior.0/@modelUsages.0 //@layers.1/@modules.1/@megamodel/@behavior.0/@modelUsages.2 //@layers.1/@modules.1/@megamodel/@behavior.1/@modelUsages.0 //@layers.1/@modules.1/@megamodel/@behavior.1/@modelUsages.2" binding="//@modelResourceSet/@resources.0"/>
+        <models xsi:type="eurema:RuntimeModel" uid="074e753f-fa0e-40a5-9098-7bb0fe97f6ce" name="Failure analysis rules" description="Failure analysis rules" usedBy="//@layers.1/@modules.1/@megamodel/@behavior.0/@modelUsages.1" binding="//@modelResourceSet/@resources.2"/>
+        <models xsi:type="eurema:RuntimeModel" uid="6192a07e-17bd-415b-99c5-a198f76508cb" name="Deep analysis rules" description="Deep analysis rules" usedBy="//@layers.1/@modules.1/@megamodel/@behavior.1/@modelUsages.1" binding="//@modelResourceSet/@resources.1"/>
+      </megamodel>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="e568b69e-f453-4b29-a617-78b9242f7de3" name="UpdateImpl" implementation="de.mdelab.eurema.test.dummyselfrepair.monitor.Update">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="3f00a2a8-8c68-455a-ba10-eaca8b590377" name="CheckForFailuresImpl" implementation="de.mdelab.eurema.test.dummyselfrepair.analyze.CheckForFailures">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="69af09a1-a6f8-46a8-8a6e-181c05ad866e" name="DeepCheckForFailuresImpl" implementation="de.mdelab.eurema.test.dummyselfrepair.analyze.DeepCheckForFailures">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="dfe7b668-9046-41f2-9b4d-a6340fde798c" name="RepairImpl" implementation="de.mdelab.eurema.test.dummyselfrepair.plan.Repair">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="0be495a8-25f0-4d47-8590-e3584ad7a596" name="EffectImpl" implementation="de.mdelab.eurema.test.dummyselfrepair.execute.Effect">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+  </layers>
+  <modelResourceSet>
+    <resources URI="../EUREMA-Examples/model/dummy-self-repair/runtime-models/Architectural-Model.xmi" name="Architectural Model" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1 //@layers.1/@modules.1/@megamodel/@models.0"/>
+    <resources URI="../EUREMA-Examples/model/dummy-self-repair/runtime-models/Deep-analysis-rules.xmi" name="Deep analysis rules" boundByRuntimeModels="//@layers.1/@modules.1/@megamodel/@models.2"/>
+    <resources URI="../EUREMA-Examples/model/dummy-self-repair/runtime-models/Failure-analysis-rules.xmi" name="Failure analysis rules" boundByRuntimeModels="//@layers.1/@modules.1/@megamodel/@models.1"/>
+    <resources URI="../EUREMA-Examples/model/dummy-self-repair/runtime-models/TGG-Rules.xmi" name="TGG Rules" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
+    <resources URI="../EUREMA-Examples/model/dummy-self-repair/runtime-models/Repair-strategies.xmi" name="Repair strategies" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+  </modelResourceSet>
+</eurema:Architecture>

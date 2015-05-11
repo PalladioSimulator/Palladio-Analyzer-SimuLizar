@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: EUREMA-Examples
+Bundle-SymbolicName: EUREMA-Examples; singleton:=true
+Bundle-Version: 0.1.0.qualifier
+Require-Bundle: org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore.xmi,
+ EUREMA-Language;bundle-version="1.0.0",
+ EUREMA-Interpreter;bundle-version="0.1.0",
+ EUREMA-ConditionExpLanguage;bundle-version="0.1.0"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
