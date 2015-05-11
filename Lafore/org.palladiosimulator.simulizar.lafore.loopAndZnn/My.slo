@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slo:ServiceLevelObjectiveRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0">
+  <servicelevelobjectives id="_YRf38N6dEeSFR4acpbZ8HQ" name="ResponseTimeHardThSlo" description="">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_VLn8Et6xEeSFR4acpbZ8HQ" thresholdLimit="3"/>
+    <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="org.palladiosimulator.simulizar.examples.znncom/monitor/usagescenario.measuringpoint#/"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_JgcVEN62EeSFR4acpbZ8HQ" name="ResponseTimeFuzzyThSlo">
+    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_a1Bgc-OGEeSWd8lY2QHrZg" thresholdLimit="3" softLimit="2"/>
+    <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="org.palladiosimulator.simulizar.examples.znncom/monitor/usagescenario.measuringpoint#/"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_x173UOOGEeSWd8lY2QHrZg" name="PoolSizeHardThSlo">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_BZk4cuOUEeSWd8lY2QHrZg" thresholdLimit="5"/>
+    <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_qC7AMuRFEeSsFtCEWlnNdA"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="org.palladiosimulator.simulizar.examples.znncom/monitor/repository.measuringpoint#/"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_1SdokOhoEeSkZ7YVP-H6TQ" name="OverprovisionedResources" description="">
+    <lowerThreshold xsi:type="slo:HardThreshold" id="_AluFgOhpEeSkZ7YVP-H6TQ" thresholdLimit="0.2"/>
+    <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="org.palladiosimulator.simulizar.examples.znncom/monitor/usagescenario.measuringpoint#/"/>
+  </servicelevelobjectives>
+</slo:ServiceLevelObjectiveRepository>
