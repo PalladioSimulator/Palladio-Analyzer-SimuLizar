@@ -2,10 +2,14 @@
 <eurema:RuntimeEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eurema="http://www.mdelab.de/EUREMA">
   <architecture>
     <layers name="AdaptableSWLayer">
-      <modules xsi:type="eurema:SoftwareModule"/>
+      <modules xsi:type="eurema:SoftwareModule" uid="AdaptableSWID" name="AdaptableSW" sensedBy="//@architecture/@layers.1/@modules.0/@senses.0" effectedBy="//@architecture/@layers.1/@modules.0/@effects.0">
+        <software href="Repository.eurema#//@software.0"/>
+      </modules>
     </layers>
     <layers number="1" name="LaforeMAPELoopLayer">
       <modules xsi:type="eurema:MegamodelModule" uid="laforemapeID" name="LaforeMAPE">
+        <senses target="//@architecture/@layers.0/@modules.0" trigger="//@architecture/@layers.1/@modules.0/@trigger" name="senses"/>
+        <effects target="//@architecture/@layers.0/@modules.0" name="effects"/>
         <megamodel uid="laforemapeloopID" name="LaforeMAPEloop" description="This is the MAPE feedback loop for LAFORE ">
           <initialOperations uid="initialoperationID" name="InitialOperation" description="">
             <exits uid="startmapeID" name="StartMAPE" description="">
@@ -60,21 +64,34 @@
           <models xsi:type="eurema:RuntimeModel" uid="runtimestrategiesmodelID" name="RuntimeStrategiesModel" usedBy="//@architecture/@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.3 //@architecture/@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.0" binding="//@architecture/@modelResourceSet/@resources.0"/>
           <models xsi:type="eurema:RuntimeModel" uid="pcmID" name="PCM" usedBy="//@architecture/@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.2 //@architecture/@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.1" binding="//@architecture/@modelResourceSet/@resources.7"/>
         </megamodel>
+        <trigger period="10" refers="//@architecture/@layers.1/@modules.0/@senses.0" initialOperation="//@architecture/@layers.1/@modules.0/@megamodel/@initialOperations.0">
+          <events>
+            <type href="Events.eurema#/"/>
+          </events>
+        </trigger>
       </modules>
-      <modules xsi:type="eurema:SoftwareModule" uid="" name="MonitorOperationImpl"/>
-      <modules xsi:type="eurema:SoftwareModule" name="AnalyzeOperationImpl"/>
-      <modules xsi:type="eurema:SoftwareModule" name="PlanOperationImpl"/>
-      <modules xsi:type="eurema:SoftwareModule" name="ExecuteOperationImpl"/>
+      <modules xsi:type="eurema:SoftwareModule" uid="MonitorOperationImplID" name="MonitorOperationImpl">
+        <software href="Repository.eurema#//@software.1"/>
+      </modules>
+      <modules xsi:type="eurema:SoftwareModule" uid="AnalyzeOperationImplID" name="AnalyzeOperationImpl">
+        <software href="Repository.eurema#//@software.1"/>
+      </modules>
+      <modules xsi:type="eurema:SoftwareModule" uid="PlanOperationImplID" name="PlanOperationImpl">
+        <software href="Repository.eurema#//@software.1"/>
+      </modules>
+      <modules xsi:type="eurema:SoftwareModule" uid="ExecuteOperationImpl" name="ExecuteOperationImpl">
+        <software href="Repository.eurema#//@software.1"/>
+      </modules>
     </layers>
     <modelResourceSet>
-      <resources URI="..\euremaInstance\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.6"/>
-      <resources URI="..\euremaInstance\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.3"/>
-      <resources URI="..\euremaInstance\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.4"/>
-      <resources URI="..\euremaInstance\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.2"/>
-      <resources URI="..\euremaInstance\MyVSMappingsRepository.vsmappings" name="VSMappingsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.5"/>
-      <resources URI="..\euremaInstance\MyRuntimeMeasurements.measurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.1"/>
-      <resources URI="..\euremaInstance\MyMonitors.measurements" name="MonitorsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.0"/>
-      <resources name="PCM" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.7"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.6"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.3"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.4"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.2"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyVSMappingsRepository.vsmappings" name="VSMappingsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.5"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyRuntimeMeasurements.measurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.1"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\MyMonitors.measurements" name="MonitorsRepository" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.0"/>
+      <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@architecture/@layers.1/@modules.0/@megamodel/@models.7"/>
     </modelResourceSet>
   </architecture>
 </eurema:RuntimeEnvironment>

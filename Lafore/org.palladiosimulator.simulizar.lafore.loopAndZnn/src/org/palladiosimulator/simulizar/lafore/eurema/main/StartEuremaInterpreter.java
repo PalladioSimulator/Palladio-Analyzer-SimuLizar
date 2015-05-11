@@ -10,7 +10,7 @@ public class StartEuremaInterpreter {
 	public static void main(String[] args) {
 		EuremaInterpreter interpreter = EuremaInterpreterFactory.getInstance();
 		EventQueue q = interpreter
-				.execute("../euremaInstance/Lafore.eurema");
+				.execute("../org.palladiosimulator.simulizar.lafore.LoopAndZnn/Lafore.eurema");
 
 		eurema.Event startingEvent = EuremaFactory.eINSTANCE.createEvent();
 		startingEvent.setName("StartMape");
