@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Storydiagram Reconfiguration Engine
+Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfiguration.storydiagram;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.storydiagram.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.palladiosimulator.simulizar,
+ org.apache.log4j,
+ org.storydriven.storydiagrams,
+ de.uka.ipd.sdq.pcm,
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="2.0.0",
+ org.storydriven.storydiagrams.interpreter.eclipse,
+ de.uka.ipd.sdq.workflow.pcm,
+ de.mdelab.sdm.interpreter.core,
+ de.uka.ipd.sdq.workflow.mdsd,
+ de.uka.ipd.sdq.codegen.simucontroller,
+ org.scaledl.usageevolution
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
+ org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess
