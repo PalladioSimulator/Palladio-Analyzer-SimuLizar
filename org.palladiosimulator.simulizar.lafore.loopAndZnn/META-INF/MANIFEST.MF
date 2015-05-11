@@ -1,9 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: euremaInstance
+Bundle-Name: org.palladiosimulator.simulizar.lafore.loopAndZnn
 Bundle-SymbolicName: org.palladiosimulator.simulizar.lafore.loopAndZnn
 Bundle-Version: 1.0.0.qualifier
-Export-Package: org.palladiosimulator.simulizar.lafore.eurema.main
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.eclipse.emf.ecore.xmi;bundle-version="2.10.2",
  EUREMA-Interpreter;bundle-version="0.1.0",
