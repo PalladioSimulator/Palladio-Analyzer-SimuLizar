@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<sysdummy:Architecture
-    xmi:version="2.0"
-    xmlns:xmi="http://www.omg.org/XMI"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:sysdummy="http://www.mdelab.de/mrt/dummy/systemdummy.ecore"
-    xsi:schemaLocation="http://www.mdelab.de/mrt/dummy/systemdummy.ecore ../runtime-metamodels/systemdummy.ecore"
-    name="mRUBiS"/>

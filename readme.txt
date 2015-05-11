@@ -1,0 +1,1 @@
+contains pathmap / uri mapping for common Metric Specification model instances

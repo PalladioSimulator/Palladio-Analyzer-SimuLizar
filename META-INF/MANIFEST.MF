@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Metric Specification Default Resources
+Bundle-SymbolicName: org.palladiosimulator.metricspec.resources;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Vendor: palladiosimulator.org
+Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.9.2"
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
