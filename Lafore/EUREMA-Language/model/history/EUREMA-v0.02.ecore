@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="eurema" nsURI="http://www.mdelab.de/EUREMA" nsPrefix="eurema">
+  <eClassifiers xsi:type="ecore:EClass" name="Megamodel">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialOperations" lowerBound="1"
+        upperBound="-1" eType="#//InitialOperation" containment="true" eOpposite="#//InitialOperation/megamodel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="finalOperations" lowerBound="1"
+        upperBound="-1" eType="#//FinalOperation" containment="true" eOpposite="#//FinalOperation/megamodel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="decisionOperations" upperBound="-1"
+        eType="#//DecisionOperation" containment="true" eOpposite="#//DecisionOperation/megamodel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="behavior" upperBound="-1"
+        eType="#//OperationBehavior" containment="true" eOpposite="#//OperationBehavior/megamodel"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="models" upperBound="-1"
+        eType="#//Model" containment="true" eOpposite="#//Model/megamodel"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" eType="#//MegamodelModule"
+        eOpposite="#//MegamodelModule/megamodel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="InitialOperation" eSuperTypes="#//ControlOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" eOpposite="#//Megamodel/initialOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="DecisionOperation" eSuperTypes="#//ControlOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" eOpposite="#//Megamodel/decisionOperations"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="FinalOperation" eSuperTypes="#//ControlOperation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" eOpposite="#//Megamodel/finalOperations"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isDestructive" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"
+        defaultValueLiteral="false"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="OperationBehavior" abstract="true" eSuperTypes="#//Operation">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" eOpposite="#//Megamodel/behavior"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelUsages" upperBound="-1"
+        eType="#//ModelUse" containment="true" eOpposite="#//ModelUse/operation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MegamodelCall" eSuperTypes="#//OperationBehavior">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//MegamodelModule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelOperation" eSuperTypes="#//OperationBehavior">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//SoftwareModule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ControlOperation" abstract="true" eSuperTypes="#//Operation"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Operation" abstract="true" eSuperTypes="#//Executable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="entries" upperBound="-1"
+        eType="#//Entry" containment="true" eOpposite="#//Entry/operation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="exits" upperBound="-1"
+        eType="#//Exit" containment="true" eOpposite="#//Exit/operation"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SoftwareModule" eSuperTypes="#//Module">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="implementation" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//SoftwareModuleTrigger"
+        containment="true" eOpposite="#//SoftwareModuleTrigger/module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="software" lowerBound="1"
+        eType="#//Software" eOpposite="#//Software/modules"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Module" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="senses" upperBound="-1"
+        eType="#//Sensing" containment="true" eOpposite="#//Sensing/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="sensedBy" upperBound="-1"
+        eType="#//Sensing" eOpposite="#//Sensing/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effects" upperBound="-1"
+        eType="#//Effecting" containment="true" eOpposite="#//Effecting/source"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="effectedBy" upperBound="-1"
+        eType="#//Effecting" eOpposite="#//Effecting/target"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="layer" eType="#//Layer"
+        eOpposite="#//Layer/modules"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Model" abstract="true" eSuperTypes="#//MegamodelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" eOpposite="#//Megamodel/models"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="usedBy" upperBound="-1"
+        eType="#//ModelUse" eOpposite="#//ModelUse/model"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuntimeModel" eSuperTypes="#//Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//ModelResource"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MegamodelProxy" eSuperTypes="#//Model">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//MegamodelModule"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelUse" abstract="true" eSuperTypes="#//MegamodelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+        eType="#//OperationBehavior" eOpposite="#//OperationBehavior/modelUsages"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="model" lowerBound="1" eType="#//Model"
+        eOpposite="#//Model/usedBy"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Input" eSuperTypes="#//ModelUse"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Output" eSuperTypes="#//ModelUse"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Transition" eSuperTypes="#//Executable">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//Condition"
+        containment="true" eOpposite="#//Condition/transition"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Entry" eOpposite="#//Entry/incoming"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//Exit" eOpposite="#//Exit/outgoing"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Executable" abstract="true" eSuperTypes="#//MegamodelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="execInfo" eType="#//ExecutionInformation"
+        eOpposite="#//ExecutionInformation/executable"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Condition">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="expr" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transition" lowerBound="1"
+        eType="#//Transition" eOpposite="#//Transition/condition"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MegamodelElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecutionContext">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="current" eType="#//Executable"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="execInfo" upperBound="-1"
+        eType="#//ExecutionInformation" containment="true" eOpposite="#//ExecutionInformation/context"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="environment" lowerBound="1"
+        eType="#//RuntimeEnvironment" eOpposite="#//RuntimeEnvironment/executions"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executing" lowerBound="1"
+        eType="#//MegamodelModule" eOpposite="#//MegamodelModule/context"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ExecutionInformation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="count" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="time" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//ELong"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executable" lowerBound="1"
+        eType="#//Executable" eOpposite="#//Executable/execInfo"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" lowerBound="1"
+        eType="#//ExecutionContext" eOpposite="#//ExecutionContext/execInfo"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Sensing">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//Module" eOpposite="#//Module/senses"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Module" eOpposite="#//Module/sensedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//Trigger"
+        eOpposite="#//Trigger/refers"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Effecting">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="source" lowerBound="1"
+        eType="#//Module" eOpposite="#//Module/effects"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="target" lowerBound="1"
+        eType="#//Module" eOpposite="#//Module/effectedBy"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="RuntimeEnvironment">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="executions" upperBound="-1"
+        eType="#//ExecutionContext" containment="true" eOpposite="#//ExecutionContext/environment"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelResources" upperBound="-1"
+        eType="#//ModelResource" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="architecture" eType="#//Architecture"
+        containment="true" eOpposite="#//Architecture/environment"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Layer">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modules" upperBound="-1"
+        eType="#//Module" containment="true" eOpposite="#//Module/layer"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="number" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="architecture" eType="#//Architecture"
+        eOpposite="#//Architecture/layers"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Trigger" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="period" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="events" upperBound="-1"
+        eType="#//Event" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="refers" eType="#//Sensing"
+        eOpposite="#//Sensing/trigger"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Event">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//EventType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="payload" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EByteArray"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MegamodelModuleTrigger" eSuperTypes="#//Trigger">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="initialOperation" lowerBound="1"
+        eType="#//InitialOperation"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" lowerBound="1"
+        eType="#//MegamodelModule" eOpposite="#//MegamodelModule/trigger"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="SoftwareModuleTrigger" eSuperTypes="#//Trigger">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="isNative" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="executionMethod" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="module" lowerBound="1"
+        eType="#//SoftwareModule" eOpposite="#//SoftwareModule/trigger"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelResource">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="URI" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="EventType">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="superType" eType="#//EventType"
+        eOpposite="#//EventType/subTypes"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="subTypes" upperBound="-1"
+        eType="#//EventType" containment="true" eOpposite="#//EventType/superType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Architecture">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="environment" eType="#//RuntimeEnvironment"
+        eOpposite="#//RuntimeEnvironment/architecture"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="layers" upperBound="-1"
+        eType="#//Layer" containment="true" eOpposite="#//Layer/architecture"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="MegamodelModule" eSuperTypes="#//Module">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="megamodel" lowerBound="1"
+        eType="#//Megamodel" containment="true" eOpposite="#//Megamodel/module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="context" eType="#//ExecutionContext"
+        eOpposite="#//ExecutionContext/executing"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="trigger" eType="#//MegamodelModuleTrigger"
+        containment="true" eOpposite="#//MegamodelModuleTrigger/module"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="binding" eType="#//ModelResource"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Software">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uid" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modules" upperBound="-1"
+        eType="#//SoftwareModule" eOpposite="#//SoftwareModule/software"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Entry" eSuperTypes="#//MegamodelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+        eType="#//Operation" eOpposite="#//Operation/entries"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="incoming" lowerBound="1"
+        upperBound="-1" eType="#//Transition" eOpposite="#//Transition/target"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Exit" eSuperTypes="#//MegamodelElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="operation" lowerBound="1"
+        eType="#//Operation" eOpposite="#//Operation/exits"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="outgoing" lowerBound="1"
+        eType="#//Transition" containment="true" eOpposite="#//Transition/source"/>
+  </eClassifiers>
+</ecore:EPackage>

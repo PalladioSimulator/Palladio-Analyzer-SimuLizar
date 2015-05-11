@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: MeasuringPointProfile
+Bundle-SymbolicName: org.palladiosimulator.simulizar.measuringpoint;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-ActivationPolicy: lazy

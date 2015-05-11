@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/EUREMA-Language/src" modelPluginID="EUREMA-Language"
+    modelName="EUREMA_2" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    importerID="org.eclipse.emf.importer.ecore" containmentProxies="true" complianceLevel="8.0"
+    copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>EUREMA.ecore</foreignModel>
+  <genPackages prefix="Eurema" disposableProviderFactory="true" ecorePackage="EUREMA.ecore#/">
+    <genClasses ecoreClass="EUREMA.ecore#//Megamodel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/initialOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/finalOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/decisionOperations"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/behavior"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/models"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Megamodel/uid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Megamodel/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Megamodel/description"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Megamodel/module"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//InitialOperation">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//InitialOperation/megamodel"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//DecisionOperation">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//DecisionOperation/megamodel"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//FinalOperation">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//FinalOperation/megamodel"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//FinalOperation/isDestructive"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//OperationBehavior">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//OperationBehavior/megamodel"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//OperationBehavior/modelUsages"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//MegamodelCall">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelCall/binding"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//ModelOperation">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ModelOperation/binding"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//ControlOperation"/>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//Operation">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Operation/entries"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Operation/exits"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//SoftwareModule">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//SoftwareModule/implementation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//SoftwareModule/trigger"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//SoftwareModule/software"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//Module">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Module/uid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Module/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Module/senses"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Module/sensedBy"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Module/effects"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Module/effectedBy"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Module/layer"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//Model">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Model/megamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Model/usedBy"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//RuntimeModel">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//RuntimeModel/binding"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//MegamodelProxy">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelProxy/binding"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//ModelUse">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//ModelUse/operation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ModelUse/model"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Input"/>
+    <genClasses ecoreClass="EUREMA.ecore#//Output"/>
+    <genClasses ecoreClass="EUREMA.ecore#//Transition">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Transition/condition"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Transition/target"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Transition/source"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//Executable">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Executable/execInfo"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Condition">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Condition/expr"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Condition/transition"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//MegamodelElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//MegamodelElement/uid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//MegamodelElement/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//MegamodelElement/description"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//ExecutionContext">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionContext/current"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionContext/execInfos"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionContext/environment"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//ExecutionContext/uid"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionContext/executing"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//ExecutionInformation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//ExecutionInformation/count"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//ExecutionInformation/time"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionInformation/executable"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//ExecutionInformation/context"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Sensing">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Sensing/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Sensing/target"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Sensing/trigger"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Sensing/name"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Effecting">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Effecting/source"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Effecting/target"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Effecting/name"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//RuntimeEnvironment">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//RuntimeEnvironment/executions"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//RuntimeEnvironment/modelResources"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//RuntimeEnvironment/architecture"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Layer">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Layer/modules"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Layer/number"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Layer/name"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Layer/architecture"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="EUREMA.ecore#//Trigger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Trigger/period"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Trigger/events"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Trigger/refers"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Event">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Event/name"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Event/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Event/payload"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//MegamodelModuleTrigger">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModuleTrigger/initialOperation"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModuleTrigger/module"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//SoftwareModuleTrigger">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//SoftwareModuleTrigger/isNative"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//SoftwareModuleTrigger/executionMethod"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//SoftwareModuleTrigger/module"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//ModelResource">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//ModelResource/URI"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//ModelResource/name"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//EventType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//EventType/type"/>
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//EventType/superType"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//EventType/subTypes"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Architecture">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Architecture/environment"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Architecture/layers"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//MegamodelModule">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModule/megamodel"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModule/context"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModule/trigger"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//MegamodelModule/binding"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Software">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Software/uid"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Software/name"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute EUREMA.ecore#//Software/description"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Software/modules"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Entry">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Entry/operation"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Entry/incoming"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Exit">
+      <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference EUREMA.ecore#//Exit/operation"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Exit/outgoing"/>
+    </genClasses>
+    <genClasses ecoreClass="EUREMA.ecore#//Repository">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference EUREMA.ecore#//Repository/software"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
