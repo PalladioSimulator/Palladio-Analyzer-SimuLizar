@@ -13,6 +13,7 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
@@ -20,6 +21,7 @@ import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
+import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
 import de.uka.ipd.sdq.pcm.resourceenvironment.util.ResourceenvironmentSwitch;
 import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
 import de.uka.ipd.sdq.pcm.seff.util.SeffSwitch;
@@ -150,40 +152,70 @@ public final class MonitorRepositoryUtil {
     private static Boolean checkPCMMeasuringPoints(final EObject element, final MeasuringPoint measuringPoint) {
         return new PcmmeasuringpointSwitch<Boolean>() {
 
-            private boolean checkActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint mp) {
+            @Override
+            public Boolean caseActiveResourceMeasuringPoint(final ActiveResourceMeasuringPoint mp) {
+                return this.checkActiveResourceMeasuringPoint(mp);
+            }
+
+            @Override
+            public Boolean caseAssemblyOperationMeasuringPoint(final AssemblyOperationMeasuringPoint mp) {
+                return this.checkAssemblyOperationMeasuringPoint(mp);
+            }
+
+            @Override
+            public Boolean caseAssemblyPassiveResourceMeasuringPoint(final AssemblyPassiveResourceMeasuringPoint object) {
+                throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
+            }
+
+            @Override
+            public Boolean caseSubSystemOperationMeasuringPoint(final SubSystemOperationMeasuringPoint object) {
+                throw new IllegalArgumentException("Subsystems are currently unsupported by SimuLizar");
+            }
+
+            @Override
+            public Boolean caseSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint mp) {
+                return this.checkSystemOperationMeasuringPoint(mp);
+            }
+
+            @Override
+            public Boolean caseUsageScenarioMeasuringPoint(final UsageScenarioMeasuringPoint object) {
+                return this.checkUsageScenarioMeasuringPoint(object);
+            }
+
+            @Override
+            public Boolean caseResourceEnvironmentMeasuringPoint(final ResourceEnvironmentMeasuringPoint mp) {
+                return checkResourceEnvironmentMeasuringPoint(element, mp);
+            }
+
+            private boolean checkActiveResourceMeasuringPoint(final ActiveResourceMeasuringPoint mp) {
                 final ProcessingResourceSpecification activeResource = mp.getActiveResource();
 
                 return new ResourceenvironmentSwitch<Boolean>() {
 
                     @Override
-                    public Boolean caseResourceContainer(ResourceContainer resourceContainer) {
+                    public Boolean caseResourceContainer(final ResourceContainer resourceContainer) {
                         return resourceContainer.getId().equals(
                                 activeResource.getResourceContainer_ProcessingResourceSpecification().getId());
                     }
 
                     @Override
-                    public Boolean caseProcessingResourceSpecification(ProcessingResourceSpecification spec) {
+                    public Boolean caseProcessingResourceSpecification(final ProcessingResourceSpecification spec) {
                         return activeResource.getId().equals(spec.getId());
                     }
 
                     @Override
-                    public Boolean defaultCase(EObject obj) {
+                    public Boolean defaultCase(final EObject obj) {
                         return false;
                     }
 
                 }.doSwitch(element);
             }
 
-            @Override
-            public Boolean caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
-                return this.checkActiveResourceMeasuringPoint(object);
-            }
-
             private boolean checkAssemblyOperationMeasuringPoint(final AssemblyOperationMeasuringPoint mp) {
                 return new SeffSwitch<Boolean>() {
 
                     @Override
-                    public Boolean caseExternalCallAction(ExternalCallAction externalCallAction) {
+                    public Boolean caseExternalCallAction(final ExternalCallAction externalCallAction) {
                         return externalCallAction.getCalledService_ExternalService().getId()
                                 .equals(mp.getOperationSignature().getId())
                                 && externalCallAction.getRole_ExternalService().getId().equals(mp.getRole().getId());
@@ -197,26 +229,11 @@ public final class MonitorRepositoryUtil {
                 }.doSwitch(element);
             }
 
-            @Override
-            public Boolean caseAssemblyOperationMeasuringPoint(AssemblyOperationMeasuringPoint object) {
-                return this.checkAssemblyOperationMeasuringPoint(object);
-            }
-
-            @Override
-            public Boolean caseAssemblyPassiveResourceMeasuringPoint(AssemblyPassiveResourceMeasuringPoint object) {
-                throw new IllegalArgumentException("Passive resources are currently unsupported by SimuLizar");
-            }
-
-            @Override
-            public Boolean caseSubSystemOperationMeasuringPoint(SubSystemOperationMeasuringPoint object) {
-                throw new IllegalArgumentException("Subsystems are currently unsupported by SimuLizar");
-            }
-
             private boolean checkSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint mp) {
                 return new UsagemodelSwitch<Boolean>() {
 
                     @Override
-                    public Boolean caseEntryLevelSystemCall(EntryLevelSystemCall entryLevelSystemCall) {
+                    public Boolean caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
                         return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
                                 .equals(mp.getOperationSignature().getId())
                                 && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
@@ -224,36 +241,42 @@ public final class MonitorRepositoryUtil {
                     }
 
                     @Override
-                    public Boolean defaultCase(EObject object) {
+                    public Boolean defaultCase(final EObject object) {
                         return false;
                     }
                 }.doSwitch(element);
-            }
-
-            @Override
-            public Boolean caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
-                return this.checkSystemOperationMeasuringPoint(object);
             }
 
             private boolean checkUsageScenarioMeasuringPoint(final UsageScenarioMeasuringPoint mp) {
                 return new UsagemodelSwitch<Boolean>() {
 
                     @Override
-                    public Boolean caseUsageScenario(UsageScenario usageScenario) {
+                    public Boolean caseUsageScenario(final UsageScenario usageScenario) {
                         return usageScenario.getId().equals(mp.getUsageScenario().getId());
                     }
 
                     @Override
-                    public Boolean defaultCase(EObject object) {
+                    public Boolean defaultCase(final EObject object) {
                         return false;
                     }
                 }.doSwitch(element);
             }
 
-            @Override
-            public Boolean caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
-                return this.checkUsageScenarioMeasuringPoint(object);
-            }
+            private Boolean checkResourceEnvironmentMeasuringPoint(final EObject element,
+                    final ResourceEnvironmentMeasuringPoint mp) {
+                return new ResourceenvironmentSwitch<Boolean>() {
+
+                    @Override
+                    public Boolean caseResourceEnvironment(final ResourceEnvironment resourceEnvironment) {
+                        return resourceEnvironment.getEntityName().equals(mp.getResourceEnvironment().getEntityName());
+                    };
+
+                    @Override
+                    public Boolean defaultCase(final EObject object) {
+                        return false;
+                    }
+                }.doSwitch(element);
+            };
 
         }.doSwitch(measuringPoint);
     }
@@ -262,14 +285,14 @@ public final class MonitorRepositoryUtil {
         return new MeasuringpointSwitch<Boolean>() {
 
             @Override
-            public Boolean caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
-                final String measuringPointResourceURI = object.getResourceURI();
+            public Boolean caseResourceURIMeasuringPoint(final ResourceURIMeasuringPoint mp) {
+                final String measuringPointResourceURI = mp.getResourceURI();
                 final String elementResourceFragment = EMFLoadHelper.getResourceFragment(element);
                 return measuringPointResourceURI.endsWith(elementResourceFragment);
             }
 
             @Override
-            public Boolean caseStringMeasuringPoint(StringMeasuringPoint object) {
+            public Boolean caseStringMeasuringPoint(final StringMeasuringPoint mp) {
                 throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
             };
 
