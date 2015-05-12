@@ -66,7 +66,7 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
         final HenshinResourceSetPartition henshinPartition = new HenshinResourceSetPartition();
         this.getBlackboard().addPartition(HENSHIN_MODEL_PARTITION_ID, henshinPartition);
 
-        if (!this.path.equals("")) {
+        if (this.path != null && !(this.path.equals(""))) {
 
             // add file protocol only if necessary
             String filePath = path;
