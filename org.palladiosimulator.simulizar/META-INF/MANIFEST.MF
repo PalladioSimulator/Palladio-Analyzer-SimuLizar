@@ -37,7 +37,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
  org.palladiosimulator.recorderframework.edp2,
  org.palladiosimulator.servicelevelobjective,
- org.palladiosimulator.servicelevelobjective.edp2
+ org.palladiosimulator.servicelevelobjective.edp2,
+ de.uka.ipd.sdq.pcm
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",

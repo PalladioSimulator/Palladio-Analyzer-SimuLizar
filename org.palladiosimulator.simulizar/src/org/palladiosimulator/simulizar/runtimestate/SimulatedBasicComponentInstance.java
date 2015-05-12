@@ -18,13 +18,11 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 public class SimulatedBasicComponentInstance extends SimulatedComponentInstance {
 
-    private final List<PassiveResource> passiveResourcesList;
     private final Map<String, IPassiveResource> passiveResourcesMap;
 
     public SimulatedBasicComponentInstance(final InterpreterDefaultContext context, final FQComponentID fqID,
             final List<PassiveResource> passiveResources) {
         super(context.getRuntimeState(), fqID);
-        this.passiveResourcesList = passiveResources;
 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
@@ -83,7 +81,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
      * @param passiveResource
      */
     private void checkAcquireReleasePrecondition(final PassiveResource passiveResource) {
-        if (passiveResource == null || !passiveResourcesList.contains(passiveResource)) {
+        if (passiveResource == null || !passiveResourcesMap.containsKey(passiveResource.getId())) {
             throw new IllegalArgumentException("Illegal passive resource for this basic component instance passed");
         }
     }
