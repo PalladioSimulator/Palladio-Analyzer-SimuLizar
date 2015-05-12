@@ -16,7 +16,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointFactory;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -24,6 +23,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.StatisticalCharacterizationEnum;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
@@ -64,9 +64,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
     private final Reconfigurator reconfigurator;
 
     private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
-
-    /** Default EMF factory for measuring points. */
-    private final MeasuringpointFactory measuringpointFactory = MeasuringpointFactory.eINSTANCE;
 
     /**
      * @param modelAccessFactory
@@ -245,19 +242,19 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
      */
     private void initReponseTimeMeasurement() {
         for (MeasurementSpecification responseTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-            // EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
+            final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+            final List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
+            final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
 
-            List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
-            Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
-
-            try {
-                IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
-                        this.runtimeMeasurementsModel, responseTimeMeasurementSpec, measuringPoint);
-                calculator.addObserver(aggregator);
-            } catch (final UnsupportedOperationException e) {
-                LOGGER.error(e);
-                throw new RuntimeException(e);
+            if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE) {
+                try {
+                    IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
+                            this.runtimeMeasurementsModel, responseTimeMeasurementSpec, measuringPoint);
+                    calculator.addObserver(aggregator);
+                } catch (final UnsupportedOperationException e) {
+                    LOGGER.error(e);
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
@@ -372,8 +369,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
 
             currentTimeProbes.put("Reconfiguration", Collections.unmodifiableList(probeList));
 
-            Calculator calculator = this.calculatorFactory
-                    .buildReconfigurationTimeCalculator(measuringPoint, probeList);
+            this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probeList);
 
             this.reconfigurator.addObserver(this);
 
