@@ -60,7 +60,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
         final SDMResourceSetPartition sdmPartition = new SDMResourceSetPartition();
         this.blackboard.addPartition(SDM_MODEL_PARTITION_ID, sdmPartition);
 
-        if (!this.path.equals("")) {
+        if (this.path != null && !(this.path.equals(""))) {
 
             // add file protocol only if necessary
             String filePath = path;
