@@ -2,7 +2,16 @@ package org.palladiosimulator.simulizar.power.ui.configuration;
 
 import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputHandler;
 
+import de.fzi.power.infrastructure.PowerInfrastructureRepository;
 
+/**
+ * Implementation of the {@link AbstractExtensionFileInputHandler} to exploit the
+ * {@code org.palladiosimulator.simulizar.ui.configuration.fileinput} extension point.
+ * This allows the user to specify {@link PowerInfrastructureRepository} model file that is included
+ * in the Simulizar launch configuration.
+ * @author Florian Rosenthal
+ *
+ */
 public class PowerInfrastructureRepositoryFileInputHandler extends AbstractExtensionFileInputHandler {
 
     /**

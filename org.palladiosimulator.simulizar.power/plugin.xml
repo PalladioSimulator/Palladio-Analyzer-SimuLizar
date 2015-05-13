@@ -10,12 +10,16 @@
       </probeFrameworkListenerDecorator>
    </extension>
    <extension
+         id="org.palladiosimulator.power"
+         name="Power Infrastructure Repository File Input Handler"
          point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
       <fileInputHandler
             fileInputHandler="org.palladiosimulator.simulizar.power.ui.configuration.PowerInfrastructureRepositoryFileInputHandler">
       </fileInputHandler>
    </extension>
    <extension
+         id="org.palladiosimulator.power"
+         name="Power Infrastructure Repository Load Job"
          point="org.palladiosimulator.simulizar.launcher.modelload">
       <loadJob
             loadJob="org.palladiosimulator.simulizar.power.jobs.LoadPowerInfrastructureRepositoryIntoBlackboardJob"
