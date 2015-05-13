@@ -4,6 +4,18 @@
   <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
     <activeResource href="../iaas.resourceenvironment#_GAVEEAEqEeS7FKokKTKFow"/>
   </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
+    <activeResource href="../iaas.resourceenvironment#_HwZ6kAEqEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
+    <activeResource href="../iaas.resourceenvironment#_JPnqkAEqEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
+    <activeResource href="../iaas.resourceenvironment#_K2xOkAEqEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
+    <activeResource href="../iaas.resourceenvironment#_EKwpkAEqEeS7FKokKTKFow"/>
+  </measuringPoints>
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server1" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server2" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="overloadUsageScenario" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/overload.usagemodel#_YtqF4AEqEeS7FKokKTKFow"/>
