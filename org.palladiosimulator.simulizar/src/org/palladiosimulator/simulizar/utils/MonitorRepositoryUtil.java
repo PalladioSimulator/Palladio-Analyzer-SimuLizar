@@ -21,6 +21,8 @@ import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 
+import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
+import simulizarmeasuringpoint.util.SimulizarmeasuringpointSwitch;
 import de.uka.ipd.sdq.pcm.repository.PassiveResource;
 import de.uka.ipd.sdq.pcm.repository.util.RepositorySwitch;
 import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -84,15 +86,34 @@ public final class MonitorRepositoryUtil {
         EObject eobject = getEObjectFromPCMMeasuringPoint(mp);
 
         if (eobject == null) {
-            eobject = getEObjectFromGeneralMeasuringPoint(mp);
+            eobject = getEObjectFromSimuLizarMeasuringPoint(mp);
             if (eobject == null) {
-                throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
-                        + mp.getStringRepresentation() + "\" -- most likely this type of measuring point is "
-                        + "not yet implemented within in getEObjectFromPCMMeasuringPoint "
-                        + "or getEObjectFromGeneralMeasuringPoint methods.");
+                eobject = getEObjectFromGeneralMeasuringPoint(mp);
+                if (eobject == null) {
+                    throw new IllegalArgumentException("Could not find EObject for MeasuringPoint \""
+                            + mp.getStringRepresentation() + "\" -- most likely this type of measuring point is "
+                            + "not yet implemented within in getEObjectFromPCMMeasuringPoint "
+                            + "or getEObjectFromGeneralMeasuringPoint methods.");
+                }
             }
         }
         return eobject;
+    }
+
+    /**
+     * Returns the measured element EObject for a SimuLizar measuring point.
+     * 
+     * @param measuringPoint
+     *            the measuring point
+     * @return the measured element
+     */
+    private static EObject getEObjectFromSimuLizarMeasuringPoint(MeasuringPoint measuringPoint) {
+        return new SimulizarmeasuringpointSwitch<EObject>() {
+            @Override
+            public EObject caseReconfigurationMeasuringPoint(ReconfigurationMeasuringPoint object) {
+                return EMFLoadHelper.loadModel(object.getResourceURI());
+            }
+        }.doSwitch(measuringPoint);
     }
 
     /**
@@ -363,7 +384,8 @@ public final class MonitorRepositoryUtil {
 
             @Override
             public Boolean caseStringMeasuringPoint(final StringMeasuringPoint mp) {
-                throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar");
+                throw new IllegalArgumentException("String measuring points are forbidden for SimuLizar: "
+                        + mp.toString());
             };
 
         }.doSwitch(measuringPoint);
