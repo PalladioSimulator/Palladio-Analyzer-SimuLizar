@@ -2,10 +2,11 @@ package org.palladiosimulator.simulizar.launcher;
 
 public class SimulizarConstants {
 
-    // for the extension point8s)
+    // for the extension points
     public static final String MODEL_LOAD_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.launcher.modelload";
     public static final String MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE = "loadJob";
     public static final String MODEL_LOAD_EXTENSION_POINT_JOB_CONFIG_BUILDER_ATTRIBUTE = "loadJobConfigBuilder";
+    public static final String MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE = "blackboardPartitionId";
 
     // Model filenames configuration identifiers
     public static final String MONITOR_REPOSITORY_FILE = "monitorRepositoryFile";
