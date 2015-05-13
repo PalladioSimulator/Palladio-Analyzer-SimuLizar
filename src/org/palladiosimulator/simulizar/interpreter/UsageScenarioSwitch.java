@@ -99,30 +99,37 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                         new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.BEGIN,
                                 this.context.getThread()));
 
-		// FIXME We stick to single model elements here even though several would be needed to
+        // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context
-        .getRuntimeState()
-        .getEventNotificationHelper()
-        .firePassedEvent(
-                new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
-                        .getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN, this.context
-                        .getThread()));
-        
+                .getRuntimeState()
+                .getEventNotificationHelper()
+                .firePassedEvent(
+                        new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
+                                .getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN, this.context
+                                .getThread()));
+
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                 entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
         providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
         this.context.getStack().removeStackFrame();
 
-		// FIXME We stick to single model elements here even though several would be needed to
-        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context
                 .getRuntimeState()
                 .getEventNotificationHelper()
                 .firePassedEvent(
                         new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
                                 this.context.getThread()));
+
+        // FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
+        this.context
+                .getRuntimeState()
+                .getEventNotificationHelper()
+                .firePassedEvent(
+                        new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
+                                .getOperationSignature__EntryLevelSystemCall(), EventType.END, this.context.getThread()));
 
         return super.caseEntryLevelSystemCall(entryLevelSystemCall);
     }
