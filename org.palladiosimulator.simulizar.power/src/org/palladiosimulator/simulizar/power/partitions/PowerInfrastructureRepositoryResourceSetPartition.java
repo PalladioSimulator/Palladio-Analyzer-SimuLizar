@@ -8,14 +8,23 @@ import de.fzi.power.infrastructure.InfrastructurePackage;
 import de.fzi.power.infrastructure.PowerInfrastructureRepository;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
+/**
+ * This class is an implementation of a {@link ResourceSetPartition} specialized on 
+ * {@link PowerInfrastructureRepository} models.
+ * @author Florian Rosenthal
+ *
+ */
 public final class PowerInfrastructureRepositoryResourceSetPartition extends ResourceSetPartition {
 
     private static final Logger LOGGER = Logger.getLogger(PowerInfrastructureRepositoryResourceSetPartition.class);
     private PowerInfrastructureRepository powerInfrastructureRepositoryModel;
 
-    public PowerInfrastructureRepositoryResourceSetPartition() {
-    }
-
+    
+    /**
+     * Gets the {@link PowerInfrastructureRepository} which is currently contained within this partition.
+     * @return The {@link PowerInfrastructureRepository} that currently resides within is partition,
+     * or {@code null} if none is available.
+     */
     public PowerInfrastructureRepository getPowerInfrastructureRepositoryModel() {
         if (this.powerInfrastructureRepositoryModel == null) {
             this.powerInfrastructureRepositoryModel = loadPowerInfrastructureRepositoryModel();
@@ -23,9 +32,6 @@ public final class PowerInfrastructureRepositoryResourceSetPartition extends Res
         return this.powerInfrastructureRepositoryModel;
     }
 
-    /**
-     * @return return the MonitorRepository element
-     */
     private PowerInfrastructureRepository loadPowerInfrastructureRepositoryModel() {
         try {
             LOGGER.debug("Retrieving Power Infrastructure Repository Model from blackboard partition");

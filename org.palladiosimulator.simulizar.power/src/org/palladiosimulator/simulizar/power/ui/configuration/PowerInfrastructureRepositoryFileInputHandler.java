@@ -5,6 +5,9 @@ import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExten
 
 public class PowerInfrastructureRepositoryFileInputHandler extends AbstractExtensionFileInputHandler {
 
+    /**
+     * This constant holds the run configuration key for the infrastructure model file.
+     */
     public static final String INFRASTRUCTURE_MODEL_FILE = "infrastructureModelFile";
     private static final String[] INFRASTRUCTURE_MODEL_FILE_EXTENSIONS = new String[] { "*.infrastructure" };
     private static final String GROUP_LABEL = "Optional: Infrastructure Model File (For Power Analyses)";
