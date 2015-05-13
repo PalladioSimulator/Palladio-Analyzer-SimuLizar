@@ -92,8 +92,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-		// FIXME We stick to single model elements here even though several would be needed to
-        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context
                 .getRuntimeState()
                 .getEventNotificationHelper()
@@ -101,6 +99,16 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                         new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.BEGIN,
                                 this.context.getThread()));
 
+		// FIXME We stick to single model elements here even though several would be needed to
+        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
+        this.context
+        .getRuntimeState()
+        .getEventNotificationHelper()
+        .firePassedEvent(
+                new ModelElementPassedEvent<OperationSignature>(entryLevelSystemCall
+                        .getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN, this.context
+                        .getThread()));
+        
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                 entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());

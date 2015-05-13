@@ -163,7 +163,7 @@ public final class MonitorRepositoryUtil {
         }.doSwitch(measuringPoint);
     }
 
-    private static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
+    public static boolean elementConformingToMeasuringPoint(final EObject element, final MeasuringPoint measuringPoint) {
         if (measuringPoint == null) {
             throw new IllegalArgumentException("Measuring point cannot be null");
         }
