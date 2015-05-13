@@ -10,7 +10,10 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.eclipse.m2m.qvt.oml,
  org.palladiosimulator.simulizar.runtimemeasurement,
- de.uka.ipd.sdq.workflow.pcm
+ de.uka.ipd.sdq.workflow.pcm,
+ de.uka.ipd.sdq.workflow.mdsd,
+ org.scaledl.usageevolution,
+ org.palladiosimulator.commons;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto
