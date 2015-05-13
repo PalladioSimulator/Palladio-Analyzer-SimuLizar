@@ -3,7 +3,7 @@
 package simulizarmeasuringpoint.impl;
 
 import org.eclipse.emf.ecore.EClass;
-import org.palladiosimulator.edp2.models.measuringpoint.impl.StringMeasuringPointImpl;
+import org.palladiosimulator.edp2.models.measuringpoint.impl.ResourceURIMeasuringPointImpl;
 
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
 import simulizarmeasuringpoint.SimulizarmeasuringpointPackage;
@@ -16,7 +16,7 @@ import simulizarmeasuringpoint.SimulizarmeasuringpointPackage;
  *
  * @generated
  */
-public class ReconfigurationMeasuringPointImpl extends StringMeasuringPointImpl implements
+public class ReconfigurationMeasuringPointImpl extends ResourceURIMeasuringPointImpl implements
 ReconfigurationMeasuringPoint {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->

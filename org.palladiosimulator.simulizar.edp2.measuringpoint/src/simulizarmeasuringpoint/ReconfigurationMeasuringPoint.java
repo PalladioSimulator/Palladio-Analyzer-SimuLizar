@@ -2,7 +2,7 @@
  */
 package simulizarmeasuringpoint;
 
-import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '
@@ -13,5 +13,5 @@ import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
  * @model
  * @generated
  */
-public interface ReconfigurationMeasuringPoint extends StringMeasuringPoint {
+public interface ReconfigurationMeasuringPoint extends ResourceURIMeasuringPoint {
 } // ReconfigurationMeasuringPoint

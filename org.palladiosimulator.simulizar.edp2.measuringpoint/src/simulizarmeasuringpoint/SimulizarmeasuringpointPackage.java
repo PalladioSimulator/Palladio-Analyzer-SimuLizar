@@ -69,7 +69,7 @@ public interface SimulizarmeasuringpointPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECONFIGURATION_MEASURING_POINT__MEASURING_POINT_REPOSITORY = MeasuringpointPackage.STRING_MEASURING_POINT__MEASURING_POINT_REPOSITORY;
+    int RECONFIGURATION_MEASURING_POINT__MEASURING_POINT_REPOSITORY = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT__MEASURING_POINT_REPOSITORY;
 
     /**
      * The feature id for the '<em><b>String Representation</b></em>' attribute. <!-- begin-user-doc
@@ -78,7 +78,7 @@ public interface SimulizarmeasuringpointPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECONFIGURATION_MEASURING_POINT__STRING_REPRESENTATION = MeasuringpointPackage.STRING_MEASURING_POINT__STRING_REPRESENTATION;
+    int RECONFIGURATION_MEASURING_POINT__STRING_REPRESENTATION = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT__STRING_REPRESENTATION;
 
     /**
      * The feature id for the '<em><b>Resource URI Representation</b></em>' attribute. <!--
@@ -87,7 +87,7 @@ public interface SimulizarmeasuringpointPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECONFIGURATION_MEASURING_POINT__RESOURCE_URI_REPRESENTATION = MeasuringpointPackage.STRING_MEASURING_POINT__RESOURCE_URI_REPRESENTATION;
+    int RECONFIGURATION_MEASURING_POINT__RESOURCE_URI_REPRESENTATION = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT__RESOURCE_URI_REPRESENTATION;
 
     /**
      * The feature id for the '<em><b>Measuring Point</b></em>' attribute. <!-- begin-user-doc -->
@@ -96,7 +96,16 @@ public interface SimulizarmeasuringpointPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECONFIGURATION_MEASURING_POINT__MEASURING_POINT = MeasuringpointPackage.STRING_MEASURING_POINT__MEASURING_POINT;
+    int RECONFIGURATION_MEASURING_POINT__MEASURING_POINT = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT__MEASURING_POINT;
+
+    /**
+     * The feature id for the '<em><b>Resource URI</b></em>' attribute. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RECONFIGURATION_MEASURING_POINT__RESOURCE_URI = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT__RESOURCE_URI;
 
     /**
      * The number of structural features of the '<em>Reconfiguration Measuring Point</em>' class.
@@ -105,7 +114,7 @@ public interface SimulizarmeasuringpointPackage extends EPackage {
      * @generated
      * @ordered
      */
-    int RECONFIGURATION_MEASURING_POINT_FEATURE_COUNT = MeasuringpointPackage.STRING_MEASURING_POINT_FEATURE_COUNT + 0;
+    int RECONFIGURATION_MEASURING_POINT_FEATURE_COUNT = MeasuringpointPackage.RESOURCE_URI_MEASURING_POINT_FEATURE_COUNT + 0;
 
     /**
      * Returns the meta object for class '

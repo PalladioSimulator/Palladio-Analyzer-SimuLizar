@@ -7,6 +7,7 @@ import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
@@ -80,6 +81,11 @@ public class SimulizarmeasuringpointAdapterFactory extends AdapterFactoryImpl {
         }
 
         @Override
+        public Adapter caseResourceURIMeasuringPoint(final ResourceURIMeasuringPoint object) {
+            return SimulizarmeasuringpointAdapterFactory.this.createResourceURIMeasuringPointAdapter();
+        }
+
+        @Override
         public Adapter defaultCase(final EObject object) {
             return SimulizarmeasuringpointAdapterFactory.this.createEObjectAdapter();
         }
@@ -140,6 +146,21 @@ public class SimulizarmeasuringpointAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createStringMeasuringPointAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '
+     * {@link org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint
+     * <em>Resource URI Measuring Point</em>}'. <!-- begin-user-doc --> This default implementation
+     * returns null so that we can easily ignore cases; it's useful to ignore a case when
+     * inheritance will catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint
+     * @generated
+     */
+    public Adapter createResourceURIMeasuringPointAdapter() {
         return null;
     }
 

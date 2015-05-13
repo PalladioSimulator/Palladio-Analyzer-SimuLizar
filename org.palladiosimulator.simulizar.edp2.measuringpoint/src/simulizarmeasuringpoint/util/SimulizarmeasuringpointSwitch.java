@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
@@ -67,6 +68,9 @@ public class SimulizarmeasuringpointSwitch<T> extends Switch<T> {
             final ReconfigurationMeasuringPoint reconfigurationMeasuringPoint = (ReconfigurationMeasuringPoint) theEObject;
             T result = this.caseReconfigurationMeasuringPoint(reconfigurationMeasuringPoint);
             if (result == null) {
+                result = this.caseResourceURIMeasuringPoint(reconfigurationMeasuringPoint);
+            }
+            if (result == null) {
                 result = this.caseStringMeasuringPoint(reconfigurationMeasuringPoint);
             }
             if (result == null) {
@@ -126,6 +130,22 @@ public class SimulizarmeasuringpointSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseStringMeasuringPoint(final StringMeasuringPoint object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '
+     * <em>Resource URI Measuring Point</em>'. <!-- begin-user-doc --> This implementation returns
+     * null; returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '
+     *         <em>Resource URI Measuring Point</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseResourceURIMeasuringPoint(final ResourceURIMeasuringPoint object) {
         return null;
     }
 

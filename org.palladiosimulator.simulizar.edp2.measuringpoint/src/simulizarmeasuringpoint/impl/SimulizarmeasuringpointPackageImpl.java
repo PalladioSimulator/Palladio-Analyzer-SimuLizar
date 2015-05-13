@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentDataPackage;
+import org.palladiosimulator.edp2.models.Repository.RepositoryPackage;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
@@ -80,7 +81,7 @@ public class SimulizarmeasuringpointPackageImpl extends EPackageImpl implements 
 
         // Initialize simple dependencies
         ExperimentDataPackage.eINSTANCE.eClass();
-        org.palladiosimulator.edp2.models.Repository.RepositoryPackage.eINSTANCE.eClass();
+        RepositoryPackage.eINSTANCE.eClass();
         MeasuringpointPackage.eINSTANCE.eClass();
         PcmPackage.eINSTANCE.eClass();
 
@@ -175,7 +176,7 @@ public class SimulizarmeasuringpointPackageImpl extends EPackageImpl implements 
 
         // Add supertypes to classes
         this.reconfigurationMeasuringPointEClass.getESuperTypes().add(
-                theMeasuringpointPackage.getStringMeasuringPoint());
+                theMeasuringpointPackage.getResourceURIMeasuringPoint());
 
         // Initialize classes and features; add operations and parameters
         this.initEClass(this.reconfigurationMeasuringPointEClass, ReconfigurationMeasuringPoint.class,
