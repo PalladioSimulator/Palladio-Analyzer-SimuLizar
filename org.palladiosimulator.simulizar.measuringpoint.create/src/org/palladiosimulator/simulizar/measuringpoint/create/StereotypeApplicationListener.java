@@ -456,46 +456,10 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
 		Map<String, IProject> map = new HashMap<>();
 		for (IProject project : projects) {
 			if (project.isOpen())
-				project.accept(new StereotypeApplicationFilesVisitor(map), IResource.DEPTH_ONE, IContainer.INCLUDE_HIDDEN);
-			 map.putAll(getElementsAndProjectsForMeasuringPoints(project));
+				project.accept(new StereotypeApplicationFilesVisitor(map), IResource.DEPTH_ONE,
+						IContainer.INCLUDE_HIDDEN);
 		}
 		return map.keySet();
-	}
-
-	/**
-	 * Collects resourceURIs of all the elements in the project to which
-	 * MeasuringPoint stereotype was applied. It is done by examining
-	 * .SimulizarProfile.pa.xmi files.
-	 * 
-	 * @param project
-	 *            projects whose .SimulizarProfile.pa.xmi are examined.
-	 * @return map of resourceURIs of elements MeasuringPoint stereotype is
-	 *         applied to and projects where the respective
-	 *         .SimulizarProfile.pa.xmi files reside.
-	 * @throws ParserConfigurationException
-	 *             exception thrown if the document could not be parsed.
-	 * @throws SAXException
-	 *             an exception thrown by the SAX.
-	 * @throws IOException
-	 *             an exception indicating some IO operation on the resource
-	 *             could not be performed correctly.
-	 * @throws TransformerException
-	 *             indicates that the XML document represented by the resource
-	 *             could not be transformed.
-	 */
-	private Map<String, IProject> getElementsAndProjectsForMeasuringPoints(IProject project)
-			throws ParserConfigurationException, SAXException, IOException, TransformerException {
-		Map<String, IProject> res = new HashMap<>();
-		if (!project.isOpen()) {
-			return res;
-		}
-		try {
-			project.accept(new StereotypeApplicationFilesVisitor(res));
-		} catch (CoreException e) {
-			logger.log(Level.INFO, "Tried to access the project that was not opened yet.");
-		}
-
-		return res;
 	}
 
 	/**
