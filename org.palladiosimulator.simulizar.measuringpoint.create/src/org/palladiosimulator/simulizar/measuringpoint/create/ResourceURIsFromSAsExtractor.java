@@ -13,7 +13,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceVisitor;
@@ -24,11 +23,11 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-public class StereotypeApplicationFilesVisitor implements IResourceVisitor {
+public class ResourceURIsFromSAsExtractor implements IResourceVisitor {
 
 	private Map<String, IProject> res;
 
-	public StereotypeApplicationFilesVisitor(Map<String, IProject> res) {
+	public ResourceURIsFromSAsExtractor(Map<String, IProject> res) {
 		this.res = res;
 	}
 
@@ -77,18 +76,7 @@ public class StereotypeApplicationFilesVisitor implements IResourceVisitor {
 				throw new RuntimeException("A problem while transforming the stereotype application file");
 			}
 		}
-		if (resource instanceof IProject) {
-			IProject project = (IProject) resource;
-			for (IResource r : project.members()) {
-				r.accept(this);
-			}
-		} else if (resource instanceof IFolder) {
-			IFolder folder = (IFolder) resource;
-			for (IResource r : folder.members()) {
-				r.accept(this);
-			}
-		}
-		return false;
+		return true;
 	}
 
 }

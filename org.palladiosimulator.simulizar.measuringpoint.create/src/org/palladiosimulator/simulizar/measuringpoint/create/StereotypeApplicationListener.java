@@ -19,7 +19,6 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IResourceChangeEvent;
@@ -51,14 +50,14 @@ import org.xml.sax.SAXException;
 public class StereotypeApplicationListener implements IResourceChangeListener {
 
 	private final Logger logger = Logger.getLogger(StereotypeApplicationListener.class.getName());
-	private static final String RESOURCE_URI_ATTRIBUTE_NAME = "resourceURI";
+	public static final String RESOURCE_URI_ATTRIBUTE_NAME = "resourceURI";
 	private static final String RESOURCE_URI_DELIMITER = "/";
 	private static final int PROJECT_NAME_POSITION_INSIDE_RESOURCE_URI = 2;
 	private static final String CREATE_MEASURING_POINT_FILE_JOB_NAME = "Add a measuring point";
 	public static final String APPLIED_TO_ELEMENT_TAG_NAME = "appliedTo";
 	private static final String ELEMENT_ID_PREFIX = "platform:/resource";
 	public static final String HREF_ATTRIBUTE_NAME = "href";
-	private static final String MEASURING_POINT_FILE_EXTENSION = ".measuringpoint";
+	public static final String MEASURING_POINT_FILE_EXTENSION = ".measuringpoint";
 	public static final String MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION = ".SimulizarProfile.pa.xmi";
 	private static final String REPOSITORY_FILE_EXTENSION = ".repository#";
 	private static final String UTF8_ENCODING = "UTF-8";
@@ -250,74 +249,21 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
 	 * @throws TransformerException
 	 *             indicates that the XML document represented by the resource
 	 *             could not be transformed.
+	 * @throws CoreException
 	 */
 	private void adaptPaXmisToDeletedMeasuringPoints(IProject project) throws ParserConfigurationException,
-			SAXException, IOException, TransformerException {
+			SAXException, IOException, TransformerException, CoreException {
 
-		List<Object> listMPsAndSAs = getExistingSAsAndMPs(project);
-		List<String> existingMPs = (List<String>) listMPsAndSAs.get(0);
-		Map<String, IResource> existingSAs = (Map<String, IResource>) listMPsAndSAs.get(1);
-
+		List<String> existingMPs = new ArrayList<String>();
+		Map<String, IResource> existingSAs = new HashMap<String, IResource>();
+		if (project.isOpen()) {
+			project.accept(new ResourceURIsFromMPsExtractor(existingMPs, existingSAs), IResource.DEPTH_INFINITE, true);
+		}
 		for (Map.Entry<String, IResource> entry : existingSAs.entrySet()) {
 			if (!existingMPs.contains(entry.getKey())) {
 				deleteElementFromPaXmi(entry.getKey(), entry.getValue());
 				oldResourceURIs.remove(entry.getKey());
 			}
-		}
-	}
-
-	/**
-	 * Retrieves resourceURIs of measuring points and stereotype applications in
-	 * this project.
-	 * 
-	 * @param project
-	 *            project inside which measuring points and stereotype
-	 *            applications are searched.
-	 * @return list that contains two element. The first one is of type
-	 *         List<String>. It contains resourceURIs of the existing measuring
-	 *         points. The second element is of type Map<String, IResource>. It
-	 *         contains resourceURIs of the existing stereotype applications and
-	 *         the corresponding resources, i.e. the files that contain the
-	 *         stereotype application.
-	 * 
-	 * @throws ParserConfigurationException
-	 *             exception thrown if the document could not be parsed.
-	 * @throws SAXException
-	 *             an exception thrown by the SAX.
-	 * @throws IOException
-	 *             an exception indicating some IO operation on the resource
-	 *             could not be performed correctly.
-	 */
-	private List<Object> getExistingSAsAndMPs(IProject project) throws ParserConfigurationException, SAXException,
-			IOException {
-		List<String> existingMPs = new ArrayList<>();
-		Map<String, IResource> existingSAs = new HashMap<>();
-		try {
-			if (project.isOpen()) {
-				for (IResource r : project.members()) {
-					if (r.getFullPath().toString().endsWith(MEASURING_POINT_FILE_EXTENSION)) {
-						Document doc = getParsedDocument(r);
-						String resourceURI = doc.getDocumentElement().getAttribute(RESOURCE_URI_ATTRIBUTE_NAME);
-						existingMPs.add(resourceURI);
-					} else if (r.getFullPath().toString()
-							.endsWith(MEASURING_POINT_STEREOTYPE_APPLICATION_FILE_EXTENSION)) {
-						Document doc = getParsedDocument(r);
-						NodeList appliedToList = doc.getElementsByTagName(APPLIED_TO_ELEMENT_TAG_NAME);
-						for (int i = 0; i < appliedToList.getLength(); i++) {
-							Element appliedTo = (Element) appliedToList.item(i);
-							String href = appliedTo.getAttribute(HREF_ATTRIBUTE_NAME);
-							existingSAs.put(href, r);
-						}
-					}
-				}
-			}
-			List<Object> result = new ArrayList<>();
-			result.add(existingMPs);
-			result.add(existingSAs);
-			return result;
-		} catch (CoreException e) {
-			logger.log(Level.INFO, "Tried to access the project that was not opened yet.");
-			return new ArrayList<>();
 		}
 	}
 
@@ -456,8 +402,7 @@ public class StereotypeApplicationListener implements IResourceChangeListener {
 		Map<String, IProject> map = new HashMap<>();
 		for (IProject project : projects) {
 			if (project.isOpen())
-				project.accept(new StereotypeApplicationFilesVisitor(map), IResource.DEPTH_ONE,
-						IContainer.INCLUDE_HIDDEN);
+				project.accept(new ResourceURIsFromSAsExtractor(map), IResource.DEPTH_INFINITE, true);
 		}
 		return map.keySet();
 	}
