@@ -5,10 +5,8 @@ import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.power.partitions.PowerInfrastructureRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.power.runconfig.LoadPowerInfrastructureRepositoryIntoBlackboardJobConfig;
 import org.palladiosimulator.simulizar.power.runconfig.LoadPowerInfrastructureRepositoryIntoBlackboardJobConfigBuilder;
-import org.palladiosimulator.simulizar.power.ui.configuration.PowerInfrastructureRepositoryFileInputHandler;
 
 import de.fzi.power.infrastructure.PowerInfrastructureRepository;
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.extension.AbstractExtensionJobConfiguration;
 import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionJob;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -34,18 +32,12 @@ public final class LoadPowerInfrastructureRepositoryIntoBlackboardJob extends Ab
     private String path;
     
     /**
-     * Initializes a new instance of the {@link LoadPowerInfrastructureRepositoryIntoBlackboardJob} class with the given parameters.
-     * @param configuration A {@link SimuComWorkflowConfiguration} that contains the settings of the current simulation run.
-     * @throws IllegalArgumentException In case the given configuration is {@code null}.
-     */
-    public LoadPowerInfrastructureRepositoryIntoBlackboardJob(SimuComWorkflowConfiguration configuration) {
-        if (configuration == null) {
-            throw new IllegalArgumentException("Given configuration must not be null.");
-        }
-        this.path = (String) configuration.getAttributes().
-                get(PowerInfrastructureRepositoryFileInputHandler.INFRASTRUCTURE_MODEL_FILE);
+    * Initializes a new instance of the {@link LoadPowerInfrastructureRepositoryIntoBlackboardJob} class.
+    */
+    public LoadPowerInfrastructureRepositoryIntoBlackboardJob() {
+        
     }
-
+    
     /**
      * {@inheritDoc}<br>
      * In this case, the passed configuration must be an {@link LoadPowerInfrastructureRepositoryIntoBlackboardJobConfig}
