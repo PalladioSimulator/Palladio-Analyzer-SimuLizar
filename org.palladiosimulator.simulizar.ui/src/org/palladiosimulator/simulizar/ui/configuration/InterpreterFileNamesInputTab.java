@@ -37,7 +37,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     /** Text field for service level objectives file. */
     protected Text serviceLevelObjectivesFile;
 
-    protected Map<AbstractExtensionFileInputHandler, Text> extensionFileFolderInputTexts;
+    protected Map<AbstractExtensionFileInputHandler, Text> extensionFileFolderInputTexts = new HashMap<AbstractExtensionFileInputHandler, Text>();
 
     /**
      * @see de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab#createControl(org.eclipse.swt.widgets.Composite)
@@ -45,7 +45,6 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     @Override
     public void createControl(final Composite parent) {
         super.createControl(parent);
-        this.extensionFileFolderInputTexts = new HashMap<AbstractExtensionFileInputHandler, Text>();
         /**
          * Create Monitor Repository file section
          */
