@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated vsmappings -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="vsmappings.presentation.VsmappingsModelWizardID"
+            name="%_UI_VsmappingsModelWizard_label"
+            class="vsmappings.presentation.VsmappingsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/VsmappingsModelFile.gif">
+         <description>%_UI_VsmappingsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated vsmappings -->
+      <editor
+            id="vsmappings.presentation.VsmappingsEditorID"
+            name="%_UI_VsmappingsEditor_label"
+            icon="icons/full/obj16/VsmappingsModelFile.gif"
+            extensions="vsmappings"
+            class="vsmappings.presentation.VsmappingsEditor"
+            contributorClass="vsmappings.presentation.VsmappingsActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
