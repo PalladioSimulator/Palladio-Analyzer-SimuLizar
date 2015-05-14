@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated strategies -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="strategies.presentation.StrategiesModelWizardID"
+            name="%_UI_StrategiesModelWizard_label"
+            class="strategies.presentation.StrategiesModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/StrategiesModelFile.gif">
+         <description>%_UI_StrategiesModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated strategies -->
+      <editor
+            id="strategies.presentation.StrategiesEditorID"
+            name="%_UI_StrategiesEditor_label"
+            icon="icons/full/obj16/StrategiesModelFile.gif"
+            extensions="strategies"
+            class="strategies.presentation.StrategiesEditor"
+            contributorClass="strategies.presentation.StrategiesActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
