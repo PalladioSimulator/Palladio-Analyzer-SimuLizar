@@ -3,6 +3,8 @@
 package measurements;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
  * <!-- begin-user-doc -->
@@ -32,12 +34,12 @@ public interface MeasuredMonitor extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Monitor</em>' reference.
-	 * @see #setMonitor(org.palladiosimulator.monitorrepository.Monitor)
+	 * @see #setMonitor(Monitor)
 	 * @see measurements.MeasurementsPackage#getMeasuredMonitor_Monitor()
 	 * @model
 	 * @generated
 	 */
-	org.palladiosimulator.monitorrepository.Monitor getMonitor();
+	Monitor getMonitor();
 
 	/**
 	 * Sets the value of the '{@link measurements.MeasuredMonitor#getMonitor <em>Monitor</em>}' reference.
@@ -47,7 +49,7 @@ public interface MeasuredMonitor extends EObject {
 	 * @see #getMonitor()
 	 * @generated
 	 */
-	void setMonitor(org.palladiosimulator.monitorrepository.Monitor value);
+	void setMonitor(Monitor value);
 
 	/**
 	 * Returns the value of the '<em><b>Value</b></em>' attribute.
@@ -85,12 +87,12 @@ public interface MeasuredMonitor extends EObject {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Metric</em>' reference.
-	 * @see #setMetric(org.palladiosimulator.monitorrepository.MeasurementSpecification)
+	 * @see #setMetric(MeasurementSpecification)
 	 * @see measurements.MeasurementsPackage#getMeasuredMonitor_Metric()
 	 * @model
 	 * @generated
 	 */
-	org.palladiosimulator.monitorrepository.MeasurementSpecification getMetric();
+	MeasurementSpecification getMetric();
 
 	/**
 	 * Sets the value of the '{@link measurements.MeasuredMonitor#getMetric <em>Metric</em>}' reference.
@@ -100,6 +102,6 @@ public interface MeasuredMonitor extends EObject {
 	 * @see #getMetric()
 	 * @generated
 	 */
-	void setMetric(org.palladiosimulator.monitorrepository.MeasurementSpecification value);
+	void setMetric(MeasurementSpecification value);
 
 } // MeasuredMonitor

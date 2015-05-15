@@ -11,6 +11,7 @@ import org.eclipse.emf.common.EMFPlugin;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.palladiosimulator.edp2.models.ExperimentData.provider.EDP2EditPlugin;
 import org.palladiosimulator.metricspec.provider.MetricSpecEditPlugin;
+import org.palladiosimulator.monitorrepository.provider.MonitorrepositoryEditPlugin;
 
 /**
  * This is the central singleton for the Measurements edit plugin.
@@ -46,7 +47,7 @@ public final class MeasurementsEditPlugin extends EMFPlugin {
 		  (new ResourceLocator [] {
 		     EDP2EditPlugin.INSTANCE,
 		     MetricSpecEditPlugin.INSTANCE,
-		     org.palladiosimulator.monitorrepository.provider.MonitorrepositoryEditPlugin.INSTANCE,
+		     MonitorrepositoryEditPlugin.INSTANCE,
 		     PalladioComponentModelEditPlugin.INSTANCE,
 		     ProbabilityFunctionEditPlugin.INSTANCE,
 		     StoexEditPlugin.INSTANCE,

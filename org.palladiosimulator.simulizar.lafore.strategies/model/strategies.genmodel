@@ -6,7 +6,8 @@
     complianceLevel="8.0" copyrightFields="false" usedGenPackages="../../de.uka.ipd.sdq.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier"
     importOrganizing="true">
   <foreignModel>strategies.ecore</foreignModel>
-  <genPackages prefix="Strategies" disposableProviderFactory="true" ecorePackage="strategies.ecore#/">
+  <genPackages prefix="Strategies" resource="XML" disposableProviderFactory="true"
+      ecorePackage="strategies.ecore#/">
     <genClasses ecoreClass="strategies.ecore#//RuntimeStrategiesModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference strategies.ecore#//RuntimeStrategiesModel/strategies"/>
     </genClasses>
