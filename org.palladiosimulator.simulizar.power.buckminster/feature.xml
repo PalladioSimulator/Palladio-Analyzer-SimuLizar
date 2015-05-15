@@ -215,6 +215,7 @@ litigation.
 
    <url>
       <discovery label="SimuLizar" url="https://sdqweb.ipd.kit.edu/eclipse/simulizar/nightly/"/>
+      <discovery label="Power Consumption Analyzer" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/power/nightly/"/>
    </url>
 
    <includes
