@@ -213,6 +213,10 @@ Each party waives its rights to a jury trial in any resulting
 litigation.
    </license>
 
+   <url>
+      <discovery label="SimuLizar" url="https://sdqweb.ipd.kit.edu/eclipse/simulizar/nightly/"/>
+   </url>
+
    <includes
          id="org.palladiosimulator.simulizar.power.feature"
          version="0.0.0"/>
