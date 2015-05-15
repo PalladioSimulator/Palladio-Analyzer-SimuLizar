@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<violations:ViolationsRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0" xmlns:violations="http://simulizar.palladiosimulator.org/lafore/violations/1.0" id="_dxcdsNPBEeSHt-YvO79WHQ" entityName="MyViolationsTypes">
+<violations:ViolationsRepository
+ xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0" xmlns:violations="http://simulizar.palladiosimulator.org/lafore/violations/1.0" id="_dxcdsNPBEeSHt-YvO79WHQ" entityName="MyViolationsTypes">
   <violationTypes id="_nB8lwOOFEeSWd8lY2QHrZg" entityName="ResponseTimeViolated">
     <slo xsi:type="slo:HardThreshold" href="My.slo#_VLn8Et6xEeSFR4acpbZ8HQ"/>
   </violationTypes>
