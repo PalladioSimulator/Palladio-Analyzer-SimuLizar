@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<measurements:RuntimeMeasurementsModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:measurements="http://simulizar.palladiosimulator.org/lafore/measurements/1.0"/>
+<measurements:RuntimeMeasurementsModel xmlns:xmi="http://www.omg.org/XMI" xmlns:measurements="http://simulizar.palladiosimulator.org/lafore/measurements/1.0"/>

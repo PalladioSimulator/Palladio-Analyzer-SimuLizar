@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<strategies:RuntimeStrategiesModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:strategies="http://simulizar.palladiosimulator.org/lafore/strategies/1.0"/>
+<strategies:RuntimeStrategiesModel xmlns:xmi="http://www.omg.org/XMI" xmlns:strategies="http://simulizar.palladiosimulator.org/lafore/strategies/1.0"/>
