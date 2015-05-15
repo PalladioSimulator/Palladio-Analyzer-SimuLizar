@@ -14,4 +14,11 @@
             genModel="model/violations.genmodel"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated violations -->
+      <parser
+            type="violations"
+            class="violations.util.ViolationsResourceFactoryImpl"/>
+   </extension>
+
 </plugin>

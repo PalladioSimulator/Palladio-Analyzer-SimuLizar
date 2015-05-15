@@ -770,6 +770,57 @@ public class VsmappingsEditor
 		adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new EntityItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
@@ -1130,7 +1181,7 @@ public class VsmappingsEditor
 				selectionViewer = (TreeViewer)viewerPane.getViewer();
 				selectionViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
 
-				selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				selectionViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, selectionViewer));
 				selectionViewer.setInput(editingDomain.getResourceSet());
 				selectionViewer.setSelection(new StructuredSelection(editingDomain.getResourceSet().getResources().get(0)), true);
 				viewerPane.setTitle(editingDomain.getResourceSet());
@@ -1164,7 +1215,7 @@ public class VsmappingsEditor
 				parentViewer = (TreeViewer)viewerPane.getViewer();
 				parentViewer.setAutoExpandLevel(30);
 				parentViewer.setContentProvider(new ReverseAdapterFactoryContentProvider(adapterFactory));
-				parentViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				parentViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, parentViewer));
 
 				createContextMenuFor(parentViewer);
 				int pageIndex = addPage(viewerPane.getControl());
@@ -1189,7 +1240,7 @@ public class VsmappingsEditor
 				viewerPane.createControl(getContainer());
 				listViewer = (ListViewer)viewerPane.getViewer();
 				listViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-				listViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				listViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, listViewer));
 
 				createContextMenuFor(listViewer);
 				int pageIndex = addPage(viewerPane.getControl());
@@ -1214,7 +1265,7 @@ public class VsmappingsEditor
 				viewerPane.createControl(getContainer());
 				treeViewer = (TreeViewer)viewerPane.getViewer();
 				treeViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-				treeViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				treeViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, treeViewer));
 
 				new AdapterFactoryTreeEditor(treeViewer.getTree(), adapterFactory);
 
@@ -1259,7 +1310,7 @@ public class VsmappingsEditor
 
 				tableViewer.setColumnProperties(new String [] {"a", "b"});
 				tableViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-				tableViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				tableViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, tableViewer));
 
 				createContextMenuFor(tableViewer);
 				int pageIndex = addPage(viewerPane.getControl());
@@ -1302,7 +1353,7 @@ public class VsmappingsEditor
 
 				treeViewerWithColumns.setColumnProperties(new String [] {"a", "b"});
 				treeViewerWithColumns.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-				treeViewerWithColumns.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+				treeViewerWithColumns.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, treeViewerWithColumns));
 
 				createContextMenuFor(treeViewerWithColumns);
 				int pageIndex = addPage(viewerPane.getControl());
@@ -1435,7 +1486,7 @@ public class VsmappingsEditor
 					// Set up the tree viewer.
 					//
 					contentOutlineViewer.setContentProvider(new AdapterFactoryContentProvider(adapterFactory));
-					contentOutlineViewer.setLabelProvider(new AdapterFactoryLabelProvider(adapterFactory));
+					contentOutlineViewer.setLabelProvider(new AdapterFactoryLabelProvider.ColorProvider(adapterFactory, contentOutlineViewer));
 					contentOutlineViewer.setInput(editingDomain.getResourceSet());
 
 					// Make sure our popups work.

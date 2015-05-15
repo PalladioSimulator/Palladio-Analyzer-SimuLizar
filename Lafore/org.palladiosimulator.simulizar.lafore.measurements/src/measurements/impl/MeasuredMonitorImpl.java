@@ -9,6 +9,8 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
 
 /**
  * <!-- begin-user-doc -->
@@ -54,7 +56,7 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 * @ordered
 	 */
-	protected org.palladiosimulator.monitorrepository.MeasurementSpecification metric;
+	protected MeasurementSpecification metric;
 
 	/**
 	 * The cached value of the '{@link #getMonitor() <em>Monitor</em>}' reference.
@@ -64,7 +66,7 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * @generated
 	 * @ordered
 	 */
-	protected org.palladiosimulator.monitorrepository.Monitor monitor;
+	protected Monitor monitor;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -90,10 +92,10 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.palladiosimulator.monitorrepository.Monitor getMonitor() {
+	public Monitor getMonitor() {
 		if (monitor != null && monitor.eIsProxy()) {
 			InternalEObject oldMonitor = (InternalEObject)monitor;
-			monitor = (org.palladiosimulator.monitorrepository.Monitor)eResolveProxy(oldMonitor);
+			monitor = (Monitor)eResolveProxy(oldMonitor);
 			if (monitor != oldMonitor) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MeasurementsPackage.MEASURED_MONITOR__MONITOR, oldMonitor, monitor));
@@ -107,7 +109,7 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.palladiosimulator.monitorrepository.Monitor basicGetMonitor() {
+	public Monitor basicGetMonitor() {
 		return monitor;
 	}
 
@@ -116,8 +118,8 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMonitor(org.palladiosimulator.monitorrepository.Monitor newMonitor) {
-		org.palladiosimulator.monitorrepository.Monitor oldMonitor = monitor;
+	public void setMonitor(Monitor newMonitor) {
+		Monitor oldMonitor = monitor;
 		monitor = newMonitor;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MeasurementsPackage.MEASURED_MONITOR__MONITOR, oldMonitor, monitor));
@@ -149,10 +151,10 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.palladiosimulator.monitorrepository.MeasurementSpecification getMetric() {
+	public MeasurementSpecification getMetric() {
 		if (metric != null && metric.eIsProxy()) {
 			InternalEObject oldMetric = (InternalEObject)metric;
-			metric = (org.palladiosimulator.monitorrepository.MeasurementSpecification)eResolveProxy(oldMetric);
+			metric = (MeasurementSpecification)eResolveProxy(oldMetric);
 			if (metric != oldMetric) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, MeasurementsPackage.MEASURED_MONITOR__METRIC, oldMetric, metric));
@@ -166,7 +168,7 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public org.palladiosimulator.monitorrepository.MeasurementSpecification basicGetMetric() {
+	public MeasurementSpecification basicGetMetric() {
 		return metric;
 	}
 
@@ -175,8 +177,8 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setMetric(org.palladiosimulator.monitorrepository.MeasurementSpecification newMetric) {
-		org.palladiosimulator.monitorrepository.MeasurementSpecification oldMetric = metric;
+	public void setMetric(MeasurementSpecification newMetric) {
+		MeasurementSpecification oldMetric = metric;
 		metric = newMetric;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, MeasurementsPackage.MEASURED_MONITOR__METRIC, oldMetric, metric));
@@ -214,10 +216,10 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 				setValue((Double)newValue);
 				return;
 			case MeasurementsPackage.MEASURED_MONITOR__METRIC:
-				setMetric((org.palladiosimulator.monitorrepository.MeasurementSpecification)newValue);
+				setMetric((MeasurementSpecification)newValue);
 				return;
 			case MeasurementsPackage.MEASURED_MONITOR__MONITOR:
-				setMonitor((org.palladiosimulator.monitorrepository.Monitor)newValue);
+				setMonitor((Monitor)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -235,10 +237,10 @@ public class MeasuredMonitorImpl extends MinimalEObjectImpl.Container implements
 				setValue(VALUE_EDEFAULT);
 				return;
 			case MeasurementsPackage.MEASURED_MONITOR__METRIC:
-				setMetric((org.palladiosimulator.monitorrepository.MeasurementSpecification)null);
+				setMetric((MeasurementSpecification)null);
 				return;
 			case MeasurementsPackage.MEASURED_MONITOR__MONITOR:
-				setMonitor((org.palladiosimulator.monitorrepository.Monitor)null);
+				setMonitor((Monitor)null);
 				return;
 		}
 		super.eUnset(featureID);
