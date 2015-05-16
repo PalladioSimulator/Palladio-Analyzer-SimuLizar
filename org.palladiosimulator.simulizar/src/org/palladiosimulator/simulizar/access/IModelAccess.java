@@ -35,8 +35,6 @@ public interface IModelAccess extends Cloneable {
 
     public RuntimeMeasurementModel getRuntimeMeasurementModel();
 
-    // public PowerInfrastructureRepository getPowerInfrastructureRepository();
-
     public UsageEvolution getUsageEvolutionModel();
 
     // public Collection<Activity> getStoryDiagrams();

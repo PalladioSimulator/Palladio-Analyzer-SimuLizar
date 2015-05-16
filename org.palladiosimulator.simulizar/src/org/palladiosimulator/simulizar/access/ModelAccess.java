@@ -117,11 +117,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         return monitorRepositoryPartition.getMonitorRepositoryModel();
     }
 
-    // @Override
-    // public PowerInfrastructureRepository getPowerInfrastructureRepository() {
-    // return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel();
-    // }
-
     /**
      * 
      * @return the global RuntimeMeasurement model.

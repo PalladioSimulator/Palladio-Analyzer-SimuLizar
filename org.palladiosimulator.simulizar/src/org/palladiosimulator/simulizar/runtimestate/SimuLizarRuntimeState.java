@@ -114,6 +114,16 @@ public class SimuLizarRuntimeState {
         return this.modelAccess;
     }
 
+    /**
+     * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
+     * of changes.
+     * 
+     * @return The reconfigurator.
+     */
+    public Reconfigurator getReconfigurator() {
+        return reconfigurator;
+    }
+
     public void runSimulation() {
         LOGGER.debug("Starting Simulizar simulation...");
         final double simRealTimeNano = ExperimentRunner.run(model);
