@@ -17,7 +17,7 @@
          </appinfo>
       </annotation>
       <complexType>
-         <sequence minOccurs="0" maxOccurs="1">
+         <sequence minOccurs="0" maxOccurs="unbounded">
             <element ref="loadJob"/>
             <element ref="blackboardPartitionId"/>
          </sequence>
