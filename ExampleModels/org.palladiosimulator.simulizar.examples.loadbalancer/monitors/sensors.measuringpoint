@@ -14,5 +14,5 @@
   </measuringPoints>
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server1" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="Server2" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
-  <measuringPoints xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" measuringPoint="Reconfiguration"/>
+  <measuringPoints xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" measuringPoint="Reconfiguration" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/reconfigurations_active/acquire.sdm"/>
 </org.palladiosimulator.edp2.models:MeasuringPointRepository>
