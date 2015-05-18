@@ -36,6 +36,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.
@@ -88,12 +89,15 @@ public class QVTOExecutor {
         }
         //now collect all models that were added to blackboard via extension point
         for (String partitionId : ExtensionHelper.getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE,
+                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)) {
-            ResourceSet rs = blackboard.getPartition(partitionId).getResourceSet();
-            currentModel = rs.getResources().get(0).getContents().get(0);
-            if (currentModel != null) {
-                result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+            ResourceSetPartition partition = blackboard.getPartition(partitionId);
+            if (partition != null) {
+                ResourceSet rs = partition.getResourceSet();
+                currentModel = rs.getResources().get(0).getContents().get(0);
+                if (currentModel != null) {
+                    result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+                }
             }
         }
         return result;
