@@ -42,7 +42,7 @@ import simulizarmeasuringpoint.util.SimulizarmeasuringpointAdapterFactory;
  * @generated
  */
 public class SimulizarmeasuringpointItemProviderAdapterFactory extends SimulizarmeasuringpointAdapterFactory implements
-ComposeableAdapterFactory, IChangeNotifier, IDisposable {
+        ComposeableAdapterFactory, IChangeNotifier, IDisposable {
     /**
      * This keeps track of the root adapter factory that delegates to this adapter factory. <!--
      * begin-user-doc --> <!-- end-user-doc -->
@@ -222,7 +222,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
         /**
          * The switch for creating child descriptors specific to each extended class. <!--
          * begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         protected static class CreationSwitch extends MeasuringpointSwitch<Object> {
@@ -236,7 +236,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
             /**
              * The domain in which to create the children. <!-- begin-user-doc --> <!-- end-user-doc
              * -->
-             * 
+             *
              * @generated
              */
             protected EditingDomain editingDomain;
@@ -244,7 +244,7 @@ ComposeableAdapterFactory, IChangeNotifier, IDisposable {
             /**
              * Creates the a switch for populating child descriptors in the given domain. <!--
              * begin-user-doc --> <!-- end-user-doc -->
-             * 
+             *
              * @generated
              */
             CreationSwitch(final List<Object> newChildDescriptors, final EditingDomain editingDomain) {

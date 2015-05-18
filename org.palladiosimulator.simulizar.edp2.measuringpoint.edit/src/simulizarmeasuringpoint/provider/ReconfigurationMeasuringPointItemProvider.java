@@ -9,7 +9,7 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.palladiosimulator.edp2.models.measuringpoint.provider.StringMeasuringPointItemProvider;
+import org.palladiosimulator.edp2.models.measuringpoint.provider.ResourceURIMeasuringPointItemProvider;
 
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
 
@@ -20,7 +20,7 @@ import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
  * 
  * @generated
  */
-public class ReconfigurationMeasuringPointItemProvider extends StringMeasuringPointItemProvider {
+public class ReconfigurationMeasuringPointItemProvider extends ResourceURIMeasuringPointItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
