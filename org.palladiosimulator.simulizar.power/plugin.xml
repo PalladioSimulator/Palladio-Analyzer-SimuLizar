@@ -22,12 +22,10 @@
          name="Power Infrastructure Repository Load Job"
          point="org.palladiosimulator.simulizar.launcher.modelload">
       <loadJob
+            blackboardPartitionId="de.fzi.power"
             loadJob="org.palladiosimulator.simulizar.power.jobs.LoadPowerInfrastructureRepositoryIntoBlackboardJob"
             loadJobConfigBuilder="org.palladiosimulator.simulizar.power.runconfig.LoadPowerInfrastructureRepositoryIntoBlackboardJobConfigBuilder">
       </loadJob>
-      <blackboardPartitionId
-            blackboardPartitionId="de.fzi.power">
-      </blackboardPartitionId>
    </extension>
 
 </plugin>

@@ -36,7 +36,7 @@ public class LoadPowerInfrastructureRepositoryIntoBlackboardJobConfig extends Ab
     
     @Override
     public String getErrorMessage() {
-       return null;
+       return "Invalid Power Infrastructure Configuration!";
     }
 
     /**
