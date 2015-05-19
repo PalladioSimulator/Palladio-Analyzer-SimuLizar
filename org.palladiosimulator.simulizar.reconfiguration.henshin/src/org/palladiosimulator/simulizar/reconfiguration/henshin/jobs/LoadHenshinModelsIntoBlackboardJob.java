@@ -8,11 +8,10 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinResourceSetPartition;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.FileUtil;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -37,10 +36,10 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
 
     private final String path;
 
-    public LoadHenshinModelsIntoBlackboardJob(final SimuComWorkflowConfiguration configuration,
+    public LoadHenshinModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
             MDSDBlackboard blackboard) {
         this.blackboard = blackboard;
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER);
+        this.path = configuration.getReconfigurationRulesFolder();
     }
 
     @Override
