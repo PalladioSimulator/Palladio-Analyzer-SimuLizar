@@ -9,10 +9,9 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.SDMResourceSetPartition;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -45,10 +44,10 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public LoadSDMModelsIntoBlackboardJob(final SimuComWorkflowConfiguration configuration,
+    public LoadSDMModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
             final MDSDBlackboard blackboard) {
         this.blackboard = blackboard;
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER);
+        this.path = configuration.getReconfigurationRulesFolder();
     }
 
     /**
