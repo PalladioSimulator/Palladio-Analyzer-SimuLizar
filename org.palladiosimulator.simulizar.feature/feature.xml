@@ -243,6 +243,7 @@ litigation.
       <import plugin="de.uka.ipd.sdq.identifier" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.pcm" version="3.6.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.units" version="2.1.0" match="greaterOrEqual"/>
@@ -266,7 +267,11 @@ litigation.
       <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.pcm.edp2.measuringpoint" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.experimentanalysis" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.edp2.datastream"/>
+      <import plugin="org.apache.commons.collections15" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.scaledl.usageevolution" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.storydriven.core"/>
+      <import plugin="de.uka.ipd.sdq.completions"/>
       <import plugin="org.eclipse.ui" version="3.106.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.debug.ui" version="3.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.resources" version="3.9.0" match="greaterOrEqual"/>
@@ -274,22 +279,7 @@ litigation.
       <import plugin="org.eclipse.ui.navigator.resources" version="3.4.700" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.ui" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.10.0" match="greaterOrEqual"/>
-      <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.edp2.datastream"/>
-      <import plugin="org.apache.commons.collections15" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.storydriven.core"/>
-      <import plugin="de.uka.ipd.sdq.completions"/>
-      <import plugin="org.eclipse.ui.ide" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.10.0" match="compatible"/>
-      <import plugin="org.eclipse.emf.ecore" version="2.10.0" match="compatible"/>
-      <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="compatible"/>
-      <import plugin="de.uka.ipd.sdq.identifier" version="2.1.0" match="compatible"/>
-      <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="compatible"/>
-      <import plugin="de.uka.ipd.sdq.pcm" version="3.6.0" match="compatible"/>
-      <import plugin="de.uka.ipd.sdq.probfunction" version="2.1.0" match="compatible"/>
-      <import plugin="de.uka.ipd.sdq.stoex" version="2.2.0" match="compatible"/>
-      <import plugin="de.uka.ipd.sdq.units" version="2.1.0" match="compatible"/>
       <import plugin="org.palladiosimulator.simulizar.edp2.measuringpoint" version="0.1.0" match="compatible"/>
       <import plugin="org.eclipse.emf.edit" version="2.10.0" match="compatible"/>
       <import plugin="org.palladiosimulator.edp2.edit" version="1.0.0" match="compatible"/>
@@ -299,6 +289,7 @@ litigation.
       <import plugin="de.uka.ipd.sdq.probfunction.edit" version="2.1.0" match="compatible"/>
       <import plugin="de.uka.ipd.sdq.stoex.edit" version="2.2.0" match="compatible"/>
       <import plugin="de.uka.ipd.sdq.units.edit" version="2.1.0" match="compatible"/>
+      <import feature="de.uka.ipd.sdq.pcm.feature" version="3.5.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
