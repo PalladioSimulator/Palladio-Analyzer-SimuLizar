@@ -352,14 +352,14 @@ litigation.
          id="org.palladiosimulator.simulizar.measuringpoint"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.measuringpoint.create"
          download-size="0"
          install-size="0"
-         version="1.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
 </feature>
