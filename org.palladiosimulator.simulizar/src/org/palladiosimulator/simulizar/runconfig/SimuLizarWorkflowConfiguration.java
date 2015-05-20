@@ -2,9 +2,14 @@ package org.palladiosimulator.simulizar.runconfig;
 
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 
 public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration {
+
+    /** Logger for this class. */
+    private static final Logger LOGGER = Logger.getLogger(SimuLizarWorkflowConfiguration.class);
 
     protected String monitorRepositoryFile;
     protected String reconfigurationRulesFolder;
@@ -53,11 +58,23 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
     }
 
     @Override
-    protected Object clone() throws CloneNotSupportedException {
+    protected SimuLizarWorkflowConfiguration clone() throws CloneNotSupportedException {
         SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) super.clone();
         config.monitorRepositoryFile = this.monitorRepositoryFile;
         config.reconfigurationRulesFolder = this.reconfigurationRulesFolder;
         config.usageEvolutionFile = this.usageEvolutionFile;
+        return config;
+    }
+
+    @Override
+    public SimuLizarWorkflowConfiguration getClone() {
+        SimuLizarWorkflowConfiguration config;
+        try {
+            config = this.clone();
+        } catch (CloneNotSupportedException e) {
+            LOGGER.fatal("Could not clone configuration.", e);
+            config = null;
+        }
         return config;
     }
 
