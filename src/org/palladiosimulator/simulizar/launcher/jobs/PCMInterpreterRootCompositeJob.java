@@ -1,11 +1,7 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionConfigurationBuilder;
-import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionJob;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -29,15 +25,10 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
     public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration) {
         super(false);
 
-        this.addJob(new LoadPCMModelsIntoBlackboardInterpreterJob(configuration));
+        // Always begin with an empty Blackboard;
+        this.setBlackboard(new MDSDBlackboard());
 
-        this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
-
-        this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
-
-        this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
-
-        addModelLoadExtensionJobs(configuration);
+        this.addJob(new LoadSimuLizarModelsIntoBlackboardJob(configuration));
 
         this.addJob(new PCMStartInterpretationJob(configuration));
 
@@ -45,25 +36,4 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
 
     }
 
-    private void addModelLoadExtensionJobs(SimuLizarWorkflowConfiguration configuration) {
-        Iterable<AbstractWorkflowExtensionJob<MDSDBlackboard>> loadJobs = ExtensionHelper.getExecutableExtensions(
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE);
-
-        for (AbstractWorkflowExtensionJob<MDSDBlackboard> loadJob : loadJobs) {
-            // check if corresponding config builder is available
-            // filter available extensions by name of job class
-            // this can be improved
-            AbstractWorkflowExtensionConfigurationBuilder builder = ExtensionHelper.getExecutableExtension(
-                    SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
-                    SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_CONFIG_BUILDER_ATTRIBUTE,
-                    SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE, loadJob.getClass().getName());
-            if (builder != null) {
-                // may be null as it is an optional attribute
-                loadJob.setJobConfiguration(builder.buildConfiguration(configuration.getAttributes()));
-            }
-            this.add(loadJob);
-        }
-    }
 }

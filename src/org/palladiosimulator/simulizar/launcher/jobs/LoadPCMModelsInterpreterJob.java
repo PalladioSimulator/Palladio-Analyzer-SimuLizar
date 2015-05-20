@@ -8,6 +8,7 @@ import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.configurations.AbstractPCMWorkflowRunConfiguration;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob;
@@ -59,10 +60,15 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
         final ResourceSetPartition pcmPartition = this.blackboard
                 .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
+        final ResourceSetPartition pcmOriginalPartition = new PCMResourceSetPartition();
+        this.blackboard.addPartition(LoadSimuLizarModelsIntoBlackboardJob.ORIGINAL_PCM_MODELS_PARTITION_ID,
+                pcmOriginalPartition);
+
         // Load the PCM model and its middleware completions
         LOGGER.info("Loading PCM Model Files");
         for (final String modelFile : this.configuration.getPCMModelFiles()) {
             pcmPartition.loadModel(URI.createURI(modelFile));
+            pcmOriginalPartition.loadModel(URI.createURI(modelFile));
         }
         pcmPartition.resolveAllProxies();
     }
