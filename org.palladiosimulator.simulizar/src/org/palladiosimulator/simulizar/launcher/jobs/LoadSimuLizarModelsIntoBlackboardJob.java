@@ -25,6 +25,14 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
      * @param config
      */
     public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
+        this(configuration, true);
+    }
+
+    /**
+     * @param config
+     */
+    public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
+            boolean loadExtensions) {
         super(false);
 
         this.addJob(new PreparePCMBlackboardPartionJob());
@@ -32,7 +40,9 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
         this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
         this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
         this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
-        addModelLoadExtensionJobs(configuration);
+        if (loadExtensions) {
+            addModelLoadExtensionJobs(configuration);
+        }
     }
 
     private void addModelLoadExtensionJobs(SimuLizarWorkflowConfiguration configuration) {
