@@ -13,9 +13,8 @@ import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
-import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
+import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -26,7 +25,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Matthias Becker
  * 
  */
-public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
+public class LoadSDMModelsIntoBlackboardJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
     public static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
 
@@ -44,9 +43,7 @@ public class LoadSDMModelsIntoBlackboardJob implements IJob, IBlackboardInteract
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public LoadSDMModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
-            final MDSDBlackboard blackboard) {
-        this.blackboard = blackboard;
+    public LoadSDMModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
         this.path = configuration.getReconfigurationRulesFolder();
     }
 

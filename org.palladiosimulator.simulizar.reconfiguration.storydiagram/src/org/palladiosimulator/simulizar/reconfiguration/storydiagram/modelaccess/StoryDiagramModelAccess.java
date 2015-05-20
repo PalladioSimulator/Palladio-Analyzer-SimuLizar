@@ -38,7 +38,9 @@ public class StoryDiagramModelAccess implements IModelAccess {
         this.modelAccess = modelAccess;
         IProgressMonitor monitor = new NullProgressMonitor();
         try {
-            new LoadSDMModelsIntoBlackboardJob(configuration, modelAccess.getBlackboard()).execute(monitor);
+            LoadSDMModelsIntoBlackboardJob loadSDMModelsJob = new LoadSDMModelsIntoBlackboardJob(configuration);
+            loadSDMModelsJob.setBlackboard(this.modelAccess.getBlackboard());
+            loadSDMModelsJob.execute(monitor);
         } catch (JobFailedException e) {
             LOGGER.error("Failed loading StoryDiagram reconfiguration rules into Blackboard.", e);
         } catch (UserCanceledException e) {

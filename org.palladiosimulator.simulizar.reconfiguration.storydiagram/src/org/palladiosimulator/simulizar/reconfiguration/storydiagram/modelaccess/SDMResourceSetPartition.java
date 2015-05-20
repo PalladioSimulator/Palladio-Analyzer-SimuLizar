@@ -29,10 +29,11 @@ public class SDMResourceSetPartition extends ResourceSetPartition {
         for (final Resource resource : this.rs.getResources()) {
             if (resource != null && resource.getContents().size() > 0
                     && resource.getContents().get(0).eClass() == ActivitiesPackage.eINSTANCE.getActivity()) {
-                activities.add((Activity) resource.getContents().get(0));
+                Activity activity = (Activity) resource.getContents().get(0);
+                activities.add(activity);
             }
         }
-
+        resolveAllProxies();
         return activities;
 
     }
