@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<strategies:StrategiesRepository xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:strategies="http://simulizar.palladiosimulator.org/lafore/strategies/1.0" id="_Rs_NUNPBEeSHt-YvO79WHQ" entityName="MyStrategiesTypes">
-  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_8j8vMOjWEeS2iepYc8riaA" entityName="ScaleUp">
+<strategies:StrategiesRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:strategies="http://simulizar.palladiosimulator.org/lafore/strategies/1.0" id="_Rs_NUNPBEeSHt-YvO79WHQ" entityName="MyStrategiesTypes">
+  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_8j8vMOjWEeS2iepYc8riaA" entityName="ScaleUp" behavior="_fT3cIOjdEeSb473xhumhBg">
     <steps_Behaviour xsi:type="seff:StopAction" id="_GpBckOjpEeSerPBaZ7dTjg" entityName="ScaleUpStop" predecessor_AbstractAction="_fT3cIOjdEeSb473xhumhBg"/>
     <steps_Behaviour xsi:type="seff:StartAction" id="_IhgoMujpEeSerPBaZ7dTjg" entityName="ScaleUpStart" successor_AbstractAction="_fT3cIOjdEeSb473xhumhBg"/>
     <steps_Behaviour xsi:type="strategies:ReconfigurationAction" id="_fT3cIOjdEeSb473xhumhBg" entityName="AddMultimediaComponentRule" predecessor_AbstractAction="_IhgoMujpEeSerPBaZ7dTjg" successor_AbstractAction="_GpBckOjpEeSerPBaZ7dTjg"/>

@@ -83,13 +83,13 @@
     </modules>
   </layers>
   <modelResourceSet>
-    <resources URI="MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
-    <resources URI="MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
-    <resources URI="MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
-    <resources URI="MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
-    <resources URI="MyVSMappingsRepository.vsmappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
-    <resources URI="MyRuntimeMeasurements.measurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
-    <resources URI="MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
-    <resources URI="..\org.palladiosimulator.simulizar.lafore.LoopAndZnn\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
+    <resources URI="..\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
+    <resources URI="..\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
+    <resources URI="..\knowledgeModels\design\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
+    <resources URI="..\knowledgeModels\design\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+    <resources URI="..\knowledgeModels\design\MyVSMappingsRepository.vsmappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
+    <resources URI="..\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
+    <resources URI="..\knowledgeModels\design\MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
+    <resources URI="..\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
   </modelResourceSet>
 </eurema:Architecture>

@@ -5,13 +5,13 @@
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_6NWzQN66EeSFR4acpbZ8HQ" intervall="10.0"/>
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
     </measurementSpecifications>
-    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="palladio.znncom/monitor/usagescenario.measuringpoint#/"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="../../palladio.znncom/monitor/usagescenario.measuringpoint#/"/>
   </monitors>
   <monitors id="_-BVIEOhmEeSkZ7YVP-H6TQ" entityName="PoolSizeMonitor">
     <measurementSpecifications id="_La38EOhnEeSkZ7YVP-H6TQ" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_O4bBAOhnEeSkZ7YVP-H6TQ" intervall="10.0"/>
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_qC7AMuRFEeSsFtCEWlnNdA"/>
     </measurementSpecifications>
-    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="palladio.znncom/monitor/repository.measuringpoint#/"/>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="../../palladio.znncom/monitor/repository.measuringpoint#/"/>
   </monitors>
 </monitorrepository:MonitorRepository>
