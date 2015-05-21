@@ -13,9 +13,9 @@
          id="org.palladiosimulator.power"
          name="Power Infrastructure Repository File Input Handler"
          point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
-      <fileInputHandler
-            fileInputHandler="org.palladiosimulator.simulizar.power.ui.configuration.PowerInfrastructureRepositoryFileInputHandler">
-      </fileInputHandler>
+      <fileInputConfigurationBuilder
+            fileInputConfigurationBuilder="org.palladiosimulator.simulizar.power.ui.configuration.PowerInfrastructureRepositoryFileInputConfigBuilder">
+      </fileInputConfigurationBuilder>
    </extension>
    <extension
          id="org.palladiosimulator.power"
