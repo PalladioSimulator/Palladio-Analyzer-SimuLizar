@@ -12,7 +12,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputHandler;
+import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputConfigurationBuilder;
+import org.palladiosimulator.simulizar.ui.configuration.extensions.ExtensionFileInputConfiguration;
+import org.palladiosimulator.simulizar.ui.configuration.extensions.ExtensionFileInputConfiguration.DefaultPropertyKeys;
+import org.palladiosimulator.simulizar.ui.configuration.extensions.ExtensionInputType;
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
@@ -25,7 +28,7 @@ import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
 
     private static final String EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.ui.configuration.fileinput";
-    private static final String EXTENSION_POINT_ATTRIBUTE = "fileInputHandler";
+    private static final String EXTENSION_POINT_ATTRIBUTE = "fileInputConfigurationBuilder";
 
     // input fields
     /** Text field for path to Monitor Repository file. */
@@ -37,7 +40,11 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     /** Text field for service level objectives file. */
     protected Text serviceLevelObjectivesFile;
 
-    protected Map<AbstractExtensionFileInputHandler, Text> extensionFileFolderInputTexts = new HashMap<AbstractExtensionFileInputHandler, Text>();
+    private final Map<ExtensionFileInputConfiguration, Text> extensionFileFolderInputTexts;
+
+    public InterpreterFileNamesInputTab() {
+        this.extensionFileFolderInputTexts = new HashMap<ExtensionFileInputConfiguration, Text>();
+    }
 
     /**
      * @see de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab#createControl(org.eclipse.swt.widgets.Composite)
@@ -45,6 +52,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     @Override
     public void createControl(final Composite parent) {
         super.createControl(parent);
+        this.extensionFileFolderInputTexts.clear();
         /**
          * Create Monitor Repository file section
          */
@@ -78,22 +86,35 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File",
                 getShell(), SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
 
-       createInputSectionsForExtensions();
+        createInputSectionsForExtensions();
 
     }
 
     private void createInputSectionsForExtensions() {
-        Iterable<AbstractExtensionFileInputHandler> extensions = ExtensionHelper.getExecutableExtensions(
+        Iterable<AbstractExtensionFileInputConfigurationBuilder> extensions = ExtensionHelper.getExecutableExtensions(
                 EXTENSION_POINT_ID, EXTENSION_POINT_ATTRIBUTE);
-        for (AbstractExtensionFileInputHandler extension : extensions) {
+        for (AbstractExtensionFileInputConfigurationBuilder extension : extensions) {
+            ExtensionFileInputConfiguration config = extension.buildConfiguration();
             Text inputText = new Text(container, SWT.SINGLE | SWT.BORDER);
-            this.extensionFileFolderInputTexts.put(extension, inputText);
-            TabHelper.createFileInputSection(container, modifyListener, extension.getGroupLabel(),
-                    extension.getFileExtensionRestrictions(), inputText, extension.getDialogTitle(), getShell(),
-                    extension.getDefaultFileUri());
+            this.extensionFileFolderInputTexts.put(config, inputText);
+            String groupLabel = config.getPropertyByKey(DefaultPropertyKeys.GROUP_LABEL_KEY, String.class);
+            String dialogTitle = config.getPropertyByKey(DefaultPropertyKeys.DIALOG_TITLE_KEY, String.class);
+            String defaultUri = config.getPropertyByKey(DefaultPropertyKeys.DEFAULT_URI_KEY, String.class);
+            ExtensionInputType inputType = config.getPropertyByKey(DefaultPropertyKeys.INPUT_TYPE_KEY,
+                    DefaultPropertyKeys.EXPECTED_INPUT_TYPE_DATA_TYPE);
+            if (inputType == ExtensionInputType.FILE) {
+                String[] fileExtensionRestrictions = config.getPropertyByKey(DefaultPropertyKeys.FILE_RESTRICTIONS_KEY,
+                        DefaultPropertyKeys.EXPECTED_FILE_RESTRICTIONS_DATA_TYPE);
+                TabHelper.createFileInputSection(container, modifyListener, groupLabel, fileExtensionRestrictions,
+                        inputText, dialogTitle, getShell(), defaultUri);
+            } else {
+                TabHelper.createFolderInputSection(container, modifyListener, groupLabel, monitorRepositoryFile,
+                        dialogTitle, getShell(), defaultUri);
+            }
+
         }
     }
-    
+
     private void setTextFromConfigAttribute(Text textWidget, ILaunchConfiguration config, String attributeName,
             String defaultValue) {
         try {
@@ -119,10 +140,11 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         setTextFromConfigAttribute(this.usageEvolutionFile, configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        for (Entry<AbstractExtensionFileInputHandler, Text> entry : this.extensionFileFolderInputTexts
-                .entrySet()) {
-            setTextFromConfigAttribute(entry.getValue(), configuration, entry.getKey().getConfigurationAttributeName(),
-                    entry.getKey().getDefaultFileUri());
+        for (Entry<ExtensionFileInputConfiguration, Text> entry : this.extensionFileFolderInputTexts.entrySet()) {
+            String defaultUri = entry.getKey().getPropertyByKey(DefaultPropertyKeys.DEFAULT_URI_KEY, String.class);
+            String configAttributeName = entry.getKey().getPropertyByKey(DefaultPropertyKeys.CONFIG_ATTRIBUTE_NAME_KEY,
+                    String.class);
+            setTextFromConfigAttribute(entry.getValue(), configuration, configAttributeName, defaultUri);
         }
     }
 
@@ -141,11 +163,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
                 serviceLevelObjectivesFile.getText());
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
-        for (Entry<AbstractExtensionFileInputHandler, Text> entry : this.extensionFileFolderInputTexts
-                .entrySet()) {
-           configuration.setAttribute(entry.getKey().getConfigurationAttributeName(), entry.getValue().getText());
-           //trigger callback, so that additional stuff can be done
-           entry.getKey().afterPerformApply(configuration);
+        for (Entry<ExtensionFileInputConfiguration, Text> entry : this.extensionFileFolderInputTexts.entrySet()) {
+            String configAttributeName = entry.getKey().getPropertyByKey(DefaultPropertyKeys.CONFIG_ATTRIBUTE_NAME_KEY,
+                    String.class);
+            configuration.setAttribute(configAttributeName, entry.getValue().getText());
         }
     }
 
@@ -166,12 +187,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        
-        for (AbstractExtensionFileInputHandler extensionFileFolderInputText : this.extensionFileFolderInputTexts.keySet()) {
-            configuration.setAttribute(extensionFileFolderInputText.getConfigurationAttributeName(), 
-                    extensionFileFolderInputText.getDefaultFileUri());
-            //trigger callback, so that additional stuff can be done by client
-            extensionFileFolderInputText.afterSetDefaults(configuration);
+
+        for (ExtensionFileInputConfiguration extensionConfig : this.extensionFileFolderInputTexts.keySet()) {
+            String defaultUri = extensionConfig.getPropertyByKey(DefaultPropertyKeys.DEFAULT_URI_KEY, String.class);
+            String configAttributeName = extensionConfig.getPropertyByKey(DefaultPropertyKeys.CONFIG_ATTRIBUTE_NAME_KEY,
+                    String.class);
+            configuration.setAttribute(configAttributeName, defaultUri);
         }
     }
 
@@ -180,11 +201,6 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
      */
     @Override
     public boolean isValid(final ILaunchConfiguration launchConfig) {
-        for (AbstractExtensionFileInputHandler handler : this.extensionFileFolderInputTexts.keySet()) {
-            if (!handler.isValid(launchConfig)) {
-                return false;
-            }
-        }
         return true;
     }
 }

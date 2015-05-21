@@ -10,7 +10,7 @@
 It is intended for clients that wish to contribute to a Simulizar launch configuration in terms of files/folders that are meant to be publicly accessible.
 
 When a Simulizar launch configuration is displayed in Eclipse, each registered extension contributes to
-to the {@link InterpreterFileNamesInputTab}, i.e., an input field is added for each of which.
+to the link InterpreterFileNamesInputTab, i.e., an input field is added for each of which.
       </documentation>
    </annotation>
 
@@ -22,7 +22,7 @@ to the {@link InterpreterFileNamesInputTab}, i.e., an input field is added for e
       </annotation>
       <complexType>
          <sequence>
-            <element ref="fileInputHandler"/>
+            <element ref="fileInputConfigurationBuilder"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
@@ -51,15 +51,15 @@ to the {@link InterpreterFileNamesInputTab}, i.e., an input field is added for e
       </complexType>
    </element>
 
-   <element name="fileInputHandler">
+   <element name="fileInputConfigurationBuilder">
       <complexType>
-         <attribute name="fileInputHandler" type="string">
+         <attribute name="fileInputConfigurationBuilder" type="string" use="required">
             <annotation>
                <documentation>
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputHandler:"/>
+                  <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputConfigurationBuilder:"/>
                </appinfo>
             </annotation>
          </attribute>
