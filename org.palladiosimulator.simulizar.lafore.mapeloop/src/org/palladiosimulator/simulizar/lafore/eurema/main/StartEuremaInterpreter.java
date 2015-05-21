@@ -21,8 +21,8 @@ import eurema.EuremaFactory;
 
 public class StartEuremaInterpreter {
 
-	public static void main(String[] args) {
-		registerModels();
+	public void startLafore() {
+		//registerModels();
 		
 		EuremaInterpreter interpreter = EuremaInterpreterFactory.getInstance();
 		EventQueue q = interpreter
