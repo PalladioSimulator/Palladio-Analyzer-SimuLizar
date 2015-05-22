@@ -12,11 +12,13 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.eclipse.emf.ecore.util.EcoreSwitch;
 import org.eclipse.m2m.internal.qvt.oml.expressions.DirectionKind;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ModelParameter;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ModelType;
@@ -53,6 +55,7 @@ public class QVTOExecutor {
     private static final String QVTO_FILE_EXTENSION = ".qvto";
     private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
     private final List<TransformationData> qvtoRules;
+    // store mapping model type -> model instance
     private final Map<EPackage, EObject> availableModels;
 
     /**
@@ -75,17 +78,20 @@ public class QVTOExecutor {
         Map<EPackage, EObject> result = new HashMap<>();
         MDSDBlackboard blackboard = this.modelAccess.getBlackboard();
         EObject currentModel = this.modelAccess.getRuntimeMeasurementModel();
-        result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+        if (currentModel != null) {
+            result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
+        }
         currentModel = this.modelAccess.getUsageEvolutionModel();
         if (currentModel != null) {
-            result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+            result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
         }
         for (Resource pcmResource : this.modelAccess.getGlobalPCMModel().getResourceSet().getResources()) {
             // we want the root of the model, the root EObject
-            if (pcmResource.getContents().size() > 0) {
-                currentModel = pcmResource.getContents().get(0);
+            List<EObject> contents = pcmResource.getContents();
+            if (!contents.isEmpty()) {
+                currentModel = contents.get(0);
                 if (currentModel != null) {
-                    result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+                    result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
                 }
             }
         }
@@ -95,16 +101,41 @@ public class QVTOExecutor {
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)) {
             ResourceSetPartition partition = blackboard.getPartition(partitionId);
             if (partition != null) {
-                ResourceSet rs = partition.getResourceSet();
-                currentModel = rs.getResources().get(0).getContents().get(0);
-                if (currentModel != null) {
-                    result.put((EPackage) currentModel.eClass().eContainer(), currentModel);
+                ResourceSet resourceSet = partition.getResourceSet();
+                List<Resource> resources = resourceSet.getResources();
+                //handle case when no model has been specified, i.e., resources is an empty list
+                if (!resources.isEmpty()) {
+                    currentModel = resources.get(0).getContents().get(0);
+                    if (currentModel != null) {
+                        result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
+                    }
                 }
             }
         }
         return result;
     }
 
+    private final static EcoreSwitch<EPackage> MODELTYPE_RETRIEVER = new EcoreSwitch<EPackage>() {
+      
+        @Override
+        public EPackage caseEPackage(EPackage ePackage) {
+            // we found the model type, just return
+            return ePackage;
+        }
+        
+        @Override
+        public EPackage caseEClass(EClass eClass) {
+            // from meta class to containing object, should be an EPackage
+            return doSwitch(eClass.eContainer());
+        }
+        
+        @Override
+        public EPackage defaultCase(EObject eObject) {
+            //go on with the meta class
+            return doSwitch(eObject.eClass());
+        }
+    };
+    
     /**
      * Executes all QVTo rules found in the configured reconfiguration rule folder.
      * 
@@ -262,6 +293,16 @@ public class QVTOExecutor {
         }
     }
 
+    /**
+     * Convenience class to store required information about a QVTo transformation:
+     * <ul>
+     * <li>the corresponding {@link OperationalTransformation} model object</li>
+     * <li>the {@link TransformationExecutor} that will execute the transformation</li>
+     * <li>information about its parameters in terms of a collection of {@link TransformationParameterInformation} </li>
+     * </ul>
+     * @author Florian Rosenthal
+     *
+     */
     private static class TransformationData {
         private final OperationalTransformation associatedTransformation;
         private final TransformationExecutor transformationExecutor;
@@ -291,6 +332,12 @@ public class QVTOExecutor {
         }
     }
 
+    /**
+     * Convenience class to store required information (type, kind and index) about 
+     * parameters of a QVTo transformation
+     * @author Florian Rosenthal
+     *
+     */
     private static class TransformationParameterInformation {
         private final EPackage parameterType;
         private final DirectionKind parameterDirectionKind;
@@ -302,23 +349,14 @@ public class QVTOExecutor {
             this.parameterIndex = paramIndex;
         }
 
-        /**
-         * @return the parameterType
-         */
         private EPackage getParameterType() {
             return this.parameterType;
         }
 
-        /**
-         * @return the parameterDirectionKind
-         */
         private DirectionKind getParameterDirectionKind() {
             return this.parameterDirectionKind;
         }
 
-        /**
-         * @return the parameterIndex
-         */
         private int getParameterIndex() {
             return this.parameterIndex;
         }
