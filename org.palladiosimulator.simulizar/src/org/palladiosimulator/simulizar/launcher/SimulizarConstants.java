@@ -8,6 +8,12 @@ public class SimulizarConstants {
     public static final String MODEL_LOAD_EXTENSION_POINT_JOB_CONFIG_BUILDER_ATTRIBUTE = "loadJobConfigBuilder";
     public static final String MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE = "blackboardPartitionId";
 
+    /**
+     * Id of the extendible Runtime State observer point
+     */
+    public static final String RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor";
+    public static final String RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE = "accessor";
+
     // Model filenames configuration identifiers
     public static final String MONITOR_REPOSITORY_FILE = "monitorRepositoryFile";
     public static final String RECONFIGURATION_RULES_FOLDER = "reconfigurationRulesFolder";
