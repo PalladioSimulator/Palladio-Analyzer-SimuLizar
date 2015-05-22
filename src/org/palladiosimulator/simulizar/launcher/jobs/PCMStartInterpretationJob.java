@@ -1,12 +1,10 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.Platform;
+import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
@@ -50,28 +48,23 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOGGER.info("Start job: " + this);
 
         LOGGER.info("Initialise Simulizar runtime state");
-        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(configuration, new ModelAccess(
-                this.blackboard));
+        SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(configuration, new ModelAccess(this.blackboard));
 
-        // Instantiate all RuntimeState extensions
-        IExtension[] extensions = Platform.getExtensionRegistry()
-                .getExtensionPoint("org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor").getExtensions();
-        for (IExtension extension : extensions) {
-            for (IConfigurationElement element : extension.getConfigurationElements()) {
-                IRuntimeStateAccessor accessor = null;
-                try {
-                    accessor = (IRuntimeStateAccessor) element.createExecutableExtension("accessor");
-                } catch (CoreException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                accessor.setRuntimeStateModel(runtimeState);
-            }
-        }
+        initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
+    }
+
+    private void initializeRuntimeStateAccessors(SimuLizarRuntimeState runtimeState) {
+        Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
+                SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
+                SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
+
+        for (IRuntimeStateAccessor accessor : stateAccessors) {
+            accessor.setRuntimeStateModel(runtimeState);
+        }
     }
 
     /**
