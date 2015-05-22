@@ -343,6 +343,8 @@ public class QVTOExecutor {
         private final DirectionKind parameterDirectionKind;
         private final int parameterIndex;
 
+        private static final String FORMAT_STRING = "param: index = %d, type = %s, direction = %s";
+        
         private TransformationParameterInformation(EPackage paramType, DirectionKind paramDirectionKind, int paramIndex) {
             this.parameterType = paramType;
             this.parameterDirectionKind = paramDirectionKind;
@@ -359,6 +361,12 @@ public class QVTOExecutor {
 
         private int getParameterIndex() {
             return this.parameterIndex;
+        }
+        
+        @Override
+        public String toString() {
+           return String.format(FORMAT_STRING, this.parameterIndex, this.parameterType.getName(), 
+                   this.parameterDirectionKind.getName());
         }
     }
 }
