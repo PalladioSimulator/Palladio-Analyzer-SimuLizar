@@ -78,4 +78,7 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
         return config;
     }
 
+    public String getTemporaryDataLocation() {
+        return this.temporaryDataLocation;
+    }
 }
