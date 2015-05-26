@@ -1,16 +1,21 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
+import org.scaledl.usageevolution.Usage;
+import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.WorkParameterEvolution;
 
+import tools.descartes.dlim.Sequence;
 import tools.descartes.dlim.generator.ModelEvaluator;
 import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
 import de.uka.ipd.sdq.pcm.parameter.VariableCharacterisation;
 import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
 import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.pcm.usagemodel.Workload;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -20,34 +25,87 @@ public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredS
     final long simuTime;
     final long dlimDuration;
     long limboTime = 0;
-    private final ModelEvaluator loadEvaluator;
-    private final Map<VariableCharacterisation, ModelEvaluator> workEvaluators;
-    private final UsageModel usageModel;
+    SimuLizarRuntimeState rtState;
 
     public PeriodicallyTriggeredWorkloadEvolver(SimuComModel model, double firstOccurrence, double delay,
-            long simuTime, long dlimDuration, ModelEvaluator loadEvaluator,
-            Map<VariableCharacterisation, ModelEvaluator> workEvaluators, UsageModel usageModel) {
+            long simuTime, long dlimDuration, SimuLizarRuntimeState rtState) {
         super(model, firstOccurrence, delay);
 
         this.dlimDuration = dlimDuration;
         this.simuTime = simuTime;
-        this.loadEvaluator = loadEvaluator;
-        this.workEvaluators = workEvaluators;
-        this.usageModel = usageModel;
+
+        this.rtState = rtState;
+
+    }
+
+    protected ModelEvaluator getLoadEvaluator() {
+        // TODO: consider optimizing this by adding a loadEvaluator instance variable that is
+        // lazily initialized by this call. Must first determine whether this has side
+        // effects on the simulation.
+
+        // Create the load evaluator by finding the DLIM sequence for the first usage
+        // within the usage evolution model.
+        UsageEvolution usageEvolution = rtState.getModelAccess().getUsageEvolutionModel();
+        if (usageEvolution != null) {
+            Usage usage = usageEvolution.getUsages().get(0);
+            if (usage != null) {
+                Sequence loadEvolutionSequence = usage.getLoadEvolution();
+                if (loadEvolutionSequence != null) {
+                    return new ModelEvaluator(loadEvolutionSequence);
+                }
+            }
+        }
+        return null;
+    }
+
+    protected Map<VariableCharacterisation, ModelEvaluator> getWorkEvaluators() {
+        // TODO: consider optimizing this by changing workEvaluators to be an instance variable that
+        // is lazily initialized by this call. Must first determine whether this has side
+        // effects on the simulation.
+
+        // Build the hashmap from work parameters of the first usage in the usage evolution
+        // and to their corresponding model evaluators
+        Map<VariableCharacterisation, ModelEvaluator> workEvaluators = new HashMap<VariableCharacterisation, ModelEvaluator>();
+
+        UsageEvolution usageEvolution = rtState.getModelAccess().getUsageEvolutionModel();
+        if (usageEvolution != null) {
+            Usage usage = usageEvolution.getUsages().get(0);
+
+            if (usage != null) {
+                for (WorkParameterEvolution workParam : usage.getWorkEvolutions()) {
+                    VariableCharacterisation varChar = workParam.getVariableCharacterisation();
+                    Sequence paramSequence = workParam.getEvolution();
+                    if (varChar == null) {
+                        LOGGER.error("Skipping evolution of unspecified work parameter");
+                        continue;
+                    }
+                    if (paramSequence == null) {
+                        LOGGER.error("Skipping unspecified evolution for work parameter " + varChar);
+                        continue;
+                    }
+
+                    // Add parameter and model evaluator for the work parameter
+                    workEvaluators.put(varChar, new ModelEvaluator(paramSequence));
+                }
+            }
+        }
+        return workEvaluators;
     }
 
     @Override
     protected void triggerInternal() {
-
         if (limboTime <= dlimDuration) {
             // First, evolve load if load evaluator exists
+            ModelEvaluator loadEvaluator = getLoadEvaluator();
+
             if (loadEvaluator != null) {
-                evolveLoad();
+                evolveLoad(loadEvaluator);
             }
 
             // Then, iterate through work parameters to evolve
+            Map<VariableCharacterisation, ModelEvaluator> workEvaluators = getWorkEvaluators();
             for (VariableCharacterisation workParam : workEvaluators.keySet()) {
-                evolveWork(workParam);
+                evolveWork(workParam, workEvaluators.get(workParam));
             }
 
             limboTime++;
@@ -59,13 +117,13 @@ public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredS
             // The LIMBO evaluator do not define a value at the total duration
             // time, so get a value close to end of the simulation by requesting
             // the value one millionth of a time unit before the total duration
-            return loadEvaluator.getArrivalRateAtTime(limboTime - 0.000001);
+            return evaluator.getArrivalRateAtTime(limboTime - 0.000001);
         } else {
-            return loadEvaluator.getArrivalRateAtTime(limboTime);
+            return evaluator.getArrivalRateAtTime(limboTime);
         }
     }
 
-    protected void evolveLoad() {
+    protected void evolveLoad(ModelEvaluator loadEvaluator) {
         double newRate = getNewRate(loadEvaluator);
 
         // TODO: if we want to support multiple usage instances with using different
@@ -76,7 +134,10 @@ public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredS
         // (see last line of this comment) is to another copy of the usage model.
         // These issues must be resolved to support multiple usages.
         // Workload wl = usage.getScenario().getWorkload_UsageScenario();
-        Workload wl = usageModel.getUsageScenario_UsageModel().get(0).getWorkload_UsageScenario();
+        // Workload wl =
+        // usageModel.getUsageScenario_UsageModel().get(0).getWorkload_UsageScenario();
+        Workload wl = rtState.getModelAccess().getUsageEvolutionModel().getUsages().get(0).getScenario()
+                .getWorkload_UsageScenario();
         if (wl != null) {
             if (wl instanceof OpenWorkload) {
                 PCMRandomVariable openwl = ((OpenWorkload) wl).getInterArrivalTime_OpenWorkload();
@@ -110,34 +171,16 @@ public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredS
         }
     }
 
-    protected void evolveWork(VariableCharacterisation workParameter) {
-        ModelEvaluator evaluator = workEvaluators.get(workParameter);
+    protected void evolveWork(VariableCharacterisation workParameter, ModelEvaluator evaluator) {
         if (evaluator == null)
             return;
 
         double newRate = getNewRate(evaluator);
         String newRateStr = Double.toString(newRate);
 
-        // Simplest approach would be to just use the workParameter directly, but does this refer to
-        // the right object?
-        workParameter.getSpecification_VariableCharacterisation().setSpecification(newRateStr);
+        LOGGER.info("Changing work from "
+                + workParameter.getSpecification_VariableCharacterisation().getSpecification() + " to " + newRateStr);
 
-        /*
-         * // Locate parameter to evolve for (AbstractUserAction act :
-         * usageModel.getUsageScenario_UsageModel().get(0)
-         * .getScenarioBehaviour_UsageScenario().getActions_ScenarioBehaviour()) {
-         * 
-         * if (act instanceof EntryLevelSystemCall) { EntryLevelSystemCall actCall =
-         * (EntryLevelSystemCall) act; VariableUsage varUsage =
-         * actCall.getInputParameterUsages_EntryLevelSystemCall().get(0); VariableCharacterisation
-         * varChar = varUsage.getVariableCharacterisation_VariableUsage().get(0);
-         * 
-         * varChar.getSpecification_VariableCharacterisation().setSpecification(newRateStr); //
-         * varUsage.getVariableCharacterisation_VariableUsage(). }
-         * 
-         * }
-         * 
-         * usageModel.getUsageScenario_UsageModel();
-         */
+        workParameter.getSpecification_VariableCharacterisation().setSpecification(newRateStr);
     }
 }

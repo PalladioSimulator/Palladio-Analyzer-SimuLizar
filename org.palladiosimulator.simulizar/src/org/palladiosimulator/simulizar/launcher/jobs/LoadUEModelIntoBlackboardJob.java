@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.exceptions.UEModelLoadException;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -49,7 +48,8 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
             throw new UEModelLoadException("The PCM models must be loaded first");
         }
 
-        final UEResourceSetPartition uePartition = new UEResourceSetPartition(this.getPCMResourceSetPartition());
+        // Use the PCMResoureSetPartition for usage evolution
+        PCMResourceSetPartition uePartition = this.getPCMResourceSetPartition();
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
@@ -59,12 +59,9 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
             }
 
             uePartition.loadModel(URI.createURI(filePath));
+            uePartition.resolveAllProxies();
 
         }
-        this.getBlackboard().addPartition(UE_MODEL_PARTITION_ID, uePartition);
-        // now resolve all cross references from current resource to PCM
-        uePartition.resolveAllProxies();
-
     }
 
     /**
