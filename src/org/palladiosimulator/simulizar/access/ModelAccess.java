@@ -16,11 +16,10 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.jobs.LoadUEModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
-import org.palladiosimulator.simulizar.launcher.partitions.UEResourceSetPartition;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -42,7 +41,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
     private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
-    private final UEResourceSetPartition uePartititon;
+    // private final UEResourceSetPartition uePartititon;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
     private final MDSDBlackboard blackboard;
 
@@ -64,7 +63,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
                 LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
         // this.powerInfrastructureRepositoryPartition = getResourceSetPartition(blackboard,
         // LoadPowerInfrastructureRepositoryIntoBlackboardJob.POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID);
-        this.uePartititon = getResourceSetPartition(blackboard, LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
+        // this.uePartititon = getResourceSetPartition(blackboard,
+        // LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
 
@@ -76,7 +76,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
         // this.powerInfrastructureRepositoryPartition =
         // copy.powerInfrastructureRepositoryPartition;
-        this.uePartititon = copy.uePartititon;
+        // this.uePartititon = copy.uePartititon;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
 
@@ -132,10 +132,18 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      */
     @Override
     public UsageEvolution getUsageEvolutionModel() {
-        if (this.uePartititon == null)
+        try {
+            LOGGER.debug("Retrieving Usage Evolution model from blackboard partition");
+            // List<UsageEvolution> result =
+            // this.pcmPartition.getElement(UsageevolutionPackage.eINSTANCE
+            // .getUsageEvolution());
+            List<UsageEvolution> result = this.getGlobalPCMModel().getElement(
+                    UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+            return result.get(0);
+        } catch (Exception e) {
+            LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
             return null;
-        else
-            return this.uePartititon.getUsageEvolution();
+        }
     }
 
     /**
