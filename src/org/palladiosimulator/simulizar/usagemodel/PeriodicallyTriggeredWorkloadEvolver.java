@@ -175,8 +175,9 @@ public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredS
         if (evaluator == null)
             return;
 
-        double newRate = getNewRate(evaluator);
-        String newRateStr = Double.toString(newRate);
+        // Support only long values for now
+        long newRate = Math.round(getNewRate(evaluator));
+        String newRateStr = Long.toString(newRate);
 
         LOGGER.info("Changing work from "
                 + workParameter.getSpecification_VariableCharacterisation().getSpecification() + " to " + newRateStr);
