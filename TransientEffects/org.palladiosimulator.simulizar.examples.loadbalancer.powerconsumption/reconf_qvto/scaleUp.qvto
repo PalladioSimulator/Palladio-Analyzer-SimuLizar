@@ -1,0 +1,109 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule increases the processing rate of all
+ * resources in case the monitored mean response time is greater than 3.0 (seconds). 
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0';
+modeltype PCM_ALLOC uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0';
+modeltype PCM_REP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0';
+modeltype PCM_SEFF uses 'http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0';
+modeltype PCM_SYS uses 'http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0';
+modeltype PCM_RES_ENV uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0';
+modeltype PCM_RES_TYPE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0';
+modeltype PCM_USAGE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/5.0';
+modeltype PCM_COMP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0';
+modeltype PCM_ENTITY uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0';
+modeltype PCM_PARAM uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+/*
+ * The transformation signature declares that a PRM modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The PRM modeltype is referenced as 'prm' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation ScaleUp(		in prm : PRM,
+							in pcmRepository : PCM_REP,
+							in pcmSystem : PCM_SYS,
+							in pcmAllocation : PCM_ALLOC,
+							inout pcmResources : PCM_RES_ENV ) {
+							
+							
+	// Define Threshold and Scale Up
+	property threshold : Real = 3.0;
+	property scaleUp : Real = 100.0;
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+
+		log('SimuLizar ScaleUp Rule Transformation started');
+		
+		assert fatal(prm.rootObjects()[PRMMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		
+		var runtimeMeasurements = prm.rootObjects()[PRMMeasurement];
+		// Scale up processing speed for all Resources
+		pcmAllocation.rootObjects()[Allocation]->forAll(
+			allocation : Allocation | 
+			scaleUpProcessingResources(allocation.targetResourceEnvironment_Allocation, runtimeMeasurements)
+		);
+
+	}
+	
+	helper checkCondition(runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
+		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
+			if (pcmModelElementsMeasurement.measurementValue > threshold) {
+				return true;
+			} endif
+		};
+		return false;
+	}
+	
+	/**
+	 * Scale up ProcessingResources.
+	 */
+	helper scaleUpProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
+		if (checkCondition(runtimeMeasurements)) then {
+			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
+				scaleUpProcessingResourcesRecursively(resourceContainer);
+			};
+		
+			return true;
+		} endif;
+		return false;
+	}
+	
+	/**
+	 * Recursively scale up ProcessingResources.
+	 */
+	helper scaleUpProcessingResourcesRecursively(resourceContainer : ResourceContainer) {
+	
+		// increase processing rate by scaleUp
+		resourceContainer.activeResourceSpecifications_ResourceContainer->forEach(processingResourceSpecification){
+			var currentProcessingRate : String := processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification;
+	    	var newProcessingRate : Real := currentProcessingRate.toReal() + scaleUp;
+	    	processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification := newProcessingRate.toString();
+	    };
+	    
+	    // recursive call
+		resourceContainer.nestedResourceContainers__ResourceContainer->forEach(nestedResourceContainer){
+			scaleUpProcessingResourcesRecursively(nestedResourceContainer);
+		};		
+	}
+}
