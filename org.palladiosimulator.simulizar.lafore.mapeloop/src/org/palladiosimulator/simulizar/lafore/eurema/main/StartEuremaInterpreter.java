@@ -1,8 +1,6 @@
 package org.palladiosimulator.simulizar.lafore.eurema.main;
 
 
-import measurements.util.MeasurementsResourceFactoryImpl;
-
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.monitorrepository.util.MonitorRepositoryResourceFactoryImpl;
@@ -62,7 +60,7 @@ public class StartEuremaInterpreter {
         
         final Resource.Factory monitorrepositoryFactory = new MonitorRepositoryResourceFactoryImpl();
         
-        final Resource.Factory measurementsFactory = new MeasurementsResourceFactoryImpl();
+
         final Resource.Factory violationsFactory = new ViolationsResourceFactoryImpl();
         final Resource.Factory strategiesFactory = new StrategiesResourceFactoryImpl();
         final Resource.Factory vsmappingsFactory = new VsmappingsResourceFactoryImpl();
@@ -77,7 +75,7 @@ public class StartEuremaInterpreter {
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("monitorrepository", monitorrepositoryFactory);
         EPackage.Registry.INSTANCE.put("http://palladiosimulator.org/MonitorRepository/1.0", monitorrepositoryFactory);
         
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("measurements", measurementsFactory);
+
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("violations", violationsFactory);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("strategies", strategiesFactory);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put("vsmappings", vsmappingsFactory);
