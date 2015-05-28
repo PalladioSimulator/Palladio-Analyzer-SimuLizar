@@ -21,4 +21,18 @@
             class="vsmappings.util.VsmappingsResourceFactoryImpl"/>
    </extension>
 
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated violationstrategymappings -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/lafore/violationstrategymappings/1.0"
+            class="violationstrategymappings.ViolationstrategymappingsPackage"
+            genModel="model/violationstrategymappings.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated violationstrategymappings -->
+      <parser
+            type="violationstrategymappings"
+            class="violationstrategymappings.util.ViolationstrategymappingsResourceFactoryImpl"/>
+   </extension>
 </plugin>

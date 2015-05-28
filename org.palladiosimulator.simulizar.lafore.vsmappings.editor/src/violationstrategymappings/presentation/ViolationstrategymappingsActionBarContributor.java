@@ -1,6 +1,6 @@
 /**
  */
-package vsmappings.presentation;
+package violationstrategymappings.presentation;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,12 +40,12 @@ import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.PartInitException;
 
 /**
- * This is the action bar contributor for the Vsmappings model editor.
+ * This is the action bar contributor for the Violationstrategymappings model editor.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class VsmappingsActionBarContributor
+public class ViolationstrategymappingsActionBarContributor
 	extends EditingDomainActionBarContributor
 	implements ISelectionChangedListener {
 	/**
@@ -71,14 +71,14 @@ public class VsmappingsActionBarContributor
 	 * @generated
 	 */
 	protected IAction showPropertiesViewAction =
-		new Action(VsmappingsEditorPlugin.INSTANCE.getString("_UI_ShowPropertiesView_menu_item")) {
+		new Action(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ShowPropertiesView_menu_item")) {
 			@Override
 			public void run() {
 				try {
 					getPage().showView("org.eclipse.ui.views.PropertySheet");
 				}
 				catch (PartInitException exception) {
-					VsmappingsEditorPlugin.INSTANCE.log(exception);
+					ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 				}
 			}
 		};
@@ -91,7 +91,7 @@ public class VsmappingsActionBarContributor
 	 * @generated
 	 */
 	protected IAction refreshViewerAction =
-		new Action(VsmappingsEditorPlugin.INSTANCE.getString("_UI_RefreshViewer_menu_item")) {
+		new Action(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_RefreshViewer_menu_item")) {
 			@Override
 			public boolean isEnabled() {
 				return activeEditorPart instanceof IViewerProvider;
@@ -148,7 +148,7 @@ public class VsmappingsActionBarContributor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VsmappingsActionBarContributor() {
+	public ViolationstrategymappingsActionBarContributor() {
 		super(ADDITIONS_LAST_STYLE);
 		loadResourceAction = new LoadResourceAction();
 		validateAction = new ValidateAction();
@@ -163,8 +163,8 @@ public class VsmappingsActionBarContributor
 	 */
 	@Override
 	public void contributeToToolBar(IToolBarManager toolBarManager) {
-		toolBarManager.add(new Separator("vsmappings-settings"));
-		toolBarManager.add(new Separator("vsmappings-additions"));
+		toolBarManager.add(new Separator("violationstrategymappings-settings"));
+		toolBarManager.add(new Separator("violationstrategymappings-additions"));
 	}
 
 	/**
@@ -178,7 +178,7 @@ public class VsmappingsActionBarContributor
 	public void contributeToMenu(IMenuManager menuManager) {
 		super.contributeToMenu(menuManager);
 
-		IMenuManager submenuManager = new MenuManager(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsEditor_menu"), "vsmappingsMenuID");
+		IMenuManager submenuManager = new MenuManager(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsEditor_menu"), "violationstrategymappingsMenuID");
 		menuManager.insertAfter("additions", submenuManager);
 		submenuManager.add(new Separator("settings"));
 		submenuManager.add(new Separator("actions"));
@@ -187,12 +187,12 @@ public class VsmappingsActionBarContributor
 
 		// Prepare for CreateChild item addition or removal.
 		//
-		createChildMenuManager = new MenuManager(VsmappingsEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
+		createChildMenuManager = new MenuManager(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
 		submenuManager.insertBefore("additions", createChildMenuManager);
 
 		// Prepare for CreateSibling item addition or removal.
 		//
-		createSiblingMenuManager = new MenuManager(VsmappingsEditorPlugin.INSTANCE.getString("_UI_CreateSibling_menu_item"));
+		createSiblingMenuManager = new MenuManager(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_CreateSibling_menu_item"));
 		submenuManager.insertBefore("additions", createSiblingMenuManager);
 
 		// Force an update because Eclipse hides empty menus now.
@@ -383,11 +383,11 @@ public class VsmappingsActionBarContributor
 		super.menuAboutToShow(menuManager);
 		MenuManager submenuManager = null;
 
-		submenuManager = new MenuManager(VsmappingsEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
+		submenuManager = new MenuManager(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_CreateChild_menu_item"));
 		populateManager(submenuManager, createChildActions, null);
 		menuManager.insertBefore("edit", submenuManager);
 
-		submenuManager = new MenuManager(VsmappingsEditorPlugin.INSTANCE.getString("_UI_CreateSibling_menu_item"));
+		submenuManager = new MenuManager(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_CreateSibling_menu_item"));
 		populateManager(submenuManager, createSiblingActions, null);
 		menuManager.insertBefore("edit", submenuManager);
 	}

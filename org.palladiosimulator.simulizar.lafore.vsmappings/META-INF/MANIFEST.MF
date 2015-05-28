@@ -9,7 +9,10 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Export-Package: vsmappings,
  vsmappings.impl,
- vsmappings.util
+ vsmappings.util,
+ violationstrategymappings,
+ violationstrategymappings.impl,
+ violationstrategymappings.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
