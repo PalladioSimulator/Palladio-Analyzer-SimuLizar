@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -250,7 +249,9 @@ public class QVTOExecutor {
         // to incorporate other special treatments, call nested switches inside this method
         @Override
         public ModelExtent defaultCase(EObject model) {
-            return new BasicModelExtent(Collections.singletonList(model));
+            BasicModelExtent result = new BasicModelExtent();
+            result.add(model);
+            return result;
         }
     };
 
