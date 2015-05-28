@@ -15,7 +15,7 @@ public class ActionRepositoryFileInputConfigBuilder extends AbstractExtensionFil
      */
     public static final String ACTION_MODEL_FILE = "actionModelFile";
     private static final String[] ACTION_MODEL_FILE_EXTENSIONS = new String[] { "*.actions" };
-    private static final String GROUP_LABEL = "Optional: Action Model File (For Transient Effect Analysis)";
+    private static final String GROUP_LABEL = "Optional: Action Model File (For Transient Effect Analyses)";
     private static final String DIALOG_TITLE = "Select Action Model File";
 
     @Override
