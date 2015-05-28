@@ -3,8 +3,6 @@ package org.palladiosimulator.simulizar.lafore.eurema.monitor;
 import java.util.LinkedList;
 import java.util.List;
 
-import measurements.RuntimeMeasurementsModel;
-
 import org.eclipse.emf.ecore.resource.Resource;
 
 import de.mdelab.eurema.operation.IModelOperation;
@@ -24,7 +22,6 @@ public class MonitorImplementation implements IModelOperation{
 		
 		
 		MonitorRepository mr;
-		RuntimeMeasurementsModel rmm;
 		
 		// print the input models and get the Monitors
 		System.out.println("Input Models:");
@@ -41,11 +38,11 @@ public class MonitorImplementation implements IModelOperation{
 		for (Resource r : models) {
 
 			if (r.getURI().toString().contains("RuntimeMeasurements")) {
-				rmm = (RuntimeMeasurementsModel)r.getContents().get(0); 
+				//rmm = (RuntimeMeasurementsModel)r.getContents().get(0); 
 				
 				// TODO: implement the monitoring here!!!
 				
-				output.add((Resource)rmm); // add the rmm in the output models
+				//output.add((Resource)rmm); // add the rmm in the output models
 			}
 		}
 		
