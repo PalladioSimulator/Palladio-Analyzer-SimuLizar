@@ -22,10 +22,13 @@ public class StartEuremaInterpreter {
 	public void startLafore() {
 		//registerModels();
 		
+		
 		EuremaInterpreter interpreter = EuremaInterpreterFactory.getInstance();
 		EventQueue q = interpreter
-				.execute("../org.palladiosimulator.simulizar.lafore.LoopAndZnn/Lafore.eurema");
-
+				.execute("E:\\Edu\\UPB\\MA thesis\\EclipseLafore\\SimuLizarLaforeSource\\org.palladiosimulator.simulizar.lafore.mapeloop\\EuremaLaforeMapeLoop\\Lafore.eurema"); 
+				//.execute("../org.palladiosimulator.simulizar.lafore.mapeloop/EuremaLaforeMapeLoop/Lafore.eurema");
+				
+		
 		eurema.Event startingEvent = EuremaFactory.eINSTANCE.createEvent();
 		startingEvent.setName("StartMape");
 		eurema.EventType startingEventType = EuremaFactory.eINSTANCE.createEventType();
