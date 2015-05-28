@@ -10,12 +10,12 @@
     <steps_Behaviour xsi:type="seff:StopAction" id="_mRTHUOjoEeSerPBaZ7dTjg" entityName="ScaleDownStop" predecessor_AbstractAction="_SXi2AOjlEeSerPBaZ7dTjg"/>
     <steps_Behaviour xsi:type="strategies:ReconfigurationAction" id="_SXi2AOjlEeSerPBaZ7dTjg" entityName="RemoveComponentRule" predecessor_AbstractAction="_YxvK4ujoEeSerPBaZ7dTjg" successor_AbstractAction="_mRTHUOjoEeSerPBaZ7dTjg"/>
   </serviceEffectSpecifications__BasicComponent>
-  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_SPskyejpEeSerPBaZ7dTjg" entityName="ContentUpgrade">
+  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_SPskyejpEeSerPBaZ7dTjg" entityName="ContentUpgrade" behavior="_pFqCIOjkEeSerPBaZ7dTjg">
     <steps_Behaviour xsi:type="seff:StopAction" id="_XY3eAOjpEeSerPBaZ7dTjg" entityName="ContentUpgradeStop" predecessor_AbstractAction="_pFqCIOjkEeSerPBaZ7dTjg"/>
     <steps_Behaviour xsi:type="seff:StartAction" id="_XxFJsejpEeSerPBaZ7dTjg" entityName="ContentUpgradeStart" successor_AbstractAction="_pFqCIOjkEeSerPBaZ7dTjg"/>
     <steps_Behaviour xsi:type="strategies:ReconfigurationAction" id="_pFqCIOjkEeSerPBaZ7dTjg" entityName="ContentUpgrade" predecessor_AbstractAction="_XxFJsejpEeSerPBaZ7dTjg" successor_AbstractAction="_XY3eAOjpEeSerPBaZ7dTjg"/>
   </serviceEffectSpecifications__BasicComponent>
-  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_d2j6OejpEeSerPBaZ7dTjg" entityName="ContentDowngrade">
+  <serviceEffectSpecifications__BasicComponent xsi:type="strategies:StrategyType" id="_d2j6OejpEeSerPBaZ7dTjg" entityName="ContentDowngrade" behavior="_sHhQoOjkEeSerPBaZ7dTjg">
     <steps_Behaviour xsi:type="seff:StartAction" id="_zWRkEujpEeSerPBaZ7dTjg" entityName="ContentDowngradeStart" successor_AbstractAction="_sHhQoOjkEeSerPBaZ7dTjg"/>
     <steps_Behaviour xsi:type="seff:StopAction" id="_z2xpEOjpEeSerPBaZ7dTjg" entityName="ContentDowngradeStop" predecessor_AbstractAction="_sHhQoOjkEeSerPBaZ7dTjg"/>
     <steps_Behaviour xsi:type="strategies:ReconfigurationAction" id="_sHhQoOjkEeSerPBaZ7dTjg" entityName="ContentDowngrade" predecessor_AbstractAction="_zWRkEujpEeSerPBaZ7dTjg" successor_AbstractAction="_z2xpEOjpEeSerPBaZ7dTjg"/>
