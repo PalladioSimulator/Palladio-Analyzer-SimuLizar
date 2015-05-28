@@ -2,6 +2,7 @@
  */
 package strategies;
 
+import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -22,7 +23,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface RuntimeStrategiesModel extends EObject {
+public interface RuntimeStrategiesModel extends EObject, Entity {
 	/**
 	 * Returns the value of the '<em><b>Strategies</b></em>' containment reference list.
 	 * The list contents are of type {@link strategies.Strategy}.

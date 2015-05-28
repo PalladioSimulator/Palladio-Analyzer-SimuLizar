@@ -143,7 +143,12 @@ public class RuntimeViolationsModelItemProvider extends EntityItemProvider {
 		newChildDescriptors.add
 			(createChildParameter
 				(ViolationsPackage.Literals.RUNTIME_VIOLATIONS_MODEL__VIOLATIONS,
-				 ViolationsFactory.eINSTANCE.createViolation()));
+				 ViolationsFactory.eINSTANCE.createQuantifiableViolation()));
+
+		newChildDescriptors.add
+			(createChildParameter
+				(ViolationsPackage.Literals.RUNTIME_VIOLATIONS_MODEL__VIOLATIONS,
+				 ViolationsFactory.eINSTANCE.createNonQuantifiableViolation()));
 	}
 
 	/**

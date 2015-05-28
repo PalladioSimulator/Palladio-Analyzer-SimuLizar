@@ -15,6 +15,8 @@ import org.eclipse.emf.ecore.impl.EPackageImpl;
 
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 
+import violations.NonQuantifiableViolation;
+import violations.QuantifiableViolation;
 import violations.RuntimeViolationsModel;
 import violations.Violation;
 import violations.ViolationType;
@@ -56,6 +58,20 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 	 * @generated
 	 */
 	private EClass runtimeViolationsModelEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass quantifiableViolationEClass = null;
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	private EClass nonQuantifiableViolationEClass = null;
 
 	/**
 	 * Creates an instance of the model <b>Package</b>, registered with
@@ -172,15 +188,6 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EAttribute getViolation_ViolatedPercentage() {
-		return (EAttribute)violationEClass.getEStructuralFeatures().get(1);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public EClass getViolationsRepository() {
 		return violationsRepositoryEClass;
 	}
@@ -217,6 +224,33 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
+	public EClass getQuantifiableViolation() {
+		return quantifiableViolationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EAttribute getQuantifiableViolation_Percentage() {
+		return (EAttribute)quantifiableViolationEClass.getEStructuralFeatures().get(0);
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public EClass getNonQuantifiableViolation() {
+		return nonQuantifiableViolationEClass;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
 	public ViolationsFactory getViolationsFactory() {
 		return (ViolationsFactory)getEFactoryInstance();
 	}
@@ -246,13 +280,17 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 
 		violationEClass = createEClass(VIOLATION);
 		createEReference(violationEClass, VIOLATION__VIOLATION_TYPE);
-		createEAttribute(violationEClass, VIOLATION__VIOLATED_PERCENTAGE);
 
 		violationsRepositoryEClass = createEClass(VIOLATIONS_REPOSITORY);
 		createEReference(violationsRepositoryEClass, VIOLATIONS_REPOSITORY__VIOLATION_TYPES);
 
 		runtimeViolationsModelEClass = createEClass(RUNTIME_VIOLATIONS_MODEL);
 		createEReference(runtimeViolationsModelEClass, RUNTIME_VIOLATIONS_MODEL__VIOLATIONS);
+
+		quantifiableViolationEClass = createEClass(QUANTIFIABLE_VIOLATION);
+		createEAttribute(quantifiableViolationEClass, QUANTIFIABLE_VIOLATION__PERCENTAGE);
+
+		nonQuantifiableViolationEClass = createEClass(NON_QUANTIFIABLE_VIOLATION);
 	}
 
 	/**
@@ -291,21 +329,27 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 		violationEClass.getESuperTypes().add(theEntityPackage.getEntity());
 		violationsRepositoryEClass.getESuperTypes().add(theEntityPackage.getEntity());
 		runtimeViolationsModelEClass.getESuperTypes().add(theEntityPackage.getEntity());
+		quantifiableViolationEClass.getESuperTypes().add(this.getViolation());
+		nonQuantifiableViolationEClass.getESuperTypes().add(this.getViolation());
 
 		// Initialize classes and features; add operations and parameters
 		initEClass(violationTypeEClass, ViolationType.class, "ViolationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getViolationType_Description(), ecorePackage.getEString(), "description", null, 0, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getViolationType_Slo(), theServicelevelObjectivePackage.getThreshold(), null, "slo", null, 0, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getViolationType_Slo(), theServicelevelObjectivePackage.getThreshold(), null, "slo", null, 1, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-		initEClass(violationEClass, Violation.class, "Violation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEClass(violationEClass, Violation.class, "Violation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getViolation_ViolationType(), this.getViolationType(), null, "violationType", null, 1, 1, Violation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEAttribute(getViolation_ViolatedPercentage(), ecorePackage.getEDouble(), "violatedPercentage", null, 0, 1, Violation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(violationsRepositoryEClass, ViolationsRepository.class, "ViolationsRepository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getViolationsRepository_ViolationTypes(), this.getViolationType(), null, "violationTypes", null, 0, -1, ViolationsRepository.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(runtimeViolationsModelEClass, RuntimeViolationsModel.class, "RuntimeViolationsModel", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getRuntimeViolationsModel_Violations(), this.getViolation(), null, "violations", null, 0, -1, RuntimeViolationsModel.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(quantifiableViolationEClass, QuantifiableViolation.class, "QuantifiableViolation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+		initEAttribute(getQuantifiableViolation_Percentage(), ecorePackage.getEInt(), "percentage", null, 1, 1, QuantifiableViolation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+
+		initEClass(nonQuantifiableViolationEClass, NonQuantifiableViolation.class, "NonQuantifiableViolation", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 
 		// Create resource
 		createResource(eNS_URI);

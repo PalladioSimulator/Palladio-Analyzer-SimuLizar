@@ -2,6 +2,7 @@
  */
 package strategies;
 
+import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -20,7 +21,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface Strategy extends EObject {
+public interface Strategy extends EObject, Entity {
 	/**
 	 * Returns the value of the '<em><b>Strategy Type</b></em>' reference.
 	 * <!-- begin-user-doc -->

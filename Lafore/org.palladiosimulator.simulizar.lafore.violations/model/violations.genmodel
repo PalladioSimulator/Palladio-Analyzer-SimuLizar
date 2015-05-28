@@ -14,7 +14,6 @@
     </genClasses>
     <genClasses ecoreClass="violations.ecore#//Violation">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference violations.ecore#//Violation/violationType"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute violations.ecore#//Violation/violatedPercentage"/>
     </genClasses>
     <genClasses ecoreClass="violations.ecore#//ViolationsRepository">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference violations.ecore#//ViolationsRepository/violationTypes"/>
@@ -22,5 +21,9 @@
     <genClasses ecoreClass="violations.ecore#//RuntimeViolationsModel">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference violations.ecore#//RuntimeViolationsModel/violations"/>
     </genClasses>
+    <genClasses ecoreClass="violations.ecore#//QuantifiableViolation">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute violations.ecore#//QuantifiableViolation/percentage"/>
+    </genClasses>
+    <genClasses ecoreClass="violations.ecore#//NonQuantifiableViolation"/>
   </genPackages>
 </genmodel:GenModel>

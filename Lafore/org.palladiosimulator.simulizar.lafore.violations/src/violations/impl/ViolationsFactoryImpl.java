@@ -57,9 +57,10 @@ public class ViolationsFactoryImpl extends EFactoryImpl implements ViolationsFac
 	public EObject create(EClass eClass) {
 		switch (eClass.getClassifierID()) {
 			case ViolationsPackage.VIOLATION_TYPE: return createViolationType();
-			case ViolationsPackage.VIOLATION: return createViolation();
 			case ViolationsPackage.VIOLATIONS_REPOSITORY: return createViolationsRepository();
 			case ViolationsPackage.RUNTIME_VIOLATIONS_MODEL: return createRuntimeViolationsModel();
+			case ViolationsPackage.QUANTIFIABLE_VIOLATION: return createQuantifiableViolation();
+			case ViolationsPackage.NON_QUANTIFIABLE_VIOLATION: return createNonQuantifiableViolation();
 			default:
 				throw new IllegalArgumentException("The class '" + eClass.getName() + "' is not a valid classifier");
 		}
@@ -80,16 +81,6 @@ public class ViolationsFactoryImpl extends EFactoryImpl implements ViolationsFac
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Violation createViolation() {
-		ViolationImpl violation = new ViolationImpl();
-		return violation;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	public ViolationsRepository createViolationsRepository() {
 		ViolationsRepositoryImpl violationsRepository = new ViolationsRepositoryImpl();
 		return violationsRepository;
@@ -103,6 +94,26 @@ public class ViolationsFactoryImpl extends EFactoryImpl implements ViolationsFac
 	public RuntimeViolationsModel createRuntimeViolationsModel() {
 		RuntimeViolationsModelImpl runtimeViolationsModel = new RuntimeViolationsModelImpl();
 		return runtimeViolationsModel;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public QuantifiableViolation createQuantifiableViolation() {
+		QuantifiableViolationImpl quantifiableViolation = new QuantifiableViolationImpl();
+		return quantifiableViolation;
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	public NonQuantifiableViolation createNonQuantifiableViolation() {
+		NonQuantifiableViolationImpl nonQuantifiableViolation = new NonQuantifiableViolationImpl();
+		return nonQuantifiableViolation;
 	}
 
 	/**

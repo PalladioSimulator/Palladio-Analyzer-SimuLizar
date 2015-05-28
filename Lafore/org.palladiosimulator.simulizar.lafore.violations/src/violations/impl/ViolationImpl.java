@@ -23,13 +23,12 @@ import violations.ViolationsPackage;
  * The following features are implemented:
  * <ul>
  *   <li>{@link violations.impl.ViolationImpl#getViolationType <em>Violation Type</em>}</li>
- *   <li>{@link violations.impl.ViolationImpl#getViolatedPercentage <em>Violated Percentage</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
-public class ViolationImpl extends EntityImpl implements Violation {
+public abstract class ViolationImpl extends EntityImpl implements Violation {
 	/**
 	 * The cached value of the '{@link #getViolationType() <em>Violation Type</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -39,25 +38,6 @@ public class ViolationImpl extends EntityImpl implements Violation {
 	 * @ordered
 	 */
 	protected ViolationType violationType;
-
-	/**
-	 * The default value of the '{@link #getViolatedPercentage() <em>Violated Percentage</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getViolatedPercentage()
-	 * @generated
-	 * @ordered
-	 */
-	protected static final double VIOLATED_PERCENTAGE_EDEFAULT = 0.0;
-	/**
-	 * The cached value of the '{@link #getViolatedPercentage() <em>Violated Percentage</em>}' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @see #getViolatedPercentage()
-	 * @generated
-	 * @ordered
-	 */
-	protected double violatedPercentage = VIOLATED_PERCENTAGE_EDEFAULT;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -121,35 +101,12 @@ public class ViolationImpl extends EntityImpl implements Violation {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public double getViolatedPercentage() {
-		return violatedPercentage;
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	public void setViolatedPercentage(double newViolatedPercentage) {
-		double oldViolatedPercentage = violatedPercentage;
-		violatedPercentage = newViolatedPercentage;
-		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE, oldViolatedPercentage, violatedPercentage));
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
 	@Override
 	public Object eGet(int featureID, boolean resolve, boolean coreType) {
 		switch (featureID) {
 			case ViolationsPackage.VIOLATION__VIOLATION_TYPE:
 				if (resolve) return getViolationType();
 				return basicGetViolationType();
-			case ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE:
-				return getViolatedPercentage();
 		}
 		return super.eGet(featureID, resolve, coreType);
 	}
@@ -164,9 +121,6 @@ public class ViolationImpl extends EntityImpl implements Violation {
 		switch (featureID) {
 			case ViolationsPackage.VIOLATION__VIOLATION_TYPE:
 				setViolationType((ViolationType)newValue);
-				return;
-			case ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE:
-				setViolatedPercentage((Double)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -183,9 +137,6 @@ public class ViolationImpl extends EntityImpl implements Violation {
 			case ViolationsPackage.VIOLATION__VIOLATION_TYPE:
 				setViolationType((ViolationType)null);
 				return;
-			case ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE:
-				setViolatedPercentage(VIOLATED_PERCENTAGE_EDEFAULT);
-				return;
 		}
 		super.eUnset(featureID);
 	}
@@ -200,26 +151,8 @@ public class ViolationImpl extends EntityImpl implements Violation {
 		switch (featureID) {
 			case ViolationsPackage.VIOLATION__VIOLATION_TYPE:
 				return violationType != null;
-			case ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE:
-				return violatedPercentage != VIOLATED_PERCENTAGE_EDEFAULT;
 		}
 		return super.eIsSet(featureID);
-	}
-
-	/**
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public String toString() {
-		if (eIsProxy()) return super.toString();
-
-		StringBuffer result = new StringBuffer(super.toString());
-		result.append(" (violatedPercentage: ");
-		result.append(violatedPercentage);
-		result.append(')');
-		return result.toString();
 	}
 
 } //ViolationImpl

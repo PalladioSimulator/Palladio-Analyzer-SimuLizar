@@ -89,6 +89,14 @@ public class ViolationsAdapterFactory extends AdapterFactoryImpl {
 				return createRuntimeViolationsModelAdapter();
 			}
 			@Override
+			public Adapter caseQuantifiableViolation(QuantifiableViolation object) {
+				return createQuantifiableViolationAdapter();
+			}
+			@Override
+			public Adapter caseNonQuantifiableViolation(NonQuantifiableViolation object) {
+				return createNonQuantifiableViolationAdapter();
+			}
+			@Override
 			public Adapter caseIdentifier(Identifier object) {
 				return createIdentifierAdapter();
 			}
@@ -173,6 +181,34 @@ public class ViolationsAdapterFactory extends AdapterFactoryImpl {
 	 * @generated
 	 */
 	public Adapter createRuntimeViolationsModelAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link violations.QuantifiableViolation <em>Quantifiable Violation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see violations.QuantifiableViolation
+	 * @generated
+	 */
+	public Adapter createQuantifiableViolationAdapter() {
+		return null;
+	}
+
+	/**
+	 * Creates a new adapter for an object of class '{@link violations.NonQuantifiableViolation <em>Non Quantifiable Violation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * This default implementation returns null so that we can easily ignore cases;
+	 * it's useful to ignore a case when inheritance will catch all the cases anyway.
+	 * <!-- end-user-doc -->
+	 * @return the new adapter.
+	 * @see violations.NonQuantifiableViolation
+	 * @generated
+	 */
+	public Adapter createNonQuantifiableViolationAdapter() {
 		return null;
 	}
 

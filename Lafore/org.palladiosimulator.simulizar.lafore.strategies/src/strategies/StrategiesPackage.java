@@ -2,6 +2,7 @@
  */
 package strategies;
 
+import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
 import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
 
 import de.uka.ipd.sdq.pcm.seff.SeffPackage;
@@ -70,13 +71,31 @@ public interface StrategiesPackage extends EPackage {
 	int RUNTIME_STRATEGIES_MODEL = 0;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RUNTIME_STRATEGIES_MODEL__ID = EntityPackage.ENTITY__ID;
+
+	/**
+	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int RUNTIME_STRATEGIES_MODEL__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Strategies</b></em>' containment reference list.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL__STRATEGIES = 0;
+	int RUNTIME_STRATEGIES_MODEL__STRATEGIES = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Runtime Strategies Model</em>' class.
@@ -85,7 +104,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL_FEATURE_COUNT = 1;
+	int RUNTIME_STRATEGIES_MODEL_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.StrategyImpl <em>Strategy</em>}' class.
@@ -98,13 +117,31 @@ public interface StrategiesPackage extends EPackage {
 	int STRATEGY = 1;
 
 	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRATEGY__ID = EntityPackage.ENTITY__ID;
+
+	/**
+	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int STRATEGY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+
+	/**
 	 * The feature id for the '<em><b>Strategy Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY__STRATEGY_TYPE = 0;
+	int STRATEGY__STRATEGY_TYPE = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Strategy</em>' class.
@@ -113,7 +150,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_FEATURE_COUNT = 1;
+	int STRATEGY_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.StrategyTypeImpl <em>Strategy Type</em>}' class.
