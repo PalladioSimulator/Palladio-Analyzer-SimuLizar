@@ -2,11 +2,11 @@
 <ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="strategies" nsURI="http://simulizar.palladiosimulator.org/lafore/strategies/1.0"
     nsPrefix="strategies">
-  <eClassifiers xsi:type="ecore:EClass" name="RuntimeStrategiesModel">
+  <eClassifiers xsi:type="ecore:EClass" name="RuntimeStrategiesModel" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="strategies" upperBound="-1"
         eType="#//Strategy" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Strategy">
+  <eClassifiers xsi:type="ecore:EClass" name="Strategy" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="strategyType" lowerBound="1"
         eType="#//StrategyType"/>
   </eClassifiers>

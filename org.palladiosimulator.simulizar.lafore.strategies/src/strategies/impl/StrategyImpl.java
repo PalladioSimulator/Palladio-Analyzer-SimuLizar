@@ -2,14 +2,11 @@
  */
 package strategies.impl;
 
+import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import strategies.StrategiesPackage;
 import strategies.Strategy;
 import strategies.StrategyType;
@@ -27,7 +24,7 @@ import strategies.StrategyType;
  *
  * @generated
  */
-public class StrategyImpl extends MinimalEObjectImpl.Container implements Strategy {
+public class StrategyImpl extends EntityImpl implements Strategy {
 	/**
 	 * The cached value of the '{@link #getStrategyType() <em>Strategy Type</em>}' reference.
 	 * <!-- begin-user-doc -->

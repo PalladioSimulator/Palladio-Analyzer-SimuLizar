@@ -151,22 +151,13 @@ public interface ViolationsPackage extends EPackage {
 	int VIOLATION__VIOLATION_TYPE = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Violated Percentage</b></em>' attribute.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 * @ordered
-	 */
-	int VIOLATION__VIOLATED_PERCENTAGE = EntityPackage.ENTITY_FEATURE_COUNT + 1;
-
-	/**
 	 * The number of structural features of the '<em>Violation</em>' class.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 2;
+	int VIOLATION_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link violations.impl.ViolationsRepositoryImpl <em>Repository</em>}' class.
@@ -261,6 +252,107 @@ public interface ViolationsPackage extends EPackage {
 	int RUNTIME_VIOLATIONS_MODEL_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
+	 * The meta object id for the '{@link violations.impl.QuantifiableViolationImpl <em>Quantifiable Violation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see violations.impl.QuantifiableViolationImpl
+	 * @see violations.impl.ViolationsPackageImpl#getQuantifiableViolation()
+	 * @generated
+	 */
+	int QUANTIFIABLE_VIOLATION = 4;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFIABLE_VIOLATION__ID = VIOLATION__ID;
+
+	/**
+	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFIABLE_VIOLATION__ENTITY_NAME = VIOLATION__ENTITY_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Violation Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFIABLE_VIOLATION__VIOLATION_TYPE = VIOLATION__VIOLATION_TYPE;
+
+	/**
+	 * The feature id for the '<em><b>Percentage</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFIABLE_VIOLATION__PERCENTAGE = VIOLATION_FEATURE_COUNT + 0;
+
+	/**
+	 * The number of structural features of the '<em>Quantifiable Violation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int QUANTIFIABLE_VIOLATION_FEATURE_COUNT = VIOLATION_FEATURE_COUNT + 1;
+
+	/**
+	 * The meta object id for the '{@link violations.impl.NonQuantifiableViolationImpl <em>Non Quantifiable Violation</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @see violations.impl.NonQuantifiableViolationImpl
+	 * @see violations.impl.ViolationsPackageImpl#getNonQuantifiableViolation()
+	 * @generated
+	 */
+	int NON_QUANTIFIABLE_VIOLATION = 5;
+
+	/**
+	 * The feature id for the '<em><b>Id</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_QUANTIFIABLE_VIOLATION__ID = VIOLATION__ID;
+
+	/**
+	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_QUANTIFIABLE_VIOLATION__ENTITY_NAME = VIOLATION__ENTITY_NAME;
+
+	/**
+	 * The feature id for the '<em><b>Violation Type</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_QUANTIFIABLE_VIOLATION__VIOLATION_TYPE = VIOLATION__VIOLATION_TYPE;
+
+	/**
+	 * The number of structural features of the '<em>Non Quantifiable Violation</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 * @ordered
+	 */
+	int NON_QUANTIFIABLE_VIOLATION_FEATURE_COUNT = VIOLATION_FEATURE_COUNT + 0;
+
+	/**
 	 * Returns the meta object for class '{@link violations.ViolationType <em>Violation Type</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -314,17 +406,6 @@ public interface ViolationsPackage extends EPackage {
 	EReference getViolation_ViolationType();
 
 	/**
-	 * Returns the meta object for the attribute '{@link violations.Violation#getViolatedPercentage <em>Violated Percentage</em>}'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return the meta object for the attribute '<em>Violated Percentage</em>'.
-	 * @see violations.Violation#getViolatedPercentage()
-	 * @see #getViolation()
-	 * @generated
-	 */
-	EAttribute getViolation_ViolatedPercentage();
-
-	/**
 	 * Returns the meta object for class '{@link violations.ViolationsRepository <em>Repository</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -365,6 +446,37 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 */
 	EReference getRuntimeViolationsModel_Violations();
+
+	/**
+	 * Returns the meta object for class '{@link violations.QuantifiableViolation <em>Quantifiable Violation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Quantifiable Violation</em>'.
+	 * @see violations.QuantifiableViolation
+	 * @generated
+	 */
+	EClass getQuantifiableViolation();
+
+	/**
+	 * Returns the meta object for the attribute '{@link violations.QuantifiableViolation#getPercentage <em>Percentage</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the attribute '<em>Percentage</em>'.
+	 * @see violations.QuantifiableViolation#getPercentage()
+	 * @see #getQuantifiableViolation()
+	 * @generated
+	 */
+	EAttribute getQuantifiableViolation_Percentage();
+
+	/**
+	 * Returns the meta object for class '{@link violations.NonQuantifiableViolation <em>Non Quantifiable Violation</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for class '<em>Non Quantifiable Violation</em>'.
+	 * @see violations.NonQuantifiableViolation
+	 * @generated
+	 */
+	EClass getNonQuantifiableViolation();
 
 	/**
 	 * Returns the factory that creates the instances of the model.
@@ -434,14 +546,6 @@ public interface ViolationsPackage extends EPackage {
 		EReference VIOLATION__VIOLATION_TYPE = eINSTANCE.getViolation_ViolationType();
 
 		/**
-		 * The meta object literal for the '<em><b>Violated Percentage</b></em>' attribute feature.
-		 * <!-- begin-user-doc -->
-		 * <!-- end-user-doc -->
-		 * @generated
-		 */
-		EAttribute VIOLATION__VIOLATED_PERCENTAGE = eINSTANCE.getViolation_ViolatedPercentage();
-
-		/**
 		 * The meta object literal for the '{@link violations.impl.ViolationsRepositoryImpl <em>Repository</em>}' class.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -476,6 +580,34 @@ public interface ViolationsPackage extends EPackage {
 		 * @generated
 		 */
 		EReference RUNTIME_VIOLATIONS_MODEL__VIOLATIONS = eINSTANCE.getRuntimeViolationsModel_Violations();
+
+		/**
+		 * The meta object literal for the '{@link violations.impl.QuantifiableViolationImpl <em>Quantifiable Violation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see violations.impl.QuantifiableViolationImpl
+		 * @see violations.impl.ViolationsPackageImpl#getQuantifiableViolation()
+		 * @generated
+		 */
+		EClass QUANTIFIABLE_VIOLATION = eINSTANCE.getQuantifiableViolation();
+
+		/**
+		 * The meta object literal for the '<em><b>Percentage</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @generated
+		 */
+		EAttribute QUANTIFIABLE_VIOLATION__PERCENTAGE = eINSTANCE.getQuantifiableViolation_Percentage();
+
+		/**
+		 * The meta object literal for the '{@link violations.impl.NonQuantifiableViolationImpl <em>Non Quantifiable Violation</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
+		 * @see violations.impl.NonQuantifiableViolationImpl
+		 * @see violations.impl.ViolationsPackageImpl#getNonQuantifiableViolation()
+		 * @generated
+		 */
+		EClass NON_QUANTIFIABLE_VIOLATION = eINSTANCE.getNonQuantifiableViolation();
 
 	}
 

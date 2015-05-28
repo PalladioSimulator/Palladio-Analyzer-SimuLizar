@@ -1,34 +1,36 @@
 /**
  */
-package strategies.provider;
+package violations.provider;
 
 
-import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
 import java.util.Collection;
 import java.util.List;
+
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.ResourceLocator;
+
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import strategies.StrategiesPackage;
-import strategies.Strategy;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ViewerNotification;
+
+import violations.QuantifiableViolation;
+import violations.ViolationsPackage;
 
 /**
- * This is the item provider adapter for a {@link strategies.Strategy} object.
+ * This is the item provider adapter for a {@link violations.QuantifiableViolation} object.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class StrategyItemProvider 
-	extends EntityItemProvider {
+public class QuantifiableViolationItemProvider extends ViolationItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StrategyItemProvider(AdapterFactory adapterFactory) {
+	public QuantifiableViolationItemProvider(AdapterFactory adapterFactory) {
 		super(adapterFactory);
 	}
 
@@ -43,42 +45,42 @@ public class StrategyItemProvider
 		if (itemPropertyDescriptors == null) {
 			super.getPropertyDescriptors(object);
 
-			addStrategyTypePropertyDescriptor(object);
+			addPercentagePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
 
 	/**
-	 * This adds a property descriptor for the Strategy Type feature.
+	 * This adds a property descriptor for the Percentage feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addStrategyTypePropertyDescriptor(Object object) {
+	protected void addPercentagePropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_Strategy_strategyType_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Strategy_strategyType_feature", "_UI_Strategy_type"),
-				 StrategiesPackage.Literals.STRATEGY__STRATEGY_TYPE,
+				 getString("_UI_QuantifiableViolation_percentage_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_QuantifiableViolation_percentage_feature", "_UI_QuantifiableViolation_type"),
+				 ViolationsPackage.Literals.QUANTIFIABLE_VIOLATION__PERCENTAGE,
 				 true,
 				 false,
-				 true,
-				 null,
+				 false,
+				 ItemPropertyDescriptor.INTEGRAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
 
 	/**
-	 * This returns Strategy.gif.
+	 * This returns QuantifiableViolation.gif.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public Object getImage(Object object) {
-		return overlayImage(object, getResourceLocator().getImage("full/obj16/Strategy"));
+		return overlayImage(object, getResourceLocator().getImage("full/obj16/QuantifiableViolation"));
 	}
 
 	/**
@@ -89,10 +91,10 @@ public class StrategyItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((Strategy)object).getId();
+		String label = ((QuantifiableViolation)object).getId();
 		return label == null || label.length() == 0 ?
-			getString("_UI_Strategy_type") :
-			getString("_UI_Strategy_type") + " " + label;
+			getString("_UI_QuantifiableViolation_type") :
+			getString("_UI_QuantifiableViolation_type") + " " + label;
 	}
 	
 
@@ -106,6 +108,12 @@ public class StrategyItemProvider
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
+
+		switch (notification.getFeatureID(QuantifiableViolation.class)) {
+			case ViolationsPackage.QUANTIFIABLE_VIOLATION__PERCENTAGE:
+				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+				return;
+		}
 		super.notifyChanged(notification);
 	}
 
@@ -119,17 +127,6 @@ public class StrategyItemProvider
 	@Override
 	protected void collectNewChildDescriptors(Collection<Object> newChildDescriptors, Object object) {
 		super.collectNewChildDescriptors(newChildDescriptors, object);
-	}
-
-	/**
-	 * Return the resource locator for this item provider's resources.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ResourceLocator getResourceLocator() {
-		return StrategiesEditPlugin.INSTANCE;
 	}
 
 }

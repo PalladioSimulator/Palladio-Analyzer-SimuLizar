@@ -61,7 +61,7 @@ public interface ViolationType extends EObject, Entity {
 	 * @return the value of the '<em>Slo</em>' reference.
 	 * @see #setSlo(Threshold)
 	 * @see violations.ViolationsPackage#getViolationType_Slo()
-	 * @model
+	 * @model required="true"
 	 * @generated
 	 */
 	Threshold getSlo();

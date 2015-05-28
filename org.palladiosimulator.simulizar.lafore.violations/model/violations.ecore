@@ -4,12 +4,11 @@
     nsPrefix="violations">
   <eClassifiers xsi:type="ecore:EClass" name="ViolationType" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="slo" eType="ecore:EClass platform:/plugin/org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore#//Threshold"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slo" lowerBound="1" eType="ecore:EClass platform:/plugin/org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore#//Threshold"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Violation" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
+  <eClassifiers xsi:type="ecore:EClass" name="Violation" abstract="true" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="violationType" lowerBound="1"
         eType="#//ViolationType"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="violatedPercentage" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ViolationsRepository" eSuperTypes="platform:/plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="violationTypes" upperBound="-1"
@@ -19,4 +18,13 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="violations" upperBound="-1"
         eType="#//Violation" containment="true"/>
   </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="QuantifiableViolation" eSuperTypes="#//Violation">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="percentage" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details/>
+      </eAnnotations>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NonQuantifiableViolation" eSuperTypes="#//Violation"/>
 </ecore:EPackage>

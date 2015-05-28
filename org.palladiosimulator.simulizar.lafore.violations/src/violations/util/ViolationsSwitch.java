@@ -107,6 +107,26 @@ public class ViolationsSwitch<T> extends Switch<T> {
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
+			case ViolationsPackage.QUANTIFIABLE_VIOLATION: {
+				QuantifiableViolation quantifiableViolation = (QuantifiableViolation)theEObject;
+				T result = caseQuantifiableViolation(quantifiableViolation);
+				if (result == null) result = caseViolation(quantifiableViolation);
+				if (result == null) result = caseEntity(quantifiableViolation);
+				if (result == null) result = caseIdentifier(quantifiableViolation);
+				if (result == null) result = caseNamedElement(quantifiableViolation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
+			case ViolationsPackage.NON_QUANTIFIABLE_VIOLATION: {
+				NonQuantifiableViolation nonQuantifiableViolation = (NonQuantifiableViolation)theEObject;
+				T result = caseNonQuantifiableViolation(nonQuantifiableViolation);
+				if (result == null) result = caseViolation(nonQuantifiableViolation);
+				if (result == null) result = caseEntity(nonQuantifiableViolation);
+				if (result == null) result = caseIdentifier(nonQuantifiableViolation);
+				if (result == null) result = caseNamedElement(nonQuantifiableViolation);
+				if (result == null) result = defaultCase(theEObject);
+				return result;
+			}
 			default: return defaultCase(theEObject);
 		}
 	}
@@ -168,6 +188,36 @@ public class ViolationsSwitch<T> extends Switch<T> {
 	 * @generated
 	 */
 	public T caseRuntimeViolationsModel(RuntimeViolationsModel object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Quantifiable Violation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Quantifiable Violation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseQuantifiableViolation(QuantifiableViolation object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Non Quantifiable Violation</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Non Quantifiable Violation</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseNonQuantifiableViolation(NonQuantifiableViolation object) {
 		return null;
 	}
 

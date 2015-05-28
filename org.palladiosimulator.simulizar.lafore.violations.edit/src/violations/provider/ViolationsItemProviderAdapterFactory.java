@@ -95,29 +95,6 @@ public class ViolationsItemProviderAdapterFactory extends ViolationsAdapterFacto
 	}
 
 	/**
-	 * This keeps track of the one adapter used for all {@link violations.Violation} instances.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected ViolationItemProvider violationItemProvider;
-
-	/**
-	 * This creates an adapter for a {@link violations.Violation}.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public Adapter createViolationAdapter() {
-		if (violationItemProvider == null) {
-			violationItemProvider = new ViolationItemProvider(this);
-		}
-
-		return violationItemProvider;
-	}
-
-	/**
 	 * This keeps track of the one adapter used for all {@link violations.ViolationsRepository} instances.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -161,6 +138,52 @@ public class ViolationsItemProviderAdapterFactory extends ViolationsAdapterFacto
 		}
 
 		return runtimeViolationsModelItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link violations.QuantifiableViolation} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected QuantifiableViolationItemProvider quantifiableViolationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link violations.QuantifiableViolation}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createQuantifiableViolationAdapter() {
+		if (quantifiableViolationItemProvider == null) {
+			quantifiableViolationItemProvider = new QuantifiableViolationItemProvider(this);
+		}
+
+		return quantifiableViolationItemProvider;
+	}
+
+	/**
+	 * This keeps track of the one adapter used for all {@link violations.NonQuantifiableViolation} instances.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected NonQuantifiableViolationItemProvider nonQuantifiableViolationItemProvider;
+
+	/**
+	 * This creates an adapter for a {@link violations.NonQuantifiableViolation}.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Adapter createNonQuantifiableViolationAdapter() {
+		if (nonQuantifiableViolationItemProvider == null) {
+			nonQuantifiableViolationItemProvider = new NonQuantifiableViolationItemProvider(this);
+		}
+
+		return nonQuantifiableViolationItemProvider;
 	}
 
 	/**
@@ -263,9 +286,10 @@ public class ViolationsItemProviderAdapterFactory extends ViolationsAdapterFacto
 	 */
 	public void dispose() {
 		if (violationTypeItemProvider != null) violationTypeItemProvider.dispose();
-		if (violationItemProvider != null) violationItemProvider.dispose();
 		if (violationsRepositoryItemProvider != null) violationsRepositoryItemProvider.dispose();
 		if (runtimeViolationsModelItemProvider != null) runtimeViolationsModelItemProvider.dispose();
+		if (quantifiableViolationItemProvider != null) quantifiableViolationItemProvider.dispose();
+		if (nonQuantifiableViolationItemProvider != null) nonQuantifiableViolationItemProvider.dispose();
 	}
 
 }

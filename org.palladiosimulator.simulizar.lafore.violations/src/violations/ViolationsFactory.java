@@ -31,15 +31,6 @@ public interface ViolationsFactory extends EFactory {
 	ViolationType createViolationType();
 
 	/**
-	 * Returns a new object of class '<em>Violation</em>'.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @return a new object of class '<em>Violation</em>'.
-	 * @generated
-	 */
-	Violation createViolation();
-
-	/**
 	 * Returns a new object of class '<em>Repository</em>'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
@@ -56,6 +47,24 @@ public interface ViolationsFactory extends EFactory {
 	 * @generated
 	 */
 	RuntimeViolationsModel createRuntimeViolationsModel();
+
+	/**
+	 * Returns a new object of class '<em>Quantifiable Violation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Quantifiable Violation</em>'.
+	 * @generated
+	 */
+	QuantifiableViolation createQuantifiableViolation();
+
+	/**
+	 * Returns a new object of class '<em>Non Quantifiable Violation</em>'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return a new object of class '<em>Non Quantifiable Violation</em>'.
+	 * @generated
+	 */
+	NonQuantifiableViolation createNonQuantifiableViolation();
 
 	/**
 	 * Returns the package supported by this factory.

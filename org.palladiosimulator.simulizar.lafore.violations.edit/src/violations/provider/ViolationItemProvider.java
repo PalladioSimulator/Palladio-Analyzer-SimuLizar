@@ -4,20 +4,13 @@ package violations.provider;
 
 
 import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
-
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-
-import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.ViewerNotification;
 import violations.Violation;
 import violations.ViolationsPackage;
 
@@ -50,7 +43,6 @@ public class ViolationItemProvider extends EntityItemProvider {
 			super.getPropertyDescriptors(object);
 
 			addViolationTypePropertyDescriptor(object);
-			addViolatedPercentagePropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
 	}
@@ -73,28 +65,6 @@ public class ViolationItemProvider extends EntityItemProvider {
 				 false,
 				 true,
 				 null,
-				 null,
-				 null));
-	}
-
-	/**
-	 * This adds a property descriptor for the Violated Percentage feature.
-	 * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-	 * @generated
-	 */
-	protected void addViolatedPercentagePropertyDescriptor(Object object) {
-		itemPropertyDescriptors.add
-			(createItemPropertyDescriptor
-				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
-				 getResourceLocator(),
-				 getString("_UI_Violation_violatedPercentage_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_Violation_violatedPercentage_feature", "_UI_Violation_type"),
-				 ViolationsPackage.Literals.VIOLATION__VIOLATED_PERCENTAGE,
-				 true,
-				 false,
-				 false,
-				 ItemPropertyDescriptor.REAL_VALUE_IMAGE,
 				 null,
 				 null));
 	}
@@ -135,12 +105,6 @@ public class ViolationItemProvider extends EntityItemProvider {
 	@Override
 	public void notifyChanged(Notification notification) {
 		updateChildren(notification);
-
-		switch (notification.getFeatureID(Violation.class)) {
-			case ViolationsPackage.VIOLATION__VIOLATED_PERCENTAGE:
-				fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
-				return;
-		}
 		super.notifyChanged(notification);
 	}
 

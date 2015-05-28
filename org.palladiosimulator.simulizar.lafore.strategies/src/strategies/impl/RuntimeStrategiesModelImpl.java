@@ -2,20 +2,14 @@
  */
 package strategies.impl;
 
+import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
 import java.util.Collection;
-
 import org.eclipse.emf.common.notify.NotificationChain;
-
 import org.eclipse.emf.common.util.EList;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
-import org.eclipse.emf.ecore.impl.MinimalEObjectImpl;
-
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-
 import strategies.RuntimeStrategiesModel;
 import strategies.StrategiesPackage;
 import strategies.Strategy;
@@ -33,7 +27,7 @@ import strategies.Strategy;
  *
  * @generated
  */
-public class RuntimeStrategiesModelImpl extends MinimalEObjectImpl.Container implements RuntimeStrategiesModel {
+public class RuntimeStrategiesModelImpl extends EntityImpl implements RuntimeStrategiesModel {
 	/**
 	 * The cached value of the '{@link #getStrategies() <em>Strategies</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

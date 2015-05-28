@@ -279,8 +279,8 @@ public class StrategiesPackageImpl extends EPackageImpl implements StrategiesPac
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		SeffPackage theSeffPackage = (SeffPackage)EPackage.Registry.INSTANCE.getEPackage(SeffPackage.eNS_URI);
 		EntityPackage theEntityPackage = (EntityPackage)EPackage.Registry.INSTANCE.getEPackage(EntityPackage.eNS_URI);
+		SeffPackage theSeffPackage = (SeffPackage)EPackage.Registry.INSTANCE.getEPackage(SeffPackage.eNS_URI);
 		RepositoryPackage theRepositoryPackage = (RepositoryPackage)EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI);
 
 		// Create type parameters
@@ -288,6 +288,8 @@ public class StrategiesPackageImpl extends EPackageImpl implements StrategiesPac
 		// Set bounds for type parameters
 
 		// Add supertypes to classes
+		runtimeStrategiesModelEClass.getESuperTypes().add(theEntityPackage.getEntity());
+		strategyEClass.getESuperTypes().add(theEntityPackage.getEntity());
 		strategyTypeEClass.getESuperTypes().add(theSeffPackage.getResourceDemandingSEFF());
 		strategyTypeEClass.getESuperTypes().add(theEntityPackage.getEntity());
 		reconfigurationActionEClass.getESuperTypes().add(theSeffPackage.getInternalAction());

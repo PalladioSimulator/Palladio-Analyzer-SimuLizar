@@ -3,25 +3,15 @@
 package strategies.provider;
 
 
+import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
 import java.util.Collection;
 import java.util.List;
-
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.common.util.ResourceLocator;
-
 import org.eclipse.emf.ecore.EStructuralFeature;
-
-import org.eclipse.emf.edit.provider.IEditingDomainItemProvider;
-import org.eclipse.emf.edit.provider.IItemLabelProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.eclipse.emf.edit.provider.IItemPropertySource;
-import org.eclipse.emf.edit.provider.IStructuredItemContentProvider;
-import org.eclipse.emf.edit.provider.ITreeItemContentProvider;
-import org.eclipse.emf.edit.provider.ItemProviderAdapter;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-
 import strategies.RuntimeStrategiesModel;
 import strategies.StrategiesFactory;
 import strategies.StrategiesPackage;
@@ -33,13 +23,7 @@ import strategies.StrategiesPackage;
  * @generated
  */
 public class RuntimeStrategiesModelItemProvider 
-	extends ItemProviderAdapter
-	implements
-		IEditingDomainItemProvider,
-		IStructuredItemContentProvider,
-		ITreeItemContentProvider,
-		IItemLabelProvider,
-		IItemPropertySource {
+	extends EntityItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -114,7 +98,10 @@ public class RuntimeStrategiesModelItemProvider
 	 */
 	@Override
 	public String getText(Object object) {
-		return getString("_UI_RuntimeStrategiesModel_type");
+		String label = ((RuntimeStrategiesModel)object).getId();
+		return label == null || label.length() == 0 ?
+			getString("_UI_RuntimeStrategiesModel_type") :
+			getString("_UI_RuntimeStrategiesModel_type") + " " + label;
 	}
 	
 

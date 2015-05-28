@@ -89,12 +89,18 @@ public class StrategiesSwitch<T> extends Switch<T> {
 			case StrategiesPackage.RUNTIME_STRATEGIES_MODEL: {
 				RuntimeStrategiesModel runtimeStrategiesModel = (RuntimeStrategiesModel)theEObject;
 				T result = caseRuntimeStrategiesModel(runtimeStrategiesModel);
+				if (result == null) result = caseEntity(runtimeStrategiesModel);
+				if (result == null) result = caseIdentifier(runtimeStrategiesModel);
+				if (result == null) result = caseNamedElement(runtimeStrategiesModel);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}
 			case StrategiesPackage.STRATEGY: {
 				Strategy strategy = (Strategy)theEObject;
 				T result = caseStrategy(strategy);
+				if (result == null) result = caseEntity(strategy);
+				if (result == null) result = caseIdentifier(strategy);
+				if (result == null) result = caseNamedElement(strategy);
 				if (result == null) result = defaultCase(theEObject);
 				return result;
 			}

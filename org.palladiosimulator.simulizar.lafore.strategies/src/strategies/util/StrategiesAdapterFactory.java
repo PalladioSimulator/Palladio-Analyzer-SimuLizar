@@ -112,6 +112,14 @@ public class StrategiesAdapterFactory extends AdapterFactoryImpl {
 				return createIdentifierAdapter();
 			}
 			@Override
+			public Adapter caseNamedElement(NamedElement object) {
+				return createNamedElementAdapter();
+			}
+			@Override
+			public Adapter caseEntity(Entity object) {
+				return createEntityAdapter();
+			}
+			@Override
 			public Adapter caseServiceEffectSpecification(ServiceEffectSpecification object) {
 				return createServiceEffectSpecificationAdapter();
 			}
@@ -122,14 +130,6 @@ public class StrategiesAdapterFactory extends AdapterFactoryImpl {
 			@Override
 			public Adapter caseResourceDemandingSEFF(ResourceDemandingSEFF object) {
 				return createResourceDemandingSEFFAdapter();
-			}
-			@Override
-			public Adapter caseNamedElement(NamedElement object) {
-				return createNamedElementAdapter();
-			}
-			@Override
-			public Adapter caseEntity(Entity object) {
-				return createEntityAdapter();
 			}
 			@Override
 			public Adapter caseAbstractAction(AbstractAction object) {
