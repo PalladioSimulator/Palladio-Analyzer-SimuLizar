@@ -34,4 +34,31 @@
       </editor>
    </extension>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated violationstrategymappings -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="violationstrategymappings.presentation.ViolationstrategymappingsModelWizardID"
+            name="%_UI_ViolationstrategymappingsModelWizard_label"
+            class="violationstrategymappings.presentation.ViolationstrategymappingsModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ViolationstrategymappingsModelFile.gif">
+         <description>%_UI_ViolationstrategymappingsModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated violationstrategymappings -->
+      <editor
+            id="violationstrategymappings.presentation.ViolationstrategymappingsEditorID"
+            name="%_UI_ViolationstrategymappingsEditor_label"
+            icon="icons/full/obj16/ViolationstrategymappingsModelFile.gif"
+            extensions="violationstrategymappings"
+            class="violationstrategymappings.presentation.ViolationstrategymappingsEditor"
+            contributorClass="violationstrategymappings.presentation.ViolationstrategymappingsActionBarContributor">
+      </editor>
+   </extension>
 </plugin>

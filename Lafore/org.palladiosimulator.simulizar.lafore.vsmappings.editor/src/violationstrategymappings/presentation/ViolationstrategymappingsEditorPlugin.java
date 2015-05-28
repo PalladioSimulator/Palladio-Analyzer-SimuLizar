@@ -1,6 +1,6 @@
 /**
  */
-package vsmappings.presentation;
+package violationstrategymappings.presentation;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierEditPlugin;
 
@@ -29,19 +29,19 @@ import strategies.provider.StrategiesEditPlugin;
 import violations.provider.ViolationsEditPlugin;
 
 /**
- * This is the central singleton for the Vsmappings editor plugin.
+ * This is the central singleton for the Violationstrategymappings editor plugin.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public final class VsmappingsEditorPlugin extends EMFPlugin {
+public final class ViolationstrategymappingsEditorPlugin extends EMFPlugin {
 	/**
 	 * Keep track of the singleton.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public static final VsmappingsEditorPlugin INSTANCE = new VsmappingsEditorPlugin();
+	public static final ViolationstrategymappingsEditorPlugin INSTANCE = new ViolationstrategymappingsEditorPlugin();
 	
 	/**
 	 * Keep track of the singleton.
@@ -57,7 +57,7 @@ public final class VsmappingsEditorPlugin extends EMFPlugin {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VsmappingsEditorPlugin() {
+	public ViolationstrategymappingsEditorPlugin() {
 		super
 			(new ResourceLocator [] {
 				EDP2EditPlugin.INSTANCE,

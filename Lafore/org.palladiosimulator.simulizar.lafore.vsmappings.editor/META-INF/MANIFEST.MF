@@ -4,11 +4,11 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.lafore.violationstrategymappings.editor;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: vsmappings.presentation.VsmappingsEditorPlugin$Implementation
+Bundle-Activator: violationstrategymappings.presentation.ViolationstrategymappingsEditorPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Export-Package: vsmappings.presentation
+Export-Package: violationstrategymappings.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  org.palladiosimulator.simulizar.lafore.violationstrategymappings.edit;visibility:=reexport,

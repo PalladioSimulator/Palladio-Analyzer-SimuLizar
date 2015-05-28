@@ -1,6 +1,6 @@
 /**
  */
-package vsmappings.presentation;
+package violationstrategymappings.presentation;
 
 
 import java.util.ArrayList;
@@ -69,9 +69,9 @@ import org.eclipse.ui.dialogs.WizardNewFileCreationPage;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ISetSelectionTarget;
 
-import vsmappings.VsmappingsFactory;
-import vsmappings.VsmappingsPackage;
-import vsmappings.provider.VsmappingsEditPlugin;
+import violationstrategymappings.ViolationstrategymappingsFactory;
+import violationstrategymappings.ViolationstrategymappingsPackage;
+import violationstrategymappings.provider.ViolationstrategymappingsEditPlugin;
 
 
 import org.eclipse.core.runtime.Path;
@@ -91,7 +91,7 @@ import org.eclipse.ui.PartInitException;
  * <!-- end-user-doc -->
  * @generated
  */
-public class VsmappingsModelWizard extends Wizard implements INewWizard {
+public class ViolationstrategymappingsModelWizard extends Wizard implements INewWizard {
 	/**
 	 * The supported extensions for created files.
 	 * <!-- begin-user-doc -->
@@ -99,7 +99,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	public static final List<String> FILE_EXTENSIONS =
-		Collections.unmodifiableList(Arrays.asList(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsEditorFilenameExtensions").split("\\s*,\\s*")));
+		Collections.unmodifiableList(Arrays.asList(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsEditorFilenameExtensions").split("\\s*,\\s*")));
 
 	/**
 	 * A formatted list of supported file extensions, suitable for display.
@@ -108,7 +108,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	public static final String FORMATTED_FILE_EXTENSIONS =
-		VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsEditorFilenameExtensions").replaceAll("\\s*,\\s*", ", ");
+		ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsEditorFilenameExtensions").replaceAll("\\s*,\\s*", ", ");
 
 	/**
 	 * This caches an instance of the model package.
@@ -116,7 +116,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VsmappingsPackage vsmappingsPackage = VsmappingsPackage.eINSTANCE;
+	protected ViolationstrategymappingsPackage violationstrategymappingsPackage = ViolationstrategymappingsPackage.eINSTANCE;
 
 	/**
 	 * This caches an instance of the model factory.
@@ -124,7 +124,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VsmappingsFactory vsmappingsFactory = vsmappingsPackage.getVsmappingsFactory();
+	protected ViolationstrategymappingsFactory violationstrategymappingsFactory = violationstrategymappingsPackage.getViolationstrategymappingsFactory();
 
 	/**
 	 * This is the file creation page.
@@ -132,7 +132,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VsmappingsModelWizardNewFileCreationPage newFileCreationPage;
+	protected ViolationstrategymappingsModelWizardNewFileCreationPage newFileCreationPage;
 
 	/**
 	 * This is the initial object creation page.
@@ -140,7 +140,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected VsmappingsModelWizardInitialObjectCreationPage initialObjectCreationPage;
+	protected ViolationstrategymappingsModelWizardInitialObjectCreationPage initialObjectCreationPage;
 
 	/**
 	 * Remember the selection during initialization for populating the default container.
@@ -175,8 +175,8 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	public void init(IWorkbench workbench, IStructuredSelection selection) {
 		this.workbench = workbench;
 		this.selection = selection;
-		setWindowTitle(VsmappingsEditorPlugin.INSTANCE.getString("_UI_Wizard_label"));
-		setDefaultPageImageDescriptor(ExtendedImageRegistry.INSTANCE.getImageDescriptor(VsmappingsEditorPlugin.INSTANCE.getImage("full/wizban/NewVsmappings")));
+		setWindowTitle(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_Wizard_label"));
+		setDefaultPageImageDescriptor(ExtendedImageRegistry.INSTANCE.getImageDescriptor(ViolationstrategymappingsEditorPlugin.INSTANCE.getImage("full/wizban/NewViolationstrategymappings")));
 	}
 
 	/**
@@ -188,7 +188,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	protected Collection<String> getInitialObjectNames() {
 		if (initialObjectNames == null) {
 			initialObjectNames = new ArrayList<String>();
-			for (EClassifier eClassifier : vsmappingsPackage.getEClassifiers()) {
+			for (EClassifier eClassifier : violationstrategymappingsPackage.getEClassifiers()) {
 				if (eClassifier instanceof EClass) {
 					EClass eClass = (EClass)eClassifier;
 					if (!eClass.isAbstract()) {
@@ -208,8 +208,8 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * @generated
 	 */
 	protected EObject createInitialModel() {
-		EClass eClass = (EClass)vsmappingsPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
-		EObject rootObject = vsmappingsFactory.create(eClass);
+		EClass eClass = (EClass)violationstrategymappingsPackage.getEClassifier(initialObjectCreationPage.getInitialObjectName());
+		EObject rootObject = violationstrategymappingsFactory.create(eClass);
 		return rootObject;
 	}
 
@@ -259,7 +259,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 							resource.save(options);
 						}
 						catch (Exception exception) {
-							VsmappingsEditorPlugin.INSTANCE.log(exception);
+							ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 						}
 						finally {
 							progressMonitor.done();
@@ -292,14 +292,14 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 					 workbench.getEditorRegistry().getDefaultEditor(modelFile.getFullPath().toString()).getId());					 	 
 			}
 			catch (PartInitException exception) {
-				MessageDialog.openError(workbenchWindow.getShell(), VsmappingsEditorPlugin.INSTANCE.getString("_UI_OpenEditorError_label"), exception.getMessage());
+				MessageDialog.openError(workbenchWindow.getShell(), ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_OpenEditorError_label"), exception.getMessage());
 				return false;
 			}
 
 			return true;
 		}
 		catch (Exception exception) {
-			VsmappingsEditorPlugin.INSTANCE.log(exception);
+			ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 			return false;
 		}
 	}
@@ -310,14 +310,14 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public class VsmappingsModelWizardNewFileCreationPage extends WizardNewFileCreationPage {
+	public class ViolationstrategymappingsModelWizardNewFileCreationPage extends WizardNewFileCreationPage {
 		/**
 		 * Pass in the selection.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public VsmappingsModelWizardNewFileCreationPage(String pageId, IStructuredSelection selection) {
+		public ViolationstrategymappingsModelWizardNewFileCreationPage(String pageId, IStructuredSelection selection) {
 			super(pageId, selection);
 		}
 
@@ -333,7 +333,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 				String extension = new Path(getFileName()).getFileExtension();
 				if (extension == null || !FILE_EXTENSIONS.contains(extension)) {
 					String key = FILE_EXTENSIONS.size() > 1 ? "_WARN_FilenameExtensions" : "_WARN_FilenameExtension";
-					setErrorMessage(VsmappingsEditorPlugin.INSTANCE.getString(key, new Object [] { FORMATTED_FILE_EXTENSIONS }));
+					setErrorMessage(ViolationstrategymappingsEditorPlugin.INSTANCE.getString(key, new Object [] { FORMATTED_FILE_EXTENSIONS }));
 					return false;
 				}
 				return true;
@@ -357,7 +357,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public class VsmappingsModelWizardInitialObjectCreationPage extends WizardPage {
+	public class ViolationstrategymappingsModelWizardInitialObjectCreationPage extends WizardPage {
 		/**
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
@@ -385,7 +385,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		public VsmappingsModelWizardInitialObjectCreationPage(String pageId) {
+		public ViolationstrategymappingsModelWizardInitialObjectCreationPage(String pageId) {
 			super(pageId);
 		}
 
@@ -410,7 +410,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 
 			Label containerLabel = new Label(composite, SWT.LEFT);
 			{
-				containerLabel.setText(VsmappingsEditorPlugin.INSTANCE.getString("_UI_ModelObject"));
+				containerLabel.setText(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ModelObject"));
 
 				GridData data = new GridData();
 				data.horizontalAlignment = GridData.FILL;
@@ -436,7 +436,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 
 			Label encodingLabel = new Label(composite, SWT.LEFT);
 			{
-				encodingLabel.setText(VsmappingsEditorPlugin.INSTANCE.getString("_UI_XMLEncoding"));
+				encodingLabel.setText(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_XMLEncoding"));
 
 				GridData data = new GridData();
 				data.horizontalAlignment = GridData.FILL;
@@ -535,10 +535,10 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 		 */
 		protected String getLabel(String typeName) {
 			try {
-				return VsmappingsEditPlugin.INSTANCE.getString("_UI_" + typeName + "_type");
+				return ViolationstrategymappingsEditPlugin.INSTANCE.getString("_UI_" + typeName + "_type");
 			}
 			catch(MissingResourceException mre) {
-				VsmappingsEditorPlugin.INSTANCE.log(mre);
+				ViolationstrategymappingsEditorPlugin.INSTANCE.log(mre);
 			}
 			return typeName;
 		}
@@ -551,7 +551,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 		protected Collection<String> getEncodings() {
 			if (encodings == null) {
 				encodings = new ArrayList<String>();
-				for (StringTokenizer stringTokenizer = new StringTokenizer(VsmappingsEditorPlugin.INSTANCE.getString("_UI_XMLEncodingChoices")); stringTokenizer.hasMoreTokens(); ) {
+				for (StringTokenizer stringTokenizer = new StringTokenizer(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_XMLEncodingChoices")); stringTokenizer.hasMoreTokens(); ) {
 					encodings.add(stringTokenizer.nextToken());
 				}
 			}
@@ -569,10 +569,10 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 	public void addPages() {
 		// Create a page, set the title, and the initial model file name.
 		//
-		newFileCreationPage = new VsmappingsModelWizardNewFileCreationPage("Whatever", selection);
-		newFileCreationPage.setTitle(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsModelWizard_label"));
-		newFileCreationPage.setDescription(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsModelWizard_description"));
-		newFileCreationPage.setFileName(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsEditorFilenameDefaultBase") + "." + FILE_EXTENSIONS.get(0));
+		newFileCreationPage = new ViolationstrategymappingsModelWizardNewFileCreationPage("Whatever", selection);
+		newFileCreationPage.setTitle(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsModelWizard_label"));
+		newFileCreationPage.setDescription(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsModelWizard_description"));
+		newFileCreationPage.setFileName(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsEditorFilenameDefaultBase") + "." + FILE_EXTENSIONS.get(0));
 		addPage(newFileCreationPage);
 
 		// Try and get the resource selection to determine a current directory for the file dialog.
@@ -598,7 +598,7 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 
 					// Make up a unique new name here.
 					//
-					String defaultModelBaseFilename = VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsEditorFilenameDefaultBase");
+					String defaultModelBaseFilename = ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsEditorFilenameDefaultBase");
 					String defaultModelFilenameExtension = FILE_EXTENSIONS.get(0);
 					String modelFilename = defaultModelBaseFilename + "." + defaultModelFilenameExtension;
 					for (int i = 1; ((IContainer)selectedResource).findMember(modelFilename) != null; ++i) {
@@ -608,9 +608,9 @@ public class VsmappingsModelWizard extends Wizard implements INewWizard {
 				}
 			}
 		}
-		initialObjectCreationPage = new VsmappingsModelWizardInitialObjectCreationPage("Whatever2");
-		initialObjectCreationPage.setTitle(VsmappingsEditorPlugin.INSTANCE.getString("_UI_VsmappingsModelWizard_label"));
-		initialObjectCreationPage.setDescription(VsmappingsEditorPlugin.INSTANCE.getString("_UI_Wizard_initial_object_description"));
+		initialObjectCreationPage = new ViolationstrategymappingsModelWizardInitialObjectCreationPage("Whatever2");
+		initialObjectCreationPage.setTitle(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_ViolationstrategymappingsModelWizard_label"));
+		initialObjectCreationPage.setDescription(ViolationstrategymappingsEditorPlugin.INSTANCE.getString("_UI_Wizard_initial_object_description"));
 		addPage(initialObjectCreationPage);
 	}
 

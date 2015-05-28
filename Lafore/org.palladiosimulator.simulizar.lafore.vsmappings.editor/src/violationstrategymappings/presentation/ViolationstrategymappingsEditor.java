@@ -1,6 +1,6 @@
 /**
  */
-package vsmappings.presentation;
+package violationstrategymappings.presentation;
 
 
 import java.io.IOException;
@@ -154,7 +154,7 @@ import org.eclipse.emf.edit.ui.util.EditUIUtil;
 
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
-import vsmappings.provider.VsmappingsItemProviderAdapterFactory;
+import violationstrategymappings.provider.ViolationstrategymappingsItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProviderAdapterFactory;
 
@@ -220,12 +220,12 @@ import violations.provider.ViolationsItemProviderAdapterFactory;
 
 
 /**
- * This is an example of a Vsmappings model editor.
+ * This is an example of a Violationstrategymappings model editor.
  * <!-- begin-user-doc -->
  * <!-- end-user-doc -->
  * @generated
  */
-public class VsmappingsEditor
+public class ViolationstrategymappingsEditor
 	extends MultiPageEditorPart
 	implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerProvider, IGotoMarker {
 	/**
@@ -387,18 +387,18 @@ public class VsmappingsEditor
 			public void partActivated(IWorkbenchPart p) {
 				if (p instanceof ContentOutline) {
 					if (((ContentOutline)p).getCurrentPage() == contentOutlinePage) {
-						getActionBarContributor().setActiveEditor(VsmappingsEditor.this);
+						getActionBarContributor().setActiveEditor(ViolationstrategymappingsEditor.this);
 
 						setCurrentViewer(contentOutlineViewer);
 					}
 				}
 				else if (p instanceof PropertySheet) {
 					if (propertySheetPages.contains(((PropertySheet)p).getCurrentPage())) {
-						getActionBarContributor().setActiveEditor(VsmappingsEditor.this);
+						getActionBarContributor().setActiveEditor(ViolationstrategymappingsEditor.this);
 						handleActivate();
 					}
 				}
-				else if (p == VsmappingsEditor.this) {
+				else if (p == ViolationstrategymappingsEditor.this) {
 					handleActivate();
 				}
 			}
@@ -571,7 +571,7 @@ public class VsmappingsEditor
 								 public void run() {
 									 removedResources.addAll(visitor.getRemovedResources());
 									 if (!isDirty()) {
-										 getSite().getPage().closeEditor(VsmappingsEditor.this, false);
+										 getSite().getPage().closeEditor(ViolationstrategymappingsEditor.this, false);
 									 }
 								 }
 							 });
@@ -582,7 +582,7 @@ public class VsmappingsEditor
 							(new Runnable() {
 								 public void run() {
 									 changedResources.addAll(visitor.getChangedResources());
-									 if (getSite().getPage().getActiveEditor() == VsmappingsEditor.this) {
+									 if (getSite().getPage().getActiveEditor() == ViolationstrategymappingsEditor.this) {
 										 handleActivate();
 									 }
 								 }
@@ -590,7 +590,7 @@ public class VsmappingsEditor
 					}
 				}
 				catch (CoreException exception) {
-					VsmappingsEditorPlugin.INSTANCE.log(exception);
+					ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 				}
 			}
 		};
@@ -614,7 +614,7 @@ public class VsmappingsEditor
 
 		if (!removedResources.isEmpty()) {
 			if (handleDirtyConflict()) {
-				getSite().getPage().closeEditor(VsmappingsEditor.this, false);
+				getSite().getPage().closeEditor(ViolationstrategymappingsEditor.this, false);
 			}
 			else {
 				removedResources.clear();
@@ -678,7 +678,7 @@ public class VsmappingsEditor
 			BasicDiagnostic diagnostic =
 				new BasicDiagnostic
 					(Diagnostic.OK,
-					 "org.palladiosimulator.simulizar.lafore.vsmappings.editor",
+					 "org.palladiosimulator.simulizar.lafore.violationstrategymappings.editor",
 					 0,
 					 null,
 					 new Object [] { editingDomain.getResourceSet() });
@@ -706,7 +706,7 @@ public class VsmappingsEditor
 					showTabs();
 				}
 				catch (PartInitException exception) {
-					VsmappingsEditorPlugin.INSTANCE.log(exception);
+					ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 				}
 			}
 
@@ -717,7 +717,7 @@ public class VsmappingsEditor
 						markerHelper.createMarkers(diagnostic);
 					}
 					catch (CoreException exception) {
-						VsmappingsEditorPlugin.INSTANCE.log(exception);
+						ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 					}
 				}
 			}
@@ -744,7 +744,7 @@ public class VsmappingsEditor
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public VsmappingsEditor() {
+	public ViolationstrategymappingsEditor() {
 		super();
 		initializeEditingDomain();
 	}
@@ -761,7 +761,7 @@ public class VsmappingsEditor
 		adapterFactory = new ComposedAdapterFactory(ComposedAdapterFactory.Descriptor.Registry.INSTANCE);
 
 		adapterFactory.addAdapterFactory(new ResourceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new VsmappingsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new ViolationstrategymappingsItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ExperimentDataItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new RepositoryItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MeasuringpointItemProviderAdapterFactory());
@@ -1123,7 +1123,7 @@ public class VsmappingsEditor
 			BasicDiagnostic basicDiagnostic =
 				new BasicDiagnostic
 					(Diagnostic.ERROR,
-					 "org.palladiosimulator.simulizar.lafore.vsmappings.editor",
+					 "org.palladiosimulator.simulizar.lafore.violationstrategymappings.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object [] { exception == null ? (Object)resource : exception });
@@ -1134,7 +1134,7 @@ public class VsmappingsEditor
 			return
 				new BasicDiagnostic
 					(Diagnostic.ERROR,
-					 "org.palladiosimulator.simulizar.lafore.vsmappings.editor",
+					 "org.palladiosimulator.simulizar.lafore.violationstrategymappings.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),
 					 new Object[] { exception });
@@ -1163,7 +1163,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							Tree tree = new Tree(composite, SWT.MULTI);
@@ -1197,7 +1197,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							Tree tree = new Tree(composite, SWT.MULTI);
@@ -1226,7 +1226,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							return new ListViewer(composite);
@@ -1251,7 +1251,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							return new TreeViewer(composite);
@@ -1278,7 +1278,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							return new TableViewer(composite);
@@ -1321,7 +1321,7 @@ public class VsmappingsEditor
 			//
 			{
 				ViewerPane viewerPane =
-					new ViewerPane(getSite().getPage(), VsmappingsEditor.this) {
+					new ViewerPane(getSite().getPage(), ViolationstrategymappingsEditor.this) {
 						@Override
 						public Viewer createViewer(Composite composite) {
 							return new TreeViewer(composite);
@@ -1541,8 +1541,8 @@ public class VsmappingsEditor
 			new ExtendedPropertySheetPage(editingDomain) {
 				@Override
 				public void setSelectionToViewer(List<?> selection) {
-					VsmappingsEditor.this.setSelectionToViewer(selection);
-					VsmappingsEditor.this.setFocus();
+					ViolationstrategymappingsEditor.this.setSelectionToViewer(selection);
+					ViolationstrategymappingsEditor.this.setFocus();
 				}
 
 				@Override
@@ -1664,7 +1664,7 @@ public class VsmappingsEditor
 		catch (Exception exception) {
 			// Something went wrong that shouldn't.
 			//
-			VsmappingsEditorPlugin.INSTANCE.log(exception);
+			ViolationstrategymappingsEditorPlugin.INSTANCE.log(exception);
 		}
 		updateProblemIndication = true;
 		updateProblemIndication();
@@ -1868,7 +1868,7 @@ public class VsmappingsEditor
 	 * @generated
 	 */
 	private static String getString(String key) {
-		return VsmappingsEditorPlugin.INSTANCE.getString(key);
+		return ViolationstrategymappingsEditorPlugin.INSTANCE.getString(key);
 	}
 
 	/**
@@ -1878,7 +1878,7 @@ public class VsmappingsEditor
 	 * @generated
 	 */
 	private static String getString(String key, Object s1) {
-		return VsmappingsEditorPlugin.INSTANCE.getString(key, new Object [] { s1 });
+		return ViolationstrategymappingsEditorPlugin.INSTANCE.getString(key, new Object [] { s1 });
 	}
 
 	/**
