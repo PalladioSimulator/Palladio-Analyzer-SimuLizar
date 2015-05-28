@@ -15,7 +15,7 @@ public class LoadActionRepositoryIntoBlackboardJobConfig extends AbstractExtensi
     
     private String actionRepositoryPath;
     
-    public static String DEFAULT_ACTION_REPOSITORY_PATH = "platform:/resource/org.palladiosimulator.simulizar.action.repository/model/repository.actions";
+    public static final String DEFAULT_ACTION_REPOSITORY_PATH = "platform:/resource/org.palladiosimulator.simulizar.action.repository/model/repository.actions";
     
     /**
      * Initializes a new instance of the {@link LoadActionRepositoryIntoBlackboardJobConfig} class
