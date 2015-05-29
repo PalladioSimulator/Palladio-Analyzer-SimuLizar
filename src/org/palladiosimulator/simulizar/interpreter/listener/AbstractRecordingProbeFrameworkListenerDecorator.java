@@ -12,16 +12,33 @@ import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 
-public abstract class AbstractRecordingProbeFrameworkListenerDecorator implements IProbeFrameworkListenerDecorator {
+/**
+ * This class has to be implemented by all clients that wish to have additional measurements
+ * recorded, i.e., by all classes that make use of the
+ * {@code org.palladiosimulator.simulizar.interpreter.listener.probeframework} extension point.
+ * 
+ * @author Florian Rosenthal
+ *
+ */
+public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
     private ProbeFrameworkListener probeFrameworkListener;
 
-    @Override
+    /**
+     * Injects the probe framework listener that is decorated by this class.
+     * 
+     * @param probeFrameworkListener
+     *            The {@link ProbeFrameworkListener} used during the current simulation run.
+     */
     public void setProbeFrameworkListener(ProbeFrameworkListener probeFrameworkListener) {
         this.probeFrameworkListener = probeFrameworkListener;
     }
 
-    @Override
+    /**
+     * Registers additional measurements to be observed/stored by the probe framework listener.<br>
+     * This method is called by the {@link ProbeFrameworkListener} in order to have additional
+     * measurements attached.
+     */
     public void registerMeasurements() {
         if (this.probeFrameworkListener == null) {
             throw new IllegalStateException("No ProbeFrameworkListener at hand. "
@@ -29,6 +46,12 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator implement
         }
     }
 
+    /**
+     * Gets the current {@link ProbeFrameworkListener} instance.
+     * 
+     * @return The current {@link ProbeFrameworkListener} that has been passed to this instance via
+     *         {@link #setProbeFrameworkListener(ProbeFrameworkListener)}.
+     */
     protected ProbeFrameworkListener getProbeFrameworkListener() {
         return this.probeFrameworkListener;
     }
