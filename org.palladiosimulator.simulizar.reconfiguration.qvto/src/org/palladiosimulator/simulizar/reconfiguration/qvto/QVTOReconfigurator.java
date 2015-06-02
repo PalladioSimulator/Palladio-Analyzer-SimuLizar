@@ -6,7 +6,9 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
@@ -16,7 +18,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
  * @author Matthias Becker
  *
  */
-public class QVTOReconfigurator implements IReconfigurator {
+public class QVTOReconfigurator extends AbstractReconfigurator implements IReconfigurator {
 
     /**
      * This class' internal LOGGER.
@@ -27,10 +29,6 @@ public class QVTOReconfigurator implements IReconfigurator {
      * QVTO Interpreter used internally to interpret the SDs.
      */
     private QVTOExecutor qvtoExecutor;
-
-    private IModelAccess modelAccessFactory;
-
-    private SimuLizarWorkflowConfiguration configuration;
 
     /**
      * QVTO Reconfigurator default constructor.
@@ -78,22 +76,6 @@ public class QVTOReconfigurator implements IReconfigurator {
             this.qvtoExecutor = new QVTOExecutor(this.modelAccessFactory, this.configuration);
         }
         return this.qvtoExecutor;
-    }
-
-    @Override
-    public void setModelAccess(IModelAccess modelAccess) {
-        if (modelAccess == null) {
-            throw new IllegalArgumentException("Given modelAccess must not be null.");
-        }
-        this.modelAccessFactory = modelAccess;
-    }
-
-    @Override
-    public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
-        if (configuration == null) {
-            throw new IllegalArgumentException("Given configuration must not be null.");
-        }
-        this.configuration = configuration;
     }
 
 }
