@@ -172,7 +172,7 @@ public class SimuLizarRuntimeState {
             }
         }
 
-        reconfigurator = new Reconfigurator(modelAccess, simulationControl, engines);
+        reconfigurator = new Reconfigurator(model, modelAccess, simulationControl, engines);
         reconfigurator.addObserver(new IReconfigurationListener() {
             @Override
             public void reconfigurationExecuted(Collection<Notification> modelChanges) {

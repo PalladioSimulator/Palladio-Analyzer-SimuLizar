@@ -19,6 +19,7 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
@@ -99,8 +100,14 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     private final ISimulationControl simulationController;
 
+    private final SimuComModel model;
+
+    private ReconfigurationProcess reconfigurationProcess = null;
+
     /**
      * Constructor.
+     * 
+     * @param model
      * 
      * @param modelAccessFactory
      *            Access factory for model access interfaces.
@@ -108,9 +115,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      *            Set of reconfigurators which will be triggered as soon as new, interesting
      *            monitoring data arrives.
      */
-    public Reconfigurator(final IModelAccess modelAccessFactory, final ISimulationControl simulationcontrol,
-            final List<IReconfigurator> reconfigurators) {
+    public Reconfigurator(SimuComModel model, final IModelAccess modelAccessFactory,
+            final ISimulationControl simulationcontrol, final List<IReconfigurator> reconfigurators) {
         super();
+        this.model = model;
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
@@ -143,18 +151,14 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     protected void checkAndExecuteReconfigurations(final Notification notification) {
         final EObject monitoredElement = this.getMonitoredElement(notification);
 
-        // Value changed, reconfigure!
-        if (isNotificationNewMeasurement(monitoredElement)) {
-            for (final IReconfigurator reconfigurator : this.reconfigurators) {
-                double startReconfigurationTime = this.simulationController.getCurrentSimulationTime();
-                if (reconfigurator.checkAndExecute(monitoredElement)) {
-                    this.getEventDispatcher().beginReconfigurationEvent(
-                            new ReconfigurationEvent(EventType.BEGIN, startReconfigurationTime));
-                    LOGGER.debug("Successfully executed reconfiguration.");
-                    this.getEventDispatcher().endReconfigurationEvent(
-                            new ReconfigurationEvent(EventType.END, this.simulationController));
-                }
-            }
+        // Value changed, reconfiguration is triggered. Reconfiguration only executes if the
+        // previous reconfiguration process is finished. This could be done on a more fine-granular
+        // level (one thread per executor).
+        if (isNotificationNewMeasurement(monitoredElement)
+                && (reconfigurationProcess == null || reconfigurationProcess.isFinished())) {
+            reconfigurationProcess = new ReconfigurationProcess(model, "Reconfiguration Process", this.reconfigurators,
+                    monitoredElement, this.getEventDispatcher());
+            reconfigurationProcess.scheduleAt(0);
         }
     }
 
@@ -216,6 +220,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
             LOGGER.warn("Unsupported RuntimeMeasurement Notification: " + notification);
             return null;
         }
+    }
+
+    public ReconfigurationProcess getReconfigurationProcess() {
+        return reconfigurationProcess;
     }
 
 }
