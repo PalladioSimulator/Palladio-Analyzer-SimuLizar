@@ -31,6 +31,7 @@ import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
+import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
@@ -94,19 +95,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         final List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
         SimuComModel model = state.getMainContext().getModel();
 
-        // Barrier process
-        SimuComSimProcess barrierProcess = new SimuComSimProcess(model, "Transient Effect Barrier") {
-            @Override
-            protected void internalLifeCycle() {
-                // wait for the users to finish processing
-                while (checkIfUsersRun(users)) {
-                    this.passivate();
-                }
-                // execute adaptation
-                executeAdaptation(step, mapping);
-                state.getReconfigurator().getEventDispatcher().reconfigurationExecuted(null);
-            }
-        };
+        // get the process in which the reconfiguration is executed
+        final ReconfigurationProcess reconfigurationProcess = state.getReconfigurator().getReconfigurationProcess();
 
         // consume resources
         for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
@@ -134,9 +124,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
                     start.setSuccessor(sysCall);
                     sysCall.setSuccessor(stop);
                     new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-                    barrierProcess.scheduleAt(0);
+                    reconfigurationProcess.scheduleAt(0);
                 }
             };
+            
             List<Probe> usageStartStopProbes = Collections.unmodifiableList(Arrays.asList(
                     (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
                     (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
@@ -145,7 +136,16 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             users.add(user);
             user.startUserLife();
         }
-        barrierProcess.scheduleAt(0);
+        // wait until all users have finished executing
+        while (checkIfUsersRun(users)) {
+            reconfigurationProcess.passivate();
+        }
+        
+        // execute adaptation
+        executeAdaptation(step, mapping);
+        state.getReconfigurator().getEventDispatcher().reconfigurationExecuted(null);
+        
+        
         return true;
     }
 
