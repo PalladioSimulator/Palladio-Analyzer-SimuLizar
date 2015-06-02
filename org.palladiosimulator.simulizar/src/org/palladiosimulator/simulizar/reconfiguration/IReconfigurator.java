@@ -27,4 +27,12 @@ public interface IReconfigurator {
 
     public void setConfiguration(final SimuLizarWorkflowConfiguration configuration);
 
+    /**
+     * Configures the reconfiguration framework in which <code>this</code> is used.
+     * 
+     * @param reconfigurator
+     *            The reconfiguration framework in which <code>this</code> is used.
+     */
+    public void setReconfigurator(Reconfigurator reconfigurator);
+
 }

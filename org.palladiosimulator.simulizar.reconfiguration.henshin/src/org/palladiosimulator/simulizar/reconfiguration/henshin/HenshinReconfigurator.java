@@ -14,9 +14,10 @@ import org.eclipse.emf.henshin.model.Module;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-public class HenshinReconfigurator implements IReconfigurator {
+public class HenshinReconfigurator extends AbstractReconfigurator {
 
     private HenshinModelAccess modelAccess;
     private List<Module> modules;
