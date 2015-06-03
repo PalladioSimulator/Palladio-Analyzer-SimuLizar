@@ -18,6 +18,7 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
  * @generated
  */
 public class RuntimeMeasurementFactoryImpl extends EFactoryImpl implements RuntimeMeasurementFactory {
+
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
      *

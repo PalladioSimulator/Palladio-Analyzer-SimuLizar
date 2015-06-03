@@ -25,6 +25,7 @@ import de.uka.ipd.sdq.identifier.IdentifierPackage;
  * @generated
  */
 public interface RuntimeMeasurementPackage extends EPackage {
+
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -66,6 +67,15 @@ public interface RuntimeMeasurementPackage extends EPackage {
     int RUNTIME_MEASUREMENT_MODEL = 0;
 
     /**
+     * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RUNTIME_MEASUREMENT_MODEL__PROFILEABLE_ELEMENT = IdentifierPackage.IDENTIFIER__PROFILEABLE_ELEMENT;
+
+    /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
@@ -102,6 +112,15 @@ public interface RuntimeMeasurementPackage extends EPackage {
      * @generated
      */
     int RUNTIME_MEASUREMENT = 1;
+
+    /**
+     * The feature id for the '<em><b>Profileable Element</b></em>' reference. <!-- begin-user-doc
+     * --> <!-- end-user-doc -->
+     *
+     * @generated
+     * @ordered
+     */
+    int RUNTIME_MEASUREMENT__PROFILEABLE_ELEMENT = IdentifierPackage.IDENTIFIER__PROFILEABLE_ELEMENT;
 
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
@@ -240,6 +259,7 @@ public interface RuntimeMeasurementPackage extends EPackage {
      * @generated
      */
     interface Literals {
+
         /**
          * The meta object literal for the '
          * {@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementModelImpl

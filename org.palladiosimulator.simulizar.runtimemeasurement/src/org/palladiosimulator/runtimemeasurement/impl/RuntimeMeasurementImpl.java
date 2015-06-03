@@ -2,42 +2,43 @@
  */
 package org.palladiosimulator.runtimemeasurement.impl;
 
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
-
 import org.eclipse.emf.common.notify.Notification;
-
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
-
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+
 /**
- * <!-- begin-user-doc -->
- * An implementation of the model object '<em><b>Runtime Measurement</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Runtime Measurement</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * <ul>
- *   <li>{@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasuringPoint <em>Measuring Point</em>}</li>
- *   <li>{@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasurementSpecification <em>Measurement Specification</em>}</li>
- *   <li>{@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasuringValue <em>Measuring Value</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasuringPoint
+ * <em>Measuring Point</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasurementSpecification
+ * <em>Measurement Specification</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.runtimemeasurement.impl.RuntimeMeasurementImpl#getMeasuringValue
+ * <em>Measuring Value</em>}</li>
  * </ul>
  * </p>
  *
  * @generated
  */
 public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMeasurement {
+
     /**
      * The cached value of the '{@link #getMeasuringPoint() <em>Measuring Point</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMeasuringPoint()
      * @generated
      * @ordered
@@ -45,9 +46,9 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
     protected MeasuringPoint measuringPoint;
 
     /**
-     * The cached value of the '{@link #getMeasurementSpecification() <em>Measurement Specification</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * The cached value of the '{@link #getMeasurementSpecification()
+     * <em>Measurement Specification</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMeasurementSpecification()
      * @generated
      * @ordered
@@ -56,8 +57,8 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
 
     /**
      * The default value of the '{@link #getMeasuringValue() <em>Measuring Value</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMeasuringValue()
      * @generated
      * @ordered
@@ -66,8 +67,8 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
 
     /**
      * The cached value of the '{@link #getMeasuringValue() <em>Measuring Value</em>}' attribute.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @see #getMeasuringValue()
      * @generated
      * @ordered
@@ -75,8 +76,8 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
     protected double measuringValue = MEASURING_VALUE_EDEFAULT;
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     protected RuntimeMeasurementImpl() {
@@ -84,8 +85,8 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
@@ -94,207 +95,223 @@ public class RuntimeMeasurementImpl extends IdentifierImpl implements RuntimeMea
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public MeasuringPoint getMeasuringPoint() {
-        if (measuringPoint != null && measuringPoint.eIsProxy()) {
-            InternalEObject oldMeasuringPoint = (InternalEObject) measuringPoint;
-            measuringPoint = (MeasuringPoint) eResolveProxy(oldMeasuringPoint);
-            if (measuringPoint != oldMeasuringPoint) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT, oldMeasuringPoint,
-                            measuringPoint));
-            }
-        }
-        return measuringPoint;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public MeasuringPoint basicGetMeasuringPoint() {
-        return measuringPoint;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setMeasuringPoint(MeasuringPoint newMeasuringPoint) {
-        MeasuringPoint oldMeasuringPoint = measuringPoint;
-        measuringPoint = newMeasuringPoint;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT, oldMeasuringPoint, measuringPoint));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public MeasurementSpecification getMeasurementSpecification() {
-        if (measurementSpecification != null && measurementSpecification.eIsProxy()) {
-            InternalEObject oldMeasurementSpecification = (InternalEObject) measurementSpecification;
-            measurementSpecification = (MeasurementSpecification) eResolveProxy(oldMeasurementSpecification);
-            if (measurementSpecification != oldMeasurementSpecification) {
-                if (eNotificationRequired())
-                    eNotify(new ENotificationImpl(this, Notification.RESOLVE,
-                            RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION,
-                            oldMeasurementSpecification, measurementSpecification));
-            }
-        }
-        return measurementSpecification;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public MeasurementSpecification basicGetMeasurementSpecification() {
-        return measurementSpecification;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setMeasurementSpecification(MeasurementSpecification newMeasurementSpecification) {
-        MeasurementSpecification oldMeasurementSpecification = measurementSpecification;
-        measurementSpecification = newMeasurementSpecification;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION,
-                    oldMeasurementSpecification, measurementSpecification));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public double getMeasuringValue() {
-        return measuringValue;
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @generated
-     */
-    public void setMeasuringValue(double newMeasuringValue) {
-        double oldMeasuringValue = measuringValue;
-        measuringValue = newMeasuringValue;
-        if (eNotificationRequired())
-            eNotify(new ENotificationImpl(this, Notification.SET,
-                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE, oldMeasuringValue, measuringValue));
-    }
-
-    /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
-    public Object eGet(int featureID, boolean resolve, boolean coreType) {
+    public MeasuringPoint getMeasuringPoint() {
+        if (this.measuringPoint != null && this.measuringPoint.eIsProxy()) {
+            final InternalEObject oldMeasuringPoint = (InternalEObject) this.measuringPoint;
+            this.measuringPoint = (MeasuringPoint) this.eResolveProxy(oldMeasuringPoint);
+            if (this.measuringPoint != oldMeasuringPoint) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT, oldMeasuringPoint,
+                            this.measuringPoint));
+                }
+            }
+        }
+        return this.measuringPoint;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public MeasuringPoint basicGetMeasuringPoint() {
+        return this.measuringPoint;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMeasuringPoint(final MeasuringPoint newMeasuringPoint) {
+        final MeasuringPoint oldMeasuringPoint = this.measuringPoint;
+        this.measuringPoint = newMeasuringPoint;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT, oldMeasuringPoint,
+                    this.measuringPoint));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public MeasurementSpecification getMeasurementSpecification() {
+        if (this.measurementSpecification != null && this.measurementSpecification.eIsProxy()) {
+            final InternalEObject oldMeasurementSpecification = (InternalEObject) this.measurementSpecification;
+            this.measurementSpecification = (MeasurementSpecification) this.eResolveProxy(oldMeasurementSpecification);
+            if (this.measurementSpecification != oldMeasurementSpecification) {
+                if (this.eNotificationRequired()) {
+                    this.eNotify(new ENotificationImpl(this, Notification.RESOLVE,
+                            RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION,
+                            oldMeasurementSpecification, this.measurementSpecification));
+                }
+            }
+        }
+        return this.measurementSpecification;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    public MeasurementSpecification basicGetMeasurementSpecification() {
+        return this.measurementSpecification;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMeasurementSpecification(final MeasurementSpecification newMeasurementSpecification) {
+        final MeasurementSpecification oldMeasurementSpecification = this.measurementSpecification;
+        this.measurementSpecification = newMeasurementSpecification;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION,
+                    oldMeasurementSpecification, this.measurementSpecification));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public double getMeasuringValue() {
+        return this.measuringValue;
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public void setMeasuringValue(final double newMeasuringValue) {
+        final double oldMeasuringValue = this.measuringValue;
+        this.measuringValue = newMeasuringValue;
+        if (this.eNotificationRequired()) {
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE, oldMeasuringValue,
+                    this.measuringValue));
+        }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT:
-            if (resolve)
-                return getMeasuringPoint();
-            return basicGetMeasuringPoint();
+            if (resolve) {
+                return this.getMeasuringPoint();
+            }
+            return this.basicGetMeasuringPoint();
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            if (resolve)
-                return getMeasurementSpecification();
-            return basicGetMeasurementSpecification();
+            if (resolve) {
+                return this.getMeasurementSpecification();
+            }
+            return this.basicGetMeasurementSpecification();
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE:
-            return getMeasuringValue();
+            return this.getMeasuringValue();
         }
         return super.eGet(featureID, resolve, coreType);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
-    public void eSet(int featureID, Object newValue) {
+    public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT:
-            setMeasuringPoint((MeasuringPoint) newValue);
+            this.setMeasuringPoint((MeasuringPoint) newValue);
             return;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            setMeasurementSpecification((MeasurementSpecification) newValue);
+            this.setMeasurementSpecification((MeasurementSpecification) newValue);
             return;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE:
-            setMeasuringValue((Double) newValue);
+            this.setMeasuringValue((Double) newValue);
             return;
         }
         super.eSet(featureID, newValue);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
-    public void eUnset(int featureID) {
+    public void eUnset(final int featureID) {
         switch (featureID) {
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT:
-            setMeasuringPoint((MeasuringPoint) null);
+            this.setMeasuringPoint((MeasuringPoint) null);
             return;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            setMeasurementSpecification((MeasurementSpecification) null);
+            this.setMeasurementSpecification((MeasurementSpecification) null);
             return;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE:
-            setMeasuringValue(MEASURING_VALUE_EDEFAULT);
+            this.setMeasuringValue(MEASURING_VALUE_EDEFAULT);
             return;
         }
         super.eUnset(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
-    public boolean eIsSet(int featureID) {
+    public boolean eIsSet(final int featureID) {
         switch (featureID) {
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_POINT:
-            return measuringPoint != null;
+            return this.measuringPoint != null;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASUREMENT_SPECIFICATION:
-            return measurementSpecification != null;
+            return this.measurementSpecification != null;
         case RuntimeMeasurementPackage.RUNTIME_MEASUREMENT__MEASURING_VALUE:
-            return measuringValue != MEASURING_VALUE_EDEFAULT;
+            return this.measuringValue != MEASURING_VALUE_EDEFAULT;
         }
         return super.eIsSet(featureID);
     }
 
     /**
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
      * @generated
      */
     @Override
     public String toString() {
-        if (eIsProxy())
+        if (this.eIsProxy()) {
             return super.toString();
+        }
 
-        StringBuffer result = new StringBuffer(super.toString());
+        final StringBuffer result = new StringBuffer(super.toString());
         result.append(" (measuringValue: ");
-        result.append(measuringValue);
+        result.append(this.measuringValue);
         result.append(')');
         return result.toString();
     }
 
-} //RuntimeMeasurementImpl
+} // RuntimeMeasurementImpl

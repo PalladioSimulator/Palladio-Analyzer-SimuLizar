@@ -3,7 +3,6 @@
 package org.palladiosimulator.runtimemeasurement;
 
 import org.eclipse.emf.common.util.EList;
-import org.eclipse.emf.ecore.EObject;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 
@@ -26,7 +25,8 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * @model
  * @generated
  */
-public interface RuntimeMeasurementModel extends EObject, Identifier {
+public interface RuntimeMeasurementModel extends Identifier {
+
     /**
      * Returns the value of the '<em><b>Measurements</b></em>' containment reference list. The list
      * contents are of type {@link org.palladiosimulator.runtimemeasurement.RuntimeMeasurement}.

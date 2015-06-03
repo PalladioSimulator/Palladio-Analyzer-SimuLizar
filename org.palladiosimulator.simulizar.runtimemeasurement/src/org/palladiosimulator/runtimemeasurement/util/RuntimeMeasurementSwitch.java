@@ -5,6 +5,7 @@ package org.palladiosimulator.runtimemeasurement.util;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.util.Switch;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
@@ -22,6 +23,7 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * @generated
  */
 public class RuntimeMeasurementSwitch<T> extends Switch<T> {
+
     /**
      * The cached model package <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -70,6 +72,9 @@ public class RuntimeMeasurementSwitch<T> extends Switch<T> {
                 result = this.caseIdentifier(runtimeMeasurementModel);
             }
             if (result == null) {
+                result = this.caseStereotypableElement(runtimeMeasurementModel);
+            }
+            if (result == null) {
                 result = this.defaultCase(theEObject);
             }
             return result;
@@ -79,6 +84,9 @@ public class RuntimeMeasurementSwitch<T> extends Switch<T> {
             T result = this.caseRuntimeMeasurement(runtimeMeasurement);
             if (result == null) {
                 result = this.caseIdentifier(runtimeMeasurement);
+            }
+            if (result == null) {
+                result = this.caseStereotypableElement(runtimeMeasurement);
             }
             if (result == null) {
                 result = this.defaultCase(theEObject);
@@ -118,6 +126,22 @@ public class RuntimeMeasurementSwitch<T> extends Switch<T> {
      * @generated
      */
     public T caseRuntimeMeasurement(final RuntimeMeasurement object) {
+        return null;
+    }
+
+    /**
+     * Returns the result of interpreting the object as an instance of '
+     * <em>Stereotypable Element</em>'. <!-- begin-user-doc --> This implementation returns null;
+     * returning a non-null result will terminate the switch. <!-- end-user-doc -->
+     *
+     * @param object
+     *            the target of the switch.
+     * @return the result of interpreting the object as an instance of '
+     *         <em>Stereotypable Element</em>'.
+     * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+     * @generated
+     */
+    public T caseStereotypableElement(final StereotypableElement object) {
         return null;
     }
 

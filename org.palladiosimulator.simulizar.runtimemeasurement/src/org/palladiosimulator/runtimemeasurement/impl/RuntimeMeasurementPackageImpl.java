@@ -22,6 +22,7 @@ import de.uka.ipd.sdq.identifier.IdentifierPackage;
  * @generated
  */
 public class RuntimeMeasurementPackageImpl extends EPackageImpl implements RuntimeMeasurementPackage {
+
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *

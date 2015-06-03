@@ -31,6 +31,7 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  * @generated
  */
 public class RuntimeMeasurementModelImpl extends IdentifierImpl implements RuntimeMeasurementModel {
+
     /**
      * The cached value of the '{@link #getMeasurements() <em>Measurements</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->

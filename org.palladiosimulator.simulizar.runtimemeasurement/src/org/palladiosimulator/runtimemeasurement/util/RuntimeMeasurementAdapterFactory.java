@@ -6,6 +6,7 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notifier;
 import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.mdsdprofiles.StereotypableElement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
@@ -20,6 +21,7 @@ import de.uka.ipd.sdq.identifier.Identifier;
  * @generated
  */
 public class RuntimeMeasurementAdapterFactory extends AdapterFactoryImpl {
+
     /**
      * The cached model package. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
@@ -64,6 +66,7 @@ public class RuntimeMeasurementAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     protected RuntimeMeasurementSwitch<Adapter> modelSwitch = new RuntimeMeasurementSwitch<Adapter>() {
+
         @Override
         public Adapter caseRuntimeMeasurementModel(final RuntimeMeasurementModel object) {
             return RuntimeMeasurementAdapterFactory.this.createRuntimeMeasurementModelAdapter();
@@ -72,6 +75,11 @@ public class RuntimeMeasurementAdapterFactory extends AdapterFactoryImpl {
         @Override
         public Adapter caseRuntimeMeasurement(final RuntimeMeasurement object) {
             return RuntimeMeasurementAdapterFactory.this.createRuntimeMeasurementAdapter();
+        }
+
+        @Override
+        public Adapter caseStereotypableElement(final StereotypableElement object) {
+            return RuntimeMeasurementAdapterFactory.this.createStereotypableElementAdapter();
         }
 
         @Override
@@ -125,6 +133,21 @@ public class RuntimeMeasurementAdapterFactory extends AdapterFactoryImpl {
      * @generated
      */
     public Adapter createRuntimeMeasurementAdapter() {
+        return null;
+    }
+
+    /**
+     * Creates a new adapter for an object of class '
+     * {@link org.palladiosimulator.mdsdprofiles.StereotypableElement
+     * <em>Stereotypable Element</em>}'. <!-- begin-user-doc --> This default implementation returns
+     * null so that we can easily ignore cases; it's useful to ignore a case when inheritance will
+     * catch all the cases anyway. <!-- end-user-doc -->
+     *
+     * @return the new adapter.
+     * @see org.palladiosimulator.mdsdprofiles.StereotypableElement
+     * @generated
+     */
+    public Adapter createStereotypableElementAdapter() {
         return null;
     }
 
