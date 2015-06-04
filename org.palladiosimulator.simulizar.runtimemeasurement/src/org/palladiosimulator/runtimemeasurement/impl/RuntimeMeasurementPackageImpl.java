@@ -85,7 +85,7 @@ public class RuntimeMeasurementPackageImpl extends EPackageImpl implements Runti
         // Obtain or create and register package
         final RuntimeMeasurementPackageImpl theRuntimeMeasurementPackage = (RuntimeMeasurementPackageImpl) (EPackage.Registry.INSTANCE
                 .get(eNS_URI) instanceof RuntimeMeasurementPackageImpl ? EPackage.Registry.INSTANCE.get(eNS_URI)
-                : new RuntimeMeasurementPackageImpl());
+                        : new RuntimeMeasurementPackageImpl());
 
         isInited = true;
 

@@ -29,9 +29,5 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  de.uka.ipd.sdq.stoex;bundle-version="2.2.0";visibility:=reexport,
  de.uka.ipd.sdq.stoex.edit;bundle-version="2.2.0";visibility:=reexport,
  de.uka.ipd.sdq.units;bundle-version="2.1.0";visibility:=reexport,
- de.uka.ipd.sdq.units.edit;bundle-version="2.1.0";visibility:=reexport,
- org.palladiosimulator.mdsdprofiles;visibility:=reexport,
- org.palladiosimulator.mdsdprofiles.edit;visibility:=reexport,
- org.modelversioning.emfprofile;visibility:=reexport,
- org.modelversioning.emfprofile.edit;visibility:=reexport
+ de.uka.ipd.sdq.units.edit;bundle-version="2.1.0";visibility:=reexport
 Bundle-ActivationPolicy: lazy
