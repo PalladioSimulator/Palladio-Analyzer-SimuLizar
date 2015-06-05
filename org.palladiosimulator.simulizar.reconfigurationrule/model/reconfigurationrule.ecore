@@ -5,7 +5,7 @@
   <eClassifiers xsi:type="ecore:EClass" name="ReconfigurationRuleSet">
     <eStructuralFeatures xsi:type="ecore:EReference" name="rules" upperBound="-1"
         eType="#//ReconfigurationRule" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="controllerAllocationResource"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ReconfigurationRule">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
@@ -14,16 +14,26 @@
         <details key="documentation" value="Priority of the reconfiguration rule represented as Integer. Values from 0 to n are the priority in a ruleset which determine the order of which a reconfiguration rule is executed. Lower values are higher priority, earlier execution. The value -1 means unspecified priority and is equal to the latest execution within the ruleset. The order in which multiple rules with unspecified priority are executed is non-deterministic."/>
       </eAnnotations>
     </eStructuralFeatures>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="resourceDemand"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" lowerBound="1"
-        eType="#//ConditionPattern"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="script" lowerBound="1"
-        eType="#//Rule"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="conditionCheck" lowerBound="1"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//ModelTransformation">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="transformationAction" lowerBound="1"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//ModelTransformation">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="ConditionPattern"/>
-  <eClassifiers xsi:type="ecore:EClass" name="QvtRule" eSuperTypes="#//Rule"/>
-  <eClassifiers xsi:type="ecore:EClass" name="StoryDiagramRule" eSuperTypes="#//Rule"/>
-  <eClassifiers xsi:type="ecore:EClass" name="Rule" abstract="true">
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="uri"/>
+  <eClassifiers xsi:type="ecore:EClass" name="ModelTransformation" abstract="true">
+    <eTypeParameters name="ExecutableTransformationElement">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelTransformation">
+      <eGenericType eTypeParameter="#//ModelTransformation/ExecutableTransformationElement"/>
+    </eStructuralFeatures>
   </eClassifiers>
 </ecore:EPackage>
