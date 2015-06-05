@@ -4,7 +4,9 @@
   <rm:locator searchPathRef="StoryDiagrams" failOnError="false" pattern="^org\.storydriven\..*" />
   <rm:locator searchPathRef="StoryDiagrams" failOnError="false" pattern="^de\.mdelab\..*" />
   <rm:locator searchPathRef="StoryDiagrams" failOnError="false" pattern="^de\.upb\.swt\.core.*" />
-  
+ 
+  <rm:locator searchPathRef="MDSDProfiles" failOnError="false"/>
+    
   <rm:locator searchPathRef="simulizarsvn" failOnError="true" pattern="^org\.palladiosimulator\.simulizar.*" />
   
   <rm:locator pattern="^de\.uka\.ipd\.sdq\..*" searchPathRef="SDQ_Commons" failOnError="false"/>
@@ -245,4 +247,11 @@
     </rm:provider>
   </rm:searchPath>  
   
+  <rm:searchPath name="MDSDProfiles">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/mdsdprofiles/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
 </rm:rmap>
