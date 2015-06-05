@@ -4,3 +4,4 @@ Bundle-Name: MeasuringPointProfile
 Bundle-SymbolicName: org.palladiosimulator.simulizar.measuringpoint;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ActivationPolicy: lazy
+Require-Bundle: org.modelversioning.emfprofile.registry;bundle-version="1.0.0"
