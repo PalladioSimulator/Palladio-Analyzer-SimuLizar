@@ -41,12 +41,8 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
     private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
-    // private final UEResourceSetPartition uePartititon;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
     private final MDSDBlackboard blackboard;
-
-    // private final PowerInfrastructureRepositoryResourceSetPartition
-    // powerInfrastructureRepositoryPartition;
 
     /**
      * Constructor
@@ -61,22 +57,15 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
                 LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
-        // this.powerInfrastructureRepositoryPartition = getResourceSetPartition(blackboard,
-        // LoadPowerInfrastructureRepositoryIntoBlackboardJob.POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID);
-        // this.uePartititon = getResourceSetPartition(blackboard,
-        // LoadUEModelIntoBlackboardJob.UE_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
 
     private ModelAccess(final ModelAccess copy) {
         super();
-        this.blackboard = this.blackboard;
+        this.blackboard = copy.blackboard;
         this.runtimeMeasurementModel = copy.runtimeMeasurementModel;
         this.pcmPartition = copy.pcmPartition;
         this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
-        // this.powerInfrastructureRepositoryPartition =
-        // copy.powerInfrastructureRepositoryPartition;
-        // this.uePartititon = copy.uePartititon;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
 
@@ -94,7 +83,7 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      * @return a copy of the global PCM modelling partition
      */
     private PCMResourceSetPartition copyPCMPartition() {
-        PCMResourceSetPartition newPartition = new PCMResourceSetPartition();
+        final PCMResourceSetPartition newPartition = new PCMResourceSetPartition();
         List<EObject> modelCopy = EMFCopyHelper.deepCopyToEObjectList(pcmPartition.getResourceSet());
         for (int i = 0; i < modelCopy.size(); i++) {
             Resource resource = newPartition.getResourceSet().createResource(URI.createFileURI("/temp" + i));
@@ -134,11 +123,11 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     public UsageEvolution getUsageEvolutionModel() {
         try {
             LOGGER.debug("Retrieving Usage Evolution model from blackboard partition");
+            List<UsageEvolution> result = this.pcmPartition.getElement(UsageevolutionPackage.eINSTANCE
+                    .getUsageEvolution());
             // List<UsageEvolution> result =
-            // this.pcmPartition.getElement(UsageevolutionPackage.eINSTANCE
+            // this.uePartititon.getElement(UsageevolutionPackage.eINSTANCE
             // .getUsageEvolution());
-            List<UsageEvolution> result = this.getGlobalPCMModel().getElement(
-                    UsageevolutionPackage.eINSTANCE.getUsageEvolution());
             return result.get(0);
         } catch (Exception e) {
             LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
@@ -154,11 +143,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     public boolean monitorRepositoryExists() {
         return monitorRepositoryPartition.getResourceSet().getResources().size() > 0;
     }
-
-    // public boolean powerInfrastructureRepositoryExists() {
-    // return this.powerInfrastructureRepositoryPartition.getPowerInfrastructureRepositoryModel() !=
-    // null;
-    // }
 
     @SuppressWarnings("unchecked")
     private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard, final String id) {

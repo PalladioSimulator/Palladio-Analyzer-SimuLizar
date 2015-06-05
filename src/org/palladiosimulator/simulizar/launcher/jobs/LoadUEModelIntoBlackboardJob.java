@@ -23,8 +23,6 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String UE_MODEL_PARTITION_ID = "org.scaledl.usageevolution";
-
     private MDSDBlackboard blackboard;
 
     private final String path;
