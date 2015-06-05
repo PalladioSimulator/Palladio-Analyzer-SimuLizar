@@ -5,13 +5,12 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.lafore.mapeloop
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.eclipse.emf.ecore.xmi;bundle-version="2.10.2",
- EUREMA-Interpreter;bundle-version="0.1.0",
- EUREMA-Language;bundle-version="1.0.0",
- EUREMA-ConditionExpLanguage;bundle-version="0.1.0",
  org.palladiosimulator.simulizar.lafore.strategies;bundle-version="0.1.0",
  org.palladiosimulator.simulizar.lafore.violations;bundle-version="0.1.0",
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
- org.palladiosimulator.simulizar.lafore.violationstrategymappings;bundle-version="0.1.0"
+ org.palladiosimulator.simulizar.lafore.violationstrategymappings;bundle-version="0.1.0",
+ EUREMA-Language,
+ EUREMA-Interpreter-Interface;bundle-version="1.0.0"
 Export-Package: org.palladiosimulator.simulizar.lafore.eurema.analyze,
  org.palladiosimulator.simulizar.lafore.eurema.execute,
  org.palladiosimulator.simulizar.lafore.eurema.main,
