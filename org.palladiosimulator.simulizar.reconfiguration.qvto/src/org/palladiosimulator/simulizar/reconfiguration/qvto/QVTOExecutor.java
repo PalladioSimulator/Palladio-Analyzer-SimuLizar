@@ -74,8 +74,8 @@ public class QVTOExecutor {
     }
 
     private Map<EPackage, EObject> collectBlackboardModels() {
-        Map<EPackage, EObject> result = new HashMap<>();
-        MDSDBlackboard blackboard = this.modelAccess.getBlackboard();
+        final Map<EPackage, EObject> result = new HashMap<>();
+        final MDSDBlackboard blackboard = this.modelAccess.getBlackboard();
         EObject currentModel = this.modelAccess.getRuntimeMeasurementModel();
         if (currentModel != null) {
             result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
@@ -84,9 +84,9 @@ public class QVTOExecutor {
         if (currentModel != null) {
             result.put(MODELTYPE_RETRIEVER.doSwitch(currentModel), currentModel);
         }
-        for (Resource pcmResource : this.modelAccess.getGlobalPCMModel().getResourceSet().getResources()) {
+        for (final Resource pcmResource : this.modelAccess.getGlobalPCMModel().getResourceSet().getResources()) {
             // we want the root of the model, the root EObject
-            List<EObject> contents = pcmResource.getContents();
+            final List<EObject> contents = pcmResource.getContents();
             if (!contents.isEmpty()) {
                 currentModel = contents.get(0);
                 if (currentModel != null) {
@@ -95,14 +95,14 @@ public class QVTOExecutor {
             }
         }
         // now collect all models that were added to blackboard via extension point
-        for (String partitionId : ExtensionHelper.getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
+        for (final String partitionId : ExtensionHelper.getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)) {
-            ResourceSetPartition partition = blackboard.getPartition(partitionId);
+            final ResourceSetPartition partition = blackboard.getPartition(partitionId);
             if (partition != null) {
-                ResourceSet resourceSet = partition.getResourceSet();
-                List<Resource> resources = resourceSet.getResources();
-                //handle case when no model has been specified, i.e., resources is an empty list
+                final ResourceSet resourceSet = partition.getResourceSet();
+                final List<Resource> resources = resourceSet.getResources();
+                // handle case when no model has been specified, i.e., resources is an empty list
                 if (!resources.isEmpty()) {
                     currentModel = resources.get(0).getContents().get(0);
                     if (currentModel != null) {
@@ -115,26 +115,26 @@ public class QVTOExecutor {
     }
 
     private final static EcoreSwitch<EPackage> MODELTYPE_RETRIEVER = new EcoreSwitch<EPackage>() {
-      
+
         @Override
-        public EPackage caseEPackage(EPackage ePackage) {
+        public EPackage caseEPackage(final EPackage ePackage) {
             // we found the model type, just return
             return ePackage;
         }
-        
+
         @Override
-        public EPackage caseEClass(EClass eClass) {
+        public EPackage caseEClass(final EClass eClass) {
             // from meta class to containing object, should be an EPackage
             return doSwitch(eClass.eContainer());
         }
-        
+
         @Override
-        public EPackage defaultCase(EObject eObject) {
-            //go on with the meta class
+        public EPackage defaultCase(final EObject eObject) {
+            // go on with the meta class
             return doSwitch(eObject.eClass());
         }
     };
-    
+
     /**
      * Executes all QVTo rules found in the configured reconfiguration rule folder.
      * 
@@ -144,7 +144,7 @@ public class QVTOExecutor {
      */
     public boolean executeRules(final EObject monitoredElement) {
         boolean result = false;
-        for (TransformationData transformationData : this.qvtoRules) {
+        for (final TransformationData transformationData : this.qvtoRules) {
             result |= executeTransformation(transformationData);
         }
         return result;
@@ -155,7 +155,7 @@ public class QVTOExecutor {
      * @param configuration
      *            Simulation configuration
      */
-    private URI[] loadQvtFiles(SimuLizarWorkflowConfiguration configuration) {
+    private URI[] loadQvtFiles(final SimuLizarWorkflowConfiguration configuration) {
         final String path = configuration.getReconfigurationRulesFolder();
         URI[] result = null;
         if (!path.equals("")) {
@@ -171,25 +171,26 @@ public class QVTOExecutor {
             result = new URI[0];
         }
         if (result.length == 0) {
-            LOGGER.warn("No QVTo rules found, QVTo reconfigurations disabled.");
+            LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
         }
         return result;
     }
 
     private static final ExpressionsSwitch<OperationalTransformation> OPERATIONAL_TRANSFORMATION_SWITCH = new ExpressionsSwitch<OperationalTransformation>() {
+
         @Override
-        public OperationalTransformation caseOperationalTransformation(OperationalTransformation transformation) {
+        public OperationalTransformation caseOperationalTransformation(final OperationalTransformation transformation) {
             return transformation;
         }
     };
 
-    private void initializeTransformationExecutors(URI[] transformationUris) {
+    private void initializeTransformationExecutors(final URI[] transformationUris) {
         assert transformationUris != null;
-        ResourceSet resourceSet = new ResourceSetImpl();
-        for (URI transformationUri : transformationUris) {
+        final ResourceSet resourceSet = new ResourceSetImpl();
+        for (final URI transformationUri : transformationUris) {
             // the EObject transformation should be the first in in the content list
-            Resource transformationResource = resourceSet.getResource(transformationUri, true);
-            OperationalTransformation transformation = OPERATIONAL_TRANSFORMATION_SWITCH
+            final Resource transformationResource = resourceSet.getResource(transformationUri, true);
+            final OperationalTransformation transformation = OPERATIONAL_TRANSFORMATION_SWITCH
                     .doSwitch(transformationResource.getContents().get(0));
             if (transformation == null) {
                 throw new IllegalStateException(
@@ -203,28 +204,28 @@ public class QVTOExecutor {
     private static final ExpressionsSwitch<EPackage> PARAM_META_MODEL_SWITCH = new ExpressionsSwitch<EPackage>() {
 
         @Override
-        public EPackage caseModelType(ModelType modeltype) {
+        public EPackage caseModelType(final ModelType modeltype) {
             return modeltype.getMetamodel().get(0);
         }
     };
 
     private Collection<TransformationParameterInformation> retrieveTransformationParameterInformation(
-            OperationalTransformation transformation) {
+            final OperationalTransformation transformation) {
         assert transformation != null;
-        List<ModelParameter> parameters = transformation.getModelParameter();
-        List<TransformationParameterInformation> result = new ArrayList<>(parameters.size());
+        final List<ModelParameter> parameters = transformation.getModelParameter();
+        final List<TransformationParameterInformation> result = new ArrayList<>(parameters.size());
         int index = 0;
-        for (ModelParameter parameter : parameters) {
+        for (final ModelParameter parameter : parameters) {
             result.add(new TransformationParameterInformation(PARAM_META_MODEL_SWITCH.doSwitch(parameter.getType()),
                     parameter.getKind(), index++));
         }
         return result;
     }
 
-    private EObject getAvailableModelByEPackage(EPackage ePackage) {
+    private EObject getAvailableModelByEPackage(final EPackage ePackage) {
         assert ePackage != null;
 
-        for (EPackage modelPackage : this.availableModels.keySet()) {
+        for (final EPackage modelPackage : this.availableModels.keySet()) {
             // use namespace URIs as criterion for equality
             if (modelPackage.getNsURI().equals(ePackage.getNsURI())) {
                 return this.availableModels.get(modelPackage);
@@ -241,28 +242,28 @@ public class QVTOExecutor {
         // special treatment for RuntimeMeasurementModel: directly pass contained measurements to
         // model extent
         @Override
-        public ModelExtent caseRuntimeMeasurementModel(RuntimeMeasurementModel runtimeMeasurementModel) {
+        public ModelExtent caseRuntimeMeasurementModel(final RuntimeMeasurementModel runtimeMeasurementModel) {
             return new BasicModelExtent(runtimeMeasurementModel.getMeasurements());
         }
 
         // default case to handle all other models
         // to incorporate other special treatments, call nested switches inside this method
         @Override
-        public ModelExtent defaultCase(EObject model) {
-            BasicModelExtent result = new BasicModelExtent();
+        public ModelExtent defaultCase(final EObject model) {
+            final BasicModelExtent result = new BasicModelExtent();
             result.add(model);
             return result;
         }
     };
 
-    private boolean executeTransformation(TransformationData transformationData) {
+    private boolean executeTransformation(final TransformationData transformationData) {
         assert transformationData != null && transformationData.getTransformationExecutor() != null;
 
-        ModelExtent[] modelExtents = new ModelExtent[transformationData.getParameterCount()];
-        for (TransformationParameterInformation paramInfo : transformationData.getParameterInformation()) {
+        final ModelExtent[] modelExtents = new ModelExtent[transformationData.getParameterCount()];
+        for (final TransformationParameterInformation paramInfo : transformationData.getParameterInformation()) {
             if (paramInfo.getParameterDirectionKind() != DirectionKind.OUT) {
                 // fill with one the corresponding available model
-                EObject sourceModel = getAvailableModelByEPackage(paramInfo.getParameterType());
+                final EObject sourceModel = getAvailableModelByEPackage(paramInfo.getParameterType());
                 if (sourceModel == null) {
                     throw new IllegalStateException("No model available for " + (paramInfo.getParameterIndex() + 1)
                             + ". parameter of QVTo transformation '"
@@ -277,12 +278,12 @@ public class QVTOExecutor {
         }
         // setup the execution environment details ->
         // configuration properties, LOGGER, monitor object etc.
-        ExecutionContextImpl executionContext = new ExecutionContextImpl();
+        final ExecutionContextImpl executionContext = new ExecutionContextImpl();
         // context.setConfigProperty("keepModeling", true);
         executionContext.setLog(new QVTOReconfigurationLogger(QVTOExecutor.class));
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
-        ExecutionDiagnostic result = transformationData.getTransformationExecutor().execute(executionContext,
+        final ExecutionDiagnostic result = transformationData.getTransformationExecutor().execute(executionContext,
                 modelExtents);
         // check the result for success
         if (result.getSeverity() == Diagnostic.OK) {
@@ -299,18 +300,21 @@ public class QVTOExecutor {
      * <ul>
      * <li>the corresponding {@link OperationalTransformation} model object</li>
      * <li>the {@link TransformationExecutor} that will execute the transformation</li>
-     * <li>information about its parameters in terms of a collection of {@link TransformationParameterInformation} </li>
+     * <li>information about its parameters in terms of a collection of
+     * {@link TransformationParameterInformation}</li>
      * </ul>
+     * 
      * @author Florian Rosenthal
      *
      */
     private static class TransformationData {
+
         private final OperationalTransformation associatedTransformation;
         private final TransformationExecutor transformationExecutor;
         private final Collection<TransformationParameterInformation> parameterInformation;
 
-        private TransformationData(OperationalTransformation transformation, TransformationExecutor executor,
-                Collection<TransformationParameterInformation> paramInfo) {
+        private TransformationData(final OperationalTransformation transformation,
+                final TransformationExecutor executor, final Collection<TransformationParameterInformation> paramInfo) {
             this.associatedTransformation = transformation;
             this.transformationExecutor = executor;
             this.parameterInformation = paramInfo;
@@ -334,19 +338,22 @@ public class QVTOExecutor {
     }
 
     /**
-     * Convenience class to store required information (type, kind and index) about 
-     * parameters of a QVTo transformation
+     * Convenience class to store required information (type, kind and index) about parameters of a
+     * QVTo transformation
+     * 
      * @author Florian Rosenthal
      *
      */
     private static class TransformationParameterInformation {
+
         private final EPackage parameterType;
         private final DirectionKind parameterDirectionKind;
         private final int parameterIndex;
 
         private static final String FORMAT_STRING = "param: index = %d, type = %s, direction = %s";
-        
-        private TransformationParameterInformation(EPackage paramType, DirectionKind paramDirectionKind, int paramIndex) {
+
+        private TransformationParameterInformation(final EPackage paramType, final DirectionKind paramDirectionKind,
+                final int paramIndex) {
             this.parameterType = paramType;
             this.parameterDirectionKind = paramDirectionKind;
             this.parameterIndex = paramIndex;
@@ -363,11 +370,11 @@ public class QVTOExecutor {
         private int getParameterIndex() {
             return this.parameterIndex;
         }
-        
+
         @Override
         public String toString() {
-           return String.format(FORMAT_STRING, this.parameterIndex, this.parameterType.getName(), 
-                   this.parameterDirectionKind.getName());
+            return String.format(FORMAT_STRING, this.parameterIndex, this.parameterType.getName(),
+                    this.parameterDirectionKind.getName());
         }
     }
 }
