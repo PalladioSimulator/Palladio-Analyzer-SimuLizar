@@ -111,7 +111,7 @@ public final class MonitorRepositoryUtil {
         return new SimulizarmeasuringpointSwitch<EObject>() {
             @Override
             public EObject caseReconfigurationMeasuringPoint(ReconfigurationMeasuringPoint object) {
-                return EMFLoadHelper.loadModel(object.getResourceURI());
+                return EMFLoadHelper.loadAndResolveEObject(object.getResourceURI());
             }
         }.doSwitch(measuringPoint);
     }
@@ -127,7 +127,7 @@ public final class MonitorRepositoryUtil {
         return new MeasuringpointSwitch<EObject>() {
             @Override
             public EObject caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
-                return EMFLoadHelper.loadModel(object.getResourceURI());
+                return EMFLoadHelper.loadAndResolveEObject(object.getResourceURI());
             }
         }.doSwitch(measuringPoint);
     }
