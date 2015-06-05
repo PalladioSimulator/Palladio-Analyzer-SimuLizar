@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated storydiagram -->
+      <package
+            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/storydiagram/1.0"
+            class="storydiagram.StorydiagramPackage"
+            genModel="model/storydiagramreconfiguration.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated storydiagramreconfiguration -->
+      <package
+            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/storydiagram/1.0"
+            class="org.palladiosimulator.simulizar.reconfiguration.storydiagramreconfiguration.StoryDiagramReconfigurationPackage"
+            genModel="model/storydiagramreconfiguration.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.extension_parser">
+      <!-- @generated storydiagramreconfiguration -->
+      <parser
+            type="sdreconfigurationset"
+            class="org.palladiosimulator.simulizar.reconfiguration.storydiagramreconfiguration.util.StoryDiagramReconfigurationResourceFactoryImpl"/>
+   </extension>
+</plugin>
