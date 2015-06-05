@@ -19,7 +19,7 @@ public class ExecuteImplementation implements IModelOperation{
 		// TODO: implement the Execute here!!!
 
 		ModelOperationResult result = new ModelOperationResult(
-				"updated model", output);
+				"executed", output);
 
 		return result;
 	}

@@ -19,7 +19,7 @@ public class PlanImplementation implements IModelOperation{
 		// TODO: implement the plan here!!!
 
 		ModelOperationResult result = new ModelOperationResult(
-				"updated model", output);
+				"planned", output);
 
 		return result;
 	}

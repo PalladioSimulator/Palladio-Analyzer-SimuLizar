@@ -20,7 +20,7 @@ public class AnalyzeImplementation implements IModelOperation{
 		// TODO: implement the analysis here!!!
 
 		ModelOperationResult result = new ModelOperationResult(
-				"updated model", output);
+				"analyzed", output);
 
 		return result;
 	}

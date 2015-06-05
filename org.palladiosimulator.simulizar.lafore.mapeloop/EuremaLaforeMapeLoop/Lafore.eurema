@@ -18,9 +18,9 @@
         <finalOperations uid="finaloperationID" name="FinalOperation">
           <entries uid="finishmapeID" name="FinishMAPE" incoming="//@layers.1/@modules.0/@megamodel/@behavior.3/@exits.0/@outgoing"/>
         </finalOperations>
-        <behavior xsi:type="eurema:ModelOperation" uid="monitorIoperationD" name="MonitorOperation" binding="//@layers.1/@modules.1">
+        <behavior xsi:type="eurema:ModelOperation" uid="monitoroperationID" name="MonitorOperation" binding="//@layers.1/@modules.1">
           <entries uid="monitorID" name="Monitor" incoming="//@layers.1/@modules.0/@megamodel/@initialOperations.0/@exits.0/@outgoing"/>
-          <exits uid="monitoredID" name="Monitored">
+          <exits uid="monitoredID" name="monitored">
             <outgoing uid="monitored2analyzeID" name="Monitored2Analyze" target="//@layers.1/@modules.0/@megamodel/@behavior.1/@entries.0"/>
           </exits>
           <modelUsages xsi:type="eurema:Input" uid="monitorinmonitorsrepositoryID" name="MonitorInMonitorsRepository" model="//@layers.1/@modules.0/@megamodel/@models.0"/>
@@ -29,7 +29,7 @@
         </behavior>
         <behavior xsi:type="eurema:ModelOperation" uid="analyzeoperationID" name="AnalyzeOperation" binding="//@layers.1/@modules.2">
           <entries uid="analyzeID" name="Analyze" incoming="//@layers.1/@modules.0/@megamodel/@behavior.0/@exits.0/@outgoing"/>
-          <exits uid="analyzedID" name="Analyzed">
+          <exits uid="analyzedID" name="analyzed">
             <outgoing uid="analyzed2planID" name="Analyzed2Plan" target="//@layers.1/@modules.0/@megamodel/@behavior.2/@entries.0"/>
           </exits>
           <modelUsages xsi:type="eurema:Input" uid="analyzeruntimemeasurementsmodelID" name="AnalyzeInRuntimeMeasurementsModel" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
@@ -38,7 +38,7 @@
         </behavior>
         <behavior xsi:type="eurema:ModelOperation" uid="planoperationID" name="PlanOperation" description="" binding="//@layers.1/@modules.3">
           <entries uid="PlanID" name="Plan" incoming="//@layers.1/@modules.0/@megamodel/@behavior.1/@exits.0/@outgoing"/>
-          <exits uid="plannedID" name="Planned">
+          <exits uid="plannedID" name="planned">
             <outgoing uid="planned2executeID" name="Planned2Execute" target="//@layers.1/@modules.0/@megamodel/@behavior.3/@entries.0"/>
           </exits>
           <modelUsages xsi:type="eurema:Input" uid="planInruntimeviolationsmodelID" name="PlanInRuntimeViolationsModel" model="//@layers.1/@modules.0/@megamodel/@models.3"/>
@@ -48,7 +48,7 @@
         </behavior>
         <behavior xsi:type="eurema:ModelOperation" uid="executeoperationID" name="ExecuteOperation" binding="//@layers.1/@modules.4">
           <entries uid="executeID" name="Execute" incoming="//@layers.1/@modules.0/@megamodel/@behavior.2/@exits.0/@outgoing"/>
-          <exits uid="executedID" name="Executed">
+          <exits uid="executedID" name="executed">
             <outgoing uid="executed2finishmapeID" name="Executed2FinishMAPE" target="//@layers.1/@modules.0/@megamodel/@finalOperations.0/@entries.0"/>
           </exits>
           <modelUsages xsi:type="eurema:Input" uid="executeInruntimestrategiesmodelID" name="ExecuteInRuntimeStrategiesModel" model="//@layers.1/@modules.0/@megamodel/@models.6"/>
@@ -63,8 +63,8 @@
         <models xsi:type="eurema:RuntimeModel" uid="runtimestrategiesmodelID" name="RuntimeStrategiesModel" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.3 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.0" binding="//@modelResourceSet/@resources.0"/>
         <models xsi:type="eurema:RuntimeModel" uid="pcmID" name="PCM" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.2 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.1" binding="//@modelResourceSet/@resources.7"/>
       </megamodel>
-      <trigger period="10" refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
-        <events>
+      <trigger period="1" refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
+        <events name="triggerStartMapeEvent">
           <type href="Events.eurema#/"/>
         </events>
       </trigger>
@@ -83,13 +83,13 @@
     </modules>
   </layers>
   <modelResourceSet>
-    <resources URI="..\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
-    <resources URI="..\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
-    <resources URI="..\knowledgeModels\design\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
-    <resources URI="..\knowledgeModels\design\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
-    <resources URI="..\knowledgeModels\design\MyVSMappingsRepository.vsmappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
-    <resources URI="..\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
-    <resources URI="..\knowledgeModels\design\MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
-    <resources URI="..\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
   </modelResourceSet>
 </eurema:Architecture>
