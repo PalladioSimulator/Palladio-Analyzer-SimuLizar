@@ -37,13 +37,13 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
     private final String path;
 
     public LoadHenshinModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
-            MDSDBlackboard blackboard) {
+            final MDSDBlackboard blackboard) {
         this.blackboard = blackboard;
         this.path = configuration.getReconfigurationRulesFolder();
     }
 
     @Override
-    public void setBlackboard(MDSDBlackboard blackboard) {
+    public void setBlackboard(final MDSDBlackboard blackboard) {
         this.blackboard = blackboard;
     }
 
@@ -55,12 +55,12 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
     }
 
     @Override
-    public void cleanup(IProgressMonitor arg0) throws CleanupFailedException {
+    public void cleanup(final IProgressMonitor arg0) throws CleanupFailedException {
         // TODO Do we need to do anything to clean up?
     }
 
     @Override
-    public void execute(IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
+    public void execute(final IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
 
         final HenshinResourceSetPartition henshinPartition = new HenshinResourceSetPartition();
         this.getBlackboard().addPartition(HENSHIN_MODEL_PARTITION_ID, henshinPartition);
@@ -68,20 +68,20 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
         if (this.path != null && !(this.path.equals(""))) {
 
             // add file protocol only if necessary
-            String filePath = path;
+            String filePath = this.path;
             File folder = null;
-            if (!path.startsWith("platform:")) {
+            if (!this.path.startsWith("platform:")) {
                 filePath = "file:///" + filePath;
 
-                URI pathToSDM = URI.createURI(filePath);
+                final URI pathToSDM = URI.createURI(filePath);
                 folder = new File(pathToSDM.toFileString());
             } else {
                 String folderString = "";
                 try {
-                    URL pathURL = FileLocator.resolve(new URL(this.path));
+                    final URL pathURL = FileLocator.resolve(new URL(this.path));
                     folderString = pathURL.toExternalForm().replace("file:", "");
                     folder = new File(folderString);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.warn("Folder " + folderString + " cannot be accessed.", e);
                     return;
                 }
@@ -98,7 +98,7 @@ public class LoadHenshinModelsIntoBlackboardJob implements IJob, IBlackboardInte
                     henshinPartition.loadModel(URI.createFileURI(file.getPath()));
                 }
             } else {
-                LOGGER.warn("No Henshin reconfiguration rules found. Henshin reconfiguration engine disabled.");
+                LOGGER.info("No Henshin reconfiguration rules found. Henshin reconfiguration engine disabled.");
             }
         }
 

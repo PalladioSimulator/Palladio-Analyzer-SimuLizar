@@ -59,20 +59,20 @@ public class LoadSDMModelsIntoBlackboardJob extends SequentialBlackboardInteract
         if (this.path != null && !(this.path.equals(""))) {
 
             // add file protocol only if necessary
-            String filePath = path;
+            String filePath = this.path;
             File folder = null;
-            if (!path.startsWith("platform:")) {
+            if (!this.path.startsWith("platform:")) {
                 filePath = "file:///" + filePath;
 
-                URI pathToSDM = URI.createURI(filePath);
+                final URI pathToSDM = URI.createURI(filePath);
                 folder = new File(pathToSDM.toFileString());
             } else {
                 String folderString = "";
                 try {
-                    URL pathURL = FileLocator.resolve(new URL(this.path));
+                    final URL pathURL = FileLocator.resolve(new URL(this.path));
                     folderString = pathURL.toExternalForm().replace("file:", "");
                     folder = new File(folderString);
-                } catch (IOException e) {
+                } catch (final IOException e) {
                     LOGGER.warn("Folder " + folderString + " cannot be accessed.", e);
                     return;
                 }
@@ -94,7 +94,7 @@ public class LoadSDMModelsIntoBlackboardJob extends SequentialBlackboardInteract
                     sdmPartition.loadModel(URI.createFileURI(file.getPath()));
                 }
             } else {
-                LOGGER.warn("No SDM models found, SD reconfigurations disabled.");
+                LOGGER.info("No SDM models found, SD reconfigurations disabled.");
             }
         }
 
