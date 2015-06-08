@@ -4,7 +4,7 @@ package violations;
 
 import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.servicelevelobjective.Threshold;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 
 /**
  * <!-- begin-user-doc -->
@@ -59,12 +59,12 @@ public interface ViolationType extends EObject, Entity {
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Slo</em>' reference.
-	 * @see #setSlo(Threshold)
+	 * @see #setSlo(ServiceLevelObjective)
 	 * @see violations.ViolationsPackage#getViolationType_Slo()
 	 * @model required="true"
 	 * @generated
 	 */
-	Threshold getSlo();
+	ServiceLevelObjective getSlo();
 
 	/**
 	 * Sets the value of the '{@link violations.ViolationType#getSlo <em>Slo</em>}' reference.
@@ -74,6 +74,6 @@ public interface ViolationType extends EObject, Entity {
 	 * @see #getSlo()
 	 * @generated
 	 */
-	void setSlo(Threshold value);
+	void setSlo(ServiceLevelObjective value);
 
 } // ViolationType
