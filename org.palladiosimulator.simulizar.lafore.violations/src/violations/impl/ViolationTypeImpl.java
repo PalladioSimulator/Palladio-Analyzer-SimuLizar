@@ -7,7 +7,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
-import org.palladiosimulator.servicelevelobjective.Threshold;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 import violations.ViolationType;
 import violations.ViolationsPackage;
 
@@ -54,7 +54,7 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 	 * @generated
 	 * @ordered
 	 */
-	protected Threshold slo;
+	protected ServiceLevelObjective slo;
 
 	/**
 	 * <!-- begin-user-doc -->
@@ -101,10 +101,10 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Threshold getSlo() {
+	public ServiceLevelObjective getSlo() {
 		if (slo != null && slo.eIsProxy()) {
 			InternalEObject oldSlo = (InternalEObject)slo;
-			slo = (Threshold)eResolveProxy(oldSlo);
+			slo = (ServiceLevelObjective)eResolveProxy(oldSlo);
 			if (slo != oldSlo) {
 				if (eNotificationRequired())
 					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViolationsPackage.VIOLATION_TYPE__SLO, oldSlo, slo));
@@ -118,7 +118,7 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public Threshold basicGetSlo() {
+	public ServiceLevelObjective basicGetSlo() {
 		return slo;
 	}
 
@@ -127,8 +127,8 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setSlo(Threshold newSlo) {
-		Threshold oldSlo = slo;
+	public void setSlo(ServiceLevelObjective newSlo) {
+		ServiceLevelObjective oldSlo = slo;
 		slo = newSlo;
 		if (eNotificationRequired())
 			eNotify(new ENotificationImpl(this, Notification.SET, ViolationsPackage.VIOLATION_TYPE__SLO, oldSlo, slo));
@@ -163,7 +163,7 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 				setDescription((String)newValue);
 				return;
 			case ViolationsPackage.VIOLATION_TYPE__SLO:
-				setSlo((Threshold)newValue);
+				setSlo((ServiceLevelObjective)newValue);
 				return;
 		}
 		super.eSet(featureID, newValue);
@@ -181,7 +181,7 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 				setDescription(DESCRIPTION_EDEFAULT);
 				return;
 			case ViolationsPackage.VIOLATION_TYPE__SLO:
-				setSlo((Threshold)null);
+				setSlo((ServiceLevelObjective)null);
 				return;
 		}
 		super.eUnset(featureID);

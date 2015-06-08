@@ -335,7 +335,7 @@ public class ViolationsPackageImpl extends EPackageImpl implements ViolationsPac
 		// Initialize classes and features; add operations and parameters
 		initEClass(violationTypeEClass, ViolationType.class, "ViolationType", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEAttribute(getViolationType_Description(), ecorePackage.getEString(), "description", null, 0, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getViolationType_Slo(), theServicelevelObjectivePackage.getThreshold(), null, "slo", null, 1, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getViolationType_Slo(), theServicelevelObjectivePackage.getServiceLevelObjective(), null, "slo", null, 1, 1, ViolationType.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(violationEClass, Violation.class, "Violation", IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getViolation_ViolationType(), this.getViolationType(), null, "violationType", null, 1, 1, Violation.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
