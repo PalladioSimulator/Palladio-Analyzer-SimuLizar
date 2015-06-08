@@ -26,16 +26,16 @@ public class ReconfigurationProcess extends SimuComSimProcess {
     @Override
     protected void internalLifeCycle() {
         double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
-        reconfigurationDispatcher.beginReconfigurationEvent(new ReconfigurationEvent(EventType.BEGIN,
-                startReconfigurationTime));
         for (IReconfigurator reconfigurator : reconfigurators) {
             if (reconfigurator.checkAndExecute(monitoredElement)) {
+                reconfigurationDispatcher.beginReconfigurationEvent(new ReconfigurationEvent(EventType.BEGIN,
+                        startReconfigurationTime));
                 LOGGER.debug("Successfully executed reconfiguration.");
+                double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
+                reconfigurationDispatcher.endReconfigurationEvent(new ReconfigurationEvent(EventType.END,
+                        endReconfigurationTime));
             }
         }
-        double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
-        reconfigurationDispatcher.endReconfigurationEvent(new ReconfigurationEvent(EventType.END,
-                endReconfigurationTime));
     }
 
 }
