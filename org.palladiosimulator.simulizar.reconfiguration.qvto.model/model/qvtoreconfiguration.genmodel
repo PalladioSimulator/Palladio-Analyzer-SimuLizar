@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel"
+    modelDirectory="/org.palladiosimulator.simulizar.reconfiguration.qvto.model/src"
+    modelPluginID="org.palladiosimulator.simulizar.reconfiguration.qvto.model" modelName="Qvtoreconfiguration"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="7.0" copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.eclipse.m2m.qvt.oml.ecore.imperativeocl/model/ImperativeOCL.genmodel#//ImperativeOCL ../../org.eclipse.ocl/model/OCL.genmodel#//ocl ../../org.eclipse.ocl.ecore/model/OCLEcore.genmodel#//ocl ../../org.eclipse.m2m.qvt.oml/model/QVTOperational.genmodel#//qvtoperational ../../org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.genmodel#//reconfigurationrule"
+    operationReflection="true" importOrganizing="true">
+  <foreignModel>qvtoreconfiguration.ecore</foreignModel>
+  <genPackages prefix="QvtoReconfiguration" basePackage="org.palladiosimulator.simulizar.reconfiguration.qvto"
+      disposableProviderFactory="true" childCreationExtenders="true" ecorePackage="qvtoreconfiguration.ecore#/">
+    <genClasses ecoreClass="qvtoreconfiguration.ecore#//QvtoTransformation"/>
+  </genPackages>
+</genmodel:GenModel>
