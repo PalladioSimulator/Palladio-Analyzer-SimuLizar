@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated qvtoreconfiguration -->
+      <factory
+            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/qvto/1.0"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.provider.QvtoReconfigurationItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.edit.childCreationExtenders">
+      <!-- @generated qvtoreconfiguration -->
+      <extender
+            uri="http://www.eclipse.org/ocl/1.1.0/OCL/Utilities"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.provider.QvtoReconfigurationItemProviderAdapterFactory$UtilitiesChildCreationExtender"/>
+      <extender
+            uri="http://www.eclipse.org/ocl/1.1.0/OCL/Expressions"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.provider.QvtoReconfigurationItemProviderAdapterFactory$ExpressionsChildCreationExtender"/>
+      <extender
+            uri="http://www.eclipse.org/ocl/1.1.0/Ecore"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.provider.QvtoReconfigurationItemProviderAdapterFactory$EcoreChildCreationExtender"/>
+      <extender
+            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/1.0"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.provider.QvtoReconfigurationItemProviderAdapterFactory$reconfigurationruleChildCreationExtender"/>
+   </extension>
+
+</plugin>
