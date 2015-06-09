@@ -61,7 +61,7 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
                 .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
         final ResourceSetPartition pcmOriginalPartition = new PCMResourceSetPartition();
-        this.blackboard.addPartition(LoadSimuLizarModelsIntoBlackboardJob.ORIGINAL_PCM_MODELS_PARTITION_ID,
+        this.blackboard.addPartition(LoadSimuLizarModelsIntoBlackboardJob.PCM_MODELS_ANALYZED_PARTITION_ID,
                 pcmOriginalPartition);
 
         // Load the PCM model and its middleware completions

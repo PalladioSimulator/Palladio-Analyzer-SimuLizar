@@ -19,7 +19,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.PreparePCMBlackboardPartitionJob;
  */
 public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String ORIGINAL_PCM_MODELS_PARTITION_ID = "de.uka.ipd.sdq.pcmmodels.partition.original";
+    public static final String PCM_MODELS_ANALYZED_PARTITION_ID = "org.palladiosimulator.analyzed.partition";
 
     /**
      * @param config
