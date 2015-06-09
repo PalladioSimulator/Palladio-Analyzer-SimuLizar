@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.exceptions.SLORepositoryLoadException;
-import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.partitions.ServiceLevelObjectiveResourceSetPartition;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -47,8 +46,8 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJo
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-        if (this.getPCMResourceSetPartition() == null || this.getMonitorRepositoryResourceSetPartition() == null) {
-            throw new SLORepositoryLoadException("Palladio models and MonitorRepository model must be loaded first.");
+        if (this.getPCMResourceSetPartition() == null) {
+            throw new SLORepositoryLoadException("Palladio models must be loaded first.");
         }
 
         final ServiceLevelObjectiveResourceSetPartition sloPartition = new ServiceLevelObjectiveResourceSetPartition();
@@ -96,14 +95,6 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJo
     private PCMResourceSetPartition getPCMResourceSetPartition() {
         return (PCMResourceSetPartition) (this.getBlackboard()
                 .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID));
-    }
-
-    /**
-     * @return the pcm resource set partition
-     */
-    private MonitorRepositoryResourceSetPartition getMonitorRepositoryResourceSetPartition() {
-        return (MonitorRepositoryResourceSetPartition) (this.getBlackboard()
-                .getPartition(LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID));
     }
 
     /**
