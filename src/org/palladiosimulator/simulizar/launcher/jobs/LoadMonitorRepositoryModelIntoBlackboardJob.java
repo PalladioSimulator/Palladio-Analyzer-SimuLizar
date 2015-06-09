@@ -24,8 +24,6 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  */
 public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "org.palladiosimulator.monitorrepository";
-
     private MDSDBlackboard blackboard;
 
     private final String path;
@@ -62,7 +60,8 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             monitorRepositoryPartition.loadModel(URI.createURI(filePath));
 
         }
-        this.getBlackboard().addPartition(MONITOR_REPOSITORY_MODEL_PARTITION_ID, monitorRepositoryPartition);
+        this.getBlackboard().addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID,
+                monitorRepositoryPartition);
         // now resolve all cross references from current resource to PCM
         monitorRepositoryPartition.resolveAllProxies();
 

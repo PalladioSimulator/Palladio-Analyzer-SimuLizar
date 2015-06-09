@@ -12,11 +12,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
-import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
@@ -31,7 +30,7 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  * Helper to access the PCM model (global and local), the RuntimeMeasurement model, the Monitor
  * Repository model, the usage evolution model and all SD models.
  * 
- * @author Joachim Meyer, Steffen Becker, Erlend Stav
+ * @author Joachim Meyer, Steffen Becker, Erlend Stav, Sebastian Lehrig
  */
 public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
@@ -40,7 +39,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
-    private final MonitorRepositoryResourceSetPartition monitorRepositoryPartition;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
     private final MDSDBlackboard blackboard;
 
@@ -55,8 +53,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.blackboard = blackboard;
         this.runtimeMeasurementModel = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel();
         this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
-        this.monitorRepositoryPartition = getResourceSetPartition(blackboard,
-                LoadMonitorRepositoryModelIntoBlackboardJob.MONITOR_REPOSITORY_MODEL_PARTITION_ID);
         this.currentPCMCopy = copyPCMPartition();
     }
 
@@ -65,7 +61,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
         this.blackboard = copy.blackboard;
         this.runtimeMeasurementModel = copy.runtimeMeasurementModel;
         this.pcmPartition = copy.pcmPartition;
-        this.monitorRepositoryPartition = copy.monitorRepositoryPartition;
         this.currentPCMCopy = copy.currentPCMCopy;
     }
 
@@ -103,7 +98,15 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
      */
     @Override
     public MonitorRepository getMonitorRepositoryModel() {
-        return monitorRepositoryPartition.getMonitorRepositoryModel();
+        try {
+            LOGGER.debug("Retrieving Monitor Repository model from blackboard partition");
+            List<MonitorRepository> result = this.pcmPartition.getElement(MonitorRepositoryPackage.eINSTANCE
+                    .getMonitorRepository());
+            return result.get(0);
+        } catch (Exception e) {
+            LOGGER.info("No Monitor Repository model found, so no simulation data will be taken.");
+            return null;
+        }
     }
 
     /**
@@ -125,23 +128,11 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
             LOGGER.debug("Retrieving Usage Evolution model from blackboard partition");
             List<UsageEvolution> result = this.pcmPartition.getElement(UsageevolutionPackage.eINSTANCE
                     .getUsageEvolution());
-            // List<UsageEvolution> result =
-            // this.uePartititon.getElement(UsageevolutionPackage.eINSTANCE
-            // .getUsageEvolution());
             return result.get(0);
         } catch (Exception e) {
             LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
             return null;
         }
-    }
-
-    /**
-     * Checks whether Monitor Repository exists.
-     * 
-     * @return true if yes, otherwise false;
-     */
-    public boolean monitorRepositoryExists() {
-        return monitorRepositoryPartition.getResourceSet().getResources().size() > 0;
     }
 
     @SuppressWarnings("unchecked")
