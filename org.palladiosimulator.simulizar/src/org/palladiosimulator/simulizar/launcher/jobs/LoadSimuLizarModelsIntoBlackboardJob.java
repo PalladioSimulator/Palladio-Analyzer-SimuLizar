@@ -8,7 +8,7 @@ import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionConfigurationB
 import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
-import de.uka.ipd.sdq.workflow.pcm.jobs.PreparePCMBlackboardPartionJob;
+import de.uka.ipd.sdq.workflow.pcm.jobs.PreparePCMBlackboardPartitionJob;
 
 /**
  * Composite Job for preparing Blackboard and loading PCM Models into it.
@@ -35,7 +35,7 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
             boolean loadExtensions) {
         super(false);
 
-        this.addJob(new PreparePCMBlackboardPartionJob());
+        this.addJob(new PreparePCMBlackboardPartitionJob());
         this.addJob(new LoadPCMModelsInterpreterJob(configuration));
         this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
         this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
