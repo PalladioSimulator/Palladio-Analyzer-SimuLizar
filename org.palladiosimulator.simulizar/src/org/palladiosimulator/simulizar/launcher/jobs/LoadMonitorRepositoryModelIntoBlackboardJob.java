@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.exceptions.MonitorRepositoryModelLoadException;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -47,8 +46,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             throw new MonitorRepositoryModelLoadException("The PCM models must be loaded first");
         }
 
-        final MonitorRepositoryResourceSetPartition monitorRepositoryPartition = new MonitorRepositoryResourceSetPartition(
-                this.getPCMResourceSetPartition());
+        final PCMResourceSetPartition monitorRepositoryPartition = this.getPCMResourceSetPartition();
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary

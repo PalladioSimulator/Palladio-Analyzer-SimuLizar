@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.exceptions.SLORepositoryLoadException;
-import org.palladiosimulator.simulizar.launcher.partitions.ServiceLevelObjectiveResourceSetPartition;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -50,7 +49,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJo
             throw new SLORepositoryLoadException("Palladio models must be loaded first.");
         }
 
-        final ServiceLevelObjectiveResourceSetPartition sloPartition = new ServiceLevelObjectiveResourceSetPartition();
+        final PCMResourceSetPartition sloPartition = this.getPCMResourceSetPartition();
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
