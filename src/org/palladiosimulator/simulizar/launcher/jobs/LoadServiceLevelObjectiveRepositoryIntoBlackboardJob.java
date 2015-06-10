@@ -24,8 +24,6 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJob,
         IBlackboardInteractingJob<MDSDBlackboard> {
 
-    public static final String SLO_REPOSITORY_PARTITION_ID = "org.palladiosimulator.servicelevelobjective";
-
     private MDSDBlackboard blackboard;
 
     private final String path;
@@ -59,7 +57,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJo
             }
 
             sloPartition.loadModel(URI.createURI(filePath));
-            this.getBlackboard().addPartition(SLO_REPOSITORY_PARTITION_ID, sloPartition);
+            this.getBlackboard().addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, sloPartition);
             // now resolve all cross references from current resource to PCM
             sloPartition.resolveAllProxies();
         }
