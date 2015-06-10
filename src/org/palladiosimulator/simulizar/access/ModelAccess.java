@@ -15,6 +15,8 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
+import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -105,6 +107,21 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
             return result.get(0);
         } catch (Exception e) {
             LOGGER.info("No Monitor Repository model found, so no simulation data will be taken.");
+            return null;
+        }
+    }
+
+    /**
+     * @return return the usage evolution element
+     */
+    public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepositoryModel() {
+        try {
+            LOGGER.debug("Retrieving Service Level Objective repository from blackboard partition");
+            List<ServiceLevelObjectiveRepository> result = this.pcmPartition
+                    .getElement(ServicelevelObjectivePackage.eINSTANCE.getServiceLevelObjectiveRepository());
+            return result.get(0);
+        } catch (Exception e) {
+            LOGGER.info("No Service Level Objectives found.");
             return null;
         }
     }
