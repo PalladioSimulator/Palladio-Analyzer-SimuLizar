@@ -33,6 +33,7 @@ import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
+import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -55,7 +56,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     public void execute(IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
 
         PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard().getPartition(
-                LoadServiceLevelObjectiveRepositoryIntoBlackboardJob.SLO_REPOSITORY_PARTITION_ID);
+                LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
         if (partition == null) {
             LOGGER.info("No Service level objectives provided. Skipping evaluation of experiment data");
