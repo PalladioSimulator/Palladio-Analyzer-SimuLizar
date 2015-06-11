@@ -55,6 +55,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
+            /*
+             * TODO FIXME Christian this needs to be refactored and moved as this is now triggered
+             * within the processes.
+             */
             modelChanges.clear();
             Reconfigurator.this.checkAndExecuteReconfigurations(notification);
             if (modelChanges.size() > 0) {

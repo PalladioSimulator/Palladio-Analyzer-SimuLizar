@@ -36,6 +36,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
                         endReconfigurationTime));
             }
         }
+        // TODO FIXME Christian pass model changes instead of null
+        this.reconfigurationDispatcher.reconfigurationExecuted(null);
     }
 
 }
