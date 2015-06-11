@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_cwWzENIfEeSvYrDsAIgQPw" entityName="loadBalancerMonitorRepo">
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_cwWzENIfEeSvYrDsAIgQPw" entityName="loadBalancerMonitorRepo">
   <monitors id="_Ea4AgNIgEeSvYrDsAIgQPw" entityName="rackPduMonitor">
     <measurementSpecifications id="_EyJ4ENIgEeSvYrDsAIgQPw">
       <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_uiVVAdIhEeSvYrDsAIgQPw" intervall="10.0" delay="5.0"/>
@@ -80,5 +80,11 @@
       <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.10"/>
+  </monitors>
+  <monitors id="_i5-EsA2_EeWAkadjxq9mmw" entityName="Reconfigurations">
+    <measurementSpecifications id="_jJ3h4A2_EeWAkadjxq9mmw">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_VYg6MujFEeSB6OBq2SKZxQ"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.11"/>
   </monitors>
 </monitorrepository:MonitorRepository>
