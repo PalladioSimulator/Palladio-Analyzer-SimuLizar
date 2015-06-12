@@ -25,19 +25,16 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 
     @Override
     protected void internalLifeCycle() {
-        double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
         for (IReconfigurator reconfigurator : reconfigurators) {
+            double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
+            reconfigurationDispatcher.beginReconfigurationEvent(new ReconfigurationEvent(EventType.BEGIN,
+                    startReconfigurationTime));
             if (reconfigurator.checkAndExecute(monitoredElement)) {
-                reconfigurationDispatcher.beginReconfigurationEvent(new ReconfigurationEvent(EventType.BEGIN,
-                        startReconfigurationTime));
                 LOGGER.debug("Successfully executed reconfiguration.");
                 double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
                 reconfigurationDispatcher.endReconfigurationEvent(new ReconfigurationEvent(EventType.END,
                         endReconfigurationTime));
             }
         }
-        // TODO FIXME Christian pass model changes instead of null
-        this.reconfigurationDispatcher.reconfigurationExecuted(null);
     }
-
 }

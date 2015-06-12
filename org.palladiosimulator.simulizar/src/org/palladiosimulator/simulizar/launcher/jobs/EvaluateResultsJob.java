@@ -22,9 +22,10 @@ import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.recorderframework.edp2.config.EDP2RecorderConfigurationFactory;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilter;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilterConfiguration;
-import org.palladiosimulator.simulizar.launcher.partitions.ServiceLevelObjectiveResourceSetPartition;
+import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -32,6 +33,8 @@ import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
+import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -48,38 +51,44 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     @Override
     public void cleanup(IProgressMonitor arg0) throws CleanupFailedException {
         // TODO Auto-generated method stub
-
     }
 
     @Override
     public void execute(IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
 
-        ServiceLevelObjectiveResourceSetPartition partition = (ServiceLevelObjectiveResourceSetPartition) this
-                .getBlackboard().getPartition(
-                        LoadServiceLevelObjectiveRepositoryIntoBlackboardJob.SLO_REPOSITORY_PARTITION_ID);
+        PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard().getPartition(
+                LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
         if (partition == null) {
-            LOGGER.info("No Service level objectives provided. Skipping evaluation of experiment data");
+            LOGGER.warn("No resource partition found. Skipping evaluation.");
         } else {
             String repositoryId = (String) this.configuration.getAttributes().get(
                     EDP2RecorderConfigurationFactory.REPOSITORY_ID);
             String basename = this.configuration.getSimulationConfiguration().getNameBase();
             String variation = this.configuration.getSimulationConfiguration().getVariationId();
 
-            this.serviceLevelObjectives = partition.getServiceLevelObjectiveRepository().getServicelevelobjectives();
+            final ModelAccess modelAccess = new ModelAccess(this.getBlackboard());
 
-            Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
-            final ExperimentGroup experimentGroup = getExperimentGroup(repository, basename);
-            experimentSetting = getExperimentSetting(experimentGroup, variation);
+            ServiceLevelObjectiveRepository sloRepository = modelAccess.getServiceLevelObjectiveRepositoryModel();
+            if (sloRepository != null) {
+                this.serviceLevelObjectives = modelAccess.getServiceLevelObjectiveRepositoryModel()
+                        .getServicelevelobjectives();
 
-            LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
+                Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
+                final ExperimentGroup experimentGroup = getExperimentGroup(repository, basename);
+                experimentSetting = getExperimentSetting(experimentGroup, variation);
 
-            final int lastExperiment = this.experimentSetting.getExperimentRuns().size() - 1;
-            final ExperimentRun experimentRun = this.experimentSetting.getExperimentRuns().get(lastExperiment);
+                LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
 
-            long[] sloViolations = computeSloViolations();
-            LOGGER.info("Service level objectives were violated in " + sloViolations[1]
-                    + " measurements within a total of " + sloViolations[0] + " measurments.");
+                final int lastExperiment = this.experimentSetting.getExperimentRuns().size() - 1;
+                final ExperimentRun experimentRun = this.experimentSetting.getExperimentRuns().get(lastExperiment);
+
+                long[] sloViolations = computeSloViolations();
+                LOGGER.info("Service level objectives were violated in " + sloViolations[1]
+                        + " measurements within a total of " + sloViolations[0] + " measurments.");
+            } else {
+                LOGGER.info("No service level objectives provided. Skipping evaluation.");
+            }
         }
     }
 
