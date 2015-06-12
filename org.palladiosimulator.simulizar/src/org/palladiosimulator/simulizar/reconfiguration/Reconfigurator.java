@@ -15,9 +15,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
-import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -102,8 +101,6 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      */
     private final List<IReconfigurator> reconfigurators;
 
-    private final ISimulationControl simulationController;
-
     private final SimuComModel model;
 
     private ReconfigurationProcess reconfigurationProcess = null;
@@ -126,7 +123,6 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
-        this.simulationController = simulationcontrol;
     }
 
     /**
@@ -189,16 +185,12 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     };
 
-    void fireReconfigurationEvent(final ReconfigurationEvent event) {
-        for (final IReconfigurationListener singleListener : this.getObservers()) {
-            if (event.getEventType() == EventType.BEGIN) {
-                singleListener.beginReconfigurationEvent(event);
-            } else if (event.getEventType() == EventType.END) {
-                singleListener.endReconfigurationEvent(event);
-            } else {
-                throw new PCMModelInterpreterException("Tried to fire unknown event");
-            }
-        }
+    void fireReconfigurationEvent(EndReconfigurationEvent endReconfigurationEvent) {
+        this.getEventDispatcher().endReconfigurationEvent(endReconfigurationEvent);
+    }
+
+    void fireReconfigurationEvent(BeginReconfigurationEvent beginReconfigurationEvent) {
+        this.getEventDispatcher().beginReconfigurationEvent(beginReconfigurationEvent);
     }
 
     /**

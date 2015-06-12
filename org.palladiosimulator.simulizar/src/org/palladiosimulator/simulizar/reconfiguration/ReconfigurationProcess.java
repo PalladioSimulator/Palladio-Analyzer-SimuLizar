@@ -3,8 +3,9 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -27,14 +28,15 @@ public class ReconfigurationProcess extends SimuComSimProcess {
     protected void internalLifeCycle() {
         for (IReconfigurator reconfigurator : reconfigurators) {
             double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
-            reconfigurationDispatcher.beginReconfigurationEvent(new ReconfigurationEvent(EventType.BEGIN,
-                    startReconfigurationTime));
-            if (reconfigurator.checkAndExecute(monitoredElement)) {
+            reconfigurationDispatcher
+                    .beginReconfigurationEvent(new BeginReconfigurationEvent(startReconfigurationTime));
+            boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+            if (reconfigResult) {
                 LOGGER.debug("Successfully executed reconfiguration.");
-                double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
-                reconfigurationDispatcher.endReconfigurationEvent(new ReconfigurationEvent(EventType.END,
-                        endReconfigurationTime));
             }
+            double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
+            reconfigurationDispatcher.endReconfigurationEvent(new EndReconfigurationEvent(EventResult
+                    .fromBoolean(reconfigResult), endReconfigurationTime));
         }
     }
 }
