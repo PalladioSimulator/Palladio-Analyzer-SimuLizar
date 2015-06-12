@@ -17,4 +17,4 @@ Require-Bundle: org.modelversioning.emfprofile;bundle-version="1.1.0",
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.action.repository.black
 Bundle-Activator: org.palladiosimulator.simulizar.action.repository.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
