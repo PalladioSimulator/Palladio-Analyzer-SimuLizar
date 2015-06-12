@@ -1,14 +1,24 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.FileLocator;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.osgi.framework.Bundle;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
@@ -18,10 +28,13 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
-import org.palladiosimulator.simulizar.lafore.eurema.main.StartEuremaInterpreter;
 
+import de.mdelab.eurema.interpreter.EuremaInterpreter;
+import de.mdelab.eurema.interpreter.EuremaInterpreterFactory;
+import de.mdelab.eurema.interpreter.EventQueue;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
+import eurema.EuremaFactory;
 
 /**
  * Class whose objects will listen on changes in the PCM@Runtime and trigger
@@ -31,6 +44,7 @@ import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
  * @author Matthias Becker
  * @author Sebastian Lehrig
  * @author Florian Rosenthal
+ * @author Goran Piskachev
  *
  */
 public class Reconfigurator extends
@@ -40,6 +54,16 @@ public class Reconfigurator extends
 	 * This class' internal LOGGER.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
+
+	/**
+	 * This is the EUREMA interpreter instance.
+	 */
+	private final EuremaInterpreter interpreter = EuremaInterpreterFactory
+			.getInstance();
+	/**
+	 * This is a queue for events which trigger the interpretation of EUREMA.
+	 */
+	private EventQueue q;
 
 	/**
 	 * After executing a reconfiguration, current model changes within the PCM
@@ -61,10 +85,35 @@ public class Reconfigurator extends
 			if (modelChanges.size() > 0) {
 				Reconfigurator.this.getEventDispatcher()
 						.reconfigurationExecuted(modelChanges);
+
 			}
 		}
 
 	};
+
+	// this could not work, because we should not modify files in the platform
+	// in the first instance from the runtime instance
+	public void saveRuntimeMeasurements() {
+		ResourceSet resourceSet = new ResourceSetImpl();
+		// URI uri = URI
+		// .createURI("org.palladiosimulator.simulizar.lafore.mapeloop/knowledgeModels/MyRuntimeMeasurements.runtimemeasurements");
+
+		// Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+		// Map<String, Object> m = reg.getExtensionToFactoryMap();
+		// m.put("runtimemeasurements", new XMIResourceFactoryImpl());
+
+		URI platformPluginURI = URI.createFileURI(getAbsoluteFilename(
+				"org.palladiosimulator.simulizar.lafore.mapeloop",
+				"knowledgeModels/MyRuntimeMeasurements.runtimemeasurements"));
+		// .createURI("platform:/plugin/org.palladiosimulator.simulizar.lafore.mapeloop/knowledgeModels/MyRuntimeMeasurements.runtimemeasurements");
+		Resource resource = resourceSet.createResource(platformPluginURI);
+		resource.getContents().add(runtimeMeasurementModel);
+		try {
+			resource.save(Collections.emptyMap());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * A log listener which logs all changes in the global PCM model.
@@ -122,6 +171,7 @@ public class Reconfigurator extends
 				.getRuntimeMeasurementModel();
 		this.reconfigurators = reconfigurators;
 		this.simulationController = simulationcontrol;
+		initEurema();
 	}
 
 	/**
@@ -158,21 +208,89 @@ public class Reconfigurator extends
 		final EObject monitoredElement = this.getMonitoredElement(notification);
 
 		// Value changed, reconfigure!
-		/*
-		 * if (isNotificationNewMeasurement(monitoredElement)) { for (final
-		 * IReconfigurator reconfigurator : this.reconfigurators) { double
-		 * startReconfigurationTime =
-		 * this.simulationController.getCurrentSimulationTime(); if
-		 * (reconfigurator.checkAndExecute(monitoredElement)) {
-		 * this.getEventDispatcher().beginReconfigurationEvent( new
-		 * ReconfigurationEvent(EventType.BEGIN, startReconfigurationTime));
-		 * LOGGER.debug("Successfully executed reconfiguration.");
-		 * this.getEventDispatcher().endReconfigurationEvent( new
-		 * ReconfigurationEvent(EventType.END, this.simulationController)); } }
-		 * }
-		 */
-		StartEuremaInterpreter startEurema = new StartEuremaInterpreter();
-		startEurema.startLafore();
+
+		if (isNotificationNewMeasurement(monitoredElement)) {
+			// for (final IReconfigurator reconfigurator : this.reconfigurators)
+			// {
+			// double startReconfigurationTime = this.simulationController
+			// .getCurrentSimulationTime();
+			// if (reconfigurator.checkAndExecute(monitoredElement)) {
+			// this.getEventDispatcher().beginReconfigurationEvent(
+			// new ReconfigurationEvent(EventType.BEGIN,
+			// startReconfigurationTime));
+			// LOGGER.debug("Successfully executed reconfiguration.");
+			// this.getEventDispatcher().endReconfigurationEvent(
+			// new ReconfigurationEvent(EventType.END,
+			// this.simulationController));
+			// }
+			// }
+			LOGGER.debug("Reconfiguration with LAFORE started at: "
+					+ this.simulationController.getCurrentSimulationTime());
+			saveRuntimeMeasurements();
+			triggerEurema();
+			LOGGER.debug("Reconfiguration with LAFORE stopped at: "
+					+ this.simulationController.getCurrentSimulationTime());
+
+		}
+
+	}
+
+	public void triggerEurema() {
+		eurema.Event startingEvent = EuremaFactory.eINSTANCE.createEvent();
+		startingEvent.setName("StartMape");
+		eurema.EventType startingEventType = EuremaFactory.eINSTANCE
+				.createEventType();
+		startingEventType.setType("StartMapeEvent");
+		startingEvent.setType(startingEventType);
+
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("==============================");
+		System.out.println();
+		System.out
+				.println("Added StartMape event. (EUREMA interpreatation is triggered)");
+		System.out.println();
+		System.out.println("==============================");
+
+		q.add(startingEvent);
+	}
+
+	/**
+	 * Method which locates the EUREMA model, in this case that is the Lafore
+	 * instance. Then is loads the model for interpretation.
+	 */
+	public void initEurema() {
+
+		q = interpreter.execute(getAbsoluteFilename(
+				"org.palladiosimulator.simulizar.lafore.mapeloop",
+				"EuremaLaforeMapeLoop/Lafore.eurema"));
+		// .execute("E:\\Edu\\UPB\\MA thesis\\EclipseLafore\\ws\\org.palladiosimulator.simulizar.lafore.mapeloop\\EuremaLaforeMapeLoop\\Lafore.eurema");
+
+	}
+
+	public String getAbsoluteFilename(String bundleName, String relativePath) {
+		String absoluteFilename = "";
+		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/'
+				+ relativePath, true);
+		absoluteFilename = platformPluginURI.toFileString();
+
+		Bundle bundle = Platform.getBundle(bundleName);
+		URL base = bundle.getEntry(relativePath);
+
+		// FIXME: this is hack !
+		try {
+			absoluteFilename = FileLocator.toFileURL(base).toString();
+			if (absoluteFilename.startsWith("file:/")) {
+				absoluteFilename = absoluteFilename.substring(6);
+			}
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		return absoluteFilename;
 	}
 
 	/**

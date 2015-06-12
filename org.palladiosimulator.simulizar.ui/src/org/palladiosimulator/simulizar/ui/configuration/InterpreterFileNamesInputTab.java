@@ -21,12 +21,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     // input fields
     /** Text field for path to Monitor Repository file. */
     protected Text monitorRepositoryFile;
-    /** Text field for path to reconfiguration rules folder. */
-    protected Text reconfigurationRulesFolder;
+//    /** Text field for path to reconfiguration rules folder. */
+//    protected Text reconfigurationRulesFolder;
     /** Text field for path to usage evolution file. */
     protected Text usageEvolutionFile;
     
-    protected Text infrastructureModelFileText;
+//    protected Text infrastructureModelFileText;
 
      /**
      * @see de.uka.ipd.sdq.workflow.launchconfig.tabs.FileNamesInputTab#createControl(org.eclipse.swt.widgets.Composite)
@@ -39,17 +39,17 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
          * Create Monitor Repository file section
          */
         monitorRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Monitor Repository File",
+        TabHelper.createFileInputSection(container, modifyListener, "Monitor Repository File",
                 SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, monitorRepositoryFile,
                 "Select Monitor Repository File", getShell(), SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
 
         /**
          * Create reconfiguration rules folder section
          */
-        reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration Rules folder ",
-                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
+//        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration Rules folder ",
+//                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
+//                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
 
         /**
          * Create UsageEvolution file section
@@ -62,10 +62,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         /**
          * Create Infrastructure model file section
          */
-        this.infrastructureModelFileText = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Infrastructure Model File (For Power Analyses)",
-                SimulizarConstants.INFRASTRUCTURE_MODEL_FILE_EXTENSIONS, this.infrastructureModelFileText, "Select Infrastructure Model File",
-                getShell(), SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+//        this.infrastructureModelFileText = new Text(container, SWT.SINGLE | SWT.BORDER);
+//        TabHelper.createFileInputSection(container, modifyListener, "Optional: Infrastructure Model File (For Power Analyses)",
+//                SimulizarConstants.INFRASTRUCTURE_MODEL_FILE_EXTENSIONS, this.infrastructureModelFileText, "Select Infrastructure Model File",
+//                getShell(), SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
 
     }
 
@@ -85,12 +85,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.initializeFrom(configuration);
         setTextFromConfigAttribute(this.monitorRepositoryFile, configuration, SimulizarConstants.MONITOR_REPOSITORY_FILE, 
                 SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        setTextFromConfigAttribute(this.reconfigurationRulesFolder, configuration,
-                SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        setTextFromConfigAttribute(this.reconfigurationRulesFolder, configuration,
+//                SimulizarConstants.RECONFIGURATION_RULES_FOLDER, SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
         setTextFromConfigAttribute(this.usageEvolutionFile, configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        setTextFromConfigAttribute(this.infrastructureModelFileText, configuration, SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
-                SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+//        setTextFromConfigAttribute(this.infrastructureModelFileText, configuration, SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
+//                SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
     }
 
     /*
@@ -103,10 +103,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         super.performApply(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE, monitorRepositoryFile.getText());
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                reconfigurationRulesFolder.getText());
+//        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+//                reconfigurationRulesFolder.getText());
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
-        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE, this.infrastructureModelFileText.getText());
+//        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE, this.infrastructureModelFileText.getText());
     }
 
     /*
@@ -120,12 +120,12 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.setDefaults(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE,
                 SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+//                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
                 SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
-                SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
+//        configuration.setAttribute(SimulizarConstants.INFRASTRUCTURE_MODEL_FILE,
+//                SimulizarConstants.DEFAULT_INFRASTRUCTURE_MODEL_FILE);
     }
 
     /**

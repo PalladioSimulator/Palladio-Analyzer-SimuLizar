@@ -10,7 +10,9 @@ Require-Bundle: org.eclipse.emf.ecore;bundle-version="2.10.2",
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
  org.palladiosimulator.simulizar.lafore.violationstrategymappings;bundle-version="0.1.0",
  EUREMA-Language,
- EUREMA-Interpreter-Interface;bundle-version="1.0.0"
+ EUREMA-Interpreter-Interface;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.runtimemeasurement,
+ org.jscience
 Export-Package: org.palladiosimulator.simulizar.lafore.eurema.analyze,
  org.palladiosimulator.simulizar.lafore.eurema.execute,
  org.palladiosimulator.simulizar.lafore.eurema.main,

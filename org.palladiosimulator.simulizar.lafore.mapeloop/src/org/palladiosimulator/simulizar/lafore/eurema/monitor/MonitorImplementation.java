@@ -40,7 +40,7 @@ public class MonitorImplementation implements IModelOperation{
 			if (r.getURI().toString().contains("RuntimeMeasurements")) {
 				//rmm = (RuntimeMeasurementsModel)r.getContents().get(0); 
 				
-				// TODO: implement the monitoring here!!!
+				// TODO: implement the monitoring here!!! At the moment this is performer in Simulizar, before calling the Loop. Therefore, we should not repeat the monitoring twice. 
 				
 				//output.add((Resource)rmm); // add the rmm in the output models
 			}

@@ -63,8 +63,8 @@
         <models xsi:type="eurema:RuntimeModel" uid="runtimestrategiesmodelID" name="RuntimeStrategiesModel" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.3 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.0" binding="//@modelResourceSet/@resources.0"/>
         <models xsi:type="eurema:RuntimeModel" uid="pcmID" name="PCM" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.2 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.1" binding="//@modelResourceSet/@resources.7"/>
       </megamodel>
-      <trigger period="1" refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
-        <events name="triggerStartMapeEvent">
+      <trigger refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
+        <events name="">
           <type href="Events.eurema#/"/>
         </events>
       </trigger>
