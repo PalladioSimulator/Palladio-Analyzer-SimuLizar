@@ -12,7 +12,8 @@ Require-Bundle: org.modelversioning.emfprofile;bundle-version="1.1.0",
  org.eclipse.m2m.qvt.oml.project;bundle-version="3.4.0",
  de.uka.ipd.sdq.identifier;bundle-version="2.1.0",
  org.eclipse.core.runtime;bundle-version="3.10.0",
- org.modelversioning.emfprofile.application.registry;bundle-version="1.0.0"
+ org.modelversioning.emfprofile.application.registry;bundle-version="1.0.0",
+ org.palladiosimulator.mdsdprofiles.api
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.action.repository.black
 Bundle-Activator: org.palladiosimulator.simulizar.action.repository.Activator
