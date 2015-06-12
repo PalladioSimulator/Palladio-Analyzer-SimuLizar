@@ -1,14 +1,11 @@
 package org.palladiosimulator.simulizar.action.interpreter;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.registry.IProfileProvider;
 import org.palladiosimulator.simulizar.action.core.Action;
 
 public class ActionProfileProvider implements IProfileProvider {
-
-	
 	
 	private Action action;
 
@@ -19,11 +16,6 @@ public class ActionProfileProvider implements IProfileProvider {
 	@Override
 	public Profile getProfile() {
 		return action.getTransientStateProfile();
-	}
-
-	@Override
-	public String getProfileDescription() {
-		return action.getTransientStateProfile().getName();
 	}
 
 	@Override
@@ -41,14 +33,6 @@ public class ActionProfileProvider implements IProfileProvider {
 		return action.getTransientStateProfile().getNsURI();
 	}
 
-	@Override
-	public Profile loadProfile(ResourceSet rs) {
-		Resource resource = rs.getResource(this.action.getTransientStateProfile().eResource()
-                .getURI(), true);
-		return obtainProfileFromResource(resource);
-
-	}
-	
 	// TODO FIXME
 	private Profile obtainProfileFromResource(Resource resource) {
         return action.getTransientStateProfile();
