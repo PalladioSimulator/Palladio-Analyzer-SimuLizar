@@ -4,7 +4,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.exceptions.MonitorRepositoryModelLoadException;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.launcher.partitions.MonitorRepositoryResourceSetPartition;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -23,8 +22,6 @@ import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
  * 
  */
 public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
-
-    public static final String MONITOR_REPOSITORY_MODEL_PARTITION_ID = "org.palladiosimulator.monitorrepository";
 
     private MDSDBlackboard blackboard;
 
@@ -49,8 +46,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             throw new MonitorRepositoryModelLoadException("The PCM models must be loaded first");
         }
 
-        final MonitorRepositoryResourceSetPartition monitorRepositoryPartition = new MonitorRepositoryResourceSetPartition(
-                this.getPCMResourceSetPartition());
+        final PCMResourceSetPartition monitorRepositoryPartition = this.getPCMResourceSetPartition();
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
@@ -58,14 +54,10 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             if (!getPath().startsWith("platform:")) {
                 filePath = "file:///" + filePath;
             }
-
             monitorRepositoryPartition.loadModel(URI.createURI(filePath));
-
         }
-        this.getBlackboard().addPartition(MONITOR_REPOSITORY_MODEL_PARTITION_ID, monitorRepositoryPartition);
         // now resolve all cross references from current resource to PCM
         monitorRepositoryPartition.resolveAllProxies();
-
     }
 
     /**

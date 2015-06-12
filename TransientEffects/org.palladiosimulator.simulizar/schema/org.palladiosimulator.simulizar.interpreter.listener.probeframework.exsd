@@ -6,7 +6,7 @@
          <meta.schema plugin="org.palladiosimulator.simulizar" id="org.palladiosimulator.simulizar.interpreter.listener.probeframework" name="Simulizar Probe Framework Listener Decorator"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         The extension point is used by clients to record additional mesaurements by means of the ProbeFrameworkListener.
       </documentation>
    </annotation>
 
@@ -52,10 +52,10 @@
          <attribute name="decorator" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Class used to register additonal measurements.
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.simulizar.interpreter.listener.IProbeFrameworkListenerDecorator"/>
+                  <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator:"/>
                </appinfo>
             </annotation>
          </attribute>
