@@ -51,8 +51,9 @@ public class AnalyzeImplementation implements IModelOperation{
 			// iterate through all violation type available in the Violations Repository 
 			for (ViolationType violationT : vRepository.getViolationTypes()) 
 			{
-				// check whether the measurement specification matches 
-				if(rMeasurement.getMeasurementSpecification() == violationT.getSlo().getMetricDescription())
+				// check whether the measurement specifications match (MetricDesctiption and MeasuringPoint) 
+				if(rMeasurement.getMeasurementSpecification().getMetricDescription() == violationT.getSlo().getMetricDescription() && 
+						rMeasurement.getMeasuringPoint() == violationT.getSlo().getMeasuringPoint())
 				{
 					// check the upper value of the threshold
 					if(rMeasurement.getMeasuringValue() > (Double)violationT.getSlo().getUpperThreshold().getThresholdLimit().getValue())
@@ -80,8 +81,8 @@ public class AnalyzeImplementation implements IModelOperation{
 		}
 		
 		
-		
-		output.add(vRuntime.eResource());
+		if (vRuntime.eResource()!=null)
+			output.add(vRuntime.eResource());
 		
 		ModelOperationResult result = new ModelOperationResult(
 				"analyzed", output);
