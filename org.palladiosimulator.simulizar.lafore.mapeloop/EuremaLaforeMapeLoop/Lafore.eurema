@@ -83,13 +83,13 @@
     </modules>
   </layers>
   <modelResourceSet>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
-    <resources URI="E:\Edu\UPB\MA thesis\EclipseLafore\ws\org.palladiosimulator.simulizar.lafore.mapeloop\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\knowledgeModels\design\MyMonitors.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar.lafore.mapeloop\palladio.znncom\znn.system" name="PCM" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.7"/>
   </modelResourceSet>
 </eurema:Architecture>
