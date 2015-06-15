@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_y7TzUOp-EeS1xrjFer2CUg" entityName="ControllerInterfaces" repositoryDescription="">
+  <components__Repository xsi:type="repository:BasicComponent" id="_63lUEOqDEeS1xrjFer2CUg" entityName="MigrationController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ITgtsOqEEeS1xrjFer2CUg" entityName="Provided_IComponentMigration_MigrationController" providedInterface__OperationProvidedRole="_wMjRkOp_EeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Jh2wIOqEEeS1xrjFer2CUg" entityName="Required_IMigrationSource_MigrationController" requiredInterface__OperationRequiredRole="_3nb5UOqAEeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_KbTgoOqEEeS1xrjFer2CUg" entityName="Required_IMigrationTarget_MigrationController" requiredInterface__OperationRequiredRole="_Ahg4YOqBEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ITh70OqEEeS1xrjFer2CUg" describedService__SEFF="_zm-xEOp_EeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_ITii4OqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_wof8sfDgEeSZL9AWvTd4qw"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_wof8sfDgEeSZL9AWvTd4qw" entityName="controllerProcess" predecessor_AbstractAction="_ITii4OqEEeS1xrjFer2CUg" successor_AbstractAction="_ITii4eqEEeS1xrjFer2CUg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="4000"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_ITii4eqEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_wof8sfDgEeSZL9AWvTd4qw"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_CizTUOqEEeS1xrjFer2CUg" entityName="MigrationSource">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_N0MvEOqEEeS1xrjFer2CUg" entityName="Provided_IMigrationSource_MigrationSource" providedInterface__OperationProvidedRole="_3nb5UOqAEeS1xrjFer2CUg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_XNbvUOqEEeS1xrjFer2CUg" entityName="Provided_IComponentTransfer_MigrationSource" providedInterface__OperationProvidedRole="_RfswcOqEEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_N0MvEeqEEeS1xrjFer2CUg" describedService__SEFF="_6KXJEOqAEeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_N0MvEuqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_N0MvE-qEEeS1xrjFer2CUg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_N0MvE-qEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_N0MvEuqEEeS1xrjFer2CUg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_FFJUQOqEEeS1xrjFer2CUg" entityName="MigrationTarget">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_8UdsUOqEEeS1xrjFer2CUg" entityName="Provided_IMigrationTarget_MigrationTarget" providedInterface__OperationProvidedRole="_Ahg4YOqBEeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_XxISQOqEEeS1xrjFer2CUg" entityName="Required_IComponentTransfer_MigrationTarget" requiredInterface__OperationRequiredRole="_RfswcOqEEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_8Ue6cOqEEeS1xrjFer2CUg" describedService__SEFF="_B8EK0OqBEeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_8UfhgOqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_8UfhgeqEEeS1xrjFer2CUg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_8UfhgeqEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_8UfhgOqEEeS1xrjFer2CUg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_wMjRkOp_EeS1xrjFer2CUg" entityName="IComponentMigration">
+    <signatures__OperationInterface id="_zm-xEOp_EeS1xrjFer2CUg" entityName="migrate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_3nb5UOqAEeS1xrjFer2CUg" entityName="IMigrationSource">
+    <signatures__OperationInterface id="_6KXJEOqAEeS1xrjFer2CUg" entityName="migrate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Ahg4YOqBEeS1xrjFer2CUg" entityName="IMigrationTarget">
+    <signatures__OperationInterface id="_B8EK0OqBEeS1xrjFer2CUg" entityName="migrate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_RfswcOqEEeS1xrjFer2CUg" entityName="IComponentTransfer">
+    <signatures__OperationInterface id="_YtKcsOqEEeS1xrjFer2CUg" entityName="transferComponent"/>
+  </interfaces__Repository>
+</repository:Repository>
