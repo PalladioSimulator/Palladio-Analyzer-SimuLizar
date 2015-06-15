@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
@@ -35,11 +37,15 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 import de.uni_paderborn.fujaba.muml.reachanalysis.core.HashLevel;
+import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.ReachabilityGraphState;
+import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.sdm.StepGraph;
 import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputation;
 import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputationStatistics;
 import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.export.SDMReachabilityGraphExporter;
 
 public class SDMReconfigurationSpaceExplorer {
+
+    public static final String SDM_RECONFIGURATION_STATE_SPACE = "org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration";
 
     // Logger
     Logger LOGGER = Logger.getLogger(SDMReconfigurationSpaceExplorer.class);
@@ -59,6 +65,8 @@ public class SDMReconfigurationSpaceExplorer {
 
     private final String runtimeModelURI = "org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration/models/RuntimeMeasurementModel.prm";
 
+    private final SimuLizarWorkflowConfiguration configuration;
+
     public SDMReconfigurationSpaceExplorer(final SimuLizarWorkflowConfiguration configuration,
             final MDSDBlackboard blackboard) {
         // Load Repository Package and register it in the ResourceSet
@@ -75,6 +83,7 @@ public class SDMReconfigurationSpaceExplorer {
         m.put("sdm", new XMIResourceFactoryImpl());
         m.put("prm", new XMIResourceFactoryImpl());
 
+        this.configuration = configuration;
         this.blackboard = blackboard;
 
         LOGGER.info("Blackboard is: " + this.blackboard);
@@ -170,6 +179,46 @@ public class SDMReconfigurationSpaceExplorer {
         LOGGER.info("Time for state copy:\t\t" + stats.getTimeForStateCopy() + "ms");
         LOGGER.info("Time for hash computation\t" + stats.getTimeForHashComputation() + "ms");
 
-    }
+        // Save states
+        String temporaryDataLocation = this.configuration.getTemporaryDataLocation();
+        ResourceSetPartition partition = new ResourceSetPartition();
 
+        EList<ReachabilityGraphState> allReachableStates = reachComp.getReachabilityGraph().getStates();
+        List<URI> partitionURIs = new ArrayList<URI>();
+        for (ReachabilityGraphState state : allReachableStates) {
+            StepGraph models = ((StepGraph) state);
+            LOGGER.info("----- State: " + state + " -----");
+            // URI modelURI = URI.createPlatformResourceURI(temporaryDataLocation +
+            // "/model/PCM_partition_state_"
+            // + state.getHash());
+            // partitionURIs.add(modelURI);
+            // partition.setContents(modelURI, models.getContainedNodes());
+            if (LOGGER.isDebugEnabled()) {
+                for (EObject model : models.getContainedNodes()) {
+                    LOGGER.debug("Model: " + model);
+                }
+            }
+        }
+        // partition.storeAllResources();
+
+        URI temporaryReachabilityGraphURI = URI.createPlatformResourceURI(temporaryDataLocation
+                + "/model/simulizar.reachabilitygraph", true);
+
+        List<EObject> reachabilityGraph = new ArrayList<EObject>();
+        reachabilityGraph.addAll(allReachableStates);
+
+        partition.setContents(temporaryReachabilityGraphURI, reachabilityGraph);
+        this.blackboard.addPartition(SDM_RECONFIGURATION_STATE_SPACE, partition);
+
+        /*
+         * LOGGER.info("------------------------- Saving models -----" + allReachableStates.size());
+         * for (ReachabilityGraphState state : allReachableStates) { StepGraph models = ((StepGraph)
+         * state); LOGGER.info("------------------------- State: " + state + " -----"); for (EObject
+         * model : models.getContainedNodes()) { ResourceSetPartition reconfigurationRSP = new
+         * ResourceSetPartition(); URI modelURI =
+         * URI.createPlatformResourceURI(temporaryDataLocation + "/model/" + state.toString() + "/"
+         * + model.eClass().toString(), true); reconfigurationRSP.setContents(modelURI, model); } }
+         */
+
+    }
 }

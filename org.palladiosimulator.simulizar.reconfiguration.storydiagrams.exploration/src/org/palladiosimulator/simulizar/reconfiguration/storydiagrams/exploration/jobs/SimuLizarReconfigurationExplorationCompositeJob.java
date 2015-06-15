@@ -37,6 +37,8 @@ public class SimuLizarReconfigurationExplorationCompositeJob extends SequentialB
 
         this.addJob(new SDMReconfigurationSpaceExplorationJob(configuration));
 
+        this.addJob(new RunSimuLizarScalabilityAnalysisJob(configuration));
+
     }
 
 }
