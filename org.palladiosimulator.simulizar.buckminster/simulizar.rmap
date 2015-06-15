@@ -9,6 +9,7 @@
   <rm:locator pattern="^tools.descartes.dlim.*" searchPathRef="Limbo" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.monitorrepository.*" searchPathRef="MonitorRepository" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="false"/>
   <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Build/trunk/org.palladiosimulator.targetPlatformBuild/pcm_base.rmap"/>
   <rm:searchPath name="simulizarsvn">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
@@ -57,6 +58,13 @@
       <rm:property key="buckminster.source" value="false"/>
       <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/servicelevelobjectives/nightly/"/>
+    </rm:provider>
+  </rm:searchPath>
+  <rm:searchPath name="ExperimentAnalysis">
+    <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
+      <rm:property key="buckminster.source" value="false"/>
+      <rm:property key="buckminster.mutable" value="false"/>
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
     </rm:provider>
   </rm:searchPath>
 </rm:rmap>
