@@ -337,14 +337,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
     }
 
     @Override
-    public void beginReconfigurationEvent(final ReconfigurationEvent event) {
+    public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
         if (this.currentTimeProbes.containsKey("Reconfiguration") && simulationIsRunning()) {
             this.currentTimeProbes.get("Reconfiguration").get(START_PROBE_INDEX).takeMeasurement();
         }
     }
 
     @Override
-    public void endReconfigurationEvent(final ReconfigurationEvent event) {
+    public void endReconfigurationEvent(EndReconfigurationEvent event) {
         if (this.currentTimeProbes.containsKey("Reconfiguration") && simulationIsRunning()) {
             this.currentTimeProbes.get("Reconfiguration").get(STOP_PROBE_INDEX).takeMeasurement();
         }
@@ -376,7 +376,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener implemen
         }
     }
 
-    private Boolean simulationIsRunning() {
+    private boolean simulationIsRunning() {
         return this.simuComModel.getSimulationControl().isRunning();
     }
 

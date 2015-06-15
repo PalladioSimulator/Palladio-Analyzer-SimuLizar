@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
-public class ReconfigurationEvent {
+public abstract class ReconfigurationEvent {
 
     private final double passageTime;
     private final EventType eventType;
