@@ -362,4 +362,32 @@ litigation.
          version="1.0.0.qualifier"
          unpack="false"/>
 
+   <plugin
+         id="org.palladiosimulator.simulizar.action"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.repository"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
