@@ -17,7 +17,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
@@ -164,12 +165,12 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
     }
 
     @Override
-    public void beginReconfigurationEvent(ReconfigurationEvent event) {
+    public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
         // Nothing to do
     }
 
     @Override
-    public void endReconfigurationEvent(ReconfigurationEvent event) {
+    public void endReconfigurationEvent(EndReconfigurationEvent event) {
         // Nothing to do
     }
 

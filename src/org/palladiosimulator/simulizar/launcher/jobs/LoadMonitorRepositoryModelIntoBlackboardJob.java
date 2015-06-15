@@ -54,15 +54,11 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
             if (!getPath().startsWith("platform:")) {
                 filePath = "file:///" + filePath;
             }
-
             monitorRepositoryPartition.loadModel(URI.createURI(filePath));
-
         }
-        this.getBlackboard().addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID,
-                monitorRepositoryPartition);
+
         // now resolve all cross references from current resource to PCM
         monitorRepositoryPartition.resolveAllProxies();
-
     }
 
     /**

@@ -14,9 +14,11 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
-import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationEvent;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
@@ -172,7 +174,7 @@ public class SimuLizarRuntimeState {
             }
         }
 
-        reconfigurator = new Reconfigurator(modelAccess, simulationControl, engines);
+        reconfigurator = new Reconfigurator(model, modelAccess, simulationControl, engines);
         reconfigurator.addObserver(new IReconfigurationListener() {
             @Override
             public void reconfigurationExecuted(Collection<Notification> modelChanges) {
@@ -180,15 +182,16 @@ public class SimuLizarRuntimeState {
             }
 
             @Override
-            public void beginReconfigurationEvent(ReconfigurationEvent event) {
+            public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
                 LOGGER.info("------- System reconfiguration started at simulation time "
                         + model.getSimulationControl().getCurrentSimulationTime() + "-------");
             }
 
             @Override
-            public void endReconfigurationEvent(ReconfigurationEvent event) {
+            public void endReconfigurationEvent(EndReconfigurationEvent event) {
                 LOGGER.info("------- System reconfiguration finished at simulation time "
-                        + model.getSimulationControl().getCurrentSimulationTime() + "-------");
+                        + model.getSimulationControl().getCurrentSimulationTime() + " and did "
+                        + (event.getReconfigurationEventResult() == EventResult.FAILURE ? "NOT " : "") + "succeed-------");
             }
         });
 
