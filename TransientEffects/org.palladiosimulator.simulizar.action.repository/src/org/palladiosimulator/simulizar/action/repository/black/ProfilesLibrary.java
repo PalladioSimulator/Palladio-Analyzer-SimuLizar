@@ -49,7 +49,6 @@ public class ProfilesLibrary {
                     ProfileAPI.updateProfileApplications(pcmEntity.eResource(), profileList);
                     if (StereotypeAPI.isStereotypeApplicable(pcmEntity, stereotypeName)) {
                         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
-                        pcmEntity.saveContainingProfileApplication();
                     }
                 });
         // final Stereotype stereotype = pcmEntity
@@ -63,13 +62,11 @@ public class ProfilesLibrary {
     public static void removeStereotypeApplications(Entity pcmEntity, String stereotypeName) {
         if (StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName)) {
             StereotypeAPI.unapplyStereotype(pcmEntity, stereotypeName);
-            pcmEntity.saveContainingProfileApplication();
         }
     }
 
     public static void setTaggedValue(Entity pcmEntity, int value, String stereotypeName, String taggedValueName) {
         StereotypeAPI.setTaggedValue(pcmEntity, value, stereotypeName, taggedValueName);
-        pcmEntity.saveContainingProfileApplication();
     }
 
     public static int getIntTaggedValue(Entity pcmEntity, String taggedValueName, String stereotypeName) {

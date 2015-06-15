@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.action.repository;singleton
 Bundle-Version: 1.0.0.qualifier
 Require-Bundle: org.modelversioning.emfprofile;bundle-version="1.1.0",
  org.modelversioning.emfprofile.registry;bundle-version="1.0.0",
- edu.kit.ipd.sdq.mdsd.profiles;bundle-version="1.0.0",
  de.uka.ipd.sdq.pcm,
  org.eclipse.emf;bundle-version="2.6.0",
  org.eclipse.m2m.qvt.oml;bundle-version="3.4.1",
@@ -17,4 +16,4 @@ Require-Bundle: org.modelversioning.emfprofile;bundle-version="1.1.0",
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.action.repository.black
 Bundle-Activator: org.palladiosimulator.simulizar.action.repository.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
