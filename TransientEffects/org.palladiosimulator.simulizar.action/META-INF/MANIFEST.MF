@@ -30,7 +30,7 @@ Require-Bundle: org.eclipse.core.runtime,
  edu.kit.ipd.sdq.mdsd.profiles.util;bundle-version="1.0.0",
  org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.simulizar.ui
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar.action.core;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.common.util,
