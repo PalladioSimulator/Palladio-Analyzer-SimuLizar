@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -46,6 +47,7 @@ import de.uka.ipd.sdq.pcm.usagemodel.Start;
 import de.uka.ipd.sdq.pcm.usagemodel.Stop;
 import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
 import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelFactory;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
@@ -65,12 +67,15 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseAction(Action action) {
-        boolean result = action.getAdaptationSteps().stream().map(this::doSwitch).reduce(true, Boolean::logicalAnd);
-        if (result) {
-            this.state.getReconfigurator().getEventDispatcher()
-                    .reconfigurationExecuted(Collections.singletonList(new ActionExecutedNotification(action)));
+        boolean successful = true;
+        for (AdaptationStep step : action.getAdaptationSteps()) {
+            successful &= this.doSwitch(step);
         }
-        return result;
+        if (successful) {
+            this.state.getReconfigurator().getEventDispatcher()
+                    .reconfigurationExecuted(Collections.singletonList((Notification) new ActionExecutedNotification(action)));
+        }
+        return successful;
     }
 
     @Override
@@ -101,21 +106,17 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         final ReconfigurationProcess reconfigurationProcess = state.getReconfigurator().getReconfigurationProcess();
 
         // consume resources
-        mapping.getControllerMappings()
-                .stream()
-                .forEach(
-                        controllerMapping -> {
-
-                            ControllerCall call = controllerMapping.getMappedCall();
-                            List<Probe> usageStartStopProbes = Collections.unmodifiableList(Arrays.asList(
-                                    (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
-                                    (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
-                            OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " "
-                                    + call.getEntityName(), getControllerScenarioRunner(controllerMapping),
-                                    usageStartStopProbes);
-                            users.add(user);
-                            user.startUserLife();
-                        });
+        for(ControllerMapping controllerMapping : mapping.getControllerMappings()) {
+            
+            ControllerCall call = controllerMapping.getMappedCall();
+            List<Probe> usageStartStopProbes = Collections.unmodifiableList(
+                    Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
+                            (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
+            OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " " + call.getEntityName(),
+                    getControllerScenarioRunner(controllerMapping), usageStartStopProbes);
+            users.add(user);
+            user.startUserLife();
+        }
         // wait until all users have finished executing
         while (checkIfUsersRun(users)) {
             reconfigurationProcess.passivate();
@@ -124,31 +125,36 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         boolean result = executeAdaptation(step, mapping);
         if (result) {
             state.getReconfigurator().getEventDispatcher()
-                    .reconfigurationExecuted(Collections.singletonList(new AdaptationStepExecutedNotification(step)));
+                    .reconfigurationExecuted(Collections.singletonList((Notification) new AdaptationStepExecutedNotification(step)));
         }
         return result;
     }
 
-    private IScenarioRunner getControllerScenarioRunner(ControllerMapping controllerMapping) {
-        return (process) -> {
-            LOGGER.log(Level.INFO, "Starting with the controller scenario!");
-            final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
-            final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
-            final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-            usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
-            List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
-            final Start start = UsagemodelFactory.eINSTANCE.createStart();
-            final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-            final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
-            actions.add(start);
-            actions.add(sysCall);
-            actions.add(stop);
-            sysCall.setOperationSignature__EntryLevelSystemCall(controllerMapping.getMappedCall().getCalledSignature());
-            sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
-            start.setSuccessor(sysCall);
-            sysCall.setSuccessor(stop);
-            new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-            TransientEffectInterpreter.this.state.getReconfigurator().getReconfigurationProcess().scheduleAt(0);
+    private IScenarioRunner getControllerScenarioRunner(final ControllerMapping controllerMapping) {
+        return new IScenarioRunner() {
+            @Override
+            public void scenarioRunner(SimuComSimProcess process) {
+                LOGGER.log(Level.INFO, "Starting with the controller scenario!");
+                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(),
+                        process);
+                final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
+                final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
+                usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
+                List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
+                final Start start = UsagemodelFactory.eINSTANCE.createStart();
+                final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
+                final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
+                actions.add(start);
+                actions.add(sysCall);
+                actions.add(stop);
+                sysCall.setOperationSignature__EntryLevelSystemCall(
+                        controllerMapping.getMappedCall().getCalledSignature());
+                sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
+                start.setSuccessor(sysCall);
+                sysCall.setSuccessor(stop);
+                new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
+                TransientEffectInterpreter.this.state.getReconfigurator().getReconfigurationProcess().scheduleAt(0);
+            }
         };
     }
 
@@ -156,17 +162,17 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         IModelAccess access = state.getModelAccess();
         List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
         ModelExtent inAllocation = new BasicModelExtent(pcmAllocation);
-        List<EObject> roleSetList = Arrays.asList(roleSet);
+        List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
         ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
-        List<EObject> stepList = Arrays.asList(step);
+        List<EObject> stepList = Arrays.asList((EObject) step);
         ModelExtent stepExtent = new BasicModelExtent(stepList);
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
         OutputStreamWriter outStream = new OutputStreamWriter(System.out);
         Log log = new WriterLog(outStream);
         executionContext.setLog(log);
         // Make it so that the executor is only instantiated once
-        TransformationExecutor conflictCheckExecutor = new TransformationExecutor(URI.createURI(step
-                .getPreconditionURI()));
+        TransformationExecutor conflictCheckExecutor = new TransformationExecutor(
+                URI.createURI(step.getPreconditionURI()));
         // execute controller completion
         ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRoleSetExtent,
                 stepExtent);
@@ -174,7 +180,13 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     }
 
     private boolean checkIfUsersRun(Collection<OpenWorkloadUser> users) {
-        return !users.stream().allMatch(OpenWorkloadUser::isTerminated);
+        for (OpenWorkloadUser user : users) {
+            if (!user.isTerminated()) {
+                return true;
+            }
+        }
+
+        return true;
     }
 
     private Mapping controllerCompletion(AdaptationStep step, Repository controllerRepository) {
@@ -182,20 +194,20 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
         // get PCM model that is transformed
         ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
-        List<EObject> roleSetList = Arrays.asList(roleSet);
+        List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
         ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
         ModelExtent outMapping = new BasicModelExtent();
-        List<EObject> repositoryList = Arrays.asList(controllerRepository);
+        List<EObject> repositoryList = Arrays.asList((EObject) controllerRepository);
         ModelExtent controllerRepositoryExtent = new BasicModelExtent(repositoryList);
-        List<EObject> stepList = Arrays.asList(step);
+        List<EObject> stepList = Arrays.asList((EObject) step);
         ModelExtent stepExtent = new BasicModelExtent(stepList);
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
         OutputStreamWriter outStream = new OutputStreamWriter(System.out);
         Log log = new WriterLog(outStream);
         executionContext.setLog(log);
         // Make it so that the executor is only instantiated once
-        TransformationExecutor controllerCompletionExecutor = new TransformationExecutor(URI.createURI(step
-                .getControllerCompletionURI()));
+        TransformationExecutor controllerCompletionExecutor = new TransformationExecutor(
+                URI.createURI(step.getControllerCompletionURI()));
         // execute controller completion
         ExecutionDiagnostic result = controllerCompletionExecutor.execute(executionContext, inoutAllocation,
                 controllerRepositoryExtent, inRoleSetExtent, stepExtent, outMapping);
@@ -210,14 +222,14 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
         // get PCM model that is transformed
         ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
-        List<EObject> rolesList = Arrays.asList(this.roleSet);
+        List<EObject> rolesList = Arrays.asList((EObject) this.roleSet);
         ModelExtent rolesExtent = new BasicModelExtent(rolesList);
-        List<EObject> mappingList = Arrays.asList(mapping);
+        List<EObject> mappingList = Arrays.asList((EObject) mapping);
         ModelExtent mappingExtent = new BasicModelExtent(mappingList);
         ExecutionContextImpl executionContext = new ExecutionContextImpl();
         // Make it so that the executor is only instantiated once
-        TransformationExecutor adaptationExecutor = new TransformationExecutor(URI.createURI(step
-                .getAdaptationStepURI()));
+        TransformationExecutor adaptationExecutor = new TransformationExecutor(
+                URI.createURI(step.getAdaptationStepURI()));
         // execute adaptation
         ExecutionDiagnostic result = adaptationExecutor.execute(executionContext, inoutAllocation, rolesExtent,
                 mappingExtent);
