@@ -70,10 +70,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         boolean successful = true;
         for (AdaptationStep step : action.getAdaptationSteps()) {
             successful &= this.doSwitch(step);
-        }
-        if (successful) {
-            this.state.getReconfigurator().getEventDispatcher()
-                    .reconfigurationExecuted(Collections.singletonList((Notification) new ActionExecutedNotification(action)));
+            if (successful) {
+                this.state.getReconfigurator().getEventDispatcher()
+                        .reconfigurationExecuted(Collections.singletonList((Notification) new ActionExecutedNotification(action)));
+            }
         }
         return successful;
     }
@@ -113,7 +113,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
                     Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
                             (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
             OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " " + call.getEntityName(),
-                    getControllerScenarioRunner(controllerMapping), usageStartStopProbes);
+                    createAndScheduleControllerScenarioRunner(controllerMapping, reconfigurationProcess), usageStartStopProbes);
             users.add(user);
             user.startUserLife();
         }
@@ -130,7 +130,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         return result;
     }
 
-    private IScenarioRunner getControllerScenarioRunner(final ControllerMapping controllerMapping) {
+    private IScenarioRunner createAndScheduleControllerScenarioRunner(final ControllerMapping controllerMapping, final ReconfigurationProcess reconfigurationProcess) {
         return new IScenarioRunner() {
             @Override
             public void scenarioRunner(SimuComSimProcess process) {
@@ -153,7 +153,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
                 start.setSuccessor(sysCall);
                 sysCall.setSuccessor(stop);
                 new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-                TransientEffectInterpreter.this.state.getReconfigurator().getReconfigurationProcess().scheduleAt(0);
+                reconfigurationProcess.scheduleAt(0);
             }
         };
     }
@@ -186,7 +186,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             }
         }
 
-        return true;
+        return false;
     }
 
     private Mapping controllerCompletion(AdaptationStep step, Repository controllerRepository) {
