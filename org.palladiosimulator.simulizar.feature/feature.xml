@@ -214,7 +214,7 @@ litigation.
    </license>
 
    <url>
-      <update label="SimuLizar Update Site" url="http://sdqweb.ipd.kit.edu/eclipse/simulizar/nightly/"/>
+      <update label="SimuLizar Update Site" url="https://sdqweb.ipd.kit.edu/eclipse/simulizar/nightly/"/>
    </url>
 
    <includes
