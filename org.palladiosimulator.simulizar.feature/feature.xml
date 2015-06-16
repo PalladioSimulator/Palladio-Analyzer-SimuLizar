@@ -302,6 +302,40 @@ litigation.
       <import plugin="org.eclipse.core.filesystem" version="1.4.100" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="2.1.0" match="greaterOrEqual"/>
       <import feature="de.uka.ipd.sdq.pcm.feature" version="4.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.core.runtime" version="3.10.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore" version="2.10.0" match="compatible"/>
+      <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.identifier" version="2.1.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.pcm" version="4.0.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.probfunction" version="2.1.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.stoex" version="2.2.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.units" version="2.1.0" match="compatible"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.workflow.pcm" version="1.0.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework" version="2.0.0" match="compatible"/>
+      <import plugin="org.palladiosimulator.probeframework" version="2.0.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="2.1.0" match="compatible"/>
+      <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto" version="1.0.0" match="compatible"/>
+      <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="compatible"/>
+      <import plugin="org.palladiosimulator.simulizar.action" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore.edit" version="2.9.0" match="compatible"/>
+      <import plugin="org.modelversioning.emfprofile.edit" version="1.0.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.identifier.edit" version="2.1.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.pcm.edit" version="4.0.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.probfunction.edit" version="2.1.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.stoex.edit" version="2.2.0" match="compatible"/>
+      <import plugin="de.uka.ipd.sdq.units.edit" version="2.1.0" match="compatible"/>
+      <import plugin="org.eclipse.core.resources" version="3.9.0" match="compatible"/>
+      <import plugin="org.palladiosimulator.simulizar.action.edit" version="1.0.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" version="2.10.0" match="compatible"/>
+      <import plugin="org.eclipse.emf.edit.ui" version="2.10.0" match="compatible"/>
+      <import plugin="org.eclipse.ui.ide" version="3.10.0" match="compatible"/>
+      <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml.project" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile.application.registry" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.mdsdprofiles.api" version="1.0.0" match="compatible"/>
    </requires>
 
    <plugin
