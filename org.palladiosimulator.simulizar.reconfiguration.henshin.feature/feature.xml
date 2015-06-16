@@ -3,7 +3,9 @@
       id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature"
       label="Henshin Reconfiguration Engine"
       version="1.0.0.qualifier"
-      provider-name="palladiosimulator.org">
+      provider-name="palladiosimulator.org"
+      license-feature="org.palladiosimulator.license"
+      license-feature-version="1.0.0.qualifier">
 
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
@@ -13,10 +15,7 @@
       [Enter Copyright Description here.]
    </copyright>
 
-   <license url="http://www.example.com/license">
-      [Enter License Description here.]
-   </license>
-
+   
    <plugin
          id="org.palladiosimulator.simulizar.reconfiguration.henshin"
          download-size="0"
