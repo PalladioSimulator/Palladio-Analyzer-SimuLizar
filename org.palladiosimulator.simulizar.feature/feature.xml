@@ -11,12 +11,6 @@
       SimuLizar is a Palladio plug-in for analyzing self-adaptive systems, such as cloud computing systems, at design-time. With SimuLizar, we want to provide modeling support for self-adaptation rules as well as new analysis for scalability, elasticity, and efficiency.
    </description>
 
-   <copyright>
-      This plugin is protected by copyright held by the members of
-the Palladio Research Group, University of Karlsruhe.
-   </copyright>
-
-   
    <url>
       <update label="SimuLizar Update Site" url="https://sdqweb.ipd.kit.edu/eclipse/simulizar/nightly/"/>
    </url>

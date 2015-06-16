@@ -11,11 +11,6 @@
       [Enter Feature Description here.]
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   
    <url>
       <discovery label="StoryDiagrams" url="https://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
       <discovery label="Palladio Commons" url="https://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>

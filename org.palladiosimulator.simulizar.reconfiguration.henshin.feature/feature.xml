@@ -10,11 +10,6 @@
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
    </description>
-
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
    
    <plugin
          id="org.palladiosimulator.simulizar.reconfiguration.henshin"
