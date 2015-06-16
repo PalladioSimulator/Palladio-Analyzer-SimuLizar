@@ -33,30 +33,26 @@ public class ProfilesLibrary {
     }
 
     public static boolean hasAppliedStereotype(Set<Entity> pcmEntitySet, String stereotypeName) {
-        return pcmEntitySet.stream().anyMatch(entity -> StereotypeAPI.isStereotypeApplied(entity, stereotypeName));
+        return StereotypeAPI.hasAppliedStereotype(pcmEntitySet, stereotypeName);
     }
 
     public static boolean appliedStereotypesEqualsOne(Set<Entity> pcmEntitySet, String stereotypeName) {
-        return pcmEntitySet.stream().filter(pcmEntity -> hasAppliedStereotype(pcmEntity, stereotypeName)).count() == 1;
+        int appliedStereotypes = 0;
+
+        for (final Entity entity : pcmEntitySet) {
+            if (StereotypeAPI.isStereotypeApplied(entity, stereotypeName)) {
+                appliedStereotypes++;
+            }
+        }
+
+        if (appliedStereotypes != 1) {
+            return false;
+        }
+        return true;
     }
 
     public static void applyStereotype(Entity pcmEntity, String stereotypeName) {
-        Collection<Profile> applicableProfiles = ProfileAPI.getApplicableProfiles(pcmEntity.eResource());
-        applicableProfiles.stream().filter(p -> Objects.nonNull(p.getStereotype(stereotypeName))).findAny()
-                .ifPresent(profile -> {
-                    EList<Profile> profileList = new BasicEList<Profile>(1);
-                    profileList.add(profile);
-                    ProfileAPI.updateProfileApplications(pcmEntity.eResource(), profileList);
-                    if (StereotypeAPI.isStereotypeApplicable(pcmEntity, stereotypeName)) {
-                        StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
-                    }
-                });
-        // final Stereotype stereotype = pcmEntity
-        // .getApplicableStereotype(stereotypeName);
-        // if(stereotype != null) {
-        // pcmEntity.applyStereotype(stereotype);
-        // pcmEntity.saveContainingProfileApplication();
-        // }
+        StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
     }
 
     public static void removeStereotypeApplications(Entity pcmEntity, String stereotypeName) {
@@ -78,32 +74,38 @@ public class ProfilesLibrary {
     }
 
     public static void delete(List<NamedElement> rootEObjects, Entity eObject) {
-        Set<EObject> eObjects = new HashSet<EObject>();
-        Set<EObject> crossResourceEObjects = new HashSet<EObject>();
+        final Set<EObject> eObjects = new HashSet<EObject>();
+        final Set<EObject> crossResourceEObjects = new HashSet<EObject>();
         eObjects.add(eObject);
-
-        @SuppressWarnings("unchecked")
-        TreeIterator<InternalEObject> allContents = (TreeIterator<InternalEObject>) (TreeIterator<?>) eObject
-                .eAllContents();
-        allContents.forEachRemaining(childEObject -> {
+        for (@SuppressWarnings("unchecked")
+        final TreeIterator<InternalEObject> j = (TreeIterator<InternalEObject>) (TreeIterator<?>) eObject
+                .eAllContents(); j.hasNext();) {
+            final InternalEObject childEObject = j.next();
             if (childEObject.eDirectResource() != null) {
                 crossResourceEObjects.add(childEObject);
             } else {
                 eObjects.add(childEObject);
             }
-        });
+        }
 
-        Map<EObject, Collection<EStructuralFeature.Setting>> usages = UsageCrossReferencer.findAll(eObjects,
-                rootEObjects);
+        Map<EObject, Collection<EStructuralFeature.Setting>> usages;
+        usages = UsageCrossReferencer.findAll(eObjects, rootEObjects);
 
-        usages.forEach((deletedEObject, settingsCollection) -> settingsCollection
-                .stream()
-                .filter(setting -> !eObjects.contains(setting.getEObject())
-                        && setting.getEStructuralFeature().isChangeable())
-                .forEach(setting -> EcoreUtil.remove(setting, deletedEObject)));
+        for (final Map.Entry<EObject, Collection<EStructuralFeature.Setting>> entry : usages.entrySet()) {
+            final EObject deletedEObject = entry.getKey();
+            final Collection<EStructuralFeature.Setting> settings = entry.getValue();
+            for (final EStructuralFeature.Setting setting : settings) {
+                if (!eObjects.contains(setting.getEObject()) && setting.getEStructuralFeature().isChangeable()) {
+                    EcoreUtil.remove(setting, deletedEObject);
+                }
+            }
+        }
 
         EcoreUtil.remove(eObject);
-        crossResourceEObjects.forEach(crossResourceEObject -> EcoreUtil.remove(crossResourceEObject.eContainer(),
-                crossResourceEObject.eContainmentFeature(), crossResourceEObject));
+
+        for (final EObject crossResourceEObject : crossResourceEObjects) {
+            EcoreUtil.remove(crossResourceEObject.eContainer(), crossResourceEObject.eContainmentFeature(),
+                    crossResourceEObject);
+        }
     }
 }
