@@ -3,7 +3,6 @@
       id="org.palladiosimulator.simulizar.feature"
       label="SimuLizar Core Feature"
       version="2.0.0.qualifier"
-      provider-name="palladiosimulator.org"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
 
