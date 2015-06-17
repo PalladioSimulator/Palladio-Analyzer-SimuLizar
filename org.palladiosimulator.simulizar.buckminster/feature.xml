@@ -10,28 +10,6 @@
       [Enter Feature Description here.]
    </description>
 
-   <url>
-      <discovery label="StoryDiagrams" url="https://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
-      <discovery label="Palladio Commons" url="https://sdqweb.ipd.kit.edu/eclipse/commons/nightly/"/>
-      <discovery label="SensorFramework" url="https://sdqweb.ipd.kit.edu/eclipse/sensorframework/nightly/"/>
-      <discovery label="ProbeFramework" url="https://sdqweb.ipd.kit.edu/eclipse/probeframework/nightly/"/>
-      <discovery label="RecorderFramework" url="https://sdqweb.ipd.kit.edu/eclipse/recorderframework/nightly/"/>
-      <discovery label="Palladio Third Party Wrapper" url="https://sdqweb.ipd.kit.edu/eclipse/thirdpartywrapper/nightly/"/>
-      <discovery label="EDP2" url="https://sdqweb.ipd.kit.edu/eclipse/edp2/nightly/"/>
-      <discovery label="Operational QVT 3.4.0" url="http://download.eclipse.org/mmt/qvto/updates/releases/3.4.0"/>
-      <discovery label="MonitorRepository" url="https://sdqweb.ipd.kit.edu/eclipse/monitorrepository/nightly/"/>
-      <discovery label="ScaleDL Usage Evolution" url="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
-      <discovery label="Limbo" url="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
-      <discovery label="Service Level Objective (SLO) Update Site" url="https://sdqweb.ipd.kit.edu/eclipse/servicelevelobjectives/nightly/"/>
-      <discovery label="Palladio" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/nightly/"/>
-      <discovery label="Eclipse Luna" url="http://download.eclipse.org/releases/luna"/>
-      <discovery label="Eclipse Orbit" url="http://download.eclipse.org/tools/orbit/downloads/drops/R20130827064939/repository/"/>
-      <discovery label="xText" url="http://download.eclipse.org/modeling/tmf/xtext/updates/composite/releases"/>
-      <discovery label="ExperimentAnalysis" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
-      <discovery label="PowerConsumptionAnalyzer" url="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/power/nightly/"/>
-      <discovery label="Henshin" url="http://download.eclipse.org/modeling/emft/henshin/updates/release/"/>
-   </url>
-
    <includes
          id="org.palladiosimulator.simulizar.feature"
          version="0.0.0"/>
