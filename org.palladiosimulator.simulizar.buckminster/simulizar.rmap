@@ -20,50 +20,36 @@
   </rm:searchPath>
   <rm:searchPath name="MonitorRepository">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/monitorrepository/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="StoryDiagrams">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/storydiagraminterpreter/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="UsageEvolution">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="Henshin">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://download.eclipse.org/modeling/emft/henshin/updates/release/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="Limbo">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="ServiceLevelObjectives">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="http://sdqweb.ipd.kit.edu/eclipse/servicelevelobjectives/nightly/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="ExperimentAnalysis">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature,buckminster" readerType="p2" source="false" mutable="false">
-      <rm:property key="buckminster.source" value="false"/>
-      <rm:property key="buckminster.mutable" value="false"/>
       <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
     </rm:provider>
   </rm:searchPath>
