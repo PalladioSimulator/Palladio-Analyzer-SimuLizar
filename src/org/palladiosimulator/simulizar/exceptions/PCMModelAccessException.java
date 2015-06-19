@@ -22,4 +22,8 @@ public class PCMModelAccessException extends RuntimeException {
 
     }
 
+    public PCMModelAccessException(final String message, final Throwable e) {
+        super(message, e);
+    }
+
 }
