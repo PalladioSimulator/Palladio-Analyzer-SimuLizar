@@ -271,7 +271,7 @@ public class SDExecutor {
 
             } catch (final SDMException e) {
                 LOGGER.error("SD failed", e);
-                throw new PCMModelInterpreterException("SD interpretation failed" + e.toString());
+                throw new PCMModelInterpreterException("SD interpretation failed", e);
             }
         }
         return result;
