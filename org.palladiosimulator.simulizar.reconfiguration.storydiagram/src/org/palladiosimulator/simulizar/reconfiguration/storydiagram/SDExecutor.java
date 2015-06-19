@@ -236,7 +236,7 @@ public class SDExecutor {
      */
     private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
         this.sdNotificationReceiver.reset();
-        Map<String, Variable<EClassifier>> result = this.sdmInterpreter.executeActivity(activity, parameters);
+        final Map<String, Variable<EClassifier>> result = this.sdmInterpreter.executeActivity(activity, parameters);
         // TODO: Get info on activity success?
         if (this.sdNotificationReceiver.applicationSuccessful()) {
             return true;
@@ -254,7 +254,7 @@ public class SDExecutor {
      *         model.
      */
     public boolean executeActivities(final EObject monitoredElement) {
-        EObject returnvalue = EcoreFactory.eINSTANCE.create(BOOLEAN_ECLASS);
+        final EObject returnvalue = EcoreFactory.eINSTANCE.create(BOOLEAN_ECLASS);
         final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(MONITORED_ELEMENT,
                 EOBJECT_ECLASS, monitoredElement);
         final Variable<EClassifier> returnValueParameter = new Variable<EClassifier>(RETURN_VALUE, BOOLEAN_ECLASS,
@@ -271,7 +271,7 @@ public class SDExecutor {
 
             } catch (final SDMException e) {
                 LOGGER.error("SD failed", e);
-                throw new PCMModelInterpreterException("SD interpretation failed", e);
+                throw new PCMModelInterpreterException("SD interpretation failed" + e.toString());
             }
         }
         return result;
