@@ -32,7 +32,10 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
 
         this.addJob(new PCMStartInterpretationJob(configuration));
 
-        this.addJob(new EvaluateResultsJob(configuration));
+		if (configuration.getServiceLevelObjectivesFile() != null
+				&& !(configuration.getServiceLevelObjectivesFile().equals(""))) {
+			this.addJob(new EvaluateResultsJob(configuration));
+		}
 
     }
 
