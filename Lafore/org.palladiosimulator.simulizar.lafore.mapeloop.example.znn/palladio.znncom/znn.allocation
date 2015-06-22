@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="_1xPCMKnoEeO_FKTWaHXFBg" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="znn.resourceenvironment#/"/>
+  <system_Allocation href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+  <allocationContexts_Allocation id="_2sRuIKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService> &lt;SelfAdaptiveNewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_Q4BewKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_nvrBYKnnEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_4eB_oKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_LoadBalancer &lt;LoadBalancer> &lt;LoadBalancer>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_VremsKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_s0iCYKnnEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_P2AEMBjmEeWbbI-GSZtKbQ" entityName="Allocation_Assembly_NewsService1 &lt;NewsService> &lt;NewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_XNdW0KnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_XdkvABjlEeWbbI-GSZtKbQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_VM7soBjmEeWbbI-GSZtKbQ" entityName="Allocation_Assembly_NewsService 2&lt;NewsService> &lt;NewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_YlCNwKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_aa74ABjlEeWbbI-GSZtKbQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_YS1toBjmEeWbbI-GSZtKbQ" entityName="Allocation_Assembly_NewsService 3&lt;NewsService> &lt;NewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_bIY7UKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_gxRH8BjlEeWbbI-GSZtKbQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_bxeXsBjmEeWbbI-GSZtKbQ" entityName="Allocation_Assembly_NewsService 4&lt;NewsService> &lt;NewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_dQ26oeOPEeSWd8lY2QHrZg"/>
+    <assemblyContext_AllocationContext href="znn.system#_i0kccBjlEeWbbI-GSZtKbQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_gfvdoBjmEeWbbI-GSZtKbQ" entityName="Allocation_Assembly_NewsService 5&lt;NewsService> &lt;NewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_-vhCweOPEeSWd8lY2QHrZg"/>
+    <assemblyContext_AllocationContext href="znn.system#_loFs8BjlEeWbbI-GSZtKbQ"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

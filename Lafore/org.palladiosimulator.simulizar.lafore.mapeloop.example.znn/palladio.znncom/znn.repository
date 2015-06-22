@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_UKg1IKnmEeO_FKTWaHXFBg" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_LIKOYKnnEeO_FKTWaHXFBg" entityName="LoadBalancer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_cy6_8KnnEeO_FKTWaHXFBg" entityName="Provided_ILoadBalancer_LoadBalancer" providedInterface__OperationProvidedRole="_ZICfEKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_-3KhYKnnEeO_FKTWaHXFBg" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="__V1aYKnnEeO_FKTWaHXFBg" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="__yEqcKnnEeO_FKTWaHXFBg" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_1OGqcBjjEeWbbI-GSZtKbQ" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_2cWmQBjjEeWbbI-GSZtKbQ" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_cy7nAKnnEeO_FKTWaHXFBg" describedService__SEFF="_S3ss8KnnEeO_FKTWaHXFBg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_cy7nAannEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_YXMwoKnpEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_cy7nAqnnEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_YXMwoKnpEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_YXMwoKnpEeO_FKTWaHXFBg" entityName="selectNewsServers" predecessor_AbstractAction="_cy7nAannEeO_FKTWaHXFBg" successor_AbstractAction="_cy7nAqnnEeO_FKTWaHXFBg">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_bULfIKnpEeO_FKTWaHXFBg" entityName="selectNewsServer1" branchProbability="0.5">
+          <branchBehaviour_BranchTransition id="_bUMtQKnpEeO_FKTWaHXFBg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_bUPJganpEeO_FKTWaHXFBg" predecessor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_nK7DoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_bUPJganpEeO_FKTWaHXFBg" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="_-3KhYKnnEeO_FKTWaHXFBg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_gdsWoKnpEeO_FKTWaHXFBg" entityName="selectNewsServer2" branchProbability="0.5">
+          <branchBehaviour_BranchTransition id="_gdsWoanpEeO_FKTWaHXFBg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_gdsWoqnpEeO_FKTWaHXFBg" successor_AbstractAction="_ozmRoKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_gdsWo6npEeO_FKTWaHXFBg" predecessor_AbstractAction="_ozmRoKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_ozmRoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_gdsWoqnpEeO_FKTWaHXFBg" successor_AbstractAction="_gdsWo6npEeO_FKTWaHXFBg" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="__V1aYKnnEeO_FKTWaHXFBg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_hoTvoKnpEeO_FKTWaHXFBg" entityName="selectNewsServer3">
+          <branchBehaviour_BranchTransition id="_hoTvoanpEeO_FKTWaHXFBg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_hoTvoqnpEeO_FKTWaHXFBg" successor_AbstractAction="_pjNwsKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_hoUWsKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_pjNwsKnpEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_pjNwsKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_hoTvoqnpEeO_FKTWaHXFBg" successor_AbstractAction="_hoUWsKnpEeO_FKTWaHXFBg" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="__yEqcKnnEeO_FKTWaHXFBg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_J-a3sBjkEeWbbI-GSZtKbQ" entityName="selectNewsServer4">
+          <branchBehaviour_BranchTransition id="_J-d7ABjkEeWbbI-GSZtKbQ">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_J-fwMBjkEeWbbI-GSZtKbQ" successor_AbstractAction="_WCS5QBjkEeWbbI-GSZtKbQ"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_J-gXQBjkEeWbbI-GSZtKbQ" predecessor_AbstractAction="_WCS5QBjkEeWbbI-GSZtKbQ"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_WCS5QBjkEeWbbI-GSZtKbQ" predecessor_AbstractAction="_J-fwMBjkEeWbbI-GSZtKbQ" successor_AbstractAction="_J-gXQBjkEeWbbI-GSZtKbQ" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="_1OGqcBjjEeWbbI-GSZtKbQ"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_PwrxQBjkEeWbbI-GSZtKbQ" entityName="selectNewsServer5">
+          <branchBehaviour_BranchTransition id="_PwsYUBjkEeWbbI-GSZtKbQ">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_PwsYURjkEeWbbI-GSZtKbQ" successor_AbstractAction="_dTIpoBjkEeWbbI-GSZtKbQ"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_Pws_YBjkEeWbbI-GSZtKbQ" predecessor_AbstractAction="_dTIpoBjkEeWbbI-GSZtKbQ"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_dTIpoBjkEeWbbI-GSZtKbQ" predecessor_AbstractAction="_PwsYURjkEeWbbI-GSZtKbQ" successor_AbstractAction="_Pws_YBjkEeWbbI-GSZtKbQ" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="_2cWmQBjjEeWbbI-GSZtKbQ"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_j8YkoBjbEeWNAuA7wCUwzg" entityName="NewsService">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_liPIIBjbEeWNAuA7wCUwzg" entityName="Provided_INews_NewsService" providedInterface__OperationProvidedRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_liPIIRjbEeWNAuA7wCUwzg" describedService__SEFF="_16dhkKnmEeO_FKTWaHXFBg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_liPvMBjbEeWNAuA7wCUwzg" entityName="start" successor_AbstractAction="_tQiQkBjbEeWNAuA7wCUwzg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_liPvMRjbEeWNAuA7wCUwzg" entityName="stop" predecessor_AbstractAction="_tQiQkBjbEeWNAuA7wCUwzg"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_tQiQkBjbEeWNAuA7wCUwzg" entityName="selectNewsContentFidelity" predecessor_AbstractAction="_liPvMBjbEeWNAuA7wCUwzg" successor_AbstractAction="_liPvMRjbEeWNAuA7wCUwzg">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_y--aEBjbEeWNAuA7wCUwzg" entityName="selectMultimedia" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_y-_oMBjbEeWNAuA7wCUwzg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_y_A2UBjbEeWNAuA7wCUwzg" successor_AbstractAction="_1gDvYBjeEeWNAuA7wCUwzg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_y_A2URjbEeWNAuA7wCUwzg" predecessor_AbstractAction="_1gDvYBjeEeWNAuA7wCUwzg"/>
+            <steps_Behaviour xsi:type="seff:InternalAction" id="_1gDvYBjeEeWNAuA7wCUwzg" entityName="deliverMultimediaNews" predecessor_AbstractAction="_y_A2UBjbEeWNAuA7wCUwzg" successor_AbstractAction="_y_A2URjbEeWNAuA7wCUwzg">
+              <resourceDemand_Action>
+                <specification_ParametericResourceDemand specification="300"/>
+                <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+              </resourceDemand_Action>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_zqs3oBjbEeWNAuA7wCUwzg" entityName="selectTextual">
+          <branchBehaviour_BranchTransition id="_zqs3oRjbEeWNAuA7wCUwzg">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_zqtesBjbEeWNAuA7wCUwzg" successor_AbstractAction="__WxV0BjeEeWNAuA7wCUwzg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_zqtesRjbEeWNAuA7wCUwzg" predecessor_AbstractAction="__WxV0BjeEeWNAuA7wCUwzg"/>
+            <steps_Behaviour xsi:type="seff:InternalAction" id="__WxV0BjeEeWNAuA7wCUwzg" entityName="deliverTextualNews" predecessor_AbstractAction="_zqtesBjbEeWNAuA7wCUwzg" successor_AbstractAction="_zqtesRjbEeWNAuA7wCUwzg">
+              <resourceDemand_Action>
+                <specification_ParametericResourceDemand specification="100"/>
+                <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+              </resourceDemand_Action>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_v3bBEKnmEeO_FKTWaHXFBg" entityName="SelfAdaptiveNewsService">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="__SXsIKnmEeO_FKTWaHXFBg" entityName="Provided_INews_NewsService" providedInterface__OperationProvidedRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_AjiZEKnnEeO_FKTWaHXFBg" entityName="Required_ILoadBalancer_NewsService" requiredInterface__OperationRequiredRole="_ZICfEKnmEeO_FKTWaHXFBg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="__SaIYKnmEeO_FKTWaHXFBg" describedService__SEFF="_16dhkKnmEeO_FKTWaHXFBg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="__SavcKnmEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_JtPdoKnpEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="__SavcanmEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_JtPdoKnpEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_JtPdoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="__SavcKnmEeO_FKTWaHXFBg" successor_AbstractAction="__SavcanmEeO_FKTWaHXFBg" calledService_ExternalService="_S3ss8KnnEeO_FKTWaHXFBg" role_ExternalService="_AjiZEKnnEeO_FKTWaHXFBg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_XrqAoKnmEeO_FKTWaHXFBg" entityName="INews">
+    <signatures__OperationInterface id="_16dhkKnmEeO_FKTWaHXFBg" entityName="getNews"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_ZICfEKnmEeO_FKTWaHXFBg" entityName="ILoadBalancer">
+    <signatures__OperationInterface id="_S3ss8KnnEeO_FKTWaHXFBg" entityName="selectAndDeliverNewsService"/>
+  </interfaces__Repository>
+</repository:Repository>
