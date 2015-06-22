@@ -41,6 +41,8 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
 				SimulizarConstants.MONITOR_REPOSITORY_FILE, "Loading Monitor Respository Model"));
 		this.addJob(new LoadModelIntoBlackboardAndResolveAllJob(configuration,
 				SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE, "Loading Service Level Objectives Model"));
+		this.addJob(new LoadModelIntoBlackboardAndResolveAllJob(configuration,
+				SimulizarConstants.RECONFIGURATION_RULES_FILE, "Loading Reconfiguration Model"));
 		this.addJob(new LoadModelIntoBlackboardAndResolveAllJob(configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
 				"Loading Usage Evolution Model"));
 		if (loadExtensions) {
