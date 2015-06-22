@@ -100,7 +100,7 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialBlackboardInte
 
         for (IJob job : this.myJobs) {
             if (job instanceof IBlackboardInteractingJob) {
-                ((IBlackboardInteractingJob) job).setBlackboard(this.myBlackboard);
+                ((IBlackboardInteractingJob) job).setBlackboard(this.blackboard);
             }
         }
         super.execute(monitor);
