@@ -69,9 +69,9 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
 
 	private boolean executeActivities(final EObject monitoredElement, ArrayList<Activity> activities) {
 		if (!activities.isEmpty()) {
-            LOGGER.debug("Checking reconfiguration rules due to RuntimeMeasurement change");
+            LOGGER.info("Checking reconfiguration rules due to RuntimeMeasurement change");
             final boolean result = this.getSDExecutor(activities).executeActivities(monitoredElement);
-            LOGGER.debug(result ? "Reconfigured system by a matching rule"
+            LOGGER.info(result ? "Reconfigured system by a matching rule"
                     : "No reconfiguration rule was executed, all conditions were false");
             return result;
         } else {
@@ -82,12 +82,13 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
 	@Override
 	public boolean runExecute(EList<ModelTransformation<?>> actions, EObject monitoredElement) {
     	ArrayList<Activity> activities = new ArrayList<Activity>();
+    	LOGGER.info("Executing Story Diagram Model Transformation.");
     	for(ModelTransformation<?> action : actions){
     		try {
     			ModelTransformation<Activity> sdModelTransformation = (ModelTransformation<Activity>)action;
     			activities.add(sdModelTransformation.getModelTransformation());
     		} catch (ClassCastException e){
-    			LOGGER.debug("Not a Storydiagram model transformation.");
+    			LOGGER.info("Not a Storydiagram model transformation.");
     		}
     	}
     	
