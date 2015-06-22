@@ -17,6 +17,8 @@ public interface IReconfigurationEngine {
 	 * Trigger a condition check of the model@runtime. Engines should check
 	 * whether they should reconfigure.
 	 * 
+	 * @param <T>
+	 * 
 	 * @param monitoredElement
 	 *            PCM model element for which a new sensor measurement arrived.
 	 * @return <code>true</code> if the check was positive/matched,
