@@ -22,4 +22,7 @@ public class PCMModelInterpreterException extends PCMModelAccessException {
 
     }
 
+    public PCMModelInterpreterException(final String message, final Throwable e) {
+        super(message, e);
+    }
 }
