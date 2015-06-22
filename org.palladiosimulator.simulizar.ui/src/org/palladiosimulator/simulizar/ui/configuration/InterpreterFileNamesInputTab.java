@@ -34,7 +34,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     /** Text field for path to Monitor Repository file. */
     protected Text monitorRepositoryFile;
     /** Text field for path to reconfiguration rules folder. */
-    protected Text reconfigurationRulesFolder;
+    protected Text reconfigurationRulesFile;
     /** Text field for path to usage evolution file. */
     protected Text usageEvolutionFile;
     /** Text field for service level objectives file. */
@@ -64,10 +64,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         /**
          * Create reconfiguration rules folder section
          */
-        reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration Rules folder",
-                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        reconfigurationRulesFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+        TabHelper.createFileInputSection(container, modifyListener, "Optional: Reconfiguration Model File",
+        		SimulizarConstants.RECONFIGURATION_RULES_FILE_EXTENSION, reconfigurationRulesFile, "Select Reconfiguration Model File", getShell(),
+                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FILE);
 
         /**
          * Create service level objective repository section
@@ -132,9 +132,9 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.initializeFrom(configuration);
         setTextFromConfigAttribute(this.monitorRepositoryFile, configuration,
                 SimulizarConstants.MONITOR_REPOSITORY_FILE, SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        setTextFromConfigAttribute(this.reconfigurationRulesFolder, configuration,
-                SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        setTextFromConfigAttribute(this.reconfigurationRulesFile, configuration,
+                SimulizarConstants.RECONFIGURATION_RULES_FILE,
+                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FILE);
         setTextFromConfigAttribute(this.serviceLevelObjectivesFile, configuration,
                 SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
@@ -158,8 +158,8 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         super.performApply(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE, monitorRepositoryFile.getText());
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                reconfigurationRulesFolder.getText());
+        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FILE,
+                reconfigurationRulesFile.getText());
         configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
                 serviceLevelObjectivesFile.getText());
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
@@ -181,8 +181,8 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.setDefaults(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE,
                 SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FILE,
+                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FILE);
         configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
                 SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
