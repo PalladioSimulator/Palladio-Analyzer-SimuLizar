@@ -2,42 +2,50 @@ package org.palladiosimulator.simulizar.access;
 
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
- * Interface which allows access to all models at simulation time. Two classes of models exist:
- * global models like the central PCM model, the MonitorRepository model, the RuntimeMeasurement
- * model, or all reconfiguration rules provided in various models. The second class of models are
- * read-only copies of a subset of the global models provided to each simulated process/thread when
- * it starts to execute.
+ * Interface which allows access to all models at simulation time. Two classes
+ * of models exist: global models like the central PCM model, the
+ * MonitorRepository model, the RuntimeMeasurement model, or all reconfiguration
+ * rules provided in various models. The second class of models are read-only
+ * copies of a subset of the global models provided to each simulated
+ * process/thread when it starts to execute.
  * 
  * @author Steffen Becker, Joachim Meyer
  * 
  */
 public interface IModelAccess extends Cloneable {
 
-    public MDSDBlackboard getBlackboard();
+	public MDSDBlackboard getBlackboard();
 
-    // -----
-    // Access to simulated processes local models/local copies of the global model
-    // -----
-    public PCMResourceSetPartition getLocalPCMModel();
+	// -----
+	// Access to simulated processes local models/local copies of the global
+	// model
+	// -----
+	public PCMResourceSetPartition getLocalPCMModel();
 
-    // -----
-    // Access to any model which is global and exists only once
-    // -----
-    public PCMResourceSetPartition getGlobalPCMModel();
+	// -----
+	// Access to any model which is global and exists only once
+	// -----
+	public PCMResourceSetPartition getGlobalPCMModel();
 
-    public MonitorRepository getMonitorRepositoryModel();
+	public MonitorRepository getMonitorRepositoryModel();
 
-    public RuntimeMeasurementModel getRuntimeMeasurementModel();
+	public RuntimeMeasurementModel getRuntimeMeasurementModel();
 
-    public UsageEvolution getUsageEvolutionModel();
+	public UsageEvolution getUsageEvolutionModel();
 
-    // public Collection<Activity> getStoryDiagrams();
+	// public Collection<Activity> getStoryDiagrams();
 
-    public IModelAccess clone();
+	public IModelAccess clone();
+
+	public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepositoryModel();
+
+	public Reconfiguration getReconfigurationModel();
 }

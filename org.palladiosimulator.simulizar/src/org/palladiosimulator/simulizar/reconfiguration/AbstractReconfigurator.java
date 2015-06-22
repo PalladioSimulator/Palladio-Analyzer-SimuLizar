@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-public abstract class AbstractReconfigurator implements IReconfigurator {
+public abstract class AbstractReconfigurator implements IReconfigurationEngine {
 
     protected IModelAccess modelAccessFactory;
     protected SimuLizarWorkflowConfiguration configuration;
