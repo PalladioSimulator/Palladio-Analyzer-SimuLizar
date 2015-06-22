@@ -32,7 +32,7 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
         config.setAccuracyInformationModelFile(getStringAttribute(ConstantsContainer.ACCURACY_QUALITY_ANNOTATION_FILE));
 
         config.setMonitorRepositoryFile(getStringAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE));
-        config.setReconfigurationRulesFolder(getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER));
+        config.setReconfigurationRulesFolder(getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FILE));
         config.setServiceLevelObjectivesFile(getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
         config.setUsageEvolutionFile(getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
 
