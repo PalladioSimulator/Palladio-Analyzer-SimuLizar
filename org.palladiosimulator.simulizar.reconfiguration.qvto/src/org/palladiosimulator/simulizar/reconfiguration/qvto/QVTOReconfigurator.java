@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
  * @author Matthias Becker
  *
  */
-public class QVTOReconfigurator extends AbstractReconfigurator implements IReconfigurator {
+public class QVTOReconfigurator extends AbstractReconfigurator implements IReconfigurationEngine {
 
     /**
      * This class' internal LOGGER.
