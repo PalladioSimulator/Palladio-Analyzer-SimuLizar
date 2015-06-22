@@ -9,7 +9,9 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.henshin.model.Module;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.jobs.LoadHenshinModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -108,4 +110,14 @@ public class HenshinModelAccess implements IModelAccess {
     public MDSDBlackboard getBlackboard() {
         return modelAccess.getBlackboard();
     }
+
+	@Override
+	public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepositoryModel() {
+		return modelAccess.getServiceLevelObjectiveRepositoryModel();
+	}
+
+	@Override
+	public Reconfiguration getReconfigurationModel() {
+		return modelAccess.getReconfigurationModel();
+	}
 }
