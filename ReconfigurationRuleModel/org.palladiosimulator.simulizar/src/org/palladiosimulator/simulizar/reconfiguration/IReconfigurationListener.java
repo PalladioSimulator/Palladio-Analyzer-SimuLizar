@@ -7,9 +7,9 @@ import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfiguration
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 
 public interface IReconfigurationListener {
-    public void reconfigurationExecuted(Collection<Notification> modelChanges);
+	public void reconfigurationExecuted(Collection<Notification> modelChanges);
 
-    public void beginReconfigurationEvent(BeginReconfigurationEvent event);
+	public void beginReconfigurationEvent(BeginReconfigurationEvent event);
 
-    public void endReconfigurationEvent(EndReconfigurationEvent event);
+	public void endReconfigurationEvent(EndReconfigurationEvent event);
 }

@@ -20,7 +20,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelSyncer;
@@ -158,11 +158,11 @@ public class SimuLizarRuntimeState {
         IExtension[] extensions = Platform.getExtensionRegistry()
                 .getExtensionPoint("org.palladiosimulator.simulizar.reconfigurationengine").getExtensions();
 
-        List<IReconfigurator> engines = new LinkedList<IReconfigurator>();
+        List<IReconfigurationEngine> engines = new LinkedList<IReconfigurationEngine>();
         for (IExtension extension : extensions) {
             for (IConfigurationElement element : extension.getConfigurationElements()) {
                 try {
-                    IReconfigurator reconfigurator = (IReconfigurator) element
+                    IReconfigurationEngine reconfigurator = (IReconfigurationEngine) element
                             .createExecutableExtension("reconfigurationEngine");
                     reconfigurator.setConfiguration(configuration);
                     reconfigurator.setModelAccess(modelAccess);
