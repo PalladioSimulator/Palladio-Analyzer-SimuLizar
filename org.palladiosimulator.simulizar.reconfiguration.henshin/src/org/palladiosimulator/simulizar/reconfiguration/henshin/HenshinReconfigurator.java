@@ -48,7 +48,7 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
     private boolean executeUnit(UnitApplication app, Unit unit) {
       
         // Load the measurement model into an EGraph
-        LOGGER.info("Called Henshin reconfiguration engine.");
+        LOGGER.debug("Called Henshin reconfiguration engine.");
         EGraph graph = new EGraphImpl(this.modelAccess.getRuntimeMeasurementModel());
         graph.add(this.modelAccess.getGlobalPCMModel().getAllocation());
 
