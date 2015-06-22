@@ -35,21 +35,44 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 		EList<Tactic> tactics = reconfigurationModel.getStrategies().get(0).getTactics();
 
 		for (Tactic tactic : tactics) {
+			boolean checkResult = false;
+			boolean executeResult = false;
 			for (IReconfigurationEngine reconfigurator : reconfigurators) {
 				double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
 				reconfigurationDispatcher
 						.beginReconfigurationEvent(new BeginReconfigurationEvent(startReconfigurationTime));
-				boolean checkResult = reconfigurator.runCheck(tactic.getCondition(), monitoredElement);
+				checkResult |= reconfigurator.runCheck(tactic.getCondition(), monitoredElement);
 				boolean reconfigResult = false;
 				if (checkResult) {
-					LOGGER.debug("Reconfiguration check was positive. Executing Reconfiguration.");
-					reconfigResult = reconfigurator.runExecute(tactic.getAction(), monitoredElement);
+					LOGGER.info("Reconfiguration check was positive. Executing Reconfiguration.");
+				} else {
+					LOGGER.info("Reconfiguration check was negative.");
 				}
 				double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
 				// TODO Christian FIXME pass changes instead of null
 				this.reconfigurationDispatcher.reconfigurationExecuted(null);
 				reconfigurationDispatcher.endReconfigurationEvent(
 						new EndReconfigurationEvent(EventResult.fromBoolean(reconfigResult), endReconfigurationTime));
+			}
+
+			if (checkResult) {
+				for (IReconfigurationEngine reconfigurator : reconfigurators) {
+					double startReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
+					reconfigurationDispatcher
+							.beginReconfigurationEvent(new BeginReconfigurationEvent(startReconfigurationTime));
+					executeResult |= reconfigurator.runExecute(tactic.getAction(), monitoredElement);
+					boolean reconfigResult = false;
+					if (executeResult) {
+						LOGGER.info("Reconfiguration execution succeeded.");
+					} else {
+						LOGGER.info("Reconfiguration execution failed.");
+					}
+					double endReconfigurationTime = this.getModel().getSimulationControl().getCurrentSimulationTime();
+					// TODO Christian FIXME pass changes instead of null
+					this.reconfigurationDispatcher.reconfigurationExecuted(null);
+					reconfigurationDispatcher.endReconfigurationEvent(new EndReconfigurationEvent(
+							EventResult.fromBoolean(reconfigResult), endReconfigurationTime));
+				}
 			}
 
 		}

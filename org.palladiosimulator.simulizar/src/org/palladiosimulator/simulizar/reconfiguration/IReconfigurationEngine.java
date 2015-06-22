@@ -13,6 +13,13 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
  */
 public interface IReconfigurationEngine {
 
+	public static int RECONFIGURATION_CHECK_SUCCEEDED = 0;
+	public static int RECONFIGURATION_CHECK_FAILED = 1;
+	public static int RECONFIGURATION_CHECK_NOT_APPLICABLE_BY_ENGINE = 2;
+	public static int RECONFIGURATION_EXECUTION_SUCCEEDED = 3;
+	public static int RECONFIGURATION_EXECUTION_FAILED = 4;
+	public static int RECONFIGURATION_EXECUTION_NOT_APPLICABLE_BY_ENGINE = 5;
+
 	/**
 	 * Trigger a condition check of the model@runtime. Engines should check
 	 * whether they should reconfigure.
