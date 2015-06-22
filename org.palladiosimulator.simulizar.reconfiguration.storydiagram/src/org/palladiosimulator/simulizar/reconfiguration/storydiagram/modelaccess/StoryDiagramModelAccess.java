@@ -8,7 +8,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -110,4 +112,14 @@ public class StoryDiagramModelAccess implements IModelAccess {
     public MDSDBlackboard getBlackboard() {
         return modelAccess.getBlackboard();
     }
+
+	@Override
+	public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepositoryModel() {
+		return modelAccess.getServiceLevelObjectiveRepositoryModel();
+	}
+
+	@Override
+	public Reconfiguration getReconfigurationModel() {
+		return modelAccess.getReconfigurationModel();
+	}
 }

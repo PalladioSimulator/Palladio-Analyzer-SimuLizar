@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
@@ -148,6 +149,39 @@ public class SDExecutor {
     public SDExecutor(final StoryDiagramModelAccess modelAccessFactory) {
         super();
         this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
+        this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
+        this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
+        try {
+            this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
+        } catch (final SDMException e) {
+            throw new RuntimeException("Unable to inialise SD interpreter engine", e);
+        }
+        this.sdNotificationReceiver = new SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
+                this.sdmInterpreter.getFacadeFactory());
+        this.sdmInterpreter.getNotificationEmitter().addNotificationReceiver(this.sdNotificationReceiver);
+
+        if (LOGGER.isDebugEnabled()) {
+            this.sdmInterpreter
+                    .getNotificationEmitter()
+                    .addNotificationReceiver(
+                            new OutputStreamNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
+                                    this.sdmInterpreter.getFacadeFactory()));
+        }
+
+        this.staticParameters = this.createParameter();
+        this.activities = this.createBindingsForActivities();
+    }
+    
+    /**
+     * Constructor of the SD Executor.
+     * 
+     * @param modelAccessFactory
+     *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
+     *            models.
+     */
+    public SDExecutor(final StoryDiagramModelAccess modelAccessFactory, final List<Activity> storydiagramActivities) {
+        super();
+        this.storyDiagrams = storydiagramActivities;
         this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         try {
