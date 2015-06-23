@@ -3,14 +3,14 @@ package org.palladiosimulator.simulizar.interpreter;
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyConnector;
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector;
-import de.uka.ipd.sdq.pcm.core.composition.Connector;
-import de.uka.ipd.sdq.pcm.core.composition.RequiredDelegationConnector;
-import de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch;
-import de.uka.ipd.sdq.pcm.repository.RequiredRole;
-import de.uka.ipd.sdq.pcm.repository.Signature;
+import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector;
+import org.palladiosimulator.pcm.core.composition.Connector;
+import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector;
+import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
+import org.palladiosimulator.pcm.repository.RequiredRole;
+import org.palladiosimulator.pcm.repository.Signature;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -59,8 +59,8 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      * (non-Javadoc)
      * 
      * @see
-     * de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch#caseAssemblyInfrastructureConnector
-     * (de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector)
+     * org.palladiosimulator.pcm.core.composition.util.CompositionSwitch#caseAssemblyInfrastructureConnector
+     * (org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector)
      */
     @Override
     public SimulatedStackframe<Object> caseAssemblyInfrastructureConnector(
@@ -127,9 +127,9 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
             /*
              * (non-Javadoc)
              * 
-             * @see de.uka.ipd.sdq.pcm.core.composition.util.CompositionSwitch#
+             * @see org.palladiosimulator.pcm.core.composition.util.CompositionSwitch#
              * caseAssemblyInfrastructureConnector
-             * (de.uka.ipd.sdq.pcm.core.composition.AssemblyInfrastructureConnector)
+             * (org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector)
              */
             @Override
             public Connector caseAssemblyInfrastructureConnector(

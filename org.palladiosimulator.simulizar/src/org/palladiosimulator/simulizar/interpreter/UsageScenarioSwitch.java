@@ -7,17 +7,17 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import de.uka.ipd.sdq.pcm.repository.OperationSignature;
-import de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction;
-import de.uka.ipd.sdq.pcm.usagemodel.Branch;
-import de.uka.ipd.sdq.pcm.usagemodel.BranchTransition;
-import de.uka.ipd.sdq.pcm.usagemodel.Delay;
-import de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall;
-import de.uka.ipd.sdq.pcm.usagemodel.Loop;
-import de.uka.ipd.sdq.pcm.usagemodel.ScenarioBehaviour;
-import de.uka.ipd.sdq.pcm.usagemodel.Start;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageScenario;
-import de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch;
+import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
+import org.palladiosimulator.pcm.usagemodel.Branch;
+import org.palladiosimulator.pcm.usagemodel.BranchTransition;
+import org.palladiosimulator.pcm.usagemodel.Delay;
+import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
+import org.palladiosimulator.pcm.usagemodel.Loop;
+import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
+import org.palladiosimulator.pcm.usagemodel.Start;
+import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 /**
@@ -47,7 +47,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseBranch(de.uka.ipd.sdq.pcm.usagemodel.Branch)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseBranch(org.palladiosimulator.pcm.usagemodel.Branch)
      */
     @Override
     public T caseBranch(final Branch object) {
@@ -62,7 +62,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseDelay(de.uka.ipd.sdq.pcm.usagemodel.Delay)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseDelay(org.palladiosimulator.pcm.usagemodel.Delay)
      */
     @Override
     public T caseDelay(final Delay object) {
@@ -83,7 +83,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseEntryLevelSystemCall(de.uka.ipd.sdq.pcm.usagemodel.EntryLevelSystemCall)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseEntryLevelSystemCall(org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall)
      */
     @Override
     public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
@@ -135,7 +135,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseLoop(de.uka.ipd.sdq.pcm.usagemodel.Loop)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseLoop(org.palladiosimulator.pcm.usagemodel.Loop)
      */
     @Override
     public T caseLoop(final Loop object) {
@@ -152,7 +152,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseScenarioBehaviour(de.uka.ipd.sdq.pcm.usagemodel.ScenarioBehaviour)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseScenarioBehaviour(org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour)
      */
     @Override
     public T caseScenarioBehaviour(final ScenarioBehaviour object) {
@@ -169,7 +169,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     // /**
     // * @see
-    // de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseStart(de.uka.ipd.sdq.pcm.usagemodel.Start)
+    // org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseStart(org.palladiosimulator.pcm.usagemodel.Start)
     // */
     // @Override
     // public T caseStart(final Start object)
@@ -190,7 +190,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     // }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseAbstractUserAction(de.uka.ipd.sdq.pcm.usagemodel.AbstractUserAction)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseAbstractUserAction(org.palladiosimulator.pcm.usagemodel.AbstractUserAction)
      */
     @Override
     public T caseAbstractUserAction(final AbstractUserAction object) {
@@ -207,7 +207,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.usagemodel.util.UsagemodelSwitch#caseUsageScenario(de.uka.ipd.sdq.pcm.usagemodel.UsageScenario)
+     * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseUsageScenario(org.palladiosimulator.pcm.usagemodel.UsageScenario)
      */
     @Override
     public T caseUsageScenario(final UsageScenario usageScenario) {

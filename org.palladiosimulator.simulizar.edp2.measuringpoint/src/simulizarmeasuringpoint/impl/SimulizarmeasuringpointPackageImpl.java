@@ -12,7 +12,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringpointPackage;
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
 import simulizarmeasuringpoint.SimulizarmeasuringpointFactory;
 import simulizarmeasuringpoint.SimulizarmeasuringpointPackage;
-import de.uka.ipd.sdq.pcm.PcmPackage;
+import org.palladiosimulator.pcm.PcmPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
