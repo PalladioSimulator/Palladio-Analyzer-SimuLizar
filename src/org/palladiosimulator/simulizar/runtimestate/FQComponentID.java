@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 import java.util.Collections;
 import java.util.List;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 
 public class FQComponentID {
 

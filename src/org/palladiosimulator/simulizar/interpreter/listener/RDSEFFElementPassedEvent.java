@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import org.eclipse.emf.ecore.EObject;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
 public class RDSEFFElementPassedEvent<T extends EObject> extends ModelElementPassedEvent<T> {
