@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
-      label="QVT Operational Reconfiguration Engine"
+      label="Palladio Component Model - Analyzer: SimuLizar - QVT Operational Reconfiguations"
       version="1.0.0.qualifier"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -9,7 +9,7 @@
    <description url="http://www.example.com/description">
       [Enter Feature Description here.]
    </description>
-   
+
    <requires>
       <import plugin="org.eclipse.core.runtime"/>
       <import plugin="org.palladiosimulator.simulizar"/>
