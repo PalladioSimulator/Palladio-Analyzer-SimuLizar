@@ -29,12 +29,13 @@ import org.storydriven.storydiagrams.patterns.StoryPattern;
 import de.mdelab.sdm.interpreter.core.SDMException;
 import de.mdelab.sdm.interpreter.core.notifications.OutputStreamNotificationReceiver;
 import de.mdelab.sdm.interpreter.core.variables.Variable;
+
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcm.system.SystemPackage;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * 

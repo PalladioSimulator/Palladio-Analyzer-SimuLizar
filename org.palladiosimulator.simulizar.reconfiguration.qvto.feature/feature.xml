@@ -16,7 +16,7 @@
       <import plugin="org.apache.log4j"/>
       <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.simulizar.runtimemeasurement"/>
-      <import plugin="de.uka.ipd.sdq.workflow.pcm"/>
+      <import plugin="org.palladiosimulator.analyzer.workflow"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd"/>
       <import plugin="org.scaledl.usageevolution"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>

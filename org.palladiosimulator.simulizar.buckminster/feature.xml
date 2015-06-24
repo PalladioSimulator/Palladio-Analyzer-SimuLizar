@@ -42,7 +42,7 @@
       <import plugin="org.palladiosimulator.experimentanalysis.tests"/>
       <import plugin="org.palladiosimulator.experimentanalysis"/>
       <import plugin="de.uka.ipd.sdq.simulation" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.workflow.pcm" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.analyzer.workflow" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.simulizar.runtimemeasurement"/>
       <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>

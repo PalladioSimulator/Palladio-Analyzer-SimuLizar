@@ -10,6 +10,7 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
+import org.palladiosimulator.analyzer.workflow.runconfig.ProtocomFileNamesInputTab;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.ui.configuration.extensions.AbstractExtensionFileInputConfigurationBuilder;
@@ -19,7 +20,6 @@ import org.palladiosimulator.simulizar.ui.configuration.extensions.ExtensionInpu
 
 import de.uka.ipd.sdq.workflow.launchconfig.LaunchConfigPlugin;
 import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
-import de.uka.ipd.sdq.workflow.pcm.runconfig.ProtocomFileNamesInputTab;
 
 /**
  * File name input tab for SimuLizar. Uses middleware and eventmiddle ware input fields for Monitor

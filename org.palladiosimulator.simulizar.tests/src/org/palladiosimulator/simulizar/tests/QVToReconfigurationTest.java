@@ -16,6 +16,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.junit.Test;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -44,8 +46,6 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 public class QVToReconfigurationTest {
 

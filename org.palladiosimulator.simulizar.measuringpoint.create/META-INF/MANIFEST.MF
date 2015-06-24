@@ -11,6 +11,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.filesystem,
  org.palladiosimulator.pcm;bundle-version="4.0.0",
  de.uka.ipd.sdq.workflow.mdsd;bundle-version="2.1.0",
- de.uka.ipd.sdq.workflow.pcm;bundle-version="1.0.0"
+ org.palladiosimulator.analyzer.workflow;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy

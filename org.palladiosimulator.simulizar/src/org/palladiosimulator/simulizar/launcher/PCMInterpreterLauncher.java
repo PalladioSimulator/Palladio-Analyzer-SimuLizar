@@ -6,6 +6,7 @@ import org.apache.log4j.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.palladiosimulator.analyzer.workflow.configurations.PCMWorkflowConfigurationBuilder;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -15,7 +16,6 @@ import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowLauncher;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowConfigurationBuilder;
 import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
-import de.uka.ipd.sdq.workflow.pcm.configurations.PCMWorkflowConfigurationBuilder;
 
 /**
  * Factory for the job for launching the pcm interpreter.

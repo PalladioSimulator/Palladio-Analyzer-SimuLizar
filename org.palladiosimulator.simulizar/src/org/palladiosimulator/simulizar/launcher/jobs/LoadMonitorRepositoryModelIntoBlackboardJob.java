@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.exceptions.MonitorRepositoryModelLoadException;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
@@ -12,8 +14,6 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 /**
  * Job for loading monitor repository model into blackboard. Resolving proxies to pcm.

@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.henshin.model.Module;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
@@ -18,7 +19,6 @@ import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Helper to access all models and specifically the StoryDiagram models from the Story Diagram
