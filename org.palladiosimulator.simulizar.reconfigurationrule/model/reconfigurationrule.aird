@@ -5,7 +5,7 @@
   <models xmi:type="ecore:EPackage" href="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="http://www.eclipse.org/emf/2002/Ecore#/"/>
   <models xmi:type="genmodel:GenModel" href="platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel#/"/>
-  <models xmi:type="ecore:EPackage" href="platform:/resource/de.uka.ipd.sdq.pcm/model/pcm.ecore#/"/>
+  <models xmi:type="ecore:EPackage" href="platform:/resource/org.palladiosimulator.pcm/model/pcm.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="platform:/plugin/org.palladiosimulator.mdsdprofiles/model/mdsdprofiles.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore#/"/>
@@ -13,7 +13,7 @@
   <models xmi:type="ecore:EPackage" href="platform:/plugin/org.modelversioning.emfprofile/model/emfprofiles.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="platform:/plugin/org.modelversioning.emfprofile/model/emfprofileapplication.ecore#/"/>
   <models xmi:type="ecore:EPackage" href="platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore#/"/>
-  <models xmi:type="genmodel_1:GenModel" href="platform:/resource/de.uka.ipd.sdq.pcm/model/pcm.genmodel#/"/>
+  <models xmi:type="genmodel_1:GenModel" href="platform:/resource/org.palladiosimulator.pcm/model/pcm.genmodel#/"/>
   <models xmi:type="genmodel_1:GenModel" href="platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#/"/>
   <models xmi:type="genmodel_1:GenModel" href="platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel#/"/>
   <models xmi:type="genmodel_1:GenModel" href="platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel#/"/>

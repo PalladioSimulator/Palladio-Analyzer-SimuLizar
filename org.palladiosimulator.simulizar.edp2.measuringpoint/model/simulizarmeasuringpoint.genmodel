@@ -3,7 +3,7 @@
     modelDirectory="/org.palladiosimulator.simulizar.edp2.measuringpoint/src"
     modelPluginID="org.palladiosimulator.simulizar.edp2.measuringpoint" modelName="Simulizarmeasuringpoint"
     rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
-    complianceLevel="7.0" copyrightFields="false" usedGenPackages="../../org.palladiosimulator.edp2/model/EDP2.genmodel#//models ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.metricspec/model/metricspec.genmodel#//metricspec ../../de.uka.ipd.sdq.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units"
+    complianceLevel="7.0" copyrightFields="false" usedGenPackages="../../org.palladiosimulator.edp2/model/EDP2.genmodel#//models ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.metricspec/model/metricspec.genmodel#//metricspec ../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units"
     importOrganizing="true" cleanup="true">
   <foreignModel>simulizarmeasuringpoint.ecore</foreignModel>
   <genPackages prefix="Simulizarmeasuringpoint" disposableProviderFactory="true" childCreationExtenders="true"
