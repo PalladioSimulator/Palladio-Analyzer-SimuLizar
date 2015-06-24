@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import org.palladiosimulator.pcm.completions.DelegatingExternalCallAction;
+import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
