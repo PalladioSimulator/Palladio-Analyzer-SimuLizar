@@ -2,24 +2,25 @@
  */
 package org.palladiosimulator.simulizar.action.core;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.modelversioning.emfprofile.Profile;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 
 /**
- * <!-- begin-user-doc -->
- * A representation of the model object '<em><b>Action</b></em>'.
- * <!-- end-user-doc -->
+ * <!-- begin-user-doc --> A representation of the model object '<em><b>Action</b></em>'. <!--
+ * end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * <ul>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.Action#getAdaptationSteps <em>Adaptation Steps</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.Action#getInvolvedRoles <em>Involved Roles</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.Action#getRepository <em>Repository</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.Action#getTransientStateProfile <em>Transient State Profile</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.action.core.Action#getAdaptationSteps <em>Adaptation
+ * Steps</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.action.core.Action#getInvolvedRoles <em>Involved Roles
+ * </em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.action.core.Action#getRepository <em>Repository</em>}</li>
+ * <li>{@link org.palladiosimulator.simulizar.action.core.Action#getTransientStateProfile <em>
+ * Transient State Profile</em>}</li>
  * </ul>
  * </p>
  *
@@ -27,52 +28,58 @@ import org.palladiosimulator.simulizar.action.instance.RoleSet;
  * @model
  * @generated
  */
-public interface Action extends EObject, Entity {
-	/**
-     * Returns the value of the '<em><b>Adaptation Steps</b></em>' containment reference list.
-     * The list contents are of type {@link org.palladiosimulator.simulizar.action.core.AdaptationStep}.
-     * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.AdaptationStep#getAction <em>Action</em>}'.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Adaptation Steps</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+public interface Action extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
+    /**
+     * Returns the value of the '<em><b>Adaptation Steps</b></em>' containment reference list. The
+     * list contents are of type {@link org.palladiosimulator.simulizar.action.core.AdaptationStep}.
+     * It is bidirectional and its opposite is '
+     * {@link org.palladiosimulator.simulizar.action.core.AdaptationStep#getAction <em>Action</em>}
+     * '. <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Adaptation Steps</em>' containment reference list isn't clear,
+     * there really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
      * @return the value of the '<em>Adaptation Steps</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAction_AdaptationSteps()
      * @see org.palladiosimulator.simulizar.action.core.AdaptationStep#getAction
      * @model opposite="action" containment="true" required="true"
      * @generated
      */
-	EList<AdaptationStep> getAdaptationSteps();
+    EList<AdaptationStep> getAdaptationSteps();
 
-	/**
-     * Returns the value of the '<em><b>Involved Roles</b></em>' containment reference list.
-     * The list contents are of type {@link org.palladiosimulator.simulizar.action.core.RoleType}.
-     * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.RoleType#getAction <em>Action</em>}'.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Involved Roles</em>' containment reference list isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+    /**
+     * Returns the value of the '<em><b>Involved Roles</b></em>' containment reference list. The
+     * list contents are of type {@link org.palladiosimulator.simulizar.action.core.RoleType}. It is
+     * bidirectional and its opposite is '
+     * {@link org.palladiosimulator.simulizar.action.core.RoleType#getAction <em>Action</em>}'. <!--
+     * begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Involved Roles</em>' containment reference list isn't clear, there
+     * really should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
      * @return the value of the '<em>Involved Roles</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAction_InvolvedRoles()
      * @see org.palladiosimulator.simulizar.action.core.RoleType#getAction
      * @model opposite="action" containment="true" required="true"
      * @generated
      */
-	EList<RoleType> getInvolvedRoles();
+    EList<RoleType> getInvolvedRoles();
 
-	/**
-     * Returns the value of the '<em><b>Repository</b></em>' container reference.
-     * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.ActionRepository#getActions <em>Actions</em>}'.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Repository</em>' container reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+    /**
+     * Returns the value of the '<em><b>Repository</b></em>' container reference. It is
+     * bidirectional and its opposite is '
+     * {@link org.palladiosimulator.simulizar.action.core.ActionRepository#getActions
+     * <em>Actions</em>}'. <!-- begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Repository</em>' container reference isn't clear, there really
+     * should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
      * @return the value of the '<em>Repository</em>' container reference.
      * @see #setRepository(ActionRepository)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAction_Repository()
@@ -80,51 +87,56 @@ public interface Action extends EObject, Entity {
      * @model opposite="actions" transient="false"
      * @generated
      */
-	ActionRepository getRepository();
+    ActionRepository getRepository();
 
-	/**
-     * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.Action#getRepository <em>Repository</em>}' container reference.
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Repository</em>' container reference.
+    /**
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.action.core.Action#getRepository <em>Repository</em>}'
+     * container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Repository</em>' container reference.
      * @see #getRepository()
      * @generated
      */
-	void setRepository(ActionRepository value);
+    void setRepository(ActionRepository value);
 
-	/**
-     * Returns the value of the '<em><b>Transient State Profile</b></em>' reference.
-     * <!-- begin-user-doc -->
-	 * <p>
-	 * If the meaning of the '<em>Transient State Profile</em>' reference isn't clear,
-	 * there really should be more of a description here...
-	 * </p>
-	 * <!-- end-user-doc -->
+    /**
+     * Returns the value of the '<em><b>Transient State Profile</b></em>' reference. <!--
+     * begin-user-doc -->
+     * <p>
+     * If the meaning of the '<em>Transient State Profile</em>' reference isn't clear, there really
+     * should be more of a description here...
+     * </p>
+     * <!-- end-user-doc -->
+     *
      * @return the value of the '<em>Transient State Profile</em>' reference.
      * @see #setTransientStateProfile(Profile)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAction_TransientStateProfile()
      * @model
      * @generated
      */
-	Profile getTransientStateProfile();
+    Profile getTransientStateProfile();
 
-	/**
-     * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.Action#getTransientStateProfile <em>Transient State Profile</em>}' reference.
-     * <!-- begin-user-doc -->
-     * <!-- end-user-doc -->
-     * @param value the new value of the '<em>Transient State Profile</em>' reference.
+    /**
+     * Sets the value of the '
+     * {@link org.palladiosimulator.simulizar.action.core.Action#getTransientStateProfile
+     * <em>Transient State Profile</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @param value
+     *            the new value of the '<em>Transient State Profile</em>' reference.
      * @see #getTransientStateProfile()
      * @generated
      */
     void setTransientStateProfile(Profile value);
 
     /**
-     * <!-- begin-user-doc -->
-	 * <!-- end-user-doc -->
-     * @model required="true" affectedRoleSetRequired="true"
-     *        annotation="http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, getRepository()).caseAction(this);'"
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" affectedRoleSetRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, getRepository()).caseAction(this);'"
      * @generated
      */
-	boolean execute(RoleSet affectedRoleSet);
+    boolean execute(RoleSet affectedRoleSet);
 
 } // Action

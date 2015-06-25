@@ -2,9 +2,9 @@
 <genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
     xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.palladiosimulator.simulizar.action/src" modelPluginID="org.palladiosimulator.simulizar.action"
     modelName="Actions" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
-    importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0" copyrightFields="false"
-    usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.modelversioning.emfprofile/model/emfprofiles.genmodel#//emfprofile ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../de.uka.ipd.sdq.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units"
-    importOrganizing="true">
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="7.0"
+    copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.modelversioning.emfprofile/model/emfprofiles.genmodel#//emfprofile ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units"
+    importOrganizing="true" cleanup="true">
   <foreignModel>actions.ecore</foreignModel>
   <genPackages prefix="Action" basePackage="org.palladiosimulator.simulizar" disposableProviderFactory="true"
       ecorePackage="actions.ecore#/">
@@ -14,23 +14,25 @@
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/Action/adaptationSteps"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/Action/involvedRoles"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/Action/repository"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/Action/transientStateProfile"/>
         <genOperations ecoreOperation="actions.ecore#//core/Action/execute">
-          <genParameters ecoreParameter="actions.ecore#//core/Action/execute/affectedEntities"/>
+          <genParameters ecoreParameter="actions.ecore#//core/Action/execute/affectedRoleSet"/>
         </genOperations>
       </genClasses>
       <genClasses image="false" ecoreClass="actions.ecore#//core/AdaptationStep">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/AdaptationStep/controllerCompletionURI"/>
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/AdaptationStep/adaptationStepURI"/>
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/AdaptationStep/preconditionURI"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationStep/action"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/ResourceDemandingStep">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ResourceDemandingStep/resourceDemandingBehaviour"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ResourceDemandingStep/controllerCalls"/>
       </genClasses>
-      <genClasses ecoreClass="actions.ecore#//core/Role">
+      <genClasses ecoreClass="actions.ecore#//core/RoleType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference actions.ecore#//core/Role/type"/>
-        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/Role/action"/>
+            ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/type"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/action"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/ActionRepository">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ActionRepository/actions"/>
@@ -50,12 +52,22 @@
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//mapping/ControllerMapping">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/role"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
-            ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/controllerAllocationContext"/>
-        <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/mappedCall"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/controllerRole"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/mapping"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Instance" disposableProviderFactory="true" ecorePackage="actions.ecore#//instance">
+      <genClasses ecoreClass="actions.ecore#//instance/RoleSet">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//instance/RoleSet/roles"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//instance/Role">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//instance/Role/roleSet"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//instance/Role/roleType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//instance/Role/value"/>
       </genClasses>
     </nestedGenPackages>
   </genPackages>

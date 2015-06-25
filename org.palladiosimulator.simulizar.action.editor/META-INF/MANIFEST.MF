@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore.edit;visibility:=reexport,
  org.modelversioning.emfprofile.edit;visibility:=reexport,
  de.uka.ipd.sdq.identifier.edit;visibility:=reexport,
- de.uka.ipd.sdq.pcm.edit;visibility:=reexport,
+ org.palladiosimulator.pcm.edit;visibility:=reexport,
  de.uka.ipd.sdq.probfunction.edit;visibility:=reexport,
  de.uka.ipd.sdq.stoex.edit;visibility:=reexport,
  de.uka.ipd.sdq.units.edit;visibility:=reexport
