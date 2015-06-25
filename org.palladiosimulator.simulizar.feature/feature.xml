@@ -39,7 +39,7 @@
       <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.identifier" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.pcm" version="4.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.pcm" version="4.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex" version="2.2.0" match="greaterOrEqual"/>

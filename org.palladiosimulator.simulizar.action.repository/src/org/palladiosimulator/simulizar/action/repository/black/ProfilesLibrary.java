@@ -4,23 +4,17 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
-import org.eclipse.emf.common.util.BasicEList;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.UsageCrossReferencer;
-import org.modelversioning.emfprofile.Profile;
-import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
-
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
+import org.palladiosimulator.pcm.core.entity.Entity;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
 
 public class ProfilesLibrary {
 
@@ -28,15 +22,15 @@ public class ProfilesLibrary {
         super();
     }
 
-    public static boolean hasAppliedStereotype(Entity pcmEntity, String stereotypeName) {
+    public static boolean hasAppliedStereotype(final Entity pcmEntity, final String stereotypeName) {
         return StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName);
     }
 
-    public static boolean hasAppliedStereotype(Set<Entity> pcmEntitySet, String stereotypeName) {
+    public static boolean hasAppliedStereotype(final Set<Entity> pcmEntitySet, final String stereotypeName) {
         return StereotypeAPI.hasAppliedStereotype(pcmEntitySet, stereotypeName);
     }
 
-    public static boolean appliedStereotypesEqualsOne(Set<Entity> pcmEntitySet, String stereotypeName) {
+    public static boolean appliedStereotypesEqualsOne(final Set<Entity> pcmEntitySet, final String stereotypeName) {
         int appliedStereotypes = 0;
 
         for (final Entity entity : pcmEntitySet) {
@@ -51,35 +45,35 @@ public class ProfilesLibrary {
         return true;
     }
 
-    public static void applyStereotype(Entity pcmEntity, String stereotypeName) {
+    public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
     }
 
-    public static void removeStereotypeApplications(Entity pcmEntity, String stereotypeName) {
+    public static void removeStereotypeApplications(final Entity pcmEntity, final String stereotypeName) {
         if (StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName)) {
             StereotypeAPI.unapplyStereotype(pcmEntity, stereotypeName);
         }
     }
 
-    public static void setTaggedValue(Entity pcmEntity, int value, String stereotypeName, String taggedValueName) {
+    public static void setTaggedValue(final Entity pcmEntity, final int value, final String stereotypeName, final String taggedValueName) {
         StereotypeAPI.setTaggedValue(pcmEntity, value, stereotypeName, taggedValueName);
     }
 
-    public static int getIntTaggedValue(Entity pcmEntity, String taggedValueName, String stereotypeName) {
+    public static int getIntTaggedValue(final Entity pcmEntity, final String taggedValueName, final String stereotypeName) {
         return (int) StereotypeAPI.getTaggedValue(pcmEntity, taggedValueName, stereotypeName);
     }
 
-    public static double getDoubleTaggedValue(Entity pcmEntity, String taggedValueName, String stereotypeName) {
+    public static double getDoubleTaggedValue(final Entity pcmEntity, final String taggedValueName, final String stereotypeName) {
         return (double) StereotypeAPI.getTaggedValue(pcmEntity, taggedValueName, stereotypeName);
     }
 
-    public static void delete(List<NamedElement> rootEObjects, Entity eObject) {
+    public static void delete(final List<NamedElement> rootEObjects, final Entity eObject) {
         final Set<EObject> eObjects = new HashSet<EObject>();
         final Set<EObject> crossResourceEObjects = new HashSet<EObject>();
         eObjects.add(eObject);
         for (@SuppressWarnings("unchecked")
         final TreeIterator<InternalEObject> j = (TreeIterator<InternalEObject>) (TreeIterator<?>) eObject
-                .eAllContents(); j.hasNext();) {
+        .eAllContents(); j.hasNext();) {
             final InternalEObject childEObject = j.next();
             if (childEObject.eDirectResource() != null) {
                 crossResourceEObjects.add(childEObject);
