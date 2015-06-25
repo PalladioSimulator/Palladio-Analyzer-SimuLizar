@@ -20,12 +20,12 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.debug.core,
  org.eclipse.debug.ui,
  de.uka.ipd.sdq.codegen.simucontroller,
- de.uka.ipd.sdq.workflow.pcm;bundle-version="1.0.0",
  org.palladiosimulator.simulizar.ui;bundle-version="2.0.0",
  org.palladiosimulator.simulizar.reconfiguration.storydiagram,
  de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.sdm,
  de.uka.ipd.sdq.simulation,
- org.palladiosimulator.commons
+ org.palladiosimulator.commons,
+ org.palladiosimulator.analyzer.workflow;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Import-Package: de.uni_paderborn.fujaba.modelinstance,

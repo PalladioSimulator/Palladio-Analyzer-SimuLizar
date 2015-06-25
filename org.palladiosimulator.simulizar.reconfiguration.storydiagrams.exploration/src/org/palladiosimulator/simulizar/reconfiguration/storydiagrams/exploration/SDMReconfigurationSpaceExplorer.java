@@ -16,6 +16,14 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.repository.Repository;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
+import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs.LoadSDMModelsIntoBlackboardJob;
@@ -24,24 +32,9 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.storydriven.storydiagrams.StorydiagramsPackage;
 import org.storydriven.storydiagrams.activities.Activity;
 
-import de.uka.ipd.sdq.pcm.allocation.Allocation;
-import de.uka.ipd.sdq.pcm.repository.Repository;
-import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceEnvironment;
-import de.uka.ipd.sdq.pcm.resourcetype.ResourcetypePackage;
-import de.uka.ipd.sdq.pcm.system.System;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
-import de.uni_paderborn.fujaba.muml.reachanalysis.core.HashLevel;
-import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.ReachabilityGraphState;
-import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.sdm.StepGraph;
-import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputation;
-import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputationStatistics;
-import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.export.SDMReachabilityGraphExporter;
 
 public class SDMReconfigurationSpaceExplorer {
 
@@ -76,8 +69,8 @@ public class SDMReconfigurationSpaceExplorer {
         RuntimeMeasurementPackage.eINSTANCE.eClass();
         StoexPackage.eINSTANCE.eClass();
 
-        Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-        Map<String, Object> m = reg.getExtensionToFactoryMap();
+        final Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
+        final Map<String, Object> m = reg.getExtensionToFactoryMap();
         m.put("repository", new XMIResourceFactoryImpl());
         m.put("resourcetype", new XMIResourceFactoryImpl());
         m.put("sdm", new XMIResourceFactoryImpl());
@@ -91,7 +84,7 @@ public class SDMReconfigurationSpaceExplorer {
     }
 
     private List<Activity> loadActivities() {
-        SDMResourceSetPartition sdmPartition = getResourceSetPartition(this.blackboard,
+        final SDMResourceSetPartition sdmPartition = getResourceSetPartition(this.blackboard,
                 LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID);
 
         if (!(sdmPartition == null)) {
@@ -107,24 +100,24 @@ public class SDMReconfigurationSpaceExplorer {
     }
 
     private HashSet<EObject> setupInitialGraph() throws IOException {
-        HashSet<EObject> result = new HashSet<EObject>();
+        final HashSet<EObject> result = new HashSet<EObject>();
 
-        ResourceSet rs = new ResourceSetImpl();
-        Resource runtimeModelResource = rs.createResource(URI.createPlatformPluginURI(runtimeModelURI, true));
+        final ResourceSet rs = new ResourceSetImpl();
+        final Resource runtimeModelResource = rs.createResource(URI.createPlatformPluginURI(runtimeModelURI, true));
 
         runtimeModelResource.load(Collections.EMPTY_MAP);
-        List<Repository> repositories = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
+        final List<Repository> repositories = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
                 LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID)).getRepositories();
-        Allocation allocation = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
+        final Allocation allocation = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
                 LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID)).getAllocation();
-        System system = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
+        final org.palladiosimulator.pcm.system.System system = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
                 LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID)).getSystem();
-        ResourceEnvironment resourceenvironment = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
+        final ResourceEnvironment resourceenvironment = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
                 LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID)).getResourceEnvironment();
-        UsageModel usagemodel = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
+        final UsageModel usagemodel = ((PCMResourceSetPartition) getResourceSetPartition(this.blackboard,
                 LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID)).getUsageModel();
 
-        RuntimeMeasurementModel runtimemodel = (RuntimeMeasurementModel) runtimeModelResource.getContents().get(0);
+        final RuntimeMeasurementModel runtimemodel = (RuntimeMeasurementModel) runtimeModelResource.getContents().get(0);
 
         result.add(allocation);
         result.addAll(repositories);
@@ -140,30 +133,30 @@ public class SDMReconfigurationSpaceExplorer {
     public void computeReconfigurationSpace() throws IOException {
 
         // create initial graph objects
-        HashSet<EObject> initialGraphObjects = setupInitialGraph();
+        final HashSet<EObject> initialGraphObjects = setupInitialGraph();
 
         // load activities
-        List<Activity> activities = loadActivities();
+        final List<Activity> activities = loadActivities();
 
         // compute the reachability graph
-        SDMReachabilityComputation reachComp = new SDMReachabilityComputation(initialGraphObjects, activities);
+        final SDMReachabilityComputation reachComp = new SDMReachabilityComputation(initialGraphObjects, activities);
         reachComp.setIdentifyUnchangeableSubgraphs(detectUnchangeableNodes);
         reachComp.setStoreMatching(false);
         reachComp.setStoreIndexMap(storeIndexMapping);
         reachComp.setHashLevel(HashLevel.LEVEL1);
         SDMReachabilityComputation.setDEBUG(debug_printout);
-        long sysTime = java.lang.System.currentTimeMillis();
+        final long sysTime = java.lang.System.currentTimeMillis();
         reachComp.computeReachabilityGraph();
-        long curTime = java.lang.System.currentTimeMillis();
+        final long curTime = java.lang.System.currentTimeMillis();
 
         // make GraphViz print-out
         if (printGraph) {
-            SDMReachabilityGraphExporter exporter = new SDMReachabilityGraphExporter();
+            final SDMReachabilityGraphExporter exporter = new SDMReachabilityGraphExporter();
             exporter.export(reachComp.getReachabilityGraph());
         }
 
         // get stats
-        SDMReachabilityComputationStatistics stats = reachComp.getReachabilityComputationStatistics();
+        final SDMReachabilityComputationStatistics stats = reachComp.getReachabilityComputationStatistics();
 
         // print stats
         LOGGER.info("-------------------- Summary ----------------");
@@ -180,13 +173,13 @@ public class SDMReconfigurationSpaceExplorer {
         LOGGER.info("Time for hash computation\t" + stats.getTimeForHashComputation() + "ms");
 
         // Save states
-        String temporaryDataLocation = this.configuration.getTemporaryDataLocation();
-        ResourceSetPartition partition = new ResourceSetPartition();
+        final String temporaryDataLocation = this.configuration.getTemporaryDataLocation();
+        final ResourceSetPartition partition = new ResourceSetPartition();
 
-        EList<ReachabilityGraphState> allReachableStates = reachComp.getReachabilityGraph().getStates();
-        List<URI> partitionURIs = new ArrayList<URI>();
-        for (ReachabilityGraphState state : allReachableStates) {
-            StepGraph models = ((StepGraph) state);
+        final EList<ReachabilityGraphState> allReachableStates = reachComp.getReachabilityGraph().getStates();
+        final List<URI> partitionURIs = new ArrayList<URI>();
+        for (final ReachabilityGraphState state : allReachableStates) {
+            final StepGraph models = ((StepGraph) state);
             LOGGER.info("----- State: " + state + " -----");
             // URI modelURI = URI.createPlatformResourceURI(temporaryDataLocation +
             // "/model/PCM_partition_state_"
@@ -194,17 +187,17 @@ public class SDMReconfigurationSpaceExplorer {
             // partitionURIs.add(modelURI);
             // partition.setContents(modelURI, models.getContainedNodes());
             if (LOGGER.isDebugEnabled()) {
-                for (EObject model : models.getContainedNodes()) {
+                for (final EObject model : models.getContainedNodes()) {
                     LOGGER.debug("Model: " + model);
                 }
             }
         }
         // partition.storeAllResources();
 
-        URI temporaryReachabilityGraphURI = URI.createPlatformResourceURI(temporaryDataLocation
+        final URI temporaryReachabilityGraphURI = URI.createPlatformResourceURI(temporaryDataLocation
                 + "/model/simulizar.reachabilitygraph", true);
 
-        List<EObject> reachabilityGraph = new ArrayList<EObject>();
+        final List<EObject> reachabilityGraph = new ArrayList<EObject>();
         reachabilityGraph.addAll(allReachableStates);
 
         partition.setContents(temporaryReachabilityGraphURI, reachabilityGraph);
