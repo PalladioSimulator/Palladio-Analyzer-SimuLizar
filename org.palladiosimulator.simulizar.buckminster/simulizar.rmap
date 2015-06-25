@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
-  <rm:locator pattern="^org\.palladiosimulator\.simulizar.*" searchPathRef="simulizarsvn"/>
+  
+  <rm:locator pattern="^org\.palladiosimulator\.simulizar.*" searchPathRef="simulizarsvn" failOnError="true"/>
+  
   <rm:locator pattern="^org\.storydriven\..*" searchPathRef="StoryDiagrams" failOnError="false"/>
   <rm:locator pattern="^de\.mdelab\..*" searchPathRef="StoryDiagrams" failOnError="false"/>
   <rm:locator pattern="^de\.upb\.swt\.core.*" searchPathRef="StoryDiagrams" failOnError="false"/>
@@ -10,7 +12,9 @@
   <rm:locator pattern="^org\.palladiosimulator\.servicelevelobjective.*" searchPathRef="ServiceLevelObjectives" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.monitorrepository.*" searchPathRef="MonitorRepository" failOnError="false"/>
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="false"/>
-  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Build/trunk/org.palladiosimulator.targetPlatformBuild/pcm_base.rmap"/>
+  
+  <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Analyzer/SimuCom/trunk/org.palladiosimulator.simucom.buckminster/simucom.rmap"/>
+  
   <rm:searchPath name="simulizarsvn">
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
       <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/SimuLizar/trunk/{0}">
