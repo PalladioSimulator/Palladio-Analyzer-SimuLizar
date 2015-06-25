@@ -77,7 +77,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
 
             final int lastExperiment = this.experimentSetting.getExperimentRuns().size() - 1;
-            final ExperimentRun experimentRun = this.experimentSetting.getExperimentRuns().get(lastExperiment);
+            this.experimentSetting.getExperimentRuns().get(lastExperiment);
 
             long[] sloViolations = computeSloViolations();
             LOGGER.info("Service level objectives were violated in " + sloViolations[1]
