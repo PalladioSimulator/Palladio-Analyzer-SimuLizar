@@ -1,9 +1,7 @@
 package org.palladiosimulator.simulizar.access;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
@@ -25,7 +23,6 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
@@ -39,7 +36,6 @@ public class ModelAccess implements IModelAccess, IReconfigurationListener {
 
     private static final Logger LOGGER = Logger.getLogger(ModelAccess.class.getName());
 
-    private final Map<SimuComSimProcess, PCMResourceSetPartition> modelCopies = new HashMap<SimuComSimProcess, PCMResourceSetPartition>();
     private final PCMResourceSetPartition pcmPartition;
     private PCMResourceSetPartition currentPCMCopy;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
