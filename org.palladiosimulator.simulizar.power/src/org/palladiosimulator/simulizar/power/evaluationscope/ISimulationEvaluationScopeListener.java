@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.power.evaluationscope;
 
+import org.palladiosimulator.experimentanalysis.SlidingWindow;
+
 /**
  * By implementing this interface, classes are enabled to observe
  * {@link SimulationTimeEvaluationScope}s. Clients may want to do so in order to keep track of

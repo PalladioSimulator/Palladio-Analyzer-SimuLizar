@@ -21,6 +21,7 @@ import org.palladiosimulator.experimentanalysis.SlidingWindowUtilizationAggregat
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -33,7 +34,6 @@ import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.interpreter.AbstractEvaluationScope;
 import de.fzi.power.interpreter.InterpreterUtils;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ProcessingResourceSpecification;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 /**

@@ -5,7 +5,7 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.power;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.power.Activator
 Require-Bundle: org.eclipse.core.runtime,
- de.uka.ipd.sdq.pcm,
+ org.palladiosimulator.pcm,
  de.uka.ipd.sdq.simucomframework,
  org.palladiosimulator.metricspec,
  de.fzi.power.interpreter,
