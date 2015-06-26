@@ -19,7 +19,7 @@
                 nsURI="http://www.modelversioning.org/emfprofile/application/1.1">
           </metamodel>
           <metamodel
-                nsURI="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0">
+                nsURI="http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.0">
           </metamodel>
        </library>
     </unit>
@@ -27,6 +27,7 @@
  
 <extension point="org.modelversioning.emfprofile.profile">
 	<profile profile_resource="transientstates/componentmigration.emfprofile_diagram"/>
+	<profile profile_resource="transientstates/componentinstantiation.emfprofile_diagram"/>
 </extension>
 
 </plugin>
