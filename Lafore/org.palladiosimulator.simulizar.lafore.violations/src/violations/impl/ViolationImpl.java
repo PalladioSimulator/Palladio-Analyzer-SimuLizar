@@ -21,10 +21,10 @@ import violations.ViolationsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violations.impl.ViolationImpl#getViolationType <em>Violation Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

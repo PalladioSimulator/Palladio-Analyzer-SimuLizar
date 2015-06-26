@@ -15,10 +15,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link violations.ViolationsRepository#getViolationTypes <em>Violation Types</em>}</li>
  * </ul>
- * </p>
  *
  * @see violations.ViolationsPackage#getViolationsRepository()
  * @model

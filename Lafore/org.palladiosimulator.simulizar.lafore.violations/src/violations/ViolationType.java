@@ -13,11 +13,11 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link violations.ViolationType#getDescription <em>Description</em>}</li>
  *   <li>{@link violations.ViolationType#getSlo <em>Slo</em>}</li>
  * </ul>
- * </p>
  *
  * @see violations.ViolationsPackage#getViolationType()
  * @model

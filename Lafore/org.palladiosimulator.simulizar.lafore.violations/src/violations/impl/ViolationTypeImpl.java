@@ -5,6 +5,7 @@ package violations.impl;
 import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
@@ -17,11 +18,11 @@ import violations.ViolationsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violations.impl.ViolationTypeImpl#getDescription <em>Description</em>}</li>
  *   <li>{@link violations.impl.ViolationTypeImpl#getSlo <em>Slo</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
@@ -102,7 +103,7 @@ public class ViolationTypeImpl extends EntityImpl implements ViolationType {
 	 * @generated
 	 */
 	public ServiceLevelObjective getSlo() {
-		if (slo != null && slo.eIsProxy()) {
+		if (slo != null && ((EObject)slo).eIsProxy()) {
 			InternalEObject oldSlo = (InternalEObject)slo;
 			slo = (ServiceLevelObjective)eResolveProxy(oldSlo);
 			if (slo != oldSlo) {

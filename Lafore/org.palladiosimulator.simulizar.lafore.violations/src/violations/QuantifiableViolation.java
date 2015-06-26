@@ -10,10 +10,10 @@ package violations;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link violations.QuantifiableViolation#getPercentage <em>Percentage</em>}</li>
  * </ul>
- * </p>
  *
  * @see violations.ViolationsPackage#getQuantifiableViolation()
  * @model
