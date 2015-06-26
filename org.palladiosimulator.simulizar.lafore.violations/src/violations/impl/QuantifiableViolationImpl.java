@@ -17,10 +17,10 @@ import violations.ViolationsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violations.impl.QuantifiableViolationImpl#getPercentage <em>Percentage</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

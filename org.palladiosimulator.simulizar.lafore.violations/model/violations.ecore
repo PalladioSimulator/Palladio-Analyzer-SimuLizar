@@ -4,7 +4,7 @@
     nsPrefix="violations">
   <eClassifiers xsi:type="ecore:EClass" name="ViolationType" eSuperTypes="../../de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="description" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="slo" lowerBound="1" eType="ecore:EClass platform:/plugin/org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore#//ServiceLevelObjective"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slo" lowerBound="1" eType="ecore:EClass ../../org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore#//ServiceLevelObjective"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Violation" abstract="true" eSuperTypes="../../de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/entity/Entity">
     <eStructuralFeatures xsi:type="ecore:EReference" name="violationType" lowerBound="1"

@@ -212,6 +212,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.provider.MeasuringpointI
 
 import org.palladiosimulator.metricspec.provider.MetricSpecItemProviderAdapterFactory;
 
+import org.palladiosimulator.monitorrepository.provider.MonitorRepositoryItemProviderAdapterFactory;
 import org.palladiosimulator.servicelevelobjective.provider.ServicelevelObjectiveItemProviderAdapterFactory;
 
 
@@ -761,14 +762,13 @@ public class ViolationsEditor
 		adapterFactory.addAdapterFactory(new ExperimentDataItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new RepositoryItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MeasuringpointItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MetricSpecItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new MonitorRepositoryItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new PcmItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new EntityItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
@@ -785,59 +785,30 @@ public class ViolationsEditor
 		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.provider.PcmItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.core.provider.CoreItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.core.entity.provider.EntityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.core.composition.provider.CompositionItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.usagemodel.provider.UsagemodelItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.resourcetype.provider.ResourcetypeItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.protocol.provider.ProtocolItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.parameter.provider.ParameterItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.reliability.provider.ReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.seff.provider.SeffItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.seff.seff_performance.provider.SeffPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.seff.seff_reliability.provider.SeffReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.qosannotations.provider.QosannotationsItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.qosannotations.qos_performance.provider.QosPerformanceItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.qosannotations.qos_reliability.provider.QosReliabilityItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.system.provider.SystemItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.resourceenvironment.provider.ResourceenvironmentItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.allocation.provider.AllocationItemProviderAdapterFactory());
+		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.subsystem.provider.SubsystemItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ProbfunctionItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ServicelevelObjectiveItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new StoexItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new UnitsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new ReflectiveItemProviderAdapterFactory());
 
 		// Create the command stack that will notify this editor as commands are executed.
@@ -1085,7 +1056,7 @@ public class ViolationsEditor
 	 * @generated
 	 */
 	public void createModel() {
-		URI resourceURI = EditUIUtil.getURI(getEditorInput());
+		URI resourceURI = EditUIUtil.getURI(getEditorInput(), editingDomain.getResourceSet().getURIConverter());
 		Exception exception = null;
 		Resource resource = null;
 		try {
@@ -1113,10 +1084,11 @@ public class ViolationsEditor
 	 * @generated
 	 */
 	public Diagnostic analyzeResourceProblems(Resource resource, Exception exception) {
-		if (!resource.getErrors().isEmpty() || !resource.getWarnings().isEmpty()) {
+		boolean hasErrors = !resource.getErrors().isEmpty();
+		if (hasErrors || !resource.getWarnings().isEmpty()) {
 			BasicDiagnostic basicDiagnostic =
 				new BasicDiagnostic
-					(Diagnostic.ERROR,
+					(hasErrors ? Diagnostic.ERROR : Diagnostic.WARNING,
 					 "org.palladiosimulator.simulizar.lafore.violations.editor",
 					 0,
 					 getString("_UI_CreateModelError_message", resource.getURI()),

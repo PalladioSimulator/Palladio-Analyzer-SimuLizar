@@ -26,10 +26,10 @@ import violations.ViolationsRepository;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violations.impl.ViolationsRepositoryImpl#getViolationTypes <em>Violation Types</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

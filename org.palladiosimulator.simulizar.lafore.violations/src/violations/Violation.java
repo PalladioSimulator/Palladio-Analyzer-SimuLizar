@@ -13,10 +13,10 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link violations.Violation#getViolationType <em>Violation Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see violations.ViolationsPackage#getViolation()
  * @model abstract="true"

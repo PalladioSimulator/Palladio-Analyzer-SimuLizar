@@ -26,10 +26,10 @@ import violations.ViolationsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violations.impl.RuntimeViolationsModelImpl#getViolations <em>Violations</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
