@@ -17,12 +17,12 @@ import violations.ViolationType;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getViolation <em>Violation</em>}</li>
  *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getStrategies <em>Strategies</em>}</li>
  *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getStrategyPriority <em>Strategy Priority</em>}</li>
  * </ul>
- * </p>
  *
  * @see violationstrategymappings.ViolationstrategymappingsPackage#getViolationStrategyMapping()
  * @model
