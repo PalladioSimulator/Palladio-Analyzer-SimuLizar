@@ -26,10 +26,10 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingRepositoryImpl#getVsmappings <em>Vsmappings</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */

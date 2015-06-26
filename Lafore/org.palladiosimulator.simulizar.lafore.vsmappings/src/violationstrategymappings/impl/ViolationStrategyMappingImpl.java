@@ -24,12 +24,12 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getViolation <em>Violation</em>}</li>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getStrategies <em>Strategies</em>}</li>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getStrategyPriority <em>Strategy Priority</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
