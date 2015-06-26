@@ -8,14 +8,31 @@
       </controllerCalls>
     </adaptationSteps>
     <involvedRoles id="_kPTj0OztEeSasuhUPGMaRg" entityName="MigratedComponentAssemblyContext">
-      <type href="../../../plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//core/composition/AssemblyContext"/>
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//core/composition/AssemblyContext"/>
     </involvedRoles>
     <involvedRoles id="_or2AkeztEeSasuhUPGMaRg" entityName="TargetResourceContainer">
-      <type href="../../../plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
     </involvedRoles>
     <involvedRoles id="_56tD0ezuEeSasuhUPGMaRg" entityName="MigrationControllerLocation">
-      <type href="../../../plugin/de.uka.ipd.sdq.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
     </involvedRoles>
     <transientStateProfile href="../transientstates/componentmigration.emfprofile_diagram#_taYIcPSREeSh6eAXEUFylA"/>
+  </actions>
+  <actions id="_s5GsIRwJEeWmcO0Zlkc2yA" entityName="ComponentInstantiation">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_VUENIBwMEeW4AMv4FxCz8w" entityName="instantiate" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/migratecomponentcompletion.qvto" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/migratecomponent.qvto" preconditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/instantiatecomponentconditions.qvto">
+      <controllerCalls id="_0YNaoBwMEeW4AMv4FxCz8w" entityName="instantiateVm">
+        <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_63lUEOqDEeS1xrjFer2CUg"/>
+        <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_zm-xEOp_EeS1xrjFer2CUg"/>
+      </controllerCalls>
+    </adaptationSteps>
+    <involvedRoles id="_9TESQRwLEeW4AMv4FxCz8w" entityName="TargetResourceContainer">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
+    <involvedRoles id="_p7wp4RwMEeW4AMv4FxCz8w" entityName="TargetComponentAssemblyContext">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//core/composition/AssemblyContext"/>
+    </involvedRoles>
+    <involvedRoles id="_MEXt8RwNEeW4AMv4FxCz8w" entityName="InstantiationControllerLocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
   </actions>
 </org.palladiosimulator.action:ActionRepository>
