@@ -19,13 +19,13 @@ modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Cor
 modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.0';
 modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.0';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.0';
-//modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
 
 transformation vmInstantiationStereotypeApplication(
 							inout pcmAllocation : PCM_ALLOC,
-							in actionRoleSet : ACTION_INSTANCE
-							//in actionStep : ACTION_CORE
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
 							) {
 							
 property resourceContainerStereotypeName = 'InstantiatedComponentResourceContainer';
@@ -41,7 +41,7 @@ property resourceContainerStereotypeName = 'InstantiatedComponentResourceContain
 		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		assert fatal(allocation.noConflictingInstantiationInProgress(targetResourceContainer))
 				with log('Component instantiation preconditions not met');
-		applyStereotype(targetResourceConatiner, resourceContainerStereotypeName);
+		applyStereotype(targetResourceContainer, resourceContainerStereotypeName);
 	}
 	
 	query Allocation::noConflictingInstantiationInProgress(targetContainer : ResourceContainer) : Boolean {
