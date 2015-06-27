@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.palladiosimulator.edp2.impl.RepositoryManager;
-import org.palladiosimulator.edp2.models.Repository.LocalDirectoryRepository;
+import org.palladiosimulator.edp2.models.Repository.Repository;
+import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
@@ -21,14 +22,14 @@ import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
 
 public class SimuComModelMock extends SimuComModel {
 
-    private static LocalDirectoryRepository repo = null;
+    private static Repository repo = null;
     private static String repoId = null;
     private static File repoFile = new File("testRepo");
 
     private static SimuComModelMock instance = null;
 
     private static void createRepository() {
-        repo = RepositoryManager.initializeLocalDirectoryRepository(repoFile);
+        repo = LocalDirectoryRepositoryHelper.initializeLocalDirectoryRepository(repoFile);
         repoId = repo.getId();
         RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), repo);
     }
@@ -39,7 +40,7 @@ public class SimuComModelMock extends SimuComModel {
         repoId = null;
         if (repoFile.canRead() && repoFile.canWrite()) {
             if (repoFile.isDirectory()) {
-                for (File f : repoFile.listFiles()) {
+                for (final File f : repoFile.listFiles()) {
                     f.delete();
                 }
             }
@@ -49,7 +50,7 @@ public class SimuComModelMock extends SimuComModel {
 
     private static Map<String, Object> createMockedConfiguration() {
 
-        Map<String, Object> configuration = new HashMap<String, Object>();
+        final Map<String, Object> configuration = new HashMap<String, Object>();
         configuration.put(SimuComConfig.SIMULATE_FAILURES, false);
         configuration.put(SimuComConfig.SIMULATE_LINKING_RESOURCES, false);
         configuration.put(SimuComConfig.VERBOSE_LOGGING, false);
@@ -69,7 +70,7 @@ public class SimuComModelMock extends SimuComModel {
         return SimucomstatusFactory.eINSTANCE.createSimuComStatus();
     }
 
-    public void triggerMockWindowMoveOn(SimulizarSlidingWindow window) {
+    public void triggerMockWindowMoveOn(final SimulizarSlidingWindow window) {
         new MockWindowMoveOnTriggeredEvent(this, window).triggerInternal();
     }
 
@@ -97,7 +98,7 @@ public class SimuComModelMock extends SimuComModel {
     private static class MockWindowMoveOnTriggeredEvent extends PeriodicallyTriggeredSimulationEntity {
         private final SimulizarSlidingWindow window;
 
-        private MockWindowMoveOnTriggeredEvent(SimuComModel model, SimulizarSlidingWindow window) {
+        private MockWindowMoveOnTriggeredEvent(final SimuComModel model, final SimulizarSlidingWindow window) {
             super(model, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             this.window = window;
         }
@@ -106,9 +107,9 @@ public class SimuComModelMock extends SimuComModel {
             Method moveOnMethod = null;
             try {
                 moveOnMethod = SlidingWindow.class.getDeclaredMethod("moveOn", new Class[0]);
-            } catch (NoSuchMethodException e) {
+            } catch (final NoSuchMethodException e) {
                 e.printStackTrace();
-            } catch (SecurityException e) {
+            } catch (final SecurityException e) {
                 e.printStackTrace();
             }
             return moveOnMethod;
@@ -116,16 +117,16 @@ public class SimuComModelMock extends SimuComModel {
 
         private void invokeMoveOn() {
             // dirty hack;)
-            Method moveOnMethod = obtainMoveOnMethod();
+            final Method moveOnMethod = obtainMoveOnMethod();
             if (moveOnMethod != null) {
                 moveOnMethod.setAccessible(true);
                 try {
                     moveOnMethod.invoke(this.window, new Object[0]);
-                } catch (IllegalAccessException e) {
+                } catch (final IllegalAccessException e) {
                     e.printStackTrace();
-                } catch (IllegalArgumentException e) {
+                } catch (final IllegalArgumentException e) {
                     e.printStackTrace();
-                } catch (InvocationTargetException e) {
+                } catch (final InvocationTargetException e) {
                     e.printStackTrace();
                 }
             } else {
