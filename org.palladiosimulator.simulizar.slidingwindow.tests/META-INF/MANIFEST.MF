@@ -17,6 +17,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.scheduler;bundle-version="1.0.0",
  org.palladiosimulator.experimentanalysis.tests,
  org.jscience,
- org.palladiosimulator.metricspec.resources;bundle-version="1.0.0"
+ org.palladiosimulator.metricspec.resources;bundle-version="1.0.0",
+ org.palladiosimulator.edp2.dao.localfile;bundle-version="1.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
