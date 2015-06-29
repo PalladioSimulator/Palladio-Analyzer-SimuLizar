@@ -94,12 +94,21 @@
       <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="org.modelversioning.emfprofile"/>
-      <import plugin="org.eclipse.m2m.qvt.oml"/>
-      <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto"/>
-      <import plugin="org.palladiosimulator.simulizar.ui"/>
-      <import plugin="org.modelversioning.emfprofile.edit"/>
-      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.eclipse.ui.ide" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.action" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.edit" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile.edit" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.action.edit" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.ecore.xmi" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf.edit.ui" version="2.10.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml.project" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile.application.registry" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.mdsdprofiles.api" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
