@@ -2,10 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
-import de.uka.ipd.sdq.pcm.seff.InternalAction;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -15,16 +11,16 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link strategies.ReconfigurationAction#getCodeRef <em>Code Ref</em>}</li>
  * </ul>
- * </p>
  *
  * @see strategies.StrategiesPackage#getReconfigurationAction()
  * @model
  * @generated
  */
-public interface ReconfigurationAction extends EObject, InternalAction, Entity {
+public interface ReconfigurationAction extends EObject, org.palladiosimulator.pcm.seff.InternalAction, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Code Ref</b></em>' attribute.
 	 * <!-- begin-user-doc -->

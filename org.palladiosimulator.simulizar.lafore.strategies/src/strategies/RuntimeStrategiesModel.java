@@ -2,7 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -14,16 +13,16 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link strategies.RuntimeStrategiesModel#getStrategies <em>Strategies</em>}</li>
  * </ul>
- * </p>
  *
  * @see strategies.StrategiesPackage#getRuntimeStrategiesModel()
  * @model
  * @generated
  */
-public interface RuntimeStrategiesModel extends EObject, Entity {
+public interface RuntimeStrategiesModel extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Strategies</b></em>' containment reference list.
 	 * The list contents are of type {@link strategies.Strategy}.

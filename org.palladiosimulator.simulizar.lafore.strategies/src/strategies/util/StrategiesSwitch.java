@@ -3,25 +3,6 @@
 package strategies.util;
 
 import de.uka.ipd.sdq.identifier.Identifier;
-
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingEntity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceProvidingRequiringEntity;
-import de.uka.ipd.sdq.pcm.core.entity.InterfaceRequiringEntity;
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
-import de.uka.ipd.sdq.pcm.core.entity.ResourceInterfaceRequiringEntity;
-
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-import de.uka.ipd.sdq.pcm.repository.ImplementationComponentType;
-import de.uka.ipd.sdq.pcm.repository.RepositoryComponent;
-
-import de.uka.ipd.sdq.pcm.seff.AbstractAction;
-import de.uka.ipd.sdq.pcm.seff.AbstractInternalControlFlowAction;
-import de.uka.ipd.sdq.pcm.seff.InternalAction;
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
-import de.uka.ipd.sdq.pcm.seff.ServiceEffectSpecification;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -67,7 +48,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * Checks whether this is a switch for the given package.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @parameter ePackage the package in question.
+	 * @param ePackage the package in question.
 	 * @return whether this is a switch for the given package.
 	 * @generated
 	 */
@@ -239,51 +220,6 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	}
 
 	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Service Effect Specification</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Service Effect Specification</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseServiceEffectSpecification(ServiceEffectSpecification object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Resource Demanding Behaviour</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Resource Demanding Behaviour</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseResourceDemandingBehaviour(ResourceDemandingBehaviour object) {
-		return null;
-	}
-
-	/**
-	 * Returns the result of interpreting the object as an instance of '<em>Resource Demanding SEFF</em>'.
-	 * <!-- begin-user-doc -->
-	 * This implementation returns null;
-	 * returning a non-null result will terminate the switch.
-	 * <!-- end-user-doc -->
-	 * @param object the target of the switch.
-	 * @return the result of interpreting the object as an instance of '<em>Resource Demanding SEFF</em>'.
-	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
-	 * @generated
-	 */
-	public T caseResourceDemandingSEFF(ResourceDemandingSEFF object) {
-		return null;
-	}
-
-	/**
 	 * Returns the result of interpreting the object as an instance of '<em>Named Element</em>'.
 	 * <!-- begin-user-doc -->
 	 * This implementation returns null;
@@ -294,7 +230,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNamedElement(NamedElement object) {
+	public T caseNamedElement(org.palladiosimulator.pcm.core.entity.NamedElement object) {
 		return null;
 	}
 
@@ -309,7 +245,52 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEntity(Entity object) {
+	public T caseEntity(org.palladiosimulator.pcm.core.entity.Entity object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Service Effect Specification</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Service Effect Specification</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseServiceEffectSpecification(org.palladiosimulator.pcm.seff.ServiceEffectSpecification object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Resource Demanding Behaviour</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Resource Demanding Behaviour</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseResourceDemandingBehaviour(org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour object) {
+		return null;
+	}
+
+	/**
+	 * Returns the result of interpreting the object as an instance of '<em>Resource Demanding SEFF</em>'.
+	 * <!-- begin-user-doc -->
+	 * This implementation returns null;
+	 * returning a non-null result will terminate the switch.
+	 * <!-- end-user-doc -->
+	 * @param object the target of the switch.
+	 * @return the result of interpreting the object as an instance of '<em>Resource Demanding SEFF</em>'.
+	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
+	 * @generated
+	 */
+	public T caseResourceDemandingSEFF(org.palladiosimulator.pcm.seff.ResourceDemandingSEFF object) {
 		return null;
 	}
 
@@ -324,7 +305,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAbstractAction(AbstractAction object) {
+	public T caseAbstractAction(org.palladiosimulator.pcm.seff.AbstractAction object) {
 		return null;
 	}
 
@@ -339,7 +320,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseAbstractInternalControlFlowAction(AbstractInternalControlFlowAction object) {
+	public T caseAbstractInternalControlFlowAction(org.palladiosimulator.pcm.seff.AbstractInternalControlFlowAction object) {
 		return null;
 	}
 
@@ -354,7 +335,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInternalAction(InternalAction object) {
+	public T caseInternalAction(org.palladiosimulator.pcm.seff.InternalAction object) {
 		return null;
 	}
 
@@ -369,7 +350,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInterfaceProvidingEntity(InterfaceProvidingEntity object) {
+	public T caseInterfaceProvidingEntity(org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity object) {
 		return null;
 	}
 
@@ -384,7 +365,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseResourceInterfaceRequiringEntity(ResourceInterfaceRequiringEntity object) {
+	public T caseResourceInterfaceRequiringEntity(org.palladiosimulator.pcm.core.entity.ResourceInterfaceRequiringEntity object) {
 		return null;
 	}
 
@@ -399,7 +380,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInterfaceRequiringEntity(InterfaceRequiringEntity object) {
+	public T caseInterfaceRequiringEntity(org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity object) {
 		return null;
 	}
 
@@ -414,7 +395,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseInterfaceProvidingRequiringEntity(InterfaceProvidingRequiringEntity object) {
+	public T caseInterfaceProvidingRequiringEntity(org.palladiosimulator.pcm.core.entity.InterfaceProvidingRequiringEntity object) {
 		return null;
 	}
 
@@ -429,7 +410,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseRepositoryComponent(RepositoryComponent object) {
+	public T caseRepositoryComponent(org.palladiosimulator.pcm.repository.RepositoryComponent object) {
 		return null;
 	}
 
@@ -444,7 +425,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseImplementationComponentType(ImplementationComponentType object) {
+	public T caseImplementationComponentType(org.palladiosimulator.pcm.repository.ImplementationComponentType object) {
 		return null;
 	}
 
@@ -459,7 +440,7 @@ public class StrategiesSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseBasicComponent(BasicComponent object) {
+	public T caseBasicComponent(org.palladiosimulator.pcm.repository.BasicComponent object) {
 		return null;
 	}
 

@@ -2,10 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingSEFF;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -17,16 +13,16 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link strategies.StrategyType#getBehavior <em>Behavior</em>}</li>
  * </ul>
- * </p>
  *
  * @see strategies.StrategiesPackage#getStrategyType()
  * @model
  * @generated
  */
-public interface StrategyType extends EObject, ResourceDemandingSEFF, Entity {
+public interface StrategyType extends EObject, org.palladiosimulator.pcm.seff.ResourceDemandingSEFF, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Behavior</b></em>' reference list.
 	 * The list contents are of type {@link strategies.ReconfigurationAction}.

@@ -2,8 +2,6 @@
  */
 package violations.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -28,7 +26,7 @@ import violations.ViolationsPackage;
  *
  * @generated
  */
-public abstract class ViolationImpl extends EntityImpl implements Violation {
+public abstract class ViolationImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements Violation {
 	/**
 	 * The cached value of the '{@link #getViolationType() <em>Violation Type</em>}' reference.
 	 * <!-- begin-user-doc -->

@@ -2,8 +2,6 @@
  */
 package violations;
 
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -75,7 +73,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_TYPE__ID = EntityPackage.ENTITY__ID;
+	int VIOLATION_TYPE__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -84,7 +82,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_TYPE__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int VIOLATION_TYPE__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Description</b></em>' attribute.
@@ -93,7 +91,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_TYPE__DESCRIPTION = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int VIOLATION_TYPE__DESCRIPTION = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Slo</b></em>' reference.
@@ -102,7 +100,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_TYPE__SLO = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int VIOLATION_TYPE__SLO = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Violation Type</em>' class.
@@ -111,7 +109,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_TYPE_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 2;
+	int VIOLATION_TYPE_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link violations.impl.ViolationImpl <em>Violation</em>}' class.
@@ -130,7 +128,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION__ID = EntityPackage.ENTITY__ID;
+	int VIOLATION__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -139,7 +137,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int VIOLATION__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Violation Type</b></em>' reference.
@@ -148,7 +146,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION__VIOLATION_TYPE = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int VIOLATION__VIOLATION_TYPE = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Violation</em>' class.
@@ -157,7 +155,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int VIOLATION_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link violations.impl.ViolationsRepositoryImpl <em>Repository</em>}' class.
@@ -176,7 +174,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATIONS_REPOSITORY__ID = EntityPackage.ENTITY__ID;
+	int VIOLATIONS_REPOSITORY__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -185,7 +183,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATIONS_REPOSITORY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int VIOLATIONS_REPOSITORY__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Violation Types</b></em>' containment reference list.
@@ -194,7 +192,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATIONS_REPOSITORY__VIOLATION_TYPES = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int VIOLATIONS_REPOSITORY__VIOLATION_TYPES = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
@@ -203,7 +201,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATIONS_REPOSITORY_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int VIOLATIONS_REPOSITORY_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link violations.impl.RuntimeViolationsModelImpl <em>Runtime Violations Model</em>}' class.
@@ -222,7 +220,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_VIOLATIONS_MODEL__ID = EntityPackage.ENTITY__ID;
+	int RUNTIME_VIOLATIONS_MODEL__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -231,7 +229,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_VIOLATIONS_MODEL__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int RUNTIME_VIOLATIONS_MODEL__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Violations</b></em>' containment reference list.
@@ -240,7 +238,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_VIOLATIONS_MODEL__VIOLATIONS = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int RUNTIME_VIOLATIONS_MODEL__VIOLATIONS = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Runtime Violations Model</em>' class.
@@ -249,7 +247,7 @@ public interface ViolationsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_VIOLATIONS_MODEL_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int RUNTIME_VIOLATIONS_MODEL_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link violations.impl.QuantifiableViolationImpl <em>Quantifiable Violation</em>}' class.

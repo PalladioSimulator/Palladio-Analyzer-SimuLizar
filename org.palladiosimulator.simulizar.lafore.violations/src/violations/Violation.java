@@ -2,8 +2,6 @@
  */
 package violations;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -22,7 +20,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model abstract="true"
  * @generated
  */
-public interface Violation extends EObject, Entity {
+public interface Violation extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Violation Type</b></em>' reference.
 	 * <!-- begin-user-doc -->

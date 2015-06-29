@@ -3,12 +3,6 @@
 package strategies.provider;
 
 
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-
-import de.uka.ipd.sdq.pcm.seff.SeffPackage;
-
-import de.uka.ipd.sdq.pcm.seff.provider.ResourceDemandingSEFFItemProvider;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -32,7 +26,7 @@ import strategies.StrategyType;
  * <!-- end-user-doc -->
  * @generated
  */
-public class StrategyTypeItemProvider extends ResourceDemandingSEFFItemProvider {
+public class StrategyTypeItemProvider extends org.palladiosimulator.pcm.seff.provider.ResourceDemandingSEFFItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
@@ -73,7 +67,7 @@ public class StrategyTypeItemProvider extends ResourceDemandingSEFFItemProvider 
 				 getResourceLocator(),
 				 getString("_UI_NamedElement_entityName_feature"),
 				 getString("_UI_PropertyDescriptor_description", "_UI_NamedElement_entityName_feature", "_UI_NamedElement_type"),
-				 EntityPackage.Literals.NAMED_ELEMENT__ENTITY_NAME,
+				 org.palladiosimulator.pcm.core.entity.EntityPackage.Literals.NAMED_ELEMENT__ENTITY_NAME,
 				 true,
 				 false,
 				 false,
@@ -162,7 +156,7 @@ public class StrategyTypeItemProvider extends ResourceDemandingSEFFItemProvider 
 
 		newChildDescriptors.add
 			(createChildParameter
-				(SeffPackage.Literals.RESOURCE_DEMANDING_BEHAVIOUR__STEPS_BEHAVIOUR,
+				(org.palladiosimulator.pcm.seff.SeffPackage.Literals.RESOURCE_DEMANDING_BEHAVIOUR__STEPS_BEHAVIOUR,
 				 StrategiesFactory.eINSTANCE.createReconfigurationAction()));
 	}
 

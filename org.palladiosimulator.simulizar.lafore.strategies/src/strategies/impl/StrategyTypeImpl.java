@@ -2,12 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
-
-import de.uka.ipd.sdq.pcm.seff.impl.ResourceDemandingSEFFImpl;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -30,15 +24,15 @@ import strategies.StrategyType;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link strategies.impl.StrategyTypeImpl#getEntityName <em>Entity Name</em>}</li>
  *   <li>{@link strategies.impl.StrategyTypeImpl#getBehavior <em>Behavior</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class StrategyTypeImpl extends ResourceDemandingSEFFImpl implements StrategyType {
+public class StrategyTypeImpl extends org.palladiosimulator.pcm.seff.impl.ResourceDemandingSEFFImpl implements StrategyType {
 	/**
 	 * The default value of the '{@link #getEntityName() <em>Entity Name</em>}' attribute.
 	 * <!-- begin-user-doc -->
@@ -198,13 +192,13 @@ public class StrategyTypeImpl extends ResourceDemandingSEFFImpl implements Strat
 	 */
 	@Override
 	public int eBaseStructuralFeatureID(int derivedFeatureID, Class<?> baseClass) {
-		if (baseClass == NamedElement.class) {
+		if (baseClass == org.palladiosimulator.pcm.core.entity.NamedElement.class) {
 			switch (derivedFeatureID) {
-				case StrategiesPackage.STRATEGY_TYPE__ENTITY_NAME: return EntityPackage.NAMED_ELEMENT__ENTITY_NAME;
+				case StrategiesPackage.STRATEGY_TYPE__ENTITY_NAME: return org.palladiosimulator.pcm.core.entity.EntityPackage.NAMED_ELEMENT__ENTITY_NAME;
 				default: return -1;
 			}
 		}
-		if (baseClass == Entity.class) {
+		if (baseClass == org.palladiosimulator.pcm.core.entity.Entity.class) {
 			switch (derivedFeatureID) {
 				default: return -1;
 			}
@@ -219,13 +213,13 @@ public class StrategyTypeImpl extends ResourceDemandingSEFFImpl implements Strat
 	 */
 	@Override
 	public int eDerivedStructuralFeatureID(int baseFeatureID, Class<?> baseClass) {
-		if (baseClass == NamedElement.class) {
+		if (baseClass == org.palladiosimulator.pcm.core.entity.NamedElement.class) {
 			switch (baseFeatureID) {
-				case EntityPackage.NAMED_ELEMENT__ENTITY_NAME: return StrategiesPackage.STRATEGY_TYPE__ENTITY_NAME;
+				case org.palladiosimulator.pcm.core.entity.EntityPackage.NAMED_ELEMENT__ENTITY_NAME: return StrategiesPackage.STRATEGY_TYPE__ENTITY_NAME;
 				default: return -1;
 			}
 		}
-		if (baseClass == Entity.class) {
+		if (baseClass == org.palladiosimulator.pcm.core.entity.Entity.class) {
 			switch (baseFeatureID) {
 				default: return -1;
 			}

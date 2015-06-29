@@ -2,11 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
-
-import de.uka.ipd.sdq.pcm.seff.SeffPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -77,7 +72,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL__ID = EntityPackage.ENTITY__ID;
+	int RUNTIME_STRATEGIES_MODEL__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -86,7 +81,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int RUNTIME_STRATEGIES_MODEL__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Strategies</b></em>' containment reference list.
@@ -95,7 +90,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL__STRATEGIES = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int RUNTIME_STRATEGIES_MODEL__STRATEGIES = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Runtime Strategies Model</em>' class.
@@ -104,7 +99,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RUNTIME_STRATEGIES_MODEL_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int RUNTIME_STRATEGIES_MODEL_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.StrategyImpl <em>Strategy</em>}' class.
@@ -123,7 +118,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY__ID = EntityPackage.ENTITY__ID;
+	int STRATEGY__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -132,7 +127,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
+	int STRATEGY__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Strategy Type</b></em>' reference.
@@ -141,7 +136,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY__STRATEGY_TYPE = EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int STRATEGY__STRATEGY_TYPE = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Strategy</em>' class.
@@ -150,7 +145,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int STRATEGY_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.StrategyTypeImpl <em>Strategy Type</em>}' class.
@@ -169,7 +164,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__ID = SeffPackage.RESOURCE_DEMANDING_SEFF__ID;
+	int STRATEGY_TYPE__ID = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__ID;
 
 	/**
 	 * The feature id for the '<em><b>Seff Type ID</b></em>' attribute.
@@ -178,7 +173,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__SEFF_TYPE_ID = SeffPackage.RESOURCE_DEMANDING_SEFF__SEFF_TYPE_ID;
+	int STRATEGY_TYPE__SEFF_TYPE_ID = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__SEFF_TYPE_ID;
 
 	/**
 	 * The feature id for the '<em><b>Described Service SEFF</b></em>' reference.
@@ -187,7 +182,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__DESCRIBED_SERVICE_SEFF = SeffPackage.RESOURCE_DEMANDING_SEFF__DESCRIBED_SERVICE_SEFF;
+	int STRATEGY_TYPE__DESCRIBED_SERVICE_SEFF = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__DESCRIBED_SERVICE_SEFF;
 
 	/**
 	 * The feature id for the '<em><b>Basic Component Service Effect Specification</b></em>' container reference.
@@ -196,7 +191,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__BASIC_COMPONENT_SERVICE_EFFECT_SPECIFICATION = SeffPackage.RESOURCE_DEMANDING_SEFF__BASIC_COMPONENT_SERVICE_EFFECT_SPECIFICATION;
+	int STRATEGY_TYPE__BASIC_COMPONENT_SERVICE_EFFECT_SPECIFICATION = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__BASIC_COMPONENT_SERVICE_EFFECT_SPECIFICATION;
 
 	/**
 	 * The feature id for the '<em><b>Abstract Loop Action Resource Demanding Behaviour</b></em>' container reference.
@@ -205,7 +200,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__ABSTRACT_LOOP_ACTION_RESOURCE_DEMANDING_BEHAVIOUR = SeffPackage.RESOURCE_DEMANDING_SEFF__ABSTRACT_LOOP_ACTION_RESOURCE_DEMANDING_BEHAVIOUR;
+	int STRATEGY_TYPE__ABSTRACT_LOOP_ACTION_RESOURCE_DEMANDING_BEHAVIOUR = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__ABSTRACT_LOOP_ACTION_RESOURCE_DEMANDING_BEHAVIOUR;
 
 	/**
 	 * The feature id for the '<em><b>Abstract Branch Transition Resource Demanding Behaviour</b></em>' container reference.
@@ -214,7 +209,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__ABSTRACT_BRANCH_TRANSITION_RESOURCE_DEMANDING_BEHAVIOUR = SeffPackage.RESOURCE_DEMANDING_SEFF__ABSTRACT_BRANCH_TRANSITION_RESOURCE_DEMANDING_BEHAVIOUR;
+	int STRATEGY_TYPE__ABSTRACT_BRANCH_TRANSITION_RESOURCE_DEMANDING_BEHAVIOUR = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__ABSTRACT_BRANCH_TRANSITION_RESOURCE_DEMANDING_BEHAVIOUR;
 
 	/**
 	 * The feature id for the '<em><b>Steps Behaviour</b></em>' containment reference list.
@@ -223,7 +218,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__STEPS_BEHAVIOUR = SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR;
+	int STRATEGY_TYPE__STEPS_BEHAVIOUR = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__STEPS_BEHAVIOUR;
 
 	/**
 	 * The feature id for the '<em><b>Resource Demanding Internal Behaviours</b></em>' containment reference list.
@@ -232,7 +227,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS = SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS;
+	int STRATEGY_TYPE__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF__RESOURCE_DEMANDING_INTERNAL_BEHAVIOURS;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -241,7 +236,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__ENTITY_NAME = SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 0;
+	int STRATEGY_TYPE__ENTITY_NAME = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 0;
 
 	/**
 	 * The feature id for the '<em><b>Behavior</b></em>' reference list.
@@ -250,7 +245,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE__BEHAVIOR = SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 1;
+	int STRATEGY_TYPE__BEHAVIOR = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 1;
 
 	/**
 	 * The number of structural features of the '<em>Strategy Type</em>' class.
@@ -259,7 +254,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGY_TYPE_FEATURE_COUNT = SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 2;
+	int STRATEGY_TYPE_FEATURE_COUNT = org.palladiosimulator.pcm.seff.SeffPackage.RESOURCE_DEMANDING_SEFF_FEATURE_COUNT + 2;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.ReconfigurationActionImpl <em>Reconfiguration Action</em>}' class.
@@ -278,7 +273,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__ID = SeffPackage.INTERNAL_ACTION__ID;
+	int RECONFIGURATION_ACTION__ID = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -287,7 +282,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__ENTITY_NAME = SeffPackage.INTERNAL_ACTION__ENTITY_NAME;
+	int RECONFIGURATION_ACTION__ENTITY_NAME = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Predecessor Abstract Action</b></em>' reference.
@@ -296,7 +291,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__PREDECESSOR_ABSTRACT_ACTION = SeffPackage.INTERNAL_ACTION__PREDECESSOR_ABSTRACT_ACTION;
+	int RECONFIGURATION_ACTION__PREDECESSOR_ABSTRACT_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__PREDECESSOR_ABSTRACT_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Successor Abstract Action</b></em>' reference.
@@ -305,7 +300,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__SUCCESSOR_ABSTRACT_ACTION = SeffPackage.INTERNAL_ACTION__SUCCESSOR_ABSTRACT_ACTION;
+	int RECONFIGURATION_ACTION__SUCCESSOR_ABSTRACT_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__SUCCESSOR_ABSTRACT_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Resource Demanding Behaviour Abstract Action</b></em>' container reference.
@@ -314,7 +309,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__RESOURCE_DEMANDING_BEHAVIOUR_ABSTRACT_ACTION = SeffPackage.INTERNAL_ACTION__RESOURCE_DEMANDING_BEHAVIOUR_ABSTRACT_ACTION;
+	int RECONFIGURATION_ACTION__RESOURCE_DEMANDING_BEHAVIOUR_ABSTRACT_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__RESOURCE_DEMANDING_BEHAVIOUR_ABSTRACT_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Resource Demand Action</b></em>' containment reference list.
@@ -323,7 +318,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__RESOURCE_DEMAND_ACTION = SeffPackage.INTERNAL_ACTION__RESOURCE_DEMAND_ACTION;
+	int RECONFIGURATION_ACTION__RESOURCE_DEMAND_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__RESOURCE_DEMAND_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Infrastructure Call Action</b></em>' containment reference list.
@@ -332,7 +327,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__INFRASTRUCTURE_CALL_ACTION = SeffPackage.INTERNAL_ACTION__INFRASTRUCTURE_CALL_ACTION;
+	int RECONFIGURATION_ACTION__INFRASTRUCTURE_CALL_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__INFRASTRUCTURE_CALL_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Resource Call Action</b></em>' containment reference list.
@@ -341,7 +336,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__RESOURCE_CALL_ACTION = SeffPackage.INTERNAL_ACTION__RESOURCE_CALL_ACTION;
+	int RECONFIGURATION_ACTION__RESOURCE_CALL_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__RESOURCE_CALL_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Internal Failure Occurrence Descriptions Internal Action</b></em>' containment reference list.
@@ -350,7 +345,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__INTERNAL_FAILURE_OCCURRENCE_DESCRIPTIONS_INTERNAL_ACTION = SeffPackage.INTERNAL_ACTION__INTERNAL_FAILURE_OCCURRENCE_DESCRIPTIONS_INTERNAL_ACTION;
+	int RECONFIGURATION_ACTION__INTERNAL_FAILURE_OCCURRENCE_DESCRIPTIONS_INTERNAL_ACTION = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION__INTERNAL_FAILURE_OCCURRENCE_DESCRIPTIONS_INTERNAL_ACTION;
 
 	/**
 	 * The feature id for the '<em><b>Code Ref</b></em>' attribute.
@@ -359,7 +354,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION__CODE_REF = SeffPackage.INTERNAL_ACTION_FEATURE_COUNT + 0;
+	int RECONFIGURATION_ACTION__CODE_REF = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Reconfiguration Action</em>' class.
@@ -368,7 +363,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int RECONFIGURATION_ACTION_FEATURE_COUNT = SeffPackage.INTERNAL_ACTION_FEATURE_COUNT + 1;
+	int RECONFIGURATION_ACTION_FEATURE_COUNT = org.palladiosimulator.pcm.seff.SeffPackage.INTERNAL_ACTION_FEATURE_COUNT + 1;
 
 	/**
 	 * The meta object id for the '{@link strategies.impl.StrategiesRepositoryImpl <em>Repository</em>}' class.
@@ -387,7 +382,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__ID = RepositoryPackage.BASIC_COMPONENT__ID;
+	int STRATEGIES_REPOSITORY__ID = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -396,7 +391,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__ENTITY_NAME = RepositoryPackage.BASIC_COMPONENT__ENTITY_NAME;
+	int STRATEGIES_REPOSITORY__ENTITY_NAME = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Provided Roles Interface Providing Entity</b></em>' containment reference list.
@@ -405,7 +400,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY = RepositoryPackage.BASIC_COMPONENT__PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY;
+	int STRATEGIES_REPOSITORY__PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__PROVIDED_ROLES_INTERFACE_PROVIDING_ENTITY;
 
 	/**
 	 * The feature id for the '<em><b>Resource Required Roles Resource Interface Requiring Entity</b></em>' containment reference list.
@@ -414,7 +409,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__RESOURCE_REQUIRED_ROLES_RESOURCE_INTERFACE_REQUIRING_ENTITY = RepositoryPackage.BASIC_COMPONENT__RESOURCE_REQUIRED_ROLES_RESOURCE_INTERFACE_REQUIRING_ENTITY;
+	int STRATEGIES_REPOSITORY__RESOURCE_REQUIRED_ROLES_RESOURCE_INTERFACE_REQUIRING_ENTITY = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__RESOURCE_REQUIRED_ROLES_RESOURCE_INTERFACE_REQUIRING_ENTITY;
 
 	/**
 	 * The feature id for the '<em><b>Required Roles Interface Requiring Entity</b></em>' containment reference list.
@@ -423,7 +418,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY = RepositoryPackage.BASIC_COMPONENT__REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY;
+	int STRATEGIES_REPOSITORY__REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__REQUIRED_ROLES_INTERFACE_REQUIRING_ENTITY;
 
 	/**
 	 * The feature id for the '<em><b>Repository Repository Component</b></em>' container reference.
@@ -432,7 +427,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__REPOSITORY_REPOSITORY_COMPONENT = RepositoryPackage.BASIC_COMPONENT__REPOSITORY_REPOSITORY_COMPONENT;
+	int STRATEGIES_REPOSITORY__REPOSITORY_REPOSITORY_COMPONENT = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__REPOSITORY_REPOSITORY_COMPONENT;
 
 	/**
 	 * The feature id for the '<em><b>Parent Complete Component Types</b></em>' reference list.
@@ -441,7 +436,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__PARENT_COMPLETE_COMPONENT_TYPES = RepositoryPackage.BASIC_COMPONENT__PARENT_COMPLETE_COMPONENT_TYPES;
+	int STRATEGIES_REPOSITORY__PARENT_COMPLETE_COMPONENT_TYPES = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__PARENT_COMPLETE_COMPONENT_TYPES;
 
 	/**
 	 * The feature id for the '<em><b>Component Parameter Usage Implementation Component Type</b></em>' containment reference list.
@@ -450,7 +445,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__COMPONENT_PARAMETER_USAGE_IMPLEMENTATION_COMPONENT_TYPE = RepositoryPackage.BASIC_COMPONENT__COMPONENT_PARAMETER_USAGE_IMPLEMENTATION_COMPONENT_TYPE;
+	int STRATEGIES_REPOSITORY__COMPONENT_PARAMETER_USAGE_IMPLEMENTATION_COMPONENT_TYPE = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__COMPONENT_PARAMETER_USAGE_IMPLEMENTATION_COMPONENT_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Component Type</b></em>' attribute.
@@ -459,7 +454,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__COMPONENT_TYPE = RepositoryPackage.BASIC_COMPONENT__COMPONENT_TYPE;
+	int STRATEGIES_REPOSITORY__COMPONENT_TYPE = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__COMPONENT_TYPE;
 
 	/**
 	 * The feature id for the '<em><b>Service Effect Specifications Basic Component</b></em>' containment reference list.
@@ -468,7 +463,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__SERVICE_EFFECT_SPECIFICATIONS_BASIC_COMPONENT = RepositoryPackage.BASIC_COMPONENT__SERVICE_EFFECT_SPECIFICATIONS_BASIC_COMPONENT;
+	int STRATEGIES_REPOSITORY__SERVICE_EFFECT_SPECIFICATIONS_BASIC_COMPONENT = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__SERVICE_EFFECT_SPECIFICATIONS_BASIC_COMPONENT;
 
 	/**
 	 * The feature id for the '<em><b>Passive Resource Basic Component</b></em>' containment reference list.
@@ -477,7 +472,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY__PASSIVE_RESOURCE_BASIC_COMPONENT = RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT;
+	int STRATEGIES_REPOSITORY__PASSIVE_RESOURCE_BASIC_COMPONENT = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT__PASSIVE_RESOURCE_BASIC_COMPONENT;
 
 	/**
 	 * The number of structural features of the '<em>Repository</em>' class.
@@ -486,7 +481,7 @@ public interface StrategiesPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int STRATEGIES_REPOSITORY_FEATURE_COUNT = RepositoryPackage.BASIC_COMPONENT_FEATURE_COUNT + 0;
+	int STRATEGIES_REPOSITORY_FEATURE_COUNT = org.palladiosimulator.pcm.repository.RepositoryPackage.BASIC_COMPONENT_FEATURE_COUNT + 0;
 
 
 	/**
