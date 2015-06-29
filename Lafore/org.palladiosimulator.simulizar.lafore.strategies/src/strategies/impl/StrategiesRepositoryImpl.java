@@ -2,8 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.repository.impl.BasicComponentImpl;
-
 import org.eclipse.emf.ecore.EClass;
 
 import strategies.StrategiesPackage;
@@ -13,12 +11,10 @@ import strategies.StrategiesRepository;
  * <!-- begin-user-doc -->
  * An implementation of the model object '<em><b>Repository</b></em>'.
  * <!-- end-user-doc -->
- * <p>
- * </p>
  *
  * @generated
  */
-public class StrategiesRepositoryImpl extends BasicComponentImpl implements StrategiesRepository {
+public class StrategiesRepositoryImpl extends org.palladiosimulator.pcm.repository.impl.BasicComponentImpl implements StrategiesRepository {
 	/**
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->

@@ -2,7 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -12,16 +11,16 @@ import org.eclipse.emf.ecore.EObject;
  *
  * <p>
  * The following features are supported:
+ * </p>
  * <ul>
  *   <li>{@link strategies.Strategy#getStrategyType <em>Strategy Type</em>}</li>
  * </ul>
- * </p>
  *
  * @see strategies.StrategiesPackage#getStrategy()
  * @model
  * @generated
  */
-public interface Strategy extends EObject, Entity {
+public interface Strategy extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Strategy Type</b></em>' reference.
 	 * <!-- begin-user-doc -->

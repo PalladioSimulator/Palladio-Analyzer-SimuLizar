@@ -3,8 +3,6 @@
 package violationstrategymappings.provider;
 
 
-import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -29,7 +27,7 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * @generated
  */
 public class ViolationStrategyMappingItemProvider 
-	extends EntityItemProvider
+	extends org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider
 	implements
 		IItemColorProvider {
 	/**

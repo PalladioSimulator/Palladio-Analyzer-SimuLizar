@@ -157,45 +157,6 @@ import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 import violations.provider.ViolationsItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.allocation.provider.AllocationItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.core.composition.provider.CompositionItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.core.provider.CoreItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.parameter.provider.ParameterItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.protocol.provider.ProtocolItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.provider.PcmItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.qosannotations.provider.QosannotationsItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.qosannotations.qos_performance.provider.QosPerformanceItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.qosannotations.qos_reliability.provider.QosReliabilityItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.reliability.provider.ReliabilityItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.resourceenvironment.provider.ResourceenvironmentItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.resourcetype.provider.ResourcetypeItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.seff.provider.SeffItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.seff.seff_performance.provider.SeffPerformanceItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.seff.seff_reliability.provider.SeffReliabilityItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.subsystem.provider.SubsystemItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.system.provider.SystemItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.pcm.usagemodel.provider.UsagemodelItemProviderAdapterFactory;
-
 import de.uka.ipd.sdq.probfunction.provider.ProbfunctionItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.stoex.provider.StoexItemProviderAdapterFactory;
@@ -765,26 +726,6 @@ public class ViolationsEditor
 		adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MetricSpecItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new MonitorRepositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new PcmItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new EntityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new CompositionItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new UsagemodelItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new de.uka.ipd.sdq.pcm.repository.provider.RepositoryItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SeffReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosannotationsItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosPerformanceItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new QosReliabilityItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SystemItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new ResourceenvironmentItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new AllocationItemProviderAdapterFactory());
-		adapterFactory.addAdapterFactory(new SubsystemItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.provider.PcmItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.core.provider.CoreItemProviderAdapterFactory());
 		adapterFactory.addAdapterFactory(new org.palladiosimulator.pcm.core.entity.provider.EntityItemProviderAdapterFactory());

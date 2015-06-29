@@ -2,14 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.PcmPackage;
-
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-
-import de.uka.ipd.sdq.pcm.repository.RepositoryPackage;
-
-import de.uka.ipd.sdq.pcm.seff.SeffPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -114,7 +106,7 @@ public class StrategiesPackageImpl extends EPackageImpl implements StrategiesPac
 		isInited = true;
 
 		// Initialize simple dependencies
-		PcmPackage.eINSTANCE.eClass();
+		org.palladiosimulator.pcm.PcmPackage.eINSTANCE.eClass();
 
 		// Create package meta-data objects
 		theStrategiesPackage.createPackageContents();
@@ -279,9 +271,9 @@ public class StrategiesPackageImpl extends EPackageImpl implements StrategiesPac
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EntityPackage theEntityPackage = (EntityPackage)EPackage.Registry.INSTANCE.getEPackage(EntityPackage.eNS_URI);
-		SeffPackage theSeffPackage = (SeffPackage)EPackage.Registry.INSTANCE.getEPackage(SeffPackage.eNS_URI);
-		RepositoryPackage theRepositoryPackage = (RepositoryPackage)EPackage.Registry.INSTANCE.getEPackage(RepositoryPackage.eNS_URI);
+		org.palladiosimulator.pcm.core.entity.EntityPackage theEntityPackage = (org.palladiosimulator.pcm.core.entity.EntityPackage)EPackage.Registry.INSTANCE.getEPackage(org.palladiosimulator.pcm.core.entity.EntityPackage.eNS_URI);
+		org.palladiosimulator.pcm.seff.SeffPackage theSeffPackage = (org.palladiosimulator.pcm.seff.SeffPackage)EPackage.Registry.INSTANCE.getEPackage(org.palladiosimulator.pcm.seff.SeffPackage.eNS_URI);
+		org.palladiosimulator.pcm.repository.RepositoryPackage theRepositoryPackage = (org.palladiosimulator.pcm.repository.RepositoryPackage)EPackage.Registry.INSTANCE.getEPackage(org.palladiosimulator.pcm.repository.RepositoryPackage.eNS_URI);
 
 		// Create type parameters
 

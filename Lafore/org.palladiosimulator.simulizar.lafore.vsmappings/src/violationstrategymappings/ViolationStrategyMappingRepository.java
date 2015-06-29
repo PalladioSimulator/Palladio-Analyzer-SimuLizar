@@ -2,8 +2,6 @@
  */
 package violationstrategymappings;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -24,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface ViolationStrategyMappingRepository extends EObject, Entity {
+public interface ViolationStrategyMappingRepository extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Vsmappings</b></em>' containment reference list.
 	 * The list contents are of type {@link violationstrategymappings.ViolationStrategyMapping}.

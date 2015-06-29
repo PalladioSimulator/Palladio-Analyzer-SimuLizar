@@ -2,10 +2,6 @@
  */
 package strategies;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
-import de.uka.ipd.sdq.pcm.repository.BasicComponent;
-
 import org.eclipse.emf.ecore.EObject;
 
 /**
@@ -18,5 +14,5 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface StrategiesRepository extends EObject, BasicComponent, Entity {
+public interface StrategiesRepository extends EObject, org.palladiosimulator.pcm.repository.BasicComponent, org.palladiosimulator.pcm.core.entity.Entity {
 } // StrategiesRepository

@@ -2,7 +2,6 @@
  */
 package violations;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 
@@ -23,7 +22,7 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
  * @model
  * @generated
  */
-public interface ViolationType extends EObject, Entity {
+public interface ViolationType extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Description</b></em>' attribute.
 	 * <!-- begin-user-doc -->

@@ -3,10 +3,6 @@
 package violationstrategymappings.util;
 
 import de.uka.ipd.sdq.identifier.Identifier;
-
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-import de.uka.ipd.sdq.pcm.core.entity.NamedElement;
-
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 
@@ -149,7 +145,7 @@ public class ViolationstrategymappingsSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNamedElement(NamedElement object) {
+	public T caseNamedElement(org.palladiosimulator.pcm.core.entity.NamedElement object) {
 		return null;
 	}
 
@@ -164,7 +160,7 @@ public class ViolationstrategymappingsSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEntity(Entity object) {
+	public T caseEntity(org.palladiosimulator.pcm.core.entity.Entity object) {
 		return null;
 	}
 

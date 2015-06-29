@@ -2,8 +2,6 @@
  */
 package violations;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
 import org.eclipse.emf.common.util.EList;
 
 import org.eclipse.emf.ecore.EObject;
@@ -24,7 +22,7 @@ import org.eclipse.emf.ecore.EObject;
  * @model
  * @generated
  */
-public interface ViolationsRepository extends EObject, Entity {
+public interface ViolationsRepository extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Violation Types</b></em>' containment reference list.
 	 * The list contents are of type {@link violations.ViolationType}.

@@ -2,8 +2,6 @@
  */
 package violationstrategymappings;
 
-import de.uka.ipd.sdq.pcm.core.entity.Entity;
-
 import org.eclipse.emf.ecore.EObject;
 
 import strategies.StrategyType;
@@ -28,7 +26,7 @@ import violations.ViolationType;
  * @model
  * @generated
  */
-public interface ViolationStrategyMapping extends EObject, Entity {
+public interface ViolationStrategyMapping extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
 	/**
 	 * Returns the value of the '<em><b>Violation</b></em>' reference.
 	 * <!-- begin-user-doc -->

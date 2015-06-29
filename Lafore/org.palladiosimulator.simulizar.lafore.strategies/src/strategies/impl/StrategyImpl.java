@@ -2,7 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
@@ -17,14 +16,14 @@ import strategies.StrategyType;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link strategies.impl.StrategyImpl#getStrategyType <em>Strategy Type</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class StrategyImpl extends EntityImpl implements Strategy {
+public class StrategyImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements Strategy {
 	/**
 	 * The cached value of the '{@link #getStrategyType() <em>Strategy Type</em>}' reference.
 	 * <!-- begin-user-doc -->

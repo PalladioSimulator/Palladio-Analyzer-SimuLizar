@@ -3,8 +3,6 @@
 package violations.provider;
 
 
-import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -27,7 +25,7 @@ import violations.ViolationsPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ViolationTypeItemProvider extends EntityItemProvider {
+public class ViolationTypeItemProvider extends org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

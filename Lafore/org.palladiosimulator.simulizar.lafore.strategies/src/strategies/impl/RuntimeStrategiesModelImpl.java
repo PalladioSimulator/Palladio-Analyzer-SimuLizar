@@ -2,7 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
 import java.util.Collection;
 import org.eclipse.emf.common.notify.NotificationChain;
 import org.eclipse.emf.common.util.EList;
@@ -20,14 +19,14 @@ import strategies.Strategy;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link strategies.impl.RuntimeStrategiesModelImpl#getStrategies <em>Strategies</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class RuntimeStrategiesModelImpl extends EntityImpl implements RuntimeStrategiesModel {
+public class RuntimeStrategiesModelImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements RuntimeStrategiesModel {
 	/**
 	 * The cached value of the '{@link #getStrategies() <em>Strategies</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

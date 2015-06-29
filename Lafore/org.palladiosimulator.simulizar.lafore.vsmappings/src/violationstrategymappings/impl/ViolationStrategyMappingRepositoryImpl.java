@@ -2,8 +2,6 @@
  */
 package violationstrategymappings.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -33,7 +31,7 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  *
  * @generated
  */
-public class ViolationStrategyMappingRepositoryImpl extends EntityImpl implements ViolationStrategyMappingRepository {
+public class ViolationStrategyMappingRepositoryImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements ViolationStrategyMappingRepository {
 	/**
 	 * The cached value of the '{@link #getVsmappings() <em>Vsmappings</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

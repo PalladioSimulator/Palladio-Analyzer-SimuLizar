@@ -2,8 +2,6 @@
  */
 package violations.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.impl.EntityImpl;
-
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
@@ -33,7 +31,7 @@ import violations.ViolationsPackage;
  *
  * @generated
  */
-public class RuntimeViolationsModelImpl extends EntityImpl implements RuntimeViolationsModel {
+public class RuntimeViolationsModelImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements RuntimeViolationsModel {
 	/**
 	 * The cached value of the '{@link #getViolations() <em>Violations</em>}' containment reference list.
 	 * <!-- begin-user-doc -->

@@ -2,8 +2,6 @@
  */
 package violationstrategymappings.impl;
 
-import de.uka.ipd.sdq.pcm.core.entity.EntityPackage;
-
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
@@ -221,7 +219,7 @@ public class ViolationstrategymappingsPackageImpl extends EPackageImpl implement
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		EntityPackage theEntityPackage = (EntityPackage)EPackage.Registry.INSTANCE.getEPackage(EntityPackage.eNS_URI);
+		org.palladiosimulator.pcm.core.entity.EntityPackage theEntityPackage = (org.palladiosimulator.pcm.core.entity.EntityPackage)EPackage.Registry.INSTANCE.getEPackage(org.palladiosimulator.pcm.core.entity.EntityPackage.eNS_URI);
 		ViolationsPackage theViolationsPackage = (ViolationsPackage)EPackage.Registry.INSTANCE.getEPackage(ViolationsPackage.eNS_URI);
 		StrategiesPackage theStrategiesPackage = (StrategiesPackage)EPackage.Registry.INSTANCE.getEPackage(StrategiesPackage.eNS_URI);
 

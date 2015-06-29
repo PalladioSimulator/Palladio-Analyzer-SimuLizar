@@ -2,8 +2,6 @@
  */
 package strategies.impl;
 
-import de.uka.ipd.sdq.pcm.seff.impl.InternalActionImpl;
-
 import org.eclipse.emf.common.notify.Notification;
 
 import org.eclipse.emf.ecore.EClass;
@@ -19,14 +17,14 @@ import strategies.StrategiesPackage;
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
+ * </p>
  * <ul>
  *   <li>{@link strategies.impl.ReconfigurationActionImpl#getCodeRef <em>Code Ref</em>}</li>
  * </ul>
- * </p>
  *
  * @generated
  */
-public class ReconfigurationActionImpl extends InternalActionImpl implements ReconfigurationAction {
+public class ReconfigurationActionImpl extends org.palladiosimulator.pcm.seff.impl.InternalActionImpl implements ReconfigurationAction {
 	/**
 	 * The default value of the '{@link #getCodeRef() <em>Code Ref</em>}' attribute.
 	 * <!-- begin-user-doc -->

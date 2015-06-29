@@ -3,8 +3,6 @@
 package strategies.provider;
 
 
-import de.uka.ipd.sdq.pcm.seff.provider.InternalActionItemProvider;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -27,7 +25,7 @@ import strategies.StrategiesPackage;
  * <!-- end-user-doc -->
  * @generated
  */
-public class ReconfigurationActionItemProvider extends InternalActionItemProvider {
+public class ReconfigurationActionItemProvider extends org.palladiosimulator.pcm.seff.provider.InternalActionItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->

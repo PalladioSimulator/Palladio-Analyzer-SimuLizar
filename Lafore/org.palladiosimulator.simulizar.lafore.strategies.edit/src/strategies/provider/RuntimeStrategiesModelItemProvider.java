@@ -3,7 +3,6 @@
 package strategies.provider;
 
 
-import de.uka.ipd.sdq.pcm.core.entity.provider.EntityItemProvider;
 import java.util.Collection;
 import java.util.List;
 import org.eclipse.emf.common.notify.AdapterFactory;
@@ -23,7 +22,7 @@ import strategies.StrategiesPackage;
  * @generated
  */
 public class RuntimeStrategiesModelItemProvider 
-	extends EntityItemProvider {
+	extends org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider {
 	/**
 	 * This constructs an instance from a factory and a notifier.
 	 * <!-- begin-user-doc -->
