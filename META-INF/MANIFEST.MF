@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Simulizar Sliding Window Implementation
+Bundle-SymbolicName: org.palladiosimulator.simulizar.slidingwindow
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.simulizar.slidingwindow.Activator
+Bundle-Vendor: palladiosimulator.org
+Require-Bundle: org.eclipse.core.runtime,
+ org.palladiosimulator.experimentanalysis,
+ de.uka.ipd.sdq.simulation.abstractsimengine,
+ org.jscience,
+ org.palladiosimulator.metricspec,
+ de.uka.ipd.sdq.simucomframework,
+ org.palladiosimulator.simulizar,
+ org.palladiosimulator.commons;bundle-version="1.0.0",
+ org.palladiosimulator.monitorrepository
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.palladiosimulator.simulizar.slidingwindow.impl,
+ org.palladiosimulator.simulizar.slidingwindow.util
