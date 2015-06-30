@@ -4,6 +4,7 @@ package violationstrategymappings;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.palladiosimulator.pcm.core.entity.Entity;
 import strategies.StrategyType;
 
 import violations.ViolationType;
@@ -18,7 +19,7 @@ import violations.ViolationType;
  * </p>
  * <ul>
  *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getViolation <em>Violation</em>}</li>
- *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getStrategies <em>Strategies</em>}</li>
+ *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getStrategy <em>Strategy</em>}</li>
  *   <li>{@link violationstrategymappings.ViolationStrategyMapping#getStrategyPriority <em>Strategy Priority</em>}</li>
  * </ul>
  *
@@ -26,7 +27,7 @@ import violations.ViolationType;
  * @model
  * @generated
  */
-public interface ViolationStrategyMapping extends EObject, org.palladiosimulator.pcm.core.entity.Entity {
+public interface ViolationStrategyMapping extends EObject, Entity {
 	/**
 	 * Returns the value of the '<em><b>Violation</b></em>' reference.
 	 * <!-- begin-user-doc -->
@@ -54,30 +55,30 @@ public interface ViolationStrategyMapping extends EObject, org.palladiosimulator
 	void setViolation(ViolationType value);
 
 	/**
-	 * Returns the value of the '<em><b>Strategies</b></em>' reference.
+	 * Returns the value of the '<em><b>Strategy</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Strategies</em>' reference isn't clear,
+	 * If the meaning of the '<em>Strategy</em>' reference isn't clear,
 	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Strategies</em>' reference.
-	 * @see #setStrategies(StrategyType)
-	 * @see violationstrategymappings.ViolationstrategymappingsPackage#getViolationStrategyMapping_Strategies()
+	 * @return the value of the '<em>Strategy</em>' reference.
+	 * @see #setStrategy(StrategyType)
+	 * @see violationstrategymappings.ViolationstrategymappingsPackage#getViolationStrategyMapping_Strategy()
 	 * @model required="true"
 	 * @generated
 	 */
-	StrategyType getStrategies();
+	StrategyType getStrategy();
 
 	/**
-	 * Sets the value of the '{@link violationstrategymappings.ViolationStrategyMapping#getStrategies <em>Strategies</em>}' reference.
+	 * Sets the value of the '{@link violationstrategymappings.ViolationStrategyMapping#getStrategy <em>Strategy</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Strategies</em>' reference.
-	 * @see #getStrategies()
+	 * @param value the new value of the '<em>Strategy</em>' reference.
+	 * @see #getStrategy()
 	 * @generated
 	 */
-	void setStrategies(StrategyType value);
+	void setStrategy(StrategyType value);
 
 	/**
 	 * Returns the value of the '<em><b>Strategy Priority</b></em>' attribute.

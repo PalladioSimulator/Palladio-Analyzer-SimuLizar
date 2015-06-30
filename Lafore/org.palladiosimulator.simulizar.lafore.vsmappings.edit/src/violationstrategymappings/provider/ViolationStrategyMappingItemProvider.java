@@ -17,6 +17,7 @@ import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
+import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
 import violationstrategymappings.ViolationStrategyMapping;
 import violationstrategymappings.ViolationstrategymappingsPackage;
 
@@ -27,7 +28,7 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * @generated
  */
 public class ViolationStrategyMappingItemProvider 
-	extends org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider
+	extends EntityItemProvider
 	implements
 		IItemColorProvider {
 	/**
@@ -52,7 +53,7 @@ public class ViolationStrategyMappingItemProvider
 			super.getPropertyDescriptors(object);
 
 			addViolationPropertyDescriptor(object);
-			addStrategiesPropertyDescriptor(object);
+			addStrategyPropertyDescriptor(object);
 			addStrategyPriorityPropertyDescriptor(object);
 		}
 		return itemPropertyDescriptors;
@@ -81,19 +82,19 @@ public class ViolationStrategyMappingItemProvider
 	}
 
 	/**
-	 * This adds a property descriptor for the Strategies feature.
+	 * This adds a property descriptor for the Strategy feature.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	protected void addStrategiesPropertyDescriptor(Object object) {
+	protected void addStrategyPropertyDescriptor(Object object) {
 		itemPropertyDescriptors.add
 			(createItemPropertyDescriptor
 				(((ComposeableAdapterFactory)adapterFactory).getRootAdapterFactory(),
 				 getResourceLocator(),
-				 getString("_UI_ViolationStrategyMapping_strategies_feature"),
-				 getString("_UI_PropertyDescriptor_description", "_UI_ViolationStrategyMapping_strategies_feature", "_UI_ViolationStrategyMapping_type"),
-				 ViolationstrategymappingsPackage.Literals.VIOLATION_STRATEGY_MAPPING__STRATEGIES,
+				 getString("_UI_ViolationStrategyMapping_strategy_feature"),
+				 getString("_UI_PropertyDescriptor_description", "_UI_ViolationStrategyMapping_strategy_feature", "_UI_ViolationStrategyMapping_type"),
+				 ViolationstrategymappingsPackage.Literals.VIOLATION_STRATEGY_MAPPING__STRATEGY,
 				 true,
 				 false,
 				 true,

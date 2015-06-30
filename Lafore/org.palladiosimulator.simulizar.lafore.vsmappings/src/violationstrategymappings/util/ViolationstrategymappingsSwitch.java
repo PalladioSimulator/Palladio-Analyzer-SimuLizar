@@ -8,6 +8,8 @@ import org.eclipse.emf.ecore.EPackage;
 
 import org.eclipse.emf.ecore.util.Switch;
 
+import org.palladiosimulator.pcm.core.entity.Entity;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
 import violationstrategymappings.*;
 
 /**
@@ -145,7 +147,7 @@ public class ViolationstrategymappingsSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseNamedElement(org.palladiosimulator.pcm.core.entity.NamedElement object) {
+	public T caseNamedElement(NamedElement object) {
 		return null;
 	}
 
@@ -160,7 +162,7 @@ public class ViolationstrategymappingsSwitch<T> extends Switch<T> {
 	 * @see #doSwitch(org.eclipse.emf.ecore.EObject) doSwitch(EObject)
 	 * @generated
 	 */
-	public T caseEntity(org.palladiosimulator.pcm.core.entity.Entity object) {
+	public T caseEntity(Entity object) {
 		return null;
 	}
 

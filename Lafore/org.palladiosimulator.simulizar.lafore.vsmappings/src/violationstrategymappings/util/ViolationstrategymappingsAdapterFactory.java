@@ -10,6 +10,8 @@ import org.eclipse.emf.common.notify.impl.AdapterFactoryImpl;
 
 import org.eclipse.emf.ecore.EObject;
 
+import org.palladiosimulator.pcm.core.entity.Entity;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
 import violationstrategymappings.*;
 
 /**
@@ -81,11 +83,11 @@ public class ViolationstrategymappingsAdapterFactory extends AdapterFactoryImpl 
 				return createIdentifierAdapter();
 			}
 			@Override
-			public Adapter caseNamedElement(org.palladiosimulator.pcm.core.entity.NamedElement object) {
+			public Adapter caseNamedElement(NamedElement object) {
 				return createNamedElementAdapter();
 			}
 			@Override
-			public Adapter caseEntity(org.palladiosimulator.pcm.core.entity.Entity object) {
+			public Adapter caseEntity(Entity object) {
 				return createEntityAdapter();
 			}
 			@Override

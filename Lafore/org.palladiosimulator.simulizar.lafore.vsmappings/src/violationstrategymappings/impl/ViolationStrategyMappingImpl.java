@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 
+import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
 import strategies.StrategyType;
 
 import violations.ViolationType;
@@ -25,13 +26,13 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * </p>
  * <ul>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getViolation <em>Violation</em>}</li>
- *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getStrategies <em>Strategies</em>}</li>
+ *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getStrategy <em>Strategy</em>}</li>
  *   <li>{@link violationstrategymappings.impl.ViolationStrategyMappingImpl#getStrategyPriority <em>Strategy Priority</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements ViolationStrategyMapping {
+public class ViolationStrategyMappingImpl extends EntityImpl implements ViolationStrategyMapping {
 	/**
 	 * The cached value of the '{@link #getViolation() <em>Violation</em>}' reference.
 	 * <!-- begin-user-doc -->
@@ -43,14 +44,14 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 	protected ViolationType violation;
 
 	/**
-	 * The cached value of the '{@link #getStrategies() <em>Strategies</em>}' reference.
+	 * The cached value of the '{@link #getStrategy() <em>Strategy</em>}' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @see #getStrategies()
+	 * @see #getStrategy()
 	 * @generated
 	 * @ordered
 	 */
-	protected StrategyType strategies;
+	protected StrategyType strategy;
 
 	/**
 	 * The default value of the '{@link #getStrategyPriority() <em>Strategy Priority</em>}' attribute.
@@ -134,16 +135,16 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StrategyType getStrategies() {
-		if (strategies != null && strategies.eIsProxy()) {
-			InternalEObject oldStrategies = (InternalEObject)strategies;
-			strategies = (StrategyType)eResolveProxy(oldStrategies);
-			if (strategies != oldStrategies) {
+	public StrategyType getStrategy() {
+		if (strategy != null && strategy.eIsProxy()) {
+			InternalEObject oldStrategy = (InternalEObject)strategy;
+			strategy = (StrategyType)eResolveProxy(oldStrategy);
+			if (strategy != oldStrategy) {
 				if (eNotificationRequired())
-					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES, oldStrategies, strategies));
+					eNotify(new ENotificationImpl(this, Notification.RESOLVE, ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY, oldStrategy, strategy));
 			}
 		}
-		return strategies;
+		return strategy;
 	}
 
 	/**
@@ -151,8 +152,8 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public StrategyType basicGetStrategies() {
-		return strategies;
+	public StrategyType basicGetStrategy() {
+		return strategy;
 	}
 
 	/**
@@ -160,11 +161,11 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public void setStrategies(StrategyType newStrategies) {
-		StrategyType oldStrategies = strategies;
-		strategies = newStrategies;
+	public void setStrategy(StrategyType newStrategy) {
+		StrategyType oldStrategy = strategy;
+		strategy = newStrategy;
 		if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES, oldStrategies, strategies));
+			eNotify(new ENotificationImpl(this, Notification.SET, ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY, oldStrategy, strategy));
 	}
 
 	/**
@@ -199,9 +200,9 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__VIOLATION:
 				if (resolve) return getViolation();
 				return basicGetViolation();
-			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES:
-				if (resolve) return getStrategies();
-				return basicGetStrategies();
+			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY:
+				if (resolve) return getStrategy();
+				return basicGetStrategy();
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY:
 				return getStrategyPriority();
 		}
@@ -219,8 +220,8 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__VIOLATION:
 				setViolation((ViolationType)newValue);
 				return;
-			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES:
-				setStrategies((StrategyType)newValue);
+			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY:
+				setStrategy((StrategyType)newValue);
 				return;
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY:
 				setStrategyPriority((Integer)newValue);
@@ -240,8 +241,8 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__VIOLATION:
 				setViolation((ViolationType)null);
 				return;
-			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES:
-				setStrategies((StrategyType)null);
+			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY:
+				setStrategy((StrategyType)null);
 				return;
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY:
 				setStrategyPriority(STRATEGY_PRIORITY_EDEFAULT);
@@ -260,8 +261,8 @@ public class ViolationStrategyMappingImpl extends org.palladiosimulator.pcm.core
 		switch (featureID) {
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__VIOLATION:
 				return violation != null;
-			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGIES:
-				return strategies != null;
+			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY:
+				return strategy != null;
 			case ViolationstrategymappingsPackage.VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY:
 				return strategyPriority != STRATEGY_PRIORITY_EDEFAULT;
 		}

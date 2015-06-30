@@ -17,6 +17,7 @@ import org.eclipse.emf.edit.provider.IItemColorProvider;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 
+import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
 import violationstrategymappings.ViolationStrategyMappingRepository;
 import violationstrategymappings.ViolationstrategymappingsFactory;
 import violationstrategymappings.ViolationstrategymappingsPackage;
@@ -28,7 +29,7 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  * @generated
  */
 public class ViolationStrategyMappingRepositoryItemProvider 
-	extends org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider
+	extends EntityItemProvider
 	implements
 		IItemColorProvider {
 	/**
