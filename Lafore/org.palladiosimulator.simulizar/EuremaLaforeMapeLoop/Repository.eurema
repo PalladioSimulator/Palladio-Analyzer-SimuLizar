@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eurema:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:eurema="http://www.mdelab.de/EUREMA">
+  <software uid="AdaptableSoftwareID" name="AdaptableSoftware" description="AdaptableSoftware">
+    <modules href="Lafore.eurema#//@architecture/@layers.0/@modules.0"/>
+  </software>
+  <software uid="GenericModelOperationImplementationID" name="GenericModelOperationImplementation" description="GenericModelOperationImplementation">
+    <modules href="Lafore.eurema#//@architecture/@layers.1/@modules.2"/>
+    <modules href="Lafore.eurema#//@architecture/@layers.1/@modules.4"/>
+    <modules href="Lafore.eurema#//@architecture/@layers.1/@modules.1"/>
+    <modules href="Lafore.eurema#//@architecture/@layers.1/@modules.3"/>
+  </software>
+</eurema:Repository>

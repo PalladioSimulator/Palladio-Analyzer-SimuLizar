@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Experimentanalysis
+Bundle-SymbolicName: org.palladiosimulator.experimentanalysis
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: org.palladiosimulator.experimentanalysis.Activator
+Require-Bundle: org.eclipse.core.runtime,
+ org.palladiosimulator.commons,
+ org.jscience,
+ org.palladiosimulator.metricspec,
+ org.palladiosimulator.measurementframework,
+ org.palladiosimulator.recorderframework,
+ org.palladiosimulator.edp2
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
+Export-Package: org.palladiosimulator.experimentanalysis

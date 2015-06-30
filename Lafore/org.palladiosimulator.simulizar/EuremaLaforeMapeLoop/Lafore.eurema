@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<eurema:Architecture xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:eurema="http://www.mdelab.de/EUREMA">
+  <layers name="AdaptableSWLayer">
+    <modules xsi:type="eurema:SoftwareModule" uid="AdaptableSWID" name="AdaptableSW" sensedBy="//@layers.1/@modules.0/@senses.0" effectedBy="//@layers.1/@modules.0/@effects.0">
+      <software href="Repository.eurema#//@software.0"/>
+    </modules>
+  </layers>
+  <layers number="1" name="LaforeMAPELoopLayer">
+    <modules xsi:type="eurema:MegamodelModule" uid="laforemapeID" name="LaforeMAPE">
+      <senses target="//@layers.0/@modules.0" trigger="//@layers.1/@modules.0/@trigger" name="senses"/>
+      <effects target="//@layers.0/@modules.0" name="effects"/>
+      <megamodel uid="laforemapeloopID" name="LaforeMAPEloop" description="This is the MAPE feedback loop for LAFORE ">
+        <initialOperations uid="initialoperationID" name="InitialOperation" description="">
+          <exits uid="startmapeID" name="StartMAPE" description="">
+            <outgoing uid="startmape2monitorID" name="StartMAPE2Monitor" target="//@layers.1/@modules.0/@megamodel/@behavior.0/@entries.0"/>
+          </exits>
+        </initialOperations>
+        <finalOperations uid="finaloperationID" name="FinalOperation">
+          <entries uid="finishmapeID" name="FinishMAPE" incoming="//@layers.1/@modules.0/@megamodel/@behavior.3/@exits.0/@outgoing"/>
+        </finalOperations>
+        <behavior xsi:type="eurema:ModelOperation" uid="monitoroperationID" name="MonitorOperation" binding="//@layers.1/@modules.1">
+          <entries uid="monitorID" name="Monitor" incoming="//@layers.1/@modules.0/@megamodel/@initialOperations.0/@exits.0/@outgoing"/>
+          <exits uid="monitoredID" name="monitored">
+            <outgoing uid="monitored2analyzeID" name="Monitored2Analyze" target="//@layers.1/@modules.0/@megamodel/@behavior.1/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="monitorinmonitorsrepositoryID" name="MonitorInMonitorsRepository" model="//@layers.1/@modules.0/@megamodel/@models.0"/>
+          <modelUsages xsi:type="eurema:Output" uid="monitoroutruntimemeasurementsmodelID" name="MonitorOutRuntimeMeasurementsModel" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="analyzeoperationID" name="AnalyzeOperation" binding="//@layers.1/@modules.2">
+          <entries uid="analyzeID" name="Analyze" incoming="//@layers.1/@modules.0/@megamodel/@behavior.0/@exits.0/@outgoing"/>
+          <exits uid="analyzedID" name="analyzed">
+            <outgoing uid="analyzed2planID" name="Analyzed2Plan" target="//@layers.1/@modules.0/@megamodel/@behavior.2/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="analyzeruntimemeasurementsmodelID" name="AnalyzeInRuntimeMeasurementsModel" model="//@layers.1/@modules.0/@megamodel/@models.1"/>
+          <modelUsages xsi:type="eurema:Input" uid="analyzeinviolationsrepositoryID" name="AnalyzeInViolationsRepository" model="//@layers.1/@modules.0/@megamodel/@models.2"/>
+          <modelUsages xsi:type="eurema:Output" uid="analyzeoutruntimeviolationsmodelID" name="AnalyzeOutRuntimeViolationsModel" model="//@layers.1/@modules.0/@megamodel/@models.3"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="planoperationID" name="PlanOperation" description="" binding="//@layers.1/@modules.3">
+          <entries uid="PlanID" name="Plan" incoming="//@layers.1/@modules.0/@megamodel/@behavior.1/@exits.0/@outgoing"/>
+          <exits uid="plannedID" name="planned">
+            <outgoing uid="planned2executeID" name="Planned2Execute" target="//@layers.1/@modules.0/@megamodel/@behavior.3/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="planInruntimeviolationsmodelID" name="PlanInRuntimeViolationsModel" model="//@layers.1/@modules.0/@megamodel/@models.3"/>
+          <modelUsages xsi:type="eurema:Input" uid="planinstrategiesrepositoryID" name="PlanInStrategiesRepository" model="//@layers.1/@modules.0/@megamodel/@models.4"/>
+          <modelUsages xsi:type="eurema:Input" uid="planinvsmappingrepositoryID" name="PlanInVSMappingRepository" model="//@layers.1/@modules.0/@megamodel/@models.5"/>
+          <modelUsages xsi:type="eurema:Output" uid="planoutruntimestrategiesmodelID" name="PlanOutRuntimeStrategiesModel" model="//@layers.1/@modules.0/@megamodel/@models.6"/>
+        </behavior>
+        <behavior xsi:type="eurema:ModelOperation" uid="executeoperationID" name="ExecuteOperation" binding="//@layers.1/@modules.4">
+          <entries uid="executeID" name="Execute" incoming="//@layers.1/@modules.0/@megamodel/@behavior.2/@exits.0/@outgoing"/>
+          <exits uid="executedID" name="executed">
+            <outgoing uid="executed2finishmapeID" name="Executed2FinishMAPE" target="//@layers.1/@modules.0/@megamodel/@finalOperations.0/@entries.0"/>
+          </exits>
+          <modelUsages xsi:type="eurema:Input" uid="executeInruntimestrategiesmodelID" name="ExecuteInRuntimeStrategiesModel" model="//@layers.1/@modules.0/@megamodel/@models.6"/>
+        </behavior>
+        <models xsi:type="eurema:RuntimeModel" uid="monitorsrepositoryID" name="MonitorsRepository" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.0" binding="//@modelResourceSet/@resources.6"/>
+        <models xsi:type="eurema:RuntimeModel" uid="runtimemeasurementsmodelID" name="RuntimeMeasurementsModel" description="" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.0/@modelUsages.1 //@layers.1/@modules.0/@megamodel/@behavior.1/@modelUsages.0" binding="//@modelResourceSet/@resources.5"/>
+        <models xsi:type="eurema:RuntimeModel" uid="violationsrepositoryID" name="ViolationsRepository" description="" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.1/@modelUsages.1" binding="//@modelResourceSet/@resources.3"/>
+        <models xsi:type="eurema:RuntimeModel" uid="runtimeviolationsmodelID" name="RuntimeViolationsModel" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.1/@modelUsages.2 //@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.0" binding="//@modelResourceSet/@resources.1"/>
+        <models xsi:type="eurema:RuntimeModel" uid="strategiesrepositoryID" name="StrategiesRepository" description="" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.1" binding="//@modelResourceSet/@resources.2"/>
+        <models xsi:type="eurema:RuntimeModel" uid="vsmappingrepositoryID" name="VSMappingRepository" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.2" binding="//@modelResourceSet/@resources.4"/>
+        <models xsi:type="eurema:RuntimeModel" uid="runtimestrategiesmodelID" name="RuntimeStrategiesModel" usedBy="//@layers.1/@modules.0/@megamodel/@behavior.2/@modelUsages.3 //@layers.1/@modules.0/@megamodel/@behavior.3/@modelUsages.0" binding="//@modelResourceSet/@resources.0"/>
+      </megamodel>
+      <trigger refers="//@layers.1/@modules.0/@senses.0" initialOperation="//@layers.1/@modules.0/@megamodel/@initialOperations.0">
+        <events name="">
+          <type href="Events.eurema#/"/>
+        </events>
+      </trigger>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="MonitorOperationImplID" name="MonitorOperationImpl" implementation="org.palladiosimulator.simulizar.lafore.eurema.operations.MonitorImplementation">
+      <software href="Repository.eurema#//@software.1"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="AnalyzeOperationImplID" name="AnalyzeOperationImpl" implementation="org.palladiosimulator.simulizar.lafore.eurema.operations.AnalyzeImplementation">
+      <software href="Repository.eurema#//@software.1"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="PlanOperationImplID" name="PlanOperationImpl" implementation="org.palladiosimulator.simulizar.lafore.eurema.operations.PlanImplementation">
+      <software href="Repository.eurema#//@software.1"/>
+    </modules>
+    <modules xsi:type="eurema:SoftwareModule" uid="ExecuteOperationImpl" name="ExecuteOperationImpl" implementation="org.palladiosimulator.simulizar.lafore.eurema.operations.ExecuteImplementation">
+      <software href="Repository.eurema#//@software.1"/>
+    </modules>
+  </layers>
+  <modelResourceSet>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
+    <resources URI="E:\Edu\UPB\MA thesis\EclipseFinal\ws\org.palladiosimulator.simulizar\knowledgeModels\design\MonitorsRep.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
+  </modelResourceSet>
+</eurema:Architecture>
