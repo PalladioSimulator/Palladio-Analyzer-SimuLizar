@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.palladiosimulator.pcm.core.entity.EntityPackage;
 
 /**
  * <!-- begin-user-doc -->
@@ -72,7 +73,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
+	int VIOLATION_STRATEGY_MAPPING__ID = EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -81,7 +82,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
+	int VIOLATION_STRATEGY_MAPPING__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Violation</b></em>' reference.
@@ -90,16 +91,16 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING__VIOLATION = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int VIOLATION_STRATEGY_MAPPING__VIOLATION = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Strategies</b></em>' reference.
+	 * The feature id for the '<em><b>Strategy</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING__STRATEGIES = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int VIOLATION_STRATEGY_MAPPING__STRATEGY = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Strategy Priority</b></em>' attribute.
@@ -108,7 +109,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 2;
+	int VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY = EntityPackage.ENTITY_FEATURE_COUNT + 2;
 
 	/**
 	 * The number of structural features of the '<em>Violation Strategy Mapping</em>' class.
@@ -117,7 +118,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 3;
+	int VIOLATION_STRATEGY_MAPPING_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 3;
 
 	/**
 	 * The meta object id for the '{@link violationstrategymappings.impl.ViolationStrategyMappingRepositoryImpl <em>Violation Strategy Mapping Repository</em>}' class.
@@ -136,7 +137,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__ID = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ID;
+	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__ID = EntityPackage.ENTITY__ID;
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
@@ -145,7 +146,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__ENTITY_NAME = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY__ENTITY_NAME;
+	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
 	 * The feature id for the '<em><b>Vsmappings</b></em>' containment reference list.
@@ -154,7 +155,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__VSMAPPINGS = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 0;
+	int VIOLATION_STRATEGY_MAPPING_REPOSITORY__VSMAPPINGS = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
 	 * The number of structural features of the '<em>Violation Strategy Mapping Repository</em>' class.
@@ -163,7 +164,7 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	 * @generated
 	 * @ordered
 	 */
-	int VIOLATION_STRATEGY_MAPPING_REPOSITORY_FEATURE_COUNT = org.palladiosimulator.pcm.core.entity.EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int VIOLATION_STRATEGY_MAPPING_REPOSITORY_FEATURE_COUNT = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 
 	/**
@@ -188,15 +189,15 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 	EReference getViolationStrategyMapping_Violation();
 
 	/**
-	 * Returns the meta object for the reference '{@link violationstrategymappings.ViolationStrategyMapping#getStrategies <em>Strategies</em>}'.
+	 * Returns the meta object for the reference '{@link violationstrategymappings.ViolationStrategyMapping#getStrategy <em>Strategy</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @return the meta object for the reference '<em>Strategies</em>'.
-	 * @see violationstrategymappings.ViolationStrategyMapping#getStrategies()
+	 * @return the meta object for the reference '<em>Strategy</em>'.
+	 * @see violationstrategymappings.ViolationStrategyMapping#getStrategy()
 	 * @see #getViolationStrategyMapping()
 	 * @generated
 	 */
-	EReference getViolationStrategyMapping_Strategies();
+	EReference getViolationStrategyMapping_Strategy();
 
 	/**
 	 * Returns the meta object for the attribute '{@link violationstrategymappings.ViolationStrategyMapping#getStrategyPriority <em>Strategy Priority</em>}'.
@@ -271,12 +272,12 @@ public interface ViolationstrategymappingsPackage extends EPackage {
 		EReference VIOLATION_STRATEGY_MAPPING__VIOLATION = eINSTANCE.getViolationStrategyMapping_Violation();
 
 		/**
-		 * The meta object literal for the '<em><b>Strategies</b></em>' reference feature.
+		 * The meta object literal for the '<em><b>Strategy</b></em>' reference feature.
 		 * <!-- begin-user-doc -->
 		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference VIOLATION_STRATEGY_MAPPING__STRATEGIES = eINSTANCE.getViolationStrategyMapping_Strategies();
+		EReference VIOLATION_STRATEGY_MAPPING__STRATEGY = eINSTANCE.getViolationStrategyMapping_Strategy();
 
 		/**
 		 * The meta object literal for the '<em><b>Strategy Priority</b></em>' attribute feature.

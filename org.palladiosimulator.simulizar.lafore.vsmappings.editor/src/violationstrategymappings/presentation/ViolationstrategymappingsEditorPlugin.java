@@ -20,6 +20,7 @@ import org.palladiosimulator.edp2.models.ExperimentData.provider.EDP2EditPlugin;
 import org.palladiosimulator.metricspec.provider.MetricSpecEditPlugin;
 
 import org.palladiosimulator.monitorrepository.provider.MonitorrepositoryEditPlugin;
+import org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin;
 import org.palladiosimulator.servicelevelobjective.provider.ServiceLevelObjectiveEditPlugin;
 import strategies.provider.StrategiesEditPlugin;
 
@@ -61,7 +62,7 @@ public final class ViolationstrategymappingsEditorPlugin extends EMFPlugin {
 				IdentifierEditPlugin.INSTANCE,
 				MetricSpecEditPlugin.INSTANCE,
 				MonitorrepositoryEditPlugin.INSTANCE,
-				org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin.INSTANCE,
+				PalladioComponentModelEditPlugin.INSTANCE,
 				ProbabilityFunctionEditPlugin.INSTANCE,
 				ServiceLevelObjectiveEditPlugin.INSTANCE,
 				StoexEditPlugin.INSTANCE,

@@ -9,6 +9,7 @@ import org.eclipse.emf.ecore.EReference;
 
 import org.eclipse.emf.ecore.impl.EPackageImpl;
 
+import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import strategies.StrategiesPackage;
 
 import violations.ViolationsPackage;
@@ -127,7 +128,7 @@ public class ViolationstrategymappingsPackageImpl extends EPackageImpl implement
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public EReference getViolationStrategyMapping_Strategies() {
+	public EReference getViolationStrategyMapping_Strategy() {
 		return (EReference)violationStrategyMappingEClass.getEStructuralFeatures().get(1);
 	}
 
@@ -188,7 +189,7 @@ public class ViolationstrategymappingsPackageImpl extends EPackageImpl implement
 		// Create classes and their features
 		violationStrategyMappingEClass = createEClass(VIOLATION_STRATEGY_MAPPING);
 		createEReference(violationStrategyMappingEClass, VIOLATION_STRATEGY_MAPPING__VIOLATION);
-		createEReference(violationStrategyMappingEClass, VIOLATION_STRATEGY_MAPPING__STRATEGIES);
+		createEReference(violationStrategyMappingEClass, VIOLATION_STRATEGY_MAPPING__STRATEGY);
 		createEAttribute(violationStrategyMappingEClass, VIOLATION_STRATEGY_MAPPING__STRATEGY_PRIORITY);
 
 		violationStrategyMappingRepositoryEClass = createEClass(VIOLATION_STRATEGY_MAPPING_REPOSITORY);
@@ -219,7 +220,7 @@ public class ViolationstrategymappingsPackageImpl extends EPackageImpl implement
 		setNsURI(eNS_URI);
 
 		// Obtain other dependent packages
-		org.palladiosimulator.pcm.core.entity.EntityPackage theEntityPackage = (org.palladiosimulator.pcm.core.entity.EntityPackage)EPackage.Registry.INSTANCE.getEPackage(org.palladiosimulator.pcm.core.entity.EntityPackage.eNS_URI);
+		EntityPackage theEntityPackage = (EntityPackage)EPackage.Registry.INSTANCE.getEPackage(EntityPackage.eNS_URI);
 		ViolationsPackage theViolationsPackage = (ViolationsPackage)EPackage.Registry.INSTANCE.getEPackage(ViolationsPackage.eNS_URI);
 		StrategiesPackage theStrategiesPackage = (StrategiesPackage)EPackage.Registry.INSTANCE.getEPackage(StrategiesPackage.eNS_URI);
 
@@ -234,7 +235,7 @@ public class ViolationstrategymappingsPackageImpl extends EPackageImpl implement
 		// Initialize classes and features; add operations and parameters
 		initEClass(violationStrategyMappingEClass, ViolationStrategyMapping.class, "ViolationStrategyMapping", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
 		initEReference(getViolationStrategyMapping_Violation(), theViolationsPackage.getViolationType(), null, "violation", null, 1, 1, ViolationStrategyMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
-		initEReference(getViolationStrategyMapping_Strategies(), theStrategiesPackage.getStrategyType(), null, "strategies", null, 1, 1, ViolationStrategyMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+		initEReference(getViolationStrategyMapping_Strategy(), theStrategiesPackage.getStrategyType(), null, "strategy", null, 1, 1, ViolationStrategyMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 		initEAttribute(getViolationStrategyMapping_StrategyPriority(), ecorePackage.getEInt(), "strategyPriority", null, 0, 1, ViolationStrategyMapping.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
 		initEClass(violationStrategyMappingRepositoryEClass, ViolationStrategyMappingRepository.class, "ViolationStrategyMappingRepository", !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

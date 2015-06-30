@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentEList;
 import org.eclipse.emf.ecore.util.InternalEList;
 
+import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
 import violationstrategymappings.ViolationStrategyMapping;
 import violationstrategymappings.ViolationStrategyMappingRepository;
 import violationstrategymappings.ViolationstrategymappingsPackage;
@@ -31,7 +32,7 @@ import violationstrategymappings.ViolationstrategymappingsPackage;
  *
  * @generated
  */
-public class ViolationStrategyMappingRepositoryImpl extends org.palladiosimulator.pcm.core.entity.impl.EntityImpl implements ViolationStrategyMappingRepository {
+public class ViolationStrategyMappingRepositoryImpl extends EntityImpl implements ViolationStrategyMappingRepository {
 	/**
 	 * The cached value of the '{@link #getVsmappings() <em>Vsmappings</em>}' containment reference list.
 	 * <!-- begin-user-doc -->
