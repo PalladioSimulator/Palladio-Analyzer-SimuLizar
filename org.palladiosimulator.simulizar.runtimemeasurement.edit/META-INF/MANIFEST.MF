@@ -20,8 +20,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  de.uka.ipd.sdq.identifier.edit;bundle-version="2.1.0";visibility:=reexport,
  org.palladiosimulator.metricspec;visibility:=reexport,
  org.palladiosimulator.metricspec.edit;visibility:=reexport,
- de.uka.ipd.sdq.pcm;bundle-version="3.6.0";visibility:=reexport,
- de.uka.ipd.sdq.pcm.edit;bundle-version="3.6.0";visibility:=reexport,
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0";visibility:=reexport,
  org.palladiosimulator.monitorrepository.edit;bundle-version="2.0.0";visibility:=reexport,
  de.uka.ipd.sdq.probfunction;bundle-version="2.1.0";visibility:=reexport,
@@ -29,5 +27,6 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.10.0",
  de.uka.ipd.sdq.stoex;bundle-version="2.2.0";visibility:=reexport,
  de.uka.ipd.sdq.stoex.edit;bundle-version="2.2.0";visibility:=reexport,
  de.uka.ipd.sdq.units;bundle-version="2.1.0";visibility:=reexport,
- de.uka.ipd.sdq.units.edit;bundle-version="2.1.0";visibility:=reexport
+ de.uka.ipd.sdq.units.edit;bundle-version="2.1.0";visibility:=reexport,
+ org.palladiosimulator.pcm.edit
 Bundle-ActivationPolicy: lazy
