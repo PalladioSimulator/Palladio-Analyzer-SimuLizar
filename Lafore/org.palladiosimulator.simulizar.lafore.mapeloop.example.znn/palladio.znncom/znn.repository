@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_UKg1IKnmEeO_FKTWaHXFBg" entityName="defaultRepository">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.0" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.0" id="_UKg1IKnmEeO_FKTWaHXFBg" entityName="znnRepository" repositoryDescription="Repository for the component types in the Znn.com example">
   <components__Repository xsi:type="repository:BasicComponent" id="_LIKOYKnnEeO_FKTWaHXFBg" entityName="LoadBalancer">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_cy6_8KnnEeO_FKTWaHXFBg" entityName="Provided_ILoadBalancer_LoadBalancer" providedInterface__OperationProvidedRole="_ZICfEKnmEeO_FKTWaHXFBg"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_-3KhYKnnEeO_FKTWaHXFBg" entityName="Required_INews_LoadBalancer" requiredInterface__OperationRequiredRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
@@ -14,8 +14,8 @@
         <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_bULfIKnpEeO_FKTWaHXFBg" entityName="selectNewsServer1" branchProbability="0.5">
           <branchBehaviour_BranchTransition id="_bUMtQKnpEeO_FKTWaHXFBg">
             <steps_Behaviour xsi:type="seff:StartAction" id="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
-            <steps_Behaviour xsi:type="seff:StopAction" id="_bUPJganpEeO_FKTWaHXFBg" predecessor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_nK7DoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_bUPJganpEeO_FKTWaHXFBg" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="_-3KhYKnnEeO_FKTWaHXFBg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_bUPJganpEeO_FKTWaHXFBg" predecessor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
           </branchBehaviour_BranchTransition>
         </branches_Branch>
         <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_gdsWoKnpEeO_FKTWaHXFBg" entityName="selectNewsServer2" branchProbability="0.5">
@@ -48,6 +48,9 @@
         </branches_Branch>
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
+    <passiveResource_BasicComponent id="_CdFjAB8gEeW67Z7ZNRbPoQ">
+      <capacity_PassiveResource specification="1"/>
+    </passiveResource_BasicComponent>
   </components__Repository>
   <components__Repository xsi:type="repository:BasicComponent" id="_j8YkoBjbEeWNAuA7wCUwzg" entityName="NewsService">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_liPIIBjbEeWNAuA7wCUwzg" entityName="Provided_INews_NewsService" providedInterface__OperationProvidedRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
@@ -85,10 +88,25 @@
   <components__Repository xsi:type="repository:BasicComponent" id="_v3bBEKnmEeO_FKTWaHXFBg" entityName="SelfAdaptiveNewsService">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="__SXsIKnmEeO_FKTWaHXFBg" entityName="Provided_INews_NewsService" providedInterface__OperationProvidedRole="_XrqAoKnmEeO_FKTWaHXFBg"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_AjiZEKnnEeO_FKTWaHXFBg" entityName="Required_ILoadBalancer_NewsService" requiredInterface__OperationRequiredRole="_ZICfEKnmEeO_FKTWaHXFBg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_ZeD8sBstEeWxevNMGb2NAg" entityName="Required_IReconfigurator_SelfAdaptiveNewsService" requiredInterface__OperationRequiredRole="_B1GfcBsOEeWxevNMGb2NAg"/>
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="__SaIYKnmEeO_FKTWaHXFBg" describedService__SEFF="_16dhkKnmEeO_FKTWaHXFBg">
       <steps_Behaviour xsi:type="seff:StartAction" id="__SavcKnmEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_JtPdoKnpEeO_FKTWaHXFBg"/>
-      <steps_Behaviour xsi:type="seff:StopAction" id="__SavcanmEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_JtPdoKnpEeO_FKTWaHXFBg"/>
-      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_JtPdoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="__SavcKnmEeO_FKTWaHXFBg" successor_AbstractAction="__SavcanmEeO_FKTWaHXFBg" calledService_ExternalService="_S3ss8KnnEeO_FKTWaHXFBg" role_ExternalService="_AjiZEKnnEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="__SavcanmEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_eNdrEBstEeWxevNMGb2NAg"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_JtPdoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="__SavcKnmEeO_FKTWaHXFBg" successor_AbstractAction="_eNdrEBstEeWxevNMGb2NAg" calledService_ExternalService="_S3ss8KnnEeO_FKTWaHXFBg" role_ExternalService="_AjiZEKnnEeO_FKTWaHXFBg"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_eNdrEBstEeWxevNMGb2NAg" predecessor_AbstractAction="_JtPdoKnpEeO_FKTWaHXFBg" successor_AbstractAction="__SavcanmEeO_FKTWaHXFBg" calledService_ExternalService="_D8wIcBsOEeWxevNMGb2NAg" role_ExternalService="_ZeD8sBstEeWxevNMGb2NAg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_4lMaUBsNEeWxevNMGb2NAg" entityName="Reconfigurator">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_HSUWEBsOEeWxevNMGb2NAg" entityName="Provided_IReconfigurator_Reconfigurator" providedInterface__OperationProvidedRole="_B1GfcBsOEeWxevNMGb2NAg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_HSYAcBsOEeWxevNMGb2NAg" describedService__SEFF="_D8wIcBsOEeWxevNMGb2NAg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_HSYngBsOEeWxevNMGb2NAg" entityName="start" successor_AbstractAction="_AtsucBv-EeWgL6uQBC7cww"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_HSZOkBsOEeWxevNMGb2NAg" entityName="stop" predecessor_AbstractAction="_AtsucBv-EeWgL6uQBC7cww"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_AtsucBv-EeWgL6uQBC7cww" entityName="ReconfigurationDemands" predecessor_AbstractAction="_HSYngBsOEeWxevNMGb2NAg" successor_AbstractAction="_HSZOkBsOEeWxevNMGb2NAg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_XrqAoKnmEeO_FKTWaHXFBg" entityName="INews">
@@ -96,5 +114,8 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_ZICfEKnmEeO_FKTWaHXFBg" entityName="ILoadBalancer">
     <signatures__OperationInterface id="_S3ss8KnnEeO_FKTWaHXFBg" entityName="selectAndDeliverNewsService"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_B1GfcBsOEeWxevNMGb2NAg" entityName="IReconfigurator">
+    <signatures__OperationInterface id="_D8wIcBsOEeWxevNMGb2NAg" entityName="reconfigure"/>
   </interfaces__Repository>
 </repository:Repository>
