@@ -14,9 +14,7 @@ modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Al
 modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.0';
 modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.0';
 modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.0';
-modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.0';
 modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.0';
-modeltype PCM_ENTITY uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.0';
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
