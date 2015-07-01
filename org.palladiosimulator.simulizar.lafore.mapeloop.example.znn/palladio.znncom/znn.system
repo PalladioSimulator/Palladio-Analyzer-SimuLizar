@@ -31,17 +31,17 @@
     <providedRole_AssemblyConnector href="znn.repository#_cy6_8KnnEeO_FKTWaHXFBg"/>
     <requiredRole_AssemblyConnector href="znn.repository#_AjiZEKnnEeO_FKTWaHXFBg"/>
   </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_IjbyYKnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg">
-    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#__yEqcKnnEeO_FKTWaHXFBg"/>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_tcZ90BjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_gxRH8BjlEeWbbI-GSZtKbQ">
+    <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#_1OGqcBjjEeWbbI-GSZtKbQ"/>
   </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_I_RZ0KnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg">
-    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#__V1aYKnnEeO_FKTWaHXFBg"/>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_uJpeUBjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_aa74ABjlEeWbbI-GSZtKbQ">
+    <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#_2cWmQBjjEeWbbI-GSZtKbQ"/>
   </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_JrdKYKnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg">
-    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#_-3KhYKnnEeO_FKTWaHXFBg"/>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_0EJqgBstEeWxevNMGb2NAg" entityName="Connector Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService> -> Assembly_Reconfigurator &lt;Reconfigurator>" requiringAssemblyContext_AssemblyConnector="_nvrBYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_vTuocBstEeWxevNMGb2NAg">
+    <providedRole_AssemblyConnector href="znn.repository#_HSUWEBsOEeWxevNMGb2NAg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#_ZeD8sBstEeWxevNMGb2NAg"/>
   </connectors__ComposedStructure>
   <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_Z7QSYBjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_XdkvABjlEeWbbI-GSZtKbQ">
     <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
@@ -54,18 +54,6 @@
   <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_sxweUBjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_i0kccBjlEeWbbI-GSZtKbQ">
     <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
     <requiredRole_AssemblyConnector href="znn.repository#__V1aYKnnEeO_FKTWaHXFBg"/>
-  </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_tcZ90BjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_gxRH8BjlEeWbbI-GSZtKbQ">
-    <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#_1OGqcBjjEeWbbI-GSZtKbQ"/>
-  </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_uJpeUBjlEeWbbI-GSZtKbQ" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_NewsService &lt;NewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_aa74ABjlEeWbbI-GSZtKbQ">
-    <providedRole_AssemblyConnector href="znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#_2cWmQBjjEeWbbI-GSZtKbQ"/>
-  </connectors__ComposedStructure>
-  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_0EJqgBstEeWxevNMGb2NAg" entityName="Connector Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService> -> Assembly_Reconfigurator &lt;Reconfigurator>" requiringAssemblyContext_AssemblyConnector="_nvrBYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_vTuocBstEeWxevNMGb2NAg">
-    <providedRole_AssemblyConnector href="znn.repository#_HSUWEBsOEeWxevNMGb2NAg"/>
-    <requiredRole_AssemblyConnector href="znn.repository#_ZeD8sBstEeWxevNMGb2NAg"/>
   </connectors__ComposedStructure>
   <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_k-bo0KnnEeO_FKTWaHXFBg" entityName="Provided_INews">
     <providedInterface__OperationProvidedRole href="znn.repository#_XrqAoKnmEeO_FKTWaHXFBg"/>

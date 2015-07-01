@@ -42,6 +42,19 @@
     <element xmi:type="resourceenvironment:ResourceContainer" href="znn.resourceenvironment#_-vhCweOPEeSWd8lY2QHrZg"/>
     <layoutConstraint xmi:type="notation:Bounds" xmi:id="_h2muIx8hEeW67Z7ZNRbPoQ" x="5" y="480" width="571"/>
   </children>
+  <children xmi:type="notation:Shape" xmi:id="_I8vE8B_6EeWQPMiWoz-4pw" type="2003" fontName="Segoe UI">
+    <children xmi:type="notation:DecorationNode" xmi:id="_I8vE8h_6EeWQPMiWoz-4pw" type="5008"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_I8vsAB_6EeWQPMiWoz-4pw" type="7003">
+      <children xmi:type="notation:Shape" xmi:id="_MNmYwB_6EeWQPMiWoz-4pw" type="3002" fontName="Segoe UI">
+        <children xmi:type="notation:DecorationNode" xmi:id="_MNm_0B_6EeWQPMiWoz-4pw" type="5006"/>
+        <children xmi:type="notation:DecorationNode" xmi:id="_MNm_0R_6EeWQPMiWoz-4pw" type="5007"/>
+        <element xmi:type="allocation:AllocationContext" href="znn.allocation#_LnD9MB_6EeWQPMiWoz-4pw"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_MNmYwR_6EeWQPMiWoz-4pw" y="8"/>
+      </children>
+    </children>
+    <element xmi:type="resourceenvironment:ResourceContainer" href="znn.resourceenvironment#_p4SVcB_5EeWQPMiWoz-4pw"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_I8vE8R_6EeWQPMiWoz-4pw" x="5" y="560" width="571" height="91"/>
+  </children>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_hxoukR8hEeW67Z7ZNRbPoQ"/>
   <element xmi:type="allocation:Allocation" href="znn.allocation#_1xPCMKnoEeO_FKTWaHXFBg"/>
 </notation:Diagram>

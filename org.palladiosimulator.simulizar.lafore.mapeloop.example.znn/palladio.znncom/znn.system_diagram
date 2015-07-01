@@ -157,7 +157,7 @@
       <layoutConstraint xsi:type="notation:Bounds"/>
     </children>
     <element href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
-    <layoutConstraint xsi:type="notation:Bounds" x="35" y="-60" width="1166" height="616"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="35" y="-60" width="1240" height="640"/>
   </children>
   <styles xsi:type="notation:DiagramStyle"/>
   <element href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>

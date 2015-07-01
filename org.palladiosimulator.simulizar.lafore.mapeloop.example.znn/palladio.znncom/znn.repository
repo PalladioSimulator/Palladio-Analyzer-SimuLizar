@@ -103,7 +103,7 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_HSZOkBsOEeWxevNMGb2NAg" entityName="stop" predecessor_AbstractAction="_AtsucBv-EeWgL6uQBC7cww"/>
       <steps_Behaviour xsi:type="seff:InternalAction" id="_AtsucBv-EeWgL6uQBC7cww" entityName="ReconfigurationDemands" predecessor_AbstractAction="_HSYngBsOEeWxevNMGb2NAg" successor_AbstractAction="_HSZOkBsOEeWxevNMGb2NAg">
         <resourceDemand_Action>
-          <specification_ParametericResourceDemand/>
+          <specification_ParametericResourceDemand specification="0"/>
           <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
         </resourceDemand_Action>
       </steps_Behaviour>
