@@ -3,15 +3,13 @@
   <monitors id="_KWZkoNh_EeSCTeOPoRaaPQ" entityName="ResponseTimeMonitor">
     <measurementSpecifications id="_QfOkENh_EeSCTeOPoRaaPQ" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_6NWzQN66EeSFR4acpbZ8HQ" intervall="10.0"/>
-      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="../../../org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
     </measurementSpecifications>
     <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="ZnnMeasuringPoints.measuringpoint#//@measuringPoints.1"/>
   </monitors>
   <monitors id="_-BVIEOhmEeSkZ7YVP-H6TQ" entityName="PoolSizeMonitor">
     <measurementSpecifications id="_La38EOhnEeSkZ7YVP-H6TQ" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_O4bBAOhnEeSkZ7YVP-H6TQ" intervall="10.0"/>
-      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="../../../org.palladiosimulator.metricspec.resources/models/commonMetrics.metricspec#_qC7AMuRFEeSsFtCEWlnNdA"/>
-    </measurementSpecifications>
+     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="ZnnMeasuringPoints.measuringpoint#//@measuringPoints.0"/>
   </monitors>
 </monitorrepository:MonitorRepository>

@@ -7,7 +7,7 @@
       <throughput_CommunicationLinkResourceSpecification specification="100000"/>
     </communicationLinkResourceSpecifications_LinkingResource>
   </linkingResources__ResourceEnvironment>
-  <linkingResources__ResourceEnvironment id="_nC3JQKnoEeO_FKTWaHXFBg" entityName="GigaLAN" connectedResourceContainers_LinkingResource="_Q4BewKnoEeO_FKTWaHXFBg _VremsKnoEeO_FKTWaHXFBg">
+  <linkingResources__ResourceEnvironment id="_nC3JQKnoEeO_FKTWaHXFBg" entityName="GigaLAN" connectedResourceContainers_LinkingResource="_Q4BewKnoEeO_FKTWaHXFBg _VremsKnoEeO_FKTWaHXFBg _p4SVcB_5EeWQPMiWoz-4pw">
     <communicationLinkResourceSpecifications_LinkingResource id="_nC4-cKnoEeO_FKTWaHXFBg">
       <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
       <latency_CommunicationLinkResourceSpecification specification="0.001"/>
@@ -58,6 +58,13 @@
   </resourceContainer_ResourceEnvironment>
   <resourceContainer_ResourceEnvironment id="_-vhCweOPEeSWd8lY2QHrZg" entityName="ApplicationServer5">
     <activeResourceSpecifications_ResourceContainer id="_AfXPwOOQEeSWd8lY2QHrZg">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1000"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_p4SVcB_5EeWQPMiWoz-4pw" entityName="ReconfiguratorServer">
+    <activeResourceSpecifications_ResourceContainer id="_sECbUB_5EeWQPMiWoz-4pw">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
       <processingRate_ProcessingResourceSpecification specification="1000"/>

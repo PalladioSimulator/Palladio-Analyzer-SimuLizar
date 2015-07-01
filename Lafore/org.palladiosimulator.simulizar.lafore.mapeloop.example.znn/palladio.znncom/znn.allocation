@@ -30,4 +30,8 @@
     <resourceContainer_AllocationContext href="znn.resourceenvironment#_-vhCweOPEeSWd8lY2QHrZg"/>
     <assemblyContext_AllocationContext href="znn.system#_loFs8BjlEeWbbI-GSZtKbQ"/>
   </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_LnD9MB_6EeWQPMiWoz-4pw" entityName="Allocation_Assembly_Reconfigurator &lt;Reconfigurator> &lt;Reconfigurator>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_p4SVcB_5EeWQPMiWoz-4pw"/>
+    <assemblyContext_AllocationContext href="znn.system#_vTuocBstEeWxevNMGb2NAg"/>
+  </allocationContexts_Allocation>
 </allocation:Allocation>
