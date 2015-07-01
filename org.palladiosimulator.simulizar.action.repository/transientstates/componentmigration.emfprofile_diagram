@@ -3,12 +3,11 @@
   <emfprofile:Profile xmi:id="_horSUPh-EeSxfcKkGEX99A" name="MigratedAssemblyContextProfile" nsURI="org.palladiosimulator.simulizar.action.repository.transientstates.migratedassemblycontextprofile" nsPrefix="org.palladiosimulator.simulizar.action.repository.transientstates">
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_ovN3MPh-EeSxfcKkGEX99A" name="MigratedComponentAssemblyContext">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
-      <extensions xmi:type="emfprofile:Extension" xmi:id="_qyuAAPh-EeSxfcKkGEX99A">
-        <target xmi:type="ecore:EClass" href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition/AssemblyContext"/>
-      </extensions>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_RQSxYCAMEeWKP6toSuYcVw" target="_BBr0wCAMEeWKP6toSuYcVw"/>
     </eClassifiers>
-    <eClassifiers xmi:type="ecore:EClass" xmi:id="_BBr0wCAMEeWKP6toSuYcVw" name="AssemblyContext" instanceClassName="org.palladiosimulator.pcm.core.composition.AssemblyContext"/>
+    <eClassifiers xmi:type="ecore:EClass" xmi:id="_BBr0wCAMEeWKP6toSuYcVw" name="AssemblyContext" instanceClassName="org.palladiosimulator.pcm.core.composition.AssemblyContext">
+      <eSuperTypes xmi:type="ecore:EClass" href="platform:/resource/org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity"/>
+    </eClassifiers>
   </emfprofile:Profile>
   <notation:Diagram xmi:id="_hor5YPh-EeSxfcKkGEX99A" type="EMFProfile" element="_horSUPh-EeSxfcKkGEX99A" name="componentmigration.emfprofile_diagram" measurementUnit="Pixel">
     <children xmi:type="notation:Node" xmi:id="_ovT90Ph-EeSxfcKkGEX99A" type="2006" element="_ovN3MPh-EeSxfcKkGEX99A">
