@@ -22,7 +22,7 @@
    <extension point="org.eclipse.emf.edit.childCreationExtenders">
       <!-- @generated simulizarmeasuringpoint -->
       <extender
-            uri="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1"
+            uri="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0"
             class="simulizarmeasuringpoint.provider.SimulizarmeasuringpointItemProviderAdapterFactory$MeasuringpointChildCreationExtender"/>
    </extension>
 
