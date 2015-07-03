@@ -39,8 +39,6 @@
       <import plugin="de.uka.ipd.sdq.scheduler" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2"/>
       <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.experimentanalysis.tests"/>
-      <import plugin="org.palladiosimulator.experimentanalysis"/>
       <import plugin="de.uka.ipd.sdq.simulation" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.analyzer.workflow" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="1.0.0" match="greaterOrEqual"/>
