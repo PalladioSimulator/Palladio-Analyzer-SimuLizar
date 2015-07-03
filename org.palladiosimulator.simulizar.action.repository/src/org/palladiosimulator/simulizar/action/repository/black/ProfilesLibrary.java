@@ -10,8 +10,11 @@ import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.InternalEObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.UsageCrossReferencer;
+import org.modelversioning.emfprofile.Profile;
+import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
@@ -45,7 +48,33 @@ public class ProfilesLibrary {
         return true;
     }
 
+    private static Profile queryProfileByStereotypeName(Entity pcmEntity, String stereotypeName) {
+    	assert stereotypeName != null && pcmEntity != null;
+    	
+    	Profile result = null;
+    	for (Profile profile : ProfileAPI.getApplicableProfiles(pcmEntity.eResource())) {
+    		if (profile.getStereotype(stereotypeName) != null) {
+    			result = profile;
+    			break;
+    		}
+    	}
+    	return result;
+    }
+    
+    private static void ensureProfileApplied(Resource resource, Profile profile) {
+    	assert resource != null && profile != null;
+    	
+    	if (!ProfileAPI.isProfileApplied(resource, profile)) {
+    		ProfileAPI.applyProfile(resource, profile);
+    	}
+    }
+    
     public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
+    	Profile profile = queryProfileByStereotypeName(pcmEntity, stereotypeName);
+    	if (profile == null) {
+    		throw new IllegalArgumentException("Stereotype with given name '" + stereotypeName + "' does not exist!");
+    	}
+    	ensureProfileApplied(pcmEntity.eResource(), profile);
         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
     }
 

@@ -29,5 +29,4 @@
 	<profile profile_resource="transientstates/componentmigration.emfprofile_diagram"/>
 	<profile profile_resource="transientstates/componentinstantiation.emfprofile_diagram"/>
 </extension>
-
 </plugin>
