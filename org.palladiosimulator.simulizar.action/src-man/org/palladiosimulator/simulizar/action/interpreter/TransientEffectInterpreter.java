@@ -9,7 +9,6 @@ import java.util.List;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -54,183 +53,216 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUser;
 
 public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
-    private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
-    private final SimuLizarRuntimeState state;
-    private final RoleSet roleSet;
+	private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
+	private final SimuLizarRuntimeState state;
+	private final RoleSet roleSet;
 
-    public TransientEffectInterpreter(final SimuLizarRuntimeState state, final RoleSet set, final ActionRepository repository) {
-        this.state = state;
-        this.roleSet = set;
-    }
+	public TransientEffectInterpreter(final SimuLizarRuntimeState state,
+			final RoleSet set, final ActionRepository repository) {
+		this.state = state;
+		this.roleSet = set;
+	}
 
-    @Override
-    public Boolean caseAction(final Action action) {
-        boolean successful = true;
-        for (final AdaptationStep step : action.getAdaptationSteps()) {
-            successful &= this.doSwitch(step);
-            if (successful) {
-                this.state.getReconfigurator().getEventDispatcher()
-                .reconfigurationExecuted(Collections.singletonList((Notification) new ActionExecutedNotification(action)));
-            }
-        }
-        return successful;
-    }
+	@Override
+	public Boolean caseAction(final Action action) {
+		boolean successful = true;
+		for (final AdaptationStep step : action.getAdaptationSteps()) {
+			successful &= this.doSwitch(step);
+		}
+		if (successful) {
+			this.state.getReconfigurator()
+					.getReconfigurationProcess()
+					.appendReconfigurationNotification(
+							new ActionExecutedNotification(action));
+		}
+		return successful;
+	}
 
-    @Override
-    public Boolean caseAdaptationStep(final AdaptationStep step) {
-        throw new AssertionError("AdaptationStep is abstract class, this case should not be reached at all!");
-    }
+	@Override
+	public Boolean caseAdaptationStep(final AdaptationStep step) {
+		throw new AssertionError(
+				"AdaptationStep is abstract class, this case should not be reached at all!");
+	}
 
-    @Override
-    public Boolean caseResourceDemandingStep(final ResourceDemandingStep step) {
-        // perform controller completion
-        // TODO FIXME currently it is assumed that all components are in the same repository
-        final boolean conflictExists = checkForConflictsAndApplyTransientStates(step);
-        if (conflictExists) {
-            return false;
-        }
-        /*
-         * If no conflicts exists the action can be executed. Consequently stereotypes have been
-         * applied. These must result in model updates. TODO FIXME Christian 'Real' reconfigurations
-         * should be handled differently than stereotype applications.
-         */
-        final Repository repository = step.getControllerCalls().get(0).getComponent().getRepository__RepositoryComponent();
-        final Mapping mapping = controllerCompletion(step, repository);
-        state.getReconfigurator().getEventDispatcher().reconfigurationExecuted(null);
-        final List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
-        final SimuComModel model = state.getMainContext().getModel();
+	@Override
+	public Boolean caseResourceDemandingStep(final ResourceDemandingStep step) {
+		// perform controller completion
+		// TODO FIXME currently it is assumed that all components are in the
+		// same repository
+		final boolean conflictExists = checkForConflictsAndApplyTransientStates(step);
+		if (conflictExists) {
+			return false;
+		}
+		/*
+		 * If no conflicts exists the action can be executed. Consequently
+		 * stereotypes have been applied. These must result in model updates.
+		 * TODO FIXME Christian 'Real' reconfigurations should be handled
+		 * differently than stereotype applications.
+		 */
+		final Repository repository = step.getControllerCalls().get(0)
+				.getComponent().getRepository__RepositoryComponent();
+		final Mapping mapping = controllerCompletion(step, repository);
 
-        // get the process in which the reconfiguration is executed
-        final ReconfigurationProcess reconfigurationProcess = state.getReconfigurator().getReconfigurationProcess();
+		List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
+		SimuComModel model = this.state.getMainContext().getModel();
 
-        // consume resources
-        for(final ControllerMapping controllerMapping : mapping.getControllerMappings()) {
+		// get the process in which the reconfiguration is executed
+		final ReconfigurationProcess reconfigurationProcess = this.state
+				.getReconfigurator().getReconfigurationProcess();
 
-            final ControllerCall call = controllerMapping.getMappedCall();
-            final List<Probe> usageStartStopProbes = Collections.unmodifiableList(
-                    Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
-                            (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
-            final OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " " + call.getEntityName(),
-                    createAndScheduleControllerScenarioRunner(controllerMapping, reconfigurationProcess), usageStartStopProbes);
-            users.add(user);
-            user.startUserLife();
-        }
-        // wait until all users have finished executing
-        while (checkIfUsersRun(users)) {
-            reconfigurationProcess.passivate();
-        }
-        // execute adaptation
-        final boolean result = executeAdaptation(step, mapping);
-        if (result) {
-            state.getReconfigurator().getEventDispatcher()
-            .reconfigurationExecuted(Collections.singletonList((Notification) new AdaptationStepExecutedNotification(step)));
-        }
-        return result;
-    }
+		// consume resources
+		for (ControllerMapping controllerMapping : mapping
+				.getControllerMappings()) {
 
-    private IScenarioRunner createAndScheduleControllerScenarioRunner(final ControllerMapping controllerMapping, final ReconfigurationProcess reconfigurationProcess) {
-        return new IScenarioRunner() {
-            @Override
-            public void scenarioRunner(final SimuComSimProcess process) {
-                LOGGER.log(Level.INFO, "Starting with the controller scenario!");
-                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(),
-                        process);
-                final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
-                final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-                usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
-                final List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
-                final Start start = UsagemodelFactory.eINSTANCE.createStart();
-                final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-                final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
-                actions.add(start);
-                actions.add(sysCall);
-                actions.add(stop);
-                sysCall.setOperationSignature__EntryLevelSystemCall(
-                        controllerMapping.getMappedCall().getCalledSignature());
-                sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
-                start.setSuccessor(sysCall);
-                sysCall.setSuccessor(stop);
-                new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-                reconfigurationProcess.scheduleAt(0);
-            }
-        };
-    }
+			ControllerCall call = controllerMapping.getMappedCall();
+			List<Probe> usageStartStopProbes = Collections
+					.unmodifiableList(Arrays.asList(
+							(Probe) new TakeCurrentSimulationTimeProbe(model
+									.getSimulationControl()),
+							(Probe) new TakeCurrentSimulationTimeProbe(model
+									.getSimulationControl())));
+			OpenWorkloadUser user = new OpenWorkloadUser(model,
+					step.getEntityName() + " " + call.getEntityName(),
+					createAndScheduleControllerScenarioRunner(
+							controllerMapping, reconfigurationProcess),
+					usageStartStopProbes);
+			users.add(user);
+			user.startUserLife();
+		}
+		// wait until all users have finished executing
+		while (checkIfUsersRun(users)) {
+			reconfigurationProcess.passivate();
+		}
+		// execute adaptation
+		final boolean result = executeAdaptation(step, mapping);
+		if (result) {
+			reconfigurationProcess.appendReconfigurationNotification(new AdaptationStepExecutedNotification(step));
+		}
+		return result;
+	}
 
-    private boolean checkForConflictsAndApplyTransientStates(final ResourceDemandingStep step) {
-        final IModelAccess access = state.getModelAccess();
-        final List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
-        final ModelExtent inAllocation = new BasicModelExtent(pcmAllocation);
-        final List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
-        final ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
-        final List<EObject> stepList = Arrays.asList((EObject) step);
-        final ModelExtent stepExtent = new BasicModelExtent(stepList);
-        final ExecutionContextImpl executionContext = new ExecutionContextImpl();
-        final OutputStreamWriter outStream = new OutputStreamWriter(System.out);
-        final Log log = new WriterLog(outStream);
-        executionContext.setLog(log);
-        // Make it so that the executor is only instantiated once
-        final TransformationExecutor conflictCheckExecutor = new TransformationExecutor(
-                URI.createURI(step.getPreconditionURI()));
-        // execute controller completion
-        final ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRoleSetExtent,
-                stepExtent);
-        return result.getSeverity() != Diagnostic.OK;
-    }
+	private IScenarioRunner createAndScheduleControllerScenarioRunner(
+			final ControllerMapping controllerMapping,
+			final ReconfigurationProcess reconfigurationProcess) {
+		return new IScenarioRunner() {
+			@Override
+			public void scenarioRunner(final SimuComSimProcess process) {
+				LOGGER.log(Level.INFO, "Starting with the controller scenario!");
+				final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
+						state.getMainContext(), process);
+				final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE
+						.createUsageScenario();
+				final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE
+						.createScenarioBehaviour();
+				usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
+				final List<AbstractUserAction> actions = behaviour
+						.getActions_ScenarioBehaviour();
+				final Start start = UsagemodelFactory.eINSTANCE.createStart();
+				final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE
+						.createEntryLevelSystemCall();
+				final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
+				actions.add(start);
+				actions.add(sysCall);
+				actions.add(stop);
+				sysCall.setOperationSignature__EntryLevelSystemCall(controllerMapping
+						.getMappedCall().getCalledSignature());
+				sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping
+						.getControllerRole());
+				start.setSuccessor(sysCall);
+				sysCall.setSuccessor(stop);
+				new UsageScenarioSwitch<Object>(newContext)
+						.doSwitch(usageScenario);
+				reconfigurationProcess.scheduleAt(0);
+			}
+		};
+	}
 
-    private boolean checkIfUsersRun(final Collection<OpenWorkloadUser> users) {
-        for (final OpenWorkloadUser user : users) {
-            if (!user.isTerminated()) {
-                return true;
-            }
-        }
+	private boolean checkForConflictsAndApplyTransientStates(
+			final ResourceDemandingStep step) {
+		final IModelAccess access = state.getModelAccess();
+		final List<EObject> pcmAllocation = Arrays.asList((EObject) access
+				.getGlobalPCMModel().getAllocation());
+		final ModelExtent inAllocation = new BasicModelExtent(pcmAllocation);
+		final List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
+		final ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
+		final List<EObject> stepList = Arrays.asList((EObject) step);
+		final ModelExtent stepExtent = new BasicModelExtent(stepList);
+		final ExecutionContextImpl executionContext = new ExecutionContextImpl();
+		final OutputStreamWriter outStream = new OutputStreamWriter(System.out);
+		final Log log = new WriterLog(outStream);
+		executionContext.setLog(log);
+		// Make it so that the executor is only instantiated once
+		final TransformationExecutor conflictCheckExecutor = new TransformationExecutor(
+				URI.createURI(step.getPreconditionURI()));
+		// execute controller completion
+		final ExecutionDiagnostic result = conflictCheckExecutor.execute(
+				executionContext, inAllocation, inRoleSetExtent, stepExtent);
+		return result.getSeverity() != Diagnostic.OK;
+	}
 
-        return false;
-    }
+	private boolean checkIfUsersRun(final Collection<OpenWorkloadUser> users) {
+		for (final OpenWorkloadUser user : users) {
+			if (!user.isTerminated()) {
+				return true;
+			}
+		}
 
-    private Mapping controllerCompletion(final AdaptationStep step, final Repository controllerRepository) {
-        final IModelAccess access = state.getModelAccess();
-        final List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
-        // get PCM model that is transformed
-        final ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
-        final List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
-        final ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
-        final ModelExtent outMapping = new BasicModelExtent();
-        final List<EObject> repositoryList = Arrays.asList((EObject) controllerRepository);
-        final ModelExtent controllerRepositoryExtent = new BasicModelExtent(repositoryList);
-        final List<EObject> stepList = Arrays.asList((EObject) step);
-        final ModelExtent stepExtent = new BasicModelExtent(stepList);
-        final ExecutionContextImpl executionContext = new ExecutionContextImpl();
-        final OutputStreamWriter outStream = new OutputStreamWriter(System.out);
-        final Log log = new WriterLog(outStream);
-        executionContext.setLog(log);
-        // Make it so that the executor is only instantiated once
-        final TransformationExecutor controllerCompletionExecutor = new TransformationExecutor(
-                URI.createURI(step.getControllerCompletionURI()));
-        // execute controller completion
-        final ExecutionDiagnostic result = controllerCompletionExecutor.execute(executionContext, inoutAllocation,
-                controllerRepositoryExtent, inRoleSetExtent, stepExtent, outMapping);
-        if (result.getSeverity() == Diagnostic.OK) {
-            return (Mapping) outMapping.getContents().get(0);
-        }
-        throw new RuntimeException("Controller Completion transformation did fail!");
-    }
+		return false;
+	}
 
-    private boolean executeAdaptation(final AdaptationStep step, final Mapping mapping) {
-        final IModelAccess access = state.getModelAccess();
-        final List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
-        // get PCM model that is transformed
-        final ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
-        final List<EObject> rolesList = Arrays.asList((EObject) this.roleSet);
-        final ModelExtent rolesExtent = new BasicModelExtent(rolesList);
-        final List<EObject> mappingList = Arrays.asList((EObject) mapping);
-        final ModelExtent mappingExtent = new BasicModelExtent(mappingList);
-        final ExecutionContextImpl executionContext = new ExecutionContextImpl();
-        // Make it so that the executor is only instantiated once
-        final TransformationExecutor adaptationExecutor = new TransformationExecutor(
-                URI.createURI(step.getAdaptationStepURI()));
-        // execute adaptation
-        final ExecutionDiagnostic result = adaptationExecutor.execute(executionContext, inoutAllocation, rolesExtent,
-                mappingExtent);
-        return result.getSeverity() == Diagnostic.OK;
-    }
+	private Mapping controllerCompletion(final AdaptationStep step,
+			final Repository controllerRepository) {
+		final IModelAccess access = state.getModelAccess();
+		final List<EObject> pcmAllocation = Arrays.asList((EObject) access
+				.getGlobalPCMModel().getAllocation());
+		// get PCM model that is transformed
+		final ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
+		final List<EObject> roleSetList = Arrays.asList((EObject) roleSet);
+		final ModelExtent inRoleSetExtent = new BasicModelExtent(roleSetList);
+		final ModelExtent outMapping = new BasicModelExtent();
+		final List<EObject> repositoryList = Arrays
+				.asList((EObject) controllerRepository);
+		final ModelExtent controllerRepositoryExtent = new BasicModelExtent(
+				repositoryList);
+		final List<EObject> stepList = Arrays.asList((EObject) step);
+		final ModelExtent stepExtent = new BasicModelExtent(stepList);
+		final ExecutionContextImpl executionContext = new ExecutionContextImpl();
+		final OutputStreamWriter outStream = new OutputStreamWriter(System.out);
+		final Log log = new WriterLog(outStream);
+		executionContext.setLog(log);
+		// Make it so that the executor is only instantiated once
+		final TransformationExecutor controllerCompletionExecutor = new TransformationExecutor(
+				URI.createURI(step.getControllerCompletionURI()));
+		// execute controller completion
+		final ExecutionDiagnostic result = controllerCompletionExecutor
+				.execute(executionContext, inoutAllocation,
+						controllerRepositoryExtent, inRoleSetExtent,
+						stepExtent, outMapping);
+		if (result.getSeverity() == Diagnostic.OK) {
+			return (Mapping) outMapping.getContents().get(0);
+		}
+		throw new RuntimeException(
+				"Controller Completion transformation did fail!");
+	}
+
+	private boolean executeAdaptation(final AdaptationStep step,
+			final Mapping mapping) {
+		final IModelAccess access = state.getModelAccess();
+		final List<EObject> pcmAllocation = Arrays.asList((EObject) access
+				.getGlobalPCMModel().getAllocation());
+		// get PCM model that is transformed
+		final ModelExtent inoutAllocation = new BasicModelExtent(pcmAllocation);
+		final List<EObject> rolesList = Arrays.asList((EObject) this.roleSet);
+		final ModelExtent rolesExtent = new BasicModelExtent(rolesList);
+		final List<EObject> mappingList = Arrays.asList((EObject) mapping);
+		final ModelExtent mappingExtent = new BasicModelExtent(mappingList);
+		final ExecutionContextImpl executionContext = new ExecutionContextImpl();
+		// Make it so that the executor is only instantiated once
+		final TransformationExecutor adaptationExecutor = new TransformationExecutor(
+				URI.createURI(step.getAdaptationStepURI()));
+		// execute adaptation
+		final ExecutionDiagnostic result = adaptationExecutor.execute(
+				executionContext, inoutAllocation, rolesExtent, mappingExtent);
+		return result.getSeverity() == Diagnostic.OK;
+	}
 }
