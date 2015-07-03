@@ -69,16 +69,23 @@ public class ProfilesLibrary {
     	}
     }
     
-    public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
+    private static void ensureProfileApplied(Entity pcmEntity, String stereotypeName) {
+    	assert pcmEntity != null && stereotypeName != null;
+    	
     	Profile profile = queryProfileByStereotypeName(pcmEntity, stereotypeName);
     	if (profile == null) {
     		throw new IllegalArgumentException("Stereotype with given name '" + stereotypeName + "' does not exist!");
     	}
     	ensureProfileApplied(pcmEntity.eResource(), profile);
+    }
+    
+    public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
+    	ensureProfileApplied(pcmEntity, stereotypeName);
         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
     }
 
     public static void removeStereotypeApplications(final Entity pcmEntity, final String stereotypeName) {
+    	ensureProfileApplied(pcmEntity, stereotypeName);
         if (StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName)) {
             StereotypeAPI.unapplyStereotype(pcmEntity, stereotypeName);
         }
