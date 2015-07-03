@@ -4,7 +4,7 @@
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_qp-CMCGHEeWO5-Sv6naeJg" name="MigratedComponentAssemblyContext">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_0T1fcCGHEeWO5-Sv6naeJg">
-        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.0#//core/composition/AssemblyContext"/>
+        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/composition/AssemblyContext"/>
       </extensions>
     </eClassifiers>
   </emfprofile:Profile>
@@ -34,7 +34,7 @@
       </children>
       <styles xmi:type="notation:DescriptionStyle" xmi:id="_zJAEASGHEeWO5-Sv6naeJg"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_zJAEAiGHEeWO5-Sv6naeJg" fontName="Segoe UI"/>
-      <element xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.0#//core/composition/AssemblyContext"/>
+      <element xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/composition/AssemblyContext"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_zJAEAyGHEeWO5-Sv6naeJg" x="275" y="170"/>
     </children>
     <edges xmi:type="notation:Edge" xmi:id="_0T1fcSGHEeWO5-Sv6naeJg" type="4005" element="_0T1fcCGHEeWO5-Sv6naeJg" source="_qqHzMCGHEeWO5-Sv6naeJg" target="_zJAEACGHEeWO5-Sv6naeJg">
