@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0" entityName="IaaS">
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1" entityName="IaaS">
   <linkingResources__ResourceEnvironment id="_4_XIIAEpEeS7FKokKTKFow" entityName="ComputeCenterLAN" connectedResourceContainers_LinkingResource="_xISeMAEpEeS7FKokKTKFow _3uVlIAEpEeS7FKokKTKFow _yaTfsAEpEeS7FKokKTKFow">
     <communicationLinkResourceSpecifications_LinkingResource id="_4_aygAEpEeS7FKokKTKFow">
       <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
