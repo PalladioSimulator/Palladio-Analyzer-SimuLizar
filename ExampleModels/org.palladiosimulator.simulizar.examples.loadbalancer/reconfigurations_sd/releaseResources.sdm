@@ -24,7 +24,7 @@
     <details key="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0" value="true"/>
     <details key="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" value="true"/>
     <details key="http://palladiosimulator.org/MetricSpec/1.0" value="true"/>
-    <details key="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" value="true"/>
+    <details key="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" value="true"/>
     <details key="http://palladiosimulator.org/MonitorRepository/1.0" value="true"/>
   </annotation>
   <ownedActivityEdge target="//@ownedActivityNode.2" source="//@ownedActivityNode.0"/>
