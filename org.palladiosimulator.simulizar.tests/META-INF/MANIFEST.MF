@@ -22,4 +22,6 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
  org.palladiosimulator.simulizar.runtimemeasurement,
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
- org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="1.0.0"
+ org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="1.0.0",
+ org.eclipse.emf;bundle-version="2.6.0",
+ org.palladiosimulator.metricspec.resources;bundle-version="1.0.0"
