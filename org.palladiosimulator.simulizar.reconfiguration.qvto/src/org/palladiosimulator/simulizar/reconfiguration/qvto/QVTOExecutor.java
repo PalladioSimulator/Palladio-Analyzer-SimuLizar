@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -29,12 +28,12 @@ import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.commons.eclipseutils.FileHelper;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
@@ -69,7 +68,10 @@ public class QVTOExecutor {
         super();
         this.modelAccess = modelAccess;
         this.qvtoRules = new ArrayList<>();
-        initializeTransformationExecutors(loadQvtFiles(configuration));
+        final URI[] qvtoFiles = getQvtoFiles(configuration.getReconfigurationRulesFolder());
+        if (qvtoFiles.length > 0) {
+            initializeTransformationExecutors(qvtoFiles);
+        }
         this.availableModels = collectBlackboardModels();
     }
 
@@ -151,29 +153,28 @@ public class QVTOExecutor {
     }
 
     /**
+     * Gets the QVTO files within the specified path.
      * 
-     * @param configuration
-     *            Simulation configuration
+     * @param path
+     *            Path to reconfiguration rules.
+     * @return The QVTO files within the given path. Returns an empty array in case no files are
+     *         found.
      */
-    private URI[] loadQvtFiles(final SimuLizarWorkflowConfiguration configuration) {
-        final String path = configuration.getReconfigurationRulesFolder();
-        URI[] result = null;
-        if (!path.equals("")) {
-
-            final File folder = FileUtil.getFolder(path);
-            final File[] files = FileUtil.getFiles(folder, QVTO_FILE_EXTENSION);
-            result = new URI[files.length];
-            for (int i = 0; i < result.length; ++i) {
-                LOGGER.info("Found reconfiguration rule \"" + files[i].getPath() + "\"");
-                result[i] = URI.createFileURI(files[i].getPath());
+    private URI[] getQvtoFiles(final String path) {
+        if (path.equals("")) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("No path to QVTo rules given.");
             }
-        } else {
-            result = new URI[0];
+            return new URI[0];
         }
-        if (result.length == 0) {
+
+        final URI[] uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
+
+        if (uris.length == 0) {
             LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
         }
-        return result;
+
+        return uris;
     }
 
     private static final ExpressionsSwitch<OperationalTransformation> OPERATIONAL_TRANSFORMATION_SWITCH = new ExpressionsSwitch<OperationalTransformation>() {
@@ -188,6 +189,7 @@ public class QVTOExecutor {
         assert transformationUris != null;
         final ResourceSet resourceSet = new ResourceSetImpl();
         for (final URI transformationUri : transformationUris) {
+            LOGGER.info("Found reconfiguration rule \"" + transformationUris + "\"");
             // the EObject transformation should be the first in in the content list
             final Resource transformationResource = resourceSet.getResource(transformationUri, true);
             final OperationalTransformation transformation = OPERATIONAL_TRANSFORMATION_SWITCH
