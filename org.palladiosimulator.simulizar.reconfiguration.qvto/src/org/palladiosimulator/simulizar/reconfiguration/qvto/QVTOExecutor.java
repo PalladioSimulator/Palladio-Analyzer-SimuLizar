@@ -189,7 +189,7 @@ public class QVTOExecutor {
         assert transformationUris != null;
         final ResourceSet resourceSet = new ResourceSetImpl();
         for (final URI transformationUri : transformationUris) {
-            LOGGER.info("Found reconfiguration rule \"" + transformationUris + "\"");
+            LOGGER.info("Found reconfiguration rule \"" + transformationUri + "\"");
             // the EObject transformation should be the first in in the content list
             final Resource transformationResource = resourceSet.getResource(transformationUri, true);
             final OperationalTransformation transformation = OPERATIONAL_TRANSFORMATION_SWITCH
