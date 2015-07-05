@@ -173,6 +173,10 @@ public class Reconfigurator extends
         if (isNotificationNewMeasurement(monitoredElement)
                 && (reconfigurationProcess == null || reconfigurationProcess
                         .isFinished())) {
+            // StB: I do not like this code line. It would be better to have a _single_,
+            // final reconfiguration process attached to this object. This single
+            // process could have a startProcess(monitoredElement) method to start
+            // and schedule the process...
             reconfigurationProcess = new ReconfigurationProcess(model,
                     "Reconfiguration Process", this.reconfigurators,
                     monitoredElement, this.getEventDispatcher());
