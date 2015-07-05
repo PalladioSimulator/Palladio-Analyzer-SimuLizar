@@ -9,7 +9,7 @@
  * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
  * in conjunction with mappings defined in the project properties.
  */
-modeltype PRM uses 'http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
 modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
 modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1';
@@ -48,13 +48,13 @@ transformation ScaleDown(		in prm : PRM,
 
 		log('SimuLizar ScaleDown Rule Transformation started');
 		
-		assert fatal(prm.rootObjects()[PRMMeasurement]->size() > 0)
+		assert fatal(prm.rootObjects()[RuntimeMeasurement]->size() > 0)
 			with log ("No Measurements found!");
 			
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		
-		var runtimeMeasurements = prm.rootObjects()[PRMMeasurement];
+		var runtimeMeasurements = prm.rootObjects()[RuntimeMeasurement];
 		// Scale down processing speed for all Resources
 		pcmAllocation.rootObjects()[Allocation]->forAll(
 			allocation : Allocation | 
@@ -63,9 +63,9 @@ transformation ScaleDown(		in prm : PRM,
 
 	}
 	
-	helper checkCondition(runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
+	helper checkCondition(runtimeMeasurements : Set(RuntimeMeasurement)) : Boolean {
 		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
-			if (pcmModelElementsMeasurement.measurementValue < threshold) {
+			if (pcmModelElementsMeasurement.measuringValue < threshold) {
 				return true;
 			} endif
 		};
@@ -75,7 +75,7 @@ transformation ScaleDown(		in prm : PRM,
 	/**
 	 * Scale down ProcessingResources.
 	 */
-	helper scaleDownProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(PRMMeasurement)) : Boolean {
+	helper scaleDownProcessingResources(resourceEnvironment : ResourceEnvironment, runtimeMeasurements : Set(RuntimeMeasurement)) : Boolean {
 		if (checkCondition(runtimeMeasurements)) then {
 			resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(resourceContainer) {
 				scaleDownProcessingResourcesRecursively(resourceContainer);
