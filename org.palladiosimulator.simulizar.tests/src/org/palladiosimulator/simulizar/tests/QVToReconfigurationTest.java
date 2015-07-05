@@ -22,13 +22,6 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.StatisticalCharacterizationEnum;
-import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
-import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
@@ -45,6 +38,13 @@ import org.palladiosimulator.pcm.seff.ProbabilisticBranchTransition;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
+import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class QVToReconfigurationTest {
@@ -79,7 +79,7 @@ public class QVToReconfigurationTest {
     @Test
     public void test() {
         // Deactivating test, because it kills Jenkins
-        // reconfigurationTests();
+        reconfigurationTests();
     }
 
     @SuppressWarnings("unused")
