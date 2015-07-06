@@ -96,6 +96,15 @@
       <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.modelversioning.emfprofile"/>
+      <import plugin="org.eclipse.m2m.qvt.oml"/>
+      <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto"/>
+      <import plugin="org.palladiosimulator.simulizar.ui"/>
+      <import plugin="org.modelversioning.emfprofile.edit"/>
+      <import plugin="org.eclipse.emf.edit.ui"/>
+      <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.mdsdprofiles.api"/>
    </requires>
 
    <plugin
@@ -170,6 +179,34 @@
 
    <plugin
          id="org.palladiosimulator.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.edit"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.editor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.action.repository"
          download-size="0"
          install-size="0"
          version="0.0.0"
