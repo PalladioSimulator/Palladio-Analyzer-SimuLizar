@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_n4tLENIgEeSvYrDsAIgQPw">
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_n4tLENIgEeSvYrDsAIgQPw">
   <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" measuringPoint="rackPdu" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer.powerconsumption/iaas.infrastructure#_q2nJYJgGEeS8naF2VwaQgQ"/>
   <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint">
     <activeResource href="../iaas.resourceenvironment#_GAVEEAEqEeS7FKokKTKFow"/>
