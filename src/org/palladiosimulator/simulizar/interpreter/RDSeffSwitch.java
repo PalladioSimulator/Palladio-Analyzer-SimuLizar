@@ -588,9 +588,9 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     private AllocationContext getAllocationContext(final Allocation allocation) {
         // For iterating top-down through a stack see:
         // http://stackoverflow.com/questions/16992758/is-there-a-bug-in-java-util-stacks-iterator
-        for (final ListIterator<AssemblyContext> iterator = this.context.getAssemblyContextStack()
-                .listIterator(this.context.getAssemblyContextStack().size()); iterator.hasPrevious();) {
-            for (final AllocationContext allocationContext : allocation.getAllocationContexts_Allocation()) {
+        for (final AllocationContext allocationContext : allocation.getAllocationContexts_Allocation()) {
+            for (final ListIterator<AssemblyContext> iterator = this.context.getAssemblyContextStack()
+                    .listIterator(this.context.getAssemblyContextStack().size()); iterator.hasPrevious();) {
                 if (allocationContext.getAssemblyContext_AllocationContext().getId()
                         .equals(iterator.previous().getId())) {
                     return allocationContext;
