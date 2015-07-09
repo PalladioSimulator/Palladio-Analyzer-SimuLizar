@@ -25,10 +25,22 @@ public class ProfilesLibrary {
         super();
     }
 
+    /**
+     * Gets whether the stereotype with the given name is applied to the given pcm entity.
+     * @param pcmEntity The {@link Entity} to be checked for stereotype application.
+     * @param stereotypeName The name of the stereotype to check for application.
+     * @return {@code true} whether the given stereotype is applied, {@code false} otherwise.
+     */
     public static boolean hasAppliedStereotype(final Entity pcmEntity, final String stereotypeName) {
         return StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName);
     }
 
+    /**
+     * Gets whether the stereotype with the given name is applied to any of the given pcm entities.
+     * @param pcmEntitySet A {@link Set} of pcm elements to be checked for stereotype application.
+     * @param stereotypeName The name of the stereotype to check for application.
+     * @return {@code true} whether the given stereotype is applied at least once, {@code false} otherwise.
+     */
     public static boolean hasAppliedStereotype(final Set<Entity> pcmEntitySet, final String stereotypeName) {
         return StereotypeAPI.hasAppliedStereotype(pcmEntitySet, stereotypeName);
     }
@@ -38,14 +50,13 @@ public class ProfilesLibrary {
 
         for (final Entity entity : pcmEntitySet) {
             if (StereotypeAPI.isStereotypeApplied(entity, stereotypeName)) {
-                appliedStereotypes++;
+                if (++appliedStereotypes > 1) {
+                    return false;
+                }
             }
         }
 
-        if (appliedStereotypes != 1) {
-            return false;
-        }
-        return true;
+        return appliedStereotypes == 1;
     }
 
     private static Profile queryProfileByStereotypeName(Entity pcmEntity, String stereotypeName) {
@@ -79,11 +90,24 @@ public class ProfilesLibrary {
     	ensureProfileApplied(pcmEntity.eResource(), profile);
     }
     
+    /**
+     * Applies the stereotype with the given name to the given pcm element.
+     * @param pcmEntity The {@link Entity} the stereotype shall be applied to.
+     * @param stereotypeName The name of the stereotype to apply.
+     * @throws IllegalStateException In case no stereotype with the given name exists.
+     */
     public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
     	ensureProfileApplied(pcmEntity, stereotypeName);
         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
     }
 
+    /**
+     * Revokes the application of stereotype with the given name to the given pcm element.<br>
+     * This method does nothing, in case the stereotype has not been applied beforehand.
+     * @param pcmEntity The {@link Entity} that is affected.
+     * @param stereotypeName The name of the stereotype to revoke.
+     * @throws IllegalStateException In case no stereotype with the given name exists.
+     */
     public static void removeStereotypeApplications(final Entity pcmEntity, final String stereotypeName) {
     	ensureProfileApplied(pcmEntity, stereotypeName);
         if (StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName)) {
@@ -91,6 +115,13 @@ public class ProfilesLibrary {
         }
     }
 
+    /**
+     * Sets the integer tagged value of a stereotype which is applied to the given pcm element.
+     * @param pcmEntity The {@link Entity} that is affected.
+     * @param value The new value to be set
+     * @param stereotypeName The name of the stereotype the tagged value belongs to.
+     * @param taggedValueName The name of the integer tagged value to be set.
+     */
     public static void setTaggedValue(final Entity pcmEntity, final int value, final String stereotypeName, final String taggedValueName) {
         StereotypeAPI.setTaggedValue(pcmEntity, value, stereotypeName, taggedValueName);
     }
