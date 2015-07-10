@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" id="_13DCANhyEeSNWao7qRG8CA" entityName="Monitors">
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" id="_13DCANhyEeSNWao7qRG8CA" entityName="Monitors">
   <monitors id="_KWZkoNh_EeSCTeOPoRaaPQ" entityName="ResponseTimeMonitor">
     <measurementSpecifications id="_QfOkENh_EeSCTeOPoRaaPQ" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_6NWzQN66EeSFR4acpbZ8HQ" intervall="10.0"/>
-      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
     </measurementSpecifications>
   </monitors>
   <monitors id="_-BVIEOhmEeSkZ7YVP-H6TQ" entityName="PoolSizeMonitor">
     <measurementSpecifications id="_La38EOhnEeSkZ7YVP-H6TQ" statisticalCharacterization="ArithmeticMean">
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_O4bBAOhnEeSkZ7YVP-H6TQ" intervall="10.0"/>
-      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_qC7AMuRFEeSsFtCEWlnNdA"/>
     </measurementSpecifications>
   </monitors>
 </monitorrepository:MonitorRepository>
