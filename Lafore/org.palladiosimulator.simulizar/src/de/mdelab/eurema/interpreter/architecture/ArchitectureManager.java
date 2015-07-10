@@ -22,8 +22,7 @@ public class ArchitectureManager {
 	/**
 	 * The Architecture Manager instance.
 	 */
-	public final static ArchitectureManager INSTANCE =
-			new ArchitectureManager();
+	public final static ArchitectureManager INSTANCE = new ArchitectureManager();
 
 	/**
 	 * Flag indicating whether this manager has been initialized or not.
@@ -49,12 +48,16 @@ public class ArchitectureManager {
 	 *            the {@code eurema.Architecture} element of the EUREMA model.
 	 */
 	public void initialize(eurema.Architecture eArchitecture) {
+		boolean DEBUG = true;
+		if (DEBUG) {
+			this.initialized = false;
+			this.eArchitecture = null;
+		}
 		if (!this.initialized) {
 			this.eArchitecture = eArchitecture;
 			this.initialized = true;
 		} else {
-			throw new EuremaInterpreterException(
-					"The Architecture Manager Manager has already been initialized.");
+			throw new EuremaInterpreterException("The Architecture Manager Manager has already been initialized.");
 		}
 	}
 

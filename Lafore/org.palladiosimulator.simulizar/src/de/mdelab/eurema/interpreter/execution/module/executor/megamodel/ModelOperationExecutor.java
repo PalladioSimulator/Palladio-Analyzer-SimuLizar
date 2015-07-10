@@ -6,6 +6,11 @@ import java.util.List;
 
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.lafore.eurema.operations.AnalyzeImplementation;
+import org.palladiosimulator.simulizar.lafore.eurema.operations.ExecuteImplementation;
+import org.palladiosimulator.simulizar.lafore.eurema.operations.MonitorImplementation;
+import org.palladiosimulator.simulizar.lafore.eurema.operations.PlanImplementation;
 
 import de.mdelab.eurema.interpreter.EuremaInterpreterException;
 import de.mdelab.eurema.interpreter.execution.GlobalExecutionContext;
@@ -51,8 +56,8 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 	 *         source operation has just been executed.
 	 */
 
-	public eurema.Transition execute(eurema.ModelOperation modelOperation,
-			eurema.Transition before, MegamodelModuleExecutionContext context) {
+	public eurema.Transition execute(eurema.ModelOperation modelOperation, eurema.Transition before,
+			MegamodelModuleExecutionContext context) {
 
 		eurema.SoftwareModule modelOperationImpl = modelOperation.getBinding();
 		assert modelOperationImpl != null;
@@ -60,23 +65,65 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 
 		try {
 			Class<?> implClass = Class.forName(impl);
+
 			if (!this.implementsInterface(implClass, IModelOperation.class)) {
-				throw new EuremaInterpreterException(
-						"Model operation implementation " + impl
-								+ "does not implement the interface "
-								+ IModelOperation.class.getName());
+				throw new EuremaInterpreterException("Model operation implementation " + impl
+						+ "does not implement the interface " + IModelOperation.class.getName());
 			} else {
 				// the class implements the predefined interface
 				// de.mdelab.eurema.operation.IModelOperation
 
 				// collect input models
-				List<Resource> inputModels =
-						this.retrieveInputModels(modelOperation);
+				List<Resource> inputModels = this.retrieveInputModels(modelOperation);
 
 				// instantiate and invoke the model operation implementation
 				// To invoke the implementation, see the method
 				// de.mdelab.eurema.operation.IModelOperation#run(List)
 				Object targetObject = implClass.newInstance();
+
+				if (MonitorImplementation.class.isAssignableFrom(implClass)) {
+
+					IModelAccess modAccess = this.globalExecutionContext.getModelAccess();
+					((MonitorImplementation) targetObject).setModelAccess(modAccess);
+
+					((MonitorImplementation) targetObject)
+							.setRuntimeViolationsModel(this.globalExecutionContext.getRuntimeViolationsModel());
+					((MonitorImplementation) targetObject)
+							.setRuntimeStrategiesModel(this.globalExecutionContext.getRuntimeStrategiesModel());
+				}
+
+				if (ExecuteImplementation.class.isAssignableFrom(implClass)) {
+
+					IModelAccess modAccess = this.globalExecutionContext.getModelAccess();
+					((ExecuteImplementation) targetObject).setModelAccess(modAccess);
+					((ExecuteImplementation) targetObject)
+							.setRuntimeViolationsModel(this.globalExecutionContext.getRuntimeViolationsModel());
+					((ExecuteImplementation) targetObject)
+							.setRuntimeStrategiesModel(this.globalExecutionContext.getRuntimeStrategiesModel());
+				}
+
+				if (AnalyzeImplementation.class.isAssignableFrom(implClass)) {
+
+					IModelAccess modAccess = this.globalExecutionContext.getModelAccess();
+					((AnalyzeImplementation) targetObject).setModelAccess(modAccess);
+
+					((AnalyzeImplementation) targetObject)
+							.setRuntimeViolationsModel(this.globalExecutionContext.getRuntimeViolationsModel());
+					((AnalyzeImplementation) targetObject)
+							.setRuntimeStrategiesModel(this.globalExecutionContext.getRuntimeStrategiesModel());
+				}
+
+				if (PlanImplementation.class.isAssignableFrom(implClass)) {
+
+					IModelAccess modAccess = this.globalExecutionContext.getModelAccess();
+					((PlanImplementation) targetObject).setModelAccess(modAccess);
+
+					((PlanImplementation) targetObject)
+							.setRuntimeViolationsModel(this.globalExecutionContext.getRuntimeViolationsModel());
+					((PlanImplementation) targetObject)
+							.setRuntimeStrategiesModel(this.globalExecutionContext.getRuntimeStrategiesModel());
+				}
+
 				Class<?>[] parameterTypes = new Class<?>[] { List.class };
 				Method run = implClass.getMethod("run", parameterTypes);
 				Object[] args = new Object[] { inputModels };
@@ -84,12 +131,10 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 
 				if (result == null || !(result instanceof ModelOperationResult)) {
 					throw new EuremaInterpreterException(
-							"Model operation implementation " + impl
-									+ "does not properly return results.");
+							"Model operation implementation " + impl + "does not properly return results.");
 				} else {
 					// proper result available
-					ModelOperationResult modelOperationResult =
-							(ModelOperationResult) result;
+					ModelOperationResult modelOperationResult = (ModelOperationResult) result;
 
 					// update repository with the potentially, newly
 					// created output models
@@ -101,17 +146,18 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 					this.updateRepository(inputModels);
 
 					// retrieve enabled transitions and return it
-					eurema.Exit eEnabledExit =
-							this.retrieveExit(modelOperation,
-									modelOperationResult.getReturnStatus());
+					eurema.Exit eEnabledExit = this.retrieveExit(modelOperation,
+							modelOperationResult.getReturnStatus());
 					return eEnabledExit.getOutgoing();
 				}
 
 			}
-		} catch (Exception e) {
-			throw new EuremaInterpreterException(
-					"Failure in executing the model operation implementation: "
-							+ impl, e);
+		} catch (
+
+		Exception e)
+
+		{
+			throw new EuremaInterpreterException("Failure in executing the model operation implementation: " + impl, e);
 		}
 
 	}
@@ -120,11 +166,10 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Transition execute(OperationBehavior operationBehavior,
-			eurema.Transition before, MegamodelModuleExecutionContext context) {
+	public Transition execute(OperationBehavior operationBehavior, eurema.Transition before,
+			MegamodelModuleExecutionContext context) {
 		assert operationBehavior instanceof eurema.ModelOperation;
-		return this.execute((eurema.ModelOperation) operationBehavior, before,
-				context);
+		return this.execute((eurema.ModelOperation) operationBehavior, before, context);
 	}
 
 	/**
@@ -135,8 +180,7 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 	 *            the currently executed model operation
 	 * @return the list of input models
 	 */
-	private List<Resource> retrieveInputModels(
-			eurema.ModelOperation modelOperation) {
+	private List<Resource> retrieveInputModels(eurema.ModelOperation modelOperation) {
 		EList<eurema.ModelUse> modelUses = modelOperation.getModelUsages();
 		List<Resource> inputModels = new LinkedList<Resource>();
 
@@ -147,18 +191,12 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 				eurema.Model usedModel = modelUse.getModel();
 				String modelURI = null;
 				if (usedModel instanceof eurema.RuntimeModel) {
-					modelURI =
-							((eurema.RuntimeModel) usedModel).getBinding()
-									.getURI();
+					modelURI = ((eurema.RuntimeModel) usedModel).getBinding().getURI();
 				} else if (usedModel instanceof eurema.MegamodelProxy) {
-					modelURI =
-							((eurema.MegamodelProxy) usedModel).getBinding()
-									.getBinding().getURI();
+					modelURI = ((eurema.MegamodelProxy) usedModel).getBinding().getBinding().getURI();
 				}
 				assert modelURI != null;
-				Model model =
-						ModelRepository.INSTANCE.loadModelOnDemand(modelURI,
-								usedModel.getName());
+				Model model = ModelRepository.INSTANCE.loadModelOnDemand(modelURI, usedModel.getName());
 				Resource modelResource = model.getEmfResource();
 				inputModels.add(modelResource);
 			} // else output model
@@ -199,7 +237,10 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 	private void updateRepository(List<Resource> resources) {
 		if (resources != null) {
 			for (Resource r : resources) {
-				if (r!= null && !ModelRepository.INSTANCE.containsEMFResource(r.getURI())) {
+				if (r != null) {
+					// &&
+					// !ModelRepository.INSTANCE.containsEMFResource(r.getURI()))
+					// {
 					ModelRepository.INSTANCE.addModel(r, r.getURI().toString());
 				}
 			}
@@ -219,8 +260,7 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 	 * @return the exit compartment of the model operation with the given return
 	 *         status as its name.
 	 */
-	private eurema.Exit retrieveExit(eurema.ModelOperation modelOperation,
-			String returnStatus) {
+	private eurema.Exit retrieveExit(eurema.ModelOperation modelOperation, String returnStatus) {
 		eurema.Exit resultExit = null;
 		if (returnStatus != null) {
 			for (eurema.Exit eExit : modelOperation.getExits()) {
@@ -232,8 +272,7 @@ public class ModelOperationExecutor extends OperationBehaviorExecutor {
 			}
 		}
 		if (resultExit == null) {
-			throw new EuremaInterpreterException("The model operation "
-					+ modelOperation.getName()
+			throw new EuremaInterpreterException("The model operation " + modelOperation.getName()
 					+ " has no exit compartment called: " + returnStatus);
 		} else {
 			return resultExit;
