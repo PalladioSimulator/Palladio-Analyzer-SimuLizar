@@ -5,7 +5,7 @@
     <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
   </servicelevelobjectives>
   <servicelevelobjectives id="__luscB8AEeWeaaDcKbFJ5A" name="ResponseTimeFuzzyThSlo" description="SLO for the Response Time (Linear Fuzzy Threshold)">
-    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_GuYKIx8BEeWeaaDcKbFJ5A" thresholdLimit="3" softLimit="2"/>
+    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_GuYKIx8BEeWeaaDcKbFJ5A" thresholdLimit="3" softLimit="2.5"/>
     <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
   </servicelevelobjectives>
   <servicelevelobjectives id="_L6_Y8B8BEeWeaaDcKbFJ5A" name="PoolSizeHardThSlo" description="SLO for the Number of active servers in the pool (Hard Threshold)">
@@ -13,7 +13,7 @@
     <measurementSpecification href="MonitorsRep.monitorrepository#_La38EOhnEeSkZ7YVP-H6TQ"/>
   </servicelevelobjectives>
   <servicelevelobjectives id="_aS3dcB8BEeWeaaDcKbFJ5A" name="OverprovisionedResourcesHardThSlo" description="SLO for the overprovisioned number of active servers in the pool (Hard Threshold)">
-    <lowerThreshold xsi:type="slo:HardThreshold" id="_pDhOUB8BEeWeaaDcKbFJ5A" thresholdLimit="0.2"/>
+    <lowerThreshold xsi:type="slo:HardThreshold" id="_pDhOUB8BEeWeaaDcKbFJ5A" thresholdLimit="0.5"/>
     <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
   </servicelevelobjectives>
 </slo:ServiceLevelObjectiveRepository>
