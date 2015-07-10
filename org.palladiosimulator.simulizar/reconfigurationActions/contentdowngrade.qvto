@@ -1,26 +1,47 @@
-modeltype PCM_ALLOC uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0';
-modeltype PCM_REP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0';
-modeltype PCM_SEFF uses 'http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0';
-modeltype PCM_SYS uses 'http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0';
-modeltype PCM_RES_ENV uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0';
-modeltype PCM_RES_TYPE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0';
-modeltype PCM_USAGE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.0';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.0';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.0';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.0';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.0';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.0';
 modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
 modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
-modeltype PCM_CORE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/5.0';
-modeltype PCM_COMP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0';
-modeltype PCM_ENTITY uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0';
-modeltype PCM_PARAM uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.0';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.0';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.0';
 modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
 transformation ContentDowngrade(		
-							in pcmRepository : PCM_REP,
-							in pcmSystem : PCM_SYS,
-							in pcmAllocation : PCM_ALLOC,
-							inout pcmResources : PCM_RES_ENV ) {
+							inout pcmAllocation : PCM_ALLOC,
+							inout pcmRep : PCM_REP, 
+							inout pcmSystem : PCM_SYS ) {
 								
 		main() {
-		
+			assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+			var basicComponents := pcmAllocation.rootObjects()[Allocation].allocationContexts_Allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext[BasicComponent];
+			var servers := basicComponents->select(c | c.entityName = "NewsService")->any(true);
+			var loadBalancer := basicComponents->select(c | c.entityName = "LoadBalancer")->any(true);
+			
+			var prob1 := servers.serviceEffectSpecifications__BasicComponent[ResourceDemandingBehaviour]->any(true).steps_Behaviour[BranchAction]->any(true).branches_Branch[ProbabilisticBranchTransition];
+			var prob2 := loadBalancer.serviceEffectSpecifications__BasicComponent[ResourceDemandingBehaviour]->any(true).steps_Behaviour[BranchAction]->any(true).branches_Branch[ProbabilisticBranchTransition];
+			
+			var numActiveServers = (prob2->select(p | p.branchProbability != 0.0)->size());
+			log ("Active: " + numActiveServers.toString());
+			if (numActiveServers = 5) then 
+			{
+				prob1->select(c | c.entityName = "selectMultimedia")->any(true).branchProbability := 0.0;
+				prob1->select(c | c.entityName = "selectTextual")->any(true).branchProbability := 1.0;
+			} 
+			endif;
+			
+			//prob->asOrderedSet()->forEach(p){p.branchProbability := 0.5;}
+			//log ("Multi " + prob->select(c | c.entityName = "selectMultimedia")->any(true).branchProbability.toString());
+			//log ("Text " + prob->select(c | c.entityName = "selectTextual")->any(true).branchProbability.toString());
+			
 		}					
 								
 	}
