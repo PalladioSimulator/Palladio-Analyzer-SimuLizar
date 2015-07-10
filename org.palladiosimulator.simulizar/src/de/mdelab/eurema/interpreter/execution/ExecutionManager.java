@@ -1,6 +1,10 @@
 package de.mdelab.eurema.interpreter.execution;
 
+import org.palladiosimulator.simulizar.access.IModelAccess;
+
 import de.mdelab.eurema.interpreter.EventQueue;
+import strategies.RuntimeStrategiesModel;
+import violations.RuntimeViolationsModel;
 
 /**
  * Manages the execution of the EUREMA model containing at least one module to
@@ -19,6 +23,7 @@ public interface ExecutionManager {
 	 *            the {@code eurema.RuntimeEnvironment} instance
 	 * @return the queue to which the adaptable software emits sensor events.
 	 */
-	public EventQueue initialize(eurema.RuntimeEnvironment eRuntimeEnvironment);
+	public EventQueue initialize(eurema.RuntimeEnvironment eRuntimeEnvironment, IModelAccess a,
+			RuntimeViolationsModel v, RuntimeStrategiesModel s);
 
 }

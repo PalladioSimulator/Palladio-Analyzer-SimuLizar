@@ -12,9 +12,12 @@ import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 
 import de.mdelab.eurema.interpreter.execution.events.EuremaEventTypeHierarchy;
 import de.mdelab.eurema.interpreter.models.ModelRepository;
+import strategies.RuntimeStrategiesModel;
+import violations.RuntimeViolationsModel;
 
 /**
  * Implementation of the EUREMA Interpreter.
@@ -24,6 +27,15 @@ import de.mdelab.eurema.interpreter.models.ModelRepository;
  * 
  */
 public class EuremaInterpreterImpl implements EuremaInterpreter {
+
+	private IModelAccess access;
+	private RuntimeViolationsModel vRun;
+	private RuntimeStrategiesModel sRun;
+
+	@Override
+	public IModelAccess getModelAccess() {
+		return access;
+	}
 
 	/**
 	 * Logging.
@@ -132,7 +144,8 @@ public class EuremaInterpreterImpl implements EuremaInterpreter {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EventQueue execute(eurema.Architecture eArchitecture) {
+	public EventQueue execute(eurema.Architecture eArchitecture, IModelAccess access, RuntimeViolationsModel v,
+			RuntimeStrategiesModel s) {
 		if (eArchitecture == null) {
 			throw new EuremaInterpreterException("The architecture to be executed is null.");
 		}
@@ -141,21 +154,23 @@ public class EuremaInterpreterImpl implements EuremaInterpreter {
 		logger.debug(" |_ Setting up the EUREMA model repository...");
 		ModelRepository.INSTANCE.initialize(this.rs, eArchitecture.getModelResourceSet());
 
-		return this.runtimeEnvironment.execute(eArchitecture);
+		return this.runtimeEnvironment.execute(eArchitecture, access, v, s);
 	}
 
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public EventQueue execute(String euremaArchitectureModelUri) {
+	public EventQueue execute(String euremaArchitectureModelUri, IModelAccess modAccess, RuntimeViolationsModel v,
+			RuntimeStrategiesModel s) {
 		if (euremaArchitectureModelUri == null || euremaArchitectureModelUri.equals("")) {
 			throw new EuremaInterpreterException(
 					"The URI of the architecture to be executed is null or the empty String.");
 		}
 		eurema.Architecture eArchitecture = this.loadArchitecture(euremaArchitectureModelUri);
+		access = modAccess;
 
-		return this.execute(eArchitecture);
+		return this.execute(eArchitecture, modAccess, v, s);
 	}
 
 	/**
@@ -197,4 +212,15 @@ public class EuremaInterpreterImpl implements EuremaInterpreter {
 			return (eurema.Architecture) rootObject;
 		}
 	}
+
+	@Override
+	public RuntimeViolationsModel getRuntimeViolationsModel() {
+		return vRun;
+	}
+
+	@Override
+	public RuntimeStrategiesModel getRuntimeStrategiesModel() {
+		return sRun;
+	}
+
 }

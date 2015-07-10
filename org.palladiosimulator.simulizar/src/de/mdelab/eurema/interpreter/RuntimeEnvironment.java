@@ -2,10 +2,13 @@ package de.mdelab.eurema.interpreter;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 
 import de.mdelab.eurema.interpreter.architecture.ArchitectureManager;
 import de.mdelab.eurema.interpreter.execution.ExecutionManager;
 import de.mdelab.eurema.interpreter.execution.ExecutionManagerImpl;
+import strategies.RuntimeStrategiesModel;
+import violations.RuntimeViolationsModel;
 
 /**
  * The runtime environment of the EUREMA interpreter.
@@ -15,6 +18,14 @@ import de.mdelab.eurema.interpreter.execution.ExecutionManagerImpl;
  * 
  */
 class RuntimeEnvironment {
+
+	IModelAccess access;
+	RuntimeViolationsModel vRun;
+	RuntimeStrategiesModel sRun;
+
+	IModelAccess getModelAccess() {
+		return access;
+	}
 
 	/**
 	 * Logging.
@@ -53,7 +64,9 @@ class RuntimeEnvironment {
 	 * @return The queue to which sensor events from the adaptable software have
 	 *         to be added.
 	 */
-	EventQueue execute(eurema.Architecture eArchitecture) {
+
+	EventQueue execute(eurema.Architecture eArchitecture, IModelAccess modAccess, RuntimeViolationsModel v,
+			RuntimeStrategiesModel s) {
 		logger.debug("Preparing the execution of the architecture defined in the EUREMA model " + eArchitecture);
 
 		// validate the architecture before executing it
@@ -68,11 +81,14 @@ class RuntimeEnvironment {
 		ArchitectureManager.INSTANCE.initialize(eArchitecture);
 
 		// Initialize the execution manager
-		EventQueue queue = this.executionManager.initialize(this.eRuntimeEnvironment);
+		EventQueue queue = this.executionManager.initialize(this.eRuntimeEnvironment, modAccess, v, s);
 
 		// TODO something missing here -- after the architecture manager and
 		// execution manager have been initialized?
 
+		vRun = v;
+		sRun = s;
+		access = modAccess;
 		return queue;
 	}
 

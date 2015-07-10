@@ -1,5 +1,10 @@
 package de.mdelab.eurema.interpreter;
 
+import org.palladiosimulator.simulizar.access.IModelAccess;
+
+import strategies.RuntimeStrategiesModel;
+import violations.RuntimeViolationsModel;
+
 /**
  * Interface to use the EUREMA interpreter.
  * 
@@ -19,7 +24,9 @@ public interface EuremaInterpreter {
 	 * @return The queue to which sensor events from the adaptable software have
 	 *         to be added.
 	 */
-	public EventQueue execute(eurema.Architecture eArchitecture);
+
+	public EventQueue execute(eurema.Architecture eArchitecture, IModelAccess access, RuntimeViolationsModel v,
+			RuntimeStrategiesModel s);
 
 	/**
 	 * Executes an EUREMA model.
@@ -32,6 +39,13 @@ public interface EuremaInterpreter {
 	 * @return The queue to which sensor events from the adaptable software have
 	 *         to be added.
 	 */
-	public EventQueue execute(String euremaArchitectureModelUri);
+	public EventQueue execute(String euremaArchitectureModelUri, IModelAccess accesss, RuntimeViolationsModel v,
+			RuntimeStrategiesModel s);
+
+	public IModelAccess getModelAccess();
+
+	public RuntimeViolationsModel getRuntimeViolationsModel();
+
+	public RuntimeStrategiesModel getRuntimeStrategiesModel();
 
 }

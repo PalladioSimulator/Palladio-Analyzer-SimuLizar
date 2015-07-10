@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.simulizar.access.IModelAccess;
 
 import de.mdelab.eurema.interpreter.EuremaInterpreterException;
 import de.mdelab.eurema.interpreter.EventQueue;
@@ -25,6 +26,8 @@ import de.mdelab.eurema.interpreter.execution.module.scheduler.EventDrivenModule
 import de.mdelab.eurema.interpreter.execution.module.scheduler.EventPeriodicModuleSchedulerImpl;
 import de.mdelab.eurema.interpreter.execution.module.scheduler.ModuleScheduler;
 import de.mdelab.eurema.interpreter.execution.module.scheduler.PeriodicModuleSchedulerImpl;
+import strategies.RuntimeStrategiesModel;
+import violations.RuntimeViolationsModel;
 
 /**
  * Manages the execution of the EUREMA model.
@@ -35,6 +38,9 @@ import de.mdelab.eurema.interpreter.execution.module.scheduler.PeriodicModuleSch
  */
 public class ExecutionManagerImpl implements ExecutionManager, GlobalExecutionContext {
 
+	IModelAccess accessMod;
+	RuntimeViolationsModel vRun;
+	RuntimeStrategiesModel sRun;
 	/**
 	 * Logging.
 	 */
@@ -84,12 +90,19 @@ public class ExecutionManagerImpl implements ExecutionManager, GlobalExecutionCo
 	/**
 	 * {@inheritDoc}
 	 */
+
 	@Override
-	public EventQueue initialize(eurema.RuntimeEnvironment eRuntimeEnvironment) {
+	public EventQueue initialize(eurema.RuntimeEnvironment eRuntimeEnvironment, IModelAccess access,
+			RuntimeViolationsModel v, RuntimeStrategiesModel s) {
 		logger.debug("Initializing the execution manager ...");
-		if (this.initialized) {
-			throw new EuremaInterpreterException("Execution manager has already been initialized.");
-		}
+
+		accessMod = access;
+		vRun = v;
+		sRun = s;
+		// if (this.initialized) {
+		// throw new EuremaInterpreterException("Execution manager has already
+		// been initialized.");
+		// }
 		this.globalSensorEventQueue = new EventQueueImpl("EUREMA_Global Sensor Event Queue");
 		this.schedulers = new LinkedList<>();
 		this.elementExecutorFactory = new ElementExecutorFactory(this);
@@ -328,4 +341,20 @@ public class ExecutionManagerImpl implements ExecutionManager, GlobalExecutionCo
 	public ElementExecutorFactory getElementExecutorFactory() {
 		return this.elementExecutorFactory;
 	}
+
+	@Override
+	public IModelAccess getModelAccess() {
+		return accessMod;
+	}
+
+	@Override
+	public RuntimeViolationsModel getRuntimeViolationsModel() {
+		return vRun;
+	}
+
+	@Override
+	public RuntimeStrategiesModel getRuntimeStrategiesModel() {
+		return sRun;
+	}
+
 }

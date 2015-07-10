@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMIResource;
 
 import de.mdelab.eurema.interpreter.EuremaInterpreterException;
@@ -49,6 +50,10 @@ public class ModelRepository {
 	 * name and URI of the corresponding EMF model.
 	 */
 	private eurema.ModelResourceSet eModelResourceSet;
+
+	public eurema.ModelResourceSet geteModResourceSet() {
+		return eModelResourceSet;
+	}
 
 	/**
 	 * Logging.
@@ -132,6 +137,7 @@ public class ModelRepository {
 					+ "on demand must not be null or the empty String.");
 		}
 		// HACK: absolute file paths to resolve proxies!
+
 		String filename = new File(uri).getAbsolutePath();
 		URI modelURI = URI.createFileURI(filename);
 
@@ -352,6 +358,18 @@ public class ModelRepository {
 		}
 		Resource r = this.resourceSet.getResource(uri, false);
 		return r != null;
+	}
+
+	public void removeModelResource(URI uri) {
+		if (uri == null) {
+			throw new ModelRepositoryException("Paramter \"uri\" to check containment of "
+					+ "a model resource in the EUREMA model must not be null.");
+		}
+
+		EObject mod = this.retrieveModelResourceByURI(uri.toString());
+		if (mod != null)
+			EcoreUtil.remove(mod);
+
 	}
 
 	/**
