@@ -1,19 +1,10 @@
 package org.palladiosimulator.simulizar.lafore.eurema.operations;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.osgi.framework.Bundle;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 
@@ -26,18 +17,24 @@ import violations.ViolationType;
 import violations.ViolationsFactory;
 import violations.ViolationsRepository;
 
+/**
+ * This class implements the Analyze operation for the LAFORE feedback loop.
+ * 
+ * @author Goran Piskachev
+ * 
+ */
 public class AnalyzeImplementation implements IModelOperation {
 
-	private RuntimeViolationsModel vRun;
+	private RuntimeViolationsModel violationsRun;
 	private IModelAccess access;
-	private RuntimeStrategiesModel sRun;
+	private RuntimeStrategiesModel strategiesRun;
 
 	public void setRuntimeViolationsModel(RuntimeViolationsModel v) {
-		vRun = v;
+		violationsRun = v;
 	}
 
 	public void setRuntimeStrategiesModel(RuntimeStrategiesModel s) {
-		sRun = s;
+		strategiesRun = s;
 	}
 
 	public void setModelAccess(IModelAccess modAccess) {
@@ -50,14 +47,8 @@ public class AnalyzeImplementation implements IModelOperation {
 		System.out.println("Executing the model operations implementation: " + this.getClass().getCanonicalName());
 
 		List<Resource> output = new LinkedList<Resource>();
-		// TODO: implement the analysis here!!!
 
-		// RuntimeMeasurementModel rmm = null;
 		ViolationsRepository vRepository = null;
-
-		// output model
-		// RuntimeViolationsModel vRuntime =
-		// ViolationsFactoryImpl.eINSTANCE.createRuntimeViolationsModel();
 
 		// System.out.println("Input Models:");
 		for (Resource r : models) {
@@ -100,7 +91,7 @@ public class AnalyzeImplementation implements IModelOperation {
 							Violation violationInstance = ViolationsFactory.eINSTANCE.createQuantifiableViolation();
 							violationInstance.setViolationType(violationT);
 
-							vRun.getViolations().add(violationInstance);
+							violationsRun.getViolations().add(violationInstance);
 
 						}
 					}
@@ -116,7 +107,7 @@ public class AnalyzeImplementation implements IModelOperation {
 							Violation violationInstance = ViolationsFactory.eINSTANCE.createQuantifiableViolation();
 							violationInstance.setViolationType(violationT);
 
-							vRun.getViolations().add(violationInstance);
+							violationsRun.getViolations().add(violationInstance);
 
 						}
 					}
@@ -125,41 +116,11 @@ public class AnalyzeImplementation implements IModelOperation {
 			}
 		}
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		URI platformPluginURI = URI.createFileURI(getAbsoluteFilename("org.palladiosimulator.simulizar",
-				"knowledgeModels/MyRuntimeViolations.violations"));
-		Resource resource = resourceSet.createResource(platformPluginURI);
-		resource.getContents().add(vRun);
-
-		try {
-			resource.save(Collections.emptyMap());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		output.add(vRun.eResource());
+		output.add(violationsRun.eResource());
 
 		ModelOperationResult result = new ModelOperationResult("analyzed", output);
 
 		return result;
 	}
 
-	public String getAbsoluteFilename(String bundleName, String relativePath) {
-		String absoluteFilename = "";
-		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/' + relativePath, true);
-		absoluteFilename = platformPluginURI.toFileString();
-
-		Bundle bundle = Platform.getBundle(bundleName);
-		URL base = bundle.getEntry(relativePath);
-
-		// FIXME: this is a hack !
-		try {
-			absoluteFilename = FileLocator.toFileURL(base).toString();
-			if (absoluteFilename.startsWith("file:/")) {
-				absoluteFilename = absoluteFilename.substring(6);
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return absoluteFilename;
-	}
 }

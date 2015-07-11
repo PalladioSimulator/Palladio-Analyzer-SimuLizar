@@ -19,6 +19,7 @@ public class SimulizarConstants {
 	public static final String RECONFIGURATION_RULES_FOLDER = "reconfigurationRulesFolder";
 	public static final String USAGEEVOLUTION_FILE = "usageEvolutionFile";
 	public static final String SERVICELEVELOBJECTIVEREPOSITORY_FILE = "serviceLevelObjectiveRepositoryFile";
+	// runtime models for lafore
 	public static final String STRATEGIESREPOSITORY_FILE = "strategiesRepositoryFile";
 	public static final String VIOLATIONSREPOSITORY_FILE = "violationsRepositoryFile";
 	public static final String VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE = "violationstrategymappingsRepositoryFile";
@@ -31,6 +32,7 @@ public class SimulizarConstants {
 	public static final String[] RECONFIGURATION_RULES_FILE_EXTENSION = new String[] { "*.sdm", ".qvto", ".henshin" };
 	public static final String[] USAGEEVOLUTION_FILE_EXTENSION = new String[] { "*.usageevolution" };
 	public static final String[] SERVICELEVELOBJECTIVEREPOSITORY_FILE_EXTENSION = new String[] { "*.slo" };
+	// runtime models for lafore
 	public static final String[] STRATEGIESREPOSITORY_FILE_EXTENSION = new String[] { "*.strategies" };
 	public static final String[] VIOLATIONSREPOSITORY_FILE_EXTENSION = new String[] { "*.violations" };
 	public static final String[] VIOLATIONSTRATEGYMAPPINGS_FILE_EXTENSION = new String[] {
@@ -45,6 +47,7 @@ public class SimulizarConstants {
 	public static final String DEFAULT_USAGEEVOLUTION_FILE = "";
 	public static final String DEFAULT_INFRASTRUCTURE_MODEL_FILE = "";
 	public static final String DEFAULT_SERVICELEVELOBJECTIVE_FILE = "";
+	// runtime models for lafore
 	public static final String DEFAULT_VIOLATIONSREPOSITORY_FILE = "";
 	public static final String DEFAULT_STRATEGIESREPOSITORY_FILE = "";
 	public static final String DEFAULT_VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE = "";

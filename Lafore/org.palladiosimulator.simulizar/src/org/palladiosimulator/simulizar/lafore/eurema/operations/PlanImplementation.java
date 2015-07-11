@@ -1,22 +1,19 @@
 package org.palladiosimulator.simulizar.lafore.eurema.operations;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
-import org.osgi.framework.Bundle;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.mdelab.eurema.operation.IModelOperation;
 import de.mdelab.eurema.operation.ModelOperationResult;
@@ -32,6 +29,12 @@ import violations.ViolationsRepository;
 import violationstrategymappings.ViolationStrategyMapping;
 import violationstrategymappings.ViolationStrategyMappingRepository;
 
+/**
+ * This class implements the Plan operation for the LAFORE feedback loop.
+ * 
+ * @author Goran Piskachev
+ * 
+ */
 public class PlanImplementation implements IModelOperation {
 
 	private RuntimeViolationsModel vRun;
@@ -127,7 +130,7 @@ public class PlanImplementation implements IModelOperation {
 		}
 
 		ResourceSet resourceSet = new ResourceSetImpl();
-		URI platformPluginURI = URI.createFileURI(getAbsoluteFilename("org.palladiosimulator.simulizar",
+		URI platformPluginURI = URI.createFileURI(FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
 				"knowledgeModels/MyRuntimeStrategies.strategies"));
 		Resource resource = resourceSet.createResource(platformPluginURI);
 		resource.getContents().add(sRun);
@@ -148,6 +151,13 @@ public class PlanImplementation implements IModelOperation {
 		return result;
 	}
 
+	/**
+	 * Method that checks if the strategy is already in the list.
+	 * 
+	 * @param newStrategy
+	 *            the instance of the strategy
+	 * 
+	 */
 	private boolean existsInList(Strategy newStrategy) {
 		for (Strategy st : sRun.getStrategies()) {
 			if (st.getStrategyType().getEntityName().equals(newStrategy.getStrategyType().getEntityName()))
@@ -156,26 +166,17 @@ public class PlanImplementation implements IModelOperation {
 		return false;
 	}
 
-	public String getAbsoluteFilename(String bundleName, String relativePath) {
-		String absoluteFilename = "";
-		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/' + relativePath, true);
-		absoluteFilename = platformPluginURI.toFileString();
-
-		Bundle bundle = Platform.getBundle(bundleName);
-		URL base = bundle.getEntry(relativePath);
-
-		// FIXME: this is hack !
-		try {
-			absoluteFilename = FileLocator.toFileURL(base).toString();
-			if (absoluteFilename.startsWith("file:/")) {
-				absoluteFilename = absoluteFilename.substring(6);
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return absoluteFilename;
-	}
-
+	/**
+	 * Method that returns the strategy type object from the strategies
+	 * repository for a given id.
+	 * 
+	 * @param id
+	 *            the id of the strategy type
+	 * @param sRepository
+	 *            the strategies repository
+	 * 
+	 * @return the strategy type object
+	 */
 	public StrategyType getStrategyType(String id, StrategiesRepository sRepository) {
 		for (ServiceEffectSpecification st : sRepository.getServiceEffectSpecifications__BasicComponent()) {
 			if (((StrategyType) st).getId() == id)
@@ -184,7 +185,18 @@ public class PlanImplementation implements IModelOperation {
 		return null;
 	}
 
-	public ViolationType getViolationTypeType(String id, ViolationsRepository vRepository) {
+	/**
+	 * Method that returns the violation type object from the violations
+	 * repository for a given id.
+	 * 
+	 * @param id
+	 *            the id of the violation type
+	 * @param vRepository
+	 *            the violations repository
+	 * 
+	 * @return the violation type object
+	 */
+	public ViolationType getViolationType(String id, ViolationsRepository vRepository) {
 		for (ViolationType vt : vRepository.getViolationTypes()) {
 			if (vt.getId() == id)
 				return vt;

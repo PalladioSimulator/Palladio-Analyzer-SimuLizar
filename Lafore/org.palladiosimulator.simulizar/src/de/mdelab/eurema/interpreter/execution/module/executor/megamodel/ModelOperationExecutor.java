@@ -28,6 +28,9 @@ import eurema.Transition;
  * @author thomas vogel
  * @version 0.02
  * 
+ *          ModelAccess and Violation and Strategy Runtime models are added for
+ *          LAFORE.
+ * 
  */
 public class ModelOperationExecutor extends OperationBehaviorExecutor {
 

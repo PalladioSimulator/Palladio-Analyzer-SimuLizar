@@ -35,6 +35,10 @@ import violations.RuntimeViolationsModel;
  * @author thomas vogel
  * @version 0.02
  * 
+ * 
+ *          ModelAccess and Violation and Strategy Runtime models are added for
+ *          LAFORE.
+ * 
  */
 public class ExecutionManagerImpl implements ExecutionManager, GlobalExecutionContext {
 
@@ -99,6 +103,9 @@ public class ExecutionManagerImpl implements ExecutionManager, GlobalExecutionCo
 		accessMod = access;
 		vRun = v;
 		sRun = s;
+
+		// This is commented out because we want to repeat the simulation in
+		// Simulizar more times
 		// if (this.initialized) {
 		// throw new EuremaInterpreterException("Execution manager has already
 		// been initialized.");

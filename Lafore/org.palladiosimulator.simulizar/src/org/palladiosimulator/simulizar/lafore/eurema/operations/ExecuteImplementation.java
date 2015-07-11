@@ -1,13 +1,9 @@
 package org.palladiosimulator.simulizar.lafore.eurema.operations;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -17,7 +13,6 @@ import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
-import org.osgi.framework.Bundle;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryComponent;
@@ -28,6 +23,7 @@ import org.palladiosimulator.pcm.seff.ProbabilisticBranchTransition;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.mdelab.eurema.operation.IModelOperation;
 import de.mdelab.eurema.operation.ModelOperationResult;
@@ -37,9 +33,17 @@ import strategies.Strategy;
 import strategies.StrategyType;
 import violations.RuntimeViolationsModel;
 
+/**
+ * This class implements the Execute operation for the LAFORE feedback loop.
+ * 
+ * @author Goran Piskachev
+ * 
+ */
 public class ExecuteImplementation implements IModelOperation {
 
-	// get the PCM models FIXME: This should not be here!!!
+	// These runtime models are taken from SimuLizar. They should not be here,
+	// but the current implementation of the EUREMA interpreter can not handle
+	// shared runtime models. TODO: we need a better solution with this
 	private RuntimeViolationsModel vRun;
 	private IModelAccess access;
 	private RuntimeStrategiesModel sRun;
@@ -71,12 +75,9 @@ public class ExecuteImplementation implements IModelOperation {
 
 		List<Resource> output = new LinkedList<Resource>();
 
-		// RuntimeStrategiesModel sRuntime = null;
 		StrategiesRepository sReposorty = null;
 
-		// System.out.println("Input Models:");
 		for (Resource r : models) {
-			// System.out.println(r.getURI().toString()); // print each model
 			for (EObject c : r.getContents()) {
 				// if (c instanceof RuntimeStrategiesModel) {
 				// sRuntime = (RuntimeStrategiesModel) c;
@@ -163,6 +164,9 @@ public class ExecuteImplementation implements IModelOperation {
 		return result;
 	}
 
+	/**
+	 * Method that executed the addDemand.qvto transformation
+	 */
 	public void addDemand() {
 		List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
 
@@ -180,8 +184,8 @@ public class ExecuteImplementation implements IModelOperation {
 		ModelExtent inSys = new BasicModelExtent(pcmSys);
 
 		ExecutionContextImpl executionContext = new ExecutionContextImpl();
-		URI uriqvto = URI.createFileURI(
-				getAbsoluteFilename("org.palladiosimulator.simulizar", "reconfigurationDemands/addDemand.qvto"));
+		URI uriqvto = URI.createFileURI(FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
+				"reconfigurationDemands/addDemand.qvto"));
 		TransformationExecutor conflictCheckExecutor = new TransformationExecutor(uriqvto); // execute
 																							// controller
 																							// completion
@@ -191,32 +195,23 @@ public class ExecuteImplementation implements IModelOperation {
 
 	}
 
+	/**
+	 * Method that returns the strategy type object from the strategies
+	 * repository for a given id.
+	 * 
+	 * @param id
+	 *            the id of the strategy type
+	 * @param sRepository
+	 *            the strategies repository
+	 * 
+	 * @return the strategy type object
+	 */
 	public StrategyType getStrategyType(String id, StrategiesRepository sRepository) {
 		for (ServiceEffectSpecification st : sRepository.getServiceEffectSpecifications__BasicComponent()) {
 			if (((StrategyType) st).getId() == id)
 				return (StrategyType) st;
 		}
 		return null;
-	}
-
-	public String getAbsoluteFilename(String bundleName, String relativePath) {
-		String absoluteFilename = "";
-		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/' + relativePath, true);
-		absoluteFilename = platformPluginURI.toFileString();
-
-		Bundle bundle = Platform.getBundle(bundleName);
-		URL base = bundle.getEntry(relativePath);
-
-		// FIXME: this is hack !
-		try {
-			absoluteFilename = FileLocator.toFileURL(base).toString();
-			if (absoluteFilename.startsWith("file:/")) {
-				absoluteFilename = absoluteFilename.substring(6);
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return absoluteFilename;
 	}
 
 }
