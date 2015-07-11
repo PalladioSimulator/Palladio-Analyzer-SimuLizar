@@ -33,12 +33,20 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     // input fields
     /** Text field for path to Monitor Repository file. */
     protected Text monitorRepositoryFile;
-    /** Text field for path to reconfiguration rules folder. */
-    protected Text reconfigurationRulesFolder;
-    /** Text field for path to usage evolution file. */
-    protected Text usageEvolutionFile;
-    /** Text field for service level objectives file. */
-    protected Text serviceLevelObjectivesFile;
+//    /** Text field for path to reconfiguration rules folder. */
+//    protected Text reconfigurationRulesFolder;
+//    /** Text field for path to usage evolution file. */
+//    protected Text usageEvolutionFile;
+//    /** Text field for service level objectives file. */
+//    protected Text serviceLevelObjectivesFile;
+    
+    // TODO: The user should be able to insert the input models dynamically from the UI of Simulizar. At the moment, these models are located in the Simulizar source code plugin. 
+      /** Text field for violations repository file. */
+      protected Text violationsRepositoryFile;
+      /** Text field for strategies repository file. */
+      protected Text strategiesRepositoryFile;
+      /** Text field for violationstrategymappings repository file. */
+      protected Text violationstrategymappingsRepositoryFile;
 
     private final Map<ExtensionFileInputConfiguration, Text> extensionFileFolderInputTexts;
 
@@ -57,35 +65,59 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
          * Create Monitor Repository file section
          */
         monitorRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Monitor Repository File",
+        TabHelper.createFileInputSection(container, modifyListener, "Monitor Repository File",
                 SimulizarConstants.MONITORING_SPECIFICATION_FILE_EXTENSION, monitorRepositoryFile,
                 "Select Monitor Repository File", getShell(), SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
 
-        /**
-         * Create reconfiguration rules folder section
-         */
-        reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration Rules folder",
-                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        /**
+//         * Create reconfiguration rules folder section
+//         */
+//        reconfigurationRulesFolder = new Text(container, SWT.SINGLE | SWT.BORDER);
+//        TabHelper.createFolderInputSection(container, modifyListener, "Optional: Reconfiguration Rules folder",
+//                reconfigurationRulesFolder, "Select Reconfiguration Rules Folder", getShell(),
+//                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//
+//        /**
+//         * Create service level objective repository section
+//         */
+//        serviceLevelObjectivesFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+//        TabHelper.createFileInputSection(container, modifyListener, "Optional: Service Level Objectives File",
+//                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE_EXTENSION, serviceLevelObjectivesFile,
+//                "Select Service Level Objective Repository File", getShell(),
+//                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE);
+//
+//        /**
+//         * Create UsageEvolution file section
+//         */
+//        usageEvolutionFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+//        TabHelper.createFileInputSection(container, modifyListener, "Optional: Usage Evolution File",
+//                SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File",
+//                getShell(), SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
 
-        /**
-         * Create service level objective repository section
-         */
-        serviceLevelObjectivesFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Service Level Objectives File",
-                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE_EXTENSION, serviceLevelObjectivesFile,
-                "Select Service Level Objective Repository File", getShell(),
-                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE);
-
-        /**
-         * Create UsageEvolution file section
-         */
-        usageEvolutionFile = new Text(container, SWT.SINGLE | SWT.BORDER);
-        TabHelper.createFileInputSection(container, modifyListener, "Optional: Usage Evolution File",
-                SimulizarConstants.USAGEEVOLUTION_FILE_EXTENSION, usageEvolutionFile, "Select Usage Evolution File",
-                getShell(), SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
-
+//        /**
+//         * Create violations repository section
+//         */
+//         violationsRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+//         TabHelper.createFileInputSection(container, modifyListener, "Violations Repository File", SimulizarConstants.VIOLATIONSREPOSITORY_FILE_EXTENSION,
+//        		 violationsRepositoryFile, "Select Violations Repository File", getShell(),
+//              SimulizarConstants.DEFAULT_VIOLATIONSREPOSITORY_FILE);
+//        
+//         /**
+//          * Create strategies repository section
+//          */
+//          strategiesRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+//          TabHelper.createFileInputSection(container, modifyListener, "Strategies Repository File", SimulizarConstants.STRATEGIESREPOSITORY_FILE_EXTENSION,
+//         		 strategiesRepositoryFile, "Select Strategies Repository File", getShell(),
+//               SimulizarConstants.DEFAULT_STRATEGIESREPOSITORY_FILE);
+//          
+//          /**
+//           * Create violationstrategymappings repository section
+//           */
+//          violationstrategymappingsRepositoryFile = new Text(container, SWT.SINGLE | SWT.BORDER);
+//           TabHelper.createFileInputSection(container, modifyListener, "ViolationStrategyMappings Repository File", SimulizarConstants.VIOLATIONSTRATEGYMAPPINGS_FILE_EXTENSION,
+//        		   violationstrategymappingsRepositoryFile, "Select ViolationStrategyMappings Repository File", getShell(),
+//                SimulizarConstants.DEFAULT_VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE);
+//          
         createInputSectionsForExtensions();
 
     }
@@ -132,14 +164,24 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.initializeFrom(configuration);
         setTextFromConfigAttribute(this.monitorRepositoryFile, configuration,
                 SimulizarConstants.MONITOR_REPOSITORY_FILE, SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        setTextFromConfigAttribute(this.reconfigurationRulesFolder, configuration,
-                SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
-        setTextFromConfigAttribute(this.serviceLevelObjectivesFile, configuration,
-                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
-                SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
-        setTextFromConfigAttribute(this.usageEvolutionFile, configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
-                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+//        setTextFromConfigAttribute(this.reconfigurationRulesFolder, configuration,
+//                SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+//                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        setTextFromConfigAttribute(this.serviceLevelObjectivesFile, configuration,
+//                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
+//                SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
+//        setTextFromConfigAttribute(this.usageEvolutionFile, configuration, SimulizarConstants.USAGEEVOLUTION_FILE,
+//                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+        
+        
+//        setTextFromConfigAttribute(this.violationsRepositoryFile, configuration, SimulizarConstants.VIOLATIONSREPOSITORY_FILE,
+//              SimulizarConstants.DEFAULT_VIOLATIONSREPOSITORY_FILE);
+//        setTextFromConfigAttribute(this.strategiesRepositoryFile, configuration, SimulizarConstants.STRATEGIESREPOSITORY_FILE,
+//                SimulizarConstants.DEFAULT_STRATEGIESREPOSITORY_FILE);
+//        setTextFromConfigAttribute(this.violationstrategymappingsRepositoryFile, configuration, SimulizarConstants.VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE,
+//                SimulizarConstants.DEFAULT_VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE);
+        
+        
         for (Entry<ExtensionFileInputConfiguration, Text> entry : this.extensionFileFolderInputTexts.entrySet()) {
             String defaultUri = entry.getKey().getPropertyByKey(DefaultPropertyKeys.DEFAULT_URI_KEY, String.class);
             String configAttributeName = entry.getKey().getPropertyByKey(DefaultPropertyKeys.CONFIG_ATTRIBUTE_NAME_KEY,
@@ -158,11 +200,16 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     public void performApply(final ILaunchConfigurationWorkingCopy configuration) {
         super.performApply(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE, monitorRepositoryFile.getText());
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                reconfigurationRulesFolder.getText());
-        configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
-                serviceLevelObjectivesFile.getText());
-        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
+        
+//        configuration.setAttribute(SimulizarConstants.VIOLATIONSREPOSITORY_FILE, violationsRepositoryFile.getText());
+//        configuration.setAttribute(SimulizarConstants.STRATEGIESREPOSITORY_FILE, strategiesRepositoryFile.getText());
+//        configuration.setAttribute(SimulizarConstants.VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE, violationstrategymappingsRepositoryFile.getText());
+        
+//        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+//                reconfigurationRulesFolder.getText());
+//        configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
+//                serviceLevelObjectivesFile.getText());
+//        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE, usageEvolutionFile.getText());
         for (Entry<ExtensionFileInputConfiguration, Text> entry : this.extensionFileFolderInputTexts.entrySet()) {
             String configAttributeName = entry.getKey().getPropertyByKey(DefaultPropertyKeys.CONFIG_ATTRIBUTE_NAME_KEY,
                     String.class);
@@ -181,12 +228,18 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         super.setDefaults(configuration);
         configuration.setAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE,
                 SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
-                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
-        configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
-                SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
-        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
-                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
+        configuration.setAttribute(SimulizarConstants.VIOLATIONSREPOSITORY_FILE,
+                SimulizarConstants.DEFAULT_VIOLATIONSREPOSITORY_FILE);
+        configuration.setAttribute(SimulizarConstants.STRATEGIESREPOSITORY_FILE,
+                SimulizarConstants.DEFAULT_STRATEGIESREPOSITORY_FILE);
+        configuration.setAttribute(SimulizarConstants.VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE,
+                SimulizarConstants.DEFAULT_VIOLATIONSTRATEGYMAPPINGSREPOSITORY_FILE);
+//        configuration.setAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
+//                SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+//        configuration.setAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE,
+//                SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
+//        configuration.setAttribute(SimulizarConstants.USAGEEVOLUTION_FILE,
+//                SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
 
         for (ExtensionFileInputConfiguration extensionConfig : this.extensionFileFolderInputTexts.keySet()) {
             String defaultUri = extensionConfig.getPropertyByKey(DefaultPropertyKeys.DEFAULT_URI_KEY, String.class);

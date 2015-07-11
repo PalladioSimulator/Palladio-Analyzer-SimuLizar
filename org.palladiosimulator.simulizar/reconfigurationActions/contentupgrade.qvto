@@ -1,7 +1,6 @@
 /*
- * This simple QVTO reconfiguration rule operates on the ZNN.COM example. 
- * The model for this case is in the plugin org.palladiosimulator.simulizar.lafore.mapeloop.example.znn 
- * The transformation changes the content type of the news service  to textual.
+ * This simple QVTO transformation implements the ContentUpgrade reconfiguration action for the ZNN.COM example. 
+ * It simply changes the values of the branch probability for providing multimedia or textual news content.
  *
  */
 

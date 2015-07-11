@@ -1,32 +1,21 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
 import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
-import org.osgi.framework.Bundle;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.pcm.repository.Repository;
@@ -36,11 +25,11 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.mdelab.eurema.interpreter.EuremaInterpreter;
 import de.mdelab.eurema.interpreter.EuremaInterpreterFactory;
 import de.mdelab.eurema.interpreter.EventQueue;
-import de.mdelab.eurema.interpreter.models.ModelRepository;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import eurema.EuremaFactory;
@@ -51,12 +40,14 @@ import violations.impl.ViolationsFactoryImpl;
 
 /**
  * Class whose objects will listen on changes in the PCM@Runtime and trigger
- * reconfigurations respectively.
+ * reconfigurations respectively. The reconfiguration is executed with LAFORE.
+ * LAFORE uses EUREMA feedback loop model and interprets it.
  * 
  * @author Steffen Becker
  * @author Matthias Becker
  * @author Sebastian Lehrig
  * @author Florian Rosenthal
+ * @author Goran Piskachev
  *
  */
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
@@ -100,52 +91,6 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		}
 
 	};
-
-	// this could not work, because we should not modify files in the platform
-	// in the first instance from the runtime instance
-	public void saveRuntimeMeasurements() {
-		ResourceSet resourceSet = new ResourceSetImpl();
-		// URI uri = URI
-		// .createURI("org.palladiosimulator.simulizar.lafore.mapeloop/knowledgeModels/MyRuntimeMeasurements.runtimemeasurements");
-
-		// Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE;
-		// Map<String, Object> m = reg.getExtensionToFactoryMap();
-		// m.put("runtimemeasurements", new XMIResourceFactoryImpl());
-
-		URI platformPluginURI = URI.createFileURI(getAbsoluteFilename("org.palladiosimulator.simulizar",
-				"knowledgeModels/MyRuntimeMeasurements.runtimemeasurements"));
-
-		Resource resource = resourceSet.createResource(platformPluginURI);
-		// runtimeMeasurementModel.getMeasurements().get(0).setMeasuringValue(2.0);
-		resource.getContents().add(runtimeMeasurementModel);
-
-		for (RuntimeMeasurement measurement : runtimeMeasurementModel.getMeasurements()) {
-			MeasuringPoint point = measurement.getMeasuringPoint();
-			if (point != null) {
-				resource.getContents().add(point);
-			}
-		}
-
-		String filename = new File(getAbsoluteFilename("org.palladiosimulator.simulizar",
-				"knowledgeModels/MyRuntimeMeasurements.runtimemeasurements")).getAbsolutePath();
-		URI modelURI = URI.createFileURI(filename);
-
-		for (EObject ob : ModelRepository.INSTANCE.geteModResourceSet().getResources()) {
-			if (((eurema.ModelResource) ob).getName().equals("RuntimeMeasurementsModel")) {
-				EcoreUtil.remove(ob);
-				break;
-			}
-
-		}
-		// if (ModelRepository.INSTANCE.containsModel(modelURI))
-		// ModelRepository.INSTANCE.removeModelResource(platformPluginURI);
-
-		try {
-			resource.save(Collections.emptyMap());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	/**
 	 * A log listener which logs all changes in the global PCM model.
@@ -258,7 +203,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 			// }
 			LOGGER.debug(
 					"Reconfiguration with LAFORE started at: " + this.simulationController.getCurrentSimulationTime());
-			// saveRuntimeMeasurements();
+			// This call triggers the execution of LAFORE.
 			triggerEurema();
 			LOGGER.debug(
 					"Reconfiguration with LAFORE stopped at: " + this.simulationController.getCurrentSimulationTime());
@@ -267,11 +212,18 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
 	}
 
+	/**
+	 * Method which is called to trigger the execution of LAFROE. It puts an
+	 * event into the EUREMA queue.
+	 * 
+	 */
 	public void triggerEurema() {
 		eurema.Event startingEvent = EuremaFactory.eINSTANCE.createEvent();
 		startingEvent.setName("StartMape");
 		eurema.EventType startingEventType = EuremaFactory.eINSTANCE.createEventType();
-		startingEventType.setType("StartMapeEvent");
+		startingEventType.setType("StartMapeEvent"); // this is the type of
+														// event defined in the
+														// instance of EUREMA
 		startingEvent.setType(startingEventType);
 
 		try {
@@ -282,17 +234,24 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
 		removeDemands();
 		System.out.println("==============================");
-		System.out.println();
 		System.out.println("Added StartMape event. (EUREMA interpreatation is triggered)");
-		System.out.println();
 		System.out.println("==============================");
 
 		q.add(startingEvent);
 	}
 
+	/**
+	 * Method that executes the removeDemantd.qvto transformation. This
+	 * transformation removed the demands of the Reconfigurator component in the
+	 * PCM runtime model. These demands are added when each reconfiguration
+	 * action is executed.
+	 * 
+	 */
 	public void removeDemands() {
 		List<EObject> pcmAllocation = Arrays.asList((EObject) modelAccess.getGlobalPCMModel().getAllocation());
 
+		// FIXME: This is specific to the example. We should get the repository
+		// in more general way.
 		Repository r = null;
 		for (Repository rTemp : modelAccess.getGlobalPCMModel().getRepositories()) {
 			String b = rTemp.getEntityName();
@@ -307,8 +266,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		ModelExtent inSys = new BasicModelExtent(pcmSys);
 
 		ExecutionContextImpl executionContext = new ExecutionContextImpl();
-		URI uriqvto = URI.createFileURI(
-				getAbsoluteFilename("org.palladiosimulator.simulizar", "reconfigurationDemands/removeDemands.qvto"));
+		URI uriqvto = URI.createFileURI(FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
+				"reconfigurationDemands/removeDemands.qvto"));
 		TransformationExecutor conflictCheckExecutor = new TransformationExecutor(uriqvto); // execute
 																							// controller
 																							// completion
@@ -320,7 +279,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
 	/**
 	 * Method which locates the EUREMA model, in this case that is the Lafore
-	 * instance. Then is loads the model for interpretation.
+	 * instance. Then it loads the model for interpretation.
 	 */
 	public void initEurema() {
 
@@ -355,32 +314,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		RuntimeStrategiesModel sRuntime = StrategiesFactoryImpl.eINSTANCE.createRuntimeStrategiesModel();
 
 		q = interpreter.execute(
-				getAbsoluteFilename("org.palladiosimulator.simulizar", "EuremaLaforeMapeLoop/Lafore.eurema"),
+				FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar", "EuremaLaforeMapeLoop/Lafore.eurema"),
 				modelAccess, vRuntime, sRuntime);
-
-		// .execute("E:\\Edu\\UPB\\MA
-		// thesis\\EclipseLafore\\ws\\org.palladiosimulator.simulizar.lafore.mapeloop\\EuremaLaforeMapeLoop\\Lafore.eurema");
-
-	}
-
-	public String getAbsoluteFilename(String bundleName, String relativePath) {
-		String absoluteFilename = "";
-		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/' + relativePath, true);
-		absoluteFilename = platformPluginURI.toFileString();
-
-		Bundle bundle = Platform.getBundle(bundleName);
-		URL base = bundle.getEntry(relativePath);
-
-		// FIXME: this is hack !
-		try {
-			absoluteFilename = FileLocator.toFileURL(base).toString();
-			if (absoluteFilename.startsWith("file:/")) {
-				absoluteFilename = absoluteFilename.substring(6);
-			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		return absoluteFilename;
 	}
 
 	/**

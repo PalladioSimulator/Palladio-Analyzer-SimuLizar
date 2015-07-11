@@ -1,3 +1,9 @@
+/*
+ * This simple QVTO transformation implements the ScaleDown reconfiguration action for the ZNN.COM example. 
+ * It simply changes the values of the branch probability in the LoadBalancer RDSEFF.
+ *
+ */
+
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.0';
 modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.0';
 modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.0';

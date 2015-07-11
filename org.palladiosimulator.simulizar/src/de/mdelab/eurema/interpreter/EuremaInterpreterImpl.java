@@ -25,6 +25,10 @@ import violations.RuntimeViolationsModel;
  * @author thomas vogel
  * @version 0.03
  * 
+ * 
+ *          ModelAccess and Violation and Strategy Runtime models are added for
+ *          LAFORE.
+ * 
  */
 public class EuremaInterpreterImpl implements EuremaInterpreter {
 
