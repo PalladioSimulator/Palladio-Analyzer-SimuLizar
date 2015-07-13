@@ -77,6 +77,7 @@ public class ExecuteImplementation implements IModelOperation {
 
 		StrategiesRepository sReposorty = null;
 
+		// get the Strategies Repository
 		for (Resource r : models) {
 			for (EObject c : r.getContents()) {
 				// if (c instanceof RuntimeStrategiesModel) {
@@ -88,8 +89,11 @@ public class ExecuteImplementation implements IModelOperation {
 			}
 		}
 
+		// get the Allocation from the runtime PCM
 		List<EObject> pcmAllocation = Arrays.asList((EObject) access.getGlobalPCMModel().getAllocation());
 
+		// Find the repository
+		// FIXME: This is ZNN.COM specific. We need a general solution here.
 		Repository r = null;
 		for (Repository rTemp : access.getGlobalPCMModel().getRepositories()) {
 			String b = rTemp.getEntityName();
@@ -103,6 +107,7 @@ public class ExecuteImplementation implements IModelOperation {
 		ModelExtent inRep = new BasicModelExtent(pcmRep);
 		ModelExtent inSys = new BasicModelExtent(pcmSys);
 
+		// Count the active servers in the pool. This is for debugging.
 		int countActive = 0;
 		EList<RepositoryComponent> lst = r.getComponents__Repository();
 		for (RepositoryComponent cmp : lst) {
@@ -123,7 +128,7 @@ public class ExecuteImplementation implements IModelOperation {
 		ExecutionContextImpl executionContext = new ExecutionContextImpl();
 
 		// iterate through all strategies available in the Runtime strategies
-		// model
+		// model and execute the reconfiguratiuon actions
 
 		for (Strategy strategy : sRun.getStrategies()) {
 			StrategyType st = getStrategyType(strategy.getStrategyType().getId(), sReposorty);
@@ -134,10 +139,12 @@ public class ExecuteImplementation implements IModelOperation {
 																								// ExecutionDiagnostic
 			ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRep, inSys);
 			System.out.println("Reconfiguration action: " + uriqvto);
+			// add reconfiguration demands to be simulated
 			addDemand();
 
 		}
 
+		// again, just for debugging
 		countActive = 0;
 		for (RepositoryComponent cmp : lst) {
 			String z = cmp.getEntityName();
