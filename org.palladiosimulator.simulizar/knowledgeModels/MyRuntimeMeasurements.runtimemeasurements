@@ -1,11 +1,4 @@
 <?xml version="1.0" encoding="ASCII"?>
 <xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:srm="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0">
-  <srm:RuntimeMeasurementModel id="_9Nxd8CZQEeW5Z-tXyGeeHA">
-    <measurements id="_9TiuwCZQEeW5Z-tXyGeeHA" measuringPoint="/1" measuringValue="62.22627556648936">
-      <measurementSpecification href="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/knowledgeModels/design/MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
-    </measurements>
-  </srm:RuntimeMeasurementModel>
-  <pcmmeasuringpoint:UsageScenarioMeasuringPoint stringRepresentation="Usage Scenario: OverloadUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg">
-    <usageScenario href="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
-  </pcmmeasuringpoint:UsageScenarioMeasuringPoint>
+
 </xmi:XMI>
