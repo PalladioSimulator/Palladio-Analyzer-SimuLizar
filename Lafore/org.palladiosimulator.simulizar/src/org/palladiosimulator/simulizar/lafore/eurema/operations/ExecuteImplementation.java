@@ -190,7 +190,6 @@ public class ExecuteImplementation implements IModelOperation {
 				}
 			}
 		}
-		System.out.println("Active servers: " + countActive);
 		LOGGER.info("Active servers: " + countActive);
 
 		sRun.getStrategies().clear();
