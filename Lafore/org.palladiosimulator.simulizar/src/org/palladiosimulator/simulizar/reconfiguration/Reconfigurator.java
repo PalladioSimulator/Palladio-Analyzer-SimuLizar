@@ -201,12 +201,12 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 			// this.simulationController));
 			// }
 			// }
-			LOGGER.debug(
-					"Reconfiguration with LAFORE started at: " + this.simulationController.getCurrentSimulationTime());
+
 			// This call triggers the execution of LAFORE.
 			triggerEurema();
-			LOGGER.debug(
-					"Reconfiguration with LAFORE stopped at: " + this.simulationController.getCurrentSimulationTime());
+
+			LOGGER.info("LAFORE Started! Simulation time: " + this.simulationController.getCurrentSimulationTime());
+			System.out.println("Simulation time: " + this.simulationController.getCurrentSimulationTime());
 
 		}
 
@@ -232,10 +232,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 			e.printStackTrace();
 		}
 
+		System.out.println("Added StartMape event.");
 		removeDemands();
-		System.out.println("==============================");
-		System.out.println("Added StartMape event. (EUREMA interpreatation is triggered)");
-		System.out.println("==============================");
 
 		q.add(startingEvent);
 	}
@@ -273,7 +271,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 																							// completion
 																							// ExecutionDiagnostic
 		ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRep, inSys);
-		System.out.println("Removed demands!");
+		LOGGER.info(" ======================================================= ");
+		LOGGER.info("Removed reconfiguration demands!");
 
 	}
 

@@ -80,8 +80,9 @@ public class FileUtil {
 	 */
 	public static String getAbsoluteFilename(String bundleName, String relativePath) {
 		String absoluteFilename = "";
-		URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/' + relativePath, true);
-		absoluteFilename = platformPluginURI.toFileString();
+		// URI platformPluginURI = URI.createPlatformPluginURI(bundleName + '/'
+		// + relativePath, true);
+		// absoluteFilename = platformPluginURI.toFileString();
 
 		Bundle bundle = Platform.getBundle(bundleName);
 		URL base = bundle.getEntry(relativePath);

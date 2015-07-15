@@ -82,9 +82,9 @@
   <modelResourceSet>
     <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeStrategies.strategies" name="RuntimeStrategiesModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.6"/>
     <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeViolations.violations" name="RuntimeViolationsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.3"/>
-    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnStrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
-    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
-    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ZnnViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
+    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\StrategiesRepository.strategies" name="StrategiesRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.4"/>
+    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ViolationsRepository.violations" name="ViolationsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.2"/>
+    <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\ViolationStrategyMappingsRepository.violationstrategymappings" name="VSMappingsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.5"/>
     <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\MyRuntimeMeasurements.runtimemeasurements" name="RuntimeMeasurementsModel" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.1"/>
     <resources URI="..\ws\org.palladiosimulator.simulizar\knowledgeModels\design\MonitorsRep.monitorrepository" name="MonitorsRepository" boundByRuntimeModels="//@layers.1/@modules.0/@megamodel/@models.0"/>
   </modelResourceSet>

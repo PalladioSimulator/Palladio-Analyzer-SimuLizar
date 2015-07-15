@@ -1,19 +1,15 @@
 package org.palladiosimulator.simulizar.lafore.eurema.operations;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.emf.common.util.URI;
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.utils.FileUtil;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 
 import de.mdelab.eurema.operation.IModelOperation;
 import de.mdelab.eurema.operation.ModelOperationResult;
@@ -37,6 +33,11 @@ import violationstrategymappings.ViolationStrategyMappingRepository;
  */
 public class PlanImplementation implements IModelOperation {
 
+	/**
+	 * This class' internal LOGGER.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
+
 	private RuntimeViolationsModel vRun;
 	private IModelAccess access;
 	private RuntimeStrategiesModel sRun;
@@ -55,7 +56,8 @@ public class PlanImplementation implements IModelOperation {
 
 	@Override
 	public ModelOperationResult run(List<Resource> models) {
-		System.out.println("Executing the model operations implementation: " + this.getClass().getCanonicalName());
+		// System.out.println("Executing the model operations implementation: "
+		// + this.getClass().getCanonicalName());
 
 		List<Resource> output = new LinkedList<Resource>();
 		// TODO: implement the plan here!!!
@@ -100,8 +102,11 @@ public class PlanImplementation implements IModelOperation {
 
 			// find a mapping to strategy for each violation
 			for (ViolationStrategyMapping vsMap : vsMappingRepository.getVsmappings()) {
-				if (vsMap.getViolation().getId() == violation.getViolationType().getId()) {
-					foundStrategies.add(getStrategyType(vsMap.getStrategy().getId(), sRepository));
+				String id1 = vsMap.getViolation().getId();
+				String id2 = violation.getViolationType().getId();
+				if (id1.equals(id2)) {
+					StrategyType stTmp = getStrategyType(vsMap.getStrategy().getId(), sRepository);
+					foundStrategies.add(stTmp);
 					priorities.add(vsMap.getStrategyPriority());
 				}
 
@@ -129,17 +134,18 @@ public class PlanImplementation implements IModelOperation {
 
 		}
 
-		ResourceSet resourceSet = new ResourceSetImpl();
-		URI platformPluginURI = URI.createFileURI(FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
-				"knowledgeModels/MyRuntimeStrategies.strategies"));
-		Resource resource = resourceSet.createResource(platformPluginURI);
-		resource.getContents().add(sRun);
-
-		try {
-			resource.save(Collections.emptyMap());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		// ResourceSet resourceSet = new ResourceSetImpl();
+		// URI platformPluginURI =
+		// URI.createFileURI(FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
+		// "knowledgeModels/MyRuntimeStrategies.strategies"));
+		// Resource resource = resourceSet.createResource(platformPluginURI);
+		// resource.getContents().add(sRun);
+		//
+		// try {
+		// resource.save(Collections.emptyMap());
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 
 		// if (sRuntime.eResource() != null)
 		// output.add(sRun.eResource());
@@ -179,7 +185,7 @@ public class PlanImplementation implements IModelOperation {
 	 */
 	public StrategyType getStrategyType(String id, StrategiesRepository sRepository) {
 		for (ServiceEffectSpecification st : sRepository.getServiceEffectSpecifications__BasicComponent()) {
-			if (((StrategyType) st).getId() == id)
+			if (((StrategyType) st).getId().equals(id))
 				return (StrategyType) st;
 		}
 		return null;
