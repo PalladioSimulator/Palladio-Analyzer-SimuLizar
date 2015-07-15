@@ -3,10 +3,12 @@ package org.palladiosimulator.simulizar.lafore.eurema.operations;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 
 import de.mdelab.eurema.operation.IModelOperation;
 import de.mdelab.eurema.operation.ModelOperationResult;
@@ -24,6 +26,11 @@ import violations.ViolationsRepository;
  * 
  */
 public class AnalyzeImplementation implements IModelOperation {
+
+	/**
+	 * This class' internal LOGGER.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
 
 	private RuntimeViolationsModel violationsRun;
 	private IModelAccess access;
@@ -44,7 +51,8 @@ public class AnalyzeImplementation implements IModelOperation {
 	@Override
 	public ModelOperationResult run(List<Resource> models) {
 
-		System.out.println("Executing the model operations implementation: " + this.getClass().getCanonicalName());
+		// System.out.println("Executing the model operations implementation: "
+		// + this.getClass().getCanonicalName());
 
 		List<Resource> output = new LinkedList<Resource>();
 
@@ -71,7 +79,7 @@ public class AnalyzeImplementation implements IModelOperation {
 		for (RuntimeMeasurement rMeasurement : access.getRuntimeMeasurementModel().getMeasurements()) {
 			// iterate through all violation type available in the Violations
 			// Repository
-			System.out.println("Measured value: " + rMeasurement.getMeasuringValue());
+			LOGGER.info("Measured value: " + rMeasurement.getMeasuringValue());
 			for (ViolationType violationT : vRepository.getViolationTypes()) {
 				// check whether the measurement specifications match
 				// (MetricDesctiption and MeasuringPoint)

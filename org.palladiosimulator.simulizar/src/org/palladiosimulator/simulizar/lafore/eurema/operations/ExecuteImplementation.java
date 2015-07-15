@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -23,6 +24,7 @@ import org.palladiosimulator.pcm.seff.ProbabilisticBranchTransition;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.mdelab.eurema.operation.IModelOperation;
@@ -40,6 +42,11 @@ import violations.RuntimeViolationsModel;
  * 
  */
 public class ExecuteImplementation implements IModelOperation {
+
+	/**
+	 * This class' internal LOGGER.
+	 */
+	private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
 
 	// These runtime models are taken from SimuLizar. They should not be here,
 	// but the current implementation of the EUREMA interpreter can not handle
@@ -71,7 +78,8 @@ public class ExecuteImplementation implements IModelOperation {
 		// ifile.getFullPath().toOSString();
 		// ifile.getRawLocation().makeAbsolute().toOSString();
 
-		System.out.println("Executing the model operations implementation: " + this.getClass().getCanonicalName());
+		// System.out.println("Executing the model operations implementation: "
+		// + this.getClass().getCanonicalName());
 
 		List<Resource> output = new LinkedList<Resource>();
 
@@ -132,13 +140,15 @@ public class ExecuteImplementation implements IModelOperation {
 
 		for (Strategy strategy : sRun.getStrategies()) {
 			StrategyType st = getStrategyType(strategy.getStrategyType().getId(), sReposorty);
-			URI uriqvto = URI.createFileURI(st.getBehavior().get(0).getCodeRef());
+			String absPath = FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar",
+					st.getBehavior().get(0).getCodeRef());
+			URI uriqvto = URI.createFileURI(absPath);
 			TransformationExecutor conflictCheckExecutor = new TransformationExecutor(uriqvto); // execute
 																								// controller
 																								// completion
 																								// ExecutionDiagnostic
 			ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRep, inSys);
-			System.out.println("Reconfiguration action: " + uriqvto);
+			LOGGER.info("Reconfiguration action: " + st.getEntityName());
 			// add reconfiguration demands to be simulated
 			addDemand();
 
@@ -148,6 +158,25 @@ public class ExecuteImplementation implements IModelOperation {
 		countActive = 0;
 		for (RepositoryComponent cmp : lst) {
 			String z = cmp.getEntityName();
+			if (z.equals("NewsService")) {
+				ResourceDemandingSEFF seff = (ResourceDemandingSEFF) ((BasicComponent) cmp)
+						.getServiceEffectSpecifications__BasicComponent().get(0);
+				for (AbstractAction action : seff.getSteps_Behaviour()) {
+					if (action instanceof BranchAction) {
+						for (AbstractBranchTransition prob : ((BranchAction) action).getBranches_Branch()) {
+							if (((ProbabilisticBranchTransition) prob).getBranchProbability() == 0.0
+									&& ((ProbabilisticBranchTransition) prob).getEntityName()
+											.equals("selectMultimedia"))
+								LOGGER.info("Content: Textual");
+							if (((ProbabilisticBranchTransition) prob).getBranchProbability() == 1.0
+									&& ((ProbabilisticBranchTransition) prob).getEntityName()
+											.equals("selectMultimedia"))
+								LOGGER.info("Content: Multimedia");
+						}
+					}
+				}
+			}
+
 			if (z.equals("LoadBalancer")) {
 				ResourceDemandingSEFF seff = (ResourceDemandingSEFF) ((BasicComponent) cmp)
 						.getServiceEffectSpecifications__BasicComponent().get(0);
@@ -162,6 +191,7 @@ public class ExecuteImplementation implements IModelOperation {
 			}
 		}
 		System.out.println("Active servers: " + countActive);
+		LOGGER.info("Active servers: " + countActive);
 
 		sRun.getStrategies().clear();
 
@@ -198,7 +228,7 @@ public class ExecuteImplementation implements IModelOperation {
 																							// completion
 																							// ExecutionDiagnostic
 		ExecutionDiagnostic result = conflictCheckExecutor.execute(executionContext, inAllocation, inRep, inSys);
-		System.out.println("Added Demand!");
+		LOGGER.info("Added Reconfiguration Demand");
 
 	}
 

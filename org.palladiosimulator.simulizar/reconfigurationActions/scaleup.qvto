@@ -29,6 +29,7 @@ transformation ScaleUp(
 			
 			var numActiveServers = (prob->select(p | p.branchProbability != 0.0)->size());
 			
+			// scale up only if there are less than 5 active servers
 			if (numActiveServers != 5) then 
 			{
 				var newValue := (1 / (numActiveServers + 1));

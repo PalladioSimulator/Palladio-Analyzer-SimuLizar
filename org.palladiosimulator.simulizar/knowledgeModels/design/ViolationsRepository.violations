@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <violations:ViolationsRepository xmlns:violations="http://simulizar.palladiosimulator.org/lafore/violations/1.0" id="_c3coIB8DEeWeaaDcKbFJ5A" entityName="ZnnViolationsRepository">
   <violationTypes id="_fLJJEB8DEeWeaaDcKbFJ5A" entityName="ResponseTimeViolated" description="Violation type for the SLO ResponseTimeHardThSlo">
-    <slo href="ZnnSLOs.slo#_nbsm0B7_EeWeaaDcKbFJ5A"/>
+    <slo href="SLOs.slo#_nbsm0B7_EeWeaaDcKbFJ5A"/>
   </violationTypes>
   <violationTypes id="_a77hMB8EEeWeaaDcKbFJ5A" entityName="ResponseTimeFuzzyViolated" description="Violation type for the SLO ResponseTimeFuzzyThSlo">
-    <slo href="ZnnSLOs.slo#__luscB8AEeWeaaDcKbFJ5A"/>
+    <slo href="SLOs.slo#__luscB8AEeWeaaDcKbFJ5A"/>
   </violationTypes>
   <violationTypes id="_lQoEIB8EEeWeaaDcKbFJ5A" entityName="PoolSizeViolated" description="Violation type for the SLO PoolSizeHardThSlo">
-    <slo href="ZnnSLOs.slo#_L6_Y8B8BEeWeaaDcKbFJ5A"/>
+    <slo href="SLOs.slo#_L6_Y8B8BEeWeaaDcKbFJ5A"/>
   </violationTypes>
   <violationTypes id="_qQTqMB8EEeWeaaDcKbFJ5A" entityName="OverprovisionedResourcesViolated" description="Violation type for the SLO OverprovisionedResourcesHardThSlo">
-    <slo href="ZnnSLOs.slo#_aS3dcB8BEeWeaaDcKbFJ5A"/>
+    <slo href="SLOs.slo#_aS3dcB8BEeWeaaDcKbFJ5A"/>
   </violationTypes>
 </violations:ViolationsRepository>

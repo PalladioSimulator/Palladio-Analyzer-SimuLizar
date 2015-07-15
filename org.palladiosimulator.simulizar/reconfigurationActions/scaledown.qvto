@@ -26,6 +26,7 @@ transformation ScaleDown(
 			
 			var numActiveServers = (5 - prob->select(p | p.branchProbability = 0.0)->size());
 			
+			// scale down if there are at least 2 active servers
 			if (numActiveServers > 1) then 
 			{
 				var newValue := (1 / (numActiveServers - 1));
