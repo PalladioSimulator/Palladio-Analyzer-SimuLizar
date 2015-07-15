@@ -25,6 +25,7 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.lafore.eurema.operations.AnalyzeImplementation;
 import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.mdelab.eurema.interpreter.EuremaInterpreter;
@@ -206,7 +207,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 			triggerEurema();
 
 			LOGGER.info("LAFORE Started! Simulation time: " + this.simulationController.getCurrentSimulationTime());
-			System.out.println("Simulation time: " + this.simulationController.getCurrentSimulationTime());
+			// System.out.println("Simulation time: " +
+			// this.simulationController.getCurrentSimulationTime());
 
 		}
 
@@ -232,7 +234,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 			e.printStackTrace();
 		}
 
-		System.out.println("Added StartMape event.");
+		// System.out.println("Added StartMape event.");
 		removeDemands();
 
 		q.add(startingEvent);
@@ -315,6 +317,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		q = interpreter.execute(
 				FileUtil.getAbsoluteFilename("org.palladiosimulator.simulizar", "EuremaLaforeMapeLoop/Lafore.eurema"),
 				modelAccess, vRuntime, sRuntime);
+		AnalyzeImplementation.numOfViolations = 0;
 	}
 
 	/**

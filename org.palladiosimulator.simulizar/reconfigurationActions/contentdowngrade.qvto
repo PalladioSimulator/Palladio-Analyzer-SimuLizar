@@ -26,7 +26,7 @@ transformation ContentDowngrade(
 			
 			var numActiveServers = (prob2->select(p | p.branchProbability != 0.0)->size());
 			log ("Active: " + numActiveServers.toString());
-			if (numActiveServers = 5) then 
+			if (numActiveServers > 1) then 
 			{
 				prob1->select(c | c.entityName = "selectMultimedia")->any(true).branchProbability := 0.0;
 				prob1->select(c | c.entityName = "selectTextual")->any(true).branchProbability := 1.0;

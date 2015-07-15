@@ -27,6 +27,9 @@ import violations.ViolationsRepository;
  */
 public class AnalyzeImplementation implements IModelOperation {
 
+	// for analysis
+	public static int numOfViolations;
+
 	/**
 	 * This class' internal LOGGER.
 	 */
@@ -100,7 +103,7 @@ public class AnalyzeImplementation implements IModelOperation {
 							violationInstance.setViolationType(violationT);
 
 							violationsRun.getViolations().add(violationInstance);
-
+							numOfViolations++;
 						}
 					}
 
@@ -116,7 +119,7 @@ public class AnalyzeImplementation implements IModelOperation {
 							violationInstance.setViolationType(violationT);
 
 							violationsRun.getViolations().add(violationInstance);
-
+							numOfViolations++;
 						}
 					}
 				}
