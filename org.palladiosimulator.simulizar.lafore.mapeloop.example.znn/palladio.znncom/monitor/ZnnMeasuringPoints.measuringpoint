@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_XPTTgB65EeWEk-p9lX9HbQ">
+  <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" stringRepresentation="Repository" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_UKg1IKnmEeO_FKTWaHXFBg" measuringPoint="Repository" resourceURI="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_UKg1IKnmEeO_FKTWaHXFBg"/>
+  <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: OverloadUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg">
+    <usageScenario href="../clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: OverprovisionedUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overprovisioned.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg">
+    <usageScenario href="../clients_overprovisioned.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
+  </measuringPoints>
+</org.palladiosimulator.edp2.models:MeasuringPointRepository>
