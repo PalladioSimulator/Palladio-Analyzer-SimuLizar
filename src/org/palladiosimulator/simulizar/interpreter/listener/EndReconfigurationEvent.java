@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
+import java.util.Objects;
+
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -35,9 +37,11 @@ public final class EndReconfigurationEvent extends ReconfigurationEvent {
      *            An {@link EventType} constant to denote the result of the reconfiguration.
      * @param simulationControl
      *            The {@link ISimulationControl} that is used in the current simulation run.
+     * @throws NullPointerException
+     *             In case the given {@code simulationControl} is {@code null}.
      */
     public EndReconfigurationEvent(EventResult result, ISimulationControl simulationControl) {
-        this(result, simulationControl.getCurrentSimulationTime());
+        this(result, Objects.requireNonNull(simulationControl).getCurrentSimulationTime());
     }
 
     /**

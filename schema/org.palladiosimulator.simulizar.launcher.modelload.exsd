@@ -64,7 +64,7 @@
                </appinfo>
             </annotation>
          </attribute>
-         <attribute name="loadJobConfigBuilder" type="string" use="required">
+         <attribute name="loadJobConfigBuilder" type="string">
             <annotation>
                <documentation>
                   An optional builder class to create the corresponding configuration.
