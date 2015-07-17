@@ -101,13 +101,6 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	}
 
 	@Override
-	public void scheduleAt(double d) {
-		throw new UnsupportedOperationException(
-				"The reconfiguration process is not supposed to be scheduled manually."
-						+ "Use executeReconfigurations(EObject) instead.");
-	}
-
-	@Override
 	public void reschedule(double d) {
 		throw new UnsupportedOperationException(
 				"The reconfiguration process is not supposed to be scheduled manually."
@@ -132,7 +125,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 			throw new IllegalStateException(
 					"Reconfiguration process has already terminated.");
 		}
-		this.scheduleAt(0);
+		scheduleAt(0);
 	}
 
 	/**
