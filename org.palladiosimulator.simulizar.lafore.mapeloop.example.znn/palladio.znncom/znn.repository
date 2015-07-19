@@ -11,14 +11,14 @@
       <steps_Behaviour xsi:type="seff:StartAction" id="_cy7nAannEeO_FKTWaHXFBg" entityName="start" successor_AbstractAction="_YXMwoKnpEeO_FKTWaHXFBg"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_cy7nAqnnEeO_FKTWaHXFBg" entityName="stop" predecessor_AbstractAction="_YXMwoKnpEeO_FKTWaHXFBg"/>
       <steps_Behaviour xsi:type="seff:BranchAction" id="_YXMwoKnpEeO_FKTWaHXFBg" entityName="selectNewsServers" predecessor_AbstractAction="_cy7nAannEeO_FKTWaHXFBg" successor_AbstractAction="_cy7nAqnnEeO_FKTWaHXFBg">
-        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_bULfIKnpEeO_FKTWaHXFBg" entityName="selectNewsServer1" branchProbability="0.5">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_bULfIKnpEeO_FKTWaHXFBg" entityName="selectNewsServer1" branchProbability="1.0">
           <branchBehaviour_BranchTransition id="_bUMtQKnpEeO_FKTWaHXFBg">
             <steps_Behaviour xsi:type="seff:StartAction" id="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
             <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_nK7DoKnpEeO_FKTWaHXFBg" predecessor_AbstractAction="_bUPJgKnpEeO_FKTWaHXFBg" successor_AbstractAction="_bUPJganpEeO_FKTWaHXFBg" calledService_ExternalService="_16dhkKnmEeO_FKTWaHXFBg" role_ExternalService="_-3KhYKnnEeO_FKTWaHXFBg"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_bUPJganpEeO_FKTWaHXFBg" predecessor_AbstractAction="_nK7DoKnpEeO_FKTWaHXFBg"/>
           </branchBehaviour_BranchTransition>
         </branches_Branch>
-        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_gdsWoKnpEeO_FKTWaHXFBg" entityName="selectNewsServer2" branchProbability="0.5">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_gdsWoKnpEeO_FKTWaHXFBg" entityName="selectNewsServer2">
           <branchBehaviour_BranchTransition id="_gdsWoanpEeO_FKTWaHXFBg">
             <steps_Behaviour xsi:type="seff:StartAction" id="_gdsWoqnpEeO_FKTWaHXFBg" successor_AbstractAction="_ozmRoKnpEeO_FKTWaHXFBg"/>
             <steps_Behaviour xsi:type="seff:StopAction" id="_gdsWo6npEeO_FKTWaHXFBg" predecessor_AbstractAction="_ozmRoKnpEeO_FKTWaHXFBg"/>
@@ -48,9 +48,6 @@
         </branches_Branch>
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
-    <passiveResource_BasicComponent id="_CdFjAB8gEeW67Z7ZNRbPoQ">
-      <capacity_PassiveResource specification="1"/>
-    </passiveResource_BasicComponent>
   </components__Repository>
   <components__Repository xsi:type="repository:BasicComponent" id="_j8YkoBjbEeWNAuA7wCUwzg" entityName="NewsService">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_liPIIBjbEeWNAuA7wCUwzg" entityName="Provided_INews_NewsService" providedInterface__OperationProvidedRole="_XrqAoKnmEeO_FKTWaHXFBg"/>

@@ -40,10 +40,6 @@
         <styles xmi:type="notation:FilteringStyle" xmi:id="_93uheR8fEeW67Z7ZNRbPoQ"/>
       </children>
       <children xmi:type="notation:DecorationNode" xmi:id="_93vvkB8fEeW67Z7ZNRbPoQ" type="7103">
-        <children xmi:type="notation:Node" xmi:id="_CdP7EB8gEeW67Z7ZNRbPoQ" type="3103">
-          <element xmi:type="repository:PassiveResource" href="znn.repository#_CdFjAB8gEeW67Z7ZNRbPoQ"/>
-          <layoutConstraint xmi:type="notation:Location" xmi:id="_CdP7ER8gEeW67Z7ZNRbPoQ"/>
-        </children>
         <styles xmi:type="notation:TitleStyle" xmi:id="_93vvkR8fEeW67Z7ZNRbPoQ" showTitle="true"/>
         <styles xmi:type="notation:SortingStyle" xmi:id="_93vvkh8fEeW67Z7ZNRbPoQ"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_93vvkx8fEeW67Z7ZNRbPoQ"/>
