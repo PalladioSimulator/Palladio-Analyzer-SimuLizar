@@ -1,0 +1,474 @@
+[Worker-37 ] INFO : Create workflow configuration
+[Worker-37 ] INFO : Validating workflow configuration
+[Worker-37 ] INFO : Creating workflow engine
+[Worker-37 ] INFO : Executing workflow
+[Worker-37 ] INFO : Creating workflow engine and starting workflow
+[Worker-37 ] INFO : Task Sequential Job Execution completed in 0.058757824 seconds
+[Worker-37 ] INFO : Start job: org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob@6c41aa4b
+[Worker-37 ] INFO : Initialise Simulizar runtime state
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 0.0
+[Thread-2264] INFO : Measured value: 0.0
+[Worker-37 ] INFO : No Usage Evolution model found, so evolution will not be simulated.
+[Worker-37 ] INFO : SimuTime: 200
+[Worker-37 ] INFO : Starting simulation...
+[Worker-37 ] INFO : No Usage Evolution model found, so evolution will not be simulated.
+[Worker-37 ] INFO : No Usage Evolution model found, so evolution will not be simulated.
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 1
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 4.0
+[Thread-2264] INFO : Measured value: 2.0320686083000004
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 1
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 8.0
+[Thread-2264] INFO : Measured value: 3.660024393351351
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 16.0
+[Thread-2264] INFO : Measured value: 9.718511443499999
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 20.0
+[Thread-2264] INFO : Measured value: 2.9575526925000006
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 24.0
+[Thread-2264] INFO : Measured value: 4.052151916743589
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 28.0
+[Thread-2264] INFO : Measured value: 4.7764123728448284
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 32.0
+[Thread-2264] INFO : Measured value: 4.045542830366666
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 36.0
+[Thread-2264] INFO : Measured value: 4.496725416214288
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 40.0
+[Thread-2264] INFO : Measured value: 8.16341826659524
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 44.0
+[Thread-2264] INFO : Measured value: 8.16938313990741
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 48.0
+[Thread-2264] INFO : Measured value: 11.856560263370971
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 52.0
+[Thread-2264] INFO : Measured value: 15.469620209296298
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 56.0
+[Thread-2264] INFO : Measured value: 20.451105168846148
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 60.0
+[Thread-2264] INFO : Measured value: 0.1323956610571429
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 64.0
+[Thread-2264] INFO : Measured value: 0.13765503533962298
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 68.0
+[Thread-2264] INFO : Measured value: 0.47827125545945853
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 72.0
+[Thread-2264] INFO : Measured value: 0.8658587359655168
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 76.0
+[Thread-2264] INFO : Measured value: 1.728387539000002
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 80.0
+[Thread-2264] INFO : Measured value: 4.054303149695653
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 84.0
+[Thread-2264] INFO : Measured value: 5.796723355857142
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 88.0
+[Thread-2264] INFO : Measured value: 4.722643850611111
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 92.0
+[Thread-2264] INFO : Measured value: 5.137641855868422
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 96.0
+[Thread-2264] INFO : Measured value: 4.117690823659576
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 100.0
+[Thread-2264] INFO : Measured value: 0.14116955020833308
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 104.0
+[Thread-2264] INFO : Measured value: 0.12753949297916733
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 108.0
+[Thread-2264] INFO : Measured value: 0.9732797136785715
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 112.0
+[Thread-2264] INFO : Measured value: 1.429544940341464
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 116.0
+[Thread-2264] INFO : Measured value: 2.2018589718181825
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 120.0
+[Thread-2264] INFO : Measured value: 2.046538885281248
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 124.0
+[Thread-2264] INFO : Measured value: 3.1643931007241375
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 128.0
+[Thread-2264] INFO : Measured value: 4.449305288794119
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 132.0
+[Thread-2264] INFO : Measured value: 3.7546419155500033
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 136.0
+[Thread-2264] INFO : Measured value: 3.8959551960674155
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 140.0
+[Thread-2264] INFO : Measured value: 0.15299233090000258
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 144.0
+[Thread-2264] INFO : Measured value: 0.11347386350000192
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 148.0
+[Thread-2264] INFO : Measured value: 0.49860750891304323
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 152.0
+[Thread-2264] INFO : Measured value: 0.7771206161666668
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 156.0
+[Thread-2264] INFO : Measured value: 2.266478296684207
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 2
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 160.0
+[Thread-2264] INFO : Measured value: 5.972483523999993
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 164.0
+[Thread-2264] INFO : Measured value: 8.90599047844444
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 168.0
+[Thread-2264] INFO : Measured value: 5.570461932499996
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 172.0
+[Thread-2264] INFO : Measured value: 8.629256989894742
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 176.0
+[Thread-2264] INFO : Measured value: 9.240166701660382
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 180.0
+[Thread-2264] INFO : Measured value: 8.842259045861786
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 5
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 184.0
+[Thread-2264] INFO : Measured value: 0.10766042797142826
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 188.0
+[Thread-2264] INFO : Measured value: 0.14521429249999984
+[Thread-2264] INFO : Reconfiguration action: ScaleDown
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Reconfiguration action: ContentUpgrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 192.0
+[Thread-2264] INFO : Measured value: 0.7211540348064547
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 196.0
+[Thread-2264] INFO : Measured value: 1.9765802052500006
+[Thread-2264] INFO : Content: Multimedia
+[Thread-2264] INFO : Active servers: 3
+[Worker-37 ] INFO :  ======================================================= 
+[Worker-37 ] INFO : Removed reconfiguration demands!
+[Worker-37 ] INFO : LAFORE Started! Simulation time: 200.0
+[Thread-2264] INFO : Measured value: 3.223963445655177
+[Worker-37 ] INFO : Simulation stop requested!
+[Worker-37 ] INFO : Simulation took 200.0 simulated time units
+[Thread-2264] INFO : Reconfiguration action: ContentDowngrade
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Worker-37 ] INFO : Simulation terminated. Took 102.239869291 real time seconds.
+[Worker-37 ] INFO : Total Number of Violations: 65
+[Thread-2264] INFO : Reconfiguration action: ScaleUp
+[Thread-2264] INFO : Added Reconfiguration Demand
+[Thread-2264] INFO : Content: Textual
+[Thread-2264] INFO : Active servers: 4
+[Worker-37 ] INFO : finished job: org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob@6c41aa4b
+[Worker-37 ] INFO : Task Sequential Job Execution completed in 104.371342996 seconds
+[Worker-37 ] INFO : Task Workflow Execution completed in 104.371447339 seconds
+[Worker-37 ] INFO : Cleaning up...
+[Worker-37 ] INFO : Workflow engine completed task

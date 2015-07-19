@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
-<stringAttribute key="EDP2RepositoryID" value="_rbQjkCr7EeWQAfzYq_di_A"/>
+<stringAttribute key="EDP2RepositoryID" value="_TQdesCwHEeWJT8rfMwezuQ"/>
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
 <stringAttribute key="allocationFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.allocation"/>
 <booleanAttribute key="clear" value="true"/>
@@ -26,7 +26,6 @@
 <stringAttribute key="maximumMeasurementCount" value="10000"/>
 <stringAttribute key="minimum" value=""/>
 <stringAttribute key="monitorRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/monitor/MonitorsRep.monitorrepository"/>
-<stringAttribute key="org.eclipse.debug.ui.ATTR_CAPTURE_IN_FILE" value="${workspace_loc:/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/console.txt}"/>
 <stringAttribute key="outpath" value="org.palladiosimulator.temporary"/>
 <stringAttribute key="persistenceFramework" value="Experiment Data Persistency &amp; Presentation (EDP2)"/>
 <stringAttribute key="reconfigurationRulesFolder" value=""/>
@@ -40,7 +39,7 @@
 <stringAttribute key="stepwidth" value=""/>
 <stringAttribute key="strategiesRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/knowledgeModels/design/ZnnStrategiesRepository.strategies"/>
 <stringAttribute key="usageEvolutionFile" value=""/>
-<stringAttribute key="usageFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overload.usagemodel"/>
+<stringAttribute key="usageFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overprovisioned.usagemodel"/>
 <booleanAttribute key="useConfidenceStopCondition" value="false"/>
 <booleanAttribute key="useFixedSeed" value="false"/>
 <stringAttribute key="variable" value=""/>
