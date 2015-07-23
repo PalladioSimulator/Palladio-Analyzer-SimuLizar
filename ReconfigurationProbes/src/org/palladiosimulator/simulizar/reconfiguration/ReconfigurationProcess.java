@@ -16,8 +16,8 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
- * {@link SimuComSimProcess} implementation which is responsible for executing
- * reconfigurations during Simulizar runs.
+ * {@link SimuComSimProcess} implementation which is responsible for executing reconfigurations
+ * during Simulizar runs.
  * 
  * @author Florian Rosenthal
  * @see Reconfigurator
@@ -25,154 +25,140 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  */
 public class ReconfigurationProcess extends SimuComSimProcess {
 
-	private EObject monitoredElement;
-	private final Iterable<IReconfigurator> reconfigurators;
-	private final ISimulationControl simControl;
-	private final List<Notification> currentReconfigNotifications;
-	private final Reconfigurator reconfigurator;
-	// volatile is sufficient as flag is only set once
-	private volatile boolean terminationRequested = false;
+    private final Iterable<IReconfigurator> reconfigurators;
+    private final ISimulationControl simControl;
+    private final List<Notification> currentReconfigNotifications;
+    private final Reconfigurator reconfigurator;
+    // volatile is sufficient as flag is only set once
+    private volatile boolean terminationRequested = false;
+    private EObject monitoredElement;
 
-	/**
-	 * Initializes a new instance of the {@link ReconfigurationProcess} class.
-	 * 
-	 * @param model
-	 *            The {@link SimuComModel} that is in used during the current
-	 *            simulation run.
-	 * @param reconfigurators
-	 *            An {@link Iterable} containing all {@link IReconfigurator}
-	 *            that shall be used.
-	 * @param reconfigurator
-	 *            The {@link Reconfigurator} instance that manages and triggers
-	 *            reconfigurations.
-	 */
-	protected ReconfigurationProcess(SimuComModel model,
-			Iterable<IReconfigurator> reconfigurators,
-			Reconfigurator reconfigurator) {
-		super(model, "Reconfiguration Process");
-		this.reconfigurators = Objects.requireNonNull(reconfigurators,
-				"reconfigurators must not be null");
-		this.reconfigurator = Objects.requireNonNull(reconfigurator,
-				"reconfigurator must not be null");
-		this.simControl = Objects.requireNonNull(model,
-				"Passed SimuComModel must not be null").getSimulationControl();
-		this.currentReconfigNotifications = new ArrayList<>();
-	}
+    /**
+     * Initializes a new instance of the {@link ReconfigurationProcess} class.
+     * 
+     * @param model
+     *            The {@link SimuComModel} that is in used during the current simulation run.
+     * @param reconfigurators
+     *            An {@link Iterable} containing all {@link IReconfigurator} that shall be used.
+     * @param reconfigurator
+     *            The {@link Reconfigurator} instance that manages and triggers reconfigurations.
+     */
+    protected ReconfigurationProcess(SimuComModel model, Iterable<IReconfigurator> reconfigurators,
+            Reconfigurator reconfigurator) {
+        super(model, "Reconfiguration Process");
+        this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
+        this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
+        this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
+        this.currentReconfigNotifications = new ArrayList<>();
+    }
 
-	/**
-	 * Appends the given notification about model change due to a
-	 * reconfiguration that takes place.
-	 * 
-	 * @param notification
-	 *            A {@link Notification} that describe model changes due to
-	 *            reconfiguration.
-	 */
-	public void appendReconfigurationNotification(Notification notification) {
-		if (notification != null) {
-			this.currentReconfigNotifications.add(notification);
-		}
-	}
+    /**
+     * Appends the given notification about model change due to a reconfiguration that takes place.
+     * 
+     * @param notification
+     *            A {@link Notification} that describe model changes due to reconfiguration.
+     */
+    public void appendReconfigurationNotification(Notification notification) {
+        if (notification != null) {
+            this.currentReconfigNotifications.add(notification);
+        }
+    }
 
-	private void fireBeginReconfigurationEvent(BeginReconfigurationEvent event) {
-		this.reconfigurator.fireReconfigurationEvent(event);
-	}
+    private void fireBeginReconfigurationEvent(BeginReconfigurationEvent event) {
+        this.reconfigurator.fireReconfigurationEvent(event);
+    }
 
-	private void fireEndReconfigurationEvent(EndReconfigurationEvent event) {
-		this.reconfigurator.fireReconfigurationEvent(event);
-	}
+    private void fireEndReconfigurationEvent(EndReconfigurationEvent event) {
+        this.reconfigurator.fireReconfigurationEvent(event);
+    }
 
-	private void fireReconfigurationExecutedEvent(
-			BeginReconfigurationEvent beginEvent,
-			EndReconfigurationEvent endEvent) {
-		this.reconfigurator
-				.fireReconfigurationEvent(new ReconfigurationExecutedEvent(
-						beginEvent, endEvent, this.currentReconfigNotifications));
-	}
+    private void fireReconfigurationExecutedEvent(BeginReconfigurationEvent beginEvent, EndReconfigurationEvent endEvent) {
+        this.reconfigurator.fireReconfigurationEvent(new ReconfigurationExecutedEvent(beginEvent, endEvent,
+                this.currentReconfigNotifications));
+    }
 
-	private void clearNotifications() {
-		this.currentReconfigNotifications.clear();
-	}
+    private void setMonitoredElement(EObject monitoredElement) {
+        this.monitoredElement = monitoredElement;
+    }
 
-	@Override
-	public void activate() {
-		throw new UnsupportedOperationException(
-				"The reconfiguration process is not supposed to be activated manually."
-						+ "Use executeReconfigurations(EObject) instead.");
-	}
+    private EObject getMonitoredElement() {
+        return this.monitoredElement;
+    }
 
-	@Override
-	public void reschedule(double d) {
-		throw new UnsupportedOperationException(
-				"The reconfiguration process is not supposed to be scheduled manually."
-						+ "Use executeReconfigurations(EObject) instead.");
-	}
+    private void clearNotifications() {
+        this.currentReconfigNotifications.clear();
+    }
 
-	/**
-	 * Executes all reconfigurations that are provided by the attached
-	 * {@link IReconfigurator}s.
-	 * 
-	 * @param monitoredElement
-	 *            The {@link EObject} which is the reconfiguration target.
-	 */
-	void executeReconfigurations(EObject monitoredElement) {
-		this.monitoredElement = Objects.requireNonNull(monitoredElement,
-				"Monitored element must not be null.");
-		if (this.isScheduled()) {
-			throw new IllegalStateException(
-					"Reconfigurations are already taking place.");
-		}
-		if (this.isFinished()) {
-			throw new IllegalStateException(
-					"Reconfiguration process has already terminated.");
-		}
-		scheduleAt(0);
-	}
+    @Override
+    public void activate() {
+        throw new UnsupportedOperationException("The reconfiguration process is not supposed to be activated manually."
+                + "Use executeReconfigurations(EObject) instead.");
+    }
 
-	/**
-	 * Indicates whether termination has been requested by a call to
-	 * {@link #requestTermination()}. <br>
-	 * Note, that the process may still be running, even if this method returns
-	 * {@code true}.
-	 * 
-	 * @return {@code true} if termination has been requested, otherwise
-	 *         {@code false}.
-	 */
-	boolean isTerminationRequested() {
-		return this.terminationRequested;
-	}
+    @Override
+    public void reschedule(double d) {
+        throw new UnsupportedOperationException("The reconfiguration process is not supposed to be scheduled manually."
+                + "Use executeReconfigurations(EObject) instead.");
+    }
 
-	/**
-	 * Requests that the process shall terminate properly.
-	 */
-	void requestTermination() {
-		if (!terminationRequested) {
-			// this ensures that flag is only set once
-			this.terminationRequested = true;
-		}
-	}
+    /**
+     * Executes all reconfigurations that are provided by the attached {@link IReconfigurator}s.
+     * 
+     * @param monitoredElement
+     *            The {@link EObject} which is the reconfiguration target.
+     */
+    void executeReconfigurations(EObject monitoredElement) {
+        if (this.isScheduled()) {
+            throw new IllegalStateException("Reconfigurations are already taking place.");
+        }
+        if (this.isFinished()) {
+            throw new IllegalStateException("Reconfiguration process has already terminated.");
+        }
+        setMonitoredElement(Objects.requireNonNull(monitoredElement, "Monitored element must not be null."));
+        scheduleAt(0);
+    }
 
-	@Override
-	protected void internalLifeCycle() {
-		// execute reconfigurations until termination requested
-		while (!isTerminationRequested()) {
-			for (IReconfigurator reconfigurator : this.reconfigurators) {
-				BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-						this.simControl.getCurrentSimulationTime());
-				fireBeginReconfigurationEvent(beginReconfigurationEvent);
-				boolean reconfigResult = reconfigurator
-						.checkAndExecute(monitoredElement);
-				EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-						EventResult.fromBoolean(reconfigResult),
-						this.simControl.getCurrentSimulationTime());
-				fireEndReconfigurationEvent(endReconfigurationEvent);
-				if (reconfigResult) {
-					LOGGER.debug("Successfully executed reconfiguration.");
-					fireReconfigurationExecutedEvent(beginReconfigurationEvent,
-							endReconfigurationEvent);
-				}
-				clearNotifications();
-				this.passivate();
-			}
-		}
-	}
+    /**
+     * Indicates whether termination has been requested by a call to {@link #requestTermination()}. <br>
+     * Note, that the process may still be running, even if this method returns {@code true}.
+     * 
+     * @return {@code true} if termination has been requested, otherwise {@code false}.
+     */
+    boolean isTerminationRequested() {
+        return this.terminationRequested;
+    }
+
+    /**
+     * Requests that the process shall terminate properly.
+     */
+    void requestTermination() {
+        if (!terminationRequested) {
+            // this ensures that flag is only set once
+            this.terminationRequested = true;
+        }
+    }
+
+    @Override
+    protected void internalLifeCycle() {
+        // execute reconfigurations until termination requested
+        while (!isTerminationRequested()) {
+            EObject monitoredElement = getMonitoredElement();
+            for (IReconfigurator reconfigurator : this.reconfigurators) {
+                BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
+                        this.simControl.getCurrentSimulationTime());
+                fireBeginReconfigurationEvent(beginReconfigurationEvent);
+                boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+                EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
+                        EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+                fireEndReconfigurationEvent(endReconfigurationEvent);
+                if (reconfigResult) {
+                    LOGGER.debug("Successfully executed reconfiguration.");
+                    fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
+                }
+                clearNotifications();
+            }
+            // all reconfigurators did their job, so we can go to sleep
+            this.passivate();
+        }
+    }
 }
