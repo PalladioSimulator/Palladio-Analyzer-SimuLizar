@@ -114,6 +114,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         if (this.isFinished()) {
             throw new IllegalStateException("Reconfiguration process has already terminated.");
         }
+        // the process is not scheduled, so it should be passive
+        // update of monitored element is safe
         setMonitoredElement(Objects.requireNonNull(monitoredElement, "Monitored element must not be null."));
         scheduleAt(0);
     }
