@@ -39,11 +39,11 @@ property migratedComponentContextName = 'MigratedComponentAssemblyContext';
 		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		assert fatal(allocation.noConflictingMigrationInProgress(migratedAssembly) and allocation.targetResourceContainerNotEqualSource(migratedAssembly, targetResourceContainer))
 				with log('Migration preconditions not met');
-		applyStereotype(migratedAssembly, migratedComponentContextName);
+		migratedAssembly.applyStereotype(migratedComponentContextName);
 	}
 	
 	query Allocation::noConflictingMigrationInProgress(migratedAssembly : AssemblyContext) : Boolean {
-		return not hasAppliedStereotype(migratedAssembly, migratedComponentContextName);
+		return not migratedAssembly.hasAppliedStereotype(migratedComponentContextName);
 	}
 	
 	query Allocation::targetResourceContainerNotEqualSource(migratedAssembly : AssemblyContext, targetContainer : ResourceContainer) : Boolean {

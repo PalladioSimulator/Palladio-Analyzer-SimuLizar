@@ -13,6 +13,8 @@ import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.EcoreUtil.UsageCrossReferencer;
+import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
+import org.eclipse.m2m.qvt.oml.blackbox.java.Operation.Kind;
 import org.modelversioning.emfprofile.Profile;
 import org.palladiosimulator.mdsdprofiles.api.ProfileAPI;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
@@ -31,6 +33,7 @@ public class ProfilesLibrary {
      * @param stereotypeName The name of the stereotype to check for application.
      * @return {@code true} whether the given stereotype is applied, {@code false} otherwise.
      */
+    @Operation(kind=Kind.QUERY, contextual=true)
     public static boolean hasAppliedStereotype(final Entity pcmEntity, final String stereotypeName) {
         return StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName);
     }
@@ -96,6 +99,7 @@ public class ProfilesLibrary {
      * @param stereotypeName The name of the stereotype to apply.
      * @throws IllegalStateException In case no stereotype with the given name exists.
      */
+    @Operation(kind=Kind.HELPER, contextual=true)
     public static void applyStereotype(final Entity pcmEntity, final String stereotypeName) {
     	ensureProfileApplied(pcmEntity, stereotypeName);
         StereotypeAPI.applyStereotype(pcmEntity, stereotypeName);
@@ -108,6 +112,7 @@ public class ProfilesLibrary {
      * @param stereotypeName The name of the stereotype to revoke.
      * @throws IllegalStateException In case no stereotype with the given name exists.
      */
+    @Operation(kind=Kind.HELPER, contextual=true)
     public static void removeStereotypeApplications(final Entity pcmEntity, final String stereotypeName) {
     	ensureProfileApplied(pcmEntity, stereotypeName);
         if (StereotypeAPI.isStereotypeApplied(pcmEntity, stereotypeName)) {

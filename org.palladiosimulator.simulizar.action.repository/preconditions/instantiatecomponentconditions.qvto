@@ -35,16 +35,15 @@ property resourceContainerStereotypeName = 'InstantiatedComponentResourceContain
 	 * This is the entry point to the overall transformation.
 	 */
 	main() {	
-		var allocation : Allocation := pcmAllocation.rootObjects()->selectOne(Allocation);//[Allocation]->any(true);
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
 		var targetContainerRole : instance::Role := roleSet.roles->selectOne(role | role.roleType.id = '_9TESQRwLEeW4AMv4FxCz8w');
 		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
-		assert fatal(allocation.noConflictingInstantiationInProgress(targetResourceContainer))
+		assert fatal(targetResourceContainer.noConflictingInstantiationInProgress())
 				with log('Component instantiation preconditions not met');
-		applyStereotype(targetResourceContainer, resourceContainerStereotypeName);
+		targetResourceContainer.applyStereotype(resourceContainerStereotypeName);
 	}
 	
-	query Allocation::noConflictingInstantiationInProgress(targetContainer : ResourceContainer) : Boolean {
-		return not hasAppliedStereotype(targetContainer, resourceContainerStereotypeName);
+	query ResourceContainer::noConflictingInstantiationInProgress() : Boolean {
+		return not self.hasAppliedStereotype(resourceContainerStereotypeName);
 	}
 }

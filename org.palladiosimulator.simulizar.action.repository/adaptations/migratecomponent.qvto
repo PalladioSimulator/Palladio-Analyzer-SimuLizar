@@ -38,6 +38,6 @@ property migratedComponentContextName = 'MigratedComponentAssemblyContext';
 		var targetContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		var allocationCtx : AllocationContext := self.allocationContexts_Allocation->select(a | a.assemblyContext_AllocationContext.id = migratedAssembly.id)->any(true);
 		allocationCtx.resourceContainer_AllocationContext := targetContainer;
-		removeStereotypeApplications(migratedAssembly, migratedComponentContextName);
+		migratedAssembly.removeStereotypeApplications(migratedComponentContextName);
 	}
 }
