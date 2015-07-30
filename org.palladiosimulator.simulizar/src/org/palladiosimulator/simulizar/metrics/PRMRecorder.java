@@ -16,8 +16,6 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
  */
 public abstract class PRMRecorder {
 
-    private static final RuntimeMeasurementFactory PRM_FACTORY = RuntimeMeasurementFactory.eINSTANCE;
-
     private final RuntimeMeasurement measurement;
     private final RuntimeMeasurementModel prmAccess;
 

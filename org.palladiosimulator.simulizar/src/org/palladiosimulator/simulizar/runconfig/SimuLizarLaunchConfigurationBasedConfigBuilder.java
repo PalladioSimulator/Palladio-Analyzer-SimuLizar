@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.runconfig;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComExtensionConfigurationBuilder;
@@ -12,7 +13,6 @@ import de.uka.ipd.sdq.simucomframework.SimuComConfigExtension;
 import de.uka.ipd.sdq.workflow.extension.ExtensionHelper;
 import de.uka.ipd.sdq.workflow.extension.WorkflowExtension;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowBasedRunConfiguration;
-import de.uka.ipd.sdq.workflow.pcm.ConstantsContainer;
 
 public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunchConfigurationBasedConfigBuilder {
 

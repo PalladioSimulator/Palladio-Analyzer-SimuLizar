@@ -3,11 +3,11 @@ package org.palladiosimulator.simulizar.launcher.partitions;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Special ResourceSetPartition for the MonitorRepository, with the functionality to resolve cross

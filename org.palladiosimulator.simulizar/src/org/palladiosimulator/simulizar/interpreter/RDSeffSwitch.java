@@ -17,30 +17,30 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import de.uka.ipd.sdq.completions.DelegatingExternalCallAction;
-import de.uka.ipd.sdq.pcm.allocation.Allocation;
-import de.uka.ipd.sdq.pcm.allocation.AllocationContext;
-import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
-import de.uka.ipd.sdq.pcm.repository.Parameter;
-import de.uka.ipd.sdq.pcm.resourceenvironment.ResourceContainer;
-import de.uka.ipd.sdq.pcm.seff.AbstractAction;
-import de.uka.ipd.sdq.pcm.seff.AbstractBranchTransition;
-import de.uka.ipd.sdq.pcm.seff.AcquireAction;
-import de.uka.ipd.sdq.pcm.seff.BranchAction;
-import de.uka.ipd.sdq.pcm.seff.CollectionIteratorAction;
-import de.uka.ipd.sdq.pcm.seff.ExternalCallAction;
-import de.uka.ipd.sdq.pcm.seff.ForkAction;
-import de.uka.ipd.sdq.pcm.seff.ForkedBehaviour;
-import de.uka.ipd.sdq.pcm.seff.InternalAction;
-import de.uka.ipd.sdq.pcm.seff.LoopAction;
-import de.uka.ipd.sdq.pcm.seff.ReleaseAction;
-import de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour;
-import de.uka.ipd.sdq.pcm.seff.SeffPackage;
-import de.uka.ipd.sdq.pcm.seff.SetVariableAction;
-import de.uka.ipd.sdq.pcm.seff.seff_performance.InfrastructureCall;
-import de.uka.ipd.sdq.pcm.seff.seff_performance.ParametricResourceDemand;
-import de.uka.ipd.sdq.pcm.seff.util.SeffSwitch;
+import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
+import org.palladiosimulator.pcm.allocation.Allocation;
+import org.palladiosimulator.pcm.allocation.AllocationContext;
+import org.palladiosimulator.pcm.core.PCMRandomVariable;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.repository.Parameter;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.seff.AbstractAction;
+import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
+import org.palladiosimulator.pcm.seff.AcquireAction;
+import org.palladiosimulator.pcm.seff.BranchAction;
+import org.palladiosimulator.pcm.seff.CollectionIteratorAction;
+import org.palladiosimulator.pcm.seff.ExternalCallAction;
+import org.palladiosimulator.pcm.seff.ForkAction;
+import org.palladiosimulator.pcm.seff.ForkedBehaviour;
+import org.palladiosimulator.pcm.seff.InternalAction;
+import org.palladiosimulator.pcm.seff.LoopAction;
+import org.palladiosimulator.pcm.seff.ReleaseAction;
+import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
+import org.palladiosimulator.pcm.seff.SeffPackage;
+import org.palladiosimulator.pcm.seff.SetVariableAction;
+import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
+import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
+import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
@@ -86,7 +86,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(de.uka.ipd.sdq.pcm.seff.ResourceDemandingBehaviour)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour)
      */
     @Override
     public Object caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
@@ -124,13 +124,13 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseAbstractAction(org.palladiosimulator.pcm.seff.AbstractAction)
      */
     /*
      * (non-Javadoc)
      * 
      * @see
-     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAbstractAction(de.uka.ipd.sdq.pcm.seff.AbstractAction
+     * org.palladiosimulator.pcm.seff.util.SeffSwitch#caseAbstractAction(org.palladiosimulator.pcm.seff.AbstractAction
      * )
      */
     @Override
@@ -140,7 +140,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseInternalAction(de.uka.ipd.sdq.pcm.seff.InternalAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseInternalAction(org.palladiosimulator.pcm.seff.InternalAction)
      */
     @Override
     public Object caseInternalAction(final InternalAction internalAction) {
@@ -174,7 +174,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseExternalCallAction(de.uka.ipd.sdq.pcm.seff.ExternalCallAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseExternalCallAction(org.palladiosimulator.pcm.seff.ExternalCallAction)
      */
     @Override
     public Object caseExternalCallAction(final ExternalCallAction externalCall) {
@@ -204,7 +204,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseBranchAction(de.uka.ipd.sdq.pcm.seff.BranchAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseBranchAction(org.palladiosimulator.pcm.seff.BranchAction)
      */
     @Override
     public Object caseBranchAction(final BranchAction object) {
@@ -245,7 +245,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseCollectionIteratorAction(de.uka.ipd.sdq.pcm.seff.CollectionIteratorAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseCollectionIteratorAction(org.palladiosimulator.pcm.seff.CollectionIteratorAction)
      */
     @Override
     public Object caseCollectionIteratorAction(final CollectionIteratorAction object) {
@@ -255,7 +255,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseForkAction(de.uka.ipd.sdq.pcm.seff.ForkAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseForkAction(org.palladiosimulator.pcm.seff.ForkAction)
      */
     @Override
     public Object caseForkAction(final ForkAction object) {
@@ -291,7 +291,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseLoopAction(de.uka.ipd.sdq.pcm.seff.LoopAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseLoopAction(org.palladiosimulator.pcm.seff.LoopAction)
      */
     @Override
     public Object caseLoopAction(final LoopAction object) {
@@ -313,7 +313,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     }
 
     /**
-     * @see de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseSetVariableAction(de.uka.ipd.sdq.pcm.seff.SetVariableAction)
+     * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseSetVariableAction(org.palladiosimulator.pcm.seff.SetVariableAction)
      */
     @Override
     public Object caseSetVariableAction(final SetVariableAction object) {
@@ -333,7 +333,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * (non-Javadoc)
      * 
      * @see
-     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseAcquireAction(de.uka.ipd.sdq.pcm.seff.AcquireAction
+     * org.palladiosimulator.pcm.seff.util.SeffSwitch#caseAcquireAction(org.palladiosimulator.pcm.seff.AcquireAction
      * )
      */
     @Override
@@ -355,7 +355,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      * (non-Javadoc)
      * 
      * @see
-     * de.uka.ipd.sdq.pcm.seff.util.SeffSwitch#caseReleaseAction(de.uka.ipd.sdq.pcm.seff.ReleaseAction
+     * org.palladiosimulator.pcm.seff.util.SeffSwitch#caseReleaseAction(org.palladiosimulator.pcm.seff.ReleaseAction
      * )
      */
     @Override

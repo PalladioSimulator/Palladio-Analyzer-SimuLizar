@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.access;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
@@ -7,7 +8,6 @@ import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
 
 /**
  * Interface which allows access to all models at simulation time. Two classes
