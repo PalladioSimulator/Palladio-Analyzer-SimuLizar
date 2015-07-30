@@ -12,11 +12,11 @@ import org.scaledl.usageevolution.WorkParameterEvolution;
 
 import tools.descartes.dlim.Sequence;
 import tools.descartes.dlim.generator.ModelEvaluator;
-import de.uka.ipd.sdq.pcm.core.PCMRandomVariable;
-import de.uka.ipd.sdq.pcm.parameter.VariableCharacterisation;
-import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.Workload;
+import org.palladiosimulator.pcm.core.PCMRandomVariable;
+import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
+import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
+import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
+import org.palladiosimulator.pcm.usagemodel.Workload;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class PeriodicallyTriggeredWorkloadEvolver extends PeriodicallyTriggeredSimulationEntity {

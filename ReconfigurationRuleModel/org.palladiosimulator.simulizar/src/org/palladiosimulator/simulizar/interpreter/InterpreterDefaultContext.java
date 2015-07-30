@@ -2,11 +2,10 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.Stack;
 
-import org.apache.log4j.Logger;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-import de.uka.ipd.sdq.pcm.core.composition.AssemblyContext;
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
@@ -24,8 +23,6 @@ public class InterpreterDefaultContext extends Context {
     * 
     */
     private static final long serialVersionUID = -5027373777424401211L;
-
-    private static final Logger LOGGER = Logger.getLogger(InterpreterDefaultContext.class.getName());
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 

@@ -7,7 +7,6 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
 
     protected IModelAccess modelAccessFactory;
     protected SimuLizarWorkflowConfiguration configuration;
-    private Reconfigurator reconfigurator;
 
     @Override
     public void setModelAccess(IModelAccess modelAccess) {
@@ -23,14 +22,6 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
             throw new IllegalArgumentException("Given configuration must not be null.");
         }
         this.configuration = configuration;
-    }
-
-    @Override
-    public void setReconfigurator(Reconfigurator reconfigurator) {
-        if (configuration == null) {
-            throw new IllegalArgumentException("Given reconfigurator must not be null.");
-        }
-        this.reconfigurator = reconfigurator;
     }
 
 }

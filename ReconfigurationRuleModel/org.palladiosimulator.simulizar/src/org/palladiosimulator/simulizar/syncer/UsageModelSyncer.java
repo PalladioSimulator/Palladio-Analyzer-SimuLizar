@@ -5,12 +5,12 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-import de.uka.ipd.sdq.pcm.core.CorePackage;
-import de.uka.ipd.sdq.pcm.usagemodel.ClosedWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.OpenWorkload;
-import de.uka.ipd.sdq.pcm.usagemodel.UsageModel;
-import de.uka.ipd.sdq.pcm.usagemodel.UsagemodelPackage;
-import de.uka.ipd.sdq.pcm.usagemodel.Workload;
+import org.palladiosimulator.pcm.core.CorePackage;
+import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
+import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
+import org.palladiosimulator.pcm.usagemodel.UsageModel;
+import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
+import org.palladiosimulator.pcm.usagemodel.Workload;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IModelSyncer {

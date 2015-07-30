@@ -3,15 +3,15 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.configurations.AbstractPCMWorkflowRunConfiguration;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.configurations.AbstractPCMWorkflowRunConfiguration;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob;
 
 /**
  * Job for loading PCM Models into Blackboard. Extends LoadPCMModelsJob from SimuCom. Overwrites
@@ -47,12 +47,12 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
     }
 
     /**
-     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
+     * @see org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.IProgressMonitor)
      */
     /*
      * (non-Javadoc)
      * 
-     * @see de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.
+     * @see org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.
      * IProgressMonitor)
      */
     @Override
@@ -80,7 +80,7 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
      * (non-Javadoc)
      * 
      * @see
-     * de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd
+     * org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd
      * .blackboard.MDSDBlackboard)
      */
     @Override

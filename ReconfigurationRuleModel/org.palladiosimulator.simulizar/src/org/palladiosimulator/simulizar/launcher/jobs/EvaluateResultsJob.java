@@ -7,6 +7,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.edp2.datastream.IDataSource;
 import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.edp2.datastream.edp2source.Edp2DataTupleDataSource;
@@ -32,8 +34,6 @@ import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
-import de.uka.ipd.sdq.workflow.pcm.blackboard.PCMResourceSetPartition;
-import de.uka.ipd.sdq.workflow.pcm.jobs.LoadPCMModelsIntoBlackboardJob;
 
 public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -77,7 +77,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
 
             final int lastExperiment = this.experimentSetting.getExperimentRuns().size() - 1;
-            final ExperimentRun experimentRun = this.experimentSetting.getExperimentRuns().get(lastExperiment);
+            this.experimentSetting.getExperimentRuns().get(lastExperiment);
 
             long[] sloViolations = computeSloViolations();
             LOGGER.info("Service level objectives were violated in " + sloViolations[1]
