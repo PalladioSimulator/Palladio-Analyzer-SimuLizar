@@ -42,6 +42,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      *            An {@link Iterable} containing all {@link IReconfigurator} that shall be used.
      * @param reconfigurator
      *            The {@link Reconfigurator} instance that manages and triggers reconfigurations.
+     * @throws NullPointerException
+     *             In case any of the given parameters is {@code null}.
      */
     protected ReconfigurationProcess(SimuComModel model, Iterable<IReconfigurator> reconfigurators,
             Reconfigurator reconfigurator) {
@@ -106,6 +108,10 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * 
      * @param monitoredElement
      *            The {@link EObject} which is the reconfiguration target.
+     * @throws IllegalStateException
+     *             In case the process is already either scheduled or finished.
+     * @throws NullPointerException
+     *             In case the passed EObject is {@code null}.
      */
     void executeReconfigurations(EObject monitoredElement) {
         if (this.isScheduled()) {
