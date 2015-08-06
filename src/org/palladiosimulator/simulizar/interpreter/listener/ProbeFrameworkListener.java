@@ -341,27 +341,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
     private void initReconfigurationTimeMeasurement() {
-
         for (MeasurementSpecification reconfigurationTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
             MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec.getMonitor().getMeasuringPoint();
 
             LOGGER.info("Created Reconfiguration Time Measuring Point");
 
-            // @SuppressWarnings("rawtypes")
-            // List probeList = new ArrayList<TriggeredProbe>(2);
-            // probeList.add(new
-            // TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-            // probeList.add(new
-            // TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-
-            // currentTimeProbes.put("Reconfiguration", Collections.unmodifiableList(probeList));
-
-            // this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probeList);
-
             Probe probe = CalculatorHelper.getEventProbeSetWithCurrentTime(this.simuComModel.getSimulationControl(),
                     new TakeReconfigurationDurationProbe(this.reconfigurator));
             this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probe);
-
         }
     }
 
