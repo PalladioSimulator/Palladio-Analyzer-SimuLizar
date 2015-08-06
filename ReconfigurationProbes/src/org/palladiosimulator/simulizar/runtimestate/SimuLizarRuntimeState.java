@@ -173,18 +173,10 @@ public class SimuLizarRuntimeState {
 
             @Override
             public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
-                // LOGGER.info("------- System reconfiguration started at simulation time " +
-                // event.getPassageTime()
-                // + "-------");
             }
 
             @Override
             public void endReconfigurationEvent(EndReconfigurationEvent event) {
-                // LOGGER.info("------- System reconfiguration finished at simulation time " +
-                // event.getPassageTime()
-                // + " and did " + (event.getReconfigurationEventResult() == EventResult.FAILURE ?
-                // "NOT " : "")
-                // + "succeed-------");
             }
 
             @Override
