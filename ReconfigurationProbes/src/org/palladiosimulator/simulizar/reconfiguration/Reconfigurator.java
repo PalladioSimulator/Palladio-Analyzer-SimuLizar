@@ -62,7 +62,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     private final SimuComModel model;
 
-    private final ReconfigurationProcess reconfigurationProcess;
+    // will be initialized lazily, once the first reconfiguration is to be executed
+    private ReconfigurationProcess reconfigurationProcess;
 
     /**
      * Constructor.
@@ -81,7 +82,6 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         this.model = model;
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
-        this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfigurators, this);
     }
 
     /**
@@ -116,8 +116,13 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         // previous reconfiguration is finished. This could be done on a
         // more fine-granular
         // level (one thread per executor).
-        if (isNotificationNewMeasurement(monitoredElement) && !this.reconfigurationProcess.isScheduled()) {
-            this.reconfigurationProcess.executeReconfigurations(runtimeMeasurementModel);
+        if (isNotificationNewMeasurement(monitoredElement)
+                && this.model.getSimulationControl().getCurrentSimulationTime() > 0
+                && (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
+            if (this.reconfigurationProcess == null) {
+                this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfigurators, this);
+            }
+            this.reconfigurationProcess.executeReconfigurations(this.runtimeMeasurementModel);
         }
     }
 

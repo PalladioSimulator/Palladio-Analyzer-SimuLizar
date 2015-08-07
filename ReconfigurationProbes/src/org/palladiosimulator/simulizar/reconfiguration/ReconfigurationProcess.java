@@ -151,22 +151,24 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         // execute reconfigurations until termination requested
         while (!isTerminationRequested()) {
             EObject monitoredElement = getMonitoredElement();
-            for (IReconfigurator reconfigurator : this.reconfigurators) {
-                BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-                        this.simControl.getCurrentSimulationTime());
-                fireBeginReconfigurationEvent(beginReconfigurationEvent);
-                boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
-                EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-                        EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
-                fireEndReconfigurationEvent(endReconfigurationEvent);
-                if (reconfigResult) {
-                    LOGGER.debug("Successfully executed reconfiguration.");
-                    fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
+            if (monitoredElement != null) {
+                for (IReconfigurator reconfigurator : this.reconfigurators) {
+                    BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
+                            this.simControl.getCurrentSimulationTime());
+                    fireBeginReconfigurationEvent(beginReconfigurationEvent);
+                    boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+                    EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
+                            EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+                    fireEndReconfigurationEvent(endReconfigurationEvent);
+                    if (reconfigResult) {
+                        LOGGER.debug("Successfully executed reconfiguration.");
+                        fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
+                    }
+                    clearNotifications();
                 }
-                clearNotifications();
+                // all reconfigurators did their job, so we can go to sleep
+                this.passivate();
             }
-            // all reconfigurators did their job, so we can go to sleep
-            this.passivate();
         }
     }
 }
