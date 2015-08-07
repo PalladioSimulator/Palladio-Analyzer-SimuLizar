@@ -87,8 +87,10 @@ transformation ScaleDown(		in prm : RUNTIMEMEASUREMENT,
 		// decrease processing rate by scaleDown
 		resourceContainer.activeResourceSpecifications_ResourceContainer->forEach(processingResourceSpecification){
 			var currentProcessingRate : String := processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification;
-	    	var newProcessingRate : Real := currentProcessingRate.toReal() - scaleDown;
-	    	processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification := newProcessingRate.toString();
+	    	if (currentProcessingRate.toReal() - scaleDown > 0.0) {
+	    		var newProcessingRate : Real := currentProcessingRate.toReal() - scaleDown;
+	    		processingResourceSpecification.processingRate_ProcessingResourceSpecification.specification := newProcessingRate.toString();
+	    	} endif;
 	    };
 	    
 	    // recursive call
