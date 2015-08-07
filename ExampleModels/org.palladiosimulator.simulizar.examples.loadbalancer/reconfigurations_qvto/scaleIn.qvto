@@ -82,23 +82,25 @@ transformation scaleIn(	in prm : PRM,
 	 */
 	helper outSourceProcessing(allocationContexts : Set(AllocationContext)) : Boolean {
 	
-	log('Found ' +  allocationContexts->size().toString() + 'AllocationContexts');
+	log('Found ' +  allocationContexts->size().toString() + ' AllocationContexts');
 	
 		allocationContexts->forEach(allocation){
 
-			if( allocation.assemblyContext_AllocationContext.entityName = "lastverteilerAK" ) {
-			log('Lastverteiler gefunden');
+			if( allocation.assemblyContext_AllocationContext.id = "_6F6LYAEnEeS7FKokKTKFow" ) {
+			log('found load balancer: AC_LoadBalancer');
 				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
 					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
-						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig2");
+						//name of branch: delegateToServer2
+						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(id="_tjFukAEoEeS7FKokKTKFow");
 						if(branch2.branchProbability > 0.0) {
-							branch2.branchProbability := branch2.branchProbability - outsourceFactor;
+							branch2.branchProbability := 0.0.max(branch2.branchProbability - outsourceFactor);
 							log('Set branchProbability to ' + branch2.branchProbability.toString());
 							return true;
 						};
-						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="zweig1");
+						//name of branch: delegateToServer1
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(id="_ridTkAEoEeS7FKokKTKFow");
 						if(branch1.branchProbability < 1.0) {
-							branch1.branchProbability := branch1.branchProbability + outsourceFactor;
+							branch1.branchProbability := 1.0.max(branch1.branchProbability + outsourceFactor);
 							log('Set branchProbability to ' + branch1.branchProbability.toString());
 							return true;
 						}
