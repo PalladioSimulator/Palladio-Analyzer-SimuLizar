@@ -58,7 +58,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 			with log ("Allocation Model is empty!");
 			
 		// Assert true for the return value of the condition check to get correct reconfiguration time measuring points
-		assert fatal (runtimeMeasurement.rootObjects()[RuntimeMeasurement]->checkCondition() = true)
+		assert error (runtimeMeasurement.rootObjects()[RuntimeMeasurement]->checkCondition() = true)
 			with log ("No reconfiguration required");	
 
 	}
