@@ -351,8 +351,7 @@ public class QVToReconfigurationTest {
         configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, Paths.get(allocationURI.path()).toAbsolutePath()
                 .toString());
         configuration.put(PMS_CONFIGURATION_KEY, Paths.get(pmsURI.path()).toAbsolutePath().toString());
-        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, Paths.get(reconfRulesURI.path()).toAbsolutePath()
-                .toString());
+        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, Paths.get(reconfRulesURI.path()).toAbsolutePath().toUri());
 
         final SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
         swfc.setMonitorRepositoryFile(configuration.get(PMS_CONFIGURATION_KEY).toString());
