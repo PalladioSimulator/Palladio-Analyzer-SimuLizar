@@ -315,7 +315,7 @@ public class QVToReconfigurationTest {
         URI pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
         pmsURI = CommonPlugin.resolve(pmsURI);
         URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
-        reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
+        //reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
 
         /*
          * Read in the PCM model.
@@ -351,7 +351,7 @@ public class QVToReconfigurationTest {
         configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, Paths.get(allocationURI.path()).toAbsolutePath()
                 .toString());
         configuration.put(PMS_CONFIGURATION_KEY, Paths.get(pmsURI.path()).toAbsolutePath().toString());
-        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, Paths.get(reconfRulesURI.path()).toAbsolutePath().toUri());
+        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, reconfRulesURI);
 
         final SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
         swfc.setMonitorRepositoryFile(configuration.get(PMS_CONFIGURATION_KEY).toString());
