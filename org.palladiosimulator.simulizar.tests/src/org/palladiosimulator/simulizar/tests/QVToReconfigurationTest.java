@@ -314,7 +314,7 @@ public class QVToReconfigurationTest {
         allocationURI = CommonPlugin.resolve(allocationURI);
         URI pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
         pmsURI = CommonPlugin.resolve(pmsURI);
-        URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, true);
+        URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
         reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
 
         /*
