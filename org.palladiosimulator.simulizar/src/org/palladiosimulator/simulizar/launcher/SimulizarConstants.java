@@ -20,6 +20,12 @@ public class SimulizarConstants {
     public static final String USAGEEVOLUTION_FILE = "usageEvolutionFile";
     public static final String SERVICELEVELOBJECTIVEREPOSITORY_FILE = "serviceLevelObjectiveRepositoryFile";
 
+    /**
+     * Id of the extension point used for reconfiguration engines
+     */
+    public static final String RECONFIGURATION_ENGINE_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.reconfigurationengine";
+    public static final String RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE = "reconfigurationEngine";
+
     /*
      * Set the file extensions which the dialogs will use as selection filter and for file name
      * validation.

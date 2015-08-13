@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,13 +39,14 @@ import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
+import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 
 /**
  * Class for listening to interpreter events in order to store collected data using the
@@ -52,11 +54,8 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProb
  * 
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
-public class ProbeFrameworkListener extends AbstractInterpreterListener
-        implements IReconfigurationListener {
-
-    private static final Logger LOGGER = Logger
-            .getLogger(ProbeFrameworkListener.class);
+public class ProbeFrameworkListener extends AbstractInterpreterListener {
+    private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
@@ -74,19 +73,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public ProbeFrameworkListener(final IModelAccess modelAccessFactory,
-            final SimuComModel simuComModel, final Reconfigurator reconfigurator) {
+    public ProbeFrameworkListener(final IModelAccess modelAccessFactory, final SimuComModel simuComModel,
+            final Reconfigurator reconfigurator) {
         super();
-        this.monitorRepositoryModel = modelAccessFactory
-                .getMonitorRepositoryModel();
-        this.runtimeMeasurementsModel = modelAccessFactory
-                .getRuntimeMeasurementModel();
-        this.calculatorFactory = simuComModel.getProbeFrameworkContext()
-                .getCalculatorFactory();
+        this.monitorRepositoryModel = modelAccessFactory.getMonitorRepositoryModel();
+        this.runtimeMeasurementsModel = modelAccessFactory.getRuntimeMeasurementModel();
+        this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = reconfigurator;
 
-        initReponseTimeMeasurement();
+        initResponseTimeMeasurement();
         initReconfigurationTimeMeasurement();
         initNumberOfResourceContainersMeasurements();
         initExtensionMeasurements();
@@ -94,8 +90,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
 
     private void initExtensionMeasurements() {
         Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper
-                .getExecutableExtensions(
-                        "org.palladiosimulator.simulizar.interpreter.listener.probeframework",
+                .getExecutableExtensions("org.palladiosimulator.simulizar.interpreter.listener.probeframework",
                         "decorator");
         for (AbstractRecordingProbeFrameworkListenerDecorator decorator : extensions) {
             decorator.setProbeFrameworkListener(this);
@@ -111,8 +106,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void beginUsageScenarioInterpretation(
-            final ModelElementPassedEvent<UsageScenario> event) {
+    public void beginUsageScenarioInterpretation(final ModelElementPassedEvent<UsageScenario> event) {
         this.startMeasurement(event);
     }
 
@@ -124,8 +118,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void endUsageScenarioInterpretation(
-            final ModelElementPassedEvent<UsageScenario> event) {
+    public void endUsageScenarioInterpretation(final ModelElementPassedEvent<UsageScenario> event) {
         this.endMeasurement(event);
     }
 
@@ -137,8 +130,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void beginEntryLevelSystemCallInterpretation(
-            final ModelElementPassedEvent<EntryLevelSystemCall> event) {
+    public void beginEntryLevelSystemCallInterpretation(final ModelElementPassedEvent<EntryLevelSystemCall> event) {
         this.startMeasurement(event);
     }
 
@@ -150,8 +142,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void endEntryLevelSystemCallInterpretation(
-            final ModelElementPassedEvent<EntryLevelSystemCall> event) {
+    public void endEntryLevelSystemCallInterpretation(final ModelElementPassedEvent<EntryLevelSystemCall> event) {
         this.endMeasurement(event);
     }
 
@@ -163,8 +154,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void beginExternalCallInterpretation(
-            final RDSEFFElementPassedEvent<ExternalCallAction> event) {
+    public void beginExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
         this.startMeasurement(event);
     }
 
@@ -176,19 +166,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
-    public void endExternalCallInterpretation(
-            final RDSEFFElementPassedEvent<ExternalCallAction> event) {
+    public void endExternalCallInterpretation(final RDSEFFElementPassedEvent<ExternalCallAction> event) {
         this.endMeasurement(event);
     }
 
     @Override
-    public <T extends EObject> void beginUnknownElementInterpretation(
-            ModelElementPassedEvent<T> event) {
+    public <T extends EObject> void beginUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
     }
 
     @Override
-    public <T extends EObject> void endUnknownElementInterpretation(
-            ModelElementPassedEvent<T> event) {
+    public <T extends EObject> void endUnknownElementInterpretation(ModelElementPassedEvent<T> event) {
     }
 
     /**
@@ -235,10 +222,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
 
                 @Override
                 public MeasurementSpecification transform(Monitor monitor) {
-                    for (MeasurementSpecification m : monitor
-                            .getMeasurementSpecifications()) {
-                        if (MetricDescriptionUtility.metricDescriptionIdsEqual(
-                                m.getMetricDescription(), soughtFor)) {
+                    for (MeasurementSpecification m : monitor.getMeasurementSpecifications()) {
+                        if (MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor)) {
                             return m;
                         }
                     }
@@ -246,9 +231,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
                 }
             };
             return Collections.unmodifiableCollection(CollectionUtils.select(
-                    CollectionUtils.collect(
-                            this.monitorRepositoryModel.getMonitors(),
-                            transformer), PredicateUtils.notNullPredicate()));
+                    CollectionUtils.collect(this.monitorRepositoryModel.getMonitors(), transformer),
+                    PredicateUtils.notNullPredicate()));
         }
         return Collections.emptyList();
     }
@@ -258,20 +242,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * monitor repository, then creates corresponding calculators and aggregators.
      * 
      */
-    private void initReponseTimeMeasurement() {
+    private void initResponseTimeMeasurement() {
         for (MeasurementSpecification responseTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            final MeasuringPoint measuringPoint = responseTimeMeasurementSpec
-                    .getMonitor().getMeasuringPoint();
-            final List<Probe> probeList = createStartAndStopProbe(
-                    measuringPoint, this.simuComModel);
-            final Calculator calculator = this.calculatorFactory
-                    .buildResponseTimeCalculator(measuringPoint, probeList);
+            final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+            final List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
+            final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
 
             if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE) {
                 try {
-                    IMeasurementSourceListener aggregator = new ResponseTimeAggregator(
-                            this.simuComModel, this.runtimeMeasurementsModel,
-                            responseTimeMeasurementSpec, measuringPoint);
+                    IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
+                            this.runtimeMeasurementsModel, responseTimeMeasurementSpec, measuringPoint);
                     calculator.addObserver(aggregator);
                 } catch (final UnsupportedOperationException e) {
                     LOGGER.error(e);
@@ -288,17 +268,13 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      */
     private void initNumberOfResourceContainersMeasurements() {
         for (MeasurementSpecification numberOfResourceContainersMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
-            MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec
-                    .getMonitor().getMeasuringPoint();
+            MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec.getMonitor().getMeasuringPoint();
 
-            final Probe probe = new EventProbeList(
-                    NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
-                    new TakeNumberOfResourceContainersProbe(
-                            simuComModel.getResourceRegistry()),
-                    Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
-                            simuComModel.getSimulationControl())));
-            calculatorFactory.buildNumberOfResourceContainersCalculator(
-                    measuringPoint, probe);
+            final Probe probe = new EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
+                    new TakeNumberOfResourceContainersProbe(simuComModel.getResourceRegistry()),
+                    Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel
+                            .getSimulationControl())));
+            calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
         }
     }
 
@@ -308,17 +284,12 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * @return list with start and stop probe
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected List<Probe> createStartAndStopProbe(
-            final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
+    protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
         List probeList = new ArrayList<TriggeredProbe>(2);
-        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
-                .getSimulationControl()));
-        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
-                .getSimulationControl()));
-        final EObject modelElement = MonitorRepositoryUtil
-                .getMonitoredElement(measuringPoint);
-        currentTimeProbes.put(((Entity) modelElement).getId(),
-                Collections.unmodifiableList(probeList));
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
+        currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
         return probeList;
     }
 
@@ -327,21 +298,16 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
      * @return
      */
     protected boolean entityIsAlreadyInstrumented(final EObject modelElement) {
-        return this.currentTimeProbes.containsKey(((Entity) modelElement)
-                .getId());
+        return this.currentTimeProbes.containsKey(((Entity) modelElement).getId());
     }
 
     /**
      * @param <T>
      * @param event
      */
-    private <T extends Entity> void startMeasurement(
-            final ModelElementPassedEvent<T> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event
-                .getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes
-                    .get(((Entity) event.getModelElement()).getId())
-                    .get(START_PROBE_INDEX)
+    private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
     }
@@ -349,92 +315,43 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener
     /**
      * @param event
      */
-    private <T extends Entity> void endMeasurement(
-            final ModelElementPassedEvent<T> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event
-                .getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes
-                    .get(((Entity) event.getModelElement()).getId())
-                    .get(STOP_PROBE_INDEX)
+    private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
     @Override
-    public void beginSystemOperationCallInterpretation(
-            ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event
-                .getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes
-                    .get(((Entity) event.getModelElement()).getId())
-                    .get(START_PROBE_INDEX)
+    public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
     }
 
     @Override
-    public void endSystemOperationCallInterpretation(
-            ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event
-                .getModelElement()).getId()) && simulationIsRunning()) {
-            this.currentTimeProbes
-                    .get(((Entity) event.getModelElement()).getId())
-                    .get(STOP_PROBE_INDEX)
+    public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId()) && simulationIsRunning()) {
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
                     .takeMeasurement(event.getThread().getRequestContext());
         }
-    }
-
-    @Override
-    public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
-        if (this.currentTimeProbes.containsKey("Reconfiguration")
-                && simulationIsRunning()) {
-            this.currentTimeProbes.get("Reconfiguration")
-                    .get(START_PROBE_INDEX).takeMeasurement();
-        }
-    }
-
-    @Override
-    public void endReconfigurationEvent(EndReconfigurationEvent event) {
-        if (this.currentTimeProbes.containsKey("Reconfiguration")
-                && simulationIsRunning()) {
-            this.currentTimeProbes.get("Reconfiguration").get(STOP_PROBE_INDEX)
-                    .takeMeasurement();
-        }
-    }
-
-    @Override
-    public void reconfigurationExecuted(ReconfigurationExecutedEvent event) {
-        // Nothing to do
     }
 
     /**
      * Initializes reconfiguration time measurement.
      * 
      */
-    @SuppressWarnings({ "unchecked" })
     private void initReconfigurationTimeMeasurement() {
-
         for (MeasurementSpecification reconfigurationTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
-            MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec
-                    .getMonitor().getMeasuringPoint();
+            MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec.getMonitor().getMeasuringPoint();
 
             LOGGER.info("Created Reconfiguration Time Measuring Point");
 
-            @SuppressWarnings("rawtypes")
-            List probeList = new ArrayList<TriggeredProbe>(2);
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
-                    .getSimulationControl()));
-            probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel
-                    .getSimulationControl()));
-
-            currentTimeProbes.put("Reconfiguration",
-                    Collections.unmodifiableList(probeList));
-
-            this.calculatorFactory.buildReconfigurationTimeCalculator(
-                    measuringPoint, probeList);
-
-            this.reconfigurator.addObserver(this);
-
+            Probe probe = CalculatorHelper
+                    .getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE, this.simuComModel
+                            .getSimulationControl(), new TakeReconfigurationDurationProbe(this.reconfigurator));
+            this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probe);
         }
     }
 

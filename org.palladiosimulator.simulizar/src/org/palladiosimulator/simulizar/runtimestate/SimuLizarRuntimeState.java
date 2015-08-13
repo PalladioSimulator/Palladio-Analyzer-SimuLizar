@@ -2,7 +2,10 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import java.util.List;
 
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
@@ -14,6 +17,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
@@ -29,213 +33,187 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
- * This class provides access to all simulation and simulizar related objects.
- * This includes access to the original SimuComModel (containing the simulated
- * resources, simulated processes, etc.), to simulizars central simulator event
- * distribution object, and to simulated component instances (e.g. to access
- * their current state of passive ressources, etc.).
+ * This class provides access to all simulation and simulizar related objects. This includes access
+ * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
+ * simulizars central simulator event distribution object, and to simulated component instances
+ * (e.g. to access their current state of passive ressources, etc.).
  * 
- * Per simulation run, there should be exactly one instance of this class and
- * all of its managed information objects.
+ * Per simulation run, there should be exactly one instance of this class and all of its managed
+ * information objects.
  * 
  * @author Steffen Becker, slightly adapted by Florian Rosenthal
  *
  */
 public class SimuLizarRuntimeState {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(SimuLizarRuntimeState.class);
+    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
-	private final SimuComModel model;
-	private final EventNotificationHelper eventHelper;
-	private final ComponentInstanceRegistry componentInstanceRegistry;
-	private final InterpreterDefaultContext mainContext;
-	private final SimulatedUsageModels usageModels;
-	private final ModelAccess modelAccess;
+    private final SimuComModel model;
+    private final EventNotificationHelper eventHelper;
+    private final ComponentInstanceRegistry componentInstanceRegistry;
+    private final InterpreterDefaultContext mainContext;
+    private final SimulatedUsageModels usageModels;
+    private final ModelAccess modelAccess;
 
-	private Reconfigurator reconfigurator;
-	private IModelSyncer[] modelSyncers;
+    private Reconfigurator reconfigurator;
+    private IModelSyncer[] modelSyncers;
 
-	/**
-	 * @param configuration
-	 * @param modelAccess
-	 */
-	public SimuLizarRuntimeState(
-			final SimuLizarWorkflowConfiguration configuration,
-			final ModelAccess modelAccess) {
-		super();
-		this.modelAccess = modelAccess;
-		this.model = SimuComModelFactory.createSimuComModel(configuration);
-		this.eventHelper = new EventNotificationHelper();
-		this.componentInstanceRegistry = new ComponentInstanceRegistry();
-		this.mainContext = new InterpreterDefaultContext(this);
-		this.usageModels = new SimulatedUsageModels(mainContext);
+    /**
+     * @param configuration
+     * @param modelAccess
+     */
+    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess) {
+        super();
+        this.modelAccess = modelAccess;
+        this.model = SimuComModelFactory.createSimuComModel(configuration);
+        this.eventHelper = new EventNotificationHelper();
+        this.componentInstanceRegistry = new ComponentInstanceRegistry();
+        this.mainContext = new InterpreterDefaultContext(this);
+        this.usageModels = new SimulatedUsageModels(mainContext);
 
-		LOGGER.debug("Initialise simucom framework's workload drivers");
-		this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
+        LOGGER.debug("Initialise simucom framework's workload drivers");
+        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
 
-		Reconfigurator reconfigurator = initializeReconfiguratorEngines(
-				configuration, this.model.getSimulationControl());
-		initializeModelSyncers();
-		// ensure to initialize model syncers (in particular
-		// ResourceEnvironmentSyncer) prior to
-		// interpreter listeners
-		// (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
-		// calculators of
-		// resources created in ResourceEnvironmentSyncer!
-		initializeInterpreterListeners(reconfigurator);
-		initializeUsageEvolver();
-	}
+        Reconfigurator reconfigurator = initializeReconfiguratorEngines(configuration,
+                this.model.getSimulationControl());
+        initializeModelSyncers();
+        // ensure to initialize model syncers (in particular
+        // ResourceEnvironmentSyncer) prior to
+        // interpreter listeners
+        // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
+        // calculators of
+        // resources created in ResourceEnvironmentSyncer!
+        initializeInterpreterListeners(reconfigurator);
+        initializeUsageEvolver();
+        this.modelAccess.startObservingPcmChanges();
+    }
 
-	/**
-	 * @return the model
-	 */
-	public final SimuComModel getModel() {
-		return model;
-	}
+    /**
+     * @return the model
+     */
+    public final SimuComModel getModel() {
+        return model;
+    }
 
-	public EventNotificationHelper getEventNotificationHelper() {
-		return this.eventHelper;
-	}
+    public EventNotificationHelper getEventNotificationHelper() {
+        return this.eventHelper;
+    }
 
-	/**
-	 * @return the componentInstanceRegistry
-	 */
-	public final ComponentInstanceRegistry getComponentInstanceRegistry() {
-		return componentInstanceRegistry;
-	}
+    /**
+     * @return the componentInstanceRegistry
+     */
+    public final ComponentInstanceRegistry getComponentInstanceRegistry() {
+        return componentInstanceRegistry;
+    }
 
-	public InterpreterDefaultContext getMainContext() {
-		return this.mainContext;
-	}
+    public InterpreterDefaultContext getMainContext() {
+        return this.mainContext;
+    }
 
-	public SimulatedUsageModels getUsageModels() {
-		return this.usageModels;
-	}
+    public SimulatedUsageModels getUsageModels() {
+        return this.usageModels;
+    }
 
-	public IModelAccess getModelAccess() {
-		return this.modelAccess;
-	}
+    public IModelAccess getModelAccess() {
+        return this.modelAccess;
+    }
 
-	/**
-	 * Returns the reconfigurator responsible for executing reconfigurations and
-	 * notifying listeners of changes.
-	 * 
-	 * @return The reconfigurator.
-	 */
-	public Reconfigurator getReconfigurator() {
-		return reconfigurator;
-	}
+    /**
+     * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
+     * of changes.
+     * 
+     * @return The reconfigurator.
+     */
+    public Reconfigurator getReconfigurator() {
+        return reconfigurator;
+    }
 
-	public void runSimulation() {
-		LOGGER.debug("Starting Simulizar simulation...");
-		final double simRealTimeNano = ExperimentRunner.run(model);
-		LOGGER.debug("Finished Simulation. Simulator took "
-				+ (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
-	}
+    public void runSimulation() {
+        LOGGER.debug("Starting Simulizar simulation...");
+        final double simRealTimeNano = ExperimentRunner.run(model);
+        LOGGER.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
+                + " real time seconds");
+    }
 
-	public void cleanUp() {
-		LOGGER.debug("Deregister all listeners and execute cleanup code");
-		this.eventHelper.removeAllListener();
-		reconfigurator.removeAllObserver();
-		reconfigurator.stopListening();
-		this.model.getProbeFrameworkContext().finish();
-		this.model.getConfiguration().getRecorderConfigurationFactory()
-				.finalizeRecorderConfigurationFactory();
-		for (final IModelSyncer modelSyncer : modelSyncers) {
-			modelSyncer.stopSyncer();
-		}
-	}
+    public void cleanUp() {
+        LOGGER.debug("Deregister all listeners and execute cleanup code");
+        this.eventHelper.removeAllListener();
+        this.reconfigurator.removeAllObserver();
+        this.reconfigurator.stopListening();
+        this.modelAccess.stopObservingPcmChanges();
+        this.model.getProbeFrameworkContext().finish();
+        this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
+        for (final IModelSyncer modelSyncer : modelSyncers) {
+            modelSyncer.stopSyncer();
+        }
+    }
 
-	private void initializeInterpreterListeners(Reconfigurator reconfigurator) {
-		LOGGER.debug("Adding Debug and monitoring interpreter listeners");
-		eventHelper.addObserver(new LogDebugListener());
-		eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model,
-				reconfigurator));
-	}
+    private void initializeInterpreterListeners(Reconfigurator reconfigurator) {
+        LOGGER.debug("Adding Debug and monitoring interpreter listeners");
+        eventHelper.addObserver(new LogDebugListener());
+        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model, reconfigurator));
+    }
 
-	private Reconfigurator initializeReconfiguratorEngines(
-			final SimuLizarWorkflowConfiguration configuration,
-			final ISimulationControl simulationControl) {
-		LOGGER.debug("Initializing reconfigurator engines and their rule sets");
+    private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
+            final ISimulationControl simulationControl) {
+        LOGGER.debug("Initializing reconfigurator engines and their rule sets");
 
-		List<IReconfigurator> reconfigEngines = ExtensionHelper
-				.getExecutableExtensions(
-						"org.palladiosimulator.simulizar.reconfigurationengine",
-						"reconfigurationEngine");
+        List<IReconfigurator> reconfigEngines = ExtensionHelper.getExecutableExtensions(
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
 
-		for (IReconfigurator reconfigEngine : reconfigEngines) {
-			reconfigEngine.setConfiguration(configuration);
-			reconfigEngine.setModelAccess(this.modelAccess);
+        for (IReconfigurator reconfigEngine : reconfigEngines) {
+            reconfigEngine.setConfiguration(configuration);
+            reconfigEngine.setModelAccess(this.modelAccess);
 
-		}
+        }
 
-		// IExtension[] extensions = Platform
-		// .getExtensionRegistry()
-		// .getExtensionPoint(
-		// "org.palladiosimulator.simulizar.reconfigurationengine")
-		// .getExtensions();
-		//
-		// for (IExtension extension : extensions) {
-		// for (IConfigurationElement element : extension
-		// .getConfigurationElements()) {
-		// try {
-		// IReconfigurator reconfigurator = (IReconfigurator) element
-		// .createExecutableExtension("reconfigurationEngine");
-		// reconfigurator.setConfiguration(configuration);
-		// reconfigurator.setModelAccess(modelAccess);
-		// engines.add(reconfigurator);
-		// } catch (CoreException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
-		// }
+        reconfigurator = new Reconfigurator(model, modelAccess, simulationControl, reconfigEngines);
+        reconfigurator.addObserver(new IReconfigurationListener() {
 
-		reconfigurator = new Reconfigurator(model, modelAccess,
-				simulationControl, reconfigEngines);
-		reconfigurator.addObserver(new IReconfigurationListener() {
+            @Override
+            public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
+            }
 
-			@Override
-			public void beginReconfigurationEvent(
-					BeginReconfigurationEvent event) {
-				LOGGER.info("------- System reconfiguration started at simulation time "
-						+ event.getPassageTime() + "-------");
-			}
+            @Override
+            public void endReconfigurationEvent(EndReconfigurationEvent event) {
+            }
 
-			@Override
-			public void endReconfigurationEvent(EndReconfigurationEvent event) {
-				LOGGER.info("------- System reconfiguration finished at simulation time "
-						+ event.getPassageTime()
-						+ " and did "
-						+ (event.getReconfigurationEventResult() == EventResult.FAILURE ? "NOT "
-								: "") + "succeed-------");
-			}
+            @Override
+            public void reconfigurationExecuted(ReconfigurationExecutedEvent reconfExecutedEvent) {
+                if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS
+                        && reconfExecutedEvent.getDuration() > 0) {
+                    LOGGER.info("------- Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
+                            + " time units-------");
+                    LOGGER.info("-------------- Collected notifications:");
+                    CollectionUtils.forAllDo(reconfExecutedEvent.getModelChanges(), new Closure<Notification>() {
 
-			@Override
-			public void reconfigurationExecuted(
-					ReconfigurationExecutedEvent reconfExecutedEvent) {
-				// nothing to do
-			}
-		});
+                        @Override
+                        public void execute(Notification notification) {
+                            LOGGER.info("--------------------- " + notification.getNotifier());
+                        }
+                    });
+                    LOGGER.info("--------------");
+                    LOGGER.info("-------");
+                }
+            }
+        });
 
-		reconfigurator.addObserver(modelAccess);
-		reconfigurator.startListening();
+        reconfigurator.startListening();
 
-		return reconfigurator;
-	}
+        return reconfigurator;
+    }
 
-	private void initializeModelSyncers() {
-		LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
-		this.modelSyncers = new IModelSyncer[] {
-				new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
-		for (IModelSyncer modelSyncer : modelSyncers) {
-			modelSyncer.initializeSyncer();
-		}
-	}
+    private void initializeModelSyncers() {
+        LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
+        this.modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
+        for (IModelSyncer modelSyncer : modelSyncers) {
+            modelSyncer.initializeSyncer();
+        }
+    }
 
-	private void initializeUsageEvolver() {
-		LOGGER.debug("Start the code to evolve the usage model over time");
-		new UsageEvolver(this).start();
-	}
+    private void initializeUsageEvolver() {
+        LOGGER.debug("Start the code to evolve the usage model over time");
+        new UsageEvolver(this).start();
+    }
 }

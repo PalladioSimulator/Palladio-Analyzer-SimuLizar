@@ -1,21 +1,23 @@
 package org.palladiosimulator.simulizar.syncer;
 
+import java.util.Objects;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.resourcetype.SchedulingPolicy;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
-import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
-import org.palladiosimulator.pcm.resourcetype.SchedulingPolicy;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -41,10 +43,9 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      *            the SimuCom model.
      */
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
-        super(runtimeState, runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
+        super(Objects.requireNonNull(runtimeState), runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
-        ;
         this.prm = runtimeState.getModelAccess().getRuntimeMeasurementModel();
     }
 
@@ -59,38 +60,39 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
             LOGGER.debug("Synchronise ResourceContainer and Simulated ResourcesContainer");
         }
         // add resource container, if not done already
-        for (final ResourceContainer resourceContainer : model.getResourceContainer_ResourceEnvironment()) {
-            final String resourceContainerId = resourceContainer.getId();
-
-            SimulatedResourceContainer simulatedResourceContainer;
-            if (runtimeModel.getModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
-                simulatedResourceContainer = (SimulatedResourceContainer) runtimeModel.getModel().getResourceRegistry()
+        for (ResourceContainer resourceContainer : this.model.getResourceContainer_ResourceEnvironment()) {
+            String resourceContainerId = resourceContainer.getId();
+            AbstractSimulatedResourceContainer simulatedResourceContainer = null;
+            if (this.runtimeModel.getModel().getResourceRegistry().containsResourceContainer(resourceContainerId)) {
+                simulatedResourceContainer = this.runtimeModel.getModel().getResourceRegistry()
                         .getResourceContainer(resourceContainerId);
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("SimulatedResourceContainer already exists: " + simulatedResourceContainer);
                 }
-                // now sync active resources
-                syncActiveResources(resourceContainer, simulatedResourceContainer);
+
             } else {
-                createSimulatedResource(resourceContainer, resourceContainerId);
+                // create a new SimulatedResourceContainer
+                simulatedResourceContainer = createSimulatedResource(resourceContainer, resourceContainerId);
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " "
+                            + simulatedResourceContainer);
+                }
             }
-
+            // now sync active resources
+            syncActiveResources(resourceContainer, simulatedResourceContainer);
         }
-
         LOGGER.debug("Synchronisation done");
-        // TODO remove unused
     }
 
     /**
      * @param resourceContainer
      * @param resourceContainerId
      */
-    private void createSimulatedResource(ResourceContainer resourceContainer, final String resourceContainerId) {
-        final AbstractSimulatedResourceContainer simulatedResourceContainer = runtimeModel.getModel()
+    private AbstractSimulatedResourceContainer createSimulatedResource(ResourceContainer resourceContainer,
+            final String resourceContainerId) {
+        AbstractSimulatedResourceContainer simulatedResourceContainer = this.runtimeModel.getModel()
                 .getResourceRegistry().createResourceContainer(resourceContainerId);
-        LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainerId + " " + simulatedResourceContainer);
-        // now sync active resources
-        syncActiveResources(resourceContainer, simulatedResourceContainer);
+        return simulatedResourceContainer;
     }
 
     @Override
@@ -100,8 +102,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     }
 
     /**
-     * Checks whether simulated resource (by type id) already exists in given simulated resource
-     * container.
+     * Gets the simulated resource by type id in given simulated resource container.
      * 
      * @param simulatedResourceContainer
      *            the simulated resource container.
@@ -109,15 +110,13 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      *            id of the resource.
      * @return the ScheduledResource.
      */
-    private ScheduledResource resourceAlreadyExist(final AbstractSimulatedResourceContainer simulatedResourceContainer,
-            final String typeId) {
+    private ScheduledResource getScheduledResourceByTypeId(
+            final AbstractSimulatedResourceContainer simulatedResourceContainer, final String typeId) {
         // Resource already exists?
         for (final AbstractScheduledResource abstractScheduledResource : simulatedResourceContainer
                 .getActiveResources()) {
             if (abstractScheduledResource.getResourceTypeId().equals(typeId)) {
-
                 return (ScheduledResource) abstractScheduledResource;
-
             }
         }
         return null;
@@ -156,23 +155,17 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 schedulingStrategy = SchedulingStrategy.DELAY;
             }
 
-            final ScheduledResource scheduledResource = this.resourceAlreadyExist(simulatedResourceContainer, typeId);
-            if (existsResource(scheduledResource)) {
+            final ScheduledResource scheduledResource = this.getScheduledResourceByTypeId(simulatedResourceContainer,
+                    typeId);
+            if (scheduledResource != null) {
+                // scheduled resource already exists, so just adapt the processing rate
                 scheduledResource.setProcessingRate(processingRate);
             } else {
+                // we have to create a new ScheduledResource of the given type
                 createSimulatedActiveResource(resourceContainer, simulatedResourceContainer, processingResource,
                         schedulingStrategy);
             }
         }
-    }
-
-    /**
-     * @param scheduledResource
-     *            Resource which existence shall be checked
-     * @return true if resource exists
-     */
-    private boolean existsResource(final ScheduledResource scheduledResource) {
-        return scheduledResource != null;
     }
 
     /**
