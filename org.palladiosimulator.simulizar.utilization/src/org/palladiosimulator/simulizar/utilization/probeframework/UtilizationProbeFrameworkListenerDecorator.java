@@ -28,32 +28,30 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
-    private static final MetricSetDescription UTILIZATION_TUPLE_METRIC_DESC =
-            MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
-    private static final MetricSetDescription STATE_TUPLE_METRIC_DESC = 
-            MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
-    
+    private static final MetricSetDescription UTILIZATION_TUPLE_METRIC_DESC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
+    private static final MetricSetDescription STATE_TUPLE_METRIC_DESC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+
     @Override
     public void registerMeasurements() {
-       super.registerMeasurements();
-       initUtilizationMeasurements();
+        super.registerMeasurements();
+        initUtilizationMeasurements();
     }
 
     private void initUtilizationMeasurements() {
         assert getProbeFrameworkListener() != null;
-        
-        Collection<MeasurementSpecification> utilMeasurementSpecs = getProbeFrameworkListener().
-                getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
+
+        Collection<MeasurementSpecification> utilMeasurementSpecs = getProbeFrameworkListener()
+                .getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC);
         if (!utilMeasurementSpecs.isEmpty()) {
             RegisterCalculatorFactoryDecorator calcFactory = RegisterCalculatorFactoryDecorator.class
                     .cast(getProbeFrameworkListener().getCalculatorFactory());
             ISlidingWindowMoveOnStrategy strategy = new KeepLastElementPriorToLowerBoundStrategy();
             SimuComModel model = getProbeFrameworkListener().getSimuComModel();
-            
+
             for (MeasurementSpecification spec : utilMeasurementSpecs) {
                 MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
 
-                Calculator calculator = calcFactory.getCalculatorByMeasuringPointAndMetricDescription(mp, 
+                Calculator calculator = calcFactory.getCalculatorByMeasuringPointAndMetricDescription(mp,
                         STATE_TUPLE_METRIC_DESC);
                 if (calculator == null) {
                     throw new IllegalStateException(
@@ -67,29 +65,35 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
             }
         }
     }
-    
+
     private void setupUtilizationRecorder(Calculator calculator, MeasurementSpecification utilizationMeasurementSpec,
             ISlidingWindowMoveOnStrategy moveOnStrategy, SimuComModel model) {
 
-        Measure<Double, Duration>[] windowProperties = SimulizarSlidingWindowUtil.
-                getWindowPropertiesFromTemporalCharacterization(utilizationMeasurementSpec
-                .getTemporalRestriction());
+        if (utilizationMeasurementSpec.getTemporalRestriction() == null) {
+            throw new IllegalArgumentException("MetricDescription (Utilization of Active Resource Tuple) '"
+                    + utilizationMeasurementSpec.getName() + "' of Monitor '"
+                    + utilizationMeasurementSpec.getMonitor().getEntityName()
+                    + "' must provide a TemporalCharacterization of Type 'Interval' or 'DelayedInterval'");
+        }
+
+        Measure<Double, Duration>[] windowProperties = SimulizarSlidingWindowUtil
+                .getWindowPropertiesFromTemporalCharacterization(utilizationMeasurementSpec.getTemporalRestriction());
 
         Map<String, Object> recorderConfigurationMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
                 UTILIZATION_TUPLE_METRIC_DESC, calculator.getMeasuringPoint());
 
         IRecorder baseRecorder = initializeRecorder(recorderConfigurationMap);
 
-        SlidingWindow window = new SimulizarSlidingWindow(windowProperties[0],
-                windowProperties[1],STATE_TUPLE_METRIC_DESC, moveOnStrategy, model);
+        SlidingWindow window = new SimulizarSlidingWindow(windowProperties[0], windowProperties[1],
+                STATE_TUPLE_METRIC_DESC, moveOnStrategy, model);
 
         SlidingWindowAggregator utilizationAggregator = new SlidingWindowUtilizationAggregator(baseRecorder);
         SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(window, utilizationAggregator);
         // register recorder at calculator
         registerMeasurementsRecorder(calculator, windowRecorder);
         // forward utilization measurements to RuntimeMeasurementModel (the former PRM)
-        utilizationAggregator.addRecorder(new UtilizationRuntimeMeasurementsRecorder(
-                getProbeFrameworkListener().getRuntimeMeasurementModel(), utilizationMeasurementSpec, 
-                utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
+        utilizationAggregator.addRecorder(new UtilizationRuntimeMeasurementsRecorder(getProbeFrameworkListener()
+                .getRuntimeMeasurementModel(), utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor()
+                .getMeasuringPoint()));
     }
 }
