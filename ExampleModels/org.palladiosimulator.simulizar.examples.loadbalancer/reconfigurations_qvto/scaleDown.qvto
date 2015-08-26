@@ -64,12 +64,7 @@ transformation ScaleDown(		in prm : PRM,
 	}
 	
 	helper checkCondition(runtimeMeasurements : Set(RuntimeMeasurement)) : Boolean {
-		runtimeMeasurements->forEach(pcmModelElementsMeasurement) {
-			if (pcmModelElementsMeasurement.measuringValue < threshold) {
-				return true;
-			} endif
-		};
-		return false;
+		return runtimeMeasurements->exists(measuringValue < threshold);
 	}
 	
 	/**
