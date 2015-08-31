@@ -40,28 +40,25 @@ public class UsageEvolver {
     }
 
     public void start() {
-        final long simuTime = runtimeState.getModel().getConfiguration().getSimuTime();
-        final long dlimDuration;
-        long timePerStep = 1000;
-
-        // Determine the duration of the evolution from the load sequence,
-        // and determine the simulation time per dlim time step
-        if (loadEvolutionSequence != null) {
-            LOGGER.info("LIMBO First Iteration end: " + loadEvolutionSequence.getFirstIterationEnd());
-            // Divide the simulation time available on the duration in the LIMBO
-            // model, but add one to include simulation time 0 and max.
-            dlimDuration = (long) loadEvolutionSequence.getFinalDuration();
-            timePerStep = simuTime / (dlimDuration + 1);
-        } else {
-            dlimDuration = 24;
-        }
-
         // TODO: add check on duration of evolutions for work parameters.
         // For now, assume that the duration of these are the same as for the load evolution
 
         // Create the periodically triggered evolver that will update load and work of the usage
         // model
-        new PeriodicallyTriggeredWorkloadEvolver(this.runtimeState.getModel(), 0, timePerStep, simuTime, dlimDuration,
-                runtimeState);
+        for (Usage usage : this.runtimeState.getModelAccess().getUsageEvolutionModel().getUsages()) {
+            double timePerStep = 1d;
+            if (usage.getEvolutionStepWidth() != 0d) {
+                timePerStep = usage.getEvolutionStepWidth();
+            }
+            if (usage.isRepeatingPattern()) {
+                new LoopingUsageEvolver(runtimeState, 0d, timePerStep, usage.getScenario());
+            } else {
+                // TODO remove this line once 'legacy' support is no longer needed.
+                timePerStep = this.runtimeState.getModel().getConfiguration().getSimuTime()
+                        / (usage.getLoadEvolution().getFinalDuration() + 1);
+                new StretchedUsageEvolver(runtimeState, 0d, timePerStep, usage.getScenario());
+            }
+        }
+
     }
 }
