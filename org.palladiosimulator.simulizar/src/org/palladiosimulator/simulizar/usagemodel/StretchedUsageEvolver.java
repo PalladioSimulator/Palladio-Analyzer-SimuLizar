@@ -16,6 +16,9 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
     // Stretching factor.
     private final double timeFactor;
 
+    // Value subtracted for evaluation of last interval
+    private final static double DELTA = 0.000001;
+
     /**
      * Creates the stretching usage evolver.
      * 
@@ -36,6 +39,13 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
 
     @Override
     protected double getNewRate(ModelEvaluator loadEvaluator) {
+        double evaluationTime = this.getCurrentTime() / timeFactor;
+        if (evaluationTime == this.getDLIMFinalDuration()) {
+            // The LIMBO evaluator do not define a value at the total duration
+            // time, so get a value close to end of the simulation by requesting
+            // the value one millionth of a time unit before the total duration
+            return loadEvaluator.getArrivalRateAtTime(evaluationTime - DELTA);
+        }
         return loadEvaluator.getArrivalRateAtTime(this.getCurrentTime() / timeFactor);
     }
 
