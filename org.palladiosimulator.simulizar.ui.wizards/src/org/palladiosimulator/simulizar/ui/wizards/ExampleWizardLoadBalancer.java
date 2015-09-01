@@ -38,6 +38,7 @@ public class ExampleWizardLoadBalancer extends Wizard implements INewWizard, IEx
 
         BasicNewProjectResourceWizard.updatePerspective(_configurationElement);
 
+        System.out.println("Edit the files");
         return true;
     }
 

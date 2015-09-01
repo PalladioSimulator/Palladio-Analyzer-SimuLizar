@@ -13,6 +13,10 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
@@ -20,94 +24,118 @@ import org.osgi.framework.Bundle;
 import org.palladiosimulator.simulizar.ui.wizards.nature.SimulizarNature;
 
 public class ExampleWizardSupport {
-    /**
-     * For this marvelous project we need to: - create the default Eclipse project - add the custom
-     * project nature - create the folder structure
-     * 
-     * @param projectName
-     * @param location
-     * @return
-     */
-    public static IProject createProject(String projectName, URI location, String archivePath) {
-        Assert.isNotNull(projectName);
-        Assert.isTrue(projectName.trim().length() > 0);
-        IProject project = createBaseProject(projectName, location);
-        try {
-            addNature(project);
-            ZipFile file = null;
-            try {
-                Bundle b = Activator.getDefault().getBundle();
-                URL u = b.getEntry(archivePath);
-                URL ur = FileLocator.toFileURL(u);
-                file = new ZipFile(ur.getFile());
-            } catch (IOException ioex) {
-                ioex.printStackTrace();
-            }
-            ZipFileStructureProvider provider = new ZipFileStructureProvider(file);
-            IPath containerPath = project.getFullPath();
-            Object source = provider.getRoot();
-            IOverwriteQuery query = new IOverwriteQuery() {
-                @Override
-                public String queryOverwrite(String path) {
-                    return IOverwriteQuery.ALL;
-                };
-            };
-            ImportOperation operation = new ImportOperation(containerPath, source, provider, query);
-            try {
-                operation.run(null);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        } catch (CoreException e) {
-            e.printStackTrace();
-            project = null;
-        }
+	/**
+	 * For this marvelous project we need to: - create the default Eclipse
+	 * project - add the custom project nature - create the folder structure
+	 * 
+	 * @param projectName
+	 * @param location
+	 * @return
+	 * @throws CoreException
+	 */
+	public static IProject createProject(String projectName, URI location, String archivePath) {
+		Assert.isNotNull(projectName);
+		Assert.isTrue(projectName.trim().length() > 0);
+		IProject project = createBaseProject(projectName, location);
+		try {
+			addNature(project);
+			ZipFile file = null;
+			try {
+				Bundle b = Activator.getDefault().getBundle();
+				URL u = b.getEntry(archivePath);
+				URL ur = FileLocator.toFileURL(u);
+				file = new ZipFile(ur.getFile());
+			} catch (IOException ioex) {
+				ioex.printStackTrace();
+			}
+			ZipFileStructureProvider provider = new ZipFileStructureProvider(file);
+			IPath containerPath = project.getFullPath();
+			Object source = provider.getRoot();
+			IOverwriteQuery query = new IOverwriteQuery() {
+				@Override
+				public String queryOverwrite(String path) {
+					return IOverwriteQuery.ALL;
+				};
+			};
+			ImportOperation operation = new ImportOperation(containerPath, source, provider, query);
+			operation.setCreateContainerStructure(true);
+			try {
+				operation.run(null);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
+			ILaunchConfiguration originalLaunchConfiguration = manager.getLaunchConfiguration(project.getFile("SimuLizar-LoadBalancer.launch"));
+			ILaunchConfigurationWorkingCopy writableCopyLaunchConfiguration = originalLaunchConfiguration.copy("SimuLizar-LoadBalancer");
+			
+			String allocationFile = originalLaunchConfiguration.getAttribute("allocationFile", "");
+			String pmsFile = originalLaunchConfiguration.getAttribute("pmsFile", "");
+			String reconfigurationRulesFolder = originalLaunchConfiguration.getAttribute("reconfigurationRulesFolder", "");
+			String usageFile = originalLaunchConfiguration.getAttribute("usageFile", "");
+			String monitorRepositoryFile = originalLaunchConfiguration.getAttribute("monitorRepositoryFile", "");
+			String serviceLevelObjectiveRepositoryFile = originalLaunchConfiguration.getAttribute("serviceLevelObjectiveRepositoryFile", "");
+			String confidenceModelElementURI = originalLaunchConfiguration.getAttribute("confidenceModelElementURI", "");
+			
+			writableCopyLaunchConfiguration.setAttribute("allocationFile", allocationFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("pmsFile", pmsFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("reconfigurationRulesFolder", reconfigurationRulesFolder.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("usageFile", usageFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("monitorRepositoryFile", monitorRepositoryFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("serviceLevelObjectiveRepositoryFile", serviceLevelObjectiveRepositoryFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			writableCopyLaunchConfiguration.setAttribute("confidenceModelElementURI", confidenceModelElementURI.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
+			
+			originalLaunchConfiguration.delete();
+			writableCopyLaunchConfiguration.doSave();
+		} catch (CoreException e) {
+			e.printStackTrace();
+			project = null;
+		}
 
-        return project;
-    }
+		return project;
+	}
 
-    /**
-     * Just do the basics: create a basic project.
-     * 
-     * @param location
-     * @param projectName
-     */
-    private static IProject createBaseProject(String projectName, URI location) {
-        // it is acceptable to use the ResourcesPlugin class
-        IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+	/**
+	 * Just do the basics: create a basic project.
+	 * 
+	 * @param location
+	 * @param projectName
+	 */
+	private static IProject createBaseProject(String projectName, URI location) {
+		// it is acceptable to use the ResourcesPlugin class
+		IProject newProject = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
-        if (!newProject.exists()) {
-            URI projectLocation = location;
-            IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
-            if (location != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(location)) {
-                projectLocation = null;
-            }
+		if (!newProject.exists()) {
+			URI projectLocation = location;
+			IProjectDescription desc = newProject.getWorkspace().newProjectDescription(newProject.getName());
+			if (location != null && ResourcesPlugin.getWorkspace().getRoot().getLocationURI().equals(location)) {
+				projectLocation = null;
+			}
 
-            desc.setLocationURI(projectLocation);
-            try {
-                newProject.create(desc, null);
-                if (!newProject.isOpen()) {
-                    newProject.open(null);
-                }
-            } catch (CoreException e) {
-                e.printStackTrace();
-            }
-        }
+			desc.setLocationURI(projectLocation);
+			try {
+				newProject.create(desc, null);
+				if (!newProject.isOpen()) {
+					newProject.open(null);
+				}
+			} catch (CoreException e) {
+				e.printStackTrace();
+			}
+		}
 
-        return newProject;
-    }
+		return newProject;
+	}
 
-    private static void addNature(IProject project) throws CoreException {
-        if (!project.hasNature(SimulizarNature.NATURE_ID)) {
-            IProjectDescription description = project.getDescription();
-            String[] prevNatures = description.getNatureIds();
-            String[] newNatures = new String[prevNatures.length + 1];
-            System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
-            newNatures[prevNatures.length] = SimulizarNature.NATURE_ID;
-            description.setNatureIds(newNatures);
+	private static void addNature(IProject project) throws CoreException {
+		if (!project.hasNature(SimulizarNature.NATURE_ID)) {
+			IProjectDescription description = project.getDescription();
+			String[] prevNatures = description.getNatureIds();
+			String[] newNatures = new String[prevNatures.length + 1];
+			System.arraycopy(prevNatures, 0, newNatures, 0, prevNatures.length);
+			newNatures[prevNatures.length] = SimulizarNature.NATURE_ID;
+			description.setNatureIds(newNatures);
 
-            IProgressMonitor monitor = null;
-            project.setDescription(description, monitor);
-        }
-    }
+			IProgressMonitor monitor = null;
+			project.setDescription(description, monitor);
+		}
+	}
 }
