@@ -13,10 +13,6 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
@@ -64,28 +60,6 @@ public class ExampleWizardSupport {
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
-			ILaunchManager manager = DebugPlugin.getDefault().getLaunchManager();
-			ILaunchConfiguration originalLaunchConfiguration = manager.getLaunchConfiguration(project.getFile("SimuLizar-LoadBalancer.launch"));
-			ILaunchConfigurationWorkingCopy writableCopyLaunchConfiguration = originalLaunchConfiguration.copy("SimuLizar-LoadBalancer");
-			
-			String allocationFile = originalLaunchConfiguration.getAttribute("allocationFile", "");
-			String pmsFile = originalLaunchConfiguration.getAttribute("pmsFile", "");
-			String reconfigurationRulesFolder = originalLaunchConfiguration.getAttribute("reconfigurationRulesFolder", "");
-			String usageFile = originalLaunchConfiguration.getAttribute("usageFile", "");
-			String monitorRepositoryFile = originalLaunchConfiguration.getAttribute("monitorRepositoryFile", "");
-			String serviceLevelObjectiveRepositoryFile = originalLaunchConfiguration.getAttribute("serviceLevelObjectiveRepositoryFile", "");
-			String confidenceModelElementURI = originalLaunchConfiguration.getAttribute("confidenceModelElementURI", "");
-			
-			writableCopyLaunchConfiguration.setAttribute("allocationFile", allocationFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("pmsFile", pmsFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("reconfigurationRulesFolder", reconfigurationRulesFolder.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("usageFile", usageFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("monitorRepositoryFile", monitorRepositoryFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("serviceLevelObjectiveRepositoryFile", serviceLevelObjectiveRepositoryFile.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			writableCopyLaunchConfiguration.setAttribute("confidenceModelElementURI", confidenceModelElementURI.replace("org.palladiosimulator.simulizar.examples.loadbalancer", projectName));
-			
-			originalLaunchConfiguration.delete();
-			writableCopyLaunchConfiguration.doSave();
 		} catch (CoreException e) {
 			e.printStackTrace();
 			project = null;
