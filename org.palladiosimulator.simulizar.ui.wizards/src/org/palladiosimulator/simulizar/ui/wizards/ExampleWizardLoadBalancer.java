@@ -69,16 +69,35 @@ public class ExampleWizardLoadBalancer extends Wizard implements INewWizard, IEx
 			ILaunchConfiguration readOnlyLaunchConfiguration = manager.getLaunchConfiguration(project.getFile(LAUNCH_CONFIGURATION_1_WITH_EXTENSION));
 			ILaunchConfigurationWorkingCopy writableLaunchConfiguration = readOnlyLaunchConfiguration.copy(LAUNCH_CONFIGURATION_1);
 			
-			List<String> keysOfAttributesToChange = Arrays.asList(ALLOCATION_FILE_ATTRIBUTE_KEY, PMS_FILE_ATTRIBUTE_KEY, RECONFIGURATION_RULES_FOLDER_ATTRIBUTE_KEY, USAGE_FILE_ATTRIBUTE_KEY, MONITOR_REPOSITORY_FILE_ATTRIBUTE_KEY, SLO_FILE_ATTRIBUTE_KEY, CONFIDENCE_MODEL_ELEMENT_URI_ATTRIBUTE_KEY);			
-			modifyLaunchConfigurationAttributeValues(keysOfAttributesToChange, LOAD_BALANCER_EXAMPLE_URI, project.getName(), readOnlyLaunchConfiguration, writableLaunchConfiguration);
+			List<String> keysOfAttributesToChange = Arrays.asList(ALLOCATION_FILE_ATTRIBUTE_KEY, 
+																  PMS_FILE_ATTRIBUTE_KEY, 
+																  RECONFIGURATION_RULES_FOLDER_ATTRIBUTE_KEY, 
+																  USAGE_FILE_ATTRIBUTE_KEY, 
+																  MONITOR_REPOSITORY_FILE_ATTRIBUTE_KEY, 
+																  SLO_FILE_ATTRIBUTE_KEY, 
+																  CONFIDENCE_MODEL_ELEMENT_URI_ATTRIBUTE_KEY);			
+			ExampleWizardSupport.modifyLaunchConfigurationAttributeValues(keysOfAttributesToChange, 
+													 LOAD_BALANCER_EXAMPLE_URI, 
+													 project.getName(), 
+													 readOnlyLaunchConfiguration, 
+													 writableLaunchConfiguration);
 			
 			// Adapting the SimuLizar Load Balancer launch
 			// configuration
 			readOnlyLaunchConfiguration = manager.getLaunchConfiguration(project.getFile(LAUNCH_CONFIGURAION_2_WITH_EXTENSION));
 			writableLaunchConfiguration = readOnlyLaunchConfiguration.copy(LAUNCH_CONFIGURAION_2);
 			
-			keysOfAttributesToChange = Arrays.asList(ALLOCATION_FILE_ATTRIBUTE_KEY, RECONFIGURATION_RULES_FOLDER_ATTRIBUTE_KEY, USAGE_FILE_ATTRIBUTE_KEY, MONITOR_REPOSITORY_FILE_ATTRIBUTE_KEY, SLO_FILE_ATTRIBUTE_KEY, CONFIDENCE_MODEL_ELEMENT_URI_ATTRIBUTE_KEY);
-			modifyLaunchConfigurationAttributeValues(keysOfAttributesToChange, LOAD_BALANCER_EXAMPLE_URI, project.getName(), readOnlyLaunchConfiguration, writableLaunchConfiguration); //$NON-NLS-1$
+			keysOfAttributesToChange = Arrays.asList(ALLOCATION_FILE_ATTRIBUTE_KEY, 
+													 RECONFIGURATION_RULES_FOLDER_ATTRIBUTE_KEY, 
+													 USAGE_FILE_ATTRIBUTE_KEY, 
+													 MONITOR_REPOSITORY_FILE_ATTRIBUTE_KEY, 
+													 SLO_FILE_ATTRIBUTE_KEY, 
+													 CONFIDENCE_MODEL_ELEMENT_URI_ATTRIBUTE_KEY);
+			ExampleWizardSupport.modifyLaunchConfigurationAttributeValues(keysOfAttributesToChange, 
+													 LOAD_BALANCER_EXAMPLE_URI, 
+													 project.getName(), 
+													 readOnlyLaunchConfiguration, 
+													 writableLaunchConfiguration); //$NON-NLS-1$
 			
 			// Adapting the SimuLizar Scalability Load Balancer launch
 			// configuration - commented out because the project requires the dependency to 
@@ -94,24 +113,6 @@ public class ExampleWizardLoadBalancer extends Wizard implements INewWizard, IEx
 		}
 
 		return true;
-	}
-	
-	/**
-	 * The method changes the values of the launch configuration attributes. It does string replacement. For the value of every attribute referred by {@code attributeKeys} it replaces {@code stringToReplace} by {@code stringThatReplaces}.
-	 * @param attributesKeys keys of attributes to modify.
-	 * @param stringToReplace string that will be replaced in the values of attributes referred by {@code attributesKeys}.
-	 * @param stringThatReplaces string that replaces the {@code stringToReplace}.
-	 * @param readOnlyLaunchConfiguration launchConfiguration that will be modified.
-	 * @param writableLaunchConfiguration writable version of the {@code readOnlyLaunchConfiguration}.
-	 * @throws CoreException The exception thrown in case of problems with handling the launch configuration.
-	 */
-	private void modifyLaunchConfigurationAttributeValues(List<String> attributesKeys, String stringToReplace, String stringThatReplaces, ILaunchConfiguration readOnlyLaunchConfiguration, ILaunchConfigurationWorkingCopy writableLaunchConfiguration) throws CoreException{
-		for(String attributeKey : attributesKeys){
-			String attributeValue = readOnlyLaunchConfiguration.getAttribute(attributeKey, ""); //$NON-NLS-1$
-			writableLaunchConfiguration.setAttribute(attributeKey, attributeValue.replace(stringToReplace, stringThatReplaces));
-		}
-		readOnlyLaunchConfiguration.delete();
-		writableLaunchConfiguration.doSave();
 	}
 
 	@Override

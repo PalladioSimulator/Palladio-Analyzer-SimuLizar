@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.ui.wizards;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URL;
+import java.util.List;
 import java.util.zip.ZipFile;
 
 import org.eclipse.core.resources.IProject;
@@ -13,6 +14,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.ui.dialogs.IOverwriteQuery;
 import org.eclipse.ui.wizards.datatransfer.ImportOperation;
 import org.eclipse.ui.wizards.datatransfer.ZipFileStructureProvider;
@@ -111,5 +114,29 @@ public class ExampleWizardSupport {
 			IProgressMonitor monitor = null;
 			project.setDescription(description, monitor);
 		}
+	}
+	
+	/**
+	 * The method changes the values of the launch configuration attributes. It does string replacement. 
+	 * For the value of every attribute referred by {@code attributeKeys} it replaces {@code stringToReplace} by {@code stringThatReplaces}.
+	 * @param attributesKeys keys of attributes to modify.
+	 * @param stringToReplace string that will be replaced in the values of attributes referred by {@code attributesKeys}.
+	 * @param stringThatReplaces string that replaces the {@code stringToReplace}.
+	 * @param readOnlyLaunchConfiguration launchConfiguration that will be modified.
+	 * @param writableLaunchConfiguration writable version of the {@code readOnlyLaunchConfiguration}.
+	 * @throws CoreException The exception thrown in case of problems with handling the launch configuration.
+	 */
+	public static void modifyLaunchConfigurationAttributeValues(List<String> attributesKeys, 
+																String stringToReplace, 
+																String stringThatReplaces, 
+																ILaunchConfiguration readOnlyLaunchConfiguration, 
+																ILaunchConfigurationWorkingCopy writableLaunchConfiguration) throws CoreException{
+		for (String attributeKey : attributesKeys) {
+			String attributeValue = readOnlyLaunchConfiguration.getAttribute(attributeKey, "");
+			writableLaunchConfiguration.setAttribute(attributeKey,
+													 attributeValue.replace(stringToReplace, stringThatReplaces));
+		}
+		readOnlyLaunchConfiguration.delete();
+		writableLaunchConfiguration.doSave();
 	}
 }
