@@ -1,9 +1,12 @@
 package org.palladiosimulator.simulizar.syncer;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -13,11 +16,19 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourcetype.SchedulingPolicy;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.probes.EventProbeList;
+import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.simulationevents.ContainerCostProbe;
+import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredContainerEntity;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -205,11 +216,46 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                                     runtimeModel.getModel().getSimulationControl(), measurementSpecification,
                                     resourceContainer, prm);
                             initCalculator(schedulingStrategy, scheduledResource, measurementSpecification);
+                        } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+                            initPeriodicCostCalculator((SimulatedResourceContainer) simulatedResourceContainer,
+                                    monitor.getMeasuringPoint());
                         }
                     }
                 }
             }
         }
+    }
+    /**
+     * TODO review
+     */
+    private void initPeriodicCostCalculator(SimulatedResourceContainer simulatedContainer,
+            MeasuringPoint measuringPoint) {
+
+        List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
+        final SimuComModel model = this.runtimeModel.getModel();
+        final ProbeFrameworkContext ctx = model.getProbeFrameworkContext();
+
+        PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
+                runtimeModel.getModel(), 0, 360, simulatedContainer); // if
+                                                                      // Simulation
+                                                                      // Time
+                                                                      // is
+                                                                      // seconds
+                                                                      // 360=1hr,
+
+        ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
+
+        // EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
+        // new TakeNumberOfResourceContainersProbe(model.getResourceRegistry()),
+
+
+        probeList.add(new TakeCurrentSimulationTimeProbe(model.getSimulationControl()));
+
+        final Probe triggeredProbeList = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
+                containerCostProbe, probeList);
+
+
+        ctx.getCalculatorFactory().buildCostOverTimeCalculator(measuringPoint, triggeredProbeList);
     }
 
     /**
