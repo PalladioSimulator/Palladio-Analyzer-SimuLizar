@@ -45,7 +45,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final MonitorRepository monitorRepository;
-    private final RuntimeMeasurementModel prm;
+    private final RuntimeMeasurementModel runtimeMeasurementModel;
 
     /**
      * Constructor
@@ -57,7 +57,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         super(Objects.requireNonNull(runtimeState), runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
-        this.prm = runtimeState.getModelAccess().getRuntimeMeasurementModel();
+        this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
     }
 
     /*
@@ -214,7 +214,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                                 || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
                             new ResourceStateListener(scheduledResource,
                                     runtimeModel.getModel().getSimulationControl(), measurementSpecification,
-                                    resourceContainer, prm);
+                                    resourceContainer, runtimeMeasurementModel);
                             initCalculator(schedulingStrategy, scheduledResource, measurementSpecification);
                         } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
                             initPeriodicCostCalculator((SimulatedResourceContainer) simulatedResourceContainer,
