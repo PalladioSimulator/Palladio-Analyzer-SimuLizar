@@ -6,10 +6,13 @@ import java.util.Objects;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.pcm.core.CorePackage;
+import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
@@ -34,6 +37,8 @@ import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.SchedulingStrategy;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
+import de.uka.ipd.sdq.stoex.RandomVariable;
+import de.uka.ipd.sdq.stoex.StoexPackage;
 
 /**
  * Class to sync resource environment model with SimuCom.
@@ -134,6 +139,27 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     .getProcessingResourceSpecification_ProcessingRate_ProcessingResourceSpecification()) {
                 syncProcessingRate((ProcessingResourceSpecification) notification.getNotifier(),
                         notification.getNewStringValue());
+            } else if (notification.getFeature() == CorePackage.eINSTANCE
+                    .getPCMRandomVariable_ProcessingResourceSpecification_processingRate_PCMRandomVariable()) {
+                final PCMRandomVariable pcmRandomVariable = (PCMRandomVariable) notification.getNotifier();
+                final EObject parent = pcmRandomVariable.eContainer();
+
+                if (parent instanceof ProcessingResourceSpecification) {
+                    syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+                } else {
+                    throw new RuntimeException(
+                            "Unsupported Notification.SET for a PCMRandomVariable with parent " + parent);
+                }
+            } else if (notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
+                final RandomVariable randomVariable = (RandomVariable) notification.getNotifier();
+                final EObject parent = randomVariable.eContainer();
+
+                if (parent instanceof ProcessingResourceSpecification) {
+                    syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+                } else {
+                    throw new RuntimeException(
+                            "Unsupported Notification.SET for a RandomVariable with parent " + parent);
+                }
             } else {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Unsupported Notification.SET for feature \"" + notification.getFeature() + "\"");
