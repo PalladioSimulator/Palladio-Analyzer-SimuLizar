@@ -9,7 +9,6 @@ import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -213,27 +212,21 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }
 
-        if (this.monitorRepository != null) {
-            for (final Monitor monitor : this.monitorRepository.getMonitors()) {
-                if (MonitorRepositoryUtil.elementConformingToMeasuringPoint(processingResource,
-                        monitor.getMeasuringPoint())) {
-                    for (final MeasurementSpecification measurementSpecification : monitor
-                            .getMeasurementSpecifications()) {
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
 
-                        final String metricID = measurementSpecification.getMetricDescription().getId();
-                        if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
-                                || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())
-                                || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-                            new ResourceStateListener(scheduledResource, runtimeModel.getModel().getSimulationControl(),
-                                    measurementSpecification, resourceContainer, runtimeMeasurementModel);
-                            initCalculator(schedulingStrategy, scheduledResource, measurementSpecification);
-                        } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                            initPeriodicCostCalculator(simulatedResourceContainer, monitor.getMeasuringPoint());
-                        }
-                    }
-                }
+            if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
+                    || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())
+                    || metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())
+                    || metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())
+                    || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
+                new ResourceStateListener(scheduledResource, runtimeModel.getModel().getSimulationControl(),
+                        measurementSpecification, resourceContainer, runtimeMeasurementModel);
+                initCalculator(schedulingStrategy, scheduledResource, measurementSpecification);
+            } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+                initPeriodicCostCalculator(simulatedResourceContainer,
+                        measurementSpecification.getMonitor().getMeasuringPoint());
             }
         }
     }
