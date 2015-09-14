@@ -35,7 +35,7 @@ public class ContainerCostProbe extends BasicEventProbe<PeriodicallyTriggeredCon
             SimulatedResourceContainer myContainer) {
         // final Measure<Double, Money> costPerContainer = Measure.valueOf(9.99,
         // EUR);
-        final Measure<Double, Money> costPerContainer = Measure.valueOf(8 + Math.random() * (10 - 8), EUR);
+        final Measure<Double, Money> costPerContainer = Measure.valueOf(10.0, EUR);
         notify(costPerContainer);
         /*
          * FIXME Still hard coded container cost --> use Tagged Value form model to get variable

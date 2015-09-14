@@ -55,6 +55,7 @@ import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
 public class ProbeFrameworkListener extends AbstractInterpreterListener {
+
     private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
@@ -89,9 +90,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     private void initExtensionMeasurements() {
-        Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper
-                .getExecutableExtensions("org.palladiosimulator.simulizar.interpreter.listener.probeframework",
-                        "decorator");
+        Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper.getExecutableExtensions(
+                "org.palladiosimulator.simulizar.interpreter.listener.probeframework", "decorator");
         for (AbstractRecordingProbeFrameworkListenerDecorator decorator : extensions) {
             decorator.setProbeFrameworkListener(this);
             decorator.registerMeasurements();
@@ -243,7 +243,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
     private void initResponseTimeMeasurement() {
-        for (MeasurementSpecification responseTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
+        for (MeasurementSpecification responseTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
             final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
             final List<Probe> probeList = createStartAndStopProbe(measuringPoint, this.simuComModel);
             final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
@@ -267,13 +268,13 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
     private void initNumberOfResourceContainersMeasurements() {
-        for (MeasurementSpecification numberOfResourceContainersMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
+        for (MeasurementSpecification numberOfResourceContainersMeasurementSpec : getMeasurementSpecificationsForMetricDescription(
+                MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
             MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec.getMonitor().getMeasuringPoint();
 
             final Probe probe = new EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
-                    new TakeNumberOfResourceContainersProbe(simuComModel.getResourceRegistry()),
-                    Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel
-                            .getSimulationControl())));
+                    new TakeNumberOfResourceContainersProbe(simuComModel.getResourceRegistry()), Arrays.asList(
+                            (TriggeredProbe) new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl())));
             calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
         }
     }
@@ -284,7 +285,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @return list with start and stop probe
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
-    protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint, final SimuComModel simuComModel) {
+    protected List<Probe> createStartAndStopProbe(final MeasuringPoint measuringPoint,
+            final SimuComModel simuComModel) {
         List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
@@ -343,14 +345,15 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * 
      */
     private void initReconfigurationTimeMeasurement() {
-        for (MeasurementSpecification reconfigurationTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
+        for (MeasurementSpecification reconfigurationTimeMeasurementSpec : getMeasurementSpecificationsForMetricDescription(
+                MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
             MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec.getMonitor().getMeasuringPoint();
 
             LOGGER.info("Created Reconfiguration Time Measuring Point");
 
-            Probe probe = CalculatorHelper
-                    .getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE, this.simuComModel
-                            .getSimulationControl(), new TakeReconfigurationDurationProbe(this.reconfigurator));
+            Probe probe = CalculatorHelper.getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE,
+                    this.simuComModel.getSimulationControl(),
+                    new TakeReconfigurationDurationProbe(this.reconfigurator));
             this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probe);
         }
     }
