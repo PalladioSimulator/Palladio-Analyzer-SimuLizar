@@ -31,7 +31,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.palladiosimulator.simulizar.edp2.measuringpoint;bundle-version="0.1.0",
  de.uka.ipd.sdq.statistics,
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
- de.uka.ipd.sdq.probfunction.math
+ de.uka.ipd.sdq.probfunction.math,
+ org.palladiosimulator.mdsdprofiles.api
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",

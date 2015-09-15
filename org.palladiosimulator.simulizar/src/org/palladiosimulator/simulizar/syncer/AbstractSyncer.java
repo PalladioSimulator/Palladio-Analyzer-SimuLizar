@@ -27,10 +27,16 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
+                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER
+                        || notification.getEventType() == Notification.RESOLVE)) {
                     LOGGER.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
                             + notification);
-                    synchronizeSimulationEntities(notification);
+
+                    try {
+                        synchronizeSimulationEntities(notification);
+                    } catch (Exception e) {
+                        LOGGER.error("Sync Exception: " + e);
+                    }
                 }
             }
 

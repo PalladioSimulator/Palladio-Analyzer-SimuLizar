@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -50,7 +51,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final MonitorRepository monitorRepository;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
-    private int numberOfContainers;
 
     /**
      * Constructor
@@ -63,7 +63,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 .getTargetResourceEnvironment_Allocation());
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
-        this.numberOfContainers = 0;
     }
 
     /*
@@ -160,18 +159,34 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     throw new RuntimeException(
                             "Unsupported Notification.SET for a RandomVariable with parent " + parent);
                 }
-            } else {
+            } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                    .getResourceContainer_ResourceEnvironment_ResourceContainer()) {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Unsupported Notification.SET for feature \"" + notification.getFeature() + "\"");
+                    LOGGER.debug("Ignoring syncing that links resource containers to their environment");
                 }
+            } else {
+                throw new RuntimeException(
+                        "Unsupported Notification.SET for feature \"" + notification.getFeature() + "\"");
             }
+            break;
 
+        case Notification.MOVE:
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Ignoring sync of move events; e.g., rewiring of linking resources");
+            }
+            break;
+
+        case MDSDProfilesNotifier.APPLY_PROFILE:
+        case MDSDProfilesNotifier.APPLY_STEREOTYPE:
+        case MDSDProfilesNotifier.UNAPPLY_PROFILE:
+        case MDSDProfilesNotifier.UNAPPLY_STEREOTYPE:
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Ignoring sync of profiles and stereotypes");
+            }
             break;
 
         default:
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Ignoring notification with event type \"" + notification.getEventType() + "\"");
-            }
+            throw new RuntimeException("Ignoring notification with event type \"" + notification.getEventType() + "\"");
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -193,13 +208,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param resourceContainer
      */
     private AbstractSimulatedResourceContainer addSimulatedResource(ResourceContainer resourceContainer) {
-        this.numberOfContainers++;
         return this.runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainer.getId());
     }
 
     private void removeSimulatedResource(final ResourceContainer resourceContainer) {
-        this.numberOfContainers--;
-
         // FIXME shutdown the simulated resource container now (...somehow ;) )
         // AbstractSimulatedResourceContainer simulatedResourceContainer =
         // findSimuComFrameworkResourceContainer();
@@ -315,12 +327,12 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final ProbeFrameworkContext ctx = model.getProbeFrameworkContext();
 
         PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
-                runtimeModel.getModel(), 0, 360, simulatedContainer); // if
-                                                                      // Simulation
-                                                                      // Time
-                                                                      // is
-                                                                      // seconds
-                                                                      // 360=1hr,
+                runtimeModel.getModel(), 0, 10, simulatedContainer); // if
+                                                                     // Simulation
+                                                                     // Time
+                                                                     // is
+                                                                     // seconds
+                                                                     // 360=1hr,
 
         ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
 
