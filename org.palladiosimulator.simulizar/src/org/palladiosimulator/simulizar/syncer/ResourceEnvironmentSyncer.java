@@ -28,6 +28,7 @@ import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.ContainerCostProbe;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredContainerEntity;
+import org.palladiosimulator.simulizar.simulationevents.TakeNumberOfResourceContainersTriggeredProbe;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -389,6 +390,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // new TakeNumberOfResourceContainersProbe(model.getResourceRegistry()),
 
         probeList.add(new TakeCurrentSimulationTimeProbe(model.getSimulationControl()));
+        probeList.add(new TakeNumberOfResourceContainersTriggeredProbe(model.getResourceRegistry()));
 
         final Probe triggeredProbeList = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
                 containerCostProbe, probeList);
