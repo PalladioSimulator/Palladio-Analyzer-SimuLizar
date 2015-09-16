@@ -29,6 +29,6 @@ public class TakeNumberOfResourceContainersTriggeredProbe extends BasicTriggered
 
     @Override
     protected Measure<Long, Dimensionless> getBasicMeasure(RequestContext measurementContext) {
-        return Measure.valueOf(resourceRegistry.getNumberOfResourceContainers(), Dimensionless.UNIT);
+        return Measure.valueOf(new Long(resourceRegistry.getSimulatedResourceContainers().size()), Dimensionless.UNIT);
     }
 }
