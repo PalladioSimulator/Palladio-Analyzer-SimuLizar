@@ -21,8 +21,8 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Erlend Stav
  * 
  */
-public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJob,
-        IBlackboardInteractingJob<MDSDBlackboard> {
+public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
+        implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
     private MDSDBlackboard blackboard;
 
@@ -57,7 +57,6 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob implements IJo
             }
 
             sloPartition.loadModel(URI.createURI(filePath));
-            this.getBlackboard().addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, sloPartition);
             // now resolve all cross references from current resource to PCM
             sloPartition.resolveAllProxies();
         }
