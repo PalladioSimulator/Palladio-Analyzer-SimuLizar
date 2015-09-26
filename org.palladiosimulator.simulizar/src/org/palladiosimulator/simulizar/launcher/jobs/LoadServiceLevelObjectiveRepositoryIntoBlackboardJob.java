@@ -24,9 +24,11 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
         implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
+    private static final String FILE_PREFIX = "file:///";
+
     private MDSDBlackboard blackboard;
 
-    private final String path;
+    private final SimuLizarWorkflowConfiguration configuration;
 
     /**
      * Constructor
@@ -35,7 +37,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
      *            the SimuCom workflow configuration.
      */
     public LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
-        this.path = configuration.getServiceLevelObjectivesFile();
+        this.configuration = configuration;
     }
 
     /**
@@ -52,8 +54,8 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
 
             // add file protocol if necessary
             String filePath = getPath();
-            if (!getPath().startsWith("platform:")) {
-                filePath = "file:///" + filePath;
+            if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
+                filePath = FILE_PREFIX + filePath;
             }
 
             sloPartition.loadModel(URI.createURI(filePath));
@@ -82,7 +84,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
      * @return returns the path.
      */
     private String getPath() {
-        return this.path;
+        return this.configuration.getServiceLevelObjectivesFile();
     }
 
     /**

@@ -5,9 +5,8 @@ import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.exceptions.UEModelLoadException;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -23,9 +22,11 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  */
 public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
+    private static final String FILE_PREFIX = "file:///";
+
     private MDSDBlackboard blackboard;
 
-    private final String path;
+    private final SimuLizarWorkflowConfiguration configuration;
 
     /**
      * Constructor
@@ -33,8 +34,8 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public LoadUEModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.USAGEEVOLUTION_FILE);
+    public LoadUEModelIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -52,8 +53,8 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
 
             // add file protocol if necessary
             String filePath = getPath();
-            if (!getPath().startsWith("platform:")) {
-                filePath = "file:///" + filePath;
+            if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
+                filePath = FILE_PREFIX + filePath;
             }
 
             uePartition.loadModel(URI.createURI(filePath));
@@ -81,7 +82,7 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
      * @return returns the path.
      */
     private String getPath() {
-        return this.path;
+        return this.configuration.getUsageEvolutionFile();
     }
 
     /**

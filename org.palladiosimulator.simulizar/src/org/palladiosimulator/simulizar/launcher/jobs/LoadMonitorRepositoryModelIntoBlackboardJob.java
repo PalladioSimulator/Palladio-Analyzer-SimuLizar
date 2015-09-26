@@ -5,9 +5,8 @@ import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.exceptions.MonitorRepositoryModelLoadException;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -25,7 +24,9 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
 
     private MDSDBlackboard blackboard;
 
-    private final String path;
+    private final SimuLizarWorkflowConfiguration configuration;
+
+    private static final String FILE_PREFIX = "file:///";
 
     /**
      * Constructor
@@ -33,8 +34,8 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public LoadMonitorRepositoryModelIntoBlackboardJob(final SimuComWorkflowConfiguration configuration) {
-        this.path = (String) configuration.getAttributes().get(SimulizarConstants.MONITOR_REPOSITORY_FILE);
+    public LoadMonitorRepositoryModelIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     /**
@@ -51,8 +52,8 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
 
             // add file protocol if necessary
             String filePath = getPath();
-            if (!getPath().startsWith("platform:")) {
-                filePath = "file:///" + filePath;
+            if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
+                filePath = FILE_PREFIX + filePath;
             }
             monitorRepositoryPartition.loadModel(URI.createURI(filePath));
         }
@@ -80,7 +81,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      * @return returns the path.
      */
     private String getPath() {
-        return this.path;
+        return this.configuration.getMonitorRepositoryFile();
     }
 
     /**
