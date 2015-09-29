@@ -41,7 +41,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * Per simulation run, there should be exactly one instance of this class and all of its managed
  * information objects.
  * 
- * @author Steffen Becker, slightly adapted by Florian Rosenthal
+ * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
 public class SimuLizarRuntimeState {
@@ -54,9 +54,8 @@ public class SimuLizarRuntimeState {
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
     private final ModelAccess modelAccess;
-
-    private Reconfigurator reconfigurator;
-    private IModelSyncer[] modelSyncers;
+    private final Reconfigurator reconfigurator;
+    private final IModelSyncer[] modelSyncers;
 
     /**
      * @param configuration
@@ -70,23 +69,18 @@ public class SimuLizarRuntimeState {
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
         this.usageModels = new SimulatedUsageModels(mainContext);
+        initializeWorkloadDrivers();
 
-        LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
-
-        Reconfigurator reconfigurator = initializeReconfiguratorEngines(configuration,
-                this.model.getSimulationControl());
-        initializeModelSyncers();
+        this.reconfigurator = initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        this.modelSyncers = initializeModelSyncers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
         // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
         // calculators of
         // resources created in ResourceEnvironmentSyncer!
-        initializeInterpreterListeners(reconfigurator);
-        if (this.modelAccess.getUsageEvolutionModel() != null) {
-            initializeUsageEvolver();
-        }
+        initializeInterpreterListeners(this.reconfigurator);
+        initializeUsageEvolver();
         this.modelAccess.startObservingPcmChanges();
     }
 
@@ -127,7 +121,7 @@ public class SimuLizarRuntimeState {
      * @return The reconfigurator.
      */
     public Reconfigurator getReconfigurator() {
-        return reconfigurator;
+        return this.reconfigurator;
     }
 
     public void runSimulation() {
@@ -150,6 +144,11 @@ public class SimuLizarRuntimeState {
         }
     }
 
+    private void initializeWorkloadDrivers() {
+        LOGGER.debug("Initialise simucom framework's workload drivers");
+        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
+    }
+
     private void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
         LOGGER.debug("Adding Debug and monitoring interpreter listeners");
         eventHelper.addObserver(new LogDebugListener());
@@ -164,13 +163,14 @@ public class SimuLizarRuntimeState {
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
 
-        for (IReconfigurator reconfigEngine : reconfigEngines) {
+        for (final IReconfigurator reconfigEngine : reconfigEngines) {
             reconfigEngine.setConfiguration(configuration);
             reconfigEngine.setModelAccess(this.modelAccess);
 
         }
 
-        reconfigurator = new Reconfigurator(model, modelAccess, simulationControl, reconfigEngines);
+        final Reconfigurator reconfigurator = new Reconfigurator(model, modelAccess, simulationControl,
+                reconfigEngines);
         reconfigurator.addObserver(new IReconfigurationListener() {
 
             @Override
@@ -206,16 +206,23 @@ public class SimuLizarRuntimeState {
         return reconfigurator;
     }
 
-    private void initializeModelSyncers() {
+    private IModelSyncer[] initializeModelSyncers() {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
-        this.modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
+
+        final IModelSyncer[] modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this),
+                new UsageModelSyncer(this) };
         for (final IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
+
+        return modelSyncers;
     }
 
     private void initializeUsageEvolver() {
-        LOGGER.debug("Start the code to evolve the usage model over time");
-        new UsageEvolver(this).start();
+        if (this.modelAccess.getUsageEvolutionModel() != null) {
+            LOGGER.debug("Start the code to evolve the usage model over time");
+
+            new UsageEvolver(this).start();
+        }
     }
 }
