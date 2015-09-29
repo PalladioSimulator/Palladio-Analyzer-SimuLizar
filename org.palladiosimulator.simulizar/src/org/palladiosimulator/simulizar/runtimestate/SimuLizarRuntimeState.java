@@ -150,7 +150,7 @@ public class SimuLizarRuntimeState {
         }
     }
 
-    private void initializeInterpreterListeners(Reconfigurator reconfigurator) {
+    private void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
         LOGGER.debug("Adding Debug and monitoring interpreter listeners");
         eventHelper.addObserver(new LogDebugListener());
         eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model, reconfigurator));
@@ -174,15 +174,15 @@ public class SimuLizarRuntimeState {
         reconfigurator.addObserver(new IReconfigurationListener() {
 
             @Override
-            public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
+            public void beginReconfigurationEvent(final BeginReconfigurationEvent event) {
             }
 
             @Override
-            public void endReconfigurationEvent(EndReconfigurationEvent event) {
+            public void endReconfigurationEvent(final EndReconfigurationEvent event) {
             }
 
             @Override
-            public void reconfigurationExecuted(ReconfigurationExecutedEvent reconfExecutedEvent) {
+            public void reconfigurationExecuted(final ReconfigurationExecutedEvent reconfExecutedEvent) {
                 if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS
                         && reconfExecutedEvent.getDuration() > 0) {
                     LOGGER.info("------- Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
@@ -209,7 +209,7 @@ public class SimuLizarRuntimeState {
     private void initializeModelSyncers() {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
         this.modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
-        for (IModelSyncer modelSyncer : modelSyncers) {
+        for (final IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
     }
