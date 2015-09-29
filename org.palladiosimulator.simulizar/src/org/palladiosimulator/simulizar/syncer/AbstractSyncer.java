@@ -33,27 +33,27 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
                             + notification);
 
                     try {
-                        synchronizeSimulationEntities(notification);
-                    } catch (Exception e) {
+                        AbstractSyncer.this.synchronizeSimulationEntities(notification);
+                    } catch (final Exception e) {
                         LOGGER.error("Sync Exception: " + e);
                     }
                 }
             }
 
         };
-        model.eAdapters().add(adapter);
+        model.eAdapters().add(this.adapter);
     }
 
     protected abstract void synchronizeSimulationEntities(final Notification notification);
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#stopSyncer()
      */
     @Override
     public void stopSyncer() {
-        model.eAdapters().remove(adapter);
+        this.model.eAdapters().remove(this.adapter);
     }
 
 }

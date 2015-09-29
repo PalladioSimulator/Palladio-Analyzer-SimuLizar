@@ -10,9 +10,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
 /**
  * Special ResourceSetPartition for the Service Level Objective Repository.
- * 
+ *
  * @author Matthias Becker
- * 
+ *
  */
 public class ServiceLevelObjectiveResourceSetPartition extends ResourceSetPartition {
 
@@ -21,7 +21,7 @@ public class ServiceLevelObjectiveResourceSetPartition extends ResourceSetPartit
 
     /**
      * Constructor
-     * 
+     *
      * @param pcmResourceSetPartition
      *            the pcm resource set partition to resolve cross references from prm to pcm.
      */
@@ -32,7 +32,7 @@ public class ServiceLevelObjectiveResourceSetPartition extends ResourceSetPartit
 
     public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepository() {
         if (this.serviveLevelObjectiveRepository == null) {
-            this.serviveLevelObjectiveRepository = loadSLOModel();
+            this.serviveLevelObjectiveRepository = this.loadSLOModel();
         }
         return this.serviveLevelObjectiveRepository;
     }
@@ -43,10 +43,10 @@ public class ServiceLevelObjectiveResourceSetPartition extends ResourceSetPartit
     private ServiceLevelObjectiveRepository loadSLOModel() {
         try {
             LOGGER.debug("Retrieving Service Level Objective repository from blackboard partition");
-            List<ServiceLevelObjectiveRepository> result = getElement(ServicelevelObjectivePackage.eINSTANCE
-                    .getServiceLevelObjectiveRepository());
+            final List<ServiceLevelObjectiveRepository> result = this
+                    .getElement(ServicelevelObjectivePackage.eINSTANCE.getServiceLevelObjectiveRepository());
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.info("No Service Level Objectives found.");
             return null;
         }

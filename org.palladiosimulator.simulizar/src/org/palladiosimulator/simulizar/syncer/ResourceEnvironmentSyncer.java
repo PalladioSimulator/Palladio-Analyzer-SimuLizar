@@ -44,7 +44,7 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 
 /**
  * Class to sync resource environment model with SimuCom.
- * 
+ *
  * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker
  */
 public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment>implements IModelSyncer {
@@ -55,7 +55,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
     /**
      * Constructor
-     * 
+     *
      * @param runtimeState
      *            the SimuCom model.
      */
@@ -68,7 +68,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#initializeSyncer()
      */
     @Override
@@ -78,7 +78,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         }
 
         for (final ResourceContainer resourceContainer : this.model.getResourceContainer_ResourceEnvironment()) {
-            createSimulatedResourceContainer(resourceContainer);
+            this.createSimulatedResourceContainer(resourceContainer);
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -96,10 +96,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         case Notification.ADD:
             if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
-                addSimulatedResource((ResourceContainer) notification.getNewValue());
+                this.addSimulatedResource((ResourceContainer) notification.getNewValue());
             } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
-                createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
+                this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
             } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getResourceEnvironment_LinkingResources__ResourceEnvironment()
                     || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
@@ -118,7 +118,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         case Notification.REMOVE:
             if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
-                removeSimulatedResource((ResourceContainer) notification.getOldValue());
+                this.removeSimulatedResource((ResourceContainer) notification.getOldValue());
             } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getResourceEnvironment_LinkingResources__ResourceEnvironment()
                     || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
@@ -137,7 +137,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         case Notification.SET:
             if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
                     .getProcessingResourceSpecification_ProcessingRate_ProcessingResourceSpecification()) {
-                syncProcessingRate((ProcessingResourceSpecification) notification.getNotifier(),
+                this.syncProcessingRate((ProcessingResourceSpecification) notification.getNotifier(),
                         notification.getNewStringValue());
             } else if (notification.getFeature() == CorePackage.eINSTANCE
                     .getPCMRandomVariable_ProcessingResourceSpecification_processingRate_PCMRandomVariable()) {
@@ -145,7 +145,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 final EObject parent = pcmRandomVariable.eContainer();
 
                 if (parent instanceof ProcessingResourceSpecification) {
-                    syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+                    this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
                 } else {
                     throw new RuntimeException(
                             "Unsupported Notification.SET for a PCMRandomVariable with parent " + parent);
@@ -155,7 +155,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 final EObject parent = randomVariable.eContainer();
 
                 if (parent instanceof ProcessingResourceSpecification) {
-                    syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+                    this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
                 } else {
                     throw new RuntimeException(
                             "Unsupported Notification.SET for a RandomVariable with parent " + parent);
@@ -195,9 +195,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         }
     }
 
-    private void createSimulatedResourceContainer(ResourceContainer resourceContainer) {
-        final AbstractSimulatedResourceContainer simulatedResourceContainer = addSimulatedResource(resourceContainer);
-        addActiveResources(resourceContainer, simulatedResourceContainer);
+    private void createSimulatedResourceContainer(final ResourceContainer resourceContainer) {
+        final AbstractSimulatedResourceContainer simulatedResourceContainer = this
+                .addSimulatedResource(resourceContainer);
+        this.addActiveResources(resourceContainer, simulatedResourceContainer);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
@@ -208,7 +209,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     /**
      * @param resourceContainer
      */
-    private AbstractSimulatedResourceContainer addSimulatedResource(ResourceContainer resourceContainer) {
+    private AbstractSimulatedResourceContainer addSimulatedResource(final ResourceContainer resourceContainer) {
         return this.runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainer.getId());
     }
 
@@ -224,33 +225,33 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // .removeResourceContainerFromRegistry(resourceContainer.getId());
     }
 
-    private void addActiveResources(ResourceContainer resourceContainer,
-            AbstractSimulatedResourceContainer simulatedResourceContainer) {
+    private void addActiveResources(final ResourceContainer resourceContainer,
+            final AbstractSimulatedResourceContainer simulatedResourceContainer) {
         for (final ProcessingResourceSpecification processingResource : resourceContainer
                 .getActiveResourceSpecifications_ResourceContainer()) {
-            createSimulatedActiveResource(processingResource);
+            this.createSimulatedActiveResource(processingResource);
         }
     }
 
     /**
-     * 
+     *
      * @param processingResource
      * @param schedulingStrategy
      */
     private void createSimulatedActiveResource(final ProcessingResourceSpecification processingResource) {
         final ResourceContainer resourceContainer = processingResource
                 .getResourceContainer_ProcessingResourceSpecification();
-        final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) getSimulatedResourceContainer(
-                processingResource);
-        final String schedulingStrategy = getSchedulingStrategy(processingResource);
+        final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) this
+                .getSimulatedResourceContainer(processingResource);
+        final String schedulingStrategy = this.getSchedulingStrategy(processingResource);
         final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
                 processingResource, new String[] {}, resourceContainer.getId(), schedulingStrategy);
 
-        attachMonitors(processingResource, resourceContainer, simulatedResourceContainer, schedulingStrategy,
+        this.attachMonitors(processingResource, resourceContainer, simulatedResourceContainer, schedulingStrategy,
                 scheduledResource);
 
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Added ActiveResource. TypeID: " + getActiveResourceTypeID(processingResource)
+            LOGGER.debug("Added ActiveResource. TypeID: " + this.getActiveResourceTypeID(processingResource)
                     + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
         }
     }
@@ -274,14 +275,14 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
     /**
      * Gets the simulated resource by type id in given simulated resource container.
-     * 
+     *
      * @return the ScheduledResource.
      */
     private ScheduledResource getScheduledResource(final ProcessingResourceSpecification processingResource) {
-        final String typeId = getActiveResourceTypeID(processingResource);
+        final String typeId = this.getActiveResourceTypeID(processingResource);
 
-        for (final AbstractScheduledResource abstractScheduledResource : getSimulatedResourceContainer(
-                processingResource).getActiveResources()) {
+        for (final AbstractScheduledResource abstractScheduledResource : this
+                .getSimulatedResourceContainer(processingResource).getActiveResources()) {
             if (abstractScheduledResource.getResourceTypeId().equals(typeId)) {
                 return (ScheduledResource) abstractScheduledResource;
             }
@@ -318,7 +319,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     || metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())
                     || metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())
                     || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-                attachResourceStateListener(resourceContainer, scheduledResource, measurementSpecification);
+                this.attachResourceStateListener(resourceContainer, scheduledResource, measurementSpecification);
                 final ActiveResourceMeasuringPoint measuringPoint = (ActiveResourceMeasuringPoint) measurementSpecification
                         .getMonitor().getMeasuringPoint();
 
@@ -354,7 +355,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                             measuringPoint);
                 }
             } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                initPeriodicCostCalculator(simulatedResourceContainer,
+                this.initPeriodicCostCalculator(simulatedResourceContainer,
                         measurementSpecification.getMonitor().getMeasuringPoint());
             }
         }
@@ -362,29 +363,28 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
 
     private void attachResourceStateListener(final ResourceContainer resourceContainer,
             final ScheduledResource scheduledResource, final MeasurementSpecification measurementSpecification) {
-        new ResourceStateListener(scheduledResource, runtimeModel.getModel().getSimulationControl(),
-                measurementSpecification, resourceContainer, runtimeMeasurementModel);
+        new ResourceStateListener(scheduledResource, this.runtimeModel.getModel().getSimulationControl(),
+                measurementSpecification, resourceContainer, this.runtimeMeasurementModel);
     }
 
     /**
      * TODO review
      */
-    private void initPeriodicCostCalculator(SimulatedResourceContainer simulatedContainer,
-            MeasuringPoint measuringPoint) {
-
-        List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
+    private void initPeriodicCostCalculator(final SimulatedResourceContainer simulatedContainer,
+            final MeasuringPoint measuringPoint) {
+        final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
         final SimuComModel model = this.runtimeModel.getModel();
         final ProbeFrameworkContext ctx = model.getProbeFrameworkContext();
 
-        PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
-                runtimeModel.getModel(), 0, 10, simulatedContainer); // if
-                                                                     // Simulation
-                                                                     // Time
-                                                                     // is
-                                                                     // seconds
-                                                                     // 360=1hr,
+        final PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
+                this.runtimeModel.getModel(), 0, 10, simulatedContainer); // if
+        // Simulation
+        // Time
+        // is
+        // seconds
+        // 360=1hr,
 
-        ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
+        final ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
 
         // EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
         // new TakeNumberOfResourceContainersProbe(model.getResourceRegistry()),

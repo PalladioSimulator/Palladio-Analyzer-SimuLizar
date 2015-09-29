@@ -10,7 +10,7 @@ import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 
 /**
  * @author Matthias
- * 
+ *
  */
 public class ReconfigurationAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
@@ -28,7 +28,7 @@ public class ReconfigurationAggregator extends PRMRecorder implements IMeasureme
     }
 
     @Override
-    public void newMeasurementAvailable(MeasuringValue measurement) {
+    public void newMeasurementAvailable(final MeasuringValue measurement) {
         // TODO Auto-generated method stub
 
     }

@@ -9,12 +9,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
-import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
-import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
-
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ComposedStructure;
 import org.palladiosimulator.pcm.core.composition.CompositionFactory;
@@ -30,12 +24,18 @@ import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
+import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
+import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
+
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
  * @author snowball
- * 
+ *
  */
 class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
@@ -49,8 +49,8 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     private final AssemblyContext instanceAssemblyContext;
 
     /**
-	 * 
-	 */
+     *
+     */
     public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
             final Signature signature, final ProvidedRole providedRole) {
         super();
@@ -77,23 +77,20 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         SimulatedStackHelper.createAndPushNewStackFrame(stack,
                 this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
 
-        FQComponentID fqID = computeFQComponentID();
+        final FQComponentID fqID = this.computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
-            this.context
-                    .getRuntimeState()
-                    .getComponentInstanceRegistry()
-                    .addComponentInstance(
-                            new SimulatedBasicComponentInstance(this.context, fqID, basicComponent
-                                    .getPassiveResource_BasicComponent()));
+            this.context.getRuntimeState().getComponentInstanceRegistry()
+                    .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
+                            basicComponent.getPassiveResource_BasicComponent()));
         }
 
         // get seffs for call
-        final List<ServiceEffectSpecification> calledSeffs = this.getSeffsForCall(
-                basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
+        final List<ServiceEffectSpecification> calledSeffs = this
+                .getSeffsForCall(basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
 
         final SimulatedStackframe<Object> result = this.interpretSeffs(calledSeffs);
 
@@ -113,27 +110,26 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
         }
-        FQComponentID fqID = computeFQComponentID();
+        final FQComponentID fqID = this.computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new composed component instance, registering it: " + entity);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
-            this.context
-                    .getRuntimeState()
-                    .getComponentInstanceRegistry()
-                    .addComponentInstance(new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
+            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
+                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
             throw new PCMModelInterpreterException("Interpret entity of provided role only");
         }
-        final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(this.providedRole);
+        final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(
+                this.providedRole);
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
                 connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
-        return repositoryComponentSwitch.doSwitch(connectedProvidedDelegationConnector
-                .getInnerProvidedRole_ProvidedDelegationConnector());
+        return repositoryComponentSwitch
+                .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
 
     /**
@@ -141,10 +137,8 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      */
     @Override
     public SimulatedStackframe<Object> caseProvidedRole(final ProvidedRole providedRole) {
-        this.context.getAssemblyContextStack().push(
-                this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT ?
-                        generateSystemAssemblyContext(providedRole) :
-                        this.instanceAssemblyContext);
+        this.context.getAssemblyContextStack().push(this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT
+                ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
 
         final SimulatedStackframe<Object> result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
 
@@ -155,7 +149,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     private AssemblyContext generateSystemAssemblyContext(final ProvidedRole providedRole2) {
         final AssemblyContext result = CompositionFactory.eINSTANCE.createAssemblyContext();
-        result.setEntityName(providedRole.getProvidingEntity_ProvidedRole().getEntityName());
+        result.setEntityName(this.providedRole.getProvidingEntity_ProvidedRole().getEntityName());
         result.setId(SYSTEM_ASSEMBLY_CONTEXT.getId());
         return result;
     }
@@ -163,7 +157,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     /**
      * Return the seffs (of different types) from a list of seffs which are affected by the call.
      * Different types are currently not supported by the meta model.
-     * 
+     *
      * @param serviceEffectSpecifications
      *            a list of service effect specifications.
      * @param operationSignature
@@ -184,7 +178,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     /**
      * Interpret the given Seffs.
-     * 
+     *
      * @param calledSeffs
      *            a list of seffs.
      */
@@ -200,8 +194,8 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            FQComponentID componentID = computeFQComponentID();
-            SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
+            final FQComponentID componentID = this.computeFQComponentID();
+            final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
                     .getRuntimeState().getComponentInstanceRegistry().getComponentInstance(componentID);
             final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, basicComponentInstance);
 
@@ -211,7 +205,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     }
 
     private FQComponentID computeFQComponentID() {
-        return new FQComponentID(computeAssemblyContextPath());
+        return new FQComponentID(this.computeAssemblyContextPath());
     }
 
     private List<AssemblyContext> computeAssemblyContextPath() {
@@ -225,12 +219,13 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
 
     /**
      * Determines the provided delegation connector which is connected with the provided role.
-     * 
+     *
      * @param providedRole
      *            the provided role.
      * @return the determined provided delegation connector, null otherwise.
      */
-    private static ProvidedDelegationConnector getConnectedProvidedDelegationConnector(final ProvidedRole providedRole) {
+    private static ProvidedDelegationConnector getConnectedProvidedDelegationConnector(
+            final ProvidedRole providedRole) {
         final InterfaceProvidingEntity implementingEntity = providedRole.getProvidingEntity_ProvidedRole();
         if (!CompositionPackage.eINSTANCE.getComposedStructure().isSuperTypeOf(implementingEntity.eClass())) {
             throw new PCMModelInterpreterException("Structure used for connector search must be a composed structure");

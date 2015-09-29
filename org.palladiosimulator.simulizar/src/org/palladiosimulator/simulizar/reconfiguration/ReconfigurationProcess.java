@@ -18,7 +18,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 /**
  * {@link SimuComSimProcess} implementation which is responsible for executing reconfigurations
  * during Simulizar runs.
- * 
+ *
  * @author Florian Rosenthal
  * @see Reconfigurator
  * @see IReconfigurator
@@ -35,7 +35,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 
     /**
      * Initializes a new instance of the {@link ReconfigurationProcess} class.
-     * 
+     *
      * @param model
      *            The {@link SimuComModel} that is in used during the current simulation run.
      * @param reconfigurators
@@ -45,8 +45,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * @throws NullPointerException
      *             In case any of the given parameters is {@code null}.
      */
-    protected ReconfigurationProcess(SimuComModel model, Iterable<IReconfigurator> reconfigurators,
-            Reconfigurator reconfigurator) {
+    protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurator> reconfigurators,
+            final Reconfigurator reconfigurator) {
         super(model, "Reconfiguration Process");
         this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
         this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
@@ -56,30 +56,31 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 
     /**
      * Appends the given notification about model change due to a reconfiguration that takes place.
-     * 
+     *
      * @param notification
      *            A {@link Notification} that describe model changes due to reconfiguration.
      */
-    public void appendReconfigurationNotification(Notification notification) {
+    public void appendReconfigurationNotification(final Notification notification) {
         if (notification != null) {
             this.currentReconfigNotifications.add(notification);
         }
     }
 
-    private void fireBeginReconfigurationEvent(BeginReconfigurationEvent event) {
+    private void fireBeginReconfigurationEvent(final BeginReconfigurationEvent event) {
         this.reconfigurator.fireReconfigurationEvent(event);
     }
 
-    private void fireEndReconfigurationEvent(EndReconfigurationEvent event) {
+    private void fireEndReconfigurationEvent(final EndReconfigurationEvent event) {
         this.reconfigurator.fireReconfigurationEvent(event);
     }
 
-    private void fireReconfigurationExecutedEvent(BeginReconfigurationEvent beginEvent, EndReconfigurationEvent endEvent) {
-        this.reconfigurator.fireReconfigurationEvent(new ReconfigurationExecutedEvent(beginEvent, endEvent,
-                this.currentReconfigNotifications));
+    private void fireReconfigurationExecutedEvent(final BeginReconfigurationEvent beginEvent,
+            final EndReconfigurationEvent endEvent) {
+        this.reconfigurator.fireReconfigurationEvent(
+                new ReconfigurationExecutedEvent(beginEvent, endEvent, this.currentReconfigNotifications));
     }
 
-    private void setMonitoredElement(EObject monitoredElement) {
+    private void setMonitoredElement(final EObject monitoredElement) {
         this.monitoredElement = monitoredElement;
     }
 
@@ -98,15 +99,16 @@ public class ReconfigurationProcess extends SimuComSimProcess {
     }
 
     @Override
-    public void reschedule(double d) {
+    public void reschedule(final double d) {
         throw new UnsupportedOperationException("The reconfiguration process is not supposed to be scheduled manually."
                 + "Use executeReconfigurations(EObject) instead.");
     }
 
     /**
-     * Indicates whether termination has been requested by a call to {@link #requestTermination()}. <br>
+     * Indicates whether termination has been requested by a call to {@link #requestTermination()}.
+     * <br>
      * Note, that the process may still be running, even if this method returns {@code true}.
-     * 
+     *
      * @return {@code true} if termination has been requested, otherwise {@code false}.
      */
     boolean isTerminationRequested() {
@@ -117,7 +119,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * Requests that the process shall terminate properly.
      */
     void requestTermination() {
-        if (!terminationRequested) {
+        if (!this.terminationRequested) {
             // this ensures that flag is only set once
             this.terminationRequested = true;
         }
@@ -125,7 +127,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 
     /**
      * Executes all reconfigurations that are provided by the attached {@link IReconfigurator}s.
-     * 
+     *
      * @param monitoredElement
      *            The {@link EObject} which is the reconfiguration target.
      * @throws IllegalStateException
@@ -133,7 +135,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * @throws NullPointerException
      *             In case the passed EObject is {@code null}.
      */
-    void executeReconfigurations(EObject monitoredElement) {
+    void executeReconfigurations(final EObject monitoredElement) {
         if (this.isScheduled()) {
             throw new IllegalStateException("Reconfigurations are already taking place.");
         }
@@ -142,29 +144,29 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         }
         // the process is not scheduled, so it should be passive
         // update of monitored element is safe
-        setMonitoredElement(Objects.requireNonNull(monitoredElement, "Monitored element must not be null."));
-        scheduleAt(0);
+        this.setMonitoredElement(Objects.requireNonNull(monitoredElement, "Monitored element must not be null."));
+        this.scheduleAt(0);
     }
 
     @Override
     protected void internalLifeCycle() {
         // execute reconfigurations until termination requested
-        while (!isTerminationRequested()) {
-            EObject monitoredElement = getMonitoredElement();
+        while (!this.isTerminationRequested()) {
+            final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
-                for (IReconfigurator reconfigurator : this.reconfigurators) {
-                    BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
+                for (final IReconfigurator reconfigurator : this.reconfigurators) {
+                    final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
                             this.simControl.getCurrentSimulationTime());
-                    fireBeginReconfigurationEvent(beginReconfigurationEvent);
-                    boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
-                    EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
+                    this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
+                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+                    final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
                             EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
-                    fireEndReconfigurationEvent(endReconfigurationEvent);
+                    this.fireEndReconfigurationEvent(endReconfigurationEvent);
                     if (reconfigResult) {
                         LOGGER.debug("Successfully executed reconfiguration.");
-                        fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
+                        this.fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
                     }
-                    clearNotifications();
+                    this.clearNotifications();
                 }
                 // all reconfigurators did their job, so we can go to sleep
                 this.passivate();

@@ -19,16 +19,17 @@ import de.uka.ipd.sdq.stoex.util.StoexSwitch;
 
 /**
  * A simulated stack for the pcm interpreter with some convenience methods.
- * 
+ *
  * @author Joachim Meyer, Christian Stier
- * 
+ *
  */
 public final class SimulatedStackHelper {
+
     private static final Logger LOGGER = Logger.getLogger(SimulatedStackHelper.class);
 
     /**
      * Adds parameters to given stack frame.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @param targetStackFrame
@@ -61,7 +62,7 @@ public final class SimulatedStackHelper {
                     try {
                         LOGGER.debug("Added value " + targetStackFrame.getValue(id) + " for id " + id
                                 + " to stackframe " + targetStackFrame);
-                    } catch (ValueNotInFrameException e) {
+                    } catch (final ValueNotInFrameException e) {
                         throw new RuntimeException(e);
                     }
                 }
@@ -71,23 +72,23 @@ public final class SimulatedStackHelper {
 
     /**
      * Returns whether the specified reference belongs to an INNER variable characterisation.
-     * 
+     *
      * @param reference
      *            the named reference associated with a variable characterisation
      * @return true, if the reference's name is "INNER"; false else.
      */
-    public static boolean isInnerReference(AbstractNamedReference reference) {
+    public static boolean isInnerReference(final AbstractNamedReference reference) {
         return new StoexSwitch<Boolean>() {
 
             @Override
-            public Boolean caseVariableReference(VariableReference object) {
+            public Boolean caseVariableReference(final VariableReference object) {
                 return object.getReferenceName().equals("INNER");
             }
 
             @Override
-            public Boolean caseNamespaceReference(NamespaceReference object) {
+            public Boolean caseNamespaceReference(final NamespaceReference object) {
                 return object.getReferenceName().equals("INNER")
-                        || doSwitch(object.getInnerReference_NamespaceReference());
+                        || this.doSwitch(object.getInnerReference_NamespaceReference());
             }
 
         }.doSwitch(reference);
@@ -96,7 +97,7 @@ public final class SimulatedStackHelper {
     /**
      * Convenience method creating new stack frame, adds it to stack and puts parameters into frame.
      * This method uses own stack for parameter evaluation.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @return the created stack frame.
@@ -109,7 +110,7 @@ public final class SimulatedStackHelper {
     /**
      * Convenience method creating new stack frame with parent, adds it to stack and puts parameters
      * into frame. This method uses own stack for parameter evaluation.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @param parent

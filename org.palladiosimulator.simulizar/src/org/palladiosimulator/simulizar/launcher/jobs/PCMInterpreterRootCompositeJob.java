@@ -9,16 +9,16 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 /**
  * Composite job loading pcm and Monitor Repository model, as well as all sdm models and usage
  * evolution model and starting pcm interpretation.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
-public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> implements
-        IBlackboardInteractingJob<MDSDBlackboard> {
+public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
+        implements IBlackboardInteractingJob<MDSDBlackboard> {
 
     /**
      * Constructor
-     * 
+     *
      * @param configuration
      *            the SimuCom workflow configuration.
      */
@@ -32,10 +32,10 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
 
         this.addJob(new PCMStartInterpretationJob(configuration));
 
-		if (configuration.getServiceLevelObjectivesFile() != null
-				&& !(configuration.getServiceLevelObjectivesFile().equals(""))) {
-			this.addJob(new EvaluateResultsJob(configuration));
-		}
+        if (configuration.getServiceLevelObjectivesFile() != null
+                && !(configuration.getServiceLevelObjectivesFile().equals(""))) {
+            this.addJob(new EvaluateResultsJob(configuration));
+        }
 
     }
 

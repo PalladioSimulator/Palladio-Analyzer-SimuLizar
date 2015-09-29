@@ -17,9 +17,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 /**
  * Job for loading service level objectives into blackboard and resolving proxies to Palladio models
  * and MonitorRepository.
- * 
+ *
  * @author Erlend Stav
- * 
+ *
  */
 public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
         implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
@@ -32,7 +32,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
 
     /**
      * Constructor
-     * 
+     *
      * @param configuration
      *            the SimuCom workflow configuration.
      */
@@ -53,7 +53,7 @@ public class LoadServiceLevelObjectiveRepositoryIntoBlackboardJob
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
-            String filePath = getPath();
+            String filePath = this.getPath();
             if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
                 filePath = FILE_PREFIX + filePath;
             }

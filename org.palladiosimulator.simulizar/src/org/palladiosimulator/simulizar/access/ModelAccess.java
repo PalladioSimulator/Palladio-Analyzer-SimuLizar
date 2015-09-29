@@ -27,7 +27,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 /**
  * Helper to access the PCM model (global and local), the RuntimeMeasurement model, the Monitor
  * Repository model, the usage evolution model and all SD models.
- * 
+ *
  * @author Joachim Meyer, Steffen Becker, Erlend Stav, Sebastian Lehrig
  */
 public class ModelAccess implements IModelAccess {
@@ -62,15 +62,16 @@ public class ModelAccess implements IModelAccess {
 
     /**
      * Constructor
-     * 
+     *
      * @param blackboard
      *            the workflow engine's blackboard holding all models.
      */
     public ModelAccess(final MDSDBlackboard blackboard) {
         this.blackboard = blackboard;
         this.runtimeMeasurementModel = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel();
-        this.pcmPartition = getResourceSetPartition(blackboard, LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
-        this.currentPCMCopy = copyPCMPartition();
+        this.pcmPartition = this.getResourceSetPartition(blackboard,
+                LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+        this.currentPCMCopy = this.copyPCMPartition();
     }
 
     private ModelAccess(final ModelAccess copy) {
@@ -93,13 +94,13 @@ public class ModelAccess implements IModelAccess {
     /**
      * Calling this method has the current instance observe the {@link PCMResourceSetPartition} in
      * order to keep track of model changes.
-     * 
+     *
      * @see #getGlobalPCMModel()
      * @see #stopObservingPcmChanges()
      */
     public void startObservingPcmChanges() {
-        if (!isObservingPcmChanges) {
-            List<Adapter> adapters = this.pcmPartition.getResourceSet().eAdapters();
+        if (!this.isObservingPcmChanges) {
+            final List<Adapter> adapters = this.pcmPartition.getResourceSet().eAdapters();
             if (!adapters.contains(this.globalPCMChangeListener)) {
                 adapters.add(this.globalPCMChangeListener);
             }
@@ -110,7 +111,7 @@ public class ModelAccess implements IModelAccess {
     /**
      * Calling this method has the current instance stop observing the
      * {@link PCMResourceSetPartition}.
-     * 
+     *
      * @see #getGlobalPCMModel()
      * @see #startObservingPcmChanges()
      */
@@ -126,9 +127,9 @@ public class ModelAccess implements IModelAccess {
      */
     private PCMResourceSetPartition copyPCMPartition() {
         final PCMResourceSetPartition newPartition = new PCMResourceSetPartition();
-        List<EObject> modelCopy = EMFCopyHelper.deepCopyToEObjectList(this.pcmPartition.getResourceSet());
+        final List<EObject> modelCopy = EMFCopyHelper.deepCopyToEObjectList(this.pcmPartition.getResourceSet());
         for (int i = 0; i < modelCopy.size(); i++) {
-            Resource resource = newPartition.getResourceSet().createResource(URI.createFileURI("/temp" + i));
+            final Resource resource = newPartition.getResourceSet().createResource(URI.createFileURI("/temp" + i));
             resource.getContents().add(modelCopy.get(i));
         }
         return newPartition;
@@ -140,17 +141,17 @@ public class ModelAccess implements IModelAccess {
     }
 
     /**
-     * 
+     *
      * @return the global Monitor Repository model.
      */
     @Override
     public MonitorRepository getMonitorRepositoryModel() {
         try {
             LOGGER.debug("Retrieving Monitor Repository model from blackboard partition");
-            List<MonitorRepository> result = this.pcmPartition.getElement(MonitorRepositoryPackage.eINSTANCE
-                    .getMonitorRepository());
+            final List<MonitorRepository> result = this.pcmPartition
+                    .getElement(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.info("No Monitor Repository model found, so no simulation data will be taken.");
             return null;
         }
@@ -162,17 +163,17 @@ public class ModelAccess implements IModelAccess {
     public ServiceLevelObjectiveRepository getServiceLevelObjectiveRepositoryModel() {
         try {
             LOGGER.debug("Retrieving Service Level Objective repository from blackboard partition");
-            List<ServiceLevelObjectiveRepository> result = this.pcmPartition
+            final List<ServiceLevelObjectiveRepository> result = this.pcmPartition
                     .getElement(ServicelevelObjectivePackage.eINSTANCE.getServiceLevelObjectiveRepository());
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.info("No Service Level Objectives found.");
             return null;
         }
     }
 
     /**
-     * 
+     *
      * @return the global RuntimeMeasurement model.
      */
     @Override
@@ -181,24 +182,25 @@ public class ModelAccess implements IModelAccess {
     }
 
     /**
-     * 
+     *
      * @return the global usage evolution model, or null if no such model is available
      */
     @Override
     public UsageEvolution getUsageEvolutionModel() {
         try {
             LOGGER.debug("Retrieving Usage Evolution model from blackboard partition");
-            List<UsageEvolution> result = this.pcmPartition.getElement(UsageevolutionPackage.eINSTANCE
-                    .getUsageEvolution());
+            final List<UsageEvolution> result = this.pcmPartition
+                    .getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
             return null;
         }
     }
 
     @SuppressWarnings("unchecked")
-    private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard, final String id) {
+    private <T extends ResourceSetPartition> T getResourceSetPartition(final MDSDBlackboard blackboard,
+            final String id) {
         return (T) blackboard.getPartition(id);
     }
 

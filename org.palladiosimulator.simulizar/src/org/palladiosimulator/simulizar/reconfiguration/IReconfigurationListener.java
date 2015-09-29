@@ -6,10 +6,9 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecu
 
 public interface IReconfigurationListener {
 
-	public void reconfigurationExecuted(
-			ReconfigurationExecutedEvent reconfExecutedEvent);
+    public void reconfigurationExecuted(ReconfigurationExecutedEvent reconfExecutedEvent);
 
-	public void beginReconfigurationEvent(BeginReconfigurationEvent event);
+    public void beginReconfigurationEvent(BeginReconfigurationEvent event);
 
-	public void endReconfigurationEvent(EndReconfigurationEvent event);
+    public void endReconfigurationEvent(EndReconfigurationEvent event);
 }

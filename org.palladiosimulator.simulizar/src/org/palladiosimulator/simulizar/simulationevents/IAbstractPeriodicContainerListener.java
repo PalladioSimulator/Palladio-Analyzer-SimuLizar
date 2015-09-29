@@ -4,13 +4,14 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 
 /**
  * Interface for listening to the periodically triggered container events.
- * 
+ *
  * @author Hendrik Eikerling
  */
 public interface IAbstractPeriodicContainerListener {
+
     /**
      * The method that is triggered periodically.
-     * 
+     *
      * @param periodicEntity
      *            The entity that fires the periodic trigger.
      * @param myContainer

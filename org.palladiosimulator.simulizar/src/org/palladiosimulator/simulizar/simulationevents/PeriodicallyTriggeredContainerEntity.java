@@ -9,22 +9,22 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 
 /**
  * An entity that can trigger periodic events with an attached container.
- * 
- * @author Hendrik Eikerling
+ *
+ * @author Hendrik Eikerling, Sebastian Lehrig
  *
  */
 public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredSimulationEntity
         implements IAbstractObservable<IAbstractPeriodicContainerListener> {
 
     private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
-    private static SimulatedResourceContainer myContainer;
+    private final SimulatedResourceContainer container;
 
     private final AbstractObservable<IAbstractPeriodicContainerListener> observableDelegate;
 
     public PeriodicallyTriggeredContainerEntity(final SimuComModel model, final double firstOccurrence,
             final double delay, final SimulatedResourceContainer container) {
         super(model, firstOccurrence, delay);
-        myContainer = container;
+        this.container = container;
         this.observableDelegate = new AbstractObservable<IAbstractPeriodicContainerListener>() {
         };
     }
@@ -34,22 +34,22 @@ public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredS
         if (LOGGER.isInfoEnabled()) {
             final StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Periodic trigger for container ");
-            stringBuilder.append(myContainer.getResourceContainerID());
+            stringBuilder.append(this.container.getResourceContainerID());
             stringBuilder.append(" occured at time ");
-            stringBuilder.append(getModel().getSimulationControl().getCurrentSimulationTime());
+            stringBuilder.append(this.getModel().getSimulationControl().getCurrentSimulationTime());
             LOGGER.info(stringBuilder.toString());
         }
 
-        this.observableDelegate.getEventDispatcher().triggerPeriodicUpdate(this, myContainer);
+        this.observableDelegate.getEventDispatcher().triggerPeriodicUpdate(this, this.container);
     }
 
     @Override
     public void addObserver(final IAbstractPeriodicContainerListener observer) {
-        observableDelegate.addObserver(observer);
+        this.observableDelegate.addObserver(observer);
     }
 
     @Override
     public void removeObserver(final IAbstractPeriodicContainerListener observer) {
-        observableDelegate.removeObserver(observer);
+        this.observableDelegate.removeObserver(observer);
     }
 }

@@ -9,7 +9,7 @@ public class FQComponentID {
 
     private final List<AssemblyContext> assembyContextPath;
 
-    public FQComponentID(List<AssemblyContext> assemblyContextPath) {
+    public FQComponentID(final List<AssemblyContext> assemblyContextPath) {
         super();
         this.assembyContextPath = Collections.unmodifiableList(assemblyContextPath);
     }
@@ -18,19 +18,19 @@ public class FQComponentID {
      * @return the assembyContextPath
      */
     public final List<AssemblyContext> getAssembyContextPath() {
-        return assembyContextPath;
+        return this.assembyContextPath;
     }
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#hashCode()
      */
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        for (final AssemblyContext ctx : assembyContextPath) {
+        for (final AssemblyContext ctx : this.assembyContextPath) {
             result = prime * result + ctx.getId().hashCode();
         }
         return result;
@@ -38,29 +38,30 @@ public class FQComponentID {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
-        FQComponentID other = (FQComponentID) obj;
-        if (assembyContextPath == null) {
+        final FQComponentID other = (FQComponentID) obj;
+        if (this.assembyContextPath == null) {
             if (other.assembyContextPath != null) {
                 return false;
             }
         } else {
-            if (this.assembyContextPath.size() != other.assembyContextPath.size())
+            if (this.assembyContextPath.size() != other.assembyContextPath.size()) {
                 return false;
-            for (int i = 0; i < assembyContextPath.size(); i++) {
+            }
+            for (int i = 0; i < this.assembyContextPath.size(); i++) {
                 if (!this.assembyContextPath.get(i).getId().equals(other.assembyContextPath.get(i).getId())) {
                     return false;
                 }
@@ -71,13 +72,13 @@ public class FQComponentID {
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        StringBuilder pathBuilder = new StringBuilder();
-        for (AssemblyContext assembyContext : assembyContextPath) {
+        final StringBuilder pathBuilder = new StringBuilder();
+        for (final AssemblyContext assembyContext : this.assembyContextPath) {
             pathBuilder.append(assembyContext.getEntityName());
             pathBuilder.append("::");
         }

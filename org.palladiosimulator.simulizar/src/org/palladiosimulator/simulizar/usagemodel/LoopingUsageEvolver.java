@@ -9,16 +9,17 @@ import tools.descartes.dlim.generator.ModelEvaluator;
 /**
  * Looping usage evolver. Assumes that the time unit of the DLIM sequence and simulation are
  * equivalent. Repeats the DLIM sequence once its end has been reached.
- * 
+ *
  * @author stier
  *
  */
 public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
+
     static final Logger LOGGER = Logger.getLogger(LoopingUsageEvolver.class);
 
     /**
      * Constructs the looping usage evolver.
-     * 
+     *
      * @param rtState
      *            SimuLizar runtime state.
      * @param firstOccurrence
@@ -28,8 +29,8 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The evolved scenario.
      */
-    public LoopingUsageEvolver(SimuLizarRuntimeState rtState, double firstOccurrence, double delay,
-            UsageScenario evolvedScenario) {
+    public LoopingUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
+            final UsageScenario evolvedScenario) {
         super(rtState, firstOccurrence, delay, evolvedScenario);
         if (!this.getCorrespondingUsage().isRepeatingPattern()) {
             throw new IllegalArgumentException("The corresponding usage model must contain a repeating pattern.");
@@ -37,20 +38,20 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
     }
 
     @Override
-    protected double getNewRate(ModelEvaluator evaluator) {
-        return evaluator.getArrivalRateAtTime(floorMod(getCurrentTime(), getDLIMFinalDuration()));
+    protected double getNewRate(final ModelEvaluator evaluator) {
+        return evaluator.getArrivalRateAtTime(floorMod(this.getCurrentTime(), this.getDLIMFinalDuration()));
     }
 
     /**
      * Calculates the modulo between floored x and y.
-     * 
+     *
      * @param x
      *            The dividend.
      * @param y
      *            The divisor.
      * @return Floored modulo.
      */
-    private static double floorMod(double x, double y) {
+    private static double floorMod(final double x, final double y) {
         return x - Math.floor(x / y) * y;
     }
 }

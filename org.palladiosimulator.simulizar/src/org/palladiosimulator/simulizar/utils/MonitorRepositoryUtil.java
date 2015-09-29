@@ -40,9 +40,9 @@ import simulizarmeasuringpoint.util.SimulizarmeasuringpointSwitch;
 
 /**
  * Util methods for the monitoring model
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig, Matthias Becker
- * 
+ *
  */
 
 public final class MonitorRepositoryUtil {
@@ -50,7 +50,7 @@ public final class MonitorRepositoryUtil {
     /**
      * Method checks if given element should be monitored with given performance metric. If yes, it
      * will return the corresponding MeasurementSpecification, otherwise null.
-     * 
+     *
      * @param monitorRepositoryModel
      *            the monitoring model
      * @param element
@@ -79,7 +79,7 @@ public final class MonitorRepositoryUtil {
 
     /**
      * Method returns the monitored element EObject for a measuring point.
-     * 
+     *
      * @param mp
      *            the measuring point for which the monitored element shall be returned
      * @return the monitored element
@@ -105,16 +105,16 @@ public final class MonitorRepositoryUtil {
 
     /**
      * Returns the measured element EObject for a SimuLizar measuring point.
-     * 
+     *
      * @param measuringPoint
      *            the measuring point
      * @return the measured element
      */
-    private static EObject getEObjectFromSimuLizarMeasuringPoint(MeasuringPoint measuringPoint) {
+    private static EObject getEObjectFromSimuLizarMeasuringPoint(final MeasuringPoint measuringPoint) {
         return new SimulizarmeasuringpointSwitch<EObject>() {
 
             @Override
-            public EObject caseReconfigurationMeasuringPoint(ReconfigurationMeasuringPoint object) {
+            public EObject caseReconfigurationMeasuringPoint(final ReconfigurationMeasuringPoint object) {
                 return EMFLoadHelper.loadAndResolveEObject(object.getResourceURI());
             }
         }.doSwitch(measuringPoint);
@@ -122,16 +122,16 @@ public final class MonitorRepositoryUtil {
 
     /**
      * Returns the measured element EObject for a general measuring point.
-     * 
+     *
      * @param measuringPoint
      *            the measuring point
      * @return the measured element
      */
-    private static EObject getEObjectFromGeneralMeasuringPoint(MeasuringPoint measuringPoint) {
+    private static EObject getEObjectFromGeneralMeasuringPoint(final MeasuringPoint measuringPoint) {
         return new MeasuringpointSwitch<EObject>() {
 
             @Override
-            public EObject caseResourceURIMeasuringPoint(ResourceURIMeasuringPoint object) {
+            public EObject caseResourceURIMeasuringPoint(final ResourceURIMeasuringPoint object) {
                 return EMFLoadHelper.loadAndResolveEObject(object.getResourceURI());
             }
         }.doSwitch(measuringPoint);
@@ -139,27 +139,27 @@ public final class MonitorRepositoryUtil {
 
     /**
      * Returns the measured element EObject for a PCM measuring point.
-     * 
+     *
      * @param measuringPoint
      *            the measuring point
      * @return the measured element
      */
-    private static EObject getEObjectFromPCMMeasuringPoint(MeasuringPoint measuringPoint) {
+    private static EObject getEObjectFromPCMMeasuringPoint(final MeasuringPoint measuringPoint) {
 
         return new PcmmeasuringpointSwitch<EObject>() {
 
             @Override
-            public EObject caseEntryLevelSystemCallMeasuringPoint(EntryLevelSystemCallMeasuringPoint object) {
+            public EObject caseEntryLevelSystemCallMeasuringPoint(final EntryLevelSystemCallMeasuringPoint object) {
                 return object.getEntryLevelSystemCall();
             }
 
             @Override
-            public EObject caseUsageScenarioMeasuringPoint(UsageScenarioMeasuringPoint object) {
+            public EObject caseUsageScenarioMeasuringPoint(final UsageScenarioMeasuringPoint object) {
                 return object.getUsageScenario();
             }
 
             @Override
-            public EObject caseResourceEnvironmentMeasuringPoint(ResourceEnvironmentMeasuringPoint object) {
+            public EObject caseResourceEnvironmentMeasuringPoint(final ResourceEnvironmentMeasuringPoint object) {
                 return object.getResourceEnvironment();
             };
 
@@ -167,7 +167,7 @@ public final class MonitorRepositoryUtil {
              * FIXME Different replica IDs are not supported here. [Lehrig]
              */
             @Override
-            public EObject caseActiveResourceMeasuringPoint(ActiveResourceMeasuringPoint object) {
+            public EObject caseActiveResourceMeasuringPoint(final ActiveResourceMeasuringPoint object) {
                 return object.getActiveResource();
             }
 
@@ -177,12 +177,12 @@ public final class MonitorRepositoryUtil {
              * [Lehrig]
              */
             @Override
-            public EObject caseSystemOperationMeasuringPoint(SystemOperationMeasuringPoint object) {
+            public EObject caseSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint object) {
                 return object.getOperationSignature();
             };
 
             @Override
-            public EObject caseExternalCallActionMeasuringPoint(ExternalCallActionMeasuringPoint object) {
+            public EObject caseExternalCallActionMeasuringPoint(final ExternalCallActionMeasuringPoint object) {
                 return object.getExternalCall();
             };
 
@@ -271,12 +271,12 @@ public final class MonitorRepositoryUtil {
 
             @Override
             public Boolean caseResourceEnvironmentMeasuringPoint(final ResourceEnvironmentMeasuringPoint mp) {
-                return checkResourceEnvironmentMeasuringPoint(element, mp);
+                return this.checkResourceEnvironmentMeasuringPoint(element, mp);
             }
 
             @Override
             public Boolean caseExternalCallActionMeasuringPoint(final ExternalCallActionMeasuringPoint mp) {
-                return checkExternCallActionMeasuringpoint(element, mp);
+                return this.checkExternCallActionMeasuringpoint(element, mp);
             }
 
             private boolean checkActiveResourceMeasuringPoint(final ActiveResourceMeasuringPoint mp) {
@@ -314,7 +314,7 @@ public final class MonitorRepositoryUtil {
                     }
 
                     @Override
-                    public Boolean defaultCase(EObject object) {
+                    public Boolean defaultCase(final EObject object) {
                         return false;
                     }
 
@@ -392,7 +392,7 @@ public final class MonitorRepositoryUtil {
                 return new SeffSwitch<Boolean>() {
 
                     @Override
-                    public Boolean caseExternalCallAction(ExternalCallAction externalCallAction) {
+                    public Boolean caseExternalCallAction(final ExternalCallAction externalCallAction) {
                         return externalCallAction.getId().equals(mp.getExternalCall().getId());
                     };
 

@@ -23,7 +23,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 /**
  * Class whose objects will listen on changes in the PCM@Runtime (i.e., they track changes in the
  * {@link RuntimeMeasurementModel}) and trigger reconfigurations respectively.
- * 
+ *
  * @author Steffen Becker
  * @author Matthias Becker
  * @author Sebastian Lehrig
@@ -67,16 +67,16 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     /**
      * Constructor.
-     * 
+     *
      * @param model
-     * 
+     *
      * @param modelAccessFactory
      *            Access factory for model access interfaces.
      * @param reconfigurators
      *            Set of reconfigurators which will be triggered as soon as new, interesting
      *            monitoring data arrives.
      */
-    public Reconfigurator(SimuComModel model, final IModelAccess modelAccessFactory,
+    public Reconfigurator(final SimuComModel model, final IModelAccess modelAccessFactory,
             final ISimulationControl simulationcontrol, final List<IReconfigurator> reconfigurators) {
         super();
         this.model = model;
@@ -104,7 +104,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     /**
      * Method which is called on a change in the RuntimeMeasurement. All reconfigurators are
      * informed and can check for potential reconfigurations.
-     * 
+     *
      * @param notification
      *            The notification event, which describes a change in the RuntimeMeasurement model.
      */
@@ -116,7 +116,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         // previous reconfiguration is finished. This could be done on a
         // more fine-granular
         // level (one thread per executor).
-        if (isNotificationNewMeasurement(monitoredElement)
+        if (this.isNotificationNewMeasurement(monitoredElement)
                 && this.model.getSimulationControl().getCurrentSimulationTime() > 0
                 && (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
             if (this.reconfigurationProcess == null) {
@@ -128,7 +128,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     /**
      * Checks whether the monitored element is not null
-     * 
+     *
      * @param monitoredElement
      * @return true if the monitored element is not null
      */
@@ -149,21 +149,21 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     };
 
-    void fireReconfigurationEvent(EndReconfigurationEvent endReconfigurationEvent) {
+    void fireReconfigurationEvent(final EndReconfigurationEvent endReconfigurationEvent) {
         this.getEventDispatcher().endReconfigurationEvent(endReconfigurationEvent);
     }
 
-    void fireReconfigurationEvent(BeginReconfigurationEvent beginReconfigurationEvent) {
+    void fireReconfigurationEvent(final BeginReconfigurationEvent beginReconfigurationEvent) {
         this.getEventDispatcher().beginReconfigurationEvent(beginReconfigurationEvent);
     }
 
-    void fireReconfigurationEvent(ReconfigurationExecutedEvent reconfigurationExecutedEvent) {
+    void fireReconfigurationEvent(final ReconfigurationExecutedEvent reconfigurationExecutedEvent) {
         this.getEventDispatcher().reconfigurationExecuted(reconfigurationExecutedEvent);
     }
 
     /**
      * Retrieve the monitored PCM element from the RuntimeMeasurement change event.
-     * 
+     *
      * @param notification
      *            The RuntimeMeasurment change event.
      * @return The PCM element whose monitoring triggered the change event.
@@ -189,11 +189,11 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     /**
      * Gets the current reconfiguration process.
-     * 
+     *
      * @return The current {@link ReconfigurationProcess}.
      */
     public ReconfigurationProcess getReconfigurationProcess() {
-        return reconfigurationProcess;
+        return this.reconfigurationProcess;
     }
 
 }

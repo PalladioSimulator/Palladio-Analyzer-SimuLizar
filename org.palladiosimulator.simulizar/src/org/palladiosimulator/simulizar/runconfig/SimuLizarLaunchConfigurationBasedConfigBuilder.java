@@ -16,35 +16,37 @@ import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowBasedRunConfiguratio
 
 public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunchConfigurationBasedConfigBuilder {
 
-    public SimuLizarLaunchConfigurationBasedConfigBuilder(ILaunchConfiguration configuration, String mode)
+    public SimuLizarLaunchConfigurationBasedConfigBuilder(final ILaunchConfiguration configuration, final String mode)
             throws CoreException {
         super(configuration, mode);
         // TODO Auto-generated constructor stub
     }
 
     @Override
-    public void fillConfiguration(AbstractWorkflowBasedRunConfiguration configuration) throws CoreException {
-        SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) configuration;
-        config.setSimulateFailures(getBooleanAttribute(ConstantsContainer.SIMULATE_FAILURES));
+    public void fillConfiguration(final AbstractWorkflowBasedRunConfiguration configuration) throws CoreException {
+        final SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) configuration;
+        config.setSimulateFailures(this.getBooleanAttribute(ConstantsContainer.SIMULATE_FAILURES));
 
         // accuracy analysis
-        config.setAccuracyInfluenceAnalysisEnabled(getBooleanAttribute(ConstantsContainer.ANALYSE_ACCURACY));
-        config.setAccuracyInformationModelFile(getStringAttribute(ConstantsContainer.ACCURACY_QUALITY_ANNOTATION_FILE));
+        config.setAccuracyInfluenceAnalysisEnabled(this.getBooleanAttribute(ConstantsContainer.ANALYSE_ACCURACY));
+        config.setAccuracyInformationModelFile(
+                this.getStringAttribute(ConstantsContainer.ACCURACY_QUALITY_ANNOTATION_FILE));
 
-        config.setMonitorRepositoryFile(getStringAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE));
-        config.setReconfigurationRulesFolder(getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER));
-        config.setServiceLevelObjectivesFile(getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
-        config.setUsageEvolutionFile(getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
+        config.setMonitorRepositoryFile(this.getStringAttribute(SimulizarConstants.MONITOR_REPOSITORY_FILE));
+        config.setReconfigurationRulesFolder(this.getStringAttribute(SimulizarConstants.RECONFIGURATION_RULES_FOLDER));
+        config.setServiceLevelObjectivesFile(
+                this.getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
+        config.setUsageEvolutionFile(this.getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
 
-        SimuComConfig simuComConfig = new SimuComConfig(properties, config.isDebug());
+        final SimuComConfig simuComConfig = new SimuComConfig(this.properties, config.isDebug());
 
         // Set SimuCom config extensions based on registered extensions
-        for (String workflowHookId : WorkflowHooks.getAllWorkflowHookIDs()) {
-            for (WorkflowExtension<?> workflowExtension : ExtensionHelper.getWorkflowExtensions(workflowHookId)) {
-                if ((workflowExtension.getExtensionConfigurationBuilder() != null)
-                        && (workflowExtension.getExtensionConfigurationBuilder() instanceof SimuComExtensionConfigurationBuilder)) {
-                    SimuComConfigExtension simuComConfigExtension = ((SimuComExtensionConfigurationBuilder) workflowExtension
-                            .getExtensionConfigurationBuilder()).deriveSimuComConfigExtension(properties);
+        for (final String workflowHookId : WorkflowHooks.getAllWorkflowHookIDs()) {
+            for (final WorkflowExtension<?> workflowExtension : ExtensionHelper.getWorkflowExtensions(workflowHookId)) {
+                if ((workflowExtension.getExtensionConfigurationBuilder() != null) && (workflowExtension
+                        .getExtensionConfigurationBuilder() instanceof SimuComExtensionConfigurationBuilder)) {
+                    final SimuComConfigExtension simuComConfigExtension = ((SimuComExtensionConfigurationBuilder) workflowExtension
+                            .getExtensionConfigurationBuilder()).deriveSimuComConfigExtension(this.properties);
                     if (simuComConfigExtension != null) {
                         simuComConfig.addSimuComConfigExtension(workflowExtension.getId(), simuComConfigExtension);
                     }

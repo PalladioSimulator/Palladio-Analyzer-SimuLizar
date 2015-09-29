@@ -16,9 +16,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * Job for loading monitor repository model into blackboard. Resolving proxies to pcm.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -30,7 +30,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
 
     /**
      * Constructor
-     * 
+     *
      * @param configuration
      *            the SimuCom workflow configuration.
      */
@@ -51,7 +51,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
-            String filePath = getPath();
+            String filePath = this.getPath();
             if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
                 filePath = FILE_PREFIX + filePath;
             }

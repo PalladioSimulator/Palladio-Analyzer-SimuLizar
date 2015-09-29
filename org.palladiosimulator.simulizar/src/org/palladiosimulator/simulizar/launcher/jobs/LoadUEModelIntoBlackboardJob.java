@@ -16,9 +16,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * Job for loading usage evolution model into blackboard. Resolving proxies to pcm.
- * 
+ *
  * @author Erlend Stav
- * 
+ *
  */
 public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -30,7 +30,7 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
 
     /**
      * Constructor
-     * 
+     *
      * @param configuration
      *            the SimuCom workflow configuration.
      */
@@ -48,11 +48,11 @@ public class LoadUEModelIntoBlackboardJob implements IJob, IBlackboardInteractin
         }
 
         // Use the PCMResoureSetPartition for usage evolution
-        PCMResourceSetPartition uePartition = this.getPCMResourceSetPartition();
+        final PCMResourceSetPartition uePartition = this.getPCMResourceSetPartition();
         if (!this.getPath().equals("")) {
 
             // add file protocol if necessary
-            String filePath = getPath();
+            String filePath = this.getPath();
             if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
                 filePath = FILE_PREFIX + filePath;
             }

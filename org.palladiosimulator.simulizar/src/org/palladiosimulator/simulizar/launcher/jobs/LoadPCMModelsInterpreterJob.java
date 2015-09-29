@@ -18,7 +18,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
  * execute method to avoid loading of middleware and event middleware models. Because fields in
  * configuration UI are used for SDM models and PSM Model. TODO: StB: Remove this ugly hack again
  * and introduce proper config fields for this. Remove this class.
- * 
+ *
  */
 public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
 
@@ -51,9 +51,9 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
      */
     /*
      * (non-Javadoc)
-     * 
-     * @see org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#execute(org.eclipse.core.runtime.
-     * IProgressMonitor)
+     *
+     * @see org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#execute(org.eclipse.core.
+     * runtime. IProgressMonitor)
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
@@ -78,10 +78,10 @@ public class LoadPCMModelsInterpreterJob extends LoadPCMModelsJob {
      */
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
-     * org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.workflow.mdsd
-     * .blackboard.MDSDBlackboard)
+     * org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsJob#setBlackboard(de.uka.ipd.sdq.
+     * workflow.mdsd .blackboard.MDSDBlackboard)
      */
     @Override
     public void setBlackboard(final MDSDBlackboard blackboard) {

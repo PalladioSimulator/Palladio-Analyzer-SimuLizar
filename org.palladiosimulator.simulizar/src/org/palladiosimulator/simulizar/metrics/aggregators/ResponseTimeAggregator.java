@@ -22,9 +22,9 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 /**
  * The aggregator "Response time".
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
@@ -34,7 +34,7 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
 
     /**
      * Constructor
-     * 
+     *
      * @param measurementSpecification
      *            the measurement specification. id of the measurement.
      * @param monitoredElement
@@ -71,20 +71,21 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
 
             @Override
             protected void triggerInternal() {
-                finalizeCurrentIntervall();
+                ResponseTimeAggregator.this.finalizeCurrentIntervall();
             }
         };
     }
 
     /**
-     * 
+     *
      */
     private void finalizeCurrentIntervall() {
-        if (responseTimes.size() > 0) {
+        if (this.responseTimes.size() > 0) {
             // calculate StatisticalCharacterization
-            final double statisticalCharacterization = aggregator.calculateStatisticalCharaterization(responseTimes);
-            updateMeasurementValue(statisticalCharacterization);
-            responseTimes.clear();
+            final double statisticalCharacterization = this.aggregator
+                    .calculateStatisticalCharaterization(this.responseTimes);
+            this.updateMeasurementValue(statisticalCharacterization);
+            this.responseTimes.clear();
         }
     }
 

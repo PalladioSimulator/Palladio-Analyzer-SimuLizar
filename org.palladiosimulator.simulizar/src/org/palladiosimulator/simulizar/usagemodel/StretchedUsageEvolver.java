@@ -7,7 +7,7 @@ import tools.descartes.dlim.generator.ModelEvaluator;
 
 /**
  * Encapsulates a Usage evolver that stretches the DLIM curve to the simulation time.
- * 
+ *
  * @author stier, Erlend Stav
  *
  */
@@ -21,7 +21,7 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
 
     /**
      * Creates the stretching usage evolver.
-     * 
+     *
      * @param rtState
      *            The SimuLizar runtime state.
      * @param firstOccurrence
@@ -31,22 +31,22 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The scenario evolved by <code>this</code>.
      */
-    public StretchedUsageEvolver(SimuLizarRuntimeState rtState, double firstOccurrence, double delay,
-            UsageScenario evolvedScenario) {
+    public StretchedUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
+            final UsageScenario evolvedScenario) {
         super(rtState, firstOccurrence, delay, evolvedScenario);
-        timeFactor = this.getModel().getConfiguration().getSimuTime() / this.getDLIMFinalDuration();
+        this.timeFactor = this.getModel().getConfiguration().getSimuTime() / this.getDLIMFinalDuration();
     }
 
     @Override
-    protected double getNewRate(ModelEvaluator loadEvaluator) {
-        double evaluationTime = this.getCurrentTime() / timeFactor;
+    protected double getNewRate(final ModelEvaluator loadEvaluator) {
+        final double evaluationTime = this.getCurrentTime() / this.timeFactor;
         if (evaluationTime == this.getDLIMFinalDuration()) {
             // The LIMBO evaluator do not define a value at the total duration
             // time, so get a value close to end of the simulation by requesting
             // the value one millionth of a time unit before the total duration
             return loadEvaluator.getArrivalRateAtTime(evaluationTime - DELTA);
         }
-        return loadEvaluator.getArrivalRateAtTime(this.getCurrentTime() / timeFactor);
+        return loadEvaluator.getArrivalRateAtTime(this.getCurrentTime() / this.timeFactor);
     }
 
 }

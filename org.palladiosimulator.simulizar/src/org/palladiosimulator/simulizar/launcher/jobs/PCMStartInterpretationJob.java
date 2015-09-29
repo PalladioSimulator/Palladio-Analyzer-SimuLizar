@@ -17,9 +17,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * Job starting the pcm interpretation.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -31,7 +31,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
     /**
      * Constructor
-     * 
+     *
      * @param configuration
      *            the SimuCom workflow configuration.
      */
@@ -48,21 +48,22 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOGGER.info("Start job: " + this);
 
         LOGGER.info("Initialise Simulizar runtime state");
-        SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(configuration, new ModelAccess(this.blackboard));
+        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
+                new ModelAccess(this.blackboard));
 
-        initializeRuntimeStateAccessors(runtimeState);
+        this.initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
     }
 
-    private void initializeRuntimeStateAccessors(SimuLizarRuntimeState runtimeState) {
-        Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
+    private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
+        final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
                 SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
 
-        for (IRuntimeStateAccessor accessor : stateAccessors) {
+        for (final IRuntimeStateAccessor accessor : stateAccessors) {
             accessor.setRuntimeStateModel(runtimeState);
         }
     }

@@ -37,10 +37,10 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
  * simulizars central simulator event distribution object, and to simulated component instances
  * (e.g. to access their current state of passive ressources, etc.).
- * 
+ *
  * Per simulation run, there should be exactly one instance of this class and all of its managed
  * information objects.
- * 
+ *
  * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
@@ -68,19 +68,19 @@ public class SimuLizarRuntimeState {
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
-        this.usageModels = new SimulatedUsageModels(mainContext);
-        initializeWorkloadDrivers();
+        this.usageModels = new SimulatedUsageModels(this.mainContext);
+        this.initializeWorkloadDrivers();
 
-        this.reconfigurator = initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelSyncers = initializeModelSyncers();
+        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        this.modelSyncers = this.initializeModelSyncers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
         // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
         // calculators of
         // resources created in ResourceEnvironmentSyncer!
-        initializeInterpreterListeners(this.reconfigurator);
-        initializeUsageEvolver();
+        this.initializeInterpreterListeners(this.reconfigurator);
+        this.initializeUsageEvolver();
         this.modelAccess.startObservingPcmChanges();
     }
 
@@ -88,7 +88,7 @@ public class SimuLizarRuntimeState {
      * @return the model
      */
     public final SimuComModel getModel() {
-        return model;
+        return this.model;
     }
 
     public EventNotificationHelper getEventNotificationHelper() {
@@ -99,7 +99,7 @@ public class SimuLizarRuntimeState {
      * @return the componentInstanceRegistry
      */
     public final ComponentInstanceRegistry getComponentInstanceRegistry() {
-        return componentInstanceRegistry;
+        return this.componentInstanceRegistry;
     }
 
     public InterpreterDefaultContext getMainContext() {
@@ -117,7 +117,7 @@ public class SimuLizarRuntimeState {
     /**
      * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
      * of changes.
-     * 
+     *
      * @return The reconfigurator.
      */
     public Reconfigurator getReconfigurator() {
@@ -126,7 +126,7 @@ public class SimuLizarRuntimeState {
 
     public void runSimulation() {
         LOGGER.debug("Starting Simulizar simulation...");
-        final double simRealTimeNano = ExperimentRunner.run(model);
+        final double simRealTimeNano = ExperimentRunner.run(this.model);
         LOGGER.debug(
                 "Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
     }
@@ -139,7 +139,7 @@ public class SimuLizarRuntimeState {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (final IModelSyncer modelSyncer : modelSyncers) {
+        for (final IModelSyncer modelSyncer : this.modelSyncers) {
             modelSyncer.stopSyncer();
         }
     }
@@ -151,15 +151,15 @@ public class SimuLizarRuntimeState {
 
     private void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
         LOGGER.debug("Adding Debug and monitoring interpreter listeners");
-        eventHelper.addObserver(new LogDebugListener());
-        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model, reconfigurator));
+        this.eventHelper.addObserver(new LogDebugListener());
+        this.eventHelper.addObserver(new ProbeFrameworkListener(this.modelAccess, this.model, reconfigurator));
     }
 
     private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
             final ISimulationControl simulationControl) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
 
-        List<IReconfigurator> reconfigEngines = ExtensionHelper.getExecutableExtensions(
+        final List<IReconfigurator> reconfigEngines = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
 
@@ -169,7 +169,7 @@ public class SimuLizarRuntimeState {
 
         }
 
-        final Reconfigurator reconfigurator = new Reconfigurator(model, modelAccess, simulationControl,
+        final Reconfigurator reconfigurator = new Reconfigurator(this.model, this.modelAccess, simulationControl,
                 reconfigEngines);
         reconfigurator.addObserver(new IReconfigurationListener() {
 
@@ -191,7 +191,7 @@ public class SimuLizarRuntimeState {
                     CollectionUtils.forAllDo(reconfExecutedEvent.getModelChanges(), new Closure<Notification>() {
 
                         @Override
-                        public void execute(Notification notification) {
+                        public void execute(final Notification notification) {
                             LOGGER.info("--------------------- " + notification.getNotifier());
                         }
                     });

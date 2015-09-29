@@ -12,7 +12,7 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 
 /**
  * Probe for measuring the cost of a container.
- * 
+ *
  * @author Hendrik Eikerling
  */
 public class ContainerCostProbe extends BasicEventProbe<PeriodicallyTriggeredContainerEntity, Double, Money>
@@ -31,12 +31,12 @@ public class ContainerCostProbe extends BasicEventProbe<PeriodicallyTriggeredCon
     }
 
     @Override
-    public void triggerPeriodicUpdate(PeriodicallyTriggeredContainerEntity periodicEntity,
-            SimulatedResourceContainer myContainer) {
+    public void triggerPeriodicUpdate(final PeriodicallyTriggeredContainerEntity periodicEntity,
+            final SimulatedResourceContainer myContainer) {
         // final Measure<Double, Money> costPerContainer = Measure.valueOf(9.99,
         // EUR);
         final Measure<Double, Money> costPerContainer = Measure.valueOf(10.0, EUR);
-        notify(costPerContainer);
+        this.notify(costPerContainer);
         /*
          * FIXME Still hard coded container cost --> use Tagged Value form model to get variable
          * cost

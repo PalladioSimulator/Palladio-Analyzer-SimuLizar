@@ -13,16 +13,16 @@ public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
     public PeriodicallyTriggeredSimulationEntity(final SimuComModel model, final double firstOccurrence,
             final double delay) {
         super(model, "PeriodicallyTriggeredSimulationEntity");
-        myTriggerEvent = new PeriodicSimulationEvent(model, delay);
-        myTriggerEvent.schedule(this, firstOccurrence);
+        this.myTriggerEvent = new PeriodicSimulationEvent(model, delay);
+        this.myTriggerEvent.schedule(this, firstOccurrence);
     }
 
     public final void trigger() {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Periodic trigger for entity " + getName() + " occurred at simulation time "
-                    + getModel().getSimulationControl().getCurrentSimulationTime());
+            LOGGER.debug("Periodic trigger for entity " + this.getName() + " occurred at simulation time "
+                    + this.getModel().getSimulationControl().getCurrentSimulationTime());
         }
-        triggerInternal();
+        this.triggerInternal();
     }
 
     protected void triggerInternal() {

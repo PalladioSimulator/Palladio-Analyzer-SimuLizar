@@ -22,7 +22,7 @@ import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
-import org.palladiosimulator.recorderframework.edp2.config.EDP2RecorderConfigurationFactory;
+import org.palladiosimulator.recorderframework.edp2.config.AbstractEDP2RecorderConfigurationFactory;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilter;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilterConfiguration;
@@ -48,39 +48,39 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     }
 
     @Override
-    public void cleanup(IProgressMonitor arg0) throws CleanupFailedException {
+    public void cleanup(final IProgressMonitor arg0) throws CleanupFailedException {
         // TODO Auto-generated method stub
     }
 
     @Override
-    public void execute(IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
+    public void execute(final IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
 
-        PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard().getPartition(
-                LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+        final PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard()
+                .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
 
         if (partition == null) {
-            LOGGER.info("No Service level objectives provided. Skipping evaluation of experiment data");
+            this.LOGGER.info("No Service level objectives provided. Skipping evaluation of experiment data");
         } else {
-            String repositoryId = (String) this.configuration.getAttributes().get(
-                    EDP2RecorderConfigurationFactory.REPOSITORY_ID);
-            String basename = this.configuration.getSimulationConfiguration().getNameBase();
-            String variation = this.configuration.getSimulationConfiguration().getVariationId();
+            final String repositoryId = (String) this.configuration.getAttributes()
+                    .get(AbstractEDP2RecorderConfigurationFactory.REPOSITORY_ID);
+            final String basename = this.configuration.getSimulationConfiguration().getNameBase();
+            final String variation = this.configuration.getSimulationConfiguration().getVariationId();
 
             final ModelAccess modelAccess = new ModelAccess(this.getBlackboard());
             this.serviceLevelObjectives = modelAccess.getServiceLevelObjectiveRepositoryModel()
                     .getServicelevelobjectives();
 
-            Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
-            final ExperimentGroup experimentGroup = getExperimentGroup(repository, basename);
-            experimentSetting = getExperimentSetting(experimentGroup, variation);
+            final Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
+            final ExperimentGroup experimentGroup = this.getExperimentGroup(repository, basename);
+            this.experimentSetting = this.getExperimentSetting(experimentGroup, variation);
 
-            LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
+            this.LOGGER.info("Evaluating data in repository " + repository.getId() + " in experiment run " + basename);
 
             final int lastExperiment = this.experimentSetting.getExperimentRuns().size() - 1;
             this.experimentSetting.getExperimentRuns().get(lastExperiment);
 
-            long[] sloViolations = computeSloViolations();
-            LOGGER.info("Service level objectives were violated in " + sloViolations[1]
+            final long[] sloViolations = this.computeSloViolations();
+            this.LOGGER.info("Service level objectives were violated in " + sloViolations[1]
                     + " measurements within a total of " + sloViolations[0] + " measurments.");
         }
     }
@@ -92,7 +92,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 
     /**
      * Computes the number of SLO violations.
-     * 
+     *
      * @return the number of found SLO violations.
      */
     private long[] computeSloViolations() {
@@ -104,7 +104,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 
         for (final ServiceLevelObjective serviceLevelObjective : this.serviceLevelObjectives) {
 
-            final Measurement measurement = findMeasurement(experimentRun.getMeasurement(), serviceLevelObjective);
+            final Measurement measurement = this.findMeasurement(experimentRun.getMeasurement(), serviceLevelObjective);
             final RawMeasurements rawMeasurements = measurement.getMeasurementRanges().get(0).getRawMeasurements();
 
             final Map<String, Object> properties = new HashMap<String, Object>(1);
@@ -122,7 +122,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             dataStream.close();
         }
 
-        long[] result = new long[2];
+        final long[] result = new long[2];
         result[0] = totalMeasurements;
         result[1] = sloViolations;
 
@@ -132,7 +132,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     /**
      * Finds the measurements referenced by the SLO in the given measurements lists. For
      * identification, this methods tries to match metric IDs and measuring point names.
-     * 
+     *
      * @param measurementList
      *            the list of measurements to be investigated for a match.
      * @param serviceLevelObjective
@@ -144,8 +144,8 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     private Measurement findMeasurement(final List<Measurement> measurementList,
             final ServiceLevelObjective serviceLevelObjective) {
         for (final Measurement measurement : measurementList) {
-            if (containsMetric(measurement.getMeasuringType().getMetric(), serviceLevelObjective
-                    .getMeasurementSpecification().getMetricDescription())) {
+            if (this.containsMetric(measurement.getMeasuringType().getMetric(),
+                    serviceLevelObjective.getMeasurementSpecification().getMetricDescription())) {
                 final String measureMeasuringPoint = measurement.getMeasuringType().getMeasuringPoint()
                         .getStringRepresentation();
                 final String sloMeasuringPoint = serviceLevelObjective.getMeasurementSpecification().getMonitor()
@@ -171,14 +171,14 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
         throw new RuntimeException("Measurement for SLO \"" + serviceLevelObjective.getName() + "\" not found");
     }
 
-    private boolean containsMetric(MetricDescription metric, MetricDescription metricToCheckFor) {
+    private boolean containsMetric(final MetricDescription metric, final MetricDescription metricToCheckFor) {
         if (metric == metricToCheckFor || metric.getId().equals(metricToCheckFor.getId())) {
             return true;
         }
 
         if (metric instanceof MetricSetDescription) {
-            for (MetricDescription subMetric : ((MetricSetDescription) metric).getSubsumedMetrics()) {
-                if (containsMetric(subMetric, metricToCheckFor)) {
+            for (final MetricDescription subMetric : ((MetricSetDescription) metric).getSubsumedMetrics()) {
+                if (this.containsMetric(subMetric, metricToCheckFor)) {
                     return true;
                 }
             }
@@ -190,7 +190,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     /**
      * Returns an experiment group object from the given repository, based on the experiment group
      * purpose member variable.
-     * 
+     *
      * @param repository
      *            the repository containing the experiment group.
      * @param purpose
@@ -211,7 +211,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     /**
      * Returns the experiment setting from the given experiment group that is identified by the
      * unique experiment setting description string.
-     * 
+     *
      * @param experimentGroup
      *            the experiment group to be investigated.
      * @param experimentSettingDescription
@@ -226,8 +226,8 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             }
         }
 
-        throw new IllegalArgumentException("Could not find experiment setting for variation \""
-                + experimentSettingDescription + "\"");
+        throw new IllegalArgumentException(
+                "Could not find experiment setting for variation \"" + experimentSettingDescription + "\"");
     }
 
 }

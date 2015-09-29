@@ -16,7 +16,7 @@ import de.uka.ipd.sdq.simucomframework.SimuComConfig;
  * This class has to be implemented by all clients that wish to have additional measurements
  * recorded, i.e., by all classes that make use of the
  * {@code org.palladiosimulator.simulizar.interpreter.listener.probeframework} extension point.
- * 
+ *
  * @author Florian Rosenthal
  *
  */
@@ -26,11 +26,11 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
     /**
      * Injects the probe framework listener that is decorated by this class.
-     * 
+     *
      * @param probeFrameworkListener
      *            The {@link ProbeFrameworkListener} used during the current simulation run.
      */
-    public void setProbeFrameworkListener(ProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(final ProbeFrameworkListener probeFrameworkListener) {
         this.probeFrameworkListener = probeFrameworkListener;
     }
 
@@ -48,7 +48,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
     /**
      * Gets the current {@link ProbeFrameworkListener} instance.
-     * 
+     *
      * @return The current {@link ProbeFrameworkListener} that has been passed to this instance via
      *         {@link #setProbeFrameworkListener(ProbeFrameworkListener)}.
      */
@@ -59,19 +59,19 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     /**
      * Instantiates and initializes a {@link IRecorder} implementation based on the
      * {@link SimuComConfig} of the current SimuLizar run.
-     * 
+     *
      * @param recorderConfigMap
      *            A {@link Map} which contains the recorder configuration attributes.
      * @return An {@link IRecorder} initialized with the given configuration.
      * @see #createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(MetricDescription,
      *      MeasuringPoint)
      */
-    protected IRecorder initializeRecorder(Map<String, Object> recorderConfigMap) {
+    protected IRecorder initializeRecorder(final Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
 
-        SimuComConfig config = this.probeFrameworkListener.getSimuComModel().getConfiguration();
-        IRecorder recorder = RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config
-                .getRecorderName());
+        final SimuComConfig config = this.probeFrameworkListener.getSimuComModel().getConfiguration();
+        final IRecorder recorder = RecorderExtensionHelper
+                .instantiateRecorderImplementationForRecorder(config.getRecorderName());
         recorder.initialize(config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap));
 
         return recorder;
@@ -80,13 +80,13 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     /**
      * Registers the given recorder at the given measurement source, i.e., adds it to the list of
      * observers.
-     * 
+     *
      * @param measurementSource
      *            The {@link MeasurementSource} whose measurements shall be recorded.
      * @param recorder
      *            The {@link IRecorder} to record new measurements produced by the given source.
      */
-    protected void registerMeasurementsRecorder(MeasurementSource measurementSource, IRecorder recorder) {
+    protected void registerMeasurementsRecorder(final MeasurementSource measurementSource, final IRecorder recorder) {
         assert measurementSource != null && recorder != null;
         measurementSource.addObserver(recorder);
     }
@@ -96,7 +96,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      * {@link AbstractRecorderConfiguration#RECORDER_ACCEPTED_METRIC} attribute (key) set to the
      * given metric description and the {@link AbstractRecorderConfiguration#MEASURING_POINT}
      * attribute (key) set to the given measuring point.
-     * 
+     *
      * @param recorderAcceptedMetric
      *            The {@link MetricDescription} to be put in the map.
      * @param measuringPoint
@@ -105,11 +105,11 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      * @see #initializeRecorder(Map)
      */
     protected static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
-            MetricDescription recorderAcceptedMetric, MeasuringPoint measuringPoint) {
+            final MetricDescription recorderAcceptedMetric, final MeasuringPoint measuringPoint) {
         assert recorderAcceptedMetric != null;
         assert measuringPoint != null;
 
-        Map<String, Object> result = new HashMap<String, Object>();
+        final Map<String, Object> result = new HashMap<String, Object>();
         result.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC, recorderAcceptedMetric);
         result.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
         return result;

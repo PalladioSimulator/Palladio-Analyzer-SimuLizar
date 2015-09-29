@@ -15,20 +15,21 @@ import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
  * environment. Therefore, the probe has to implement the <code>IResourceEnvironmentListener</code>
  * interface and to register itself in the <code>registerListener</code> method to this resource
  * registry.
- * 
+ *
  * @author Sebastian Lehrig
  */
 public class TakeNumberOfResourceContainersTriggeredProbe extends BasicTriggeredProbe<Long, Dimensionless> {
 
     ResourceRegistry resourceRegistry;
 
-    public TakeNumberOfResourceContainersTriggeredProbe(ResourceRegistry resourceReg) {
+    public TakeNumberOfResourceContainersTriggeredProbe(final ResourceRegistry resourceReg) {
         super(MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS);
         this.resourceRegistry = resourceReg;
     }
 
     @Override
-    protected Measure<Long, Dimensionless> getBasicMeasure(RequestContext measurementContext) {
-        return Measure.valueOf(new Long(resourceRegistry.getSimulatedResourceContainers().size()), Dimensionless.UNIT);
+    protected Measure<Long, Dimensionless> getBasicMeasure(final RequestContext measurementContext) {
+        return Measure.valueOf(new Long(this.resourceRegistry.getSimulatedResourceContainers().size()),
+                Dimensionless.UNIT);
     }
 }

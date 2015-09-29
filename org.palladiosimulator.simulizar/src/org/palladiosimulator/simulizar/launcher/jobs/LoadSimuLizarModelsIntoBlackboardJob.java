@@ -12,10 +12,10 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * Composite Job for preparing Blackboard and loading PCM Models into it.
- * 
+ *
  * @author Joachim Meyer
  * @author Matthias Becker
- * 
+ *
  */
 public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
 
@@ -32,7 +32,7 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
      * @param config
      */
     public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
-            boolean loadExtensions) {
+            final boolean loadExtensions) {
         super(false);
 
         this.addJob(new PreparePCMBlackboardPartitionJob());
@@ -41,21 +41,21 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
         this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
         this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
         if (loadExtensions) {
-            addModelLoadExtensionJobs(configuration);
+            this.addModelLoadExtensionJobs(configuration);
         }
     }
 
-    private void addModelLoadExtensionJobs(SimuLizarWorkflowConfiguration configuration) {
-        Iterable<AbstractWorkflowExtensionJob<MDSDBlackboard>> loadJobs = ExtensionHelper.getExecutableExtensions(
+    private void addModelLoadExtensionJobs(final SimuLizarWorkflowConfiguration configuration) {
+        final Iterable<AbstractWorkflowExtensionJob<MDSDBlackboard>> loadJobs = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE);
 
-        for (AbstractWorkflowExtensionJob<MDSDBlackboard> loadJob : loadJobs) {
+        for (final AbstractWorkflowExtensionJob<MDSDBlackboard> loadJob : loadJobs) {
             // check if corresponding config builder is available
             // filter available extensions by name of job class
             // this can be improved
-            AbstractWorkflowExtensionConfigurationBuilder builder = ExtensionHelper.getExecutableExtension(
+            final AbstractWorkflowExtensionConfigurationBuilder builder = ExtensionHelper.getExecutableExtension(
                     SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
                     SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_CONFIG_BUILDER_ATTRIBUTE,
                     SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE, loadJob.getClass().getName());
