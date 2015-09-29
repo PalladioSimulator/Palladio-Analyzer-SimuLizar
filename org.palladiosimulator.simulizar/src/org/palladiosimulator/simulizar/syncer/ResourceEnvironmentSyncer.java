@@ -19,7 +19,6 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
@@ -379,25 +378,21 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * TODO review
      */
     private void initPeriodicCostCalculator(final ResourceContainerMeasuringPoint measuringPoint) {
-        final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
-        final SimuComModel model = this.runtimeModel.getModel();
-        final ProbeFrameworkContext ctx = model.getProbeFrameworkContext();
+        final SimuComModel simuComModel = this.runtimeModel.getModel();
 
+        // if Simulation Time is seconds 360=1hr,
         final PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
-                this.runtimeModel.getModel(), 0, 10, measuringPoint); // if
-        // Simulation Time is seconds 360=1hr,
-
+                this.runtimeModel.getModel(), 0, 10, measuringPoint);
         final ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
 
-        // EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
-        // new TakeNumberOfResourceContainersProbe(model.getResourceRegistry()),
-
-        probeList.add(new TakeCurrentSimulationTimeProbe(model.getSimulationControl()));
-        probeList.add(new TakeNumberOfResourceContainersTriggeredProbe(model.getResourceRegistry()));
+        final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
+        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
+        probeList.add(new TakeNumberOfResourceContainersTriggeredProbe(simuComModel.getResourceRegistry()));
 
         final Probe triggeredProbeList = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
                 containerCostProbe, probeList);
 
-        ctx.getCalculatorFactory().buildCostOverTimeCalculator(measuringPoint, triggeredProbeList);
+        simuComModel.getProbeFrameworkContext().getCalculatorFactory().buildCostOverTimeCalculator(measuringPoint,
+                triggeredProbeList);
     }
 }
