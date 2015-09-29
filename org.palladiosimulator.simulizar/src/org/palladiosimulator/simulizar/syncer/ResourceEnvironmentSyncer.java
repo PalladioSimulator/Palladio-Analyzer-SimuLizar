@@ -381,9 +381,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final SimuComModel simuComModel = this.runtimeModel.getModel();
 
         // if Simulation Time is seconds 360=1hr,
-        final PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
-                this.runtimeModel.getModel(), 0, 10, measuringPoint);
-        final ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
+        final ContainerCostProbe containerCostProbe = new ContainerCostProbe(
+                new PeriodicallyTriggeredContainerEntity(simuComModel, 0, 10, measuringPoint));
 
         final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
