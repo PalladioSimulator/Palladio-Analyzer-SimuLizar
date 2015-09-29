@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.simulationevents;
 import org.apache.log4j.Logger;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.commons.designpatterns.IAbstractObservable;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 
 /**
  * An entity that can trigger periodic events with an attached container.
@@ -17,14 +17,14 @@ public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredS
         implements IAbstractObservable<IAbstractPeriodicContainerListener> {
 
     private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
-    private final SimulatedResourceContainer container;
+    private final ResourceContainerMeasuringPoint measuringPoint;
 
     private final AbstractObservable<IAbstractPeriodicContainerListener> observableDelegate;
 
     public PeriodicallyTriggeredContainerEntity(final SimuComModel model, final double firstOccurrence,
-            final double delay, final SimulatedResourceContainer container) {
+            final double delay, final ResourceContainerMeasuringPoint measuringPoint) {
         super(model, firstOccurrence, delay);
-        this.container = container;
+        this.measuringPoint = measuringPoint;
         this.observableDelegate = new AbstractObservable<IAbstractPeriodicContainerListener>() {
         };
     }
@@ -34,13 +34,13 @@ public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredS
         if (LOGGER.isInfoEnabled()) {
             final StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("Periodic trigger for container ");
-            stringBuilder.append(this.container.getResourceContainerID());
+            stringBuilder.append(this.measuringPoint.getStringRepresentation());
             stringBuilder.append(" occured at time ");
             stringBuilder.append(this.getModel().getSimulationControl().getCurrentSimulationTime());
             LOGGER.info(stringBuilder.toString());
         }
 
-        this.observableDelegate.getEventDispatcher().triggerPeriodicUpdate(this, this.container);
+        this.observableDelegate.getEventDispatcher().triggerPeriodicUpdate(this.measuringPoint);
     }
 
     @Override

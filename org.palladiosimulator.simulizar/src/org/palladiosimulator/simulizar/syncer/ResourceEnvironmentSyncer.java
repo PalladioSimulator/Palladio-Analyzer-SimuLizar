@@ -7,7 +7,6 @@ import java.util.Objects;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -19,6 +18,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
@@ -247,8 +247,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
                 processingResource, new String[] {}, resourceContainer.getId(), schedulingStrategy);
 
-        this.attachMonitors(processingResource, resourceContainer, simulatedResourceContainer, schedulingStrategy,
-                scheduledResource);
+        this.attachMonitors(processingResource, resourceContainer, schedulingStrategy, scheduledResource);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: " + this.getActiveResourceTypeID(processingResource)
@@ -308,8 +307,9 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * events that require monitor attachment [Lehrig]
      */
     private void attachMonitors(final ProcessingResourceSpecification processingResource,
-            final ResourceContainer resourceContainer, final SimulatedResourceContainer simulatedResourceContainer,
-            final String schedulingStrategy, final ScheduledResource scheduledResource) {
+            final ResourceContainer resourceContainer, final String schedulingStrategy,
+            final ScheduledResource scheduledResource) {
+        // Processing Resource monitors
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
                 .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
             final String metricID = measurementSpecification.getMetricDescription().getId();
@@ -354,9 +354,17 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                     CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
                             measuringPoint);
                 }
-            } else if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                this.initPeriodicCostCalculator(simulatedResourceContainer,
-                        measurementSpecification.getMonitor().getMeasuringPoint());
+            }
+        }
+
+        // Resource Container monitors
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, resourceContainer)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
+
+            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+                this.initPeriodicCostCalculator(
+                        (ResourceContainerMeasuringPoint) measurementSpecification.getMonitor().getMeasuringPoint());
             }
         }
     }
@@ -370,19 +378,14 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     /**
      * TODO review
      */
-    private void initPeriodicCostCalculator(final SimulatedResourceContainer simulatedContainer,
-            final MeasuringPoint measuringPoint) {
+    private void initPeriodicCostCalculator(final ResourceContainerMeasuringPoint measuringPoint) {
         final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
         final SimuComModel model = this.runtimeModel.getModel();
         final ProbeFrameworkContext ctx = model.getProbeFrameworkContext();
 
         final PeriodicallyTriggeredContainerEntity periodicContainerTrigger = new PeriodicallyTriggeredContainerEntity(
-                this.runtimeModel.getModel(), 0, 10, simulatedContainer); // if
-        // Simulation
-        // Time
-        // is
-        // seconds
-        // 360=1hr,
+                this.runtimeModel.getModel(), 0, 10, measuringPoint); // if
+        // Simulation Time is seconds 360=1hr,
 
         final ContainerCostProbe containerCostProbe = new ContainerCostProbe(periodicContainerTrigger);
 

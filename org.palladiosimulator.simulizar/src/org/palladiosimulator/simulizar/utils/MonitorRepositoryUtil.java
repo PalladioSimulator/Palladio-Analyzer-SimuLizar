@@ -29,6 +29,7 @@ import org.palladiosimulator.pcmmeasuringpoint.AssemblyOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.EntryLevelSystemCallMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.ResourceEnvironmentMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SubSystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
@@ -275,6 +276,11 @@ public final class MonitorRepositoryUtil {
             }
 
             @Override
+            public Boolean caseResourceContainerMeasuringPoint(final ResourceContainerMeasuringPoint mp) {
+                return this.checkResourceContainerMeasuringPoint(element, mp);
+            }
+
+            @Override
             public Boolean caseExternalCallActionMeasuringPoint(final ExternalCallActionMeasuringPoint mp) {
                 return this.checkExternCallActionMeasuringpoint(element, mp);
             }
@@ -386,6 +392,22 @@ public final class MonitorRepositoryUtil {
                     }
                 }.doSwitch(element);
             };
+
+            private Boolean checkResourceContainerMeasuringPoint(final EObject element,
+                    final ResourceContainerMeasuringPoint mp) {
+                return new ResourceenvironmentSwitch<Boolean>() {
+
+                    @Override
+                    public Boolean caseResourceContainer(final ResourceContainer resourceContainer) {
+                        return resourceContainer.getId().equals(mp.getResourceContainer().getId());
+                    };
+
+                    @Override
+                    public Boolean defaultCase(final EObject object) {
+                        return false;
+                    }
+                }.doSwitch(element);
+            }
 
             private Boolean checkExternCallActionMeasuringpoint(final EObject element,
                     final ExternalCallActionMeasuringPoint mp) {
