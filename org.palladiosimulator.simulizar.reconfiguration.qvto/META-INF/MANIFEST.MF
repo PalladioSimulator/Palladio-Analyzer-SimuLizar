@@ -14,7 +14,9 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.workflow.mdsd,
  org.scaledl.usageevolution,
  org.palladiosimulator.commons;bundle-version="1.0.0",
- de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0"
+ de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
+ org.apache.commons.collections15
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,
+ org.palladiosimulator.simulizar.reconfiguration.qvto.util
