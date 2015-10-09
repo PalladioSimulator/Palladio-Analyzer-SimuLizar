@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
@@ -42,55 +43,81 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class QVToReconfigurationTest {
 
-    private final String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.repository";
-    private final String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment";
-    private final String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.system";
-    private final String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.allocation";
-    private final String PMS_MODEL_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.pms";
-    private final String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addClonedServer";
-    private final String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addNewServer";
-    private final String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
-    private final String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/scaleUp";
-    private final String PMS_CONFIGURATION_KEY = "pmsFile";
-    private final String RECONFIGURATION_RULES_CONFIGURATION_KEY = "reconfigurationRulesFolder";
-    private final String ALLOCATION_FILE_CONFIGURATION_KEY = "allocationFile";
-    private final String REPOSITORY_EXTENSION = "repository";
-    private final String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
-    private final String SYSTEM_EXTENSION = "system";
-    private final String ALLOCATION_EXTENSION = "allocation";
-    private final String BRANCH_2_ENTITY_NAME = "branch2";
-    private final double BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING = 0.1;
-    private final double BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING = 0.0;
-    private final double MEASUREMENT_BELOW_THRESHOLD = 1.0;
-    private final double MEASUREMENT_OVER_THRESHOLD = 5.0;
-    private final String SERVER_RESOURCE_CONTAINER_NAME = "server";
-    private final double SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING = 1100.0;
-    private final double SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING = 1000.0;
-    private final int EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING = 1;
-    private final int EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING = 2;
+    private final static String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.repository";
+    private final static String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment";
+    private final static String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.system";
+    private final static String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.allocation";
+    private final static String PMS_MODEL_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.pms";
+    private final static String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addClonedServer";
+    private final static String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addNewServer";
+    private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
+    private final static String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/scaleUp";
+    private final static String ALLOCATION_FILE_CONFIGURATION_KEY = "allocationFile";
+    private final static String REPOSITORY_EXTENSION = "repository";
+    private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
+    private final static String SYSTEM_EXTENSION = "system";
+    private final static String ALLOCATION_EXTENSION = "allocation";
+    private final static String BRANCH_2_ENTITY_NAME = "branch2";
+    private final static double BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING = 0.1;
+    private final static double BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING = 0.0;
+    private final static double MEASUREMENT_BELOW_THRESHOLD = 1.0;
+    private final static double MEASUREMENT_OVER_THRESHOLD = 5.0;
+    private final static String SERVER_RESOURCE_CONTAINER_NAME = "server";
+    private final static double SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING = 1100.0;
+    private final static double SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING = 1000.0;
+    private final static int EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING = 1;
+    private final static int EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING = 2;
+
+    private static URI systemURI;
+    private static URI resourceEnvironmentURI;
+    private static URI repositoryURI;
+    private static URI allocationURI;
+    private static URI pmsURI;
+
+    @BeforeClass
+    public static void setUpBeforeClass() {
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
+                new RepositoryResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
+                new ResourceenvironmentResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
+                new SystemResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
+                new AllocationResourceFactoryImpl());
+
+        repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
+        repositoryURI = CommonPlugin.resolve(repositoryURI);
+        resourceEnvironmentURI = URI.createPlatformPluginURI(RESOURCE_ENVIRONMENT_PATH, true);
+        resourceEnvironmentURI = CommonPlugin.resolve(resourceEnvironmentURI);
+        systemURI = URI.createPlatformPluginURI(SYSTEM_PATH, true);
+        systemURI = CommonPlugin.resolve(systemURI);
+        allocationURI = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
+        allocationURI = CommonPlugin.resolve(allocationURI);
+        pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
+        pmsURI = CommonPlugin.resolve(pmsURI);
+
+    }
 
     @Test
     public void test() {
-        // Deactivating test, because it kills Jenkins
         reconfigurationTests();
     }
 
-    @SuppressWarnings("unused")
     private void reconfigurationTests() {
         assertEquals("The branch probability was not changed as expected!", BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING,
                 outsource(MEASUREMENT_OVER_THRESHOLD), 0.0);
         assertEquals("The branch probability has not remained as it was expected!",
                 BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING, outsource(MEASUREMENT_BELOW_THRESHOLD), 0.0);
 
-        assertEquals("Processing resources have not scaled as expected!",
-                SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING, scaleUp(MEASUREMENT_OVER_THRESHOLD), 0.0);
+        assertEquals("Processing resources have not scaled as expected!", SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING,
+                scaleUp(MEASUREMENT_OVER_THRESHOLD), 0.0);
         assertEquals("Processing resources have not remained as it was expected!",
                 SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING, scaleUp(MEASUREMENT_BELOW_THRESHOLD), 0.0);
 
@@ -123,14 +150,14 @@ public class QVToReconfigurationTest {
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfServer1Client++;
                 }
 
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server2")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfServer2Client++;
                 }
             }
@@ -156,7 +183,7 @@ public class QVToReconfigurationTest {
                 if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
                         .equals("server1")
                         && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("client")) {
+                                .equals("client")) {
                     numOfIServerProviders++;
                 }
             }
@@ -220,7 +247,8 @@ public class QVToReconfigurationTest {
              */
             if (root instanceof AllocationContext) {
                 final AllocationContext serverAllocationContext = (AllocationContext) root;
-                final AssemblyContext serverAssemblyContext = serverAllocationContext.getAssemblyContext_AllocationContext();
+                final AssemblyContext serverAssemblyContext = serverAllocationContext
+                        .getAssemblyContext_AllocationContext();
                 /*
                  * The server that contains our SEFF is of type BasicComponent.
                  */
@@ -286,36 +314,37 @@ public class QVToReconfigurationTest {
         measurementSpecification.setStatisticalCharacterization(StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
         measurementSpecification.setTemporalRestriction(null);
 
-        final RuntimeMeasurement measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
-        measurement.setId("");
-        measurement.setMeasuringValue(m);
-        measurement.setMeasurementSpecification(measurementSpecification);
+        final RuntimeMeasurement responeTimeRuntimeMeasuremnt = RuntimeMeasurementFactory.eINSTANCE
+                .createRuntimeMeasurement();
+        responeTimeRuntimeMeasuremnt.setId("");
+        responeTimeRuntimeMeasuremnt.setMeasuringValue(m);
+        responeTimeRuntimeMeasuremnt.setMeasurementSpecification(measurementSpecification);
 
-        final Resource.Factory repositoryFactory = new RepositoryResourceFactoryImpl();
-        final Resource.Factory resourceEnvironmentFactory = new ResourceenvironmentResourceFactoryImpl();
-        final Resource.Factory systemFactory = new SystemResourceFactoryImpl();
-        final Resource.Factory allocationFactory = new AllocationResourceFactoryImpl();
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION, repositoryFactory);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-                resourceEnvironmentFactory);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION, systemFactory);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION, allocationFactory);
+        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
+        // new RepositoryResourceFactoryImpl());
+        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
+        // new ResourceenvironmentResourceFactoryImpl());
+        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
+        // new SystemResourceFactoryImpl());
+        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
+        // new AllocationResourceFactoryImpl());
 
         /*
          * Get the URIs of the files needed to create the model
          */
-        URI repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
-        repositoryURI = CommonPlugin.resolve(repositoryURI);
-        URI resourceEnvironmentURI = URI.createPlatformPluginURI(RESOURCE_ENVIRONMENT_PATH, true);
-        resourceEnvironmentURI = CommonPlugin.resolve(resourceEnvironmentURI);
-        URI systemURI = URI.createPlatformPluginURI(SYSTEM_PATH, true);
-        systemURI = CommonPlugin.resolve(systemURI);
-        URI allocationURI = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
-        allocationURI = CommonPlugin.resolve(allocationURI);
-        URI pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
-        pmsURI = CommonPlugin.resolve(pmsURI);
+        // URI repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
+        // repositoryURI = CommonPlugin.resolve(repositoryURI);
+        // URI resourceEnvironmentURI = URI.createPlatformPluginURI(RESOURCE_ENVIRONMENT_PATH,
+        // true);
+        // resourceEnvironmentURI = CommonPlugin.resolve(resourceEnvironmentURI);
+        // URI systemURI = URI.createPlatformPluginURI(SYSTEM_PATH, true);
+        // systemURI = CommonPlugin.resolve(systemURI);
+        // URI allocationURI = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
+        // allocationURI = CommonPlugin.resolve(allocationURI);
+        // URI pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
+        // pmsURI = CommonPlugin.resolve(pmsURI);
         URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
-        //reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
+        // reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
 
         /*
          * Read in the PCM model.
@@ -342,23 +371,25 @@ public class QVToReconfigurationTest {
         final MDSDBlackboard blackboard = new MDSDBlackboard();
         blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
         final IModelAccess modelAccess = new ModelAccess(blackboard);
-        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(measurement);
+        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(responeTimeRuntimeMeasuremnt);
 
         /*
-         * Create the configuration for the QVTo executor.
+         * Create the configuration for the QVTo reconfigurator.
          */
-        final Map<String, Object> configuration = new HashMap<String, Object>();
-        configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY, Paths.get(allocationURI.path()).toAbsolutePath()
-                .toString());
-        configuration.put(PMS_CONFIGURATION_KEY, Paths.get(pmsURI.path()).toAbsolutePath().toString());
-        configuration.put(RECONFIGURATION_RULES_CONFIGURATION_KEY, reconfRulesURI);
+        Map<String, Object> configuration = new HashMap<String, Object>();
+        configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY,
+                Paths.get(allocationURI.path()).toAbsolutePath().toString());
 
-        final SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
-        swfc.setMonitorRepositoryFile(configuration.get(PMS_CONFIGURATION_KEY).toString());
-        swfc.setReconfigurationRulesFolder(configuration.get(RECONFIGURATION_RULES_CONFIGURATION_KEY).toString());
-        final QVTOExecutor qvtoExecutor = new QVTOExecutor(modelAccess, swfc);
-        qvtoExecutor.executeRules(monitoredElement);
+        SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
+        swfc.setMonitorRepositoryFile(Paths.get(pmsURI.path()).toAbsolutePath().toString());
+        swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
+
+        QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess, swfc);
+        reconfigurator.setConfiguration(swfc);
+        reconfigurator.setModelAccess(modelAccess);
+        boolean checkedAndExceuted = reconfigurator.checkAndExecute(monitoredElement);
+        assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
+
         return pcmResourceSet;
     }
-
 }
