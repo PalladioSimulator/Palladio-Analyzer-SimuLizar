@@ -26,7 +26,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.slidingwindow,
  de.uka.ipd.sdq.workflow.mdsd,
  de.uka.ipd.sdq.workflow,
- org.palladiosimulator.simulizar.ui
+ org.palladiosimulator.simulizar.ui,
+ org.palladiosimulator.analyzer.workflow
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: palladiosimulator.org
