@@ -26,7 +26,7 @@
         <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
         <resourceContainer href="iaas.resourceenvironment#_3uVlIAEpEeS7FKokKTKFow"/>
       </nestedPowerConsumingEntities>
-      <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+      <distributionPowerAssemblyContext href="iaas.binding#_tuLC0Wd_EeWupMclJvipOQ"/>
     </nestedPowerConsumingEntities>
     <nestedPowerConsumingEntities xsi:type="de.fzi.power:MountedPowerDistributionUnit" id="_fZKZMZgHEeS8naF2VwaQgQ" name="loadBalancerPdu" suppliablePeakPower="1,500 W">
       <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_j0SgspgHEeS8naF2VwaQgQ" name="powerConsumingCpuLoadBalancer">
