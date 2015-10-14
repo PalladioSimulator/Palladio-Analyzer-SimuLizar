@@ -5,6 +5,7 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
+import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
@@ -42,7 +43,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel>implements IMode
                 this.syncOpenWorkload(notification);
             } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
                     && ParameterPackage.eINSTANCE.getVariableCharacterisation()
-                            .isInstance(notification.getNotifier())) {
+                            .isInstance(((EObject) notification.getNotifier()).eContainer())) {
                 /*
                  * Nothing needs to happen in this case as the new variable char. is used for the
                  * next user
