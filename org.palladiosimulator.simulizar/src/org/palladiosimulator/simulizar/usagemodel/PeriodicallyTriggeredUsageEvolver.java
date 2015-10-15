@@ -175,9 +175,9 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
                 final String newRateStr = Double.toString(newRate);
                 if (newRateStr.equals(openwl.getSpecification())) {
-                    LOGGER.info("Inter arrival time is still: " + newRateStr);
+                    LOGGER.debug("Inter arrival time is still: " + newRateStr);
                 } else {
-                    LOGGER.info(
+                    LOGGER.debug(
                             "Changing inter arrival time from: " + openwl.getSpecification() + " to :" + newRateStr);
                     openwl.setSpecification(newRateStr);
                 }
@@ -185,9 +185,9 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
                 final int newRateInt = (int) Math.round(newRate);
                 final int oldRate = ((ClosedWorkload) wl).getPopulation();
                 if (newRateInt == oldRate) {
-                    LOGGER.info("Closed workload population is still: " + newRateInt);
+                    LOGGER.debug("Closed workload population is still: " + newRateInt);
                 } else {
-                    LOGGER.info("Changing closed workload population from: " + oldRate + " to " + newRateInt);
+                    LOGGER.debug("Changing closed workload population from: " + oldRate + " to " + newRateInt);
                     ((ClosedWorkload) wl).setPopulation(newRateInt);
                 }
             }
@@ -220,7 +220,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         final long newRate = Math.round(this.getNewRate(evaluator));
         final String newRateStr = Long.toString(newRate);
 
-        LOGGER.info("Changing work from " + workParameter.getSpecification_VariableCharacterisation().getSpecification()
+        LOGGER.debug("Changing work from " + workParameter.getSpecification_VariableCharacterisation().getSpecification()
                 + " to " + newRateStr);
 
         workParameter.getSpecification_VariableCharacterisation().setSpecification(newRateStr);
