@@ -65,6 +65,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     // will be initialized lazily, once the first reconfiguration is to be executed
     private ReconfigurationProcess reconfigurationProcess;
 
+    private double thislastReconfigurationTime = 0;
+
     /**
      * Constructor.
      *
@@ -117,12 +119,13 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         // more fine-granular
         // level (one thread per executor).
         if (this.isNotificationNewMeasurement(monitoredElement)
-                && this.model.getSimulationControl().getCurrentSimulationTime() > 0
+                && this.model.getSimulationControl().getCurrentSimulationTime() > thislastReconfigurationTime
                 && (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
             if (this.reconfigurationProcess == null) {
                 this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfigurators, this);
             }
             this.reconfigurationProcess.executeReconfigurations(this.runtimeMeasurementModel);
+            thislastReconfigurationTime = this.model.getSimulationControl().getCurrentSimulationTime();
         }
     }
 
