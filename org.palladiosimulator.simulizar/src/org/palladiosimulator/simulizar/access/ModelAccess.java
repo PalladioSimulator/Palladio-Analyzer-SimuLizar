@@ -6,14 +6,36 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.EcorePackage;
+import org.eclipse.emf.ecore.impl.EAttributeImpl;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
+import org.palladiosimulator.edp2.models.Repository.RepositoryPackage;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.pcm.PcmPackage;
+import org.palladiosimulator.pcm.allocation.AllocationPackage;
+import org.palladiosimulator.pcm.core.CorePackage;
+import org.palladiosimulator.pcm.core.composition.CompositionPackage;
+import org.palladiosimulator.pcm.core.entity.EntityPackage;
+import org.palladiosimulator.pcm.parameter.ParameterPackage;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
+import org.palladiosimulator.pcm.resourcetype.ResourceType;
+import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
+import org.palladiosimulator.pcm.seff.SeffPackage;
+import org.palladiosimulator.pcm.seff.seff_performance.SeffPerformanceFactory;
+import org.palladiosimulator.pcm.seff.seff_performance.SeffPerformancePackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
@@ -21,6 +43,7 @@ import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
+import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 
@@ -39,7 +62,10 @@ public class ModelAccess implements IModelAccess {
     private final MDSDBlackboard blackboard;
     private boolean isObservingPcmChanges = false;
     private PCMResourceSetPartition currentPCMCopy;
+    private boolean modelsDirty = false;
 
+
+    
     /**
      * A log listener which logs all changes in the global PCM model.
      */
@@ -48,14 +74,30 @@ public class ModelAccess implements IModelAccess {
         @Override
         public void notifyChanged(final Notification notification) {
             super.notifyChanged(notification);
-            if (notification.getEventType() != Notification.REMOVING_ADAPTER) {
+            // The models should not be marked as a new local copy if only individual values, and
+            // not references (i.e. wiring) has changed.
+            if (isPCMModel(notification.getFeature())
+                    && notification.getEventType() != Notification.REMOVING_ADAPTER) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug("Detected change in global PCM model. Changed object: " + notification.getNotifier());
-                    LOGGER.debug("Take a new copy of the global PCM for new simulation threads");
                     LOGGER.debug(notification.toString());
                 }
-                ModelAccess.this.currentPCMCopy = ModelAccess.this.copyPCMPartition();
+                ModelAccess.this.modelsDirty = true;
             }
+        }
+
+        private boolean isPCMModel(Object feature) {
+            if(EcorePackage.eINSTANCE.getEObject().isInstance(feature)
+                    && EcorePackage.eINSTANCE.getEStructuralFeature().isInstance(feature)){
+                EStructuralFeature eStructFeature = (EStructuralFeature) feature;
+                EClass containingClass = eStructFeature.getEContainingClass();
+                EObject rootContainer = EcoreUtil.getRootContainer(containingClass);
+                
+                if(PcmPackage.eINSTANCE == rootContainer || StoexPackage.eINSTANCE == rootContainer) {
+                    return true;
+                }
+            }
+            return false;
         }
 
     };
@@ -78,6 +120,8 @@ public class ModelAccess implements IModelAccess {
         this.blackboard = copy.blackboard;
         this.runtimeMeasurementModel = copy.runtimeMeasurementModel;
         this.pcmPartition = copy.pcmPartition;
+        // make sure that model is consistent before creating copy.
+        copy.checkAndHandleDeferredChanges();
         this.currentPCMCopy = copy.currentPCMCopy;
     }
 
@@ -88,7 +132,15 @@ public class ModelAccess implements IModelAccess {
 
     @Override
     public PCMResourceSetPartition getLocalPCMModel() {
+        checkAndHandleDeferredChanges();
         return this.currentPCMCopy;
+    }
+
+    private void checkAndHandleDeferredChanges() {
+        if (this.modelsDirty) {
+            ModelAccess.this.currentPCMCopy = ModelAccess.this.copyPCMPartition();
+            modelsDirty = false;
+        }
     }
 
     /**
@@ -126,6 +178,7 @@ public class ModelAccess implements IModelAccess {
      * @return a copy of the global PCM modelling partition
      */
     private PCMResourceSetPartition copyPCMPartition() {
+        LOGGER.debug("Take a new copy of the global PCM for new simulation threads");
         final PCMResourceSetPartition newPartition = new PCMResourceSetPartition();
         final List<EObject> modelCopy = EMFCopyHelper.deepCopyToEObjectList(this.pcmPartition.getResourceSet());
         for (int i = 0; i < modelCopy.size(); i++) {

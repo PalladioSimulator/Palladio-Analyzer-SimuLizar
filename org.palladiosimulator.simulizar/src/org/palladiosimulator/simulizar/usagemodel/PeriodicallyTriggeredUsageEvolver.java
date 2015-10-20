@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
@@ -33,6 +35,10 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     protected final String evolvedScenarioId;
     protected final double deltaTime;
 
+    private Map<Usage, ModelEvaluator> cachedLoadEvaluators = new HashMap<Usage, ModelEvaluator>();
+
+    private Map<Usage, Map<VariableCharacterisation, ModelEvaluator>> cachedWorkEvaluators = new HashMap<Usage, Map<VariableCharacterisation, ModelEvaluator>>();
+
     /**
      * Constructs the looping usage evolver.
      *
@@ -60,11 +66,15 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      */
     protected ModelEvaluator getLoadEvaluator() {
         final Usage usage = this.getCorrespondingUsage();
-        final Sequence loadEvolutionSequence = usage.getLoadEvolution();
-        if (loadEvolutionSequence != null) {
-            return new ModelEvaluator(loadEvolutionSequence);
+        ModelEvaluator evaluator = this.cachedLoadEvaluators.get(usage);
+        if(evaluator == null) {
+            final Sequence loadEvolutionSequence = usage.getLoadEvolution();
+            if (loadEvolutionSequence != null) {
+                evaluator = new ModelEvaluator(loadEvolutionSequence);
+                this.cachedLoadEvaluators.put(usage, evaluator);
+            }
         }
-        return null;
+        return evaluator;
     }
 
     /**
@@ -94,25 +104,30 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
         // Build the hashmap from work parameters of the first usage in the usage evolution
         // and to their corresponding model evaluators
-        final Map<VariableCharacterisation, ModelEvaluator> workEvaluators = new HashMap<VariableCharacterisation, ModelEvaluator>();
         final Usage usage = this.getCorrespondingUsage();
-        if (usage != null) {
-            for (final WorkParameterEvolution workParam : usage.getWorkEvolutions()) {
-                final VariableCharacterisation varChar = workParam.getVariableCharacterisation();
-                final Sequence paramSequence = workParam.getEvolution();
-                if (varChar == null) {
-                    LOGGER.error("Skipping evolution of unspecified work parameter");
-                    continue;
-                }
-                if (paramSequence == null) {
-                    LOGGER.error("Skipping unspecified evolution for work parameter " + varChar);
-                    continue;
-                }
+        Map<VariableCharacterisation, ModelEvaluator> workEvaluators = this.cachedWorkEvaluators.get(usage);
+        if(workEvaluators == null) {
+            if (usage != null && usage.getWorkEvolutions() != null && usage.getWorkEvolutions().size() > 0) {
+                workEvaluators = new HashMap<VariableCharacterisation, ModelEvaluator>();
+                for (final WorkParameterEvolution workParam : usage.getWorkEvolutions()) {
+                    final VariableCharacterisation varChar = workParam.getVariableCharacterisation();
+                    final Sequence paramSequence = workParam.getEvolution();
+                    if (varChar == null) {
+                        LOGGER.error("Skipping evolution of unspecified work parameter");
+                        continue;
+                    }
+                    if (paramSequence == null) {
+                        LOGGER.error("Skipping unspecified evolution for work parameter " + varChar);
+                        continue;
+                    }
 
-                // Add parameter and model evaluator for the work parameter
-                workEvaluators.put(varChar, new ModelEvaluator(paramSequence));
+                    // Add parameter and model evaluator for the work parameter
+                    workEvaluators.put(varChar, new ModelEvaluator(paramSequence));
+                }
+                this.cachedWorkEvaluators.put(usage, workEvaluators);
             }
         }
+
         return workEvaluators;
     }
 
@@ -128,8 +143,14 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         // Then, iterate through work parameters to evolve
         final Map<VariableCharacterisation, ModelEvaluator> workEvaluators = this.getWorkEvaluators();
         for (final VariableCharacterisation workParam : workEvaluators.keySet()) {
-            this.evolveWork(workParam, workEvaluators.get(workParam));
+            final VariableCharacterisation globalWorkParam = getGlobalWorkParameter(workParam);
+            this.evolveWork(globalWorkParam, workEvaluators.get(workParam));
         }
+    }
+
+    private VariableCharacterisation getGlobalWorkParameter(final VariableCharacterisation workParam) {
+        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getModelAccess().getGlobalPCMModel().getResourceSet().getEObject(EcoreUtil.getURI(workParam), false);
+        return globalWorkParam;
     }
 
     /**
@@ -175,9 +196,9 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
                 final String newRateStr = Double.toString(newRate);
                 if (newRateStr.equals(openwl.getSpecification())) {
-                    LOGGER.debug("Inter arrival time is still: " + newRateStr);
+                    LOGGER.info("Inter arrival time is still: " + newRateStr);
                 } else {
-                    LOGGER.debug(
+                    LOGGER.info(
                             "Changing inter arrival time from: " + openwl.getSpecification() + " to :" + newRateStr);
                     openwl.setSpecification(newRateStr);
                 }
@@ -185,9 +206,9 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
                 final int newRateInt = (int) Math.round(newRate);
                 final int oldRate = ((ClosedWorkload) wl).getPopulation();
                 if (newRateInt == oldRate) {
-                    LOGGER.debug("Closed workload population is still: " + newRateInt);
+                    LOGGER.info("Closed workload population is still: " + newRateInt);
                 } else {
-                    LOGGER.debug("Changing closed workload population from: " + oldRate + " to " + newRateInt);
+                    LOGGER.info("Changing closed workload population from: " + oldRate + " to " + newRateInt);
                     ((ClosedWorkload) wl).setPopulation(newRateInt);
                 }
             }
@@ -220,7 +241,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         final long newRate = Math.round(this.getNewRate(evaluator));
         final String newRateStr = Long.toString(newRate);
 
-        LOGGER.debug("Changing work from " + workParameter.getSpecification_VariableCharacterisation().getSpecification()
+        LOGGER.info("Changing work from " + workParameter.getSpecification_VariableCharacterisation().getSpecification()
                 + " to " + newRateStr);
 
         workParameter.getSpecification_VariableCharacterisation().setSpecification(newRateStr);

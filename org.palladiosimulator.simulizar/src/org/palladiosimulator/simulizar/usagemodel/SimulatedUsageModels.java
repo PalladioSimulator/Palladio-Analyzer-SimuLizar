@@ -116,8 +116,13 @@ public class SimulatedUsageModels {
                 final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
                         SimulatedUsageModels.this.rootContext, thread);
                 final UsageModel usageModel = newContext.getModelAccess().getLocalPCMModel().getUsageModel();
-                final UsageScenario myUsageScenarioCopy = (UsageScenario) usageModel.eResource()
-                        .getEObject(scenario.getId());
+                UsageScenario myUsageScenarioCopy = null;
+                for(UsageScenario curScenario : usageModel.getUsageScenario_UsageModel()) {
+                    if(curScenario.getId().equals(scenario.getId())) {
+                        myUsageScenarioCopy = curScenario;
+                        break;
+                    }
+                }
                 new UsageScenarioSwitch<Object>(newContext).doSwitch(myUsageScenarioCopy);
             }
         };
