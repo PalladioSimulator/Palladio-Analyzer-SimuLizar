@@ -3,40 +3,17 @@ package org.palladiosimulator.simulizar.usagemodel;
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.scaledl.usageevolution.Usage;
-import org.scaledl.usageevolution.UsageEvolution;
-
-import tools.descartes.dlim.Sequence;
 
 public class UsageEvolver {
-
-    private final SimuLizarRuntimeState runtimeState;
-    private final Sequence loadEvolutionSequence;
+	/** Logger of this class. */
     private static final Logger LOGGER = Logger.getLogger(UsageEvolver.class);
+
+    /** Runtime state of the simulation. Required to start evolution(s). */
+	private final SimuLizarRuntimeState runtimeState;
 
     public UsageEvolver(final SimuLizarRuntimeState runtimeState) {
         super();
         this.runtimeState = runtimeState;
-        final UsageEvolution usageEvolution = runtimeState.getModelAccess().getUsageEvolutionModel();
-
-        // If a usage evolution model is specified, initialize the usage and loadEvaluator for later
-        // use
-        if (usageEvolution != null) {
-            LOGGER.info("Usages: " + usageEvolution.getUsages().size());
-            final Usage usage = usageEvolution.getUsages().get(0);
-            if (usage != null) {
-                this.loadEvolutionSequence = usage.getLoadEvolution();
-                if (this.loadEvolutionSequence != null) {
-                    LOGGER.info("LIMBO duration: " + this.loadEvolutionSequence.getFinalDuration());
-                }
-            } else {
-                this.loadEvolutionSequence = null;
-            }
-
-        } else {
-            this.loadEvolutionSequence = null;
-        }
-
-        LOGGER.info("SimuTime: " + runtimeState.getModel().getConfiguration().getSimuTime());
     }
 
     public void start() {
