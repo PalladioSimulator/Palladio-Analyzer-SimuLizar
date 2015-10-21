@@ -91,11 +91,11 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
     }
 
     private void createInputSectionsForExtensions() {
-        Iterable<AbstractExtensionFileInputConfigurationBuilder> extensions = ExtensionHelper.getExecutableExtensions(
-                EXTENSION_POINT_ID, EXTENSION_POINT_ATTRIBUTE);
+        Iterable<AbstractExtensionFileInputConfigurationBuilder> extensions = ExtensionHelper
+                .getExecutableExtensions(EXTENSION_POINT_ID, EXTENSION_POINT_ATTRIBUTE);
         for (AbstractExtensionFileInputConfigurationBuilder extension : extensions) {
             ExtensionFileInputConfiguration config = extension.buildConfiguration();
-            Text inputText = new Text(container, SWT.SINGLE | SWT.BORDER);
+            Text inputText = new Text(this.container, SWT.SINGLE | SWT.BORDER);
             this.extensionFileFolderInputTexts.put(config, inputText);
             String groupLabel = config.getPropertyByKey(DefaultPropertyKeys.GROUP_LABEL_KEY, String.class);
             String dialogTitle = config.getPropertyByKey(DefaultPropertyKeys.DIALOG_TITLE_KEY, String.class);
@@ -105,10 +105,10 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
             if (inputType == ExtensionInputType.FILE) {
                 String[] fileExtensionRestrictions = config.getPropertyByKey(DefaultPropertyKeys.FILE_RESTRICTIONS_KEY,
                         DefaultPropertyKeys.EXPECTED_FILE_RESTRICTIONS_DATA_TYPE);
-                TabHelper.createFileInputSection(container, modifyListener, groupLabel, fileExtensionRestrictions,
-                        inputText, dialogTitle, getShell(), defaultUri);
+                TabHelper.createFileInputSection(this.container, this.modifyListener, groupLabel,
+                        fileExtensionRestrictions, inputText, dialogTitle, getShell(), defaultUri);
             } else {
-                TabHelper.createFolderInputSection(container, modifyListener, groupLabel, monitorRepositoryFile,
+                TabHelper.createFolderInputSection(this.container, this.modifyListener, groupLabel, inputText,
                         dialogTitle, getShell(), defaultUri);
             }
 
