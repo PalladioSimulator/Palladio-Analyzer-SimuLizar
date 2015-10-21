@@ -100,7 +100,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
         // this also requires that the reconfiguration process process be
         // terminated
-        this.reconfigurationProcess.requestTermination();
+        if (this.reconfigurationProcess != null) {
+            this.reconfigurationProcess.requestTermination();
+
+        }
     }
 
     /**
