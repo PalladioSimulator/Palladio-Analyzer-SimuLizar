@@ -33,4 +33,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: palladiosimulator.org
 Export-Package: org.palladiosimulator.simulizar.power,
  org.palladiosimulator.simulizar.power.jobs,
- org.palladiosimulator.simulizar.power.runconfig
+ org.palladiosimulator.simulizar.power.runconfig,
+ org.palladiosimulator.simulizar.power.ui.configuration
