@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,9 +35,9 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     protected final String evolvedScenarioId;
     protected final double deltaTime;
 
-    private Map<Usage, ModelEvaluator> cachedLoadEvaluators = new HashMap<Usage, ModelEvaluator>();
+    private final Map<Usage, ModelEvaluator> cachedLoadEvaluators = new HashMap<Usage, ModelEvaluator>();
 
-    private Map<Usage, Map<VariableCharacterisation, ModelEvaluator>> cachedWorkEvaluators = new HashMap<Usage, Map<VariableCharacterisation, ModelEvaluator>>();
+    private final Map<Usage, Map<VariableCharacterisation, ModelEvaluator>> cachedWorkEvaluators = new HashMap<Usage, Map<VariableCharacterisation, ModelEvaluator>>();
 
     /**
      * Constructs the looping usage evolver.
@@ -66,7 +67,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     protected ModelEvaluator getLoadEvaluator() {
         final Usage usage = this.getCorrespondingUsage();
         ModelEvaluator evaluator = this.cachedLoadEvaluators.get(usage);
-        if(evaluator == null) {
+        if (evaluator == null) {
             final Sequence loadEvolutionSequence = usage.getLoadEvolution();
             if (loadEvolutionSequence != null) {
                 evaluator = new ModelEvaluator(loadEvolutionSequence);
@@ -105,7 +106,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         // and to their corresponding model evaluators
         final Usage usage = this.getCorrespondingUsage();
         Map<VariableCharacterisation, ModelEvaluator> workEvaluators = this.cachedWorkEvaluators.get(usage);
-        if(workEvaluators == null) {
+        if (workEvaluators == null) {
             if (usage != null && usage.getWorkEvolutions() != null && usage.getWorkEvolutions().size() > 0) {
                 workEvaluators = new HashMap<VariableCharacterisation, ModelEvaluator>();
                 for (final WorkParameterEvolution workParam : usage.getWorkEvolutions()) {
@@ -124,6 +125,8 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
                     workEvaluators.put(varChar, new ModelEvaluator(paramSequence));
                 }
                 this.cachedWorkEvaluators.put(usage, workEvaluators);
+            } else {
+                workEvaluators = Collections.emptyMap();
             }
         }
 
@@ -148,7 +151,8 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     }
 
     private VariableCharacterisation getGlobalWorkParameter(final VariableCharacterisation workParam) {
-        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getModelAccess().getGlobalPCMModel().getResourceSet().getEObject(EcoreUtil.getURI(workParam), false);
+        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getModelAccess()
+                .getGlobalPCMModel().getResourceSet().getEObject(EcoreUtil.getURI(workParam), false);
         return globalWorkParam;
     }
 
@@ -240,8 +244,8 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         final long newRate = Math.round(this.getNewRate(evaluator));
         final String newRateStr = Long.toString(newRate);
 
-        LOGGER.debug("Changing work from " + workParameter.getSpecification_VariableCharacterisation().getSpecification()
-                + " to " + newRateStr);
+        LOGGER.debug("Changing work from "
+                + workParameter.getSpecification_VariableCharacterisation().getSpecification() + " to " + newRateStr);
 
         workParameter.getSpecification_VariableCharacterisation().setSpecification(newRateStr);
     }
