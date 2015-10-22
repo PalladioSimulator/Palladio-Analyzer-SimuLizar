@@ -94,12 +94,11 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     }
 
     /**
-     * Detach all model listeners.
+     * Detach all model listeners and request termination of reconfiguration process.
      */
-    public void stopListening() {
+    public void cleanUp() {
         this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
-        // this also requires that the reconfiguration process process be
-        // terminated
+        // this also requires that the reconfiguration process be terminated
         if (this.reconfigurationProcess != null) {
             this.reconfigurationProcess.requestTermination();
 

@@ -135,7 +135,7 @@ public class SimuLizarRuntimeState {
         LOGGER.debug("Deregister all listeners and execute cleanup code");
         this.eventHelper.removeAllListener();
         this.reconfigurator.removeAllObserver();
-        this.reconfigurator.stopListening();
+        this.reconfigurator.cleanUp();
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
