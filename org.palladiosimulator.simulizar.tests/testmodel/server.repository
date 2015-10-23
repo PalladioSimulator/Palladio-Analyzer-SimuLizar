@@ -7,10 +7,16 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_vNK6MbwGEeSxGbiYbg6Waw" entityName="stop" predecessor_AbstractAction="_1P7G0LwGEeSxGbiYbg6Waw"/>
       <steps_Behaviour xsi:type="seff:BranchAction" id="_1P7G0LwGEeSxGbiYbg6Waw" entityName="branchProcess" predecessor_AbstractAction="_vNK6MLwGEeSxGbiYbg6Waw" successor_AbstractAction="_vNK6MbwGEeSxGbiYbg6Waw">
         <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_6NNgMLwGEeSxGbiYbg6Waw" entityName="branch1" branchProbability="1.0">
-          <branchBehaviour_BranchTransition id="_6NOHQLwGEeSxGbiYbg6Waw"/>
+          <branchBehaviour_BranchTransition id="_6NOHQLwGEeSxGbiYbg6Waw">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_KPLOAnlvEeWUWY0RHtHyZg" successor_AbstractAction="_LX3UYnlvEeWUWY0RHtHyZg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_LX3UYnlvEeWUWY0RHtHyZg" predecessor_AbstractAction="_KPLOAnlvEeWUWY0RHtHyZg"/>
+          </branchBehaviour_BranchTransition>
         </branches_Branch>
         <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_-t42ELwGEeSxGbiYbg6Waw" entityName="branch2">
-          <branchBehaviour_BranchTransition id="_-t42EbwGEeSxGbiYbg6Waw"/>
+          <branchBehaviour_BranchTransition id="_-t42EbwGEeSxGbiYbg6Waw">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_P-cd8nlvEeWUWY0RHtHyZg" successor_AbstractAction="_QXw84nlvEeWUWY0RHtHyZg"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_QXw84nlvEeWUWY0RHtHyZg" predecessor_AbstractAction="_P-cd8nlvEeWUWY0RHtHyZg"/>
+          </branchBehaviour_BranchTransition>
         </branches_Branch>
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>

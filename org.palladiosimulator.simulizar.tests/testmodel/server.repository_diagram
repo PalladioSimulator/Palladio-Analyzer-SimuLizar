@@ -39,6 +39,11 @@
     <children xmi:type="notation:Shape" xmi:id="_DloG0MiZEeSwuLsOH33EQA" type="2102" fontName=".Helvetica Neue DeskInterface">
       <children xmi:type="notation:DecorationNode" xmi:id="_Dlot4MiZEeSwuLsOH33EQA" type="5102"/>
       <children xmi:type="notation:DecorationNode" xmi:id="_Dlot4ciZEeSwuLsOH33EQA" type="7102">
+        <children xmi:type="notation:Node" xmi:id="_u1ijYHluEeWUWY0RHtHyZg" type="3102">
+          <styles xmi:type="notation:HintedDiagramLinkStyle" xmi:id="_u1ijYXluEeWUWY0RHtHyZg" diagramLink="_wMw1AHluEeWUWY0RHtHyZg" hint="PCM SEFF Model"/>
+          <element xmi:type="seff:ResourceDemandingSEFF" href="server.repository#_GOPH0MiZEeSwuLsOH33EQA"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_u1ijYnluEeWUWY0RHtHyZg"/>
+        </children>
         <styles xmi:type="notation:SortingStyle" xmi:id="_Dlot4siZEeSwuLsOH33EQA"/>
         <styles xmi:type="notation:FilteringStyle" xmi:id="_Dlot48iZEeSwuLsOH33EQA"/>
       </children>
@@ -174,5 +179,9 @@
       <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_JncZkrwHEeSxGbiYbg6Waw" points="[-77, 100, 59, -82]$[-152, 181, -16, -1]"/>
       <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_JndnsLwHEeSxGbiYbg6Waw" id="(0.5299539170506913,0.07407407407407407)"/>
     </edges>
+  </notation:Diagram>
+  <notation:Diagram xmi:id="_wMw1AHluEeWUWY0RHtHyZg" type="PCM SEFF Model" measurementUnit="Pixel">
+    <styles xmi:type="notation:DiagramStyle" xmi:id="_wMw1AXluEeWUWY0RHtHyZg"/>
+    <element xmi:type="seff:ResourceDemandingSEFF" href="server.repository#_GOPH0MiZEeSwuLsOH33EQA"/>
   </notation:Diagram>
 </xmi:XMI>
