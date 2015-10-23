@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <usageevolution:Usage xmlns:usageevolution="http://usageevolution/1.0" id="_P5BiwHi8EeWM9vp-oUqXhQ" entityName="defaultUsage">
-  <scenario href="server.usagemodel#_McLlUHf0EeW9C8FVqTkR_g"/>
+  <scenario href="../server.usagemodel#_McLlUHf0EeW9C8FVqTkR_g"/>
 </usageevolution:Usage>
