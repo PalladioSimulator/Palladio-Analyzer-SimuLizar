@@ -35,6 +35,12 @@ import org.storydriven.storydiagrams.activities.Activity;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
+import de.uni_paderborn.fujaba.muml.reachanalysis.core.HashLevel;
+import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.ReachabilityGraphState;
+import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.sdm.StepGraph;
+import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputation;
+import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.SDMReachabilityComputationStatistics;
+import de.uni_paderborn.fujaba.muml.reachanalysis.sdm.export.SDMReachabilityGraphExporter;
 
 public class SDMReconfigurationSpaceExplorer {
 
