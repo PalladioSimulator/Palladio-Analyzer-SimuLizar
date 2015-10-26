@@ -90,7 +90,7 @@ public class SimulizarRunConfigTest {
     }
 
     @After
-    public void teraDown() {
+    public void tearDown() {
         RepositoryManager.removeRepository(RepositoryManager.getCentralRepository(), this.repo);
     }
 
