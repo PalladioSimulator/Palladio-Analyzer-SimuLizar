@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploratio
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,28 +13,20 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
 import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
-import org.eclipse.emf.validation.model.EvaluationMode;
-import org.eclipse.emf.validation.service.ModelValidationService;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
-import org.palladiosimulator.analyzer.workflow.jobs.ValidatePCMModelsJob;
 import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.pcm.repository.impl.RepositoryImpl;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.SDMReconfigurationSpaceExplorer;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -49,7 +40,6 @@ import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
-import de.uka.ipd.sdq.workflow.mdsd.validation.ModelValidationJob;
 import de.uni_paderborn.fujaba.muml.reachanalysis.reachabilityGraph.sdm.StepGraph;
 
 public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
@@ -71,6 +61,7 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 		this.jobs = new ArrayList<PCMStartInterpretationJob>();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 		final ResourceSetPartition resourceSetPartition = this.blackboard
@@ -114,7 +105,7 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 						URI.createFileURI(temporaryDataLocation + "/model/PCM_partition_state_" + models.getHash()));
 				final EObject model = EcoreUtil.copy(models.getContainedNodes().get(i));
 				Diagnostic diagnostic = Diagnostician.INSTANCE.validate(model);
-				if(!(diagnostic.getSeverity() == Diagnostic.OK)){
+				if (!(diagnostic.getSeverity() == Diagnostic.OK)) {
 					StringBuilder sb = new StringBuilder();
 					sb.append("The validation failed at: ").append(model.toString()).append("\n");
 					sb.append(diagnostic).append("\n");
@@ -174,6 +165,12 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 					final ResourceSet resourceSet = new ResourceSetImpl();
 					String modelURI = folderPath.toString() + "/" + model.toString();
 					if (model.toString().contains("Repository")) {
+						Repository r = (Repository) model;
+						// We do not want to export PrimitiveDataTypes definition, but the defaultRepository.
+						// We are interested in components definitions rather than in PrimitiveDataTypes definitions.
+						if (r.getEntityName().equals("PrimitiveDataTypes")) {
+							return;
+						}
 						modelURI += ".repository";
 					}
 					if (model.toString().contains("System")) {
