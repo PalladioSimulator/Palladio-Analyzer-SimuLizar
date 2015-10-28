@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.simulationevents;
 
-import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
+import org.palladiosimulator.simulizar.runtimestate.CostModel;
 
 /**
  * Interface for listening to the periodically triggered container events.
@@ -15,5 +15,6 @@ public interface IAbstractPeriodicContainerListener {
      * @param measuringPoint
      *            The container that fires the periodic trigger.
      */
-    public abstract void triggerPeriodicUpdate(final ResourceContainerMeasuringPoint measuringPoint);
+
+    public abstract void triggerPeriodicUpdate(CostModel costModel, double timestamp, final double delay);
 }

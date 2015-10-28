@@ -28,4 +28,8 @@ public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
     protected void triggerInternal() {
     }
 
+    protected void removeEvent() {
+        this.myTriggerEvent.removeEvent();
+    }
+
 }

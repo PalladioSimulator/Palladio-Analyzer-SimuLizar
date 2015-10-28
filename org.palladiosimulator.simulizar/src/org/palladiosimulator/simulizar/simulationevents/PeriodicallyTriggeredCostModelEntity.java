@@ -1,41 +1,28 @@
 package org.palladiosimulator.simulizar.simulationevents;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.apache.log4j.Logger;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.commons.designpatterns.IAbstractObservable;
-import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.runtimestate.CostModel;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
-/**
- * An entity that can trigger periodic events with an attached container.
- *
- * @author Hendrik Eikerling, Sebastian Lehrig
- *
- */
-public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredSimulationEntity
+public class PeriodicallyTriggeredCostModelEntity extends PeriodicallyTriggeredSimulationEntity
         implements IAbstractObservable<IAbstractPeriodicContainerListener> {
 
     private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
-    private final ResourceContainer resourceContainer;
     private final CostModel costModel;
+    private final double delay;
 
     private final AbstractObservable<IAbstractPeriodicContainerListener> observableDelegate;
-    private Set<ResourceContainer> containerSet;
 
-    public PeriodicallyTriggeredContainerEntity(final SimuComModel model, final CostModel costModel,
-            final double firstOccurrence, final double delay, final ResourceContainer resourceContainer) {
+    public PeriodicallyTriggeredCostModelEntity(final SimuComModel model, final CostModel costModel,
+            final double firstOccurrence, final double delay) {
         super(model, firstOccurrence, delay);
-        this.resourceContainer = resourceContainer;
         this.costModel = costModel;
+        this.delay = delay;
         this.observableDelegate = new AbstractObservable<IAbstractPeriodicContainerListener>() {
         };
-
     }
 
     @Override
@@ -44,24 +31,11 @@ public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredS
 
         if (LOGGER.isInfoEnabled()) {
             final StringBuilder stringBuilder = new StringBuilder();
-            stringBuilder.append("Periodic trigger for container ");
-            stringBuilder.append(this.resourceContainer.getEntityName());
-            stringBuilder.append(" occured at time ");
+            stringBuilder.append("Periodic trigger for the cost model occured at time");
             stringBuilder.append(timestamp.toString());
             LOGGER.info(stringBuilder.toString());
         }
-
-        final double containerPrice;
-        this.containerSet = new HashSet<ResourceContainer>();
-        this.containerSet.add(this.resourceContainer);
-
-        if (StereotypeAPI.hasAppliedStereotype(this.containerSet, "price")) {
-            containerPrice = StereotypeAPI.getTaggedValue(this.resourceContainer, "price", "price");
-        } else {
-            containerPrice = 9.99;
-        }
-
-        this.costModel.addCostTuple(this.resourceContainer.getId(), timestamp, new Double(containerPrice));
+        this.observableDelegate.getEventDispatcher().triggerPeriodicUpdate(this.costModel, timestamp, this.delay);
     }
 
     @Override
@@ -72,10 +46,5 @@ public class PeriodicallyTriggeredContainerEntity extends PeriodicallyTriggeredS
     @Override
     public void removeObserver(final IAbstractPeriodicContainerListener observer) {
         this.observableDelegate.removeObserver(observer);
-    }
-
-    @Override
-    public void removeEvent() {
-        super.removeEvent();
     }
 }

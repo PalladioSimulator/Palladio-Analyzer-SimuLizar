@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.syncer;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
@@ -18,16 +18,16 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.pcmmeasuringpoint.ResourceContainerMeasuringPoint;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
+import org.palladiosimulator.simulizar.runtimestate.CostModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.ContainerCostProbe;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredContainerEntity;
-import org.palladiosimulator.simulizar.simulationevents.TakeNumberOfResourceContainersTriggeredProbe;
+import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredCostModelEntity;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -46,11 +46,13 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
  *
  * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker
  */
-public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment>implements IModelSyncer {
+public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
     private final MonitorRepository monitorRepository;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
+    private final CostModel costModel;
+    private final HashMap<String, PeriodicallyTriggeredContainerEntity> periodicallyTriggeredContainerEntities;
 
     /**
      * Constructor
@@ -63,6 +65,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 .getTargetResourceEnvironment_Allocation());
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
+
+        this.costModel = new CostModel();
+        this.initPeriodicCostModelCalculator();
+        this.periodicallyTriggeredContainerEntities = new HashMap<String, PeriodicallyTriggeredContainerEntity>();
     }
 
     /*
@@ -209,7 +215,11 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param resourceContainer
      */
     private AbstractSimulatedResourceContainer addSimulatedResource(final ResourceContainer resourceContainer) {
-        return this.runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainer.getId());
+        final AbstractSimulatedResourceContainer simulatedResourceContainer = this.runtimeModel.getModel()
+                .getResourceRegistry().createResourceContainer(resourceContainer.getId());
+        initPeriodicCostCalculator(resourceContainer);
+
+        return simulatedResourceContainer;
     }
 
     private void removeSimulatedResource(final ResourceContainer resourceContainer) {
@@ -222,6 +232,15 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // container)
         // this.runtimeModel.getModel().getResourceRegistry()
         // .removeResourceContainerFromRegistry(resourceContainer.getId());
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
+
+            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+                this.periodicallyTriggeredContainerEntities.get(resourceContainer.getId()).removeEvent();
+                this.periodicallyTriggeredContainerEntities.remove(resourceContainer.getId());
+            }
+        }
     }
 
     private void addActiveResources(final ResourceContainer resourceContainer,
@@ -336,7 +355,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                         }
                     } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
                             || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
-                        assert(scheduledResource
+                        assert (scheduledResource
                                 .getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                                         + "have exactly one core";
                         CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
@@ -355,17 +374,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 }
             }
         }
-
-        // Resource Container monitors
-        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                .getMeasurementSpecificationsForElement(this.monitorRepository, resourceContainer)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
-
-            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                this.initPeriodicCostCalculator(
-                        (ResourceContainerMeasuringPoint) measurementSpecification.getMonitor().getMeasuringPoint());
-            }
-        }
     }
 
     private void attachResourceStateListener(final ResourceContainer resourceContainer,
@@ -377,21 +385,39 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     /**
      * TODO review
      */
-    private void initPeriodicCostCalculator(final ResourceContainerMeasuringPoint measuringPoint) {
-        final SimuComModel simuComModel = this.runtimeModel.getModel();
+    private void initPeriodicCostCalculator(final ResourceContainer resourceContainer) {
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
 
-        // if Simulation Time is seconds 360=1hr,
-        final ContainerCostProbe containerCostProbe = new ContainerCostProbe(
-                new PeriodicallyTriggeredContainerEntity(simuComModel, 0, 10, measuringPoint));
+            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+                this.periodicallyTriggeredContainerEntities.put(resourceContainer.getId(),
+                        new PeriodicallyTriggeredContainerEntity(this.runtimeModel.getModel(), this.costModel, 0, 10,
+                                resourceContainer));
+            }
+        }
+    }
 
-        final List<TriggeredProbe> probeList = new ArrayList<TriggeredProbe>(1);
-        probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-        probeList.add(new TakeNumberOfResourceContainersTriggeredProbe(simuComModel.getResourceRegistry()));
+    private void initPeriodicCostModelCalculator() {
 
-        final Probe triggeredProbeList = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
-                containerCostProbe, probeList);
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
 
-        simuComModel.getProbeFrameworkContext().getCalculatorFactory().buildCostOverTimeCalculator(measuringPoint,
-                triggeredProbeList);
+            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+
+                final SimuComModel simuComModel = this.runtimeModel.getModel();
+
+                final Probe probe = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
+                        new ContainerCostProbe(
+                                new PeriodicallyTriggeredCostModelEntity(simuComModel, this.costModel, 30, 30)),
+                        Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
+                                simuComModel.getSimulationControl())));
+
+                simuComModel.getProbeFrameworkContext().getCalculatorFactory()
+                        .buildCostOverTimeCalculator(measurementSpecification.getMonitor().getMeasuringPoint(), probe);
+            }
+        }
+
     }
 }
