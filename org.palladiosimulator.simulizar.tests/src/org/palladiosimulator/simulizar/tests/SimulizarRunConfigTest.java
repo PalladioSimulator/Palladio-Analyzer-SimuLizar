@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -37,6 +38,8 @@ public class SimulizarRunConfigTest {
     private static final String MONITOR_REPO_PATH = MODEL_FOLDER + "/monitors/server.monitorrepository";
     private static final String RECONFIGURATION_RULES_FOLDER = MODEL_FOLDER + "/rules/";
     private static final String USAGE_EVOLUTION_MODEL_PATH = MODEL_FOLDER + "/usageevolution/server.usageevolution";
+    private static final String EMPTY_USAGE_EVOLUTION_MODEL_PATH = MODEL_FOLDER
+            + "/usageevolution/empty.usageevolution";
     private static final String SLO_REPO_PATH = MODEL_FOLDER + "/slo/server.slo";
 
     private SimuLizarWorkflowConfiguration simulizarConfiguration;
@@ -50,6 +53,7 @@ public class SimulizarRunConfigTest {
     private static URI monitorRepoUri;
     private static URI reconfigurationRulesUri;
     private static URI usageEvolutionModelUri;
+    private static URI emptyUsageEvolutionModelUri;
     private static URI sloRepoUri;
 
     @Rule
@@ -64,6 +68,8 @@ public class SimulizarRunConfigTest {
         monitorRepoUri = URI.createPlatformPluginURI(MONITOR_REPO_PATH, true);
         reconfigurationRulesUri = CommonPlugin.resolve(URI.createPlatformPluginURI(RECONFIGURATION_RULES_FOLDER, true));
         usageEvolutionModelUri = CommonPlugin.resolve(URI.createPlatformPluginURI(USAGE_EVOLUTION_MODEL_PATH, true));
+        emptyUsageEvolutionModelUri = CommonPlugin
+                .resolve(URI.createPlatformPluginURI(EMPTY_USAGE_EVOLUTION_MODEL_PATH, true));
         sloRepoUri = CommonPlugin.resolve(URI.createPlatformPluginURI(SLO_REPO_PATH, true));
     }
 
@@ -86,7 +92,6 @@ public class SimulizarRunConfigTest {
 
         MDSDBlackboard blackboard = new MDSDBlackboard();
         this.simulizarJob = new MinimalPCMInterpreterRootCompositeJob(this.simulizarConfiguration, blackboard);
-
     }
 
     @After
@@ -126,11 +131,20 @@ public class SimulizarRunConfigTest {
         runSuccessfulSimulation();
     }
 
+    @Ignore
     @Test
     public void testSuccessfulSimulationRunWithUsageEvolution() {
         // run the simulation with just the usage evolution defined
         // the simulation should finish properly
         this.simulizarConfiguration.setUsageEvolutionFile(usageEvolutionModelUri.toFileString());
+        runSuccessfulSimulation();
+    }
+
+    @Test
+    public void testSuccessfulSimulationRunWithUsageEvolutionNoParamEvolution() {
+        // run the simulation with just an empty usage evolution defined
+        // the simulation should finish properly
+        this.simulizarConfiguration.setUsageEvolutionFile(emptyUsageEvolutionModelUri.toFileString());
         runSuccessfulSimulation();
     }
 
