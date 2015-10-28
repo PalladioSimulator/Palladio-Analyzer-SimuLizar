@@ -46,7 +46,6 @@ public class SimulizarRunConfigTest {
     private SequentialBlackboardInteractingJob<MDSDBlackboard> simulizarJob;
 
     private Repository repo = null;
-    private File repoFile;
 
     private static URI allocationUri;
     private static URI usageModelUri;
@@ -74,9 +73,9 @@ public class SimulizarRunConfigTest {
     }
 
     @Before
-    public void setUp() throws Exception {
-        this.repoFile = this.tempFolder.newFolder("testRepo");
-        this.repo = LocalDirectoryRepositoryHelper.initializeLocalDirectoryRepository(repoFile);
+    public void setUp() throws IOException {
+        this.repo = LocalDirectoryRepositoryHelper
+                .initializeLocalDirectoryRepository(this.tempFolder.newFolder("testRepo"));
         RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), this.repo);
 
         Map<String, Object> properties = createSimulationProperties();
