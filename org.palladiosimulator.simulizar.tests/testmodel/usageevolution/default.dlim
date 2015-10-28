@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools.descartes.dlim:Sequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tools.descartes.dlim="http://descartes.tools/dlim/0.1" name="default" terminateAfterLoops="8" firstIterationEnd="192.0" loopDuration="24.0" finalDuration="192.0">
+  <combine operator="MULT">
+    <function xsi:type="tools.descartes.dlim:Sequence" name="trends" terminateAfterLoops="1" firstIterationEnd="192.0" loopDuration="192.0" finalDuration="192.0">
+      <sequenceFunctionContainers name="trendOffset" duration="12.0" firstIterationEnd="12.0">
+        <function xsi:type="tools.descartes.dlim:Constant" constant="0.1"/>
+      </sequenceFunctionContainers>
+      <sequenceFunctionContainers name="trend1" duration="168.0" firstIterationStart="12.0" firstIterationEnd="180.0">
+        <function xsi:type="tools.descartes.dlim:ExponentialTrend" functionOutputAtStart="0.1" functionOutputAtEnd="0.3000000000000023"/>
+      </sequenceFunctionContainers>
+      <sequenceFunctionContainers name="holdLastValue" duration="12.0" firstIterationStart="180.0" firstIterationEnd="192.0">
+        <function xsi:type="tools.descartes.dlim:Constant" constant="0.3000000000000023"/>
+      </sequenceFunctionContainers>
+    </function>
+  </combine>
+  <combine>
+    <function xsi:type="tools.descartes.dlim:UniformNoise" min="0.0" max="2.0"/>
+  </combine>
+  <combine>
+    <function xsi:type="tools.descartes.dlim:NormalNoise"/>
+  </combine>
+  <sequenceFunctionContainers name="seasonal0" duration="12.0" firstIterationEnd="12.0">
+    <function xsi:type="tools.descartes.dlim:ExponentialTrend" functionOutputAtEnd="10.0"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers name="seasonal2" duration="12.0" firstIterationStart="12.0" firstIterationEnd="24.0">
+    <function xsi:type="tools.descartes.dlim:ExponentialTrend" functionOutputAtStart="10.0" functionOutputAtEnd="0.0"/>
+  </sequenceFunctionContainers>
+</tools.descartes.dlim:Sequence>

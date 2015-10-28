@@ -13,4 +13,11 @@
       <interArrivalTime_OpenWorkload specification="2"/>
     </workload_UsageScenario>
   </usageScenario_UsageModel>
+  <userData_UsageModel>
+    <userDataParameterUsages_UserData>
+      <variableCharacterisation_VariableUsage type="VALUE">
+        <specification_VariableCharacterisation specification="42"/>
+      </variableCharacterisation_VariableUsage>
+    </userDataParameterUsages_UserData>
+  </userData_UsageModel>
 </usagemodel:UsageModel>
