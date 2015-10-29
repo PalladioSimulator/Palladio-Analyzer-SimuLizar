@@ -7,6 +7,7 @@ import java.util.Objects;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -232,15 +233,12 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // container)
         // this.runtimeModel.getModel().getResourceRegistry()
         // .removeResourceContainerFromRegistry(resourceContainer.getId());
-        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
-
-            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                this.periodicallyTriggeredContainerEntities.get(resourceContainer.getId()).removeEvent();
-                this.periodicallyTriggeredContainerEntities.remove(resourceContainer.getId());
-            }
+        if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
+            return;
         }
+
+        this.periodicallyTriggeredContainerEntities.get(resourceContainer.getId()).removeEvent();
+        this.periodicallyTriggeredContainerEntities.remove(resourceContainer.getId());
     }
 
     private void addActiveResources(final ResourceContainer resourceContainer,
@@ -382,23 +380,21 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 measurementSpecification, resourceContainer, this.runtimeMeasurementModel);
     }
 
-    /**
-     * TODO review
-     */
     private void initPeriodicCostCalculator(final ResourceContainer resourceContainer) {
-        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
-
-            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
-                this.periodicallyTriggeredContainerEntities.put(resourceContainer.getId(),
-                        new PeriodicallyTriggeredContainerEntity(this.runtimeModel.getModel(), this.costModel, 0, 10,
-                                resourceContainer));
-            }
+        if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
+            return;
         }
+
+        this.periodicallyTriggeredContainerEntities.put(resourceContainer.getId(),
+                new PeriodicallyTriggeredContainerEntity(this.runtimeModel.getModel(), this.costModel,
+                        resourceContainer));
     }
 
     private void initPeriodicCostModelCalculator() {
+        if (!StereotypeAPI.isStereotypeApplied(this.model, "CostReport")) {
+            return;
+        }
+        final double interval = StereotypeAPI.getTaggedValue(this.model, "interval", "CostReport");
 
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
                 .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
@@ -409,8 +405,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 final SimuComModel simuComModel = this.runtimeModel.getModel();
 
                 final Probe probe = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
-                        new ContainerCostProbe(
-                                new PeriodicallyTriggeredCostModelEntity(simuComModel, this.costModel, 30, 30)),
+                        new ContainerCostProbe(new PeriodicallyTriggeredCostModelEntity(simuComModel, this.costModel,
+                                interval, interval)),
                         Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
                                 simuComModel.getSimulationControl())));
 

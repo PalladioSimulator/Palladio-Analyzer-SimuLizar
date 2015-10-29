@@ -32,7 +32,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.statistics,
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction.math,
- org.palladiosimulator.mdsdprofiles.api
+ org.palladiosimulator.mdsdprofiles.api,
+ org.modelversioning.emfprofile;bundle-version="1.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
