@@ -1,10 +1,8 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +31,6 @@ import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
-import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -45,7 +42,6 @@ import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
-import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 
 /**
@@ -85,7 +81,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
         this.initResponseTimeMeasurement();
         this.initReconfigurationTimeMeasurement();
-        this.initNumberOfResourceContainersMeasurements();
         this.initExtensionMeasurements();
     }
 
@@ -264,26 +259,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     }
 
     /**
-     * Initializes the <i> number of resource containers</i> measurements. First gets the monitored
-     * elements from the monitor repository, then creates corresponding calculators.
-     *
-     */
-    private void initNumberOfResourceContainersMeasurements() {
-        for (final MeasurementSpecification numberOfResourceContainersMeasurementSpec : this
-                .getMeasurementSpecificationsForMetricDescription(
-                        MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS)) {
-            final MeasuringPoint measuringPoint = numberOfResourceContainersMeasurementSpec.getMonitor()
-                    .getMeasuringPoint();
-
-            final Probe probe = new EventProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
-                    new TakeNumberOfResourceContainersProbe(this.simuComModel.getResourceRegistry()),
-                    Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
-                            this.simuComModel.getSimulationControl())));
-            this.calculatorFactory.buildNumberOfResourceContainersCalculator(measuringPoint, probe);
-        }
-    }
-
-    /**
      * @param measuringPoint
      * @param simuComModel
      * @return list with start and stop probe
@@ -350,7 +325,6 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     /**
      * Initializes reconfiguration time measurement.
-     *
      */
     private void initReconfigurationTimeMeasurement() {
         for (final MeasurementSpecification reconfigurationTimeMeasurementSpec : this

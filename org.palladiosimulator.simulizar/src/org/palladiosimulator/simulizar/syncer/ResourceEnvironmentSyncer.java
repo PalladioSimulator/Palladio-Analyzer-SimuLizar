@@ -1,5 +1,9 @@
 package org.palladiosimulator.simulizar.syncer;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.COST_OVER_TIME;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
@@ -7,6 +11,7 @@ import java.util.Objects;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -22,6 +27,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.probeframework.probes.EventProbeList;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.CostModel;
@@ -33,6 +39,7 @@ import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -55,6 +62,8 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     private final CostModel costModel;
     private final HashMap<String, PeriodicallyTriggeredContainerEntity> periodicallyTriggeredContainerEntities;
 
+    private TriggeredProbe numberOfResourceCalculatorsProbes;
+
     /**
      * Constructor
      *
@@ -64,10 +73,12 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
         super(Objects.requireNonNull(runtimeState), runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
+
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
 
         this.costModel = new CostModel();
+        this.initNumberOfResourceContainersCalculator();
         this.initPeriodicCostModelCalculator();
         this.periodicallyTriggeredContainerEntities = new HashMap<String, PeriodicallyTriggeredContainerEntity>();
     }
@@ -182,7 +193,17 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 LOGGER.debug("Ignoring sync of move events; e.g., rewiring of linking resources");
             }
             break;
-
+        case MDSDProfilesNotifier.SET_TAGGED_VALUE:
+            final MDSDProfilesNotifier.TaggedValueTuple taggedValueTuple = ((MDSDProfilesNotifier.TaggedValueTuple) notification
+                    .getNewValue());
+            if (ResourceenvironmentPackage.eINSTANCE.getResourceContainer().isInstance(notification.getNotifier())
+                    && taggedValueTuple.getStereotypeName().equals("Price")
+                    && taggedValueTuple.getTaggedValueName().equals("unit")) {
+                // "unit" is the last tagged value expected for a complete specification to
+                // initialize a periodic cost calculator.
+                initPeriodicCostCalculator((ResourceContainer) notification.getNotifier());
+            }
+            break;
         case MDSDProfilesNotifier.APPLY_PROFILE:
         case MDSDProfilesNotifier.APPLY_STEREOTYPE:
         case MDSDProfilesNotifier.UNAPPLY_PROFILE:
@@ -205,6 +226,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final AbstractSimulatedResourceContainer simulatedResourceContainer = this
                 .addSimulatedResource(resourceContainer);
         this.addActiveResources(resourceContainer, simulatedResourceContainer);
+        initPeriodicCostCalculator(resourceContainer);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
@@ -216,11 +238,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param resourceContainer
      */
     private AbstractSimulatedResourceContainer addSimulatedResource(final ResourceContainer resourceContainer) {
-        final AbstractSimulatedResourceContainer simulatedResourceContainer = this.runtimeModel.getModel()
-                .getResourceRegistry().createResourceContainer(resourceContainer.getId());
-        initPeriodicCostCalculator(resourceContainer);
-
-        return simulatedResourceContainer;
+        return this.runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainer.getId());
     }
 
     private void removeSimulatedResource(final ResourceContainer resourceContainer) {
@@ -233,10 +251,13 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // container)
         // this.runtimeModel.getModel().getResourceRegistry()
         // .removeResourceContainerFromRegistry(resourceContainer.getId());
+        if (this.numberOfResourceCalculatorsProbes != null) {
+            this.numberOfResourceCalculatorsProbes.takeMeasurement();
+        }
+
         if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
             return;
         }
-
         this.periodicallyTriggeredContainerEntities.get(resourceContainer.getId()).removeEvent();
         this.periodicallyTriggeredContainerEntities.remove(resourceContainer.getId());
     }
@@ -264,6 +285,10 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 processingResource, new String[] {}, resourceContainer.getId(), schedulingStrategy);
 
         this.attachMonitors(processingResource, resourceContainer, schedulingStrategy, scheduledResource);
+
+        if (this.numberOfResourceCalculatorsProbes != null) {
+            this.numberOfResourceCalculatorsProbes.takeMeasurement();
+        }
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: " + this.getActiveResourceTypeID(processingResource)
@@ -390,6 +415,32 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                         resourceContainer));
     }
 
+    /**
+     * Initializes the <i>number of resource containers</i> measurements. First gets the monitored
+     * elements from the monitor repository, then creates corresponding calculators.
+     */
+    private void initNumberOfResourceContainersCalculator() {
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
+
+            if (metricID.equals(NUMBER_OF_RESOURCE_CONTAINERS.getId())) {
+
+                final MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
+                final SimuComModel simuComModel = this.runtimeModel.getModel();
+
+                this.numberOfResourceCalculatorsProbes = new TriggeredProbeList(NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
+                        Arrays.asList(new TakeNumberOfResourceContainersProbe(this.model),
+                                (TriggeredProbe) new TakeCurrentSimulationTimeProbe(
+                                        simuComModel.getSimulationControl())));
+
+                simuComModel.getProbeFrameworkContext().getCalculatorFactory()
+                        .buildNumberOfResourceContainersCalculator(measuringPoint,
+                                this.numberOfResourceCalculatorsProbes);
+            }
+        }
+    }
+
     private void initPeriodicCostModelCalculator() {
         if (!StereotypeAPI.isStereotypeApplied(this.model, "CostReport")) {
             return;
@@ -400,11 +451,11 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
                 .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
             final String metricID = measurementSpecification.getMetricDescription().getId();
 
-            if (metricID.equals(MetricDescriptionConstants.COST_OVER_TIME.getId())) {
+            if (metricID.equals(COST_OVER_TIME.getId())) {
 
                 final SimuComModel simuComModel = this.runtimeModel.getModel();
 
-                final Probe probe = new EventProbeList(MetricDescriptionConstants.COST_OVER_TIME,
+                final Probe probe = new EventProbeList(COST_OVER_TIME,
                         new ContainerCostProbe(new PeriodicallyTriggeredCostModelEntity(simuComModel, this.costModel,
                                 interval, interval)),
                         Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
