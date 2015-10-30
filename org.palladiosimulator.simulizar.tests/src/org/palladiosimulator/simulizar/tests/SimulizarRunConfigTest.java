@@ -11,6 +11,9 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.EPackage.Registry;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -20,6 +23,13 @@ import org.junit.rules.TemporaryFolder;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
+import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.pcm.repository.util.RepositoryResourceFactoryImpl;
+import org.palladiosimulator.pcm.resourceenvironment.util.ResourceenvironmentResourceFactoryImpl;
+import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
+import org.palladiosimulator.pcm.resourcetype.util.ResourcetypeResourceFactoryImpl;
+import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.tests.jobs.MinimalPCMInterpreterRootCompositeJob;
@@ -40,6 +50,12 @@ public class SimulizarRunConfigTest {
             + "/usageevolution/empty.usageevolution";
     private static final String SLO_REPO_PATH = MODEL_FOLDER + "/slo/server.slo";
 
+    private final static String REPOSITORY_EXTENSION = "repository";
+    private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
+    private final static String SYSTEM_EXTENSION = "system";
+    private final static String ALLOCATION_EXTENSION = "allocation";
+    private final static String RESOURCETYPE_EXTENSION = "resourcetype";
+
     private SimuLizarWorkflowConfiguration simulizarConfiguration;
     private SequentialBlackboardInteractingJob<MDSDBlackboard> simulizarJob;
 
@@ -58,6 +74,26 @@ public class SimulizarRunConfigTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
+        Registry r = Registry.INSTANCE;
+        r.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
+        r.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
+                new RepositoryResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
+                new ResourceenvironmentResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
+                new SystemResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
+                new AllocationResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCETYPE_EXTENSION,
+                new ResourcetypeResourceFactoryImpl());
+
+        Map<URI, URI> uriMap = URIConverter.URI_MAP;
+        uriMap.put(URI.createURI("pathmap://PCM_MODELS/Palladio.resourcetype"), URI
+                .createURI("platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype"));
+        uriMap.put(URI.createURI("pathmap://PCM_MODELS/PrimitiveTypes.repository"), URI.createURI(
+                "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository"));
+
         allocationUri = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
         usageModelUri = URI.createPlatformPluginURI(USAGE_MODEL_PATH, true);
         monitorRepoUri = URI.createPlatformPluginURI(MONITOR_REPO_PATH, true);
