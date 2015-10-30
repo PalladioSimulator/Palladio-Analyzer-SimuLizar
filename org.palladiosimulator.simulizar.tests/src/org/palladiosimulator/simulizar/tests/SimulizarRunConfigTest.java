@@ -30,6 +30,7 @@ import org.palladiosimulator.pcm.resourceenvironment.util.ResourceenvironmentRes
 import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
 import org.palladiosimulator.pcm.resourcetype.util.ResourcetypeResourceFactoryImpl;
 import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
+import org.palladiosimulator.pcm.usagemodel.util.UsagemodelResourceFactoryImpl;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.tests.jobs.MinimalPCMInterpreterRootCompositeJob;
@@ -55,6 +56,7 @@ public class SimulizarRunConfigTest {
     private final static String SYSTEM_EXTENSION = "system";
     private final static String ALLOCATION_EXTENSION = "allocation";
     private final static String RESOURCETYPE_EXTENSION = "resourcetype";
+    private final static String USAGEMODEL_EXTENSION = "usagemodel";
 
     private SimuLizarWorkflowConfiguration simulizarConfiguration;
     private SequentialBlackboardInteractingJob<MDSDBlackboard> simulizarJob;
@@ -87,6 +89,8 @@ public class SimulizarRunConfigTest {
                 new AllocationResourceFactoryImpl());
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCETYPE_EXTENSION,
                 new ResourcetypeResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(USAGEMODEL_EXTENSION,
+                new UsagemodelResourceFactoryImpl());
 
         Map<URI, URI> uriMap = URIConverter.URI_MAP;
         uriMap.put(URI.createURI("pathmap://PCM_MODELS/Palladio.resourcetype"), URI

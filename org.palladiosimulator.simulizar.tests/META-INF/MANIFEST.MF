@@ -14,4 +14,5 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  org.palladiosimulator.simulizar.runtimemeasurement,
  de.uka.ipd.sdq.simucomframework,
  org.palladiosimulator.edp2.repository.local,
- org.eclipse.emf.ecore
+ org.eclipse.emf.ecore,
+ org.palladiosimulator.pcm.resources;bundle-version="4.0.0"
