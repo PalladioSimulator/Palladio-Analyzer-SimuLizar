@@ -19,7 +19,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * {@link SimuComSimProcess} implementation which is responsible for executing reconfigurations
  * during Simulizar runs.
  *
- * @author Florian Rosenthal
+ * @author Florian Rosenthal, Sebastian Lehrig
  * @see Reconfigurator
  * @see IReconfigurator
  */
@@ -155,12 +155,16 @@ public class ReconfigurationProcess extends SimuComSimProcess {
             final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
                 for (final IReconfigurator reconfigurator : this.reconfigurators) {
+                    // Lehrig: I moved from simulation time to System.nanoTime() since
+                    // reconfigurations currently execute in 0-simulation time. Nano time made more
+                    // sense to me. Inform me if I'm wrong here since there is already some code
+                    // depending on the assumption that the duration is greater than 0.
                     final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-                            this.simControl.getCurrentSimulationTime());
+                            System.nanoTime());
                     this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
                     final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
                     final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-                            EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+                            EventResult.fromBoolean(reconfigResult), System.nanoTime());
                     this.fireEndReconfigurationEvent(endReconfigurationEvent);
                     if (reconfigResult) {
                         LOGGER.debug("Successfully executed reconfiguration.");

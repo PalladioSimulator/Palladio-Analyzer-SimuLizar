@@ -1,5 +1,9 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
+
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.collections15.Closure;
@@ -7,6 +11,12 @@ import org.apache.commons.collections15.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.probeframework.probes.TriggeredProbe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
@@ -27,16 +37,19 @@ import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
- * This class provides access to all simulation and simulizar related objects. This includes access
+ * This class provides access to all simulation and SimuLizar related objects. This includes access
  * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
- * simulizars central simulator event distribution object, and to simulated component instances
- * (e.g. to access their current state of passive ressources, etc.).
+ * SimuLizars central simulator event distribution object, and to simulated component instances
+ * (e.g. to access their current state of passive resources, etc.).
  *
  * Per simulation run, there should be exactly one instance of this class and all of its managed
  * information objects.
@@ -56,6 +69,9 @@ public class SimuLizarRuntimeState {
     private final ModelAccess modelAccess;
     private final Reconfigurator reconfigurator;
     private final IModelSyncer[] modelSyncers;
+
+    private long oldNumberOfContainers = 0;
+    private long newNumberOfContainers = 0;
 
     /**
      * @param configuration
@@ -159,6 +175,8 @@ public class SimuLizarRuntimeState {
             final ISimulationControl simulationControl) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
 
+        final TriggeredProbe numberOfResourceCalculatorsProbes = initNumberOfResourceContainersCalculator();
+
         final List<IReconfigurator> reconfigEngines = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
@@ -166,7 +184,6 @@ public class SimuLizarRuntimeState {
         for (final IReconfigurator reconfigEngine : reconfigEngines) {
             reconfigEngine.setConfiguration(configuration);
             reconfigEngine.setModelAccess(this.modelAccess);
-
         }
 
         final Reconfigurator reconfigurator = new Reconfigurator(this.model, this.modelAccess, simulationControl,
@@ -197,6 +214,12 @@ public class SimuLizarRuntimeState {
                     });
                     LOGGER.info("--------------");
                     LOGGER.info("-------");
+
+                    if (numberOfResourceCalculatorsProbes != null
+                            && SimuLizarRuntimeState.this.newNumberOfContainers != SimuLizarRuntimeState.this.oldNumberOfContainers) {
+                        SimuLizarRuntimeState.this.oldNumberOfContainers = SimuLizarRuntimeState.this.newNumberOfContainers;
+                        numberOfResourceCalculatorsProbes.takeMeasurement();
+                    }
                 }
             }
         });
@@ -204,6 +227,51 @@ public class SimuLizarRuntimeState {
         reconfigurator.startListening();
 
         return reconfigurator;
+    }
+
+    public void containerAdded() {
+        this.newNumberOfContainers++;
+    }
+
+    public void containerRemoved() {
+        this.newNumberOfContainers--;
+    }
+
+    /**
+     * Initializes the <i>number of resource containers</i> measurements. First gets the monitored
+     * elements from the monitor repository, then creates corresponding calculators.
+     */
+    private TriggeredProbe initNumberOfResourceContainersCalculator() {
+        final MonitorRepository monitorRepository = this.getModelAccess().getMonitorRepositoryModel();
+        final ResourceEnvironment resourceEnvironment = this.getModelAccess().getGlobalPCMModel().getAllocation()
+                .getTargetResourceEnvironment_Allocation();
+
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(monitorRepository, resourceEnvironment)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
+
+            if (metricID.equals(NUMBER_OF_RESOURCE_CONTAINERS.getId())) {
+
+                final MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
+
+                final TriggeredProbeList numberOfResourceCalculatorsProbes = new TriggeredProbeList(
+                        NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
+                        Arrays.asList(new TakeNumberOfResourceContainersProbe(resourceEnvironment),
+                                (TriggeredProbe) new TakeCurrentSimulationTimeProbe(
+                                        this.model.getSimulationControl())));
+
+                this.model.getProbeFrameworkContext().getCalculatorFactory()
+                        .buildNumberOfResourceContainersCalculator(measuringPoint, numberOfResourceCalculatorsProbes);
+
+                this.oldNumberOfContainers = resourceEnvironment.getResourceContainer_ResourceEnvironment().size();
+
+                numberOfResourceCalculatorsProbes.takeMeasurement();
+
+                return numberOfResourceCalculatorsProbes;
+            }
+        }
+
+        return null;
     }
 
     private IModelSyncer[] initializeModelSyncers() {
