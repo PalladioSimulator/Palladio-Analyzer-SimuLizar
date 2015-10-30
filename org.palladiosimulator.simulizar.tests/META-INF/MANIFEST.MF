@@ -16,4 +16,5 @@ Require-Bundle: org.junit;bundle-version="4.11.0",
  org.palladiosimulator.edp2.repository.local,
  org.eclipse.emf.ecore,
  org.palladiosimulator.pcm.resources;bundle-version="4.0.0",
- de.desmoj;bundle-version="2.3.3"
+ de.desmoj;bundle-version="2.3.3",
+ org.palladiosimulator.metricspec.resources;bundle-version="1.0.0"

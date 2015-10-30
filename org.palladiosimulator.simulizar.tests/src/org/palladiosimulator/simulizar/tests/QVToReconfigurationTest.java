@@ -15,6 +15,7 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
@@ -91,6 +92,9 @@ public class QVToReconfigurationTest {
                 new SystemResourceFactoryImpl());
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
                 new AllocationResourceFactoryImpl());
+        Map<URI, URI> uriMap = URIConverter.URI_MAP;
+        uriMap.put(URI.createURI(" pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
+                URI.createURI("platform:/plugin/org.palladiosimulator.metricspec.resources/commonMetrics.metricspec"));
 
         repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
         repositoryURI = CommonPlugin.resolve(repositoryURI);
