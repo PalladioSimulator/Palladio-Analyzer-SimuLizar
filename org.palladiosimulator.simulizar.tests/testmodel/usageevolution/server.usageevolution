@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <usageevolution:UsageEvolution xmlns:usageevolution="http://usageevolution/1.0" id="_hWIFAHvsEeWVQIQ1NoFy2Q" entityName="serverUsageEvolution">
-  <usages id="_l-fXQHvsEeWVQIQ1NoFy2Q" entityName="serverUsage">
-    <loadEvolution href="default.dlim#/"/>
+  <usages id="_l-fXQHvsEeWVQIQ1NoFy2Q" entityName="serverUsage" repeatingPattern="true">
+    <loadEvolution href="OneYearTrend.dlim#/"/>
     <workEvolutions>
-      <evolution href="default.dlim#//@combine.0/@function"/>
-      <variableCharacterisation href="../server.usagemodel#//@userData_UsageModel.0/@userDataParameterUsages_UserData.0/@variableCharacterisation_VariableUsage.0"/>
-    </workEvolutions>
-    <workEvolutions>
-      <evolution href="default.dlim#/"/>
-      <variableCharacterisation href="../server.usagemodel#//@userData_UsageModel.0/@userDataParameterUsages_UserData.0/@variableCharacterisation_VariableUsage.0"/>
+      <evolution href="OneYearTrend.dlim#/"/>
+      <variableCharacterisation href="../server.usagemodel#//@usageScenario_UsageModel.0/@scenarioBehaviour_UsageScenario/@actions_ScenarioBehaviour.1/@outputParameterUsages_EntryLevelSystemCall.0/@variableCharacterisation_VariableUsage.0"/>
     </workEvolutions>
     <scenario href="../server.usagemodel#_McLlUHf0EeW9C8FVqTkR_g"/>
   </usages>

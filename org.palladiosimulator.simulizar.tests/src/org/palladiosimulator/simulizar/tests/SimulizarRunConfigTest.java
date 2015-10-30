@@ -10,12 +10,10 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.URI;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -56,20 +54,17 @@ public class SimulizarRunConfigTest {
     private static URI sloRepoUri;
 
     @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder(
-            new File(CommonPlugin.resolve(URI.createPlatformPluginURI(MODEL_FOLDER, true)).toFileString()));
+    public TemporaryFolder tempFolder = new TemporaryFolder();
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        allocationUri = CommonPlugin.resolve(URI.createPlatformPluginURI(ALLOCATION_PATH, true));
-        usageModelUri = CommonPlugin.resolve(URI.createPlatformPluginURI(USAGE_MODEL_PATH, true));
-        // do not resolve URI of monitor repository location!
+        allocationUri = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
+        usageModelUri = URI.createPlatformPluginURI(USAGE_MODEL_PATH, true);
         monitorRepoUri = URI.createPlatformPluginURI(MONITOR_REPO_PATH, true);
-        reconfigurationRulesUri = CommonPlugin.resolve(URI.createPlatformPluginURI(RECONFIGURATION_RULES_FOLDER, true));
-        usageEvolutionModelUri = CommonPlugin.resolve(URI.createPlatformPluginURI(USAGE_EVOLUTION_MODEL_PATH, true));
-        emptyUsageEvolutionModelUri = CommonPlugin
-                .resolve(URI.createPlatformPluginURI(EMPTY_USAGE_EVOLUTION_MODEL_PATH, true));
-        sloRepoUri = CommonPlugin.resolve(URI.createPlatformPluginURI(SLO_REPO_PATH, true));
+        reconfigurationRulesUri = URI.createPlatformPluginURI(RECONFIGURATION_RULES_FOLDER, true);
+        usageEvolutionModelUri = URI.createPlatformPluginURI(USAGE_EVOLUTION_MODEL_PATH, true);
+        emptyUsageEvolutionModelUri = URI.createPlatformPluginURI(EMPTY_USAGE_EVOLUTION_MODEL_PATH, true);
+        sloRepoUri = URI.createPlatformPluginURI(SLO_REPO_PATH, true);
     }
 
     @Before
@@ -110,7 +105,7 @@ public class SimulizarRunConfigTest {
     public void testSuccessfulSimulationRunWithSLO() {
         // run the simulation with just the service level objects defined
         // the simulation should finish properly
-        this.simulizarConfiguration.setServiceLevelObjectivesFile(sloRepoUri.toFileString());
+        this.simulizarConfiguration.setServiceLevelObjectivesFile(sloRepoUri.toString());
         runSuccessfulSimulation();
     }
 
@@ -118,7 +113,7 @@ public class SimulizarRunConfigTest {
     public void testSuccessfulSimulationRunWithReconfigurationFolder() {
         // run the simulation with just the reconfigurations defined
         // the simulation should finish properly
-        this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toFileString());
+        this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toString());
         runSuccessfulSimulation();
     }
 
@@ -130,12 +125,11 @@ public class SimulizarRunConfigTest {
         runSuccessfulSimulation();
     }
 
-    @Ignore
     @Test
     public void testSuccessfulSimulationRunWithUsageEvolution() {
         // run the simulation with just the usage evolution defined
         // the simulation should finish properly
-        this.simulizarConfiguration.setUsageEvolutionFile(usageEvolutionModelUri.toFileString());
+        this.simulizarConfiguration.setUsageEvolutionFile(usageEvolutionModelUri.toString());
         runSuccessfulSimulation();
     }
 
@@ -143,7 +137,7 @@ public class SimulizarRunConfigTest {
     public void testSuccessfulSimulationRunWithUsageEvolutionNoParamEvolution() {
         // run the simulation with just an empty usage evolution defined
         // the simulation should finish properly
-        this.simulizarConfiguration.setUsageEvolutionFile(emptyUsageEvolutionModelUri.toFileString());
+        this.simulizarConfiguration.setUsageEvolutionFile(emptyUsageEvolutionModelUri.toString());
         runSuccessfulSimulation();
     }
 
@@ -157,7 +151,7 @@ public class SimulizarRunConfigTest {
 
     @Test
     public void testSuccessfulSimulationRunWithMonitorRepositoryAndReconfigurationFolder() {
-        this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toFileString());
+        this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toString());
         this.simulizarConfiguration.setMonitorRepositoryFile(monitorRepoUri.toString());
         runSuccessfulSimulation();
     }
@@ -172,12 +166,13 @@ public class SimulizarRunConfigTest {
         properties.put("EDP2RepositoryID", this.repo.getId());
         properties.put(SimuComConfig.SIMULATOR_ID, "de.uka.ipd.sdq.codegen.simucontroller.simulizar");
         properties.put(SimuComConfig.EXPERIMENT_RUN, SimuComConfig.DEFAULT_EXPERIMENT_RUN);
-        properties.put(SimuComConfig.SIMULATION_TIME, SimuComConfig.DEFAULT_SIMULATION_TIME);
+        properties.put(SimuComConfig.SIMULATION_TIME, "2000");
         properties.put(SimuComConfig.MAXIMUM_MEASUREMENT_COUNT, SimuComConfig.DEFAULT_MAXIMUM_MEASUREMENT_COUNT);
         properties.put(SimuComConfig.VERBOSE_LOGGING, false);
         properties.put(SimuComConfig.VARIATION_ID, SimuComConfig.DEFAULT_VARIATION_NAME);
         properties.put(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
+        properties.put("de.uka.ipd.sdq.workflowengine.debuglevel", "1"); // Log level DEBUG
 
         return properties;
     }

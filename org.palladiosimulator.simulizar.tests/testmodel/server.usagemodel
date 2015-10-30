@@ -6,6 +6,11 @@
       <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_W5fRsHf0EeW9C8FVqTkR_g" entityName="process" successor="_McMzcXf0EeW9C8FVqTkR_g" predecessor="_McMzcHf0EeW9C8FVqTkR_g">
         <providedRole_EntryLevelSystemCall href="server.repository#_mKQvQLwGEeSxGbiYbg6Waw"/>
         <operationSignature__EntryLevelSystemCall href="server.repository#_r_cZ8LwGEeSxGbiYbg6Waw"/>
+        <outputParameterUsages_EntryLevelSystemCall>
+          <variableCharacterisation_VariableUsage type="VALUE">
+            <specification_VariableCharacterisation specification="42"/>
+          </variableCharacterisation_VariableUsage>
+        </outputParameterUsages_EntryLevelSystemCall>
       </actions_ScenarioBehaviour>
       <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_McMzcXf0EeW9C8FVqTkR_g" entityName="stop" predecessor="_W5fRsHf0EeW9C8FVqTkR_g"/>
     </scenarioBehaviour_UsageScenario>
@@ -13,11 +18,4 @@
       <interArrivalTime_OpenWorkload specification="2"/>
     </workload_UsageScenario>
   </usageScenario_UsageModel>
-  <userData_UsageModel>
-    <userDataParameterUsages_UserData>
-      <variableCharacterisation_VariableUsage type="VALUE">
-        <specification_VariableCharacterisation specification="42"/>
-      </variableCharacterisation_VariableUsage>
-    </userDataParameterUsages_UserData>
-  </userData_UsageModel>
 </usagemodel:UsageModel>
