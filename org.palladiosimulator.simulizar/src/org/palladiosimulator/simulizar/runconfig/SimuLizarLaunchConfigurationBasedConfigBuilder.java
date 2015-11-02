@@ -25,7 +25,7 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
     @Override
     public void fillConfiguration(final AbstractWorkflowBasedRunConfiguration configuration) throws CoreException {
         final SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) configuration;
-        config.setSimulateFailures(this.getBooleanAttribute(ConstantsContainer.SIMULATE_FAILURES));
+        config.setSimulateFailures(this.getBooleanAttribute(SimuComConfig.SIMULATE_FAILURES));
 
         // accuracy analysis
         config.setAccuracyInfluenceAnalysisEnabled(this.getBooleanAttribute(ConstantsContainer.ANALYSE_ACCURACY));
