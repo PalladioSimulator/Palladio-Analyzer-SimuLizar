@@ -230,8 +230,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param resourceContainer
      */
     private AbstractSimulatedResourceContainer addSimulatedResource(final ResourceContainer resourceContainer) {
-        this.runtimeModel.containerAdded();
-
         return this.runtimeModel.getModel().getResourceRegistry().createResourceContainer(resourceContainer.getId());
     }
 
@@ -245,7 +243,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // container)
         // this.runtimeModel.getModel().getResourceRegistry()
         // .removeResourceContainerFromRegistry(resourceContainer.getId());
-        this.runtimeModel.containerRemoved();
 
         if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
             return;

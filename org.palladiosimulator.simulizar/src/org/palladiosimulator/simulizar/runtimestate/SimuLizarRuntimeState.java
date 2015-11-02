@@ -70,8 +70,7 @@ public class SimuLizarRuntimeState {
     private final Reconfigurator reconfigurator;
     private final IModelSyncer[] modelSyncers;
 
-    private long oldNumberOfContainers = 0;
-    private long newNumberOfContainers = 0;
+    private long numberOfContainers = 0;
 
     /**
      * @param configuration
@@ -216,8 +215,8 @@ public class SimuLizarRuntimeState {
                     LOGGER.info("-------");
 
                     if (numberOfResourceCalculatorsProbes != null
-                            && SimuLizarRuntimeState.this.newNumberOfContainers != SimuLizarRuntimeState.this.oldNumberOfContainers) {
-                        SimuLizarRuntimeState.this.oldNumberOfContainers = SimuLizarRuntimeState.this.newNumberOfContainers;
+                            && SimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
+                        SimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
                         numberOfResourceCalculatorsProbes.takeMeasurement();
                     }
                 }
@@ -227,14 +226,6 @@ public class SimuLizarRuntimeState {
         reconfigurator.startListening();
 
         return reconfigurator;
-    }
-
-    public void containerAdded() {
-        this.newNumberOfContainers++;
-    }
-
-    public void containerRemoved() {
-        this.newNumberOfContainers--;
     }
 
     /**
@@ -263,7 +254,7 @@ public class SimuLizarRuntimeState {
                 this.model.getProbeFrameworkContext().getCalculatorFactory()
                         .buildNumberOfResourceContainersCalculator(measuringPoint, numberOfResourceCalculatorsProbes);
 
-                this.oldNumberOfContainers = resourceEnvironment.getResourceContainer_ResourceEnvironment().size();
+                this.numberOfContainers = getNumberOfResourceContainers();
 
                 numberOfResourceCalculatorsProbes.takeMeasurement();
 
@@ -272,6 +263,11 @@ public class SimuLizarRuntimeState {
         }
 
         return null;
+    }
+
+    private int getNumberOfResourceContainers() {
+        return this.getModelAccess().getGlobalPCMModel().getAllocation().getTargetResourceEnvironment_Allocation()
+                .getResourceContainer_ResourceEnvironment().size();
     }
 
     private IModelSyncer[] initializeModelSyncers() {
