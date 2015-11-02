@@ -24,11 +24,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
  *
  */
 public final class LoadPowerInfrastructureRepositoryIntoBlackboardJob extends AbstractWorkflowExtensionJob<MDSDBlackboard> {
-
-    /**
-     * Constant which holds the id of the {@link PowerInfrastructureRepositoryResourceSetPartition} within the blackboard.
-     */
-    public static final String POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID = "de.fzi.power";
     
     private String path;
     
@@ -92,7 +87,6 @@ public final class LoadPowerInfrastructureRepositoryIntoBlackboardJob extends Ab
         if (!this.path.equals("")) {
             partition.loadModel(URI.createURI(!this.path.startsWith("platform:") ? "file:///" + this.path : this.path));
         }
-        this.myBlackboard.addPartition(POWER_INFRASTRUCTURE_REPOSITORY_MODEL_PARTITION_ID, partition);
         // now resolve all cross references from current resource to PCM
         partition.resolveAllProxies();
     }

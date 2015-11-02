@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
+import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
@@ -61,18 +63,19 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         Collection<MeasurementSpecification> powerMeasurementSpecs = getProbeFrameworkListener().
                 getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
         if (!powerMeasurementSpecs.isEmpty()) {
-            PowerModelRegistry reg = new PowerModelRegistry();
-            PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
+            final PowerModelRegistry reg = new PowerModelRegistry();
+            final PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(reg,
                     new ExtensibleCalculatorInstantiatorImpl());
-            List<ConsumptionContext> createdContexts = new ArrayList<ConsumptionContext>(powerMeasurementSpecs.size());
-            List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<SimulationTimeEvaluationScope>(
+            final List<ConsumptionContext> createdContexts = new ArrayList<ConsumptionContext>(powerMeasurementSpecs.size());
+            final List<SimulationTimeEvaluationScope> createdScopes = new ArrayList<SimulationTimeEvaluationScope>(
                     powerMeasurementSpecs.size());
-            RuntimeMeasurementModel runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
-            SimuComModel simucomModel = getProbeFrameworkListener().getSimuComModel();
-            
+            final RuntimeMeasurementModel runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
+            final SimuComModel simucomModel = getProbeFrameworkListener().getSimuComModel();
+            final PCMResourceSetPartition globalPCMModel = this.getProbeFrameworkListener().getModelAccess().getGlobalPCMModel();
             for (MeasurementSpecification powerSpec : powerMeasurementSpecs) {
                 MeasuringPoint mp = powerSpec.getMonitor().getMeasuringPoint();
-                PowerProvidingEntity ppe = InterpreterUtils.getPowerProvindingEntityFromMeasuringPoint(mp);
+                final PowerProvidingEntity ppe = InterpreterUtils
+                        .getPowerProvidingEntityFromMeasuringPoint(globalPCMModel.getResourceSet(), mp);
                 if (ppe == null) {
                     throw new IllegalStateException("MeasurementSpecification for metric "
                             + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
