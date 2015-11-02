@@ -56,11 +56,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
-    private final MonitorRepository monitorRepositoryModel;
-    private final RuntimeMeasurementModel runtimeMeasurementsModel;
     private final SimuComModel simuComModel;
     private final ICalculatorFactory calculatorFactory;
     private final Reconfigurator reconfigurator;
+    private final IModelAccess modelAccess;
 
     private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
 
@@ -70,11 +69,10 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public ProbeFrameworkListener(final IModelAccess modelAccessFactory, final SimuComModel simuComModel,
+    public ProbeFrameworkListener(final IModelAccess modelAccess, final SimuComModel simuComModel,
             final Reconfigurator reconfigurator) {
         super();
-        this.monitorRepositoryModel = modelAccessFactory.getMonitorRepositoryModel();
-        this.runtimeMeasurementsModel = modelAccessFactory.getRuntimeMeasurementModel();
+        this.modelAccess = modelAccess;
         this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = reconfigurator;
@@ -182,6 +180,14 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     public SimuComModel getSimuComModel() {
         return this.simuComModel;
     }
+    
+    /**
+     * Gets the {@link IModelAccess} attached to this instance.
+     * @return A reference to the {@code IModelAccess}.
+     */
+    public IModelAccess getModelAccess() {
+        return this.modelAccess;
+    }
 
     /**
      * Gets the {@link RuntimeMeasurementModel} attached to this instance.
@@ -189,7 +195,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      * @return A reference to the {@code RuntimeMeasurementModel}.
      */
     public RuntimeMeasurementModel getRuntimeMeasurementModel() {
-        return this.runtimeMeasurementsModel;
+        return this.modelAccess.getRuntimeMeasurementModel();
     }
 
     /**
@@ -213,7 +219,8 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     public Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
             final MetricDescription soughtFor) {
         assert soughtFor != null;
-        if (this.monitorRepositoryModel != null) {
+        final MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
+        if (monitorRepositoryModel != null) {
             final Transformer<Monitor, MeasurementSpecification> transformer = new Transformer<Monitor, MeasurementSpecification>() {
 
                 @Override
@@ -227,7 +234,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
                 }
             };
             return Collections.unmodifiableCollection(CollectionUtils.select(
-                    CollectionUtils.collect(this.monitorRepositoryModel.getMonitors(), transformer),
+                    CollectionUtils.collect(monitorRepositoryModel.getMonitors(), transformer),
                     PredicateUtils.notNullPredicate()));
         }
         return Collections.emptyList();
@@ -248,7 +255,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
             if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE) {
                 try {
                     final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
-                            this.runtimeMeasurementsModel, responseTimeMeasurementSpec, measuringPoint);
+                            this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec, measuringPoint);
                     calculator.addObserver(aggregator);
                 } catch (final UnsupportedOperationException e) {
                     LOGGER.error(e);
