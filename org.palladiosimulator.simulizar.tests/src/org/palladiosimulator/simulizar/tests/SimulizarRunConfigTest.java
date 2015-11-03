@@ -51,12 +51,17 @@ public class SimulizarRunConfigTest {
             + "/usageevolution/empty.usageevolution";
     private static final String SLO_REPO_PATH = MODEL_FOLDER + "/slo/server.slo";
 
-    private final static String REPOSITORY_EXTENSION = "repository";
-    private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
-    private final static String SYSTEM_EXTENSION = "system";
-    private final static String ALLOCATION_EXTENSION = "allocation";
-    private final static String RESOURCETYPE_EXTENSION = "resourcetype";
-    private final static String USAGEMODEL_EXTENSION = "usagemodel";
+    private static final String REPOSITORY_EXTENSION = "repository";
+    private static final String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
+    private static final String SYSTEM_EXTENSION = "system";
+    private static final String ALLOCATION_EXTENSION = "allocation";
+    private static final String RESOURCETYPE_EXTENSION = "resourcetype";
+    private static final String USAGEMODEL_EXTENSION = "usagemodel";
+
+    private static final String PALLADIO_RESOURCETYPES_PATHMAP = "pathmap://PCM_MODELS/Palladio.resourcetype";
+    private static final String PALLADIO_RESOURCETYPES_PATHMAP_TARGET = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype";
+    private static final String PRIMITIVE_TYPES_REPO_PATHMAP = "pathmap://PCM_MODELS/PrimitiveTypes.repository";
+    private static final String PRIMITIVE_TYPES_REPO_PATHMAP_TARGET = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository";
 
     private SimuLizarWorkflowConfiguration simulizarConfiguration;
     private SequentialBlackboardInteractingJob<MDSDBlackboard> simulizarJob;
@@ -76,7 +81,6 @@ public class SimulizarRunConfigTest {
 
     @BeforeClass
     public static void setUpBeforeClass() {
-        Registry r = Registry.INSTANCE;
         Registry.INSTANCE.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
         Registry.INSTANCE.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
@@ -93,10 +97,8 @@ public class SimulizarRunConfigTest {
                 new UsagemodelResourceFactoryImpl());
 
         Map<URI, URI> uriMap = URIConverter.URI_MAP;
-        uriMap.put(URI.createURI("pathmap://PCM_MODELS/Palladio.resourcetype"), URI
-                .createURI("platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype"));
-        uriMap.put(URI.createURI("pathmap://PCM_MODELS/PrimitiveTypes.repository"), URI.createURI(
-                "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository"));
+        uriMap.put(URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP), URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP_TARGET));
+        uriMap.put(URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP), URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP_TARGET));
 
         allocationUri = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
         usageModelUri = URI.createPlatformPluginURI(USAGE_MODEL_PATH, true);
