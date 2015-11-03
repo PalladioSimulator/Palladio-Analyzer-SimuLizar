@@ -77,8 +77,8 @@ public class SimulizarRunConfigTest {
     @BeforeClass
     public static void setUpBeforeClass() {
         Registry r = Registry.INSTANCE;
-        r.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
-        r.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
+        Registry.INSTANCE.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
+        Registry.INSTANCE.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
                 new RepositoryResourceFactoryImpl());
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
