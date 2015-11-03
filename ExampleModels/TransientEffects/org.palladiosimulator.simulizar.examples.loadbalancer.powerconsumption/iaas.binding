@@ -30,4 +30,14 @@
     </fixedFactorValues>
     <distributionPowerModel href="declarativePowerModels.spec#_on3u0n1hEeWs5NTiSBh3Qw"/>
   </powerBindings>
+  <powerBindings xsi:type="de.fzi.power:StatefulResourcePowerBinding" id="_2AXlgoI5EeWCRu5beQNLXQ" name="highEndCpu (Stateful)">
+    <powerStates id="_5pzKUII5EeWCRu5beQNLXQ" name="ON" binding="_Hcn9AJgGEeS8naF2VwaQgQ"/>
+    <powerStates id="_88K6AII5EeWCRu5beQNLXQ" name="STANDBY" binding="_8uoX0II6EeW9D58bfYJKTQ"/>
+  </powerBindings>
+  <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_8uoX0II6EeW9D58bfYJKTQ" name="standByCpu">
+    <fixedFactorValues id="_BNUJoII7EeW9D58bfYJKTQ" value="50 W">
+      <boundFactor href="declarativePowerModels.spec#_19KEAII6EeW9D58bfYJKTQ"/>
+    </fixedFactorValues>
+    <resourcePowerModelSpecification href="declarativePowerModels.spec#_p0__YoI6EeW9D58bfYJKTQ"/>
+  </powerBindings>
 </de.fzi.power:PowerBindingRepository>

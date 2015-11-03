@@ -15,9 +15,10 @@
         <resourceContainer href="iaas.resourceenvironment#_yaTfsAEpEeS7FKokKTKFow"/>
       </nestedPowerConsumingEntities>
       <nestedPowerConsumingEntities xsi:type="de.fzi.power:MountedPowerDistributionUnit" id="_2PWjRJgGEeS8naF2VwaQgQ" name="nestedMountedPduServer2" suppliablePeakPower="3,000 W">
-        <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_UX0LopgHEeS8naF2VwaQgQ" name="powerConsumingCpu2">
+        <nestedPowerConsumingEntities xsi:type="de.fzi.power:StatefulPowerConsumingResource" id="_pElrkoI5EeWCRu5beQNLXQ" name="powerConsumingCpu2 (Stateful)">
           <processingResourceSpecification href="iaas.resourceenvironment#_JPnqkAEqEeS7FKokKTKFow"/>
-          <resourcePowerAssemblyContext href="iaas.binding#_JQXykJgGEeS8naF2VwaQgQ"/>
+          <powerState href="iaas.binding#_5pzKUII5EeWCRu5beQNLXQ"/>
+          <statefulResourcePowerBinding href="iaas.binding#_2AXlgoI5EeWCRu5beQNLXQ"/>
         </nestedPowerConsumingEntities>
         <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_UzCvEpgHEeS8naF2VwaQgQ" name="powerConsumingHdd2">
           <processingResourceSpecification href="iaas.resourceenvironment#_K2xOkAEqEeS7FKokKTKFow"/>
