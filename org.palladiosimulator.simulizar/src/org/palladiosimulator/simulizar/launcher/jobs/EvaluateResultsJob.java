@@ -27,6 +27,7 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilter;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilterConfiguration;
 import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -41,8 +42,8 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     private final SimuLizarWorkflowConfiguration configuration;
     private ExperimentSetting experimentSetting;
     private EList<ServiceLevelObjective> serviceLevelObjectives;
-
-    EvaluateResultsJob(final SimuLizarWorkflowConfiguration configuration) {
+    
+    public EvaluateResultsJob(final SimuLizarWorkflowConfiguration configuration) {
         super();
         this.configuration = configuration;
     }
@@ -53,7 +54,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     }
 
     @Override
-    public void execute(final IProgressMonitor arg0) throws JobFailedException, UserCanceledException {
+    public void execute(final IProgressMonitor progressMonitor) throws JobFailedException, UserCanceledException {
 
         final PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard()
                 .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
@@ -66,7 +67,9 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             final String basename = this.configuration.getSimulationConfiguration().getNameBase();
             final String variation = this.configuration.getSimulationConfiguration().getVariationId();
 
-            final ModelAccess modelAccess = new ModelAccess(this.getBlackboard());
+//          FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences. 
+//          After we find a way to copy models so that their links do not point to intermediary, but to the models directly.
+            final ModelAccessUseOriginalReferences modelAccess = new ModelAccessUseOriginalReferences(this.getBlackboard());
             this.serviceLevelObjectives = modelAccess.getServiceLevelObjectiveRepositoryModel()
                     .getServicelevelobjectives();
 
@@ -80,6 +83,11 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             this.experimentSetting.getExperimentRuns().get(lastExperiment);
 
             final long[] sloViolations = this.computeSloViolations();
+            if(sloViolations[1] == 0){
+            	this.LOGGER.info("THE STATE WITH NO SLO VIOLATIONS WAS REACHED.");
+            	progressMonitor.setCanceled(true);
+            	progressMonitor.done();
+            }
             this.LOGGER.info("Service level objectives were violated in " + sloViolations[1]
                     + " measurements within a total of " + sloViolations[0] + " measurments.");
         }
@@ -121,7 +129,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
             sloViolations += dataStream.size();
             dataStream.close();
         }
-
+        
         final long[] result = new long[2];
         result[0] = totalMeasurements;
         result[1] = sloViolations;

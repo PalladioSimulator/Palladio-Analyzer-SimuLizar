@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
@@ -48,8 +49,10 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOGGER.info("Start job: " + this);
 
         LOGGER.info("Initialise Simulizar runtime state");
+//      FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences. 
+//      After we find a way to copy models so that their links do not point to intermediary, but to the models directly.
         final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
-                new ModelAccess(this.blackboard));
+                new ModelAccessUseOriginalReferences(this.blackboard));
 
         this.initializeRuntimeStateAccessors(runtimeState);
 

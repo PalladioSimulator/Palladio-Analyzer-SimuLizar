@@ -19,6 +19,7 @@ import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
@@ -66,7 +67,9 @@ public class SimuLizarRuntimeState {
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
-    private final ModelAccess modelAccess;
+//  FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences. 
+//  After we find a way to copy models so that their links do not point to intermediary, but to the models directly.
+    private final ModelAccessUseOriginalReferences modelAccess;
     private final Reconfigurator reconfigurator;
     private final IModelSyncer[] modelSyncers;
 
@@ -76,7 +79,7 @@ public class SimuLizarRuntimeState {
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess) {
+    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccessUseOriginalReferences modelAccess) {
         super();
         this.modelAccess = modelAccess;
         this.model = SimuComModelFactory.createSimuComModel(configuration);

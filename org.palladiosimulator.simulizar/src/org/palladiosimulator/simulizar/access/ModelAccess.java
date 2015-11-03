@@ -177,7 +177,8 @@ public class ModelAccess implements IModelAccess {
     /**
      * @return a copy of the global PCM modelling partition
      */
-    private PCMResourceSetPartition copyPCMPartition() {
+    // FIXME @Igor: Return the access level back to private when ModelAccessUseOriginalReferences is not needed anymore.
+    protected PCMResourceSetPartition copyPCMPartition() {
         LOGGER.debug("Take a new copy of the global PCM for new simulation threads");
         final PCMResourceSetPartition newPartition = new PCMResourceSetPartition();
         final List<EObject> modelCopy = EMFCopyHelper.deepCopyToEObjectList(this.pcmPartition.getResourceSet());
