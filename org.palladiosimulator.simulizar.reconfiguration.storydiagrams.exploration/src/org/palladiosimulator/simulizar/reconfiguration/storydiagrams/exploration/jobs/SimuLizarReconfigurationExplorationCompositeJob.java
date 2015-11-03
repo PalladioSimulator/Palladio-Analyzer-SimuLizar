@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.jobs;
 
-import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -18,9 +17,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  */
 public class SimuLizarReconfigurationExplorationCompositeJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
         implements IBlackboardInteractingJob<MDSDBlackboard> {
-
-    private static final Logger LOGGER = Logger.getLogger(SimuLizarReconfigurationExplorationCompositeJob.class
-            .getName());
 
     /**
      * Constructor

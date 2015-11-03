@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.jobs;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +14,7 @@ import org.eclipse.core.resources.IWorkspaceRunnable;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -25,16 +25,20 @@ import org.eclipse.emf.ecore.util.Diagnostician;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.configurations.AbstractPCMWorkflowRunConfiguration;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
 import org.palladiosimulator.pcm.repository.Repository;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
+import org.palladiosimulator.simulizar.launcher.jobs.LoadMonitorRepositoryModelIntoBlackboardJob;
+import org.palladiosimulator.simulizar.launcher.jobs.LoadServiceLevelObjectiveRepositoryIntoBlackboardJob;
+import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs.LoadSDMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.SDMReconfigurationSpaceExplorer;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
@@ -53,15 +57,11 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 
 	private MDSDBlackboard blackboard;
 
-	private final List<PCMStartInterpretationJob> jobs;
-
 	public RunSimuLizarScalabilityAnalysisJob(final SimuLizarWorkflowConfiguration configuration) {
 		super();
 		this.configuration = configuration;
-		this.jobs = new ArrayList<PCMStartInterpretationJob>();
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 		final ResourceSetPartition resourceSetPartition = this.blackboard
@@ -82,8 +82,6 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 			e.printStackTrace();
 		}
 
-		final PCMResourceSetPartition pcmPartition = new PCMResourceSetPartition();
-
 		/*
 		 * Setting up the name of the ExperimentSetting in the EDP2 repository
 		 * so that all the jobs created below fall under the separate
@@ -96,14 +94,17 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 		int j = 0;
 		for (final EObject stepGraph : reachabilityGraph) {
 			final StepGraph models = ((StepGraph) stepGraph);
+			final PCMResourceSetPartition pcmPartition = new PCMResourceSetPartition();
+			pcmPartition.initialiseResourceSetEPackages(AbstractPCMWorkflowRunConfiguration.PCM_EPACKAGES);
+			pcmPartition.loadModel(PreparePCMBlackboardPartitionJob.PCM_PALLADIO_PRIMITIVE_TYPE_REPOSITORY_URI);
+			pcmPartition.loadModel(PreparePCMBlackboardPartitionJob.PCM_PALLADIO_RESOURCE_TYPE_URI);
+			String modelsDirectory = temporaryDataLocation + "/model/PCM_partition_state_" + j++;
+			URI modelURI = URI.createFileURI(modelsDirectory);
 
-			URI modelURI = URI.createFileURI(temporaryDataLocation + "/model/PCM_partition_state_" + j++);
-
-			// resource.getContents().addAll(models.getContainedNodes());
 			for (int i = 0; i < models.getContainedNodes().size(); i++) {
-				final Resource resource = pcmPartition.getResourceSet().createResource(
-						URI.createFileURI(temporaryDataLocation + "/model/PCM_partition_state_" + models.getHash()));
 				final EObject model = EcoreUtil.copy(models.getContainedNodes().get(i));
+				final Resource resource = pcmPartition.getResourceSet()
+						.createResource(URI.createFileURI(modelsDirectory + model.hashCode()));
 				Diagnostic diagnostic = Diagnostician.INSTANCE.validate(model);
 				if (!(diagnostic.getSeverity() == Diagnostic.OK)) {
 					StringBuilder sb = new StringBuilder();
@@ -112,19 +113,20 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 					throw new RuntimeException(sb.toString());
 				}
 				LOGGER.info("Adding model " + model.toString());
+
 				resource.getContents().add(model);
 				exportPcmModel(model, modelURI, monitor);
 			}
 
-			try {
-				pcmPartition.storeAllResources();
-			} catch (final IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
 			final MDSDBlackboard jobBlackboard = new MDSDBlackboard();
 			jobBlackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmPartition);
+			jobBlackboard.addPartition(LoadSimuLizarModelsIntoBlackboardJob.PCM_MODELS_ANALYZED_PARTITION_ID,
+					this.blackboard
+							.getPartition(LoadSimuLizarModelsIntoBlackboardJob.PCM_MODELS_ANALYZED_PARTITION_ID));
+			jobBlackboard.addPartition(LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID,
+					this.blackboard.getPartition(LoadSDMModelsIntoBlackboardJob.SDM_MODEL_PARTITION_ID));
+			jobBlackboard.addPartition(SDMReconfigurationSpaceExplorer.SDM_RECONFIGURATION_STATE_SPACE,
+					this.blackboard.getPartition(SDMReconfigurationSpaceExplorer.SDM_RECONFIGURATION_STATE_SPACE));
 
 			/*
 			 * Creating a new configuration for a job with a new SimuComConfig
@@ -141,21 +143,43 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 
 			SimuComConfig simulationConfiguration = new SimuComConfig(attributes, false);
 			conf.setSimuComConfiguration(simulationConfiguration);
+			LoadMonitorRepositoryModelIntoBlackboardJob mrJob = new LoadMonitorRepositoryModelIntoBlackboardJob(conf);
+			mrJob.setBlackboard(jobBlackboard);
+			mrJob.execute(monitor);
+			LoadServiceLevelObjectiveRepositoryIntoBlackboardJob slJob = new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(
+					conf);
+			slJob.setBlackboard(jobBlackboard);
+			slJob.execute(monitor);
 
-			final PCMStartInterpretationJob simulizarJob = new PCMStartInterpretationJob(conf);
+			final PCMInterpretationAndEvaluationJob simulizarJob = new PCMInterpretationAndEvaluationJob(conf);
 			simulizarJob.setBlackboard(jobBlackboard);
 			this.add(simulizarJob);
-
-		}
-
-		for (final IJob job : this.myJobs) {
-			if (job instanceof IBlackboardInteractingJob) {
-				((IBlackboardInteractingJob) job).setBlackboard(this.blackboard);
+			// A separate NullProgressMonitor is used per simulation, so that
+			// the cancellation
+			// does not propagate to the main ProgressMonitor. If
+			// simulizarJobMonitor is cancelled
+			// it is an indicator that no other
+			// PCMInterpretationAndEvaluationJobs should be
+			// executed. The state has reached, where no SLOs are violated.
+			NullProgressMonitor simulizarJobMonitor = new NullProgressMonitor();
+			super.execute(simulizarJobMonitor);
+			if (simulizarJobMonitor.isCanceled()) {
+				break;
 			}
 		}
-		super.execute(monitor);
 	}
 
+	/**
+	 * Exports the PCM {@code model} to the file whose path is
+	 * {@code folderPath}.
+	 * 
+	 * @param model
+	 *            model to be exported
+	 * @param folderPath
+	 *            the path to which the {@code model} will be exported.
+	 * @param monitor
+	 *            ProgressMonitor.
+	 */
 	private void exportPcmModel(final EObject model, final URI folderPath, IProgressMonitor monitor) {
 		IWorkspaceRunnable exportPcmModelRunnable = new IWorkspaceRunnable() {
 
@@ -166,8 +190,10 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 					String modelURI = folderPath.toString() + "/" + model.toString();
 					if (model.toString().contains("Repository")) {
 						Repository r = (Repository) model;
-						// We do not want to export PrimitiveDataTypes definition, but the defaultRepository.
-						// We are interested in components definitions rather than in PrimitiveDataTypes definitions.
+						// We do not want to export PrimitiveDataTypes
+						// definition, but the defaultRepository.
+						// We are interested in components definitions rather
+						// than in PrimitiveDataTypes definitions.
 						if (r.getEntityName().equals("PrimitiveDataTypes")) {
 							return;
 						}
@@ -187,7 +213,7 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 					}
 					final URI fileURI = URI.createPlatformResourceURI(modelURI, true);
 					final Resource resource = resourceSet.createResource(fileURI);
-					resource.getContents().add(model);
+					resource.getContents().add(EcoreUtil.copy(model));
 
 					// Save the contents of the resource to the file system.
 					final Map<Object, Object> options = new HashMap<Object, Object>();
@@ -250,10 +276,6 @@ public class RunSimuLizarScalabilityAnalysisJob extends SequentialJob
 	@Override
 	public void setBlackboard(final MDSDBlackboard blackboard) {
 		this.blackboard = blackboard;
-	}
-
-	public List<PCMStartInterpretationJob> getJobs() {
-		return this.jobs;
 	}
 
 }

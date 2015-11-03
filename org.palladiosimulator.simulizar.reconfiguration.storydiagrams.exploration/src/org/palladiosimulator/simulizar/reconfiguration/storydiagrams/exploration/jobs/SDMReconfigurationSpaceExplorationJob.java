@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploratio
 
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.SDMReconfigurationSpaceExplorer;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -15,7 +14,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class SDMReconfigurationSpaceExplorationJob implements IBlackboardInteractingJob<MDSDBlackboard> {
 
-    private static final Logger LOGGER = Logger.getLogger(SDMReconfigurationSpaceExplorationJob.class.getName());
+    
 
     // private final SDMReconfigurationSpaceExplorer explorer;
 
