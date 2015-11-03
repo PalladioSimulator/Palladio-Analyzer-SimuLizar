@@ -7,7 +7,7 @@
     <fixedFactorValues id="_R18hQJgGEeS8naF2VwaQgQ" value="400 W">
       <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_hpdvYGOQEeWW76L-WpK6kQ"/>
     </fixedFactorValues>
-    <resourcePowerModelSpecification href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_R_P5QmOQEeWW76L-WpK6kQ"/>
+    <resourcePowerModelSpecification href="declarativePowerModels.spec#_culCEn1gEeWUt_x9QCHofA"/>
   </powerBindings>
   <powerBindings xsi:type="de.fzi.power:DistributionPowerBinding" id="_I4tggZgGEeS8naF2VwaQgQ" name="loslessDistribution">
     <fixedFactorValues id="_kYZIwJgGEeS8naF2VwaQgQ" value="0 W">
@@ -28,6 +28,6 @@
     <fixedFactorValues id="_Ac1ZwGgiEeWM8bUtzui0_Q" value="200 W">
       <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_5v610GghEeWM8bUtzui0_Q"/>
     </fixedFactorValues>
-    <distributionPowerModel href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_iIhDwGd-EeWSzN49MVDdQw"/>
+    <distributionPowerModel href="declarativePowerModels.spec#_on3u0n1hEeWs5NTiSBh3Qw"/>
   </powerBindings>
 </de.fzi.power:PowerBindingRepository>
