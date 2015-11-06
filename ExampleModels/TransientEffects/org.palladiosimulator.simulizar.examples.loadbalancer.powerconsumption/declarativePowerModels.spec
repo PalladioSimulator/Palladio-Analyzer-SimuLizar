@@ -13,7 +13,7 @@
       <metricType href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricSpec#_NbIowlt_EeS0LdH-diVVEQ"/>
     </consumptionFactors>
   </powerModelSpecifications>
-  <powerModelSpecifications xsi:type="de.fzi.power:DeclarativePowerModelSpecification" id="_p0__YoI6EeW9D58bfYJKTQ" name="Declarative StandBy Power Model (Test)" functionalExpression="Consumption">
-    <consumptionFactors xsi:type="de.fzi.power:FixedFactor" id="_19KEAII6EeW9D58bfYJKTQ" name="Standby Consumption"/>
+  <powerModelSpecifications xsi:type="de.fzi.power:DeclarativePowerModelSpecification" id="_p0__YoI6EeW9D58bfYJKTQ" name="Declarative StandBy Power Model (Test)" functionalExpression="StandbyConsumption">
+    <consumptionFactors xsi:type="de.fzi.power:FixedFactor" id="_19KEAII6EeW9D58bfYJKTQ" name="StandbyConsumption"/>
   </powerModelSpecifications>
 </de.fzi.power:PowerModelRepository>
