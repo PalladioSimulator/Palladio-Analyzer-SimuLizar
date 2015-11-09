@@ -211,7 +211,7 @@ public class SimuLizarRuntimeState {
 
                         @Override
                         public void execute(final Notification notification) {
-                            LOGGER.info(" " + notification.getNotifier());
+                            LOGGER.debug(" " + notification.getNotifier());
                         }
                     });
 
