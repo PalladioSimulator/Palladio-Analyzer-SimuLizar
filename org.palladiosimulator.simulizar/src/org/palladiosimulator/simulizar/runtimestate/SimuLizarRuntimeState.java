@@ -204,18 +204,16 @@ public class SimuLizarRuntimeState {
             public void reconfigurationExecuted(final ReconfigurationExecutedEvent reconfExecutedEvent) {
                 if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS
                         && reconfExecutedEvent.getDuration() > 0) {
-                    LOGGER.info("------- Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
-                            + " time units-------");
-                    LOGGER.info("-------------- Collected notifications:");
+                    LOGGER.debug("Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
+                            + " time units");
+                    LOGGER.debug("Collected notifications:");
                     CollectionUtils.forAllDo(reconfExecutedEvent.getModelChanges(), new Closure<Notification>() {
 
                         @Override
                         public void execute(final Notification notification) {
-                            LOGGER.info("--------------------- " + notification.getNotifier());
+                            LOGGER.info(" " + notification.getNotifier());
                         }
                     });
-                    LOGGER.info("--------------");
-                    LOGGER.info("-------");
 
                     if (numberOfResourceCalculatorsProbes != null
                             && SimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
