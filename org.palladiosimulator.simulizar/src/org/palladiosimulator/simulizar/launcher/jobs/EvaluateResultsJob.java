@@ -69,7 +69,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 
 //          FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences. 
 //          After we find a way to copy models so that their links do not point to intermediary, but to the models directly.
-            final ModelAccessUseOriginalReferences modelAccess = new ModelAccessUseOriginalReferences(this.getBlackboard());
+            final ModelAccess modelAccess = new ModelAccessUseOriginalReferences(this.getBlackboard());
             this.serviceLevelObjectives = modelAccess.getServiceLevelObjectiveRepositoryModel()
                     .getServicelevelobjectives();
 
