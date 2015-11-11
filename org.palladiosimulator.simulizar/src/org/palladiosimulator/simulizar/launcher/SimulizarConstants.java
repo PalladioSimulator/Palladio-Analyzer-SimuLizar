@@ -26,6 +26,12 @@ public class SimulizarConstants {
     public static final String RECONFIGURATION_ENGINE_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.reconfigurationengine";
     public static final String RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE = "reconfigurationEngine";
 
+    /**
+     * Id of the extension point used for adapting SimuLizar configurations
+     */
+    public static final String CONFIGURATOR_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.configurator";
+    public static final String CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE = "configurator";
+
     /*
      * Set the file extensions which the dialogs will use as selection filter and for file name
      * validation.
