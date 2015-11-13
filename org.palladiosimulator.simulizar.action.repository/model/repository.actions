@@ -35,4 +35,18 @@
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
     </involvedRoles>
   </actions>
+  <actions id="_-DPJ8InzEeWm8ose-zjfHg" entityName="PowerStateChangingAction">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_X4kwQIn0EeWm8ose-zjfHg" entityName="PowerStateChanging" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/changepowerstatecompletion.qvto" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/changepowerstate.qvto" preconditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/changepowerstatecondition.qvto">
+      <controllerCalls id="_kn6SMIoLEeWm8ose-zjfHg" entityName="dummy">
+        <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_63lUEOqDEeS1xrjFer2CUg"/>
+        <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_zm-xEOp_EeS1xrjFer2CUg"/>
+      </controllerCalls>
+    </adaptationSteps>
+    <involvedRoles id="_AfvooYn0EeWm8ose-zjfHg" entityName="AffectedStatefulPowerConsumigResource">
+      <type href="../../de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResource"/>
+    </involvedRoles>
+    <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="TargetPowerState">
+      <type href="../../de.fzi.power/model/power.ecore#//binding/PowerState"/>
+    </involvedRoles>
+  </actions>
 </org.palladiosimulator.action:ActionRepository>

@@ -1,0 +1,25 @@
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+
+modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+modeltype POWER_BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.0';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
+
+transformation checkPreconditions(
+							inout powerInfrastructure : INFRASTRUCTURE,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+property migratedComponentContextName = 'MigratedComponentAssemblyContext';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		
+	}
+	
+}

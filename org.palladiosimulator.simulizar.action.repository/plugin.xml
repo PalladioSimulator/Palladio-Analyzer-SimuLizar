@@ -23,10 +23,27 @@
           </metamodel>
        </library>
     </unit>
+    <unit
+          name="SimulationStateLibrary"
+          namespace="org.palladiosimulator.simulizar.action.repository.black">
+       <library
+             class="org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary"
+             name="SimulationStateLibrary">
+              <metamodel
+                nsURI="http://www.eclipse.org/emf/2002/Ecore">
+          </metamodel>
+       </library>
+    </unit>
  </extension>
  
 <extension point="org.modelversioning.emfprofile.profile">
 	<profile profile_resource="transientstates/componentmigration.emfprofile_diagram"/>
 	<profile profile_resource="transientstates/componentinstantiation.emfprofile_diagram"/>
+</extension>
+<extension
+      point="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor">
+   <runtimeStateAccessor
+         accessor="org.palladiosimulator.simulizar.action.repository.black.LibraryStateAccessor">
+   </runtimeStateAccessor>
 </extension>
 </plugin>
