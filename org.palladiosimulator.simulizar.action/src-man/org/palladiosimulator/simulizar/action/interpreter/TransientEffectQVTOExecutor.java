@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -73,9 +74,9 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         // combination of the two yields 3
         // independent of the frequency of occurrence of each of which
         if (flags != 3) {
-            throw new RuntimeException("Precondition " + this.preconditionUri
-                    + " must have at least 'in'/'inout' parameters of type " + ACTION_EPACKAGE.getNsURI() + " and "
-                    + ROLE_SET_EPACKAGE.getNsURI());
+            throw new RuntimeException(
+                    "Precondition " + this.preconditionUri + " must have at least 'in'/'inout' parameters of type "
+                            + ACTION_EPACKAGE.getNsURI() + " and " + ROLE_SET_EPACKAGE.getNsURI());
         }
     }
 
@@ -124,9 +125,9 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
             // independent of the frequency of occurrence of each of which
         }
         if (flags != 3) {
-            throw new RuntimeException("AdaptationStep " + this.adaptationStepUri
-                    + " must have at least 'in'/'inout' parameters of type " + MAPPING_EPACKAGE.getNsURI() + " and "
-                    + ROLE_SET_EPACKAGE.getNsURI());
+            throw new RuntimeException(
+                    "AdaptationStep " + this.adaptationStepUri + " must have at least 'in'/'inout' parameters of type "
+                            + MAPPING_EPACKAGE.getNsURI() + " and " + ROLE_SET_EPACKAGE.getNsURI());
         }
     }
 
@@ -138,7 +139,7 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         return executeTransformation(this.adaptationStepUri);
     }
 
-    final Mapping executeControllerCompletion(Repository controllerCompletionRepository) {
+    final Optional<Mapping> executeControllerCompletion(Repository controllerCompletionRepository) {
         EObject repoInCache = null;
         if (getAvailableModels().containsModelOfType(REPOSITORY_EPACKAGE)) {
             // save
@@ -153,20 +154,18 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         if (result) {
             EObject resultObj = getAvailableModels().getModelByType(MAPPING_EPACKAGE);
             if (resultObj != null) {
-                return (Mapping) resultObj;
+                return Optional.of((Mapping) resultObj);
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
     protected boolean handleExecutionResult(ExecutionDiagnostic executionResult) {
         boolean result = super.handleExecutionResult(executionResult);
         if (result) {
-            for (ModelExtent outParam : this.currentPureOutParams) {
-                EObject resultModel = outParam.getContents().get(0);
-                getAvailableModels().storeModel(resultModel);
-            }
+            this.currentPureOutParams.stream().map(ModelExtent::getContents).filter(contents -> !contents.isEmpty())
+                    .forEach(contents -> getAvailableModels().storeModel(contents.get(0)));
         }
         return result;
     }
@@ -175,9 +174,8 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     protected ModelExtent[] setupModelExtents(TransformationData data) {
         this.currentPureOutParams.clear();
         ModelExtent[] result = super.setupModelExtents(data);
-        for (TransformationParameterInformation outParam : data.getPureOutParameters()) {
-            this.currentPureOutParams.add(result[outParam.getParameterIndex()]);
-        }
+        data.getPureOutParameters()
+                .forEach(outParam -> this.currentPureOutParams.add(result[outParam.getParameterIndex()]));
         return result;
     }
 }

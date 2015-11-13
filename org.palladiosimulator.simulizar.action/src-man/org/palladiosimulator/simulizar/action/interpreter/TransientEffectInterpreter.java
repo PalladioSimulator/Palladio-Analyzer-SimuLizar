@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -36,7 +37,6 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
@@ -60,9 +60,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     @Override
     public Boolean caseAction(final Action action) {
         boolean successful = true;
-        for (final AdaptationStep step : action.getAdaptationSteps()) {
-            successful &= this.doSwitch(step);
-        }
+        action.getAdaptationSteps().stream().reduce(Boolean.TRUE, (result, step) -> doSwitch(step),
+                Boolean::logicalAnd);
         if (successful) {
             this.state.getReconfigurator().getReconfigurationProcess()
                     .appendReconfigurationNotification(new ActionExecutedNotification(action));
@@ -90,10 +89,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
          * should be handled differently than stereotype applications.
          */
         Repository repository = step.getControllerCalls().get(0).getComponent().getRepository__RepositoryComponent();
-        Mapping mapping = controllerCompletion(repository);
-        if (mapping == null) {
-            throw new RuntimeException("Controller Completion transformation failed!");
-        }
+        Mapping mapping = controllerCompletion(repository)
+                .orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
 
         List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
         SimuComModel model = this.state.getMainContext().getModel();
@@ -106,9 +103,9 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
 
             ControllerCall call = controllerMapping.getMappedCall();
-            List<Probe> usageStartStopProbes = Collections.unmodifiableList(Arrays.asList(
-                    (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
-                    (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
+            List<Probe> usageStartStopProbes = Collections.unmodifiableList(
+                    Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
+                            (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
             OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " " + call.getEntityName(),
                     createAndScheduleControllerScenarioRunner(controllerMapping, reconfigurationProcess),
                     usageStartStopProbes);
@@ -129,30 +126,25 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     private IScenarioRunner createAndScheduleControllerScenarioRunner(final ControllerMapping controllerMapping,
             final ReconfigurationProcess reconfigurationProcess) {
-        return new IScenarioRunner() {
-            @Override
-            public void scenarioRunner(final SimuComSimProcess process) {
-                LOGGER.log(Level.INFO, "Starting with the controller scenario!");
-                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(),
-                        process);
-                final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
-                final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-                usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
-                final List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
-                final Start start = UsagemodelFactory.eINSTANCE.createStart();
-                final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-                final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
-                actions.add(start);
-                actions.add(sysCall);
-                actions.add(stop);
-                sysCall.setOperationSignature__EntryLevelSystemCall(controllerMapping.getMappedCall()
-                        .getCalledSignature());
-                sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
-                start.setSuccessor(sysCall);
-                sysCall.setSuccessor(stop);
-                new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-                reconfigurationProcess.scheduleAt(0);
-            }
+        return process -> {
+            LOGGER.log(Level.INFO, "Starting with the controller scenario!");
+            final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
+            final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
+            final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
+            usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
+            final List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
+            final Start start = UsagemodelFactory.eINSTANCE.createStart();
+            final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
+            final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
+            actions.add(start);
+            actions.add(sysCall);
+            actions.add(stop);
+            sysCall.setOperationSignature__EntryLevelSystemCall(controllerMapping.getMappedCall().getCalledSignature());
+            sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
+            start.setSuccessor(sysCall);
+            sysCall.setSuccessor(stop);
+            new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
+            reconfigurationProcess.scheduleAt(0);
         };
     }
 
@@ -161,16 +153,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     }
 
     private boolean checkIfUsersRun(final Collection<OpenWorkloadUser> users) {
-        for (final OpenWorkloadUser user : users) {
-            if (!user.isTerminated()) {
-                return true;
-            }
-        }
-
-        return false;
+        return users.stream().anyMatch(u -> !u.isTerminated());
     }
 
-    private Mapping controllerCompletion(Repository controllerRepository) {
+    private Optional<Mapping> controllerCompletion(Repository controllerRepository) {
         return this.qvtoExecutor.executeControllerCompletion(controllerRepository);
     }
 
