@@ -59,8 +59,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseAction(final Action action) {
-        boolean successful = true;
-        action.getAdaptationSteps().stream().reduce(Boolean.TRUE, (result, step) -> doSwitch(step),
+        boolean successful = action.getAdaptationSteps().stream().reduce(Boolean.TRUE, (result, step) -> doSwitch(step),
                 Boolean::logicalAnd);
         if (successful) {
             this.state.getReconfigurator().getReconfigurationProcess()
