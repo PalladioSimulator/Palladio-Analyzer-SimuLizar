@@ -1,0 +1,78 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule increases the processing rate of all
+ * resources in case the monitored mean response time is greater than 3.0 (seconds). 
+ *
+ */
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype POWER_INF uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
+modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
+modeltype PCM_MP uses 'http://palladiosimulator.org/PCM/MeasuringPoint/1.0';
+modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
+
+/*
+ * The transformation signature declares that a PRM modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The PRM modeltype is referenced as 'prm' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation SwitchToStandby(		
+							in prm : RUNTIMEMEASUREMENT,
+							inout powerInfrastructure : POWER_INF,
+							inout actionsInput : ACTIONS,
+							out roleSets : INSTANCE) {
+							
+							
+	property actionRepository : ActionRepository = actionsInput.rootObjects()[core::ActionRepository]->any(true);
+	property changePowerStateActionId : String = '_-DPJ8InzEeWm8ose-zjfHg';
+	property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
+	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+		log('SimuLizar \'Switch To Standby\' Rule Transformation started');
+		
+		var runtimeMeasurements = prm.rootObjects()[RuntimeMeasurement];
+		
+		assert fatal(runtimeMeasurements->size() > 0)
+			with log ("No Measurements found!");
+			
+		var runningStatefulResource = powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON"]->any(true);
+		if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
+			var idleStateMeasurements := runtimeMeasurements->filterEmptyUtilizationMeasuements();
+			var idleMeasurementsOfResource := idleStateMeasurements[measuringPoint.oclIsTypeOf(ActiveResourceMeasuringPoint) and measuringPoint.oclAsType(ActiveResourceMeasuringPoint).activeResource.id = runningStatefulResource.processingResourceSpecification.id];
+			if (idleMeasurementsOfResource->notEmpty()) {
+				var changePowerStateAction : Action := actionRepository.actions[id = changePowerStateActionId]->any(true);
+				var actionRoleSet := object RoleSet@roleSets {
+					//the desired power state
+					roles += object instance::Role {
+						roleType := changePowerStateAction.involvedRoles[id = desiredPowerStateRoleId]->any(true);
+						value := runningStatefulResource.statefulResourcePowerBinding.powerStates->any(name = "STANDBY").oclAsType(EObject);
+					};
+					//the affected stateful resource
+					roles += object instance::Role {
+						roleType := changePowerStateAction.involvedRoles[id=affectedResourceRoleId]->any(true);
+						value := runningStatefulResource.oclAsType(EObject);
+					}
+				};
+				changePowerStateAction.execute(actionRoleSet);
+				log('Change of Power State executed');
+				log("Changed power state of stateful resource to: " + runningStatefulResource.powerState.name);
+			};
+		};
+	}
+	
+	query Set(RuntimeMeasurement) :: filterEmptyUtilizationMeasuements() : Set(RuntimeMeasurement) {
+		return self[measurementSpecification.metricDescription.name = "Utilization of Active Resource Tuple" and measuringValue = 0.0];
+	}
+}

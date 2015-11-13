@@ -30,6 +30,10 @@
       <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9A" intervall="42.0"/>
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
     </measurementSpecifications>
+    <measurementSpecifications id="__byig4ohEeWZ-ugH8bt2Fw">
+      <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_Bfm0QYoiEeWZ-ugH8bt2Fw" intervall="10.0" delay="5.0"/>
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_mhws4SkUEeSuf8LV7cHLgA"/>
+    </measurementSpecifications>
     <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.3"/>
   </monitors>
   <monitors id="_FaKyUfmIEeSpp_9_vIv4FA" entityName="hddServer2Monitor">
