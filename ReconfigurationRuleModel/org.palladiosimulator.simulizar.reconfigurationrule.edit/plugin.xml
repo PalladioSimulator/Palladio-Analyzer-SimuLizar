@@ -10,7 +10,7 @@
       <!-- @generated reconfigurationrule -->
       <factory
             uri="http://palladiosimulator.org/simulizar/reconfiguration/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.provider.ReconfigurationItemProviderAdapterFactory"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.provider.ReconfigurationItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
