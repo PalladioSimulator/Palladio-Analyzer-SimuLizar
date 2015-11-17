@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -9,7 +7,6 @@ import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
@@ -18,14 +15,15 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
- * Class whose objects will listen on changes in the PCM@Runtime and trigger
- * reconfigurations respectively.
- * 
+ * Class whose objects will listen on changes in the PCM@Runtime (i.e., they track changes in the
+ * {@link RuntimeMeasurementModel}) and trigger reconfigurations respectively.
+ *
  * @author Steffen Becker
  * @author Matthias Becker
  * @author Sebastian Lehrig
@@ -34,203 +32,173 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  */
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
 
-	/**
-	 * This class' internal LOGGER.
-	 */
-	private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
+    /**
+     * This class' internal LOGGER.
+     */
+    private static final Logger LOGGER = Logger.getLogger(Reconfigurator.class);
 
-	/**
-	 * After executing a reconfiguration, current model changes within the PCM
-	 * blackboard partition are tracked here.
-	 */
-	private final Collection<Notification> modelChanges = new LinkedList<Notification>();
+    /**
+     * Change listener, which will convert selected changes in the RuntimeMeasurement instance into
+     * reconfiguration checks.
+     */
+    private final Adapter runtimeMeasurementListener = new EContentAdapter() {
 
-	/**
-	 * Change listener, which will convert selected changes in the
-	 * RuntimeMeasurement instance into reconfiguration checks.
-	 */
-	private final Adapter runtimeMeasurementListener = new EContentAdapter() {
+        @Override
+        public void notifyChanged(final Notification notification) {
+            super.notifyChanged(notification);
+            Reconfigurator.this.checkAndExecuteReconfigurations(notification);
+        }
+    };
 
-		@Override
-		public void notifyChanged(final Notification notification) {
-			super.notifyChanged(notification);
-			/*
-			 * TODO FIXME Christian this needs to be refactored and moved as
-			 * this is now triggered within the processes.
-			 */
-			modelChanges.clear();
-			Reconfigurator.this.checkAndExecuteReconfigurations(notification);
-			if (modelChanges.size() > 0) {
-				Reconfigurator.this.getEventDispatcher().reconfigurationExecuted(modelChanges);
-			}
-		}
+    /**
+     * Access interface to the RuntimeMeasurement model.
+     */
+    private final RuntimeMeasurementModel runtimeMeasurementModel;
 
-	};
+    /**
+     * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
+     */
+    private final List<IReconfigurator> reconfigurators;
 
-	/**
-	 * A log listener which logs all changes in the global PCM model.
-	 */
-	private final Adapter globalPCMChangeListener = new EContentAdapter() {
+    private final SimuComModel model;
 
-		@Override
-		public void notifyChanged(final Notification notification) {
-			super.notifyChanged(notification);
-			if (notification.getEventType() != Notification.REMOVING_ADAPTER) {
-				modelChanges.add(notification);
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Detected change in global PCM model. Changed object: " + notification.getNotifier());
-					LOGGER.debug(notification.toString());
-				}
-			}
-		}
+    // will be initialized lazily, once the first reconfiguration is to be executed
+    private ReconfigurationProcess reconfigurationProcess;
 
-	};
+    private double lastReconfigurationTime = 0;
 
-	/**
-	 * Access interface to the global PCM@Runtime model.
-	 */
-	private final PCMResourceSetPartition pcmResourceSetPartition;
+    /**
+     * Constructor.
+     *
+     * @param model
+     *
+     * @param modelAccessFactory
+     *            Access factory for model access interfaces.
+     * @param reconfigurators
+     *            Set of reconfigurators which will be triggered as soon as new, interesting
+     *            monitoring data arrives.
+     */
+    public Reconfigurator(final SimuComModel model, final IModelAccess modelAccessFactory,
+            final ISimulationControl simulationcontrol, final List<IReconfigurator> reconfigurators) {
+        super();
+        this.model = model;
+        this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
+        this.reconfigurators = reconfigurators;
+    }
 
-	/**
-	 * Access interface to the RuntimeMeasurement model.
-	 */
-	private final RuntimeMeasurementModel runtimeMeasurementModel;
+    /**
+     * Setup all listeners to listen for their respective model changes.
+     */
+    public void startListening() {
+        this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
+    }
 
-	/**
-	 * Set of all registered reconfigurators, i.e., objects that can change the
-	 * PCM@Runtime.
-	 */
-	private final List<IReconfigurationEngine> reconfigurators;
+    /**
+     * Detach all model listeners and request termination of reconfiguration process.
+     */
+    public void cleanUp() {
+        this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
+        // this also requires that the reconfiguration process be terminated
+        if (this.reconfigurationProcess != null) {
+            this.reconfigurationProcess.requestTermination();
 
-	private final SimuComModel model;
+        }
+    }
 
-	private ReconfigurationProcess reconfigurationProcess = null;
+    /**
+     * Method which is called on a change in the RuntimeMeasurement. All reconfigurators are
+     * informed and can check for potential reconfigurations.
+     *
+     * @param notification
+     *            The notification event, which describes a change in the RuntimeMeasurement model.
+     */
+    protected void checkAndExecuteReconfigurations(final Notification notification) {
+        final EObject monitoredElement = this.getMonitoredElement(notification);
 
-	private final IModelAccess modelAccessFactory;
+        // Value changed, reconfiguration is triggered. Reconfiguration only
+        // executes if the
+        // previous reconfiguration is finished. This could be done on a
+        // more fine-granular
+        // level (one thread per executor).
+        if (this.isNotificationNewMeasurement(monitoredElement)
+                && this.model.getSimulationControl().getCurrentSimulationTime() > this.lastReconfigurationTime
+                && (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
+            if (this.reconfigurationProcess == null) {
+                this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfigurators, this);
+            }
+            this.reconfigurationProcess.executeReconfigurations(this.runtimeMeasurementModel);
+            this.lastReconfigurationTime = this.model.getSimulationControl().getCurrentSimulationTime();
+        }
+    }
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param model
-	 * 
-	 * @param modelAccessFactory
-	 *            Access factory for model access interfaces.
-	 * @param reconfigurators
-	 *            Set of reconfigurators which will be triggered as soon as new,
-	 *            interesting monitoring data arrives.
-	 */
-	public Reconfigurator(SimuComModel model, final IModelAccess modelAccessFactory,
-			final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators) {
-		super();
-		this.model = model;
-		this.modelAccessFactory = modelAccessFactory;
-		this.pcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-		this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
-		this.reconfigurators = reconfigurators;
-	}
+    /**
+     * Checks whether the monitored element is not null
+     *
+     * @param monitoredElement
+     * @return true if the monitored element is not null
+     */
+    private boolean isNotificationNewMeasurement(final EObject monitoredElement) {
+        return monitoredElement != null;
+    }
 
-	/**
-	 * Setup all listeners to listen for their respective model changes.
-	 */
-	public void startListening() {
-		pcmResourceSetPartition.getResourceSet().eAdapters().add(this.globalPCMChangeListener);
-		this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
-	}
+    /**
+     * Visitor singleton which is used to query the monitored PCM object from a RuntimeMeasurement
+     * notification (which is a change in a {@link RuntimeMeasurement}).
+     */
+    private static final RuntimeMeasurementSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new RuntimeMeasurementSwitch<MeasuringPoint>() {
 
-	/**
-	 * Detach all model listeners.
-	 */
-	public void stopListening() {
-		this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
-		pcmResourceSetPartition.getResourceSet().eAdapters().remove(this.globalPCMChangeListener);
-	}
+        @Override
+        public MeasuringPoint caseRuntimeMeasurement(final RuntimeMeasurement object) {
+            return object.getMeasuringPoint();
+        };
 
-	/**
-	 * Method which is called on a change in the RuntimeMeasurement. All
-	 * reconfigurators are informed and can check for potential
-	 * reconfigurations.
-	 * 
-	 * @param notification
-	 *            The notification event, which describes a change in the
-	 *            RuntimeMeasurement model.
-	 */
-	protected void checkAndExecuteReconfigurations(final Notification notification) {
-		final EObject monitoredElement = this.getMonitoredElement(notification);
+    };
 
-		// Value changed, reconfiguration is triggered. Reconfiguration only
-		// executes if the
-		// previous reconfiguration process is finished. This could be done on a
-		// more fine-granular
-		// level (one thread per executor).
-		if (isNotificationNewMeasurement(monitoredElement)
-				&& (reconfigurationProcess == null || reconfigurationProcess.isFinished())) {
-			reconfigurationProcess = new ReconfigurationProcess(model, "Reconfiguration Process", this.reconfigurators,
-					monitoredElement, this.getEventDispatcher(), modelAccessFactory);
-			reconfigurationProcess.scheduleAt(0);
-		}
-	}
+    void fireReconfigurationEvent(final EndReconfigurationEvent endReconfigurationEvent) {
+        this.getEventDispatcher().endReconfigurationEvent(endReconfigurationEvent);
+    }
 
-	/**
-	 * Checks whether the monitored element is not null
-	 * 
-	 * @param monitoredElement
-	 * @return true if the monitored element is not null
-	 */
-	private boolean isNotificationNewMeasurement(final EObject monitoredElement) {
-		return monitoredElement != null;
-	}
+    void fireReconfigurationEvent(final BeginReconfigurationEvent beginReconfigurationEvent) {
+        this.getEventDispatcher().beginReconfigurationEvent(beginReconfigurationEvent);
+    }
 
-	/**
-	 * Visitor singleton which is used to query the monitored PCM object from a
-	 * RuntimeMeasurement notification (which is a change in a
-	 * {@link RuntimeMeasurement}).
-	 */
-	private static final RuntimeMeasurementSwitch<MeasuringPoint> MONITORED_ELEMENT_RETRIEVER = new RuntimeMeasurementSwitch<MeasuringPoint>() {
+    void fireReconfigurationEvent(final ReconfigurationExecutedEvent reconfigurationExecutedEvent) {
+        this.getEventDispatcher().reconfigurationExecuted(reconfigurationExecutedEvent);
+    }
 
-		@Override
-		public MeasuringPoint caseRuntimeMeasurement(final RuntimeMeasurement object) {
-			return object.getMeasuringPoint();
-		};
+    /**
+     * Retrieve the monitored PCM element from the RuntimeMeasurement change event.
+     *
+     * @param notification
+     *            The RuntimeMeasurment change event.
+     * @return The PCM element whose monitoring triggered the change event.
+     */
+    protected EObject getMonitoredElement(final Notification notification) {
+        switch (notification.getEventType()) {
+        case Notification.ADD:
+            return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNewValue());
+        case Notification.REMOVE:
+            return null;
+        case Notification.REMOVING_ADAPTER:
+            return null;
+        case Notification.SET:
+            // in this case, one feature such as value of notifier
+            // PcmModelElementMeasurement could
+            // have been set/changed
+            return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNotifier());
+        default:
+            LOGGER.warn("Unsupported RuntimeMeasurement Notification: " + notification);
+            return null;
+        }
+    }
 
-	};
-
-	void fireReconfigurationEvent(EndReconfigurationEvent endReconfigurationEvent) {
-		this.getEventDispatcher().endReconfigurationEvent(endReconfigurationEvent);
-	}
-
-	void fireReconfigurationEvent(BeginReconfigurationEvent beginReconfigurationEvent) {
-		this.getEventDispatcher().beginReconfigurationEvent(beginReconfigurationEvent);
-	}
-
-	/**
-	 * Retrieve the monitored PCM element from the RuntimeMeasurement change
-	 * event.
-	 * 
-	 * @param notification
-	 *            The RuntimeMeasurment change event.
-	 * @return The PCM element whose monitoring triggered the change event.
-	 */
-	protected EObject getMonitoredElement(final Notification notification) {
-		switch (notification.getEventType()) {
-		case Notification.ADD:
-			return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNewValue());
-		case Notification.REMOVE:
-			return null;
-		case Notification.REMOVING_ADAPTER:
-			return null;
-		case Notification.SET:
-			// in this case, one feature such as value of notifier
-			// PcmModelElementMeasurement could
-			// have been set/changed
-			return MONITORED_ELEMENT_RETRIEVER.doSwitch((EObject) notification.getNotifier());
-		default:
-			LOGGER.warn("Unsupported RuntimeMeasurement Notification: " + notification);
-			return null;
-		}
-	}
-
-	public ReconfigurationProcess getReconfigurationProcess() {
-		return reconfigurationProcess;
-	}
+    /**
+     * Gets the current reconfiguration process.
+     *
+     * @return The current {@link ReconfigurationProcess}.
+     */
+    public ReconfigurationProcess getReconfigurationProcess() {
+        return this.reconfigurationProcess;
+    }
 
 }

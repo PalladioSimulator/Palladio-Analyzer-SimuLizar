@@ -16,9 +16,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * rules provided in various models. The second class of models are read-only
  * copies of a subset of the global models provided to each simulated
  * process/thread when it starts to execute.
- * 
+ *
  * @author Steffen Becker, Joachim Meyer
- * 
+ *
  */
 public interface IModelAccess extends Cloneable {
 

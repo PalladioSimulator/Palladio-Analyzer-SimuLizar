@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
@@ -23,7 +23,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
     private final List<Double> reconfigurationTimes;
 
     /**
-     * 
+     *
      */
     public ReconfigurationTimeAggregator() {
         this.reconfigurationTimes = new LinkedList<Double>();
@@ -31,13 +31,13 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * org.palladiosimulator.measurementframework.IMeasurementSourceListener#newMeasurementAvailable
      * (org.palladiosimulator.measurementframework.AbstractMeasureProvider)
      */
     @Override
-    public void newMeasurementAvailable(MeasuringValue measurement) {
+    public void newMeasurementAvailable(final MeasuringValue measurement) {
         final Measure<Double, Duration> reconfigurationTimeMeasure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC);
         this.reconfigurationTimes.add(reconfigurationTimeMeasure.doubleValue(SI.SECOND));
@@ -45,7 +45,7 @@ public class ReconfigurationTimeAggregator implements IMeasurementSourceListener
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.palladiosimulator.measurementframework.IMeasurementSourceListener#preUnregister()
      */
     @Override

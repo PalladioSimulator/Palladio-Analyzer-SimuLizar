@@ -4,15 +4,15 @@ import java.util.Collection;
 
 /**
  * The statistical characterization "Arithmetic Mean"
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class ArithmeticMean implements IStatisticalCharacterization {
 
     /**
      * Calculates the arithmetic mean of the given measurements.
-     * 
+     *
      * @param measurements
      *            a vector of double measurements
      * @return the statistical characterization.

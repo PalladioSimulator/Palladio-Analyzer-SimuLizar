@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package org.palladiosimulator.simulizar.interpreter.listener;
 
@@ -9,22 +9,22 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 
 /**
  * @author snowball
- * 
+ *
  */
 public abstract class AbstractInterpreterListener implements IInterpreterListener {
 
     /**
-	 * 
-	 */
+     *
+     */
     public AbstractInterpreterListener() {
         super();
     }
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#beginUsageScenarioInterpretation
+     *
+     * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
+     * beginUsageScenarioInterpretation
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
@@ -33,9 +33,9 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#endUsageScenarioInterpretation
+     *
+     * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
+     * endUsageScenarioInterpretation
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
@@ -44,7 +44,7 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
      * beginEntryLevelSystemCallInterpretation
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
@@ -55,7 +55,7 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
      * endEntryLevelSystemCallInterpretation
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
@@ -66,9 +66,9 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * de.upb.pcm.simulizar.interpreter.listener.IInterpreterListener#beginExternalCallInterpretation
+     *
+     * @see de.upb.pcm.simulizar.interpreter.listener.IInterpreterListener#
+     * beginExternalCallInterpretation
      * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)
      */
     @Override
@@ -77,7 +77,7 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see
      * de.upb.pcm.simulizar.interpreter.listener.IInterpreterListener#endExternalCallInterpretation
      * (de.upb.pcm.simulizar.interpreter.listener.ModelElementPassedEvent)

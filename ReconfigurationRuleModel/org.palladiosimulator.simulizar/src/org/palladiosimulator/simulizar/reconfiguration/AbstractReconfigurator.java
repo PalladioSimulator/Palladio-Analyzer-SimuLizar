@@ -9,7 +9,7 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
     protected SimuLizarWorkflowConfiguration configuration;
 
     @Override
-    public void setModelAccess(IModelAccess modelAccess) {
+    public void setModelAccess(final IModelAccess modelAccess) {
         if (modelAccess == null) {
             throw new IllegalArgumentException("Given modelAccess must not be null.");
         }
@@ -17,7 +17,7 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
     }
 
     @Override
-    public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
+    public void setConfiguration(final SimuLizarWorkflowConfiguration configuration) {
         if (configuration == null) {
             throw new IllegalArgumentException("Given configuration must not be null.");
         }

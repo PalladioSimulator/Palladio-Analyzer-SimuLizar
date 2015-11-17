@@ -12,9 +12,9 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 /**
  * Special ResourceSetPartition for the Usage Evolution, with the functionality to resolve cross
  * references from the UsageEvolution to PCM.
- * 
+ *
  * @author Erlend Stav
- * 
+ *
  */
 public class UEResourceSetPartition extends ResourceSetPartition {
 
@@ -23,7 +23,7 @@ public class UEResourceSetPartition extends ResourceSetPartition {
 
     /**
      * Constructor
-     * 
+     *
      * @param pcmResourceSetPartition
      *            the pcm resource set partition to resolve cross references from prm to pcm.
      */
@@ -34,7 +34,7 @@ public class UEResourceSetPartition extends ResourceSetPartition {
 
     public UsageEvolution getUsageEvolution() {
         if (this.ueModel == null) {
-            this.ueModel = loadUEModel();
+            this.ueModel = this.loadUEModel();
         }
         return this.ueModel;
     }
@@ -45,9 +45,9 @@ public class UEResourceSetPartition extends ResourceSetPartition {
     private UsageEvolution loadUEModel() {
         try {
             LOGGER.debug("Retrieving Usage Evolution model from blackboard partition");
-            List<UsageEvolution> result = getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+            final List<UsageEvolution> result = this.getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
             return result.get(0);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             LOGGER.info("No Usage Evolution model found, so evolution will not be simulated.");
             return null;
         }

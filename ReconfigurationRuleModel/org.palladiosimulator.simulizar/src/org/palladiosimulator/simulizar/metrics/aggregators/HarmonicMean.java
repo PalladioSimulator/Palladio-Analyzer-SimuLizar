@@ -5,14 +5,14 @@ import java.util.Collection;
 public class HarmonicMean implements IStatisticalCharacterization {
 
     @Override
-    public double calculateStatisticalCharaterization(Collection<Double> measurements) {
+    public double calculateStatisticalCharaterization(final Collection<Double> measurements) {
         Double sumOfReciprocals = 0.0;
-        for (Double m : measurements) {
+        for (final Double m : measurements) {
             sumOfReciprocals += (1.0 / m);
         }
-        double size = Double.valueOf(measurements.size());
+        final double size = Double.valueOf(measurements.size());
 
-        double d = size / sumOfReciprocals;
+        final double d = size / sumOfReciprocals;
         return d;
     }
 

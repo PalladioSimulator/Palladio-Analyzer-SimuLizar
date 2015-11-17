@@ -63,7 +63,7 @@ public class MultipleRunsConfidenceStopCondition implements SimCondition, IMeasu
 
     @Override
     public boolean check() {
-        return confidenceReached;
+        return this.confidenceReached;
     }
 
     @Override
@@ -72,26 +72,28 @@ public class MultipleRunsConfidenceStopCondition implements SimCondition, IMeasu
                 .getMeasureForMetric(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC);
         final double reconfigurationTime = reconfigurationTimeMeasure.doubleValue(SI.SECOND);
 
-        batchAlgorithm.offerSample(reconfigurationTime);
-        if (batchAlgorithm.hasValidBatches() && batchAlgorithm.getBatchMeans().size() >= minBatches) {
+        this.batchAlgorithm.offerSample(reconfigurationTime);
+        if (this.batchAlgorithm.hasValidBatches() && this.batchAlgorithm.getBatchMeans().size() >= this.minBatches) {
             // estimate actual confidence interval
-            final ConfidenceInterval ci = estimator.estimateConfidence(batchAlgorithm.getBatchMeans(), confidenceLevel);
+            final ConfidenceInterval ci = this.estimator.estimateConfidence(this.batchAlgorithm.getBatchMeans(),
+                    this.confidenceLevel);
 
             if (ci != null) {
                 // construct target confidence interval
-                final ConfidenceInterval targetCI = new ConfidenceInterval(ci.getMean(), halfWidth, confidenceLevel);
+                final ConfidenceInterval targetCI = new ConfidenceInterval(ci.getMean(), this.halfWidth,
+                        this.confidenceLevel);
 
                 if (targetCI.contains(ci)) {
                     if (LOGGER.isEnabledFor(Level.INFO)) {
                         LOGGER.info("Requested confidence reached.");
                     }
-                    confidenceReached = true;
+                    this.confidenceReached = true;
                     this.confidence = ci;
 
                     // request another batch in order to proceed with improving
                     // confidence interval's half-width until the simulation
                     // actually stops.
-                    minBatches = batchAlgorithm.getBatchMeans().size() + 1;
+                    this.minBatches = this.batchAlgorithm.getBatchMeans().size() + 1;
                 } else {
                     if (LOGGER.isEnabledFor(Level.INFO)) {
                         LOGGER.info("Requested confidence not yet reached.");
@@ -99,10 +101,10 @@ public class MultipleRunsConfidenceStopCondition implements SimCondition, IMeasu
 
                     // request another batch in order to reduce the confidence
                     // interval's half-width
-                    minBatches = batchAlgorithm.getBatchMeans().size() + 1;
+                    this.minBatches = this.batchAlgorithm.getBatchMeans().size() + 1;
                 }
                 if (LOGGER.isEnabledFor(Level.INFO)) {
-                    LOGGER.info("Current confidence interval: Mean " + ci.getMean() + ", " + confidenceLevel * 100
+                    LOGGER.info("Current confidence interval: Mean " + ci.getMean() + ", " + this.confidenceLevel * 100
                             + "% Confidence Interval " + "[" + ci.getLowerBound() + "," + ci.getUpperBound() + "]");
                 }
             }
@@ -110,7 +112,7 @@ public class MultipleRunsConfidenceStopCondition implements SimCondition, IMeasu
     }
 
     public ConfidenceInterval getConfidence() {
-        return confidence;
+        return this.confidence;
     }
 
     @Override

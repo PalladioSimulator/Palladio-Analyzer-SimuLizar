@@ -14,6 +14,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
 final class SimuComModelFactory {
+
     static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration) {
         final SimuComModel simuComModel = initialiseSimuComModel(configuration);
         return simuComModel;
@@ -54,7 +55,7 @@ final class SimuComModelFactory {
 
     /**
      * Gets the SimuCom status, creates one if none exists.
-     * 
+     *
      * @return the SimuCom status.
      */
     private static SimuComStatus createSimuComStatus() {

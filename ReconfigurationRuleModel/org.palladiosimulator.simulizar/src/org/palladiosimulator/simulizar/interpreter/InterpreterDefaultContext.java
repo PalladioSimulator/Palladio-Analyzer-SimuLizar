@@ -13,14 +13,14 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
  * Default context for the pcm interpreter.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class InterpreterDefaultContext extends Context {
 
     /**
-    * 
+    *
     */
     private static final long serialVersionUID = -5027373777424401211L;
 
@@ -34,10 +34,11 @@ public class InterpreterDefaultContext extends Context {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
-        this.modelAccess = runtimeState.getModelAccess();
+        this.modelAccess = this.runtimeState.getModelAccess();
     }
 
-    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState, final boolean copyStack) {
+    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState,
+            final boolean copyStack) {
         super(context.getModel());
         this.modelAccess = runtimeState.getModelAccess().clone();
         this.setEvaluationMode(context.getEvaluationMode());
@@ -55,7 +56,7 @@ public class InterpreterDefaultContext extends Context {
      * Create interpreter default context from the given default context (model, sim process and
      * stack are set according to the given default context). The contents of the stack will be
      * copied.
-     * 
+     *
      * @param context
      *            the default context from which the new default context should be created.
      * @param thread

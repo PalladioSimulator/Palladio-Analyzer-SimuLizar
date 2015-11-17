@@ -24,13 +24,13 @@ public abstract class SimulatedComponentInstance {
     }
 
     public FQComponentID getFqn() {
-        return myID;
+        return this.myID;
     }
 
     /**
      * @return the runtimeState
      */
     protected final SimuLizarRuntimeState getRuntimeState() {
-        return runtimeState;
+        return this.runtimeState;
     }
 }

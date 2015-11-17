@@ -4,12 +4,12 @@ import java.util.ArrayList;
 
 import org.palladiosimulator.monitorrepository.Intervall;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.IStateListener;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -17,11 +17,12 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 /**
  * Utilization performance metric for resources, based on queue length at resources. Interval starts
  * at first change of queue length. Interval limited to simple interval.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class ResourceStateListener implements IStateListener {
+
     private double start = 0.0;
 
     private double lastSimulationTime = 0.0;
@@ -38,7 +39,7 @@ public class ResourceStateListener implements IStateListener {
 
     /**
      * Constructor
-     * 
+     *
      * @param processingResourceType
      *            the processing resource type (pcm) of the resource.
      * @param abstractScheduledResource
@@ -56,7 +57,7 @@ public class ResourceStateListener implements IStateListener {
         super();
         this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
         this.simulationControl = iSimulationControl;
-        this.lastSimulationTime = simulationControl.getCurrentSimulationTime();
+        this.lastSimulationTime = this.simulationControl.getCurrentSimulationTime();
 
         this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         this.measurement.setMeasurementSpecification(measurementSpecification);
@@ -70,7 +71,7 @@ public class ResourceStateListener implements IStateListener {
     /**
      * Add measurement for measurement specification and ResourceContainerMeasurement to prm model.
      * Sets the corresponding processing resource type.
-     * 
+     *
      * @param value
      *            the measurement value.
      */
@@ -109,7 +110,7 @@ public class ResourceStateListener implements IStateListener {
 
     /**
      * Sums double values in the given list.
-     * 
+     *
      * @param list
      *            list of double values.
      * @return the sum of all values.
