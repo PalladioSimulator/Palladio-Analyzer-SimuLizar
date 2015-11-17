@@ -15,11 +15,13 @@ import org.eclipse.emf.henshin.interpreter.impl.UnitApplicationImpl;
 import org.eclipse.emf.henshin.model.Unit;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-public class HenshinReconfigurator extends AbstractReconfigurator {
+public class HenshinReconfigurator extends AbstractReconfigurator implements IReconfigurator {
 
     private HenshinModelAccess modelAccess;
     private SimuLizarWorkflowConfiguration configuration;
@@ -112,6 +114,18 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
     		}
     	}
 		return executeUnits(modules, monitoredElement);
+	}
+
+	@Override
+	public void setReconfigurator(Reconfigurator reconfigurator) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public boolean checkAndExecute(EObject monitoredElement) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
