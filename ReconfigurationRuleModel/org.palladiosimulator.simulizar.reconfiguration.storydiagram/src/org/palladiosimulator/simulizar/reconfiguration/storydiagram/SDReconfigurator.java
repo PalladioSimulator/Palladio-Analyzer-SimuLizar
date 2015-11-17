@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.storydriven.storydiagrams.activities.Activity;
@@ -111,4 +112,10 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
     public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
         this.configuration = configuration;
     }
+
+	@Override
+	public void setReconfigurator(Reconfigurator reconfigurator) {
+		// TODO Auto-generated method stub
+		
+	}
 }
