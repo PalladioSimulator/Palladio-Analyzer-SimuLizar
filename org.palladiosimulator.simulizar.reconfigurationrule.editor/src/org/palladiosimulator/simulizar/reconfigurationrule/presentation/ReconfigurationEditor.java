@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.reconfiguration.presentation;
+package org.palladiosimulator.simulizar.reconfigurationrule.presentation;
 
 
 import java.io.IOException;
@@ -154,9 +154,27 @@ import org.eclipse.emf.edit.ui.util.EditUIUtil;
 
 import org.eclipse.emf.edit.ui.view.ExtendedPropertySheetPage;
 
-import org.palladiosimulator.simulizar.reconfiguration.provider.ReconfigurationItemProviderAdapterFactory;
+import org.palladiosimulator.simulizar.reconfigurationrule.provider.ReconfigurationItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProviderAdapterFactory;
+
+import de.uka.ipd.sdq.probfunction.provider.ProbfunctionItemProviderAdapterFactory;
+
+import de.uka.ipd.sdq.stoex.provider.StoexItemProviderAdapterFactory;
+
+import de.uka.ipd.sdq.units.provider.UnitsItemProviderAdapterFactory;
+
+import org.eclipse.ui.actions.WorkspaceModifyOperation;
+
+import org.palladiosimulator.edp2.models.ExperimentData.provider.ExperimentDataItemProviderAdapterFactory;
+
+import org.palladiosimulator.edp2.models.Repository.provider.RepositoryItemProviderAdapterFactory;
+
+import org.palladiosimulator.edp2.models.measuringpoint.provider.MeasuringpointItemProviderAdapterFactory;
+
+import org.palladiosimulator.metricspec.provider.MetricSpecItemProviderAdapterFactory;
+
+import org.palladiosimulator.monitorrepository.provider.MonitorRepositoryItemProviderAdapterFactory;
 
 import org.palladiosimulator.pcm.allocation.provider.AllocationItemProviderAdapterFactory;
 
@@ -195,24 +213,6 @@ import org.palladiosimulator.pcm.subsystem.provider.SubsystemItemProviderAdapter
 import org.palladiosimulator.pcm.system.provider.SystemItemProviderAdapterFactory;
 
 import org.palladiosimulator.pcm.usagemodel.provider.UsagemodelItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.probfunction.provider.ProbfunctionItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.stoex.provider.StoexItemProviderAdapterFactory;
-
-import de.uka.ipd.sdq.units.provider.UnitsItemProviderAdapterFactory;
-
-import org.eclipse.ui.actions.WorkspaceModifyOperation;
-
-import org.palladiosimulator.edp2.models.ExperimentData.provider.ExperimentDataItemProviderAdapterFactory;
-
-import org.palladiosimulator.edp2.models.Repository.provider.RepositoryItemProviderAdapterFactory;
-
-import org.palladiosimulator.edp2.models.measuringpoint.provider.MeasuringpointItemProviderAdapterFactory;
-
-import org.palladiosimulator.metricspec.provider.MetricSpecItemProviderAdapterFactory;
-
-import org.palladiosimulator.monitorrepository.provider.MonitorRepositoryItemProviderAdapterFactory;
 
 import org.palladiosimulator.servicelevelobjective.provider.ServicelevelObjectiveItemProviderAdapterFactory;
 

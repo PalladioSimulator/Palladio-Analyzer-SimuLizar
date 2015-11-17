@@ -1,10 +1,8 @@
 /**
  */
-package org.palladiosimulator.simulizar.reconfiguration.presentation;
+package org.palladiosimulator.simulizar.reconfigurationrule.presentation;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierEditPlugin;
-
-import org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin;
 
 import de.uka.ipd.sdq.probfunction.provider.ProbabilityFunctionEditPlugin;
 
@@ -23,6 +21,8 @@ import org.palladiosimulator.edp2.models.ExperimentData.provider.EDP2EditPlugin;
 import org.palladiosimulator.metricspec.provider.MetricSpecEditPlugin;
 
 import org.palladiosimulator.monitorrepository.provider.MonitorrepositoryEditPlugin;
+
+import org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin;
 
 import org.palladiosimulator.servicelevelobjective.provider.ServiceLevelObjectiveEditPlugin;
 
