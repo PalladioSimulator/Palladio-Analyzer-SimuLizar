@@ -10,7 +10,7 @@
       <!-- @generated reconfigurationrule -->
       <package
             uri="http://palladiosimulator.org/simulizar/reconfiguration/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.ReconfigurationPackage"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.ReconfigurationPackage"
             genModel="model/reconfigurationrule.genmodel"/>
    </extension>
 
@@ -18,6 +18,6 @@
       <!-- @generated reconfigurationrule -->
       <parser
             type="reconfigurationruleset"
-            class="org.palladiosimulator.simulizar.reconfiguration.util.ReconfigurationResourceFactoryImpl"/>
+            class="org.palladiosimulator.simulizar.reconfigurationrule.util.ReconfigurationResourceFactoryImpl"/>
    </extension>
 </plugin>
