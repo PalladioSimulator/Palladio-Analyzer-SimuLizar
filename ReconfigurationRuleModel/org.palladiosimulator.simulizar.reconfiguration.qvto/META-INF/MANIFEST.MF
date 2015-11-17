@@ -8,13 +8,15 @@ Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar,
  org.apache.log4j,
- org.eclipse.m2m.qvt.oml;bundle-version="3.4.0",
+ org.eclipse.m2m.qvt.oml;bundle-version="[3.4.0,3.6.1]",
  org.palladiosimulator.simulizar.runtimemeasurement,
- de.uka.ipd.sdq.workflow.pcm,
+ org.palladiosimulator.analyzer.workflow,
  de.uka.ipd.sdq.workflow.mdsd,
  org.scaledl.usageevolution,
  org.palladiosimulator.commons;bundle-version="1.0.0",
- de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0"
+ de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
+ org.apache.commons.collections15
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,
+ org.palladiosimulator.simulizar.reconfiguration.qvto.util
