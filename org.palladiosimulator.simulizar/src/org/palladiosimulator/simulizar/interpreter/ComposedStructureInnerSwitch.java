@@ -1,8 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
-
 import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector;
@@ -11,16 +9,19 @@ import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector;
 import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
+import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
  * This visitor is used to follow assembly connectors inside of composed structures. It is called
  * from an RDSEFF visitor when the RDSEFF visitor tries to resolve the target of an external call.
- * 
+ *
  * @author Steffen Becker
- * 
+ *
  */
 class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
+
     /**
      * Logger of this class
      */
@@ -35,7 +36,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 
     /**
      * Constructor
-     * 
+     *
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
@@ -57,28 +58,27 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 
     /*
      * (non-Javadoc)
-     * 
-     * @see
-     * org.palladiosimulator.pcm.core.composition.util.CompositionSwitch#caseAssemblyInfrastructureConnector
+     *
+     * @see org.palladiosimulator.pcm.core.composition.util.CompositionSwitch#
+     * caseAssemblyInfrastructureConnector
      * (org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector)
      */
     @Override
     public SimulatedStackframe<Object> caseAssemblyInfrastructureConnector(
-            AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
+            final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
                 this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
-        return repositoryComponentSwitch.doSwitch(assemblyInfrastructureConnector
-                .getProvidedRole__AssemblyInfrastructureConnector());
+        return repositoryComponentSwitch
+                .doSwitch(assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
     }
 
     @Override
     public SimulatedStackframe<Object> caseRequiredDelegationConnector(
             final RequiredDelegationConnector requiredDelegationConnector) {
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
-        final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(
-                this.context, this.signature,
-                requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
+                this.signature, requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
         return result;
@@ -92,7 +92,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 
     /**
      * Determines the assembly connector which is connected with the required role.
-     * 
+     *
      * @param requiredRole
      *            the required role.
      * @return the determined assembly connector, null otherwise.
@@ -126,16 +126,18 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
 
             /*
              * (non-Javadoc)
-             * 
+             *
              * @see org.palladiosimulator.pcm.core.composition.util.CompositionSwitch#
              * caseAssemblyInfrastructureConnector
              * (org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector)
              */
             @Override
             public Connector caseAssemblyInfrastructureConnector(
-                    AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
-                if (assemblyInfrastructureConnector.getRequiringAssemblyContext__AssemblyInfrastructureConnector() == myContext
-                        && assemblyInfrastructureConnector.getRequiredRole__AssemblyInfrastructureConnector() == requiredRole) {
+                    final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
+                if (assemblyInfrastructureConnector
+                        .getRequiringAssemblyContext__AssemblyInfrastructureConnector() == myContext
+                        && assemblyInfrastructureConnector
+                                .getRequiredRole__AssemblyInfrastructureConnector() == requiredRole) {
                     return assemblyInfrastructureConnector;
                 }
                 return null;

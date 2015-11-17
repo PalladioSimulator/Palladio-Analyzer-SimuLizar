@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
-Bundle-Version: 2.0.0.qualifier
+Bundle-Version: 2.0.1.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
 Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
@@ -32,7 +32,9 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.statistics,
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction.math,
- org.palladiosimulator.simulizar.reconfigurationrule
+ org.palladiosimulator.mdsdprofiles.api,
+ org.modelversioning.emfprofile;bundle-version="1.1.0",
+ org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="0.1.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
@@ -146,3 +148,4 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.metricspec,
    org.palladiosimulator.monitorrepository"
 Bundle-Vendor: palladiosimulator.org
+Import-Package: org.palladiosimulator.simulizar.reconfiguration

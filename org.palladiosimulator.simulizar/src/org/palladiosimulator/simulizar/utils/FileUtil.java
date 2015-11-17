@@ -9,11 +9,12 @@ import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.emf.common.util.URI;
 
 public class FileUtil {
+
     /**
      * Get the reconfiguration rule folder.
-     * 
+     *
      * FIXME: Remove this and load reconfiguration rules into a blackboard.
-     * 
+     *
      * @param path
      *            String to the reconfiguration rules
      * @return folder of the QVTo reconfiguration rules
@@ -25,14 +26,14 @@ public class FileUtil {
         if (!path.startsWith("platform:")) {
             filePath = "file:///" + filePath;
 
-            URI folderURI = URI.createURI(filePath);
+            final URI folderURI = URI.createURI(filePath);
             folder = new File(folderURI.toFileString());
         } else {
             try {
-                URL pathURL = FileLocator.resolve(new URL(path));
-                String folderString = pathURL.toExternalForm().replace("file:", "");
+                final URL pathURL = FileLocator.resolve(new URL(path));
+                final String folderString = pathURL.toExternalForm().replace("file:", "");
                 folder = new File(folderString);
-            } catch (IOException e) {
+            } catch (final IOException e) {
                 // LOGGER.warn("No QVTo rules found, QVTo reconfigurations disabled.", e);
             }
         }
@@ -41,9 +42,9 @@ public class FileUtil {
 
     /**
      * Get the reconfiguration rule files.
-     * 
+     *
      * FIXME: Remove this and load reconfiguration rules into a blackboard.
-     * 
+     *
      * @param folder
      *            Filepath to the reconfiguration rules
      * @return folder of the QVTo reconfiguration rules

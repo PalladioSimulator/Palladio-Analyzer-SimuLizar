@@ -2,14 +2,14 @@ package org.palladiosimulator.simulizar.exceptions;
 
 /**
  * Class for exceptions while interpreting a pcm model.
- * 
+ *
  * @author Joachim Meyer
- * 
+ *
  */
 public class PCMModelInterpreterException extends PCMModelAccessException {
 
     /**
-    * 
+    *
     */
     private static final long serialVersionUID = 8959342145045102098L;
 

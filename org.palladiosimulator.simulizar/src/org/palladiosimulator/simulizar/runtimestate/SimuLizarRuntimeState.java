@@ -1,15 +1,22 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import java.util.Collection;
-import java.util.LinkedList;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS;
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
+
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.collections15.Closure;
+import org.apache.commons.collections15.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
+import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
+import org.palladiosimulator.probeframework.probes.TriggeredProbe;
+import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
@@ -19,8 +26,10 @@ import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEv
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelSyncer;
@@ -28,21 +37,24 @@ import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
- * This class provides access to all simulation and simulizar related objects. This includes access
+ * This class provides access to all simulation and SimuLizar related objects. This includes access
  * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
- * simulizars central simulator event distribution object, and to simulated component instances
- * (e.g. to access their current state of passive ressources, etc.).
- * 
+ * SimuLizars central simulator event distribution object, and to simulated component instances
+ * (e.g. to access their current state of passive resources, etc.).
+ *
  * Per simulation run, there should be exactly one instance of this class and all of its managed
  * information objects.
- * 
- * @author Steffen Becker, slightly adapted by Florian Rosenthal
+ *
+ * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
 public class SimuLizarRuntimeState {
@@ -55,9 +67,10 @@ public class SimuLizarRuntimeState {
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
     private final ModelAccess modelAccess;
+    private final Reconfigurator reconfigurator;
+    private final IModelSyncer[] modelSyncers;
 
-    private Reconfigurator reconfigurator;
-    private IModelSyncer[] modelSyncers;
+    private long numberOfContainers = 0;
 
     /**
      * @param configuration
@@ -70,27 +83,27 @@ public class SimuLizarRuntimeState {
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
-        this.usageModels = new SimulatedUsageModels(mainContext);
+        this.usageModels = new SimulatedUsageModels(this.mainContext);
+        this.initializeWorkloadDrivers();
 
-        LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
-
-        Reconfigurator reconfigurator = initializeReconfiguratorEngines(configuration,
-                this.model.getSimulationControl());
-        initializeModelSyncers();
-        // ensure to initialize model syncers (in particular ResourceEnvironmentSyncer) prior to
+        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        this.modelSyncers = this.initializeModelSyncers();
+        // ensure to initialize model syncers (in particular
+        // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
-        // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses calculators of
+        // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
+        // calculators of
         // resources created in ResourceEnvironmentSyncer!
-        initializeInterpreterListeners(reconfigurator);
-        initializeUsageEvolver();
+        this.initializeInterpreterListeners(this.reconfigurator);
+        this.initializeUsageEvolver();
+        this.modelAccess.startObservingPcmChanges();
     }
 
     /**
      * @return the model
      */
     public final SimuComModel getModel() {
-        return model;
+        return this.model;
     }
 
     public EventNotificationHelper getEventNotificationHelper() {
@@ -101,7 +114,7 @@ public class SimuLizarRuntimeState {
      * @return the componentInstanceRegistry
      */
     public final ComponentInstanceRegistry getComponentInstanceRegistry() {
-        return componentInstanceRegistry;
+        return this.componentInstanceRegistry;
     }
 
     public InterpreterDefaultContext getMainContext() {
@@ -119,98 +132,159 @@ public class SimuLizarRuntimeState {
     /**
      * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
      * of changes.
-     * 
+     *
      * @return The reconfigurator.
      */
     public Reconfigurator getReconfigurator() {
-        return reconfigurator;
+        return this.reconfigurator;
     }
 
     public void runSimulation() {
         LOGGER.debug("Starting Simulizar simulation...");
-        final double simRealTimeNano = ExperimentRunner.run(model);
-        LOGGER.debug("Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9))
-                + " real time seconds");
+        final double simRealTimeNano = ExperimentRunner.run(this.model);
+        LOGGER.debug(
+                "Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
     }
 
     public void cleanUp() {
         LOGGER.debug("Deregister all listeners and execute cleanup code");
         this.eventHelper.removeAllListener();
-        reconfigurator.removeAllObserver();
-        reconfigurator.stopListening();
+        this.reconfigurator.removeAllObserver();
+        this.reconfigurator.cleanUp();
+        this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (final IModelSyncer modelSyncer : modelSyncers) {
+        for (final IModelSyncer modelSyncer : this.modelSyncers) {
             modelSyncer.stopSyncer();
         }
     }
 
-    private void initializeInterpreterListeners(Reconfigurator reconfigurator) {
+    private void initializeWorkloadDrivers() {
+        LOGGER.debug("Initialise simucom framework's workload drivers");
+        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
+    }
+
+    private void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
         LOGGER.debug("Adding Debug and monitoring interpreter listeners");
-        eventHelper.addObserver(new LogDebugListener());
-        eventHelper.addObserver(new ProbeFrameworkListener(modelAccess, model, reconfigurator));
+        this.eventHelper.addObserver(new LogDebugListener());
+        this.eventHelper.addObserver(new ProbeFrameworkListener(this.modelAccess, this.model, reconfigurator));
     }
 
     private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
             final ISimulationControl simulationControl) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
 
-        IExtension[] extensions = Platform.getExtensionRegistry()
-                .getExtensionPoint("org.palladiosimulator.simulizar.reconfigurationengine").getExtensions();
+        final TriggeredProbe numberOfResourceCalculatorsProbes = initNumberOfResourceContainersCalculator();
 
-        List<IReconfigurationEngine> engines = new LinkedList<IReconfigurationEngine>();
-        for (IExtension extension : extensions) {
-            for (IConfigurationElement element : extension.getConfigurationElements()) {
-                try {
-                    IReconfigurationEngine reconfigurator = (IReconfigurationEngine) element
-                            .createExecutableExtension("reconfigurationEngine");
-                    reconfigurator.setConfiguration(configuration);
-                    reconfigurator.setModelAccess(modelAccess);
-                    engines.add(reconfigurator);
-                } catch (CoreException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+        final List<IReconfigurator> reconfigEngines = ExtensionHelper.getExecutableExtensions(
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
+
+        for (final IReconfigurator reconfigEngine : reconfigEngines) {
+            reconfigEngine.setConfiguration(configuration);
+            reconfigEngine.setModelAccess(this.modelAccess);
         }
 
-        reconfigurator = new Reconfigurator(model, modelAccess, simulationControl, engines);
+        final Reconfigurator reconfigurator = new Reconfigurator(this.model, this.modelAccess, simulationControl,
+                reconfigEngines);
         reconfigurator.addObserver(new IReconfigurationListener() {
+
             @Override
-            public void reconfigurationExecuted(Collection<Notification> modelChanges) {
-                // nothing to do
+            public void beginReconfigurationEvent(final BeginReconfigurationEvent event) {
             }
 
             @Override
-            public void beginReconfigurationEvent(BeginReconfigurationEvent event) {
-                LOGGER.info("------- System reconfiguration started at simulation time "
-                        + model.getSimulationControl().getCurrentSimulationTime() + "-------");
+            public void endReconfigurationEvent(final EndReconfigurationEvent event) {
             }
 
             @Override
-            public void endReconfigurationEvent(EndReconfigurationEvent event) {
-                LOGGER.info("------- System reconfiguration finished at simulation time "
-                        + model.getSimulationControl().getCurrentSimulationTime() + " and did "
-                        + (event.getReconfigurationEventResult() == EventResult.FAILURE ? "NOT " : "") + "succeed-------");
+            public void reconfigurationExecuted(final ReconfigurationExecutedEvent reconfExecutedEvent) {
+                if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS
+                        && reconfExecutedEvent.getDuration() > 0) {
+                    LOGGER.debug("Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
+                            + " time units");
+                    LOGGER.debug("Collected notifications:");
+                    CollectionUtils.forAllDo(reconfExecutedEvent.getModelChanges(), new Closure<Notification>() {
+
+                        @Override
+                        public void execute(final Notification notification) {
+                            LOGGER.debug(" " + notification.getNotifier());
+                        }
+                    });
+
+                    if (numberOfResourceCalculatorsProbes != null
+                            && SimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
+                        SimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
+                        numberOfResourceCalculatorsProbes.takeMeasurement();
+                    }
+                }
             }
         });
 
-        reconfigurator.addObserver(modelAccess);
         reconfigurator.startListening();
 
         return reconfigurator;
     }
 
-    private void initializeModelSyncers() {
+    /**
+     * Initializes the <i>number of resource containers</i> measurements. First gets the monitored
+     * elements from the monitor repository, then creates corresponding calculators.
+     */
+    private TriggeredProbe initNumberOfResourceContainersCalculator() {
+        final MonitorRepository monitorRepository = this.getModelAccess().getMonitorRepositoryModel();
+        final ResourceEnvironment resourceEnvironment = this.getModelAccess().getGlobalPCMModel().getAllocation()
+                .getTargetResourceEnvironment_Allocation();
+
+        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                .getMeasurementSpecificationsForElement(monitorRepository, resourceEnvironment)) {
+            final String metricID = measurementSpecification.getMetricDescription().getId();
+
+            if (metricID.equals(NUMBER_OF_RESOURCE_CONTAINERS.getId())) {
+
+                final MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
+
+                final TriggeredProbeList numberOfResourceCalculatorsProbes = new TriggeredProbeList(
+                        NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME,
+                        Arrays.asList(new TakeNumberOfResourceContainersProbe(resourceEnvironment),
+                                (TriggeredProbe) new TakeCurrentSimulationTimeProbe(
+                                        this.model.getSimulationControl())));
+
+                this.model.getProbeFrameworkContext().getCalculatorFactory()
+                        .buildNumberOfResourceContainersCalculator(measuringPoint, numberOfResourceCalculatorsProbes);
+
+                this.numberOfContainers = getNumberOfResourceContainers();
+
+                numberOfResourceCalculatorsProbes.takeMeasurement();
+
+                return numberOfResourceCalculatorsProbes;
+            }
+        }
+
+        return null;
+    }
+
+    private int getNumberOfResourceContainers() {
+        return this.getModelAccess().getGlobalPCMModel().getAllocation().getTargetResourceEnvironment_Allocation()
+                .getResourceContainer_ResourceEnvironment().size();
+    }
+
+    private IModelSyncer[] initializeModelSyncers() {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
-        this.modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this), new UsageModelSyncer(this) };
-        for (IModelSyncer modelSyncer : modelSyncers) {
+
+        final IModelSyncer[] modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this),
+                new UsageModelSyncer(this) };
+        for (final IModelSyncer modelSyncer : modelSyncers) {
             modelSyncer.initializeSyncer();
         }
+
+        return modelSyncers;
     }
 
     private void initializeUsageEvolver() {
-        LOGGER.debug("Start the code to evolve the usage model over time");
-        new UsageEvolver(this).start();
+        if (this.modelAccess.getUsageEvolutionModel() != null) {
+            LOGGER.debug("Start the code to evolve the usage model over time");
+
+            new UsageEvolver(this).start();
+        }
     }
 }

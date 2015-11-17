@@ -3,17 +3,19 @@ package org.palladiosimulator.simulizar.syncer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-
 import org.palladiosimulator.pcm.core.CorePackage;
+import org.palladiosimulator.pcm.parameter.ParameterPackage;
+import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
-public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IModelSyncer {
+public class UsageModelSyncer extends AbstractSyncer<UsageModel>implements IModelSyncer {
 
     private static final Logger LOGGER = Logger.getLogger(UsageModelSyncer.class);
 
@@ -34,17 +36,26 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
             break;
         case Notification.SET:
             if (UsagemodelPackage.eINSTANCE.getClosedWorkload().isInstance(notification.getNotifier())) {
-                syncClosedWorkload(notification);
+                this.syncClosedWorkload(notification);
             } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
                     && ((EObject) notification.getNotifier()).eContainer() instanceof OpenWorkload
                     && notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
-                syncOpenWorkload(notification);
+                this.syncOpenWorkload(notification);
+            } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
+                    && ParameterPackage.eINSTANCE.getVariableCharacterisation()
+                            .isInstance(((EObject) notification.getNotifier()).eContainer())) {
+                /*
+                 * Nothing needs to happen in this case as the new variable char. is used for the
+                 * next user
+                 */
             } else {
-                LOGGER.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+                LOGGER.error(
+                        "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
             }
             break;
         default:
-            LOGGER.error("Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+            LOGGER.error(
+                    "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
             break;
         }
     }
@@ -54,7 +65,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
      */
     private void syncClosedWorkload(final Notification notification) {
         final ClosedWorkload workload = (ClosedWorkload) notification.getNotifier();
-        closedWorkloadPopulationChanged(workload, notification.getNewIntValue());
+        this.closedWorkloadPopulationChanged(workload, notification.getNewIntValue());
     }
 
     /**
@@ -62,7 +73,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel> implements IMod
      */
     private void syncOpenWorkload(final Notification notification) {
         final OpenWorkload workload = (OpenWorkload) ((EObject) notification.getNotifier()).eContainer();
-        openWorkloadInterarrivalChange(workload, notification.getNewStringValue());
+        this.openWorkloadInterarrivalChange(workload, notification.getNewStringValue());
     }
 
     private void openWorkloadInterarrivalChange(final Workload workload, final String newInterarrivalTime) {

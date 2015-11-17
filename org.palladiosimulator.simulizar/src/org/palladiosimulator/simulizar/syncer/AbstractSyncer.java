@@ -27,27 +27,33 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
-                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER || notification.getEventType() == Notification.RESOLVE)) {
-                    LOGGER.info(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
+                if (!(notification.getEventType() == Notification.REMOVING_ADAPTER
+                        || notification.getEventType() == Notification.RESOLVE)) {
+                    LOGGER.debug(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
                             + notification);
-                    synchronizeSimulationEntities(notification);
+
+                    try {
+                        AbstractSyncer.this.synchronizeSimulationEntities(notification);
+                    } catch (final Exception e) {
+                        LOGGER.error("Sync Exception: " + e);
+                    }
                 }
             }
 
         };
-        model.eAdapters().add(adapter);
+        model.eAdapters().add(this.adapter);
     }
 
     protected abstract void synchronizeSimulationEntities(final Notification notification);
 
     /*
      * (non-Javadoc)
-     * 
+     *
      * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#stopSyncer()
      */
     @Override
     public void stopSyncer() {
-        model.eAdapters().remove(adapter);
+        this.model.eAdapters().remove(this.adapter);
     }
 
 }

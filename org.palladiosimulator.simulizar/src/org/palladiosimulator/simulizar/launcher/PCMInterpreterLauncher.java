@@ -19,9 +19,9 @@ import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
 
 /**
  * Factory for the job for launching the pcm interpreter.
- * 
+ *
  * @author Joachim Meyer, Matthias Becker
- * 
+ *
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
 
@@ -47,9 +47,9 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
     }
 
     @Override
-    protected SimuLizarWorkflowConfiguration deriveConfiguration(ILaunchConfiguration configuration, String mode)
-            throws CoreException {
-        SimuLizarWorkflowConfiguration config = new SimuLizarWorkflowConfiguration(configuration.getAttributes());
+    protected SimuLizarWorkflowConfiguration deriveConfiguration(final ILaunchConfiguration configuration,
+            final String mode) throws CoreException {
+        final SimuLizarWorkflowConfiguration config = new SimuLizarWorkflowConfiguration(configuration.getAttributes());
 
         AbstractWorkflowConfigurationBuilder builder;
         builder = new PCMWorkflowConfigurationBuilder(configuration, mode);

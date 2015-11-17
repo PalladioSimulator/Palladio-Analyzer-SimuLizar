@@ -2,29 +2,34 @@ package org.palladiosimulator.simulizar.utils;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
-
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
+
 import de.uka.ipd.sdq.simucomframework.variables.EvaluationProxy;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
+import de.uka.ipd.sdq.simucomframework.variables.exceptions.ValueNotInFrameException;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.stoex.AbstractNamedReference;
 import de.uka.ipd.sdq.stoex.NamespaceReference;
+import de.uka.ipd.sdq.stoex.VariableReference;
+import de.uka.ipd.sdq.stoex.analyser.visitors.StoExPrettyPrintVisitor;
+import de.uka.ipd.sdq.stoex.util.StoexSwitch;
 
 /**
  * A simulated stack for the pcm interpreter with some convenience methods.
- * 
- * @author Joachim Meyer
- * 
+ *
+ * @author Joachim Meyer, Christian Stier
+ *
  */
 public final class SimulatedStackHelper {
+
     private static final Logger LOGGER = Logger.getLogger(SimulatedStackHelper.class);
 
     /**
      * Adds parameters to given stack frame.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @param targetStackFrame
@@ -42,33 +47,57 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-                // TODO
-                // FIXME This does not seem to work for references like a.b.INNER.BYTESIZE
-                final String id = namedReference.getReferenceName() + "."
+                final String id = new StoExPrettyPrintVisitor().doSwitch(namedReference).toString() + "."
                         + variableCharacterisation.getType().getLiteral();
-
-                Object value;
-
-                if (namedReference instanceof NamespaceReference) {
-                    // we assume that this is now an INNER variable!
-                    // assign top most stack frame as current state
-                    value = new EvaluationProxy(randomVariable.getSpecification(), contextStackFrame);
+                ;
+                if (SimulatedStackHelper.isInnerReference(namedReference)) {
+                    targetStackFrame.addValue(id,
+                            new EvaluationProxy(randomVariable.getSpecification(), contextStackFrame.copyFrame()));
                 } else {
-                    value = StackContext.evaluateStatic(randomVariable.getSpecification(), contextStackFrame);
+                    targetStackFrame.addValue(id,
+                            StackContext.evaluateStatic(randomVariable.getSpecification(), contextStackFrame));
                 }
-                targetStackFrame.addValue(id, value);
 
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Added value " + value + " for id " + id + " to stackframe " + targetStackFrame);
+                    try {
+                        LOGGER.debug("Added value " + targetStackFrame.getValue(id) + " for id " + id
+                                + " to stackframe " + targetStackFrame);
+                    } catch (final ValueNotInFrameException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }
     }
 
     /**
+     * Returns whether the specified reference belongs to an INNER variable characterisation.
+     *
+     * @param reference
+     *            the named reference associated with a variable characterisation
+     * @return true, if the reference's name is "INNER"; false else.
+     */
+    public static boolean isInnerReference(final AbstractNamedReference reference) {
+        return new StoexSwitch<Boolean>() {
+
+            @Override
+            public Boolean caseVariableReference(final VariableReference object) {
+                return object.getReferenceName().equals("INNER");
+            }
+
+            @Override
+            public Boolean caseNamespaceReference(final NamespaceReference object) {
+                return object.getReferenceName().equals("INNER")
+                        || this.doSwitch(object.getInnerReference_NamespaceReference());
+            }
+
+        }.doSwitch(reference);
+    }
+
+    /**
      * Convenience method creating new stack frame, adds it to stack and puts parameters into frame.
      * This method uses own stack for parameter evaluation.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @return the created stack frame.
@@ -81,7 +110,7 @@ public final class SimulatedStackHelper {
     /**
      * Convenience method creating new stack frame with parent, adds it to stack and puts parameters
      * into frame. This method uses own stack for parameter evaluation.
-     * 
+     *
      * @param parameter
      *            the parameter.
      * @param parent

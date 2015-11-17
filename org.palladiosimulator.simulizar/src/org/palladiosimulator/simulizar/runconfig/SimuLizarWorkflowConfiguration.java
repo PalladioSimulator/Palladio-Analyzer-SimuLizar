@@ -16,39 +16,39 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
     protected String usageEvolutionFile;
     protected String serviceLevelObjectivesFile;
 
-    public SimuLizarWorkflowConfiguration(Map<String, Object> attributes) {
+    public SimuLizarWorkflowConfiguration(final Map<String, Object> attributes) {
         super(attributes);
     }
 
     public String getMonitorRepositoryFile() {
-        return monitorRepositoryFile;
+        return this.monitorRepositoryFile;
     }
 
-    public void setMonitorRepositoryFile(String monitorRepositoryFile) {
+    public void setMonitorRepositoryFile(final String monitorRepositoryFile) {
         this.monitorRepositoryFile = monitorRepositoryFile;
     }
 
     public String getReconfigurationRulesFolder() {
-        return reconfigurationRulesFolder;
+        return this.reconfigurationRulesFolder;
     }
 
-    public void setReconfigurationRulesFolder(String reconfigurationRulesFolder) {
+    public void setReconfigurationRulesFolder(final String reconfigurationRulesFolder) {
         this.reconfigurationRulesFolder = reconfigurationRulesFolder;
     }
 
     public String getUsageEvolutionFile() {
-        return usageEvolutionFile;
+        return this.usageEvolutionFile;
     }
 
-    public void setUsageEvolutionFile(String usageEvolutionFile) {
+    public void setUsageEvolutionFile(final String usageEvolutionFile) {
         this.usageEvolutionFile = usageEvolutionFile;
     }
 
     public String getServiceLevelObjectivesFile() {
-        return serviceLevelObjectivesFile;
+        return this.serviceLevelObjectivesFile;
     }
 
-    public void setServiceLevelObjectivesFile(String serviceLevelObjectivesFile) {
+    public void setServiceLevelObjectivesFile(final String serviceLevelObjectivesFile) {
         this.serviceLevelObjectivesFile = serviceLevelObjectivesFile;
     }
 
@@ -59,7 +59,7 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
 
     @Override
     protected SimuLizarWorkflowConfiguration clone() throws CloneNotSupportedException {
-        SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) super.clone();
+        final SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) super.clone();
         config.monitorRepositoryFile = this.monitorRepositoryFile;
         config.reconfigurationRulesFolder = this.reconfigurationRulesFolder;
         config.usageEvolutionFile = this.usageEvolutionFile;
@@ -71,7 +71,7 @@ public class SimuLizarWorkflowConfiguration extends SimuComWorkflowConfiguration
         SimuLizarWorkflowConfiguration config;
         try {
             config = this.clone();
-        } catch (CloneNotSupportedException e) {
+        } catch (final CloneNotSupportedException e) {
             LOGGER.fatal("Could not clone configuration.", e);
             config = null;
         }

@@ -18,12 +18,12 @@ public class PeriodicSimulationEvent extends AbstractSimEventDelegator<Periodica
     @Override
     public void eventRoutine(final PeriodicallyTriggeredSimulationEntity who) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Periodic event " + getName() + " occurred at simulation time "
-                    + getModel().getSimulationControl().getCurrentSimulationTime());
+            LOGGER.debug("Periodic event " + this.getName() + " occurred at simulation time "
+                    + this.getModel().getSimulationControl().getCurrentSimulationTime());
         }
-        if (getModel().getSimulationControl().isRunning()) {
+        if (this.getModel().getSimulationControl().isRunning()) {
             who.trigger();
-            this.schedule(who, delay);
+            this.schedule(who, this.delay);
         }
     }
 }

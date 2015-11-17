@@ -1,15 +1,10 @@
 /**
- * 
+ *
  */
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
-import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
-import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
-import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
-
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
@@ -17,10 +12,14 @@ import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
+import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 
 /**
  * @author snowball
- * 
+ *
  */
 public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> {
 
@@ -41,17 +40,17 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
                 break;
             case UsagemodelPackage.ENTRY_LEVEL_SYSTEM_CALL:
                 if (event.getEventType() == EventType.BEGIN) {
-                    singleListener
-                            .beginEntryLevelSystemCallInterpretation((ModelElementPassedEvent<EntryLevelSystemCall>) event);
+                    singleListener.beginEntryLevelSystemCallInterpretation(
+                            (ModelElementPassedEvent<EntryLevelSystemCall>) event);
                 } else {
-                    singleListener
-                            .endEntryLevelSystemCallInterpretation((ModelElementPassedEvent<EntryLevelSystemCall>) event);
+                    singleListener.endEntryLevelSystemCallInterpretation(
+                            (ModelElementPassedEvent<EntryLevelSystemCall>) event);
                 }
                 break;
             case RepositoryPackage.OPERATION_SIGNATURE:
                 if (event.getEventType() == EventType.BEGIN) {
-                    singleListener
-                            .beginSystemOperationCallInterpretation((ModelElementPassedEvent<OperationSignature>) event);
+                    singleListener.beginSystemOperationCallInterpretation(
+                            (ModelElementPassedEvent<OperationSignature>) event);
                 } else {
                     singleListener
                             .endSystemOperationCallInterpretation((ModelElementPassedEvent<OperationSignature>) event);

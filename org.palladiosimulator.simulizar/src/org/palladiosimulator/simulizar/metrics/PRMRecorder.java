@@ -11,7 +11,7 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 /**
  * Recorder for saving measurement of a measurement specification and pcm model element in prm
  * model. Can be used as base class for aggregators or performance metrics.
- * 
+ *
  * @author Joachim Meyer TODO: Should be a _Real_ Recorder, i.e., Recorder from ProbeFramework
  */
 public abstract class PRMRecorder {
@@ -21,7 +21,7 @@ public abstract class PRMRecorder {
 
     /**
      * Constructor
-     * 
+     *
      * @param prmModel
      *            the model helper.
      * @param measurementSpecification
@@ -29,16 +29,16 @@ public abstract class PRMRecorder {
      * @param monitoredElement
      *            The model object under consideration, e.g., the {@link EObject} associated with
      *            the given measurement specification.
-     * 
+     *
      */
-    public PRMRecorder(final RuntimeMeasurementModel prmAccess,
-            final MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
+    public PRMRecorder(final RuntimeMeasurementModel prmAccess, final MeasurementSpecification measurementSpecification,
+            final MeasuringPoint measuringPoint) {
         super();
         this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         this.measurement.setMeasuringPoint(measuringPoint);
         this.measurement.setMeasurementSpecification(measurementSpecification);
         this.prmAccess = prmAccess;
-        attachToPRM();
+        this.attachToPRM();
     }
 
     private void attachToPRM() {
@@ -55,7 +55,7 @@ public abstract class PRMRecorder {
 
     /**
      * Add measurement for measurement specification and PCMModelElementMeasurement to prm model.
-     * 
+     *
      * @param value
      *            the measurement value.
      */
@@ -91,7 +91,7 @@ public abstract class PRMRecorder {
      * @return returns the temporalCharacterization.
      */
     protected TemporalCharacterization getTemporalCharacterization() {
-        return getMeasurementSpecification().getTemporalRestriction();
+        return this.getMeasurementSpecification().getTemporalRestriction();
     }
 
 }
