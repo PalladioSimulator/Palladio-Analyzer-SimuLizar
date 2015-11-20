@@ -13,6 +13,7 @@ transformation checkPreconditions(
 							) {
 							
 property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
+property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
 
 	/**
 	 * The main transformation.
@@ -22,7 +23,10 @@ property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
 		var roleSet := actionRoleSet.objectsOfType(RoleSet)->any(true);
 		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
 		var affectedStatefulResource := roleSet.roles[roleType.id = affectedResourceRoleId]->any(true).value.oclAsType(StatefulPowerConsumingResource);
+		var desiredPowerState := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(PowerState);
 
+		assert fatal (not desiredPowerState.oclIsUndefined())
+			with log('Something went wrong: Given role set does not specify the desired power state.');
 		assert fatal ((not affectedStatefulResource.oclIsUndefined()) and statefulPowerConsumingResources->includes(affectedStatefulResource))
 			with log('Something went wrong: Given infrastructure repository does not contain'  
 			+ ' the StatefulPowerConsumingResource wich is affected by this action.');
