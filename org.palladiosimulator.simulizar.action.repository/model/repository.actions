@@ -43,10 +43,10 @@
       </controllerCalls>
     </adaptationSteps>
     <involvedRoles id="_AfvooYn0EeWm8ose-zjfHg" entityName="AffectedStatefulPowerConsumigResource">
-      <type href="../../de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResource"/>
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResource"/>
     </involvedRoles>
     <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="TargetPowerState">
-      <type href="../../de.fzi.power/model/power.ecore#//binding/PowerState"/>
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//binding/PowerState"/>
     </involvedRoles>
   </actions>
 </org.palladiosimulator.action:ActionRepository>

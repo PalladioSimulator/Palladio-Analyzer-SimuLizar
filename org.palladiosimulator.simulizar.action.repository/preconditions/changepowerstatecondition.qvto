@@ -12,14 +12,21 @@ transformation checkPreconditions(
 							in actionStep : ACTION_CORE
 							) {
 							
-property migratedComponentContextName = 'MigratedComponentAssemblyContext';
+property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
 
 	/**
 	 * The main transformation.
 	 * This is the entry point to the overall transformation.
 	 */
 	main() {	
-		
+		var roleSet := actionRoleSet.objectsOfType(RoleSet)->any(true);
+		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
+		var affectedStatefulResource := roleSet.roles[roleType.id = affectedResourceRoleId]->any(true).value.oclAsType(StatefulPowerConsumingResource);
+
+		assert fatal ((not affectedStatefulResource.oclIsUndefined()) and statefulPowerConsumingResources->includes(affectedStatefulResource))
+			with log('Something went wrong: Given infrastructure repository does not contain'  
+			+ ' the StatefulPowerConsumingResource wich is affected by this action.');
+			
+		var associatedResourceContainer := affectedStatefulResource.processingResourceSpecification.resourceContainer_ProcessingResourceSpecification;
 	}
-	
 }

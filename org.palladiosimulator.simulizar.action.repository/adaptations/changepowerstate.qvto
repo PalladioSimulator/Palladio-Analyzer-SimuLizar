@@ -26,7 +26,6 @@ transformation changePowerState(
 		assert fatal (statefulPowerConsumingResources[id = affectedStatefulPowerConsumingResource.id]->notEmpty())
 			with log ("Inconsistency occurred!");
 			
-		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
 		affectedStatefulPowerConsumingResource->xmap changePowerState(roleSet.getDesiredPowerStateFromRoles());
 	}
 	
