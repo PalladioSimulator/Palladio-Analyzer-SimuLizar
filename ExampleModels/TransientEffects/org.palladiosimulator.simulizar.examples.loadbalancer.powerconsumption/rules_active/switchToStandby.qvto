@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLi
  * in conjunction with mappings defined in the project properties.
  */
 modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
 modeltype POWER_INF uses 'http://www.fzi.de/Power/Infrastructure/1.0';
 modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
 modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
@@ -24,6 +25,7 @@ modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
  */
 transformation SwitchToStandby(		
 							in prm : RUNTIMEMEASUREMENT,
+							inout pcmAllocation : PCM_ALLOC,
 							inout powerInfrastructure : POWER_INF,
 							inout actionsInput : ACTIONS,
 							out roleSets : INSTANCE) {
@@ -44,13 +46,12 @@ transformation SwitchToStandby(
 		
 		var runtimeMeasurements = prm.rootObjects()[RuntimeMeasurement];
 		
-		assert fatal(runtimeMeasurements->size() > 0)
+		assert fatal(runtimeMeasurements->notEmpty())
 			with log ("No Measurements found!");
 			
 		var runningStatefulResource = powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON"]->any(true);
 		if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
-			var idleStateMeasurements := runtimeMeasurements->filterEmptyUtilizationMeasuements();
-			var idleMeasurementsOfResource := idleStateMeasurements[measuringPoint.oclIsTypeOf(ActiveResourceMeasuringPoint) and measuringPoint.oclAsType(ActiveResourceMeasuringPoint).activeResource.id = runningStatefulResource.processingResourceSpecification.id];
+			var idleMeasurementsOfResource := runtimeMeasurements->filterIdleUtilMeasurementsOfResource(runningStatefulResource);
 			if (idleMeasurementsOfResource->notEmpty()) {
 				var changePowerStateAction : Action := actionRepository.actions[id = changePowerStateActionId]->any(true);
 				var actionRoleSet := object RoleSet@roleSets {
@@ -66,10 +67,14 @@ transformation SwitchToStandby(
 					}
 				};
 				changePowerStateAction.execute(actionRoleSet);
-				log('Change of Power State executed');
+				log("Change of Power State executed");
 				log("Changed power state of stateful resource to: " + runningStatefulResource.powerState.name);
 			};
 		};
+	}
+	
+	query Set(RuntimeMeasurement) :: filterIdleUtilMeasurementsOfResource(in resource : StatefulPowerConsumingResource) : Set(RuntimeMeasurement) {
+		return self->filterEmptyUtilizationMeasuements()[measuringPoint.oclIsTypeOf(ActiveResourceMeasuringPoint) and measuringPoint.oclAsType(ActiveResourceMeasuringPoint).activeResource.id = resource.processingResourceSpecification.id];
 	}
 	
 	query Set(RuntimeMeasurement) :: filterEmptyUtilizationMeasuements() : Set(RuntimeMeasurement) {
