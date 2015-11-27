@@ -35,6 +35,7 @@ transformation SwitchToStandby(
 	property changePowerStateActionId : String = '_-DPJ8InzEeWm8ose-zjfHg';
 	property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
 	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+	property currentAllocationRoleId : String = '_7ldKUZTzEeWUYbZGIbhTfA';
 
 	/**
 	 * The main transformation.
@@ -45,9 +46,13 @@ transformation SwitchToStandby(
 		log('SimuLizar \'Switch To Standby\' Rule Transformation started');
 		
 		var runtimeMeasurements = prm.rootObjects()[RuntimeMeasurement];
+		var currentAllocation = pcmAllocation.rootObjects()[Allocation]->any(true);
 		
 		assert fatal(runtimeMeasurements->notEmpty())
-			with log ("No Measurements found!");
+			with log ('No Measurements found!');
+			
+		assert fatal (not currentAllocation.oclIsUndefined()) 
+			with log ('No valid allocation model found!');
 			
 		var runningStatefulResource = powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON"]->any(true);
 		if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
@@ -64,7 +69,12 @@ transformation SwitchToStandby(
 					roles += object instance::Role {
 						roleType := changePowerStateAction.involvedRoles[id=affectedResourceRoleId]->any(true);
 						value := runningStatefulResource.oclAsType(EObject);
-					}
+					};
+					//finally, pass the current allocation
+					roles += object instance::Role {
+						roleType := changePowerStateAction.involvedRoles[id=currentAllocationRoleId]->any(true);
+						value := currentAllocation.oclAsType(EObject);
+					};
 				};
 				changePowerStateAction.execute(actionRoleSet);
 				log("Change of Power State executed");
