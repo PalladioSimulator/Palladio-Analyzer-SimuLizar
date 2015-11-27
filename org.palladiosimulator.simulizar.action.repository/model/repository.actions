@@ -45,6 +45,9 @@
     <involvedRoles id="_AfvooYn0EeWm8ose-zjfHg" entityName="AffectedStatefulPowerConsumigResource">
       <type href="../../../plugin/de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResource"/>
     </involvedRoles>
+    <involvedRoles id="_7ldKUZTzEeWUYbZGIbhTfA" entityName="CurrentAllocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//allocation/Allocation"/>
+    </involvedRoles>
     <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="TargetPowerState">
       <type href="../../../plugin/de.fzi.power/model/power.ecore#//binding/PowerState"/>
     </involvedRoles>
