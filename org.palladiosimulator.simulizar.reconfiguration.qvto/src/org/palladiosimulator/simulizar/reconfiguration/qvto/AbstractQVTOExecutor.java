@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -112,22 +113,18 @@ public abstract class AbstractQVTOExecutor {
      * @see #AbstractQVTOExecutor(TransformationCache, QVToModelCache)
      */
     public boolean executeTransformation(URI transformationURI) {
-        TransformationData data = this.transformationCache.get(Objects.requireNonNull(transformationURI));
-        if (data == null) {
-            throw new IllegalArgumentException("Given transformation not present in transformation cache.");
-        }
-        return executeTransformation(data);
+        Optional<TransformationData> data = this.transformationCache.get(Objects.requireNonNull(transformationURI));
+        return executeTransformation(data.orElseThrow(
+                () -> new IllegalArgumentException("Given transformation not present in transformation cache.")));
     }
 
     /**
      * Template method to execute a QVTo transformation. Within this method, the following
      * (primitive) steps are conducted:
      * <ol>
-     * <li>
-     * The required model {@link ModelExtent ModelExtents} are created:
+     * <li>The required model {@link ModelExtent ModelExtents} are created:
      * {@link #setupModelExtents(TransformationData)}</li>
-     * <li>
-     * The {@link ExecutionContext} is setup: {@link #setupExecutionContext()}</li>
+     * <li>The {@link ExecutionContext} is setup: {@link #setupExecutionContext()}</li>
      * <li>The transformation is executed:
      * {@link #doExecution(TransformationExecutor, ExecutionContext, ModelExtent[])}</li>
      * <li>The {@link ExecutionDiagnostic} that describes the execution result is processed:
@@ -242,18 +239,16 @@ public abstract class AbstractQVTOExecutor {
         ModelExtent[] modelExtents = new ModelExtent[transformationData.getParameterCount()];
         // prepare the in/inout params first
         for (TransformationParameterInformation inParams : transformationData.getInParameters()) {
-            EObject sourceModel = this.availableModels.getModelByType(inParams.getParameterType());
-            if (sourceModel == null) {
-                throw new IllegalStateException("No model in QVTo model cache for "
-                        + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
-                        + transformationData.getTransformationName() + "'");
-            }
+            EObject sourceModel = this.availableModels.getModelByType(inParams.getParameterType())
+                    .orElseThrow(() -> new IllegalStateException("No model in QVTo model cache for "
+                            + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
+                            + transformationData.getTransformationName() + "'"));
             modelExtents[inParams.getParameterIndex()] = CREATE_NON_EMPTY_MODEL_EXTENT_SWITCH.doSwitch(sourceModel);
         }
         // now the pure out params, they need empty model extents
-        for (TransformationParameterInformation outParam : transformationData.getPureOutParameters()) {
-            modelExtents[outParam.getParameterIndex()] = new BasicModelExtent();
-        }
+        transformationData.getPureOutParameters()
+                .forEach(outParam -> modelExtents[outParam.getParameterIndex()] = new BasicModelExtent());
+
         return modelExtents;
     }
 }

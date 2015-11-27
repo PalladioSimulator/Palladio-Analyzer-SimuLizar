@@ -1,8 +1,10 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
@@ -90,13 +92,13 @@ public class TransformationCache {
      * 
      * @param transformationUris
      *            A set of {@link URI URIs} that point to QVTo transformations.
+     * @throws NullPointerException
+     *             In case any of the given uris is {@code null}.
      */
     @SafeVarargs
     public final void remove(URI... transformationUris) {
         URI[] uris = Objects.requireNonNull(transformationUris);
-        for (URI transformationURI : uris) {
-            this.cache.remove(Objects.requireNonNull(transformationURI));
-        }
+        Arrays.stream(uris).map(Objects::requireNonNull).forEach(this.cache::remove);
     }
 
     /**
@@ -105,14 +107,14 @@ public class TransformationCache {
      * 
      * @param transformationUri
      *            A {@link URI} that points to a QVTo transformation.
-     * @return The {@link TransformationData} of the transformation, or {@code null} if it is not
-     *         present in the cache.
+     * @return An {@link Optional} containing the {@link TransformationData} of the transformation,
+     *         which is empty if the transformation is not present in cache.
      * @throws NullPointerException
      *             In case the given URI is {@code null}.
      * @see #contains(URI)
      */
-    public TransformationData get(URI transformationUri) {
-        return this.cache.get(Objects.requireNonNull(transformationUri));
+    public Optional<TransformationData> get(URI transformationUri) {
+        return Optional.ofNullable(this.cache.get(Objects.requireNonNull(transformationUri)));
     }
 
     /**

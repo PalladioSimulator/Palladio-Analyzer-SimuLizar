@@ -1,9 +1,11 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -191,19 +193,16 @@ public class QVToModelCache {
      * 
      * @param ePackage
      *            An {@link EPackage} that describes a meta-model.
-     * @return The model, represented as an {@link EObject} that is an instance of the given
-     *         meta-model, or {@code null} if none could be found.
+     * @return The model, contained in an {@link Optional} and represented as an {@link EObject},
+     *         that is an instance of the given meta-model, or an empty {@link Optional} if none
+     *         could be found.
      * @throws NullPointerException
      *             In case {@code ePackage == null}.
      */
-    public EObject getModelByType(EPackage ePackage) {
+    public Optional<EObject> getModelByType(EPackage ePackage) {
         String namespace = Objects.requireNonNull(ePackage.getNsURI());
-        for (EPackage key : this.cache.keySet()) {
-            if (key.getNsURI().equals(namespace)) {
-                return this.cache.get(key);
-            }
-        }
-        return null;
+        return this.cache.keySet().stream().filter(key -> key.getNsURI().equals(namespace)).findAny()
+                .map(this.cache::get);
     }
 
     /**
@@ -222,38 +221,27 @@ public class QVToModelCache {
         return this.cache.containsKey(Objects.requireNonNull(ePackage));
     }
 
-    private Map<EPackage, EObject> storeBlackboardModels() {
+    private void storeBlackboardModels() {
         assert this.modelAccess != null;
 
-        Map<EPackage, EObject> result = new HashMap<>();
         storeModel(this.modelAccess.getRuntimeMeasurementModel());
-        for (Resource pcmResource : this.modelAccess.getGlobalPCMModel().getResourceSet().getResources()) {
-            // we want the root of the model, the root EObject
-            List<EObject> contents = pcmResource.getContents();
-            if (!contents.isEmpty() && !isBlacklisted(contents.get(0))) {
-                storeModel(contents.get(0));
-            }
-        }
+        // now store the all pcm models (we want the root of each model, the root EObject)
+        this.modelAccess.getGlobalPCMModel().getResourceSet().getResources().stream().map(Resource::getContents)
+                .filter(contents -> !contents.isEmpty() && !isBlacklisted(contents.get(0)))
+                .forEach(contents -> storeModel(contents.get(0)));
         // now collect all models that were added to blackboard via extension point
-        for (String partitionId : ExtensionHelper.getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
-                SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)) {
-            storeModelFromBlackboardPartition(partitionId);
-        }
-        return result;
+        ExtensionHelper
+                .getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
+                        SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
+                        SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)
+                .forEach(this::storeModelFromBlackboardPartition);
     }
 
     private static boolean isBlacklisted(EObject model) {
-        if (model.eResource().getURI()
-                .equals(PreparePCMBlackboardPartitionJob.PCM_PALLADIO_PRIMITIVE_TYPE_REPOSITORY_URI)) {
-            return true;
-        }
-        EClass eClass = model.eClass();
-        for (EClass bannedEClass : MODEL_ECLASS_BLACKLIST) {
-            if (eClass == bannedEClass) {
-                return true;
-            }
-        }
-        return false;
+        assert model != null;
+
+        return model.eResource().getURI()
+                .equals(PreparePCMBlackboardPartitionJob.PCM_PALLADIO_PRIMITIVE_TYPE_REPOSITORY_URI)
+                || Arrays.stream(MODEL_ECLASS_BLACKLIST).anyMatch(bannedEClass -> bannedEClass == model.eClass());
     }
 }
