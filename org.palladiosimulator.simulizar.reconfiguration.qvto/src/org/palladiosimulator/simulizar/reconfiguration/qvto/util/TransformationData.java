@@ -2,10 +2,10 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.Predicate;
-import org.apache.commons.collections15.PredicateUtils;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 
@@ -32,24 +32,17 @@ public final class TransformationData {
     private final Collection<TransformationParameterInformation> inParams;
     private final Collection<TransformationParameterInformation> outParams;
 
-    private static final Predicate<TransformationParameterInformation> PURE_OUT_PARAM_PREDICATE = new Predicate<TransformationParameterInformation>() {
-
-        @Override
-        public boolean evaluate(TransformationParameterInformation transformationParameterInformation) {
-            return transformationParameterInformation.isOutParameter();
-        }
-    };
-
-    private static final Predicate<TransformationParameterInformation> IN_INOUT_PARAM_PREDICATE = PredicateUtils
-            .notPredicate(PURE_OUT_PARAM_PREDICATE);
-
     TransformationData(OperationalTransformation transformation, TransformationExecutor executor,
             Collection<TransformationParameterInformation> paramInfo) {
         this.associatedTransformation = transformation;
         this.transformationExecutor = executor;
-        this.inParams = Collections.unmodifiableCollection(CollectionUtils.select(paramInfo, IN_INOUT_PARAM_PREDICATE));
+
+        Map<Boolean, List<TransformationParameterInformation>> partitionedParams = paramInfo.stream()
+                .collect(Collectors.partitioningBy(TransformationParameterInformation::isOutParameter));
+        this.inParams = Collections
+                .unmodifiableCollection(partitionedParams.getOrDefault(Boolean.FALSE, Collections.emptyList()));
         this.outParams = Collections
-                .unmodifiableCollection(CollectionUtils.select(paramInfo, PURE_OUT_PARAM_PREDICATE));
+                .unmodifiableCollection(partitionedParams.getOrDefault(Boolean.TRUE, Collections.emptyList()));
     }
 
     /**

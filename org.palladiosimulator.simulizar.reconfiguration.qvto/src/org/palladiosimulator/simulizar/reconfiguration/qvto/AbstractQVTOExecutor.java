@@ -246,8 +246,9 @@ public abstract class AbstractQVTOExecutor {
             modelExtents[inParams.getParameterIndex()] = CREATE_NON_EMPTY_MODEL_EXTENT_SWITCH.doSwitch(sourceModel);
         }
         // now the pure out params, they need empty model extents
-        transformationData.getPureOutParameters()
-                .forEach(outParam -> modelExtents[outParam.getParameterIndex()] = new BasicModelExtent());
+        transformationData.getPureOutParameters().stream()
+                .mapToInt(TransformationParameterInformation::getParameterIndex)
+                .forEach(index -> modelExtents[index] = new BasicModelExtent());
 
         return modelExtents;
     }
