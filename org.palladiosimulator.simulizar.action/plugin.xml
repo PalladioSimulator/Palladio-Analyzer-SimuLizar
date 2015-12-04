@@ -9,7 +9,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated actions -->
       <package
-            uri="http://simulizar.palladiosimulator.org/Actions/Core/1.0"
+            uri="http://simulizar.palladiosimulator.org/Actions/Core/1.1"
             class="org.palladiosimulator.simulizar.action.core.CorePackage"
             genModel="model/actions.genmodel"/>
    </extension>
@@ -17,7 +17,7 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated actions -->
       <package
-            uri="http://simulizar.palladiosimulator.org/Actions/Mapping/1.0"
+            uri="http://simulizar.palladiosimulator.org/Actions/Mapping/1.1"
             class="org.palladiosimulator.simulizar.action.mapping.MappingPackage"
             genModel="model/actions.genmodel"/>
    </extension>
@@ -25,16 +25,16 @@
    <extension point="org.eclipse.emf.ecore.generated_package">
       <!-- @generated actions -->
       <package
-            uri="http://simulizar.palladiosimulator.org/Actions/Instance/1.0"
+            uri="http://simulizar.palladiosimulator.org/Actions/Instance/1.1"
             class="org.palladiosimulator.simulizar.action.instance.InstancePackage"
             genModel="model/actions.genmodel"/>
    </extension>
    <extension
          id="org.palladiosimulator.action"
-         name="Action Repository File Input Handler"
+         name="Adaptation Behavior Repository File Input Handler"
          point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
       <fileInputConfigurationBuilder
-            fileInputConfigurationBuilder="org.palladiosimulator.simulizar.action.ui.configuration.ActionRepositoryFileInputConfigBuilder">
+            fileInputConfigurationBuilder="org.palladiosimulator.simulizar.action.ui.configuration.AdaptationBehaviorRepositoryFileInputConfigBuilder">
       </fileInputConfigurationBuilder>
    </extension>
 
@@ -44,8 +44,8 @@
          point="org.palladiosimulator.simulizar.launcher.modelload">
       <loadJob
             blackboardPartitionId="org.palladiosimulator.simulizar.action"
-            loadJob="org.palladiosimulator.simulizar.action.jobs.LoadActionRepositoryIntoBlackBoardJob"
-            loadJobConfigBuilder="org.palladiosimulator.simulizar.action.jobs.config.LoadActionRepositoryIntoBlackboardJobConfigBuilder">
+            loadJob="org.palladiosimulator.simulizar.action.jobs.LoadAdaptationBehaviorRepositoryIntoBlackBoardJob"
+            loadJobConfigBuilder="org.palladiosimulator.simulizar.action.jobs.config.LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfigBuilder">
       </loadJob>
    </extension>
    <extension
@@ -56,5 +56,5 @@
             accessor="org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState">
       </runtimeStateAccessor>
    </extension>
-
+	<extension-point name="State Transformation Task" id="stratetransformation" schema="schema/org.palladiosimulator.simulizar.action.statetransformation.exsd"/>
 </plugin>

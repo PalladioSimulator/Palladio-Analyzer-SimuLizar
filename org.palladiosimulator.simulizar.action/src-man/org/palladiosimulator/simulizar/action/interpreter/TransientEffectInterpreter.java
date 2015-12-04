@@ -10,6 +10,10 @@ import java.util.Optional;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.Platform;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
@@ -19,15 +23,19 @@ import org.palladiosimulator.pcm.usagemodel.Stop;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.simulizar.action.core.Action;
-import org.palladiosimulator.simulizar.action.core.ActionRepository;
-import org.palladiosimulator.simulizar.action.core.AdaptationStep;
+import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.action.core.AdaptationAction;
+import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
-import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
+import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
+import org.palladiosimulator.simulizar.action.core.GuardedAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
+import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
 import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
-import org.palladiosimulator.simulizar.action.interpreter.notifications.ActionExecutedNotification;
-import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationActionExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -44,51 +52,81 @@ import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUser;
 
 public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
+    private static final String STATE_TRANSFORMING_EXT_POINT_ID = "org.palladiosimulator.simulizar.action.stratetransformation";
+    private static final String STATE_TRANSFORMING_CLASS_NAME = "class";
+
     private final SimuLizarRuntimeState state;
     private final RoleSet roleSet;
-    private TransientEffectQVTOExecutor qvtoExecutor;
+    private final TransientEffectQVTOExecutor qvtoExecutor;
     private final QVToModelCache availableModels;
 
     public TransientEffectInterpreter(final SimuLizarRuntimeState state, final RoleSet set,
-            final ActionRepository repository, QVToModelCache availableModels) {
+            final AdaptationBehaviorRepository repository, IModelAccess modelAccess) {
         this.state = state;
         this.roleSet = set;
-        this.availableModels = Objects.requireNonNull(availableModels).snapshot();
+        this.availableModels = new QVToModelCache(Objects.requireNonNull(modelAccess));
         this.availableModels.storeModel(this.roleSet);
+        this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot());
     }
 
     @Override
-    public Boolean caseAction(final Action action) {
-        boolean successful = action.getAdaptationSteps().stream().reduce(Boolean.TRUE, (result, step) -> doSwitch(step),
-                Boolean::logicalAnd);
+    public Boolean caseAdaptationBehavior(final AdaptationBehavior adaptationBehavior) {
+        boolean successful = adaptationBehavior.getAdaptationSteps().stream().reduce(Boolean.TRUE,
+                (result, step) -> doSwitch(step), Boolean::logicalAnd);
         if (successful) {
             this.state.getReconfigurator().getReconfigurationProcess()
-                    .appendReconfigurationNotification(new ActionExecutedNotification(action));
+                    .appendReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
         }
         return successful;
     }
 
     @Override
-    public Boolean caseAdaptationStep(final AdaptationStep step) {
-        throw new AssertionError("AdaptationStep is abstract class, this case should not be reached at all!");
+    public Boolean caseGuardedAdaptationBehavior(GuardedAdaptationBehavior guardedAdaptationBehavior) {
+        this.qvtoExecutor.enableForTransformationExecution(guardedAdaptationBehavior);
+
+        TransientEffectQVTOExecutorUtil.validateGuardedAdaptationBehavior(this.qvtoExecutor, guardedAdaptationBehavior);
+        return this.qvtoExecutor.executeTransformation(guardedAdaptationBehavior.getPreconditionURI());
     }
 
     @Override
-    public Boolean caseResourceDemandingStep(final ResourceDemandingStep step) {
-        this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot(), step);
-        // perform controller completion
-        // TODO FIXME currently it is assumed that all components are in the
-        // same repository
-        if (!applyTransientStates()) {
-            return false;
+    public Boolean caseStateTransformingAction(StateTransformingAction stateTransformingAction) {
+        this.qvtoExecutor.enableForTransformationExecution(stateTransformingAction);
+
+        String extensionId = stateTransformingAction.getId();
+        AbstractStateTransformation transformation = getStateTransformation(extensionId);
+        transformation.setSimulationState(this.state);
+        return transformation.execute(this.roleSet);
+    };
+
+    private static AbstractStateTransformation getStateTransformation(String extensionId) {
+        Optional<IExtension> stateTransformingExtension = Arrays
+                .stream(Platform.getExtensionRegistry().getExtensionPoint(STATE_TRANSFORMING_EXT_POINT_ID)
+                        .getExtensions())
+                .filter(extension -> extension.getUniqueIdentifier().equals(extensionId)).findAny();
+        IExtension extension = stateTransformingExtension.orElseThrow(() -> new IllegalStateException(
+                "No state transformation registered for State Transforming Step " + extensionId));
+        for (IConfigurationElement element : extension.getConfigurationElements()) {
+            try {
+                return (AbstractStateTransformation) element.createExecutableExtension(STATE_TRANSFORMING_CLASS_NAME);
+            } catch (CoreException e) {
+                LOGGER.error(e.getStackTrace());
+            }
         }
-        /*
-         * If no conflicts exists the action can be executed. Consequently stereotypes have been
-         * applied. These must result in model updates. TODO FIXME Christian 'Real' reconfigurations
-         * should be handled differently than stereotype applications.
-         */
-        Repository repository = step.getControllerCalls().get(0).getComponent().getRepository__RepositoryComponent();
-        Mapping mapping = controllerCompletion(repository)
+        throw new IllegalStateException(
+                "No state transformation registered for State Transforming Step " + extensionId);
+    }
+
+    @Override
+    public Boolean caseAdaptationAction(final AdaptationAction step) {
+        throw new AssertionError("AdaptationAction is abstract class, this case should not be reached at all!");
+    }
+
+    @Override
+    public Boolean caseResourceDemandingAction(final ResourceDemandingAction resourceDemandingAction) {
+        this.qvtoExecutor.enableForTransformationExecution(resourceDemandingAction);
+
+        // perform controller completion
+        Mapping mapping = executeResourceDemandingAction(resourceDemandingAction)
                 .orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
 
         List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
@@ -105,7 +143,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             List<Probe> usageStartStopProbes = Collections.unmodifiableList(
                     Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
                             (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
-            OpenWorkloadUser user = new OpenWorkloadUser(model, step.getEntityName() + " " + call.getEntityName(),
+            OpenWorkloadUser user = new OpenWorkloadUser(model,
+                    resourceDemandingAction.getEntityName() + " " + call.getEntityName(),
                     createAndScheduleControllerScenarioRunner(controllerMapping, reconfigurationProcess),
                     usageStartStopProbes);
             users.add(user);
@@ -115,10 +154,22 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         while (checkIfUsersRun(users)) {
             reconfigurationProcess.passivate();
         }
+        return true;
+    }
+
+    @Override
+    public Boolean caseEnactAdaptationAction(EnactAdaptationAction enactAdaptationAction) {
+        this.qvtoExecutor.enableForTransformationExecution(enactAdaptationAction);
+
         // execute adaptation
-        final boolean result = executeAdaptation();
+        TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationAction);
+        final boolean result = this.qvtoExecutor.executeTransformation(enactAdaptationAction.getAdaptationStepURI());
         if (result) {
-            reconfigurationProcess.appendReconfigurationNotification(new AdaptationStepExecutedNotification(step));
+            // get the process in which the reconfiguration is executed
+            final ReconfigurationProcess reconfigurationProcess = this.state.getReconfigurator()
+                    .getReconfigurationProcess();
+            reconfigurationProcess
+                    .appendReconfigurationNotification(new AdaptationActionExecutedNotification(enactAdaptationAction));
         }
         return result;
     }
@@ -147,19 +198,23 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         };
     }
 
-    private boolean applyTransientStates() {
-        return this.qvtoExecutor.executePrecondition();
-    }
-
     private boolean checkIfUsersRun(final Collection<OpenWorkloadUser> users) {
         return users.stream().anyMatch(u -> !u.isTerminated());
     }
 
-    private Optional<Mapping> controllerCompletion(Repository controllerRepository) {
-        return this.qvtoExecutor.executeControllerCompletion(controllerRepository);
-    }
+    private Optional<Mapping> executeResourceDemandingAction(ResourceDemandingAction resourceDemandingAction) {
+        assert resourceDemandingAction != null;
 
-    private boolean executeAdaptation() {
-        return this.qvtoExecutor.executeAdaptationStep();
+        // TODO FIXME currently it is assumed that all components are in the
+        // same repository
+        /*
+         * TODO FIXME Christian 'Real' reconfigurations should be handled differently than
+         * stereotype applications.
+         */
+        Repository repository = resourceDemandingAction.getControllerCalls().get(0).getComponent()
+                .getRepository__RepositoryComponent();
+        TransientEffectQVTOExecutorUtil.validateControllerCompletion(this.qvtoExecutor, resourceDemandingAction);
+        return this.qvtoExecutor.executeControllerCompletion(repository,
+                resourceDemandingAction.getControllerCompletionURI());
     }
 }

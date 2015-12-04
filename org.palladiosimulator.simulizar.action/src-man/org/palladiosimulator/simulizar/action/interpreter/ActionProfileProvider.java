@@ -3,41 +3,39 @@ package org.palladiosimulator.simulizar.action.interpreter;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.registry.IProfileProvider;
-import org.palladiosimulator.simulizar.action.core.Action;
+import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 
 public class ActionProfileProvider implements IProfileProvider {
-	
-	private Action action;
 
-	public ActionProfileProvider(Action action) {
-		this.action = action;
-	}
+    private final AdaptationBehavior adaptationBehavior;
 
-	@Override
-	public Profile getProfile() {
-		return action.getTransientStateProfile();
-	}
+    public ActionProfileProvider(AdaptationBehavior action) {
+        this.adaptationBehavior = action;
+    }
 
-	@Override
-	public ProfileLocationType getProfileLocationType() {
-		return ProfileLocationType.BUNDLE;
-	}
+    @Override
+    public Profile getProfile() {
+        return adaptationBehavior.getTransientStateProfile();
+    }
 
-	@Override
-	public String getProfileName() {
-		return this.action.getTransientStateProfile().getName();
-	}
+    @Override
+    public ProfileLocationType getProfileLocationType() {
+        return ProfileLocationType.BUNDLE;
+    }
 
-	@Override
-	public String getProfileNsURI() {
-		return action.getTransientStateProfile().getNsURI();
-	}
+    @Override
+    public String getProfileName() {
+        return this.adaptationBehavior.getTransientStateProfile().getName();
+    }
 
-	// TODO FIXME
-	private Profile obtainProfileFromResource(Resource resource) {
-        return action.getTransientStateProfile();
-	}
+    @Override
+    public String getProfileNsURI() {
+        return adaptationBehavior.getTransientStateProfile().getNsURI();
+    }
 
-
+    // TODO FIXME
+    private Profile obtainProfileFromResource(Resource resource) {
+        return adaptationBehavior.getTransientStateProfile();
+    }
 
 }
