@@ -12,8 +12,8 @@
 modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
 modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
-modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
-modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
+modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
 /*
  * The transformation signature declares that a RuntimeMeasurement modeltype is required as input, while an PCM
@@ -31,7 +31,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 	// Define Threshold and Scale Out
 	property threshold : Real = 7.0;
 	property outsourceFactor : Real = 0.1;
-	property actionRepository : ActionRepository = actionsInput.rootObjects()[core::ActionRepository]->any(true);
+	property adaptationBehaviorRepository : AdaptationBehaviorRepository = actionsInput.rootObjects()[core::AdaptationBehaviorRepository]->any(true);
 	property targetContainerId : String = '_3uVlIAEpEeS7FKokKTKFow';
 	property sourceContainerId : String = '_yaTfsAEpEeS7FKokKTKFow';
 	
@@ -83,7 +83,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		allocationContexts->forEach(allocation){
 			log("Assembly Context name: " + allocation.assemblyContext_AllocationContext.entityName);
 			if(allocation.assemblyContext_AllocationContext.entityName = "Server1" and targetContainerId <> allocation.resourceContainer_AllocationContext.id) {
-				var vmMigrate : Action := actionRepository.actions->select(a | a.id = '_3MyFAOp9EeS7J-g-NrN0TQ')->any(true);
+				var vmMigrate : AdaptationBehavior := adaptationBehaviorRepository.actions->select(a | a.id = '_3MyFAOp9EeS7J-g-NrN0TQ')->any(true);
 				var containerSource : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = sourceContainerId)->any(true);
 				var containerTarget : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = targetContainerId)->any(true);
 				var roleSet : RoleSet := object RoleSet@roleSets {
@@ -108,7 +108,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		return false;
 	}
 	
-	query Action::getRoleTypeById(id : String) : RoleType {
+	query AdaptationBehavior::getRoleTypeById(id : String) : RoleType {
 		return self.involvedRoles->select(r | r.id = id)->any(true);
 	}
 	
