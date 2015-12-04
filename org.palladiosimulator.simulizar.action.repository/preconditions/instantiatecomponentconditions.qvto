@@ -18,9 +18,8 @@ modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel
 modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
 modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
 modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1';
-modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.0';
-modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
-modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 
 transformation vmInstantiationStereotypeApplication(
 							inout pcmAllocation : PCM_ALLOC,

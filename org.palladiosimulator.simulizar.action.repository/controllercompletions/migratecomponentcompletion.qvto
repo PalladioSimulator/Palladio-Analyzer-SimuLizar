@@ -15,9 +15,9 @@ modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repo
 modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
 modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
 modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
-modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.0';
-modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.0';
-modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.0';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 
 transformation vmMigration(
 							inout pcmAllocation : PCM_ALLOC,
@@ -45,7 +45,7 @@ transformation vmMigration(
 	main() {	
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
-		var step : ResourceDemandingStep := actionStep.rootObjects()[ResourceDemandingStep]->any(true);
+		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
 		log("Executing step " + step.entityName);
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
 		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
@@ -85,7 +85,7 @@ transformation vmMigration(
 		};
 	}
 	
-	mapping ResourceDemandingStep::vmMigrate(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet) : Mapping@actionMapping {
+	mapping ResourceDemandingAction::vmMigrate(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet) : Mapping@actionMapping {
 		log("Adding controllers for VM migration");
 		result.controllerMappings := self.controllerCalls->map addVMControllers(allocation, controllerRepository, roleSet)
 	}
