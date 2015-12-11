@@ -83,7 +83,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		allocationContexts->forEach(allocation){
 			log("Assembly Context name: " + allocation.assemblyContext_AllocationContext.entityName);
 			if(allocation.assemblyContext_AllocationContext.entityName = "Server1" and targetContainerId <> allocation.resourceContainer_AllocationContext.id) {
-				var vmMigrate : AdaptationBehavior := adaptationBehaviorRepository.actions->select(a | a.id = '_3MyFAOp9EeS7J-g-NrN0TQ')->any(true);
+				var vmMigrate : AdaptationBehavior := adaptationBehaviorRepository.actions->select(a | a.id = '_g-Ud4KAbEeWZkvqD6d6Miw')->any(true).oclAsType(AdaptationBehavior);
 				var containerSource : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = sourceContainerId)->any(true);
 				var containerTarget : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = targetContainerId)->any(true);
 				var roleSet : RoleSet := object RoleSet@roleSets {

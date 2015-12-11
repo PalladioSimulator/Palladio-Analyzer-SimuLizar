@@ -32,7 +32,7 @@ transformation SwitchToStandby(
 							
 							
 	property adaptationBehaviorRepository = actionsInput.rootObjects()[core::AdaptationBehaviorRepository]->any(true);
-	property changePowerStateActionId : String = '_-DPJ8InzEeWm8ose-zjfHg';
+	property changePowerStateAdaptationBehaviorId : String = '_Ziv7fLerarHsaygm-zjfH';
 	property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
 	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
 	property currentAllocationRoleId : String = '_7ldKUZTzEeWUYbZGIbhTfA';
@@ -58,25 +58,25 @@ transformation SwitchToStandby(
 		if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
 			var idleMeasurementsOfResource := runtimeMeasurements->filterIdleUtilMeasurementsOfResource(runningStatefulResource);
 			if (idleMeasurementsOfResource->notEmpty()) {
-				var changePowerStateAction : AdaptationBehavior := adaptationBehaviorRepository.actions[id = changePowerStateActionId]->any(true);
-				var actionRoleSet := object RoleSet@roleSets {
+				var changePowerStateAdaptationBehavior : AdaptationBehavior := adaptationBehaviorRepository.actions[id = changePowerStateAdaptationBehaviorId]->any(true);
+				var adaptationBehaviorRoleSet := object RoleSet@roleSets {
 					//the desired power state
 					roles += object instance::Role {
-						roleType := changePowerStateAction.involvedRoles[id = desiredPowerStateRoleId]->any(true);
+						roleType := changePowerStateAdaptationBehavior.involvedRoles[id = desiredPowerStateRoleId]->any(true);
 						value := runningStatefulResource.statefulResourcePowerBinding.powerStates->any(name = "STANDBY").oclAsType(EObject);
 					};
 					//the affected stateful resource
 					roles += object instance::Role {
-						roleType := changePowerStateAction.involvedRoles[id=affectedResourceRoleId]->any(true);
+						roleType := changePowerStateAdaptationBehavior.involvedRoles[id=affectedResourceRoleId]->any(true);
 						value := runningStatefulResource.oclAsType(EObject);
 					};
 					//finally, pass the current allocation
 					roles += object instance::Role {
-						roleType := changePowerStateAction.involvedRoles[id=currentAllocationRoleId]->any(true);
+						roleType := changePowerStateAdaptationBehavior.involvedRoles[id=currentAllocationRoleId]->any(true);
 						value := currentAllocation.oclAsType(EObject);
 					};
 				};
-				changePowerStateAction.execute(actionRoleSet);
+				changePowerStateAdaptationBehavior.execute(adaptationBehaviorRoleSet);
 				log("Change of Power State executed");
 				log("Changed power state of stateful resource to: " + runningStatefulResource.powerState.name);
 			};
