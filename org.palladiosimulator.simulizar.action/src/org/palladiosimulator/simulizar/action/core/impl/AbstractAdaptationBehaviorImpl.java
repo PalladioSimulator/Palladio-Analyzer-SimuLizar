@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.action.instance.impl;
+package org.palladiosimulator.simulizar.action.core.impl;
 
 import java.util.Collection;
 
@@ -10,42 +10,42 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.palladiosimulator.simulizar.action.instance.InstancePackage;
-import org.palladiosimulator.simulizar.action.instance.Role;
-import org.palladiosimulator.simulizar.action.instance.RoleSet;
-
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.AdaptationAction;
+import org.palladiosimulator.simulizar.action.core.CorePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Role Set</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Abstract Adaptation Behavior</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.palladiosimulator.simulizar.action.instance.impl.RoleSetImpl#getRoles
- * <em>Roles</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl#getAdaptationActions
+ * <em>Adaptation Actions</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class RoleSetImpl extends IdentifierImpl implements RoleSet {
+public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implements AbstractAdaptationBehavior {
     /**
-     * The cached value of the '{@link #getRoles() <em>Roles</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
+     * The cached value of the '{@link #getAdaptationActions() <em>Adaptation Actions</em>}'
+     * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getRoles()
+     * @see #getAdaptationActions()
      * @generated
      * @ordered
      */
-    protected EList<Role> roles;
+    protected EList<AdaptationAction> adaptationActions;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected RoleSetImpl() {
+    protected AbstractAdaptationBehaviorImpl() {
         super();
     }
 
@@ -56,7 +56,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
      */
     @Override
     protected EClass eStaticClass() {
-        return InstancePackage.Literals.ROLE_SET;
+        return CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR;
     }
 
     /**
@@ -65,12 +65,13 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
      * @generated
      */
     @Override
-    public EList<Role> getRoles() {
-        if (this.roles == null) {
-            this.roles = new EObjectContainmentWithInverseEList<Role>(Role.class, this, InstancePackage.ROLE_SET__ROLES,
-                    InstancePackage.ROLE__ROLE_SET);
+    public EList<AdaptationAction> getAdaptationActions() {
+        if (this.adaptationActions == null) {
+            this.adaptationActions = new EObjectContainmentWithInverseEList<AdaptationAction>(AdaptationAction.class,
+                    this, CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS,
+                    CorePackage.ADAPTATION_ACTION__ADAPTATION_BEHAVIOR);
         }
-        return this.roles;
+        return this.adaptationActions;
     }
 
     /**
@@ -83,8 +84,9 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID,
             final NotificationChain msgs) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getRoles()).basicAdd(otherEnd, msgs);
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getAdaptationActions()).basicAdd(otherEnd,
+                    msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -98,8 +100,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
             final NotificationChain msgs) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            return ((InternalEList<?>) this.getRoles()).basicRemove(otherEnd, msgs);
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            return ((InternalEList<?>) this.getAdaptationActions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -112,8 +114,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     @Override
     public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            return this.getRoles();
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            return this.getAdaptationActions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -127,9 +129,9 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     @Override
     public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            this.getRoles().clear();
-            this.getRoles().addAll((Collection<? extends Role>) newValue);
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            this.getAdaptationActions().clear();
+            this.getAdaptationActions().addAll((Collection<? extends AdaptationAction>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -143,8 +145,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     @Override
     public void eUnset(final int featureID) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            this.getRoles().clear();
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            this.getAdaptationActions().clear();
             return;
         }
         super.eUnset(featureID);
@@ -158,10 +160,10 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
     @Override
     public boolean eIsSet(final int featureID) {
         switch (featureID) {
-        case InstancePackage.ROLE_SET__ROLES:
-            return this.roles != null && !this.roles.isEmpty();
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
+            return this.adaptationActions != null && !this.adaptationActions.isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
-} // RoleSetImpl
+} // AbstractAdaptationBehaviorImpl

@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.action.mapping.impl;
+package org.palladiosimulator.simulizar.action.core.impl;
 
 import java.util.Collection;
 
@@ -10,41 +10,41 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
-import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
-import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
-import org.palladiosimulator.simulizar.action.mapping.Mapping;
-import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
+import org.palladiosimulator.simulizar.action.core.CorePackage;
+import org.palladiosimulator.simulizar.action.core.GuardedAction;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '<em><b>Guarded Action</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.palladiosimulator.simulizar.action.mapping.impl.MappingImpl#getControllerMappings
- * <em>Controller Mappings</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.action.core.impl.GuardedActionImpl#getGuardedTransitions
+ * <em>Guarded Transitions</em>}</li>
  * </ul>
  *
  * @generated
  */
-public class MappingImpl extends EntityImpl implements Mapping {
+public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAction {
     /**
-     * The cached value of the '{@link #getControllerMappings() <em>Controller Mappings</em>}'
+     * The cached value of the '{@link #getGuardedTransitions() <em>Guarded Transitions</em>}'
      * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
-     * @see #getControllerMappings()
+     * @see #getGuardedTransitions()
      * @generated
      * @ordered
      */
-    protected EList<ControllerMapping> controllerMappings;
+    protected EList<GuardedTransition> guardedTransitions;
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected MappingImpl() {
+    protected GuardedActionImpl() {
         super();
     }
 
@@ -55,7 +55,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
      */
     @Override
     protected EClass eStaticClass() {
-        return MappingPackage.Literals.MAPPING;
+        return CorePackage.Literals.GUARDED_ACTION;
     }
 
     /**
@@ -64,12 +64,13 @@ public class MappingImpl extends EntityImpl implements Mapping {
      * @generated
      */
     @Override
-    public EList<ControllerMapping> getControllerMappings() {
-        if (this.controllerMappings == null) {
-            this.controllerMappings = new EObjectContainmentWithInverseEList<ControllerMapping>(ControllerMapping.class,
-                    this, MappingPackage.MAPPING__CONTROLLER_MAPPINGS, MappingPackage.CONTROLLER_MAPPING__MAPPING);
+    public EList<GuardedTransition> getGuardedTransitions() {
+        if (this.guardedTransitions == null) {
+            this.guardedTransitions = new EObjectContainmentWithInverseEList<GuardedTransition>(GuardedTransition.class,
+                    this, CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS,
+                    CorePackage.GUARDED_TRANSITION__GUARDED_ACTION);
         }
-        return this.controllerMappings;
+        return this.guardedTransitions;
     }
 
     /**
@@ -82,8 +83,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
     public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID,
             final NotificationChain msgs) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getControllerMappings()).basicAdd(otherEnd,
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getGuardedTransitions()).basicAdd(otherEnd,
                     msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
@@ -98,8 +99,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
     public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
             final NotificationChain msgs) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            return ((InternalEList<?>) this.getControllerMappings()).basicRemove(otherEnd, msgs);
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            return ((InternalEList<?>) this.getGuardedTransitions()).basicRemove(otherEnd, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -112,8 +113,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
     @Override
     public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            return this.getControllerMappings();
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            return this.getGuardedTransitions();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -127,9 +128,9 @@ public class MappingImpl extends EntityImpl implements Mapping {
     @Override
     public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            this.getControllerMappings().clear();
-            this.getControllerMappings().addAll((Collection<? extends ControllerMapping>) newValue);
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            this.getGuardedTransitions().clear();
+            this.getGuardedTransitions().addAll((Collection<? extends GuardedTransition>) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -143,8 +144,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
     @Override
     public void eUnset(final int featureID) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            this.getControllerMappings().clear();
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            this.getGuardedTransitions().clear();
             return;
         }
         super.eUnset(featureID);
@@ -158,10 +159,10 @@ public class MappingImpl extends EntityImpl implements Mapping {
     @Override
     public boolean eIsSet(final int featureID) {
         switch (featureID) {
-        case MappingPackage.MAPPING__CONTROLLER_MAPPINGS:
-            return this.controllerMappings != null && !this.controllerMappings.isEmpty();
+        case CorePackage.GUARDED_ACTION__GUARDED_TRANSITIONS:
+            return this.guardedTransitions != null && !this.guardedTransitions.isEmpty();
         }
         return super.eIsSet(featureID);
     }
 
-} // MappingImpl
+} // GuardedActionImpl

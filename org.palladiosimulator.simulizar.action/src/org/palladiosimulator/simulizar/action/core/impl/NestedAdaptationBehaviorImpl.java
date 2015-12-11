@@ -8,31 +8,31 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
-import org.palladiosimulator.simulizar.action.core.AdaptationAction;
-import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
+import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Adaptation Action</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>Nested Adaptation Behavior</b></em>'. <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>{@link org.palladiosimulator.simulizar.action.core.impl.AdaptationActionImpl#getAction
- * <em>Action</em>}</li>
+ * <li>
+ * {@link org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl#getGuardedTransition
+ * <em>Guarded Transition</em>}</li>
  * </ul>
  *
  * @generated
  */
-public abstract class AdaptationActionImpl extends EntityImpl implements AdaptationAction {
+public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl implements NestedAdaptationBehavior {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
-    protected AdaptationActionImpl() {
+    protected NestedAdaptationBehaviorImpl() {
         super();
     }
 
@@ -43,7 +43,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
      */
     @Override
     protected EClass eStaticClass() {
-        return CorePackage.Literals.ADAPTATION_ACTION;
+        return CorePackage.Literals.NESTED_ADAPTATION_BEHAVIOR;
     }
 
     /**
@@ -52,11 +52,11 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
      * @generated
      */
     @Override
-    public AdaptationBehavior getAction() {
-        if (this.eContainerFeatureID() != CorePackage.ADAPTATION_ACTION__ACTION) {
+    public GuardedTransition getGuardedTransition() {
+        if (this.eContainerFeatureID() != CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION) {
             return null;
         }
-        return (AdaptationBehavior) this.eInternalContainer();
+        return (GuardedTransition) this.eInternalContainer();
     }
 
     /**
@@ -64,8 +64,10 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
      *
      * @generated
      */
-    public NotificationChain basicSetAction(final AdaptationBehavior newAction, NotificationChain msgs) {
-        msgs = this.eBasicSetContainer((InternalEObject) newAction, CorePackage.ADAPTATION_ACTION__ACTION, msgs);
+    public NotificationChain basicSetGuardedTransition(final GuardedTransition newGuardedTransition,
+            NotificationChain msgs) {
+        msgs = this.eBasicSetContainer((InternalEObject) newGuardedTransition,
+                CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION, msgs);
         return msgs;
     }
 
@@ -75,27 +77,29 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
      * @generated
      */
     @Override
-    public void setAction(final AdaptationBehavior newAction) {
-        if (newAction != this.eInternalContainer()
-                || (this.eContainerFeatureID() != CorePackage.ADAPTATION_ACTION__ACTION && newAction != null)) {
-            if (EcoreUtil.isAncestor(this, newAction)) {
+    public void setGuardedTransition(final GuardedTransition newGuardedTransition) {
+        if (newGuardedTransition != this.eInternalContainer()
+                || (this.eContainerFeatureID() != CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION
+                        && newGuardedTransition != null)) {
+            if (EcoreUtil.isAncestor(this, newGuardedTransition)) {
                 throw new IllegalArgumentException("Recursive containment not allowed for " + this.toString());
             }
             NotificationChain msgs = null;
             if (this.eInternalContainer() != null) {
                 msgs = this.eBasicRemoveFromContainer(msgs);
             }
-            if (newAction != null) {
-                msgs = ((InternalEObject) newAction).eInverseAdd(this,
-                        CorePackage.ADAPTATION_BEHAVIOR__ADAPTATION_STEPS, AdaptationBehavior.class, msgs);
+            if (newGuardedTransition != null) {
+                msgs = ((InternalEObject) newGuardedTransition).eInverseAdd(this,
+                        CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR, GuardedTransition.class, msgs);
             }
-            msgs = this.basicSetAction(newAction, msgs);
+            msgs = this.basicSetGuardedTransition(newGuardedTransition, msgs);
             if (msgs != null) {
                 msgs.dispatch();
             }
         } else if (this.eNotificationRequired()) {
-            this.eNotify(new ENotificationImpl(this, Notification.SET, CorePackage.ADAPTATION_ACTION__ACTION, newAction,
-                    newAction));
+            this.eNotify(new ENotificationImpl(this, Notification.SET,
+                    CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION, newGuardedTransition,
+                    newGuardedTransition));
         }
     }
 
@@ -107,11 +111,11 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
             if (this.eInternalContainer() != null) {
                 msgs = this.eBasicRemoveFromContainer(msgs);
             }
-            return this.basicSetAction((AdaptationBehavior) otherEnd, msgs);
+            return this.basicSetGuardedTransition((GuardedTransition) otherEnd, msgs);
         }
         return super.eInverseAdd(otherEnd, featureID, msgs);
     }
@@ -125,8 +129,8 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
             final NotificationChain msgs) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            return this.basicSetAction(null, msgs);
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            return this.basicSetGuardedTransition(null, msgs);
         }
         return super.eInverseRemove(otherEnd, featureID, msgs);
     }
@@ -139,9 +143,9 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public NotificationChain eBasicRemoveFromContainerFeature(final NotificationChain msgs) {
         switch (this.eContainerFeatureID()) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            return this.eInternalContainer().eInverseRemove(this, CorePackage.ADAPTATION_BEHAVIOR__ADAPTATION_STEPS,
-                    AdaptationBehavior.class, msgs);
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            return this.eInternalContainer().eInverseRemove(this,
+                    CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR, GuardedTransition.class, msgs);
         }
         return super.eBasicRemoveFromContainerFeature(msgs);
     }
@@ -154,8 +158,8 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            return this.getAction();
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            return this.getGuardedTransition();
         }
         return super.eGet(featureID, resolve, coreType);
     }
@@ -168,8 +172,8 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            this.setAction((AdaptationBehavior) newValue);
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            this.setGuardedTransition((GuardedTransition) newValue);
             return;
         }
         super.eSet(featureID, newValue);
@@ -183,8 +187,8 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public void eUnset(final int featureID) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            this.setAction((AdaptationBehavior) null);
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            this.setGuardedTransition((GuardedTransition) null);
             return;
         }
         super.eUnset(featureID);
@@ -198,10 +202,10 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
     @Override
     public boolean eIsSet(final int featureID) {
         switch (featureID) {
-        case CorePackage.ADAPTATION_ACTION__ACTION:
-            return this.getAction() != null;
+        case CorePackage.NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION:
+            return this.getGuardedTransition() != null;
         }
         return super.eIsSet(featureID);
     }
 
-} // AdaptationActionImpl
+} // NestedAdaptationBehaviorImpl

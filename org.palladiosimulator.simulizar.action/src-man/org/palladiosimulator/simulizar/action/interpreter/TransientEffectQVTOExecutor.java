@@ -13,7 +13,7 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
-import org.palladiosimulator.simulizar.action.core.GuardedAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
@@ -63,6 +63,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         return Optional.empty();
     }
 
+    boolean executeGuardedTransition(GuardedTransition guardedTransition) {
+        return this.executeTransformation(Objects.requireNonNull(guardedTransition).getConditionURI());
+    }
+
     private void storeModel(EObject model) {
         getAvailableModels().storeModel(model);
     }
@@ -74,12 +78,6 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         if (!getAvailableTransformations().contains(uri)) {
             getAvailableTransformations().store(uri);
         }
-    }
-
-    void enableForTransformationExecution(GuardedAdaptationBehavior guardedAdaptationBehavior) {
-        storeModel(Objects.requireNonNull(guardedAdaptationBehavior));
-        prepareTransformation(guardedAdaptationBehavior.getPreconditionURI());
-
     }
 
     void enableForTransformationExecution(EnactAdaptationAction enactAdaptationAction) {
@@ -94,6 +92,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
 
     void enableForTransformationExecution(StateTransformingAction stateTransformingAction) {
         storeModel(Objects.requireNonNull(stateTransformingAction));
+    }
+
+    void enableForTransformationExecution(GuardedTransition guardedTransition) {
+        prepareTransformation(Objects.requireNonNull(guardedTransition).getConditionURI());
     }
 
     Optional<TransformationData> getTransformationByUri(URI transformationId) {

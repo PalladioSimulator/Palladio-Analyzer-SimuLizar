@@ -24,12 +24,15 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationAction;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
-import org.palladiosimulator.simulizar.action.core.GuardedAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.GuardedAction;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
+import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
 import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
@@ -70,9 +73,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     }
 
     @Override
-    public Boolean caseAdaptationBehavior(final AdaptationBehavior adaptationBehavior) {
-        boolean successful = adaptationBehavior.getAdaptationSteps().stream().reduce(Boolean.TRUE,
-                (result, step) -> doSwitch(step), Boolean::logicalAnd);
+    public Boolean caseAdaptationBehavior(AdaptationBehavior adaptationBehavior) {
+        boolean successful = executeAdaptationActions(adaptationBehavior.getAdaptationActions());
         if (successful) {
             this.state.getReconfigurator().getReconfigurationProcess()
                     .appendReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
@@ -81,11 +83,32 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     }
 
     @Override
-    public Boolean caseGuardedAdaptationBehavior(GuardedAdaptationBehavior guardedAdaptationBehavior) {
-        this.qvtoExecutor.enableForTransformationExecution(guardedAdaptationBehavior);
+    public Boolean caseNestedAdaptationBehavior(NestedAdaptationBehavior nestedAdaptationBehavior) {
+        return executeAdaptationActions(nestedAdaptationBehavior.getAdaptationActions());
+    }
 
-        TransientEffectQVTOExecutorUtil.validateGuardedAdaptationBehavior(this.qvtoExecutor, guardedAdaptationBehavior);
-        return this.qvtoExecutor.executeTransformation(guardedAdaptationBehavior.getPreconditionURI());
+    private Boolean executeAdaptationActions(Collection<AdaptationAction> adaptationActions) {
+        assert adaptationActions != null;
+
+        return adaptationActions.stream().reduce(true, (result, action) -> doSwitch(action), Boolean::logicalAnd);
+    }
+
+    @Override
+    public Boolean caseGuardedTransition(GuardedTransition guardedTransition) {
+        this.qvtoExecutor.enableForTransformationExecution(guardedTransition);
+        TransientEffectQVTOExecutorUtil.validateGuardedTransition(this.qvtoExecutor, guardedTransition);
+
+        return this.qvtoExecutor.executeGuardedTransition(guardedTransition);
+    }
+
+    @Override
+    public Boolean caseGuardedAction(GuardedAction guardedAction) {
+        // find the first GuardedTransition whose condition is evaluated to true
+        Optional<GuardedTransition> branchToExecute = guardedAction.getGuardedTransitions().stream()
+                .filter(this::caseGuardedTransition).findFirst();
+        // incorporate case that no branch is to be executed, all conditions failed
+        // then we return false
+        return branchToExecute.map(GuardedTransition::getNestedAdaptationBehavior).map(this::doSwitch).orElse(false);
     }
 
     @Override
@@ -117,8 +140,13 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     }
 
     @Override
+    public Boolean caseAbstractAdaptationBehavior(AbstractAdaptationBehavior abstractAdaptationBehavior) {
+        throw new AssertionError("AbstractAdaptationBehavior is abstract, this case should not be reached at all!");
+    }
+
+    @Override
     public Boolean caseAdaptationAction(final AdaptationAction step) {
-        throw new AssertionError("AdaptationAction is abstract class, this case should not be reached at all!");
+        throw new AssertionError("AdaptationAction is abstract, this case should not be reached at all!");
     }
 
     @Override
@@ -178,14 +206,14 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             final ReconfigurationProcess reconfigurationProcess) {
         return process -> {
             LOGGER.log(Level.INFO, "Starting with the controller scenario!");
-            final InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
-            final UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
-            final ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
+            InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
+            UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
+            ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
             usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
-            final List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
-            final Start start = UsagemodelFactory.eINSTANCE.createStart();
-            final EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-            final Stop stop = UsagemodelFactory.eINSTANCE.createStop();
+            List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
+            Start start = UsagemodelFactory.eINSTANCE.createStart();
+            EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
+            Stop stop = UsagemodelFactory.eINSTANCE.createStop();
             actions.add(start);
             actions.add(sysCall);
             actions.add(stop);

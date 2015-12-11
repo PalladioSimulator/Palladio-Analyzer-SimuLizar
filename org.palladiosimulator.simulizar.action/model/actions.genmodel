@@ -10,30 +10,47 @@
       ecorePackage="actions.ecore#/">
     <nestedGenPackages prefix="Core" basePackage="org.palladiosimulator.simulizar.action"
         disposableProviderFactory="true" fileExtensions="actions" ecorePackage="actions.ecore#//core">
+      <genClasses ecoreClass="actions.ecore#//core/AdaptationBehaviorRepository">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/actions"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="actions.ecore#//core/AbstractAdaptationBehavior">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AbstractAdaptationBehavior/adaptationActions"/>
+      </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/AdaptationBehavior">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/adaptationSteps"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/involvedRoles"/>
-        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/repository"/>
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/transientStateProfile"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/repository"/>
         <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute">
           <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute/affectedRoleSet"/>
         </genOperations>
       </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/NestedAdaptationBehavior">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/NestedAdaptationBehavior/guardedTransition"/>
+      </genClasses>
       <genClasses image="false" ecoreClass="actions.ecore#//core/AdaptationAction">
-        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationAction/action"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationAction/adaptationBehavior"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/StateTransformingAction"/>
+      <genClasses ecoreClass="actions.ecore#//core/EnactAdaptationAction">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/EnactAdaptationAction/adaptationStepURI"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/ResourceDemandingAction">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/ResourceDemandingAction/controllerCompletionURI"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ResourceDemandingAction/controllerCalls"/>
       </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/GuardedAction">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedAction/guardedTransitions"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/GuardedTransition">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/GuardedTransition/conditionURI"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/guardedAction"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/nestedAdaptationBehavior"/>
+      </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/RoleType">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/type"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/action"/>
-      </genClasses>
-      <genClasses ecoreClass="actions.ecore#//core/AdaptationBehaviorRepository">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/actions"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/ControllerCall">
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
@@ -41,13 +58,6 @@
         <genFeatures notify="false" createChild="false" propertySortChoices="true"
             ecoreFeature="ecore:EReference actions.ecore#//core/ControllerCall/calledSignature"/>
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/ControllerCall/resourceDemandingStep"/>
-      </genClasses>
-      <genClasses ecoreClass="actions.ecore#//core/StateTransformingAction"/>
-      <genClasses ecoreClass="actions.ecore#//core/GuardedAdaptationBehavior">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/GuardedAdaptationBehavior/preconditionURI"/>
-      </genClasses>
-      <genClasses ecoreClass="actions.ecore#//core/EnactAdaptationAction">
-        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/EnactAdaptationAction/adaptationStepURI"/>
       </genClasses>
     </nestedGenPackages>
     <nestedGenPackages prefix="Mapping" basePackage="org.palladiosimulator.simulizar.action"

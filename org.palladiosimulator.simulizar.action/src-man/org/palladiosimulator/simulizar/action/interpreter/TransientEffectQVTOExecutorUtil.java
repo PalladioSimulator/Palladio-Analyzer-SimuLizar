@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
-import org.palladiosimulator.simulizar.action.core.GuardedAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
@@ -28,18 +28,17 @@ public class TransientEffectQVTOExecutorUtil {
         return param -> param.getParameterType().equals(desiredType);
     }
 
-    static void validateGuardedAdaptationBehavior(TransientEffectQVTOExecutor executor,
-            GuardedAdaptationBehavior precondition) {
-        URI preconditionUri = URI.createURI(precondition.getPreconditionURI());
-        Optional<TransformationData> preconditionData = executor.getTransformationByUri(preconditionUri);
+    static void validateGuardedTransition(TransientEffectQVTOExecutor executor, GuardedTransition guardedTransition) {
+        URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
+        Optional<TransformationData> preconditionData = executor.getTransformationByUri(conditionUri);
 
         Collection<TransformationParameterInformation> inParams = preconditionData
                 .map(TransformationData::getInParameters)
-                .orElseThrow(() -> new RuntimeException("Precondition transformation not available!"));
+                .orElseThrow(() -> new RuntimeException("Condition transformation not available!"));
         if (inParams.parallelStream().noneMatch(paramTypePredicate(ADAPTATION_BEHAVIOR_EPACKAGE))
                 && inParams.parallelStream().noneMatch(paramTypePredicate(ROLE_SET_EPACKAGE))) {
             throw new RuntimeException(
-                    "Precondition " + preconditionUri + " must have at least 'in'/'inout' parameters of type"
+                    "Condition/Guard " + conditionUri + " must have at least 'in'/'inout' parameters of type"
                             + ADAPTATION_BEHAVIOR_EPACKAGE.getNsURI() + " and " + ROLE_SET_EPACKAGE.getNsURI());
         }
 
