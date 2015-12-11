@@ -7,26 +7,24 @@ import java.util.List;
 
 import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
-import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
-import org.palladiosimulator.simulizar.action.core.AdaptationAction;
+import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 
 /**
  * This is the item provider adapter for a
- * {@link org.palladiosimulator.simulizar.action.core.AdaptationAction} object. <!-- begin-user-doc
- * --> <!-- end-user-doc -->
+ * {@link org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class AdaptationActionItemProvider extends EntityItemProvider {
+public class NestedAdaptationBehaviorItemProvider extends AbstractAdaptationBehaviorItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    public AdaptationActionItemProvider(final AdapterFactory adapterFactory) {
+    public NestedAdaptationBehaviorItemProvider(final AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -46,6 +44,16 @@ public class AdaptationActionItemProvider extends EntityItemProvider {
     }
 
     /**
+     * This returns NestedAdaptationBehavior.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public Object getImage(final Object object) {
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/NestedAdaptationBehavior"));
+    }
+
+    /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -53,9 +61,9 @@ public class AdaptationActionItemProvider extends EntityItemProvider {
      */
     @Override
     public String getText(final Object object) {
-        final String label = ((AdaptationAction) object).getId();
-        return label == null || label.length() == 0 ? this.getString("_UI_AdaptationAction_type")
-                : this.getString("_UI_AdaptationAction_type") + " " + label;
+        final String label = ((NestedAdaptationBehavior) object).getId();
+        return label == null || label.length() == 0 ? this.getString("_UI_NestedAdaptationBehavior_type")
+                : this.getString("_UI_NestedAdaptationBehavior_type") + " " + label;
     }
 
     /**
@@ -80,17 +88,6 @@ public class AdaptationActionItemProvider extends EntityItemProvider {
     @Override
     protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
-    }
-
-    /**
-     * Return the resource locator for this item provider's resources. <!-- begin-user-doc --> <!--
-     * end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public ResourceLocator getResourceLocator() {
-        return ActionsEditPlugin.INSTANCE;
     }
 
 }

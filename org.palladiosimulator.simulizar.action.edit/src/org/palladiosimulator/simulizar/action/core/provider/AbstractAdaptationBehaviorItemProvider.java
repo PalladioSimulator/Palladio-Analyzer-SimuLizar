@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.action.instance.provider;
+package org.palladiosimulator.simulizar.action.core.provider;
 
 import java.util.Collection;
 import java.util.List;
@@ -11,28 +11,26 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
-import org.palladiosimulator.simulizar.action.core.provider.ActionsEditPlugin;
-import org.palladiosimulator.simulizar.action.instance.InstanceFactory;
-import org.palladiosimulator.simulizar.action.instance.InstancePackage;
-import org.palladiosimulator.simulizar.action.instance.RoleSet;
-
-import de.uka.ipd.sdq.identifier.provider.IdentifierItemProvider;
+import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
+import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
+import org.palladiosimulator.simulizar.action.core.CoreFactory;
+import org.palladiosimulator.simulizar.action.core.CorePackage;
 
 /**
  * This is the item provider adapter for a
- * {@link org.palladiosimulator.simulizar.action.instance.RoleSet} object. <!-- begin-user-doc -->
- * <!-- end-user-doc -->
+ * {@link org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior} object. <!--
+ * begin-user-doc --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class RoleSetItemProvider extends IdentifierItemProvider {
+public class AbstractAdaptationBehaviorItemProvider extends EntityItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    public RoleSetItemProvider(final AdapterFactory adapterFactory) {
+    public AbstractAdaptationBehaviorItemProvider(final AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -64,7 +62,7 @@ public class RoleSetItemProvider extends IdentifierItemProvider {
     public Collection<? extends EStructuralFeature> getChildrenFeatures(final Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(InstancePackage.Literals.ROLE_SET__ROLES);
+            this.childrenFeatures.add(CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS);
         }
         return this.childrenFeatures;
     }
@@ -83,16 +81,6 @@ public class RoleSetItemProvider extends IdentifierItemProvider {
     }
 
     /**
-     * This returns RoleSet.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Object getImage(final Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/RoleSet"));
-    }
-
-    /**
      * This returns the label text for the adapted class. <!-- begin-user-doc --> <!-- end-user-doc
      * -->
      *
@@ -100,9 +88,9 @@ public class RoleSetItemProvider extends IdentifierItemProvider {
      */
     @Override
     public String getText(final Object object) {
-        final String label = ((RoleSet) object).getId();
-        return label == null || label.length() == 0 ? this.getString("_UI_RoleSet_type")
-                : this.getString("_UI_RoleSet_type") + " " + label;
+        final String label = ((AbstractAdaptationBehavior) object).getId();
+        return label == null || label.length() == 0 ? this.getString("_UI_AbstractAdaptationBehavior_type")
+                : this.getString("_UI_AbstractAdaptationBehavior_type") + " " + label;
     }
 
     /**
@@ -116,8 +104,8 @@ public class RoleSetItemProvider extends IdentifierItemProvider {
     public void notifyChanged(final Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(RoleSet.class)) {
-        case InstancePackage.ROLE_SET__ROLES:
+        switch (notification.getFeatureID(AbstractAdaptationBehavior.class)) {
+        case CorePackage.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -134,8 +122,21 @@ public class RoleSetItemProvider extends IdentifierItemProvider {
     protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(InstancePackage.Literals.ROLE_SET__ROLES,
-                InstanceFactory.eINSTANCE.createRole()));
+        newChildDescriptors
+                .add(this.createChildParameter(CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS,
+                        CoreFactory.eINSTANCE.createStateTransformingAction()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS,
+                        CoreFactory.eINSTANCE.createEnactAdaptationAction()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS,
+                        CoreFactory.eINSTANCE.createResourceDemandingAction()));
+
+        newChildDescriptors
+                .add(this.createChildParameter(CorePackage.Literals.ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_ACTIONS,
+                        CoreFactory.eINSTANCE.createGuardedAction()));
     }
 
     /**

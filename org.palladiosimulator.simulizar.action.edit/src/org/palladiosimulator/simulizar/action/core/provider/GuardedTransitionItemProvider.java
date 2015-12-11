@@ -9,28 +9,30 @@ import org.eclipse.emf.common.notify.AdapterFactory;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.edit.provider.ComposeableAdapterFactory;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
+import org.eclipse.emf.edit.provider.ItemPropertyDescriptor;
 import org.eclipse.emf.edit.provider.ViewerNotification;
 import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
-import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.CoreFactory;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
+import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 
 /**
  * This is the item provider adapter for a
- * {@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository} object. <!--
- * begin-user-doc --> <!-- end-user-doc -->
+ * {@link org.palladiosimulator.simulizar.action.core.GuardedTransition} object. <!-- begin-user-doc
+ * --> <!-- end-user-doc -->
  *
  * @generated
  */
-public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider {
+public class GuardedTransitionItemProvider extends EntityItemProvider {
     /**
      * This constructs an instance from a factory and a notifier. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
      * @generated
      */
-    public AdaptationBehaviorRepositoryItemProvider(final AdapterFactory adapterFactory) {
+    public GuardedTransitionItemProvider(final AdapterFactory adapterFactory) {
         super(adapterFactory);
     }
 
@@ -45,8 +47,25 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
         if (this.itemPropertyDescriptors == null) {
             super.getPropertyDescriptors(object);
 
+            this.addConditionURIPropertyDescriptor(object);
         }
         return this.itemPropertyDescriptors;
+    }
+
+    /**
+     * This adds a property descriptor for the Condition URI feature. <!-- begin-user-doc --> <!--
+     * end-user-doc -->
+     *
+     * @generated
+     */
+    protected void addConditionURIPropertyDescriptor(final Object object) {
+        this.itemPropertyDescriptors.add(this.createItemPropertyDescriptor(
+                ((ComposeableAdapterFactory) this.adapterFactory).getRootAdapterFactory(), this.getResourceLocator(),
+                this.getString("_UI_GuardedTransition_conditionURI_feature"),
+                this.getString("_UI_PropertyDescriptor_description", "_UI_GuardedTransition_conditionURI_feature",
+                        "_UI_GuardedTransition_type"),
+                CorePackage.Literals.GUARDED_TRANSITION__CONDITION_URI, true, false, false,
+                ItemPropertyDescriptor.GENERIC_VALUE_IMAGE, null, null));
     }
 
     /**
@@ -62,7 +81,7 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
     public Collection<? extends EStructuralFeature> getChildrenFeatures(final Object object) {
         if (this.childrenFeatures == null) {
             super.getChildrenFeatures(object);
-            this.childrenFeatures.add(CorePackage.Literals.ADAPTATION_BEHAVIOR_REPOSITORY__ACTIONS);
+            this.childrenFeatures.add(CorePackage.Literals.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR);
         }
         return this.childrenFeatures;
     }
@@ -81,13 +100,13 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
     }
 
     /**
-     * This returns AdaptationBehaviorRepository.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
+     * This returns GuardedTransition.gif. <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @generated
      */
     @Override
     public Object getImage(final Object object) {
-        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/AdaptationBehaviorRepository"));
+        return this.overlayImage(object, this.getResourceLocator().getImage("full/obj16/GuardedTransition"));
     }
 
     /**
@@ -98,9 +117,9 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
      */
     @Override
     public String getText(final Object object) {
-        final String label = ((AdaptationBehaviorRepository) object).getId();
-        return label == null || label.length() == 0 ? this.getString("_UI_AdaptationBehaviorRepository_type")
-                : this.getString("_UI_AdaptationBehaviorRepository_type") + " " + label;
+        final String label = ((GuardedTransition) object).getId();
+        return label == null || label.length() == 0 ? this.getString("_UI_GuardedTransition_type")
+                : this.getString("_UI_GuardedTransition_type") + " " + label;
     }
 
     /**
@@ -114,8 +133,11 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
     public void notifyChanged(final Notification notification) {
         this.updateChildren(notification);
 
-        switch (notification.getFeatureID(AdaptationBehaviorRepository.class)) {
-        case CorePackage.ADAPTATION_BEHAVIOR_REPOSITORY__ACTIONS:
+        switch (notification.getFeatureID(GuardedTransition.class)) {
+        case CorePackage.GUARDED_TRANSITION__CONDITION_URI:
+            this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), false, true));
+            return;
+        case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
             this.fireNotifyChanged(new ViewerNotification(notification, notification.getNotifier(), true, false));
             return;
         }
@@ -132,8 +154,9 @@ public class AdaptationBehaviorRepositoryItemProvider extends EntityItemProvider
     protected void collectNewChildDescriptors(final Collection<Object> newChildDescriptors, final Object object) {
         super.collectNewChildDescriptors(newChildDescriptors, object);
 
-        newChildDescriptors.add(this.createChildParameter(CorePackage.Literals.ADAPTATION_BEHAVIOR_REPOSITORY__ACTIONS,
-                CoreFactory.eINSTANCE.createAdaptationBehavior()));
+        newChildDescriptors
+                .add(this.createChildParameter(CorePackage.Literals.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR,
+                        CoreFactory.eINSTANCE.createNestedAdaptationBehavior()));
     }
 
     /**
