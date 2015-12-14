@@ -31,6 +31,27 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_8UfhgeqEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_8UfhgOqEEeS1xrjFer2CUg"/>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_oATY4KJKEeWC7_GU8VFHHA" entityName="ComponentInstantiationController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_L2VLkKJMEeWC7_GU8VFHHA" entityName="Provided_IComponentInstantiation_ComponentInstantiationController" providedInterface__OperationProvidedRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_od2lpaJMEeWC7_GU8VFHHA" entityName="Required_IComponentInstantiation_ComponentInstantiationController" requiredInterface__OperationRequiredRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_L2Y18KJMEeWC7_GU8VFHHA" describedService__SEFF="_veoLoKJKEeWC7_GU8VFHHA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_L2ZdAKJMEeWC7_GU8VFHHA" entityName="start" successor_AbstractAction="_fa0lTKJUEeWC7_GU8VFHHA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_fa0lTKJUEeWC7_GU8VFHHA" entityName="instantiateComponent" predecessor_AbstractAction="_L2ZdAKJMEeWC7_GU8VFHHA" successor_AbstractAction="_L2ZdAaJMEeWC7_GU8VFHHA2">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="75600"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_L2ZdAaJMEeWC7_GU8VFHHA2" entityName="stop" predecessor_AbstractAction="_fa0lTKJUEeWC7_GU8VFHHA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_1TXxcKJKEeWC7_GU8VFHHA" entityName="ComponentInstantiationLocation">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_jeP4EKJMEeWC7_GU8VFHHA" entityName="Provided_IComponentInstantiation_ComponentInstantiationLocation" providedInterface__OperationProvidedRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_jeP4EaJMEeWC7_GU8VFHHA" describedService__SEFF="_veoLoKJKEeWC7_GU8VFHHA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_jeRGMKJMEeWC7_GU8VFHHA" entityName="start" successor_AbstractAction="_jeRGMaJMEeWC7_GU8VFHHA2"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_jeRGMaJMEeWC7_GU8VFHHA2" entityName="stop" predecessor_AbstractAction="_jeRGMKJMEeWC7_GU8VFHHA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_wMjRkOp_EeS1xrjFer2CUg" entityName="IComponentMigration">
     <signatures__OperationInterface id="_zm-xEOp_EeS1xrjFer2CUg" entityName="migrate"/>
   </interfaces__Repository>
@@ -42,5 +63,8 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_RfswcOqEEeS1xrjFer2CUg" entityName="IComponentTransfer">
     <signatures__OperationInterface id="_YtKcsOqEEeS1xrjFer2CUg" entityName="transferComponent"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_rliaN6JKEeWC7_GU8VFHHA" entityName="IComponentInstantiation">
+    <signatures__OperationInterface id="_veoLoKJKEeWC7_GU8VFHHA" entityName="instantiate"/>
   </interfaces__Repository>
 </repository:Repository>
