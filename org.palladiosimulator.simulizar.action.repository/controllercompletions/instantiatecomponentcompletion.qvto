@@ -19,7 +19,7 @@ modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Ma
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 
-transformation instantiateCOmponent(
+transformation instantiateComponent(
 							inout pcmAllocation : PCM_ALLOC,
 							in pcmControllerRepository : PCM_REP,
 							in actionRoleSet : ACTION_INSTANCE,
@@ -37,6 +37,7 @@ transformation instantiateCOmponent(
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
 		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
 		log("Executing step " + step.entityName);
+		log("Test");
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
 		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
 		var roles := roleSet.roles;
@@ -52,6 +53,7 @@ transformation instantiateCOmponent(
 		var assembly : AssemblyContext := getInstantiationControllerAssembly(allocation, instantiationControllerLocation, targetResourceContainer, 
 			componentInstantiationController, componentInstantiationLocation,instantiatedComponent);
 		if(assembly = null) {
+			log("No assembly found");
 			step.map instantiateComponent(allocation, controllerRepository, roleSet, componentInstantiationController, componentInstantiationLocation,
 				instantiationControllerLocation, targetResourceContainer);
 		} else {
@@ -83,20 +85,24 @@ transformation instantiateCOmponent(
 		assembliesOnLocation->forEach(controller) {
 			log('Assemblies on location: ' + controller.id);
 		};
-		var migrationControllersOnLocation := assembliesOnLocation.assemblyContext_AllocationContext->select(c | c.encapsulatedComponent__AssemblyContext.id = componentInstantiationController.id);
-		migrationControllersOnLocation->forEach(migrController) {
+		var instantiationControllersOnLocation := assembliesOnLocation.assemblyContext_AllocationContext->select(c | c.encapsulatedComponent__AssemblyContext.id = componentInstantiationController.id);
+		instantiationControllersOnLocation->forEach(migrController) {
 			log('Instantiation controllers on target: ' + migrController.encapsulatedComponent__AssemblyContext.id);
 		};
 		var connectors := allocation.system_Allocation.connectors__ComposedStructure->selectByType(AssemblyConnector);
 		connectors->forEach(conn) {
 			log('Connection id: ' + conn.id);
 		};
-		var cProvidingController := connectors->select(c | migrationControllersOnLocation.id->includes(c.requiringAssemblyContext_AssemblyConnector.id));
+		log ("Intersection: ");
+		var cProvidingController := connectors->select(c | instantiationControllersOnLocation.id->includes(c.requiringAssemblyContext_AssemblyConnector.id));
 		cProvidingController->forEach(controller) {
 			log('Controller id: ' + controller.id);
 		};
 		var targetCorrectSource := cProvidingController->select(c | c.providingAssemblyContext_AssemblyConnector.getControllerHost(allocation).id = targetResourceContainer.id);
-		return targetCorrectSource.requiringAssemblyContext_AssemblyConnector->any(true);
+		if (targetCorrectSource <> null) {
+			return targetCorrectSource.requiringAssemblyContext_AssemblyConnector->any(true);
+		};
+		return null;
 	}
 	
 	mapping ControllerCall::addVMControllers(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
@@ -114,7 +120,9 @@ transformation instantiateCOmponent(
 		system.connectors__ComposedStructure += linkAssemblies(assemblyComponentInstantiationController, componentInstantiationController.selectRequiredRoleById('_od2lpaJMEeWC7_GU8VFHHA'),
 						assemblyComponentInstantiationLocation, componentInstantiationLocation.selectProvidedRoleById('_jeP4EKJMEeWC7_GU8VFHHA'));
 		assemblyComponentInstantiationController.allocateAt(allocation, controllerHost);
+		log("Allocating instantiation controller at " + controllerHost.id);
 		assemblyComponentInstantiationLocation.allocateAt(allocation, targetHost);
+		log("Allocating component instantiation controller at " + targetHost.id);
 		
 		// add system interface to controller component
 		var controllerProvidedRole := object OperationProvidedRole {
@@ -175,11 +183,6 @@ transformation instantiateCOmponent(
 	
 	query AssemblyContext::getControllerHost(allocation : Allocation) : ResourceContainer {
 		return allocation.allocationContexts_Allocation->select(allocationContext |allocationContext.assemblyContext_AllocationContext.id = self.id)->any(true).resourceContainer_AllocationContext;
-	}
-	
-	query getResourceEnv() : ResourceEnvironment{
-		var resEnv:=pcmAllocation.rootObjects()[Allocation].targetResourceEnvironment_Allocation;
-		return resEnv->any(true);
 	}
 	
 }

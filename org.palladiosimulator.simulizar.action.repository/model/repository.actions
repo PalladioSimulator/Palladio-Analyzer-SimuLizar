@@ -51,15 +51,15 @@
   </actions>
   <actions id="_s5GsIRwJEeWmcO0Zlkc2yA" entityName="ComponentInstantiation">
     <adaptationActions xsi:type="org.palladiosimulator.action:GuardedAction" id="_zIpLQ6HGEeWc24RAWmuF8Q" entityName="preconditionsMet">
-      <guardedTransitions id="_FP2oQKHHEeWc24RAWmuF8Q" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/migratecomponentcompletion.qvto">
+      <guardedTransitions id="_FP2oQKHHEeWc24RAWmuF8Q" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/instantiatecomponentconditions.qvto">
         <nestedAdaptationBehavior id="_JEwdQKHHEeWc24RAWmuF8Q" entityName="instantiateComponent">
-          <adaptationActions xsi:type="org.palladiosimulator.action:ResourceDemandingAction" id="_NjOzsqHHEeWc24RAWmuF8Q" entityName="instantiationOverhead">
+          <adaptationActions xsi:type="org.palladiosimulator.action:ResourceDemandingAction" id="_NjOzsqHHEeWc24RAWmuF8Q" entityName="instantiationOverhead" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/instantiatecomponentcompletion.qvto">
             <controllerCalls id="_l9HvsKHHEeWc24RAWmuF8Q" entityName="instantiateController">
               <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_oATY4KJKEeWC7_GU8VFHHA"/>
               <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_veoLoKJKEeWC7_GU8VFHHA"/>
             </controllerCalls>
           </adaptationActions>
-          <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_PfN_QaHHEeWc24RAWmuF8Q" entityName="enactAdaptation"/>
+          <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_PfN_QaHHEeWc24RAWmuF8Q" entityName="enactAdaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/instantiatecomponent.qvto"/>
         </nestedAdaptationBehavior>
       </guardedTransitions>
     </adaptationActions>

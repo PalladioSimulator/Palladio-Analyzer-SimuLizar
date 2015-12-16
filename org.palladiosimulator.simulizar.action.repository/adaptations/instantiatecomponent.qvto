@@ -47,5 +47,6 @@ property instantiatedComponentResourceContainerName = 'InstantiatedComponentReso
 			assemblyContext_AllocationContext := instantiatedComponentContext;
 		};
 		targetResourceContainer.removeStereotypeApplications(instantiatedComponentResourceContainerName);
+		log("Component " + instantiatedComponent.entityName + " instantiated at " + targetResourceContainer.entityName);
 	}
 }
