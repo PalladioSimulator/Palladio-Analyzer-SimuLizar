@@ -199,8 +199,7 @@ public class SimuLizarRuntimeState {
 
             @Override
             public void reconfigurationExecuted(final ReconfigurationExecutedEvent reconfExecutedEvent) {
-                if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS
-                        && reconfExecutedEvent.getDuration() > 0) {
+                if (reconfExecutedEvent.getReconfigurationResult() == EventResult.SUCCESS) {
                     LOGGER.debug("Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
                             + " time units");
                     LOGGER.debug("Collected notifications:");
