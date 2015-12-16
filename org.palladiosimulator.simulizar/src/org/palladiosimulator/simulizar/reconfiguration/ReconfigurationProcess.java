@@ -155,16 +155,12 @@ public class ReconfigurationProcess extends SimuComSimProcess {
             final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
                 for (final IReconfigurator reconfigurator : this.reconfigurators) {
-                    // Lehrig: I moved from simulation time to System.nanoTime() since
-                    // reconfigurations currently execute in 0-simulation time. Nano time made more
-                    // sense to me. Inform me if I'm wrong here since there is already some code
-                    // depending on the assumption that the duration is greater than 0.
                     final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-                            System.nanoTime());
+                            this.simControl.getCurrentSimulationTime());
                     this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
                     final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
                     final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-                            EventResult.fromBoolean(reconfigResult), System.nanoTime());
+                            EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
                     this.fireEndReconfigurationEvent(endReconfigurationEvent);
                     if (reconfigResult) {
                         LOGGER.debug("Successfully executed reconfiguration.");
