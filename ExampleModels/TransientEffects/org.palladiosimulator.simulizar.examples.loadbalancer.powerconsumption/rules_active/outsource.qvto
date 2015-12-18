@@ -12,9 +12,13 @@
 modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
 modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
 modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_PARAM uses 'http://simulizar.palladiosimulator.org/Actions/Parameter/1.1';
 modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
+modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 /*
  * The transformation signature declares that a RuntimeMeasurement modeltype is required as input, while an PCM
  * modeltype is transformed inplace. The RuntimeMeasurement modeltype is referenced as 'RuntimeMeasurement' throughout the 
@@ -34,6 +38,8 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 	property adaptationBehaviorRepository : AdaptationBehaviorRepository = actionsInput.rootObjects()[core::AdaptationBehaviorRepository]->any(true);
 	property targetContainerId : String = '_3uVlIAEpEeS7FKokKTKFow';
 	property sourceContainerId : String = '_yaTfsAEpEeS7FKokKTKFow';
+	property controllerCallId : String = '_PPtigOw_EeSZKvpqmLO3MQ';
+	property inputVariableName : String = 'dummyInput';
 	
 	/**
 	 * The main transformation.
@@ -87,20 +93,38 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 				var containerSource : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = sourceContainerId)->any(true);
 				var containerTarget : ResourceContainer := resourceEnvironment.resourceContainer_ResourceEnvironment->select(c | c.id = targetContainerId)->any(true);
 				var roleSet : RoleSet := object RoleSet@roleSets {
-					roles += object instance::Role {
+					roles += object Role {
 						roleType := vmMigrate.getRoleTypeById('_kPTj0OztEeSasuhUPGMaRg');
 						value := allocation.assemblyContext_AllocationContext.oclAsType(EObject);
 					};
-					roles += object instance::Role {
+					roles += object Role {
 						roleType := vmMigrate.getRoleTypeById('_56tD0ezuEeSasuhUPGMaRg');
 						value := containerSource.oclAsType(EObject);
 					};
-					roles += object instance::Role {
+					roles += object Role {
 						roleType := vmMigrate.getRoleTypeById('_or2AkeztEeSasuhUPGMaRg');
 						value := containerTarget.oclAsType(EObject);
 					};	
 				};
-				vmMigrate.execute(roleSet);
+				var inputVariableUsage := object ControllerCallInputVariableUsage {
+					correspondingControllerCall := actionsInput.objectsOfType(ControllerCall)[id = controllerCallId]->any(true);
+					variableUsage := object VariableUsage {
+						variableCharacterisation_VariableUsage := object VariableCharacterisation {
+							type := VariableCharacterisationType::VALUE;
+							specification_VariableCharacterisation := object PCMRandomVariable {
+								specification := '100'; -- trivially, pass a constant value
+							};
+						};
+						namedReference__VariableUsage := object VariableReference {
+							referenceName := inputVariableName;
+						}
+					};
+				};
+				
+				var variableUsages := object ControllerCallInputVariableUsageCollection {
+					controllerCallInputVariableUsages += inputVariableUsage;
+				};				
+				vmMigrate.execute(roleSet, variableUsages);
 				log('Migration executed');
 			}
 		};
