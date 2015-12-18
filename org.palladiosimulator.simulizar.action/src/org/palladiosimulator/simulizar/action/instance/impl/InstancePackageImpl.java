@@ -16,6 +16,8 @@ import org.palladiosimulator.simulizar.action.instance.Role;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl;
+import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
+import org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl;
 
 import de.uka.ipd.sdq.identifier.IdentifierPackage;
 
@@ -101,16 +103,22 @@ public class InstancePackageImpl extends EPackageImpl implements InstancePackage
         final MappingPackageImpl theMappingPackage = (MappingPackageImpl) (EPackage.Registry.INSTANCE
                 .getEPackage(MappingPackage.eNS_URI) instanceof MappingPackageImpl
                         ? EPackage.Registry.INSTANCE.getEPackage(MappingPackage.eNS_URI) : MappingPackage.eINSTANCE);
+        final ParameterPackageImpl theParameterPackage = (ParameterPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(ParameterPackage.eNS_URI) instanceof ParameterPackageImpl
+                        ? EPackage.Registry.INSTANCE.getEPackage(ParameterPackage.eNS_URI)
+                        : ParameterPackage.eINSTANCE);
 
         // Create package meta-data objects
         theInstancePackage.createPackageContents();
         theCorePackage.createPackageContents();
         theMappingPackage.createPackageContents();
+        theParameterPackage.createPackageContents();
 
         // Initialize created meta-data
         theInstancePackage.initializePackageContents();
         theCorePackage.initializePackageContents();
         theMappingPackage.initializePackageContents();
+        theParameterPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theInstancePackage.freeze();

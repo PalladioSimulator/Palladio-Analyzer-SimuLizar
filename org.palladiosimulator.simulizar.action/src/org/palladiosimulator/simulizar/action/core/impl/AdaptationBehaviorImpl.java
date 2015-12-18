@@ -19,6 +19,7 @@ import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.RoleType;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
+import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model object '
@@ -193,6 +194,19 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
             this.eNotify(new ENotificationImpl(this, Notification.SET, CorePackage.ADAPTATION_BEHAVIOR__REPOSITORY,
                     newRepository, newRepository));
         }
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean execute(final RoleSet affectedRoleSet,
+            final ControllerCallInputVariableUsageCollection controllerCallsVariableUsages) {
+        return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+                .createTransientEffectInterpreter(affectedRoleSet, controllerCallsVariableUsages, this.getRepository())
+                .doSwitch(this);
     }
 
     /**

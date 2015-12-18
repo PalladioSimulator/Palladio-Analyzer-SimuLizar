@@ -1,10 +1,15 @@
 package org.palladiosimulator.simulizar.action.interpreter;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
+import static java.util.stream.Collectors.toList;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -14,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
+import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
@@ -41,6 +47,8 @@ import org.palladiosimulator.simulizar.action.interpreter.notifications.Adaptati
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
+import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
+import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
@@ -53,6 +61,14 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUser;
 
+/**
+ * Visitor implementation specialized to interpret {@link AdaptationBehavior}s that are triggered
+ * during Simulizar runs. <br>
+ * This class is comparable to the interpreter classes within Simulizar.
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     private static final Logger LOGGER = Logger.getLogger(QVTOExecutor.class);
     private static final String STATE_TRANSFORMING_EXT_POINT_ID = "org.palladiosimulator.simulizar.action.stratetransformation";
@@ -60,13 +76,19 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     private final SimuLizarRuntimeState state;
     private final RoleSet roleSet;
+    private final Map<ControllerCall, List<VariableUsage>> inputVariableUsagesPerControllerCall;
     private final TransientEffectQVTOExecutor qvtoExecutor;
     private final QVToModelCache availableModels;
 
-    public TransientEffectInterpreter(final SimuLizarRuntimeState state, final RoleSet set,
-            final AdaptationBehaviorRepository repository, IModelAccess modelAccess) {
+    TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
+            ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
+            AdaptationBehaviorRepository repository, IModelAccess modelAccess) {
         this.state = state;
         this.roleSet = set;
+        this.inputVariableUsagesPerControllerCall = controllerCallsInputVariableUsages
+                .getControllerCallInputVariableUsages().stream()
+                .collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
+                        mapping(ControllerCallInputVariableUsage::getVariableUsage, toList())));
         this.availableModels = new QVToModelCache(Objects.requireNonNull(modelAccess));
         this.availableModels.storeModel(this.roleSet);
         this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot());
@@ -90,6 +112,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     private Boolean executeAdaptationActions(Collection<AdaptationAction> adaptationActions) {
         assert adaptationActions != null;
 
+        // no short-circuit evaluation: ensure that all actions be executed
         return adaptationActions.stream().reduce(true, (result, action) -> doSwitch(action), Boolean::logicalAnd);
     }
 
@@ -104,11 +127,11 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     @Override
     public Boolean caseGuardedAction(GuardedAction guardedAction) {
         // find the first GuardedTransition whose condition is evaluated to true
-        Optional<GuardedTransition> branchToExecute = guardedAction.getGuardedTransitions().stream()
-                .filter(this::caseGuardedTransition).findFirst();
-        // incorporate case that no branch is to be executed, all conditions failed
+        Optional<NestedAdaptationBehavior> branchToExecute = guardedAction.getGuardedTransitions().stream()
+                .filter(this::caseGuardedTransition).findFirst().map(GuardedTransition::getNestedAdaptationBehavior);
+        // incorporate case that no branch is to be executed (all conditions failed);
         // then we return false
-        return branchToExecute.map(GuardedTransition::getNestedAdaptationBehavior).map(this::doSwitch).orElse(false);
+        return branchToExecute.map(this::doSwitch).orElse(false);
     }
 
     @Override
@@ -166,7 +189,6 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
         // consume resources
         for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
-
             ControllerCall call = controllerMapping.getMappedCall();
             List<Probe> usageStartStopProbes = Collections.unmodifiableList(
                     Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
@@ -202,8 +224,13 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         return result;
     }
 
-    private IScenarioRunner createAndScheduleControllerScenarioRunner(final ControllerMapping controllerMapping,
-            final ReconfigurationProcess reconfigurationProcess) {
+    private IScenarioRunner createAndScheduleControllerScenarioRunner(ControllerMapping controllerMapping,
+            ReconfigurationProcess reconfigurationProcess) {
+
+        ControllerCall mappedCall = controllerMapping.getMappedCall();
+        Collection<VariableUsage> variableUsages = this.inputVariableUsagesPerControllerCall.getOrDefault(mappedCall,
+                Collections.emptyList());
+
         return process -> {
             LOGGER.log(Level.INFO, "Starting with the controller scenario!");
             InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
@@ -217,8 +244,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             actions.add(start);
             actions.add(sysCall);
             actions.add(stop);
-            sysCall.setOperationSignature__EntryLevelSystemCall(controllerMapping.getMappedCall().getCalledSignature());
+            sysCall.setOperationSignature__EntryLevelSystemCall(mappedCall.getCalledSignature());
             sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
+            // insert the input variable usages now
+            sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
             start.setSuccessor(sysCall);
             sysCall.setSuccessor(stop);
             new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);

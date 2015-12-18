@@ -29,6 +29,14 @@
             class="org.palladiosimulator.simulizar.action.instance.InstancePackage"
             genModel="model/actions.genmodel"/>
    </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Parameter/1.1"
+            class="org.palladiosimulator.simulizar.action.parameter.ParameterPackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
    <extension
          id="org.palladiosimulator.action"
          name="Adaptation Behavior Repository File Input Handler"

@@ -96,5 +96,8 @@ Export-Package: org.palladiosimulator.simulizar.action.core;
    org.palladiosimulator.simulizar.action.mapping,
    org.eclipse.emf.ecore.util,
    de.uka.ipd.sdq.pcm.core.entity",
+ org.palladiosimulator.simulizar.action.parameter,
+ org.palladiosimulator.simulizar.action.parameter.impl,
+ org.palladiosimulator.simulizar.action.parameter.util,
  org.palladiosimulator.simulizar.action.ui.configuration
 Bundle-ActivationPolicy: lazy

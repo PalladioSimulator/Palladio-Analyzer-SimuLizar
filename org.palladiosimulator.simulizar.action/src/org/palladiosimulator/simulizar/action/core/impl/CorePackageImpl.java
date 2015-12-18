@@ -31,6 +31,8 @@ import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl;
+import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
+import org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
@@ -184,16 +186,22 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
         final InstancePackageImpl theInstancePackage = (InstancePackageImpl) (EPackage.Registry.INSTANCE
                 .getEPackage(InstancePackage.eNS_URI) instanceof InstancePackageImpl
                         ? EPackage.Registry.INSTANCE.getEPackage(InstancePackage.eNS_URI) : InstancePackage.eINSTANCE);
+        final ParameterPackageImpl theParameterPackage = (ParameterPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(ParameterPackage.eNS_URI) instanceof ParameterPackageImpl
+                        ? EPackage.Registry.INSTANCE.getEPackage(ParameterPackage.eNS_URI)
+                        : ParameterPackage.eINSTANCE);
 
         // Create package meta-data objects
         theCorePackage.createPackageContents();
         theMappingPackage.createPackageContents();
         theInstancePackage.createPackageContents();
+        theParameterPackage.createPackageContents();
 
         // Initialize created meta-data
         theCorePackage.initializePackageContents();
         theMappingPackage.initializePackageContents();
         theInstancePackage.initializePackageContents();
+        theParameterPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theCorePackage.freeze();
@@ -618,6 +626,8 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
                 .getEPackage(EMFProfilePackage.eNS_URI);
         final InstancePackage theInstancePackage = (InstancePackage) EPackage.Registry.INSTANCE
                 .getEPackage(InstancePackage.eNS_URI);
+        final ParameterPackage theParameterPackage = (ParameterPackage) EPackage.Registry.INSTANCE
+                .getEPackage(ParameterPackage.eNS_URI);
         final EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE
                 .getEPackage(EcorePackage.eNS_URI);
         final RepositoryPackage theRepositoryPackage = (RepositoryPackage) EPackage.Registry.INSTANCE
@@ -669,8 +679,14 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
                 !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE,
                 IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
-        final EOperation op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(),
-                "execute", 1, 1, IS_UNIQUE, IS_ORDERED);
+        EOperation op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "execute", 1,
+                1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theParameterPackage.getControllerCallInputVariableUsageCollection(),
+                "controllerCallsVariableUsages", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "execute", 1, 1,
+                IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
 
         this.initEClass(this.nestedAdaptationBehaviorEClass, NestedAdaptationBehavior.class, "NestedAdaptationBehavior",

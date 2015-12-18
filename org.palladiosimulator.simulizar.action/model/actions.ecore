@@ -16,6 +16,13 @@
     <eClassifiers xsi:type="ecore:EClass" name="AdaptationBehavior" eSuperTypes="#//core/AbstractAdaptationBehavior">
       <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, controllerCallsVariableUsages, getRepository()).doSwitch(this);"/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+        <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
+      </eOperations>
+      <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
           <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, getRepository()).doSwitch(this);"/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
@@ -100,6 +107,25 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="roleType" lowerBound="1"
           eType="#//core/RoleType"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="value" eType="ecore:EClass http://www.eclipse.org/emf/2002/Ecore#//EObject"/>
+    </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="parameter" nsURI="http://simulizar.palladiosimulator.org/Actions/Parameter/1.1"
+      nsPrefix="org.palladiosimulator.action">
+    <eClassifiers xsi:type="ecore:EClass" name="ControllerCallInputVariableUsage"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="variableUsage" lowerBound="1"
+          eType="ecore:EClass ../../org.palladiosimulator.pcm/model/pcm.ecore#//parameter/VariableUsage"
+          containment="true"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="correspondingControllerCall"
+          lowerBound="1" eType="#//core/ControllerCall"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="containingCollection"
+          eType="#//parameter/ControllerCallInputVariableUsageCollection" eOpposite="#//parameter/ControllerCallInputVariableUsageCollection/controllerCallInputVariableUsages"/>
+    </eClassifiers>
+    <eClassifiers xsi:type="ecore:EClass" name="ControllerCallInputVariableUsageCollection"
+        eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
+      <eStructuralFeatures xsi:type="ecore:EReference" name="controllerCallInputVariableUsages"
+          upperBound="-1" eType="#//parameter/ControllerCallInputVariableUsage" containment="true"
+          eOpposite="#//parameter/ControllerCallInputVariableUsage/containingCollection"/>
     </eClassifiers>
   </eSubpackages>
 </ecore:EPackage>

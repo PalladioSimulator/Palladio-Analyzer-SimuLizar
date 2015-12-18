@@ -5,6 +5,7 @@ package org.palladiosimulator.simulizar.action.core;
 import org.eclipse.emf.common.util.EList;
 import org.modelversioning.emfprofile.Profile;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
+import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 
 /**
  * <!-- begin-user-doc --> A representation of the model object '<em><b>Adaptation Behavior</b></em>
@@ -108,6 +109,16 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
      * @generated
      */
     void setRepository(AdaptationBehaviorRepository value);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @model required="true" affectedRoleSetRequired="true"
+     *        controllerCallsVariableUsagesRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, controllerCallsVariableUsages, getRepository()).doSwitch(this);'"
+     * @generated
+     */
+    boolean execute(RoleSet affectedRoleSet, ControllerCallInputVariableUsageCollection controllerCallsVariableUsages);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
