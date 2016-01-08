@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -148,26 +149,31 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         this.scheduleAt(0);
     }
 
+    private Consumer<IReconfigurator> doReconfiguration(double currentSimulationTime, EObject monitoredElement) {
+        return r -> {
+            BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(currentSimulationTime);
+            ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
+            boolean reconfigResult = r.checkAndExecute(monitoredElement);
+            EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
+                    EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+            ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);
+            if (reconfigResult) {
+                LOGGER.debug("Successfully executed reconfiguration.");
+                ReconfigurationProcess.this.fireReconfigurationExecutedEvent(beginReconfigurationEvent,
+                        endReconfigurationEvent);
+            }
+            ReconfigurationProcess.this.clearNotifications();
+        };
+    }
+
     @Override
     protected void internalLifeCycle() {
         // execute reconfigurations until termination requested
         while (!this.isTerminationRequested()) {
             final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
-                for (final IReconfigurator reconfigurator : this.reconfigurators) {
-                    final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-                            this.simControl.getCurrentSimulationTime());
-                    this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
-                    final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-                            EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
-                    this.fireEndReconfigurationEvent(endReconfigurationEvent);
-                    if (reconfigResult) {
-                        LOGGER.debug("Successfully executed reconfiguration.");
-                        this.fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
-                    }
-                    this.clearNotifications();
-                }
+                this.reconfigurators
+                        .forEach(this.doReconfiguration(this.simControl.getCurrentSimulationTime(), monitoredElement));
                 // all reconfigurators did their job, so we can go to sleep
                 this.passivate();
             }
