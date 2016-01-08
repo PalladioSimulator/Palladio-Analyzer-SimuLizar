@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -56,6 +57,7 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOExecutor;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
@@ -75,16 +77,20 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     private static final String STATE_TRANSFORMING_CLASS_NAME = "class";
 
     private final SimuLizarRuntimeState state;
+    private final ReconfigurationProcess associatedReconfigurationProcess;
     private final RoleSet roleSet;
     private final Map<ControllerCall, List<VariableUsage>> inputVariableUsagesPerControllerCall;
     private final TransientEffectQVTOExecutor qvtoExecutor;
     private final QVToModelCache availableModels;
+    private final boolean isAsync;
 
     TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
             ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
-            AdaptationBehaviorRepository repository, IModelAccess modelAccess) {
+            AdaptationBehaviorRepository repository, IModelAccess modelAccess, boolean executeAsync) {
         this.state = state;
+        this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
         this.roleSet = set;
+        this.isAsync = executeAsync;
         this.inputVariableUsagesPerControllerCall = controllerCallsInputVariableUsages
                 .getControllerCallInputVariableUsages().stream()
                 .collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
@@ -94,12 +100,30 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot());
     }
 
+    private void spawnAsyncInterpreterProcess(AdaptationBehavior behaviorToInterpret) {
+        SimuComSimProcess asyncInterpreter = new SimuComSimProcess(this.state.getModel(),
+                "Async Transient Effect Interpreter", this.associatedReconfigurationProcess.getRequestContext()) {
+
+            @Override
+            protected void internalLifeCycle() {
+                // within the async process, just proceed regularly, that is, do the interpretion as
+                // usual
+                TransientEffectInterpreter.this.executeAdaptationActions(behaviorToInterpret.getAdaptationActions());
+            }
+        };
+        asyncInterpreter.scheduleAt(0);
+    }
+
     @Override
     public Boolean caseAdaptationBehavior(AdaptationBehavior adaptationBehavior) {
-        boolean successful = executeAdaptationActions(adaptationBehavior.getAdaptationActions());
-        if (successful) {
-            this.state.getReconfigurator().getReconfigurationProcess()
-                    .appendReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
+        boolean successful = true;
+        if (this.isAsync) {
+            spawnAsyncInterpreterProcess(adaptationBehavior);
+        } else {
+            successful = executeAdaptationActions(adaptationBehavior.getAdaptationActions());
+            if (successful) {
+                this.forwardReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
+            }
         }
         return successful;
     }
@@ -183,10 +207,6 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
         SimuComModel model = this.state.getMainContext().getModel();
 
-        // get the process in which the reconfiguration is executed
-        final ReconfigurationProcess reconfigurationProcess = this.state.getReconfigurator()
-                .getReconfigurationProcess();
-
         // consume resources
         for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
             ControllerCall call = controllerMapping.getMappedCall();
@@ -195,14 +215,17 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
                             (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
             OpenWorkloadUser user = new OpenWorkloadUser(model,
                     resourceDemandingAction.getEntityName() + " " + call.getEntityName(),
-                    createAndScheduleControllerScenarioRunner(controllerMapping, reconfigurationProcess),
-                    usageStartStopProbes);
+                    createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes);
             users.add(user);
             user.startUserLife();
         }
-        // wait until all users have finished executing
-        while (checkIfUsersRun(users)) {
-            reconfigurationProcess.passivate();
+        if (!this.isAsync) {
+            // wait until all users have finished executing by passivating the underlying
+            // reconfiguration process
+            // this ensures that no other reconfigurations can take place concurrently
+            while (checkIfUsersRun(users)) {
+                this.associatedReconfigurationProcess.passivate();
+            }
         }
         return true;
     }
@@ -214,25 +237,20 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         // execute adaptation
         TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationAction);
         final boolean result = this.qvtoExecutor.executeTransformation(enactAdaptationAction.getAdaptationStepURI());
-        if (result) {
-            // get the process in which the reconfiguration is executed
-            final ReconfigurationProcess reconfigurationProcess = this.state.getReconfigurator()
-                    .getReconfigurationProcess();
-            reconfigurationProcess
-                    .appendReconfigurationNotification(new AdaptationActionExecutedNotification(enactAdaptationAction));
+        if (result && !this.isAsync) {
+            this.forwardReconfigurationNotification(new AdaptationActionExecutedNotification(enactAdaptationAction));
         }
         return result;
     }
 
-    private IScenarioRunner createAndScheduleControllerScenarioRunner(ControllerMapping controllerMapping,
-            ReconfigurationProcess reconfigurationProcess) {
+    private IScenarioRunner createAndScheduleControllerScenarioRunner(ControllerMapping controllerMapping) {
 
         ControllerCall mappedCall = controllerMapping.getMappedCall();
         Collection<VariableUsage> variableUsages = this.inputVariableUsagesPerControllerCall.getOrDefault(mappedCall,
                 Collections.emptyList());
 
         return process -> {
-            LOGGER.log(Level.INFO, "Starting with the controller scenario!");
+            LOGGER.log(Level.INFO, "Starting with the controller scenario ('" + mappedCall.getEntityName() + "')!");
             InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
             UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
             ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
@@ -251,11 +269,16 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             start.setSuccessor(sysCall);
             sysCall.setSuccessor(stop);
             new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
-            reconfigurationProcess.scheduleAt(0);
+            if (!this.isAsync) {
+                // finally, reschedule the reconfiguration process (this is crucial!)
+                // as it could have been passivated when a resource demanding action is executed
+                // synchronously
+                this.associatedReconfigurationProcess.scheduleAt(0);
+            }
         };
     }
 
-    private boolean checkIfUsersRun(final Collection<OpenWorkloadUser> users) {
+    private boolean checkIfUsersRun(Collection<OpenWorkloadUser> users) {
         return users.stream().anyMatch(u -> !u.isTerminated());
     }
 
@@ -273,5 +296,9 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         TransientEffectQVTOExecutorUtil.validateControllerCompletion(this.qvtoExecutor, resourceDemandingAction);
         return this.qvtoExecutor.executeControllerCompletion(repository,
                 resourceDemandingAction.getControllerCompletionURI());
+    }
+
+    private void forwardReconfigurationNotification(Notification notification) {
+        this.associatedReconfigurationProcess.appendReconfigurationNotification(notification);
     }
 }

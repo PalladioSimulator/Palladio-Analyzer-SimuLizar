@@ -28,6 +28,13 @@
         <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute.1">
           <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.1/affectedRoleSet"/>
         </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync/controllerCallsVariableUsages"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync.1">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.1/affectedRoleSet"/>
+        </genOperations>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/NestedAdaptationBehavior">
         <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/NestedAdaptationBehavior/guardedTransition"/>

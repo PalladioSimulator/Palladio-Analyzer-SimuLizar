@@ -17,7 +17,7 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- *
+ * 
  * @see org.palladiosimulator.simulizar.action.parameter.ParameterFactory
  * @model kind="package"
  * @generated
@@ -25,28 +25,28 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 public interface ParameterPackage extends EPackage {
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNAME = "parameter";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_URI = "http://simulizar.palladiosimulator.org/Actions/Parameter/1.1";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     String eNS_PREFIX = "org.palladiosimulator.action";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     ParameterPackage eINSTANCE = org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl.init();
@@ -56,7 +56,7 @@ public interface ParameterPackage extends EPackage {
      * {@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageImpl
      * <em>Controller Call Input Variable Usage</em>}' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @see org.palladiosimulator.simulizar.action.parameter.impl.
      *      ControllerCallInputVariableUsageImpl
      * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsage()
@@ -67,7 +67,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -76,7 +76,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -112,7 +112,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Controller Call Input Variable Usage</em>'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -123,7 +123,7 @@ public interface ParameterPackage extends EPackage {
      * {@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl
      * <em>Controller Call Input Variable Usage Collection</em>}' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     *
+     * 
      * @see org.palladiosimulator.simulizar.action.parameter.impl.
      *      ControllerCallInputVariableUsageCollectionImpl
      * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsageCollection()
@@ -134,7 +134,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -143,7 +143,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -152,7 +152,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Controller Call Input Variable Usages</b></em>' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -163,7 +163,7 @@ public interface ParameterPackage extends EPackage {
      * The number of structural features of the '
      * <em>Controller Call Input Variable Usage Collection</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @generated
      * @ordered
      */
@@ -185,7 +185,7 @@ public interface ParameterPackage extends EPackage {
      * Returns the meta object for the containment reference '
      * {@link org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getVariableUsage
      * <em>Variable Usage</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for the containment reference '<em>Variable Usage</em>'.
      * @see org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getVariableUsage()
      * @see #getControllerCallInputVariableUsage()
@@ -197,7 +197,7 @@ public interface ParameterPackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getCorrespondingControllerCall
      * <em>Corresponding Controller Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for the reference '<em>Corresponding Controller Call</em>'.
      * @see org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getCorrespondingControllerCall()
      * @see #getControllerCallInputVariableUsage()
@@ -209,7 +209,7 @@ public interface ParameterPackage extends EPackage {
      * Returns the meta object for the container reference '
      * {@link org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getContainingCollection
      * <em>Containing Collection</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @return the meta object for the container reference '<em>Containing Collection</em>'.
      * @see org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getContainingCollection()
      * @see #getControllerCallInputVariableUsage()
@@ -222,7 +222,7 @@ public interface ParameterPackage extends EPackage {
      * {@link org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection
      * <em>Controller Call Input Variable Usage Collection</em>}'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return the meta object for class '<em>Controller Call Input Variable Usage Collection</em>'.
      * @see org.palladiosimulator.simulizar.action.parameter.
      *      ControllerCallInputVariableUsageCollection
@@ -247,7 +247,7 @@ public interface ParameterPackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -262,7 +262,7 @@ public interface ParameterPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     interface Literals {
@@ -271,7 +271,7 @@ public interface ParameterPackage extends EPackage {
          * {@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageImpl
          * <em>Controller Call Input Variable Usage</em>}' class. <!-- begin-user-doc --> <!--
          * end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.simulizar.action.parameter.impl.
          *      ControllerCallInputVariableUsageImpl
          * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsage()
@@ -282,7 +282,7 @@ public interface ParameterPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Variable Usage</b></em>' containment reference
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference CONTROLLER_CALL_INPUT_VARIABLE_USAGE__VARIABLE_USAGE = eINSTANCE
@@ -291,7 +291,7 @@ public interface ParameterPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Corresponding Controller Call</b></em>' reference
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference CONTROLLER_CALL_INPUT_VARIABLE_USAGE__CORRESPONDING_CONTROLLER_CALL = eINSTANCE
@@ -300,7 +300,7 @@ public interface ParameterPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Containing Collection</b></em>' container
          * reference feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference CONTROLLER_CALL_INPUT_VARIABLE_USAGE__CONTAINING_COLLECTION = eINSTANCE
@@ -311,7 +311,7 @@ public interface ParameterPackage extends EPackage {
          * {@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl
          * <em>Controller Call Input Variable Usage Collection</em>}' class. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
-         *
+         * 
          * @see org.palladiosimulator.simulizar.action.parameter.impl.
          *      ControllerCallInputVariableUsageCollectionImpl
          * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsageCollection()
@@ -323,7 +323,7 @@ public interface ParameterPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Controller Call Input Variable Usages</b></em>'
          * containment reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         *
+         * 
          * @generated
          */
         EReference CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES = eINSTANCE

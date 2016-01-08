@@ -70,7 +70,7 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getTransientStateProfile
      * <em>Transient State Profile</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Transient State Profile</em>' reference.
      * @see #getTransientStateProfile()
@@ -88,7 +88,7 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Repository</em>' container reference.
      * @see #setRepository(AdaptationBehaviorRepository)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAdaptationBehavior_Repository()
@@ -102,7 +102,7 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getRepository
      * <em>Repository</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Repository</em>' container reference.
      * @see #getRepository()
@@ -112,21 +112,41 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @model required="true" affectedRoleSetRequired="true"
      *        controllerCallsVariableUsagesRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, controllerCallsVariableUsages, getRepository()).doSwitch(this);'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);\r\n'"
      * @generated
      */
     boolean execute(RoleSet affectedRoleSet, ControllerCallInputVariableUsageCollection controllerCallsVariableUsages);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @model required="true" affectedRoleSetRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, getRepository()).doSwitch(this);'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this);'"
      * @generated
      */
     boolean execute(RoleSet affectedRoleSet);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @model required="true" affectedRoleSetRequired="true"
+     *        controllerCallsVariableUsagesRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this);\r\n'"
+     * @generated
+     */
+    boolean executeAsync(RoleSet affectedRoleSet,
+            ControllerCallInputVariableUsageCollection controllerCallsVariableUsages);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * 
+     * @model required="true" affectedRoleSetRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this);'"
+     * @generated
+     */
+    boolean executeAsync(RoleSet affectedRoleSet);
 
 } // AdaptationBehavior

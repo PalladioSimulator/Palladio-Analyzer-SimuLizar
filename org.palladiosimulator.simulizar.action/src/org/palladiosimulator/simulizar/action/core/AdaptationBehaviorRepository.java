@@ -34,7 +34,7 @@ public interface AdaptationBehaviorRepository extends EObject, Entity {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Actions</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAdaptationBehaviorRepository_Actions()
      * @see org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getRepository

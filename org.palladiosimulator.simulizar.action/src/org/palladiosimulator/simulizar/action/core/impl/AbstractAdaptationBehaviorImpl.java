@@ -33,7 +33,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
     /**
      * The cached value of the '{@link #getAdaptationActions() <em>Adaptation Actions</em>}'
      * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getAdaptationActions()
      * @generated
      * @ordered
@@ -42,7 +42,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected AbstractAdaptationBehaviorImpl() {
@@ -51,7 +51,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -61,7 +61,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -93,7 +93,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -108,7 +108,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -139,7 +139,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

@@ -14,13 +14,13 @@ import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 
 /**
  * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
- *
+ * 
  * @generated
  */
 public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
     /**
      * Creates the default factory implementation. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public static MappingFactory init() {
@@ -38,7 +38,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * Creates an instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public MappingFactoryImpl() {
@@ -47,7 +47,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -64,7 +64,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -86,7 +86,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -96,7 +96,7 @@ public class MappingFactoryImpl extends EFactoryImpl implements MappingFactory {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @deprecated
      * @generated
      */

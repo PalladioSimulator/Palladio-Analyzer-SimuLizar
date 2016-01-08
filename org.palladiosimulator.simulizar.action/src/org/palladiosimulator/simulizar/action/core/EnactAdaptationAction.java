@@ -27,7 +27,7 @@ public interface EnactAdaptationAction extends AdaptationAction {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Adaptation Step URI</em>' attribute.
      * @see #setAdaptationStepURI(String)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getEnactAdaptationAction_AdaptationStepURI()
@@ -40,7 +40,7 @@ public interface EnactAdaptationAction extends AdaptationAction {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.EnactAdaptationAction#getAdaptationStepURI
      * <em>Adaptation Step URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Adaptation Step URI</em>' attribute.
      * @see #getAdaptationStepURI()

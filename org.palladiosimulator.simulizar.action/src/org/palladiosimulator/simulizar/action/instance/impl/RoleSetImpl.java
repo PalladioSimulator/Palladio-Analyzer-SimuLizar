@@ -42,7 +42,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected RoleSetImpl() {
@@ -51,7 +51,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -61,7 +61,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -106,7 +106,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -120,7 +120,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -137,7 +137,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

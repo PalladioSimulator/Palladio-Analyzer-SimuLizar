@@ -33,7 +33,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
     /**
      * The cached value of the '{@link #getActions() <em>Actions</em>}' containment reference list.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getActions()
      * @generated
      * @ordered
@@ -42,7 +42,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected AdaptationBehaviorRepositoryImpl() {
@@ -51,7 +51,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -61,7 +61,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -106,7 +106,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -120,7 +120,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -137,7 +137,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class AdaptationBehaviorRepositoryImpl extends EntityImpl implements Adap
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

@@ -49,7 +49,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
     /**
      * The cached value of the '{@link #getControllerRole() <em>Controller Role</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @see #getControllerRole()
      * @generated
      * @ordered
@@ -58,7 +58,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected ControllerMappingImpl() {
@@ -67,7 +67,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -77,7 +77,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -97,7 +97,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public ControllerCall basicGetMappedCall() {
@@ -106,7 +106,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -121,7 +121,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -142,7 +142,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public OperationProvidedRole basicGetControllerRole() {
@@ -151,7 +151,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -166,7 +166,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -179,7 +179,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetMapping(final Mapping newMapping, NotificationChain msgs) {
@@ -189,7 +189,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -219,7 +219,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -236,7 +236,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -251,7 +251,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -266,7 +266,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -290,7 +290,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -311,7 +311,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -332,7 +332,7 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

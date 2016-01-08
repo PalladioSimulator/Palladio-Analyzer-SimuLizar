@@ -35,7 +35,7 @@ public interface ControllerCall extends EObject, Entity {
      * of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Component</em>' reference.
      * @see #setComponent(BasicComponent)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getControllerCall_Component()
@@ -48,7 +48,7 @@ public interface ControllerCall extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.ControllerCall#getComponent
      * <em>Component</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Component</em>' reference.
      * @see #getComponent()
@@ -64,7 +64,7 @@ public interface ControllerCall extends EObject, Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Called Signature</em>' reference.
      * @see #setCalledSignature(OperationSignature)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getControllerCall_CalledSignature()
@@ -77,7 +77,7 @@ public interface ControllerCall extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.ControllerCall#getCalledSignature
      * <em>Called Signature</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Called Signature</em>' reference.
      * @see #getCalledSignature()
@@ -95,7 +95,7 @@ public interface ControllerCall extends EObject, Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Resource Demanding Step</em>' container reference.
      * @see #setResourceDemandingStep(ResourceDemandingAction)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getControllerCall_ResourceDemandingStep()
@@ -110,7 +110,7 @@ public interface ControllerCall extends EObject, Entity {
      * {@link org.palladiosimulator.simulizar.action.core.ControllerCall#getResourceDemandingStep
      * <em>Resource Demanding Step</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Resource Demanding Step</em>' container reference.
      * @see #getResourceDemandingStep()

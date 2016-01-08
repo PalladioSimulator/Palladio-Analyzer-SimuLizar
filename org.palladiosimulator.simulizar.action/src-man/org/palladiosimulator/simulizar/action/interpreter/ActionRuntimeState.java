@@ -19,49 +19,27 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
             .createControllerCallInputVariableUsageCollection();
 
     /**
-     * Initializes a new instance of the {@link TransientEffectInterpreter} class with the given
-     * parameters.
+     * Gets a {@link TransientEffectInterpreterBuilder} which is suitable to construct an
+     * {@link TransientEffectInterpreter} with the given arguments.
      * 
-     * @param set
-     *            The {@link RoleSet} that shall be used by the interpreter.
+     * @param roleSet
+     *            The {@link RoleSet} to be used by the interpreter.
      * @param repository
-     *            The {@link AdaptationBehaviorRepository} that contains all available adaptations.
-     * @return A new instance of the {@link TransientEffectInterpreter} class.
+     *            The {@link AdaptationBehaviorRepository} which contains all available adaptations
+     *            to be executed.
+     * @return An {@link TransientEffectInterpreterBuilder} instance to construct the interpreter.
      * @throws NullPointerException
-     *             In case any of the passed objects is {@code null}.
+     *             In case either argument is {@code null}.
      */
-    public static TransientEffectInterpreter createTransientEffectInterpreter(RoleSet set,
+    public static TransientEffectInterpreterBuilder getInterpreterBuilder(RoleSet roleSet,
             AdaptationBehaviorRepository repository) {
-        return createTransientEffectInterpreter(set, EMPTY_VARIABLE_USAGE_COLLECTION, repository);
+        return new TransientEffectInterpreterBuilder(roleSet, repository);
     }
 
     /**
-     * Initializes a new instance of the {@link TransientEffectInterpreter} class with the given
-     * parameters.
-     * 
-     * @param set
-     *            The {@link RoleSet} that shall be used by the interpreter.
-     * @param controllerCallVariabelUsages
-     *            The {@link ControllerCallInputVariableUsageCollection} to be used by the
-     *            interpreter for executing {@link ControllerCall}s.
-     * @param repository
-     *            The {@link AdaptationBehaviorRepository} that contains all available adaptations.
-     * @return A new instance of the {@link TransientEffectInterpreter} class.
-     * @throws NullPointerException
-     *             In case any of the passed objects is {@code null}.
-     */
-    public static TransientEffectInterpreter createTransientEffectInterpreter(RoleSet set,
-            ControllerCallInputVariableUsageCollection controllerCallVariabelUsages,
-            AdaptationBehaviorRepository repository) {
-
-        return new TransientEffectInterpreter(state, Objects.requireNonNull(set),
-                Objects.requireNonNull(controllerCallVariabelUsages), Objects.requireNonNull(repository), modelAccess);
-    }
-
-    /**
-     * Injects the {@link SimuLizarRuntimeState} which is then used by the
-     * {@link #createTransientEffectInterpreter(RoleSet, AdaptationBehaviorRepository)} methods to
-     * equip the interpreters.
+     * Injects the {@link SimuLizarRuntimeState} which is then used by
+     * {@link #TransientEffectInterpreterBuilder} instances to equip themselves for interpreter
+     * creation.
      * 
      * @param The
      *            {@link SimuLizarRuntimeState} to inject.
@@ -72,5 +50,67 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
     public void setRuntimeStateModel(SimuLizarRuntimeState passedState) {
         ActionRuntimeState.state = Objects.requireNonNull(passedState);
         ActionRuntimeState.modelAccess = passedState.getModelAccess();
+    }
+
+    /**
+     * Implementation of the well-known <i>Builder Pattern</i> for facilitated construction of
+     * {@link TransientEffectInterpreter}s with different configurations.
+     * 
+     * @author Florian Rosenthal
+     *
+     */
+    public static class TransientEffectInterpreterBuilder {
+        private final SimuLizarRuntimeState state = ActionRuntimeState.state;
+        private final IModelAccess modelAccess = ActionRuntimeState.modelAccess;
+        private final RoleSet roleSet;
+        private final AdaptationBehaviorRepository repository;
+
+        private ControllerCallInputVariableUsageCollection controllerCallVariableUsages = EMPTY_VARIABLE_USAGE_COLLECTION;
+        private boolean isAsync = false;
+
+        private TransientEffectInterpreterBuilder(RoleSet roleSet, AdaptationBehaviorRepository repository) {
+            this.roleSet = Objects.requireNonNull(roleSet);
+            this.repository = Objects.requireNonNull(repository);
+        }
+
+        /**
+         * Equips the current builder instance to create an interpreter for asynchronous
+         * interpretation.
+         * 
+         * @return The current (yet modified) instance.
+         */
+        public TransientEffectInterpreterBuilder isAsync() {
+            this.isAsync = true;
+            return this;
+        }
+
+        /**
+         * Equips the current builder instance with a collection of input variable usages that shall
+         * be used by the interpreter to be constructed.
+         * 
+         * @param controllerCallVariabelUsages
+         *            The {@link ControllerCallInputVariableUsageCollection} to be used by the
+         *            interpreter for executing {@link ControllerCall}s.
+         * 
+         * @return The current (yet modified) instance.
+         * @throws NullPointerException
+         *             In case {@code ControllerCallInputVariableUsages == null}.
+         */
+        public TransientEffectInterpreterBuilder addControllerCallVariableUsages(
+                ControllerCallInputVariableUsageCollection controllerCallVariabelUsages) {
+            this.controllerCallVariableUsages = Objects.requireNonNull(controllerCallVariabelUsages);
+            return this;
+        }
+
+        /**
+         * Constructs a {@link TransientEffectInterpreter} instance by using the current builder
+         * configuration.
+         * 
+         * @return A newly created {@link TransientEffectInterpreter} instance.
+         */
+        public TransientEffectInterpreter build() {
+            return new TransientEffectInterpreter(this.state, this.roleSet, this.controllerCallVariableUsages,
+                    this.repository, this.modelAccess, this.isAsync);
+        }
     }
 }

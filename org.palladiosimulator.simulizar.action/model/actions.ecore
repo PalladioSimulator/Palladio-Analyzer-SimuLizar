@@ -16,14 +16,27 @@
     <eClassifiers xsi:type="ecore:EClass" name="AdaptationBehavior" eSuperTypes="#//core/AbstractAdaptationBehavior">
       <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, controllerCallsVariableUsages, getRepository()).doSwitch(this);"/>
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);&#xD;&#xA;"/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
         <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
       </eOperations>
       <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.createTransientEffectInterpreter(affectedRoleSet, getRepository()).doSwitch(this);"/>
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this);"/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+      </eOperations>
+      <eOperations name="executeAsync" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this);&#xD;&#xA;"/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+        <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
+      </eOperations>
+      <eOperations name="executeAsync" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this);"/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
       </eOperations>

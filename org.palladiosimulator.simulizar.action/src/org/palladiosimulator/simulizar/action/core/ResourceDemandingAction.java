@@ -45,7 +45,7 @@ public interface ResourceDemandingAction extends AdaptationAction {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.ResourceDemandingAction#getControllerCompletionURI
      * <em>Controller Completion URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Controller Completion URI</em>' attribute.
      * @see #getControllerCompletionURI()
@@ -64,7 +64,7 @@ public interface ResourceDemandingAction extends AdaptationAction {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Controller Calls</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getResourceDemandingAction_ControllerCalls()
      * @see org.palladiosimulator.simulizar.action.core.ControllerCall#getResourceDemandingStep

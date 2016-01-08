@@ -58,7 +58,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
      * The cached value of the '{@link #getNestedAdaptationBehavior()
      * <em>Nested Adaptation Behavior</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @see #getNestedAdaptationBehavior()
      * @generated
      * @ordered
@@ -67,7 +67,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     protected GuardedTransitionImpl() {
@@ -76,7 +76,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -86,7 +86,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -96,7 +96,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -111,7 +111,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -124,7 +124,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetGuardedAction(final GuardedAction newGuardedAction, NotificationChain msgs) {
@@ -135,7 +135,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -166,7 +166,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -176,7 +176,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     public NotificationChain basicSetNestedAdaptationBehavior(
@@ -198,7 +198,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -228,7 +228,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -253,7 +253,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -270,7 +270,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -285,7 +285,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -303,7 +303,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -325,7 +325,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -346,7 +346,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override
@@ -365,7 +365,7 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
+     * 
      * @generated
      */
     @Override

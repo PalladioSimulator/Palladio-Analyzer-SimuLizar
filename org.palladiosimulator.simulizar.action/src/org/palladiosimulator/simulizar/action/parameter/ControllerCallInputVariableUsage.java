@@ -101,7 +101,7 @@ public interface ControllerCallInputVariableUsage extends EObject, Entity {
      * really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     *
+     * 
      * @return the value of the '<em>Containing Collection</em>' container reference.
      * @see #setContainingCollection(ControllerCallInputVariableUsageCollection)
      * @see org.palladiosimulator.simulizar.action.parameter.ParameterPackage#getControllerCallInputVariableUsage_ContainingCollection()
@@ -116,7 +116,7 @@ public interface ControllerCallInputVariableUsage extends EObject, Entity {
      * {@link org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage#getContainingCollection
      * <em>Containing Collection</em>}' container reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     *
+     * 
      * @param value
      *            the new value of the '<em>Containing Collection</em>' container reference.
      * @see #getContainingCollection()
