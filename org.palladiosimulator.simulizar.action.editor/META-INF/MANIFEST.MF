@@ -10,7 +10,8 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar.action.core.presentation,
  org.palladiosimulator.simulizar.action.instance.presentation,
- org.palladiosimulator.simulizar.action.mapping.presentation
+ org.palladiosimulator.simulizar.action.mapping.presentation,
+ org.palladiosimulator.simulizar.action.parameter.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  org.palladiosimulator.simulizar.action.edit;visibility:=reexport,

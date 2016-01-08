@@ -667,6 +667,8 @@ public class InstanceEditor extends MultiPageEditorPart
         this.adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new MappingItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new InstanceItemProviderAdapterFactory());
+        this.adapterFactory.addAdapterFactory(
+                new org.palladiosimulator.simulizar.action.parameter.provider.ParameterItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EMFProfileItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());

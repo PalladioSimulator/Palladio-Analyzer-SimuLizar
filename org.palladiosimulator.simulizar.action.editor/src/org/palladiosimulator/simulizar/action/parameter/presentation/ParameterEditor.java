@@ -1,6 +1,6 @@
 /**
  */
-package org.palladiosimulator.simulizar.action.core.presentation;
+package org.palladiosimulator.simulizar.action.parameter.presentation;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -121,7 +121,6 @@ import org.modelversioning.emfprofile.provider.EMFProfileItemProviderAdapterFact
 import org.palladiosimulator.pcm.allocation.provider.AllocationItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.core.composition.provider.CompositionItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.core.entity.provider.EntityItemProviderAdapterFactory;
-import org.palladiosimulator.pcm.parameter.provider.ParameterItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.protocol.provider.ProtocolItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.provider.PcmItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.qosannotations.provider.QosannotationsItemProviderAdapterFactory;
@@ -137,9 +136,11 @@ import org.palladiosimulator.pcm.seff.seff_reliability.provider.SeffReliabilityI
 import org.palladiosimulator.pcm.subsystem.provider.SubsystemItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.system.provider.SystemItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.usagemodel.provider.UsagemodelItemProviderAdapterFactory;
+import org.palladiosimulator.simulizar.action.core.presentation.ActionsEditorPlugin;
 import org.palladiosimulator.simulizar.action.core.provider.CoreItemProviderAdapterFactory;
 import org.palladiosimulator.simulizar.action.instance.provider.InstanceItemProviderAdapterFactory;
 import org.palladiosimulator.simulizar.action.mapping.provider.MappingItemProviderAdapterFactory;
+import org.palladiosimulator.simulizar.action.parameter.provider.ParameterItemProviderAdapterFactory;
 
 import de.uka.ipd.sdq.identifier.provider.IdentifierItemProviderAdapterFactory;
 import de.uka.ipd.sdq.probfunction.provider.ProbfunctionItemProviderAdapterFactory;
@@ -147,11 +148,11 @@ import de.uka.ipd.sdq.stoex.provider.StoexItemProviderAdapterFactory;
 import de.uka.ipd.sdq.units.provider.UnitsItemProviderAdapterFactory;
 
 /**
- * This is an example of a Core model editor. <!-- begin-user-doc --> <!-- end-user-doc -->
+ * This is an example of a Parameter model editor. <!-- begin-user-doc --> <!-- end-user-doc -->
  * 
  * @generated
  */
-public class CoreEditor extends MultiPageEditorPart
+public class ParameterEditor extends MultiPageEditorPart
         implements IEditingDomainProvider, ISelectionProvider, IMenuListener, IViewerProvider, IGotoMarker {
     /**
      * This keeps track of the editing domain that is used to track all changes to the model. <!--
@@ -300,18 +301,18 @@ public class CoreEditor extends MultiPageEditorPart
         @Override
         public void partActivated(final IWorkbenchPart p) {
             if (p instanceof ContentOutline) {
-                if (((ContentOutline) p).getCurrentPage() == CoreEditor.this.contentOutlinePage) {
-                    CoreEditor.this.getActionBarContributor().setActiveEditor(CoreEditor.this);
+                if (((ContentOutline) p).getCurrentPage() == ParameterEditor.this.contentOutlinePage) {
+                    ParameterEditor.this.getActionBarContributor().setActiveEditor(ParameterEditor.this);
 
-                    CoreEditor.this.setCurrentViewer(CoreEditor.this.contentOutlineViewer);
+                    ParameterEditor.this.setCurrentViewer(ParameterEditor.this.contentOutlineViewer);
                 }
             } else if (p instanceof PropertySheet) {
-                if (CoreEditor.this.propertySheetPages.contains(((PropertySheet) p).getCurrentPage())) {
-                    CoreEditor.this.getActionBarContributor().setActiveEditor(CoreEditor.this);
-                    CoreEditor.this.handleActivate();
+                if (ParameterEditor.this.propertySheetPages.contains(((PropertySheet) p).getCurrentPage())) {
+                    ParameterEditor.this.getActionBarContributor().setActiveEditor(ParameterEditor.this);
+                    ParameterEditor.this.handleActivate();
                 }
-            } else if (p == CoreEditor.this) {
-                CoreEditor.this.handleActivate();
+            } else if (p == ParameterEditor.this) {
+                ParameterEditor.this.handleActivate();
             }
         }
 
@@ -390,18 +391,18 @@ public class CoreEditor extends MultiPageEditorPart
                 case Resource.RESOURCE__ERRORS:
                 case Resource.RESOURCE__WARNINGS: {
                     final Resource resource = (Resource) notification.getNotifier();
-                    final Diagnostic diagnostic = CoreEditor.this.analyzeResourceProblems(resource, null);
+                    final Diagnostic diagnostic = ParameterEditor.this.analyzeResourceProblems(resource, null);
                     if (diagnostic.getSeverity() != Diagnostic.OK) {
-                        CoreEditor.this.resourceToDiagnosticMap.put(resource, diagnostic);
+                        ParameterEditor.this.resourceToDiagnosticMap.put(resource, diagnostic);
                     } else {
-                        CoreEditor.this.resourceToDiagnosticMap.remove(resource);
+                        ParameterEditor.this.resourceToDiagnosticMap.remove(resource);
                     }
 
-                    if (CoreEditor.this.updateProblemIndication) {
-                        CoreEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                    if (ParameterEditor.this.updateProblemIndication) {
+                        ParameterEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
                             @Override
                             public void run() {
-                                CoreEditor.this.updateProblemIndication();
+                                ParameterEditor.this.updateProblemIndication();
                             }
                         });
                     }
@@ -421,12 +422,12 @@ public class CoreEditor extends MultiPageEditorPart
         @Override
         protected void unsetTarget(final Resource target) {
             this.basicUnsetTarget(target);
-            CoreEditor.this.resourceToDiagnosticMap.remove(target);
-            if (CoreEditor.this.updateProblemIndication) {
-                CoreEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
+            ParameterEditor.this.resourceToDiagnosticMap.remove(target);
+            if (ParameterEditor.this.updateProblemIndication) {
+                ParameterEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
                     @Override
                     public void run() {
-                        CoreEditor.this.updateProblemIndication();
+                        ParameterEditor.this.updateProblemIndication();
                     }
                 });
             }
@@ -444,7 +445,7 @@ public class CoreEditor extends MultiPageEditorPart
             final IResourceDelta delta = event.getDelta();
             try {
                 class ResourceDeltaVisitor implements IResourceDeltaVisitor {
-                    protected ResourceSet resourceSet = CoreEditor.this.editingDomain.getResourceSet();
+                    protected ResourceSet resourceSet = ParameterEditor.this.editingDomain.getResourceSet();
                     protected Collection<Resource> changedResources = new ArrayList<Resource>();
                     protected Collection<Resource> removedResources = new ArrayList<Resource>();
 
@@ -458,7 +459,7 @@ public class CoreEditor extends MultiPageEditorPart
                                 if (resource != null) {
                                     if (delta.getKind() == IResourceDelta.REMOVED) {
                                         this.removedResources.add(resource);
-                                    } else if (!CoreEditor.this.savedResources.remove(resource)) {
+                                    } else if (!ParameterEditor.this.savedResources.remove(resource)) {
                                         this.changedResources.add(resource);
                                     }
                                 }
@@ -482,24 +483,24 @@ public class CoreEditor extends MultiPageEditorPart
                 delta.accept(visitor);
 
                 if (!visitor.getRemovedResources().isEmpty()) {
-                    CoreEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                    ParameterEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
                         @Override
                         public void run() {
-                            CoreEditor.this.removedResources.addAll(visitor.getRemovedResources());
-                            if (!CoreEditor.this.isDirty()) {
-                                CoreEditor.this.getSite().getPage().closeEditor(CoreEditor.this, false);
+                            ParameterEditor.this.removedResources.addAll(visitor.getRemovedResources());
+                            if (!ParameterEditor.this.isDirty()) {
+                                ParameterEditor.this.getSite().getPage().closeEditor(ParameterEditor.this, false);
                             }
                         }
                     });
                 }
 
                 if (!visitor.getChangedResources().isEmpty()) {
-                    CoreEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
+                    ParameterEditor.this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
                         @Override
                         public void run() {
-                            CoreEditor.this.changedResources.addAll(visitor.getChangedResources());
-                            if (CoreEditor.this.getSite().getPage().getActiveEditor() == CoreEditor.this) {
-                                CoreEditor.this.handleActivate();
+                            ParameterEditor.this.changedResources.addAll(visitor.getChangedResources());
+                            if (ParameterEditor.this.getSite().getPage().getActiveEditor() == ParameterEditor.this) {
+                                ParameterEditor.this.handleActivate();
                             }
                         }
                     });
@@ -529,7 +530,7 @@ public class CoreEditor extends MultiPageEditorPart
 
         if (!this.removedResources.isEmpty()) {
             if (this.handleDirtyConflict()) {
-                this.getSite().getPage().closeEditor(CoreEditor.this, false);
+                this.getSite().getPage().closeEditor(ParameterEditor.this, false);
             } else {
                 this.removedResources.clear();
                 this.changedResources.clear();
@@ -646,7 +647,7 @@ public class CoreEditor extends MultiPageEditorPart
      * 
      * @generated
      */
-    public CoreEditor() {
+    public ParameterEditor() {
         super();
         this.initializeEditingDomain();
     }
@@ -666,8 +667,7 @@ public class CoreEditor extends MultiPageEditorPart
         this.adapterFactory.addAdapterFactory(new CoreItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new MappingItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new InstanceItemProviderAdapterFactory());
-        this.adapterFactory.addAdapterFactory(
-                new org.palladiosimulator.simulizar.action.parameter.provider.ParameterItemProviderAdapterFactory());
+        this.adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EMFProfileItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());
@@ -680,7 +680,8 @@ public class CoreEditor extends MultiPageEditorPart
         this.adapterFactory.addAdapterFactory(new RepositoryItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new ResourcetypeItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new ProtocolItemProviderAdapterFactory());
-        this.adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
+        this.adapterFactory.addAdapterFactory(
+                new org.palladiosimulator.pcm.parameter.provider.ParameterItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new ReliabilityItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new SeffItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new SeffPerformanceItemProviderAdapterFactory());
@@ -707,18 +708,18 @@ public class CoreEditor extends MultiPageEditorPart
         commandStack.addCommandStackListener(new CommandStackListener() {
             @Override
             public void commandStackChanged(final EventObject event) {
-                CoreEditor.this.getContainer().getDisplay().asyncExec(new Runnable() {
+                ParameterEditor.this.getContainer().getDisplay().asyncExec(new Runnable() {
                     @Override
                     public void run() {
-                        CoreEditor.this.firePropertyChange(IEditorPart.PROP_DIRTY);
+                        ParameterEditor.this.firePropertyChange(IEditorPart.PROP_DIRTY);
 
                         // Try to select the affected objects.
                         //
                         final Command mostRecentCommand = ((CommandStack) event.getSource()).getMostRecentCommand();
                         if (mostRecentCommand != null) {
-                            CoreEditor.this.setSelectionToViewer(mostRecentCommand.getAffectedObjects());
+                            ParameterEditor.this.setSelectionToViewer(mostRecentCommand.getAffectedObjects());
                         }
-                        for (final Iterator<PropertySheetPage> i = CoreEditor.this.propertySheetPages.iterator(); i
+                        for (final Iterator<PropertySheetPage> i = ParameterEditor.this.propertySheetPages.iterator(); i
                                 .hasNext();) {
                             final PropertySheetPage propertySheetPage = i.next();
                             if (propertySheetPage.getControl().isDisposed()) {
@@ -765,8 +766,8 @@ public class CoreEditor extends MultiPageEditorPart
                 public void run() {
                     // Try to select the items in the current content viewer of the editor.
                     //
-                    if (CoreEditor.this.currentViewer != null) {
-                        CoreEditor.this.currentViewer.setSelection(new StructuredSelection(theSelection.toArray()),
+                    if (ParameterEditor.this.currentViewer != null) {
+                        ParameterEditor.this.currentViewer.setSelection(new StructuredSelection(theSelection.toArray()),
                                 true);
                     }
                 }
@@ -880,7 +881,7 @@ public class CoreEditor extends MultiPageEditorPart
                     //
                     @Override
                     public void selectionChanged(final SelectionChangedEvent selectionChangedEvent) {
-                        CoreEditor.this.setSelection(selectionChangedEvent.getSelection());
+                        ParameterEditor.this.setSelection(selectionChangedEvent.getSelection());
                     }
                 };
             }
@@ -1009,7 +1010,7 @@ public class CoreEditor extends MultiPageEditorPart
             // Create a page for the selection tree view.
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         final Tree tree = new Tree(composite, SWT.MULTI);
@@ -1020,7 +1021,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1044,7 +1045,7 @@ public class CoreEditor extends MultiPageEditorPart
             // Create a page for the parent tree view.
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         final Tree tree = new Tree(composite, SWT.MULTI);
@@ -1055,7 +1056,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1073,7 +1074,7 @@ public class CoreEditor extends MultiPageEditorPart
             // This is the page for the list viewer
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         return new ListViewer(composite);
@@ -1082,7 +1083,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1098,7 +1099,7 @@ public class CoreEditor extends MultiPageEditorPart
             // This is the page for the tree viewer
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         return new TreeViewer(composite);
@@ -1107,7 +1108,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1125,7 +1126,7 @@ public class CoreEditor extends MultiPageEditorPart
             // This is the page for the table viewer.
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         return new TableViewer(composite);
@@ -1134,7 +1135,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1168,7 +1169,7 @@ public class CoreEditor extends MultiPageEditorPart
             // This is the page for the table tree viewer.
             //
             {
-                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), CoreEditor.this) {
+                final ViewerPane viewerPane = new ViewerPane(this.getSite().getPage(), ParameterEditor.this) {
                     @Override
                     public Viewer createViewer(final Composite composite) {
                         return new TreeViewer(composite);
@@ -1177,7 +1178,7 @@ public class CoreEditor extends MultiPageEditorPart
                     @Override
                     public void requestActivation() {
                         super.requestActivation();
-                        CoreEditor.this.setCurrentViewerPane(this);
+                        ParameterEditor.this.setCurrentViewerPane(this);
                     }
                 };
                 viewerPane.createControl(this.getContainer());
@@ -1211,7 +1212,7 @@ public class CoreEditor extends MultiPageEditorPart
             this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    CoreEditor.this.setActivePage(0);
+                    ParameterEditor.this.setActivePage(0);
                 }
             });
         }
@@ -1226,7 +1227,7 @@ public class CoreEditor extends MultiPageEditorPart
             public void controlResized(final ControlEvent event) {
                 if (!this.guard) {
                     this.guard = true;
-                    CoreEditor.this.hideTabs();
+                    ParameterEditor.this.hideTabs();
                     this.guard = false;
                 }
             }
@@ -1235,7 +1236,7 @@ public class CoreEditor extends MultiPageEditorPart
         this.getSite().getShell().getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
-                CoreEditor.this.updateProblemIndication();
+                ParameterEditor.this.updateProblemIndication();
             }
         });
     }
@@ -1322,29 +1323,29 @@ public class CoreEditor extends MultiPageEditorPart
                 @Override
                 public void createControl(final Composite parent) {
                     super.createControl(parent);
-                    CoreEditor.this.contentOutlineViewer = this.getTreeViewer();
-                    CoreEditor.this.contentOutlineViewer.addSelectionChangedListener(this);
+                    ParameterEditor.this.contentOutlineViewer = this.getTreeViewer();
+                    ParameterEditor.this.contentOutlineViewer.addSelectionChangedListener(this);
 
                     // Set up the tree viewer.
                     //
-                    CoreEditor.this.contentOutlineViewer
-                            .setContentProvider(new AdapterFactoryContentProvider(CoreEditor.this.adapterFactory));
-                    CoreEditor.this.contentOutlineViewer
-                            .setLabelProvider(new AdapterFactoryLabelProvider(CoreEditor.this.adapterFactory));
-                    CoreEditor.this.contentOutlineViewer.setInput(CoreEditor.this.editingDomain.getResourceSet());
+                    ParameterEditor.this.contentOutlineViewer
+                            .setContentProvider(new AdapterFactoryContentProvider(ParameterEditor.this.adapterFactory));
+                    ParameterEditor.this.contentOutlineViewer
+                            .setLabelProvider(new AdapterFactoryLabelProvider(ParameterEditor.this.adapterFactory));
+                    ParameterEditor.this.contentOutlineViewer
+                            .setInput(ParameterEditor.this.editingDomain.getResourceSet());
 
                     // Make sure our popups work.
                     //
-                    CoreEditor.this.createContextMenuFor(CoreEditor.this.contentOutlineViewer);
+                    ParameterEditor.this.createContextMenuFor(ParameterEditor.this.contentOutlineViewer);
 
-                    if (!CoreEditor.this.editingDomain.getResourceSet().getResources().isEmpty()) {
+                    if (!ParameterEditor.this.editingDomain.getResourceSet().getResources().isEmpty()) {
                         // Select the root object in the view.
                         //
-                        CoreEditor.this.contentOutlineViewer
-                                .setSelection(
-                                        new StructuredSelection(
-                                                CoreEditor.this.editingDomain.getResourceSet().getResources().get(0)),
-                                        true);
+                        ParameterEditor.this.contentOutlineViewer.setSelection(
+                                new StructuredSelection(
+                                        ParameterEditor.this.editingDomain.getResourceSet().getResources().get(0)),
+                                true);
                     }
                 }
 
@@ -1352,13 +1353,13 @@ public class CoreEditor extends MultiPageEditorPart
                 public void makeContributions(final IMenuManager menuManager, final IToolBarManager toolBarManager,
                         final IStatusLineManager statusLineManager) {
                     super.makeContributions(menuManager, toolBarManager, statusLineManager);
-                    CoreEditor.this.contentOutlineStatusLineManager = statusLineManager;
+                    ParameterEditor.this.contentOutlineStatusLineManager = statusLineManager;
                 }
 
                 @Override
                 public void setActionBars(final IActionBars actionBars) {
                     super.setActionBars(actionBars);
-                    CoreEditor.this.getActionBarContributor().shareGlobalActions(this, actionBars);
+                    ParameterEditor.this.getActionBarContributor().shareGlobalActions(this, actionBars);
                 }
             }
 
@@ -1371,7 +1372,7 @@ public class CoreEditor extends MultiPageEditorPart
                 //
                 @Override
                 public void selectionChanged(final SelectionChangedEvent event) {
-                    CoreEditor.this.handleContentOutlineSelection(event.getSelection());
+                    ParameterEditor.this.handleContentOutlineSelection(event.getSelection());
                 }
             });
         }
@@ -1389,14 +1390,14 @@ public class CoreEditor extends MultiPageEditorPart
         final PropertySheetPage propertySheetPage = new ExtendedPropertySheetPage(this.editingDomain) {
             @Override
             public void setSelectionToViewer(final List<?> selection) {
-                CoreEditor.this.setSelectionToViewer(selection);
-                CoreEditor.this.setFocus();
+                ParameterEditor.this.setSelectionToViewer(selection);
+                ParameterEditor.this.setFocus();
             }
 
             @Override
             public void setActionBars(final IActionBars actionBars) {
                 super.setActionBars(actionBars);
-                CoreEditor.this.getActionBarContributor().shareGlobalActions(this, actionBars);
+                ParameterEditor.this.getActionBarContributor().shareGlobalActions(this, actionBars);
             }
         };
         propertySheetPage.setPropertySourceProvider(new AdapterFactoryContentProvider(this.adapterFactory));
@@ -1480,18 +1481,18 @@ public class CoreEditor extends MultiPageEditorPart
                 // Save the resources to the file system.
                 //
                 boolean first = true;
-                for (final Resource resource : CoreEditor.this.editingDomain.getResourceSet().getResources()) {
-                    if ((first || !resource.getContents().isEmpty() || CoreEditor.this.isPersisted(resource))
-                            && !CoreEditor.this.editingDomain.isReadOnly(resource)) {
+                for (final Resource resource : ParameterEditor.this.editingDomain.getResourceSet().getResources()) {
+                    if ((first || !resource.getContents().isEmpty() || ParameterEditor.this.isPersisted(resource))
+                            && !ParameterEditor.this.editingDomain.isReadOnly(resource)) {
                         try {
                             final long timeStamp = resource.getTimeStamp();
                             resource.save(saveOptions);
                             if (resource.getTimeStamp() != timeStamp) {
-                                CoreEditor.this.savedResources.add(resource);
+                                ParameterEditor.this.savedResources.add(resource);
                             }
                         } catch (final Exception exception) {
-                            CoreEditor.this.resourceToDiagnosticMap.put(resource,
-                                    CoreEditor.this.analyzeResourceProblems(resource, exception));
+                            ParameterEditor.this.resourceToDiagnosticMap.put(resource,
+                                    ParameterEditor.this.analyzeResourceProblems(resource, exception));
                         }
                         first = false;
                     }

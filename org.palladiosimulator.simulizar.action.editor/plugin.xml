@@ -90,4 +90,32 @@
       </editor>
    </extension>
 
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterModelWizardID"
+            name="%_UI_ParameterModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ParameterModelFile.gif">
+         <description>%_UI_ParameterModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterEditorID"
+            name="%_UI_ParameterEditor_label"
+            icon="icons/full/obj16/ParameterModelFile.gif"
+            extensions="parameter"
+            class="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterActionBarContributor">
+      </editor>
+   </extension>
+
 </plugin>
