@@ -72,5 +72,6 @@
     <involvedRoles id="_MEXt8RwNEeW4AMv4FxCz8w" entityName="InstantiationControllerLocation">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
     </involvedRoles>
+    <transientStateProfile href="../../../plugin/org.palladiosimulator.simulizar.action.repository/transientstates/componentinstantiation.emfprofile_diagram#_X3rWMBwIEeWmcO0Zlkc2yA"/>
   </actions>
 </org.palladiosimulator.action:AdaptationBehaviorRepository>
