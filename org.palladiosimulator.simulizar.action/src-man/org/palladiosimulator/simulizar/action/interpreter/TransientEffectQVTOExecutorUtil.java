@@ -44,7 +44,7 @@ public class TransientEffectQVTOExecutorUtil {
 
     }
 
-    static void validateControllerCompletion(TransientEffectQVTOExecutor executor,
+    static void validateResourceDemandingAction(TransientEffectQVTOExecutor executor,
             ResourceDemandingAction resourceDemandingAction) {
         URI controllerCompletionUri = URI.createURI(resourceDemandingAction.getControllerCompletionURI());
         Optional<TransformationData> controllerCompletionData = executor
