@@ -28,6 +28,7 @@ transformation vmInstantiationStereotypeApplication(
 							) {
 							
 property resourceContainerStereotypeName = 'InstantiatedComponentResourceContainer';
+property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
 
 	/**
 	 * The main transformation.
@@ -35,7 +36,7 @@ property resourceContainerStereotypeName = 'InstantiatedComponentResourceContain
 	 */
 	main() {	
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
-		var targetContainerRole : instance::Role := roleSet.roles->selectOne(role | role.roleType.id = '_9TESQRwLEeW4AMv4FxCz8w');
+		var targetContainerRole : instance::Role := roleSet.roles->selectOne(roleType.id = targetResourceContainerRoleId);
 		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		assert fatal(targetResourceContainer.noConflictingInstantiationInProgress())
 				with log('Component instantiation preconditions not met');

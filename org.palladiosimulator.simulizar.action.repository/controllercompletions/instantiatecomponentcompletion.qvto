@@ -26,6 +26,16 @@ transformation instantiateComponent(
 							in actionStep : ACTION_CORE,
 							out actionMapping : ACTION_MAPPING
 							) {
+	
+	
+	property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
+	property instantiatedComponentRoleId : String = '_p7wp4RwMEeW4AMv4FxCz8w';
+	property controllerContainerRoleId : String = '_MEXt8RwNEeW4AMv4FxCz8w';
+	property componentInstantiationControllerId : String = '_oATY4KJKEeWC7_GU8VFHHA';
+	property componentInstantiationLocationId : String = '_1TXxcKJKEeWC7_GU8VFHHA';
+	
+	property componentInstantiationControllerRequiredRoleId : String = '_od2lpaJMEeWC7_GU8VFHHA';
+	property componentInstantiationLocationProvidedRoleId : String = 'jeP4EKJMEeWC7_GU8VFHHA';
 							
 	/**
 	 * The main transformation.
@@ -41,15 +51,15 @@ transformation instantiateComponent(
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
 		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
 		var roles := roleSet.roles;
-		var targetResourceContainerRole : instance::Role := roles->select(role | role.roleType.id = '_9TESQRwLEeW4AMv4FxCz8w')->any(true);
-		var instantiatedComponentRole : instance::Role := roles->select(role | role.roleType.id = '_p7wp4RwMEeW4AMv4FxCz8w')->any(true);
-		var instantiationControllerLocationRole : instance::Role := roles->select(role | role.roleType.id = '_MEXt8RwNEeW4AMv4FxCz8w')->any(true);
+		var targetResourceContainerRole : instance::Role := roles[roleType.id = targetResourceContainerRoleId]->any(true);
+		var instantiatedComponentRole : instance::Role := roles[roleType.id = instantiatedComponentRoleId]->any(true);
+		var instantiationControllerLocationRole : instance::Role := roles[roleType.id = controllerContainerRoleId]->any(true);
 		
 		var targetResourceContainer : ResourceContainer := targetResourceContainerRole.value.oclAsType(ResourceContainer);
 		var instantiatedComponent : BasicComponent := instantiatedComponentRole.value.oclAsType(BasicComponent);
 		var instantiationControllerLocation : ResourceContainer := instantiationControllerLocationRole.value.oclAsType(ResourceContainer);
-		var componentInstantiationController : BasicComponent := controllerRepository.getComponentById("_oATY4KJKEeWC7_GU8VFHHA");
-		var componentInstantiationLocation: BasicComponent := controllerRepository.getComponentById("_1TXxcKJKEeWC7_GU8VFHHA");
+		var componentInstantiationController : BasicComponent := controllerRepository.getComponentById(componentInstantiationControllerId);
+		var componentInstantiationLocation: BasicComponent := controllerRepository.getComponentById(componentInstantiationLocationId);
 		var assembly : AssemblyContext := getInstantiationControllerAssembly(allocation, instantiationControllerLocation, targetResourceContainer, 
 			componentInstantiationController, componentInstantiationLocation,instantiatedComponent);
 		if(assembly = null) {
@@ -67,7 +77,7 @@ transformation instantiateComponent(
 		result.controllerMappings += object ControllerMapping {
 			entityName := 'Preexisting Controller Completion Mapping Lookup';
 			mappedCall := self;
-			controllerRole := system.providedRoles_InterfaceProvidingEntity->selectByType(OperationProvidedRole)->select(i | i.providedInterface__OperationProvidedRole.id = self.calledSignature.interface__OperationSignature.id)->oclAsType(OperationProvidedRole)->any(true);			
+			controllerRole := system.providedRoles_InterfaceProvidingEntity->selectByType(OperationProvidedRole)[providedInterface__OperationProvidedRole.id = self.calledSignature.interface__OperationSignature.id]->oclAsType(OperationProvidedRole)->any(true);			
 		};
 	}
 	
@@ -81,11 +91,11 @@ transformation instantiateComponent(
 	
 	query getInstantiationControllerAssembly(allocation : Allocation, instantiationControllerLocation : ResourceContainer, targetResourceContainer : ResourceContainer, 
 		componentInstantiationController : BasicComponent, componentInstantiationLocation: BasicComponent, instantiatedComponent : BasicComponent) : AssemblyContext {
-		var assembliesOnLocation := allocation.allocationContexts_Allocation->select(c | c.resourceContainer_AllocationContext.id = instantiationControllerLocation.id);
+		var assembliesOnLocation := allocation.allocationContexts_Allocation[resourceContainer_AllocationContext.id = instantiationControllerLocation.id];
 		assembliesOnLocation->forEach(controller) {
 			log('Assemblies on location: ' + controller.id);
 		};
-		var instantiationControllersOnLocation := assembliesOnLocation.assemblyContext_AllocationContext->select(c | c.encapsulatedComponent__AssemblyContext.id = componentInstantiationController.id);
+		var instantiationControllersOnLocation := assembliesOnLocation.assemblyContext_AllocationContext[encapsulatedComponent__AssemblyContext.id = componentInstantiationController.id];
 		instantiationControllersOnLocation->forEach(migrController) {
 			log('Instantiation controllers on target: ' + migrController.encapsulatedComponent__AssemblyContext.id);
 		};
@@ -98,7 +108,7 @@ transformation instantiateComponent(
 		cProvidingController->forEach(controller) {
 			log('Controller id: ' + controller.id);
 		};
-		var targetCorrectSource := cProvidingController->select(c | c.providingAssemblyContext_AssemblyConnector.getControllerHost(allocation).id = targetResourceContainer.id);
+		var targetCorrectSource := cProvidingController[providingAssemblyContext_AssemblyConnector.getControllerHost(allocation).id = targetResourceContainer.id];
 		if (targetCorrectSource <> null) {
 			return targetCorrectSource.requiringAssemblyContext_AssemblyConnector->any(true);
 		};
@@ -108,8 +118,9 @@ transformation instantiateComponent(
 	mapping ControllerCall::addVMControllers(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
 		componentInstantiationController : BasicComponent, componentInstantiationLocation : BasicComponent,
 		controllerHost : ResourceContainer, targetHost: ResourceContainer) : ControllerMapping {
-		log("Adding VM controllers");
 		
+		log("Adding VM controllers");
+				
 		var assemblyComponentInstantiationController : AssemblyContext := componentInstantiationController.createAssembly(controllerHost);
 		var assemblyComponentInstantiationLocation : AssemblyContext := componentInstantiationLocation.createAssembly(targetHost);
 		var system : System := allocation.system_Allocation;
@@ -117,8 +128,10 @@ transformation instantiateComponent(
 		system.assemblyContexts__ComposedStructure += assemblyComponentInstantiationController;
 		system.assemblyContexts__ComposedStructure += assemblyComponentInstantiationLocation;
 		
-		system.connectors__ComposedStructure += linkAssemblies(assemblyComponentInstantiationController, componentInstantiationController.selectRequiredRoleById('_od2lpaJMEeWC7_GU8VFHHA'),
-						assemblyComponentInstantiationLocation, componentInstantiationLocation.selectProvidedRoleById('_jeP4EKJMEeWC7_GU8VFHHA'));
+		system.connectors__ComposedStructure += linkAssemblies(assemblyComponentInstantiationController, 
+						componentInstantiationController.selectRequiredRoleById(componentInstantiationControllerRequiredRoleId),
+						assemblyComponentInstantiationLocation, 
+						componentInstantiationLocation.selectProvidedRoleById(componentInstantiationLocationProvidedRoleId));
 		assemblyComponentInstantiationController.allocateAt(allocation, controllerHost);
 		log("Allocating instantiation controller at " + controllerHost.id);
 		assemblyComponentInstantiationLocation.allocateAt(allocation, targetHost);
@@ -150,12 +163,12 @@ transformation instantiateComponent(
 		}
 	}
 	
-	query BasicComponent::selectRequiredRoleById(id : String) : OperationRequiredRole {
-		return self.requiredRoles_InterfaceRequiringEntity->select(c | c. id = id)->any(true).oclAsType(OperationRequiredRole);
+	query BasicComponent::selectRequiredRoleById(requiredRoleId : String) : OperationRequiredRole {
+		return self.requiredRoles_InterfaceRequiringEntity[id = requiredRoleId]->any(true).oclAsType(OperationRequiredRole);
 	}
 	
-	query BasicComponent::selectProvidedRoleById(id : String) : OperationProvidedRole {
-		return self.providedRoles_InterfaceProvidingEntity->select(c | c. id = id)->any(true).oclAsType(OperationProvidedRole)
+	query BasicComponent::selectProvidedRoleById(providedRoleId : String) : OperationProvidedRole {
+		return self.providedRoles_InterfaceProvidingEntity[id = providedRoleId]->any(true).oclAsType(OperationProvidedRole)
 	}
 	
 	helper linkAssemblies(assemblyRequiring : AssemblyContext, requiredRole : OperationRequiredRole, 
@@ -182,7 +195,7 @@ transformation instantiateComponent(
 	}
 	
 	query AssemblyContext::getControllerHost(allocation : Allocation) : ResourceContainer {
-		return allocation.allocationContexts_Allocation->select(allocationContext |allocationContext.assemblyContext_AllocationContext.id = self.id)->any(true).resourceContainer_AllocationContext;
+		return allocation.allocationContexts_Allocation[assemblyContext_AllocationContext.id = self.id]->any(true).resourceContainer_AllocationContext;
 	}
 	
 }
