@@ -29,7 +29,6 @@ import org.palladiosimulator.pcm.usagemodel.Stop;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationAction;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
@@ -96,9 +95,26 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
      */
     private SimuComSimProcess executingProcess;
 
+    /**
+     * Initializes a new instance of the {@link TransientEffectInterpreter} class with the given
+     * arguments.
+     * 
+     * @param state
+     *            The {@link SimuLizarRuntimeState} of the current Simulizar run.
+     * @param set
+     *            The {@link RoleSet} instance which shall be used for interpretation.
+     * @param controllerCallsInputVariableUsages
+     *            The {@link ControllerCallInputVariableUsageCollection} model element which
+     *            contains the {@link ControllerCallInputVariableUsage}s.
+     * @param repository
+     *            The current {@link AdaptationBehaviorRepository}.
+     * @param executeAsync
+     *            A flag to indicate whether the adaptation behaviors shall be interpreted
+     *            asynchronously in a dedicated {@link SimuComSimProcess}.
+     */
     TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
             ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
-            AdaptationBehaviorRepository repository, IModelAccess modelAccess, boolean executeAsync) {
+            AdaptationBehaviorRepository repository, boolean executeAsync) {
         this.state = state;
         this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
         this.roleSet = set;
@@ -107,7 +123,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
                 .getControllerCallInputVariableUsages().stream()
                 .collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
                         mapping(ControllerCallInputVariableUsage::getVariableUsage, toList())));
-        this.availableModels = new QVToModelCache(Objects.requireNonNull(modelAccess));
+        this.availableModels = new QVToModelCache(Objects.requireNonNull(this.state.getModelAccess()));
         this.availableModels.storeModel(this.roleSet);
         this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot());
         this.executingProcess = this.associatedReconfigurationProcess;

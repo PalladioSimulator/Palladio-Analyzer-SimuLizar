@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.action.interpreter;
 
 import java.util.Objects;
 
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
@@ -13,7 +12,6 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public class ActionRuntimeState implements IRuntimeStateAccessor {
     private static SimuLizarRuntimeState state;
-    private static IModelAccess modelAccess;
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE
             .createControllerCallInputVariableUsageCollection();
@@ -49,11 +47,10 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
     @Override
     public void setRuntimeStateModel(SimuLizarRuntimeState passedState) {
         ActionRuntimeState.state = Objects.requireNonNull(passedState);
-        ActionRuntimeState.modelAccess = passedState.getModelAccess();
     }
 
     /**
-     * Implementation of the well-known <i>Builder Pattern</i> for facilitated construction of
+     * Implementation of the well-known <i>Builder Pattern</i> for a facilitated construction of
      * {@link TransientEffectInterpreter}s with different configurations.
      * 
      * @author Florian Rosenthal
@@ -61,7 +58,6 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      */
     public static class TransientEffectInterpreterBuilder {
         private final SimuLizarRuntimeState state = ActionRuntimeState.state;
-        private final IModelAccess modelAccess = ActionRuntimeState.modelAccess;
         private final RoleSet roleSet;
         private final AdaptationBehaviorRepository repository;
 
@@ -110,7 +106,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
          */
         public TransientEffectInterpreter build() {
             return new TransientEffectInterpreter(this.state, this.roleSet, this.controllerCallVariableUsages,
-                    this.repository, this.modelAccess, this.isAsync);
+                    this.repository, this.isAsync);
         }
     }
 }
