@@ -60,6 +60,7 @@
             </controllerCalls>
           </adaptationActions>
           <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_PfN_QaHHEeWc24RAWmuF8Q" entityName="enactAdaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/instantiatecomponent.qvto"/>
+          <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_8Hg8Yb9iEeWYJNXroRLHsA" entityName="wireWithLoadbalancer" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/wirewithloadbalancer.qvto"/>
         </nestedAdaptationBehavior>
       </guardedTransitions>
     </adaptationActions>

@@ -24,7 +24,7 @@ property instantiatedComponentResourceContainerName = 'InstantiatedComponentReso
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
 		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
-		allocation->enactComponentInstantiation(roleSet, mappingRes);
+		allocation.xmap enactComponentInstantiation(roleSet, mappingRes);
 	}
 	
 	mapping inout Allocation::enactComponentInstantiation(roleSet : RoleSet, mappingRes : Mapping) {
