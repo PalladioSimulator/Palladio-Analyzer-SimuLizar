@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1" id="_fC4jAKl-EeW7dt0FphOHdw" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="msoneadditionalserver.resourceenvironment#/"/>
+  <system_Allocation href="ms_base.system#_oPwBYHDhEeSqnN80MQ2uGw"/>
+  <allocationContexts_Allocation id="_qTU8gKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_Reencoding &lt;Reencoding> &lt;Reencoding>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_dH4W0Lg3EeSNPorBlo7x9g"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_H7z04L3NEeSvHZ5kF_aE4g"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_whNbEKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_Facade &lt;Facade> &lt;Facade>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_VD-4oHD4EeSA4fySuX9I2Q"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_0XskcKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_UserDBAdapter &lt;UserDBAdapter> &lt;UserDBAdapter>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_pulfcHD4EeSA4fySuX9I2Q"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_3QNpsKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_MediaAccess &lt;MediaAccess> &lt;MediaAccess>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_4LdYsHD4EeSA4fySuX9I2Q"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_49E0IKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_MediaManagement &lt;MediaManagement> &lt;MediaManagement>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_C1kK8HD5EeSA4fySuX9I2Q"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_-ve3oKl-EeW7dt0FphOHdw" entityName="Allocation_Assembly_Packaging &lt;Packaging> &lt;Packaging>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_IPnY0HD5EeSA4fySuX9I2Q"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_AJR8IKl_EeW7dt0FphOHdw" entityName="Allocation_Assembly_DB &lt;DB> &lt;DB>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_aMTWgLg3EeSNPorBlo7x9g"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_BnV1kKl_EeW7dt0FphOHdw" entityName="Allocation_Assembly_FileStorage &lt;FileStorage> &lt;FileStorage>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_1ek7QLg_EeSNPorBlo7x9g"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_DIdqEKl_EeW7dt0FphOHdw" entityName="Allocation_Assembly_UserManagement &lt;UserManagement> &lt;UserManagement>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_bUxacL0ZEeSAHuL4ItXOLQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_FUNI4Kl_EeW7dt0FphOHdw" entityName="Allocation_Assembly_TagWatermarking &lt;TagWatermarking> &lt;TagWatermarking>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_HLnHAL3NEeSvHZ5kF_aE4g"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_HwgMMKl_EeW7dt0FphOHdw" entityName="Allocation_Assembly_DownloadLoadBalancerTemplate &lt;DownloadLoadBalancerTemplate> &lt;DownloadLoadBalancerTemplate>">
+    <resourceContainer_AllocationContext href="msoneadditionalserver.resourceenvironment#_t8rcYHlPEeSGtbTG2d9Ipg"/>
+    <assemblyContext_AllocationContext href="ms_base.system#_f7K-kKMrEeWEBsr_QZk8NA"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

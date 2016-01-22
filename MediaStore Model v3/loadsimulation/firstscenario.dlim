@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools.descartes.dlim:Sequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tools.descartes.dlim="http://descartes.tools/dlim/0.1" name="firstscenario" terminateAfterLoops="1" firstIterationEnd="4320.0" loopDuration="4320.0" finalDuration="4320.0">
+  <sequenceFunctionContainers duration="360.0" firstIterationEnd="360.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtEnd="0.03571428571428571"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="360.0" firstIterationEnd="540.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.03571428571428571"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="540.0" firstIterationEnd="900.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.03571428571428571" functionOutputAtEnd="0.07142857142857142"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="900.0" firstIterationEnd="1080.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.07142857142857142"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="1080.0" firstIterationEnd="1440.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.07142857142857142" functionOutputAtEnd="0.10714285714285714"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="1440.0" firstIterationEnd="1620.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.10714285714285714"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="1620.0" firstIterationEnd="1980.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.10714285714285714" functionOutputAtEnd="0.14285714285714285"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="1980.0" firstIterationEnd="2160.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.14285714285714285"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="2160.0" firstIterationEnd="2340.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.14285714285714285"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="2340.0" firstIterationEnd="2700.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.14285714285714285" functionOutputAtEnd="0.10714285714285714"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="2700.0" firstIterationEnd="2880.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.10714285714285714"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="2880.0" firstIterationEnd="3240.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.10714285714285714" functionOutputAtEnd="0.07142857142857142"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="3240.0" firstIterationEnd="3420.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.07142857142857142"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="3420.0" firstIterationEnd="3780.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.07142857142857142" functionOutputAtEnd="0.03571428571428571"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="180.0" firstIterationStart="3780.0" firstIterationEnd="3960.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="0.03571428571428571"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers duration="360.0" firstIterationStart="3960.0" firstIterationEnd="4320.0">
+    <function xsi:type="tools.descartes.dlim:SinTrend" functionOutputAtStart="0.03571428571428571" functionOutputAtEnd="0.0"/>
+  </sequenceFunctionContainers>
+</tools.descartes.dlim:Sequence>
