@@ -446,7 +446,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                      * context including its stack.
                      */
                     final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
-                            RDSeffSwitch.this.context.getRuntimeState(), false);
+                            RDSeffSwitch.this.context.getRuntimeState(), true);
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.basicComponentInstance);
