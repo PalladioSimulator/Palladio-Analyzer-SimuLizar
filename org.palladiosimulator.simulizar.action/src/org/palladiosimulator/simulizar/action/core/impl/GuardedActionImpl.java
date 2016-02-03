@@ -32,7 +32,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
     /**
      * The cached value of the '{@link #getGuardedTransitions() <em>Guarded Transitions</em>}'
      * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getGuardedTransitions()
      * @generated
      * @ordered
@@ -41,7 +41,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected GuardedActionImpl() {
@@ -50,7 +50,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -60,7 +60,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -75,7 +75,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -92,7 +92,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -107,7 +107,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -121,7 +121,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -138,7 +138,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -153,7 +153,7 @@ public class GuardedActionImpl extends AdaptationActionImpl implements GuardedAc
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

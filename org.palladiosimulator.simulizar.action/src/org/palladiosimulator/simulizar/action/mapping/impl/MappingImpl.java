@@ -32,7 +32,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
     /**
      * The cached value of the '{@link #getControllerMappings() <em>Controller Mappings</em>}'
      * containment reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getControllerMappings()
      * @generated
      * @ordered
@@ -41,7 +41,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected MappingImpl() {
@@ -50,7 +50,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -60,7 +60,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -74,7 +74,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -91,7 +91,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -106,7 +106,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -120,7 +120,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -137,7 +137,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class MappingImpl extends EntityImpl implements Mapping {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

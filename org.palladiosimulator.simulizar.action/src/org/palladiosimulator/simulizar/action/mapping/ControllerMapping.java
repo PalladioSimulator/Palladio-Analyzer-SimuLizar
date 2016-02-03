@@ -35,7 +35,7 @@ public interface ControllerMapping extends EObject, Entity {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Mapped Call</em>' reference.
      * @see #setMappedCall(ControllerCall)
      * @see org.palladiosimulator.simulizar.action.mapping.MappingPackage#getControllerMapping_MappedCall()
@@ -48,7 +48,7 @@ public interface ControllerMapping extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMappedCall
      * <em>Mapped Call</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Mapped Call</em>' reference.
      * @see #getMappedCall()
@@ -63,7 +63,7 @@ public interface ControllerMapping extends EObject, Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Controller Role</em>' reference.
      * @see #setControllerRole(OperationProvidedRole)
      * @see org.palladiosimulator.simulizar.action.mapping.MappingPackage#getControllerMapping_ControllerRole()
@@ -76,7 +76,7 @@ public interface ControllerMapping extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getControllerRole
      * <em>Controller Role</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Controller Role</em>' reference.
      * @see #getControllerRole()
@@ -94,7 +94,7 @@ public interface ControllerMapping extends EObject, Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Mapping</em>' container reference.
      * @see #setMapping(Mapping)
      * @see org.palladiosimulator.simulizar.action.mapping.MappingPackage#getControllerMapping_Mapping()
@@ -108,7 +108,7 @@ public interface ControllerMapping extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMapping
      * <em>Mapping</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Mapping</em>' container reference.
      * @see #getMapping()

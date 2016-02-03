@@ -30,7 +30,7 @@ public interface RoleType extends EObject, Entity {
      * description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Type</em>' reference.
      * @see #setType(EClass)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getRoleType_Type()
@@ -42,7 +42,7 @@ public interface RoleType extends EObject, Entity {
     /**
      * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.RoleType#getType
      * <em>Type</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Type</em>' reference.
      * @see #getType()
@@ -60,7 +60,7 @@ public interface RoleType extends EObject, Entity {
      * be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Action</em>' container reference.
      * @see #setAction(AdaptationBehavior)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getRoleType_Action()
@@ -73,7 +73,7 @@ public interface RoleType extends EObject, Entity {
     /**
      * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.RoleType#getAction
      * <em>Action</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Action</em>' container reference.
      * @see #getAction()

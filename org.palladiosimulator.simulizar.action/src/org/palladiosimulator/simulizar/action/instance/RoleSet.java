@@ -34,7 +34,7 @@ public interface RoleSet extends EObject, Identifier {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Roles</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.instance.InstancePackage#getRoleSet_Roles()
      * @see org.palladiosimulator.simulizar.action.instance.Role#getRoleSet

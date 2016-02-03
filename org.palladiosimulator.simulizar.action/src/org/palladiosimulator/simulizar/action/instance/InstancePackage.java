@@ -18,7 +18,7 @@ import de.uka.ipd.sdq.identifier.IdentifierPackage;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.action.instance.InstanceFactory
  * @model kind="package"
  * @generated
@@ -26,28 +26,28 @@ import de.uka.ipd.sdq.identifier.IdentifierPackage;
 public interface InstancePackage extends EPackage {
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNAME = "instance";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_URI = "http://simulizar.palladiosimulator.org/Actions/Instance/1.1";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_PREFIX = "org.palladiosimulator.action";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     InstancePackage eINSTANCE = org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl.init();
@@ -56,7 +56,7 @@ public interface InstancePackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.action.instance.impl.RoleSetImpl <em>Role Set</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.action.instance.impl.RoleSetImpl
      * @see org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl#getRoleSet()
      * @generated
@@ -66,7 +66,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -84,7 +84,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The number of structural features of the '<em>Role Set</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -94,7 +94,7 @@ public interface InstancePackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.action.instance.impl.RoleImpl <em>Role</em>}' class.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.action.instance.impl.RoleImpl
      * @see org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl#getRole()
      * @generated
@@ -104,7 +104,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -113,7 +113,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Role Set</b></em>' container reference. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -122,7 +122,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Role Type</b></em>' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -131,7 +131,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The feature id for the '<em><b>Value</b></em>' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -140,7 +140,7 @@ public interface InstancePackage extends EPackage {
     /**
      * The number of structural features of the '<em>Role</em>' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -161,7 +161,7 @@ public interface InstancePackage extends EPackage {
      * Returns the meta object for the containment reference list '
      * {@link org.palladiosimulator.simulizar.action.instance.RoleSet#getRoles <em>Roles</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the containment reference list '<em>Roles</em>'.
      * @see org.palladiosimulator.simulizar.action.instance.RoleSet#getRoles()
      * @see #getRoleSet()
@@ -184,7 +184,7 @@ public interface InstancePackage extends EPackage {
      * Returns the meta object for the container reference '
      * {@link org.palladiosimulator.simulizar.action.instance.Role#getRoleSet <em>Role Set</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the container reference '<em>Role Set</em>'.
      * @see org.palladiosimulator.simulizar.action.instance.Role#getRoleSet()
      * @see #getRole()
@@ -196,7 +196,7 @@ public interface InstancePackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.action.instance.Role#getRoleType <em>Role Type</em>}'.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Role Type</em>'.
      * @see org.palladiosimulator.simulizar.action.instance.Role#getRoleType()
      * @see #getRole()
@@ -219,7 +219,7 @@ public interface InstancePackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -234,7 +234,7 @@ public interface InstancePackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     interface Literals {
@@ -242,7 +242,7 @@ public interface InstancePackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.action.instance.impl.RoleSetImpl <em>Role Set</em>
          * }' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.action.instance.impl.RoleSetImpl
          * @see org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl#getRoleSet()
          * @generated
@@ -252,7 +252,7 @@ public interface InstancePackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Roles</b></em>' containment reference list
          * feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference ROLE_SET__ROLES = eINSTANCE.getRoleSet_Roles();
@@ -261,7 +261,7 @@ public interface InstancePackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.action.instance.impl.RoleImpl <em>Role</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.action.instance.impl.RoleImpl
          * @see org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl#getRole()
          * @generated
@@ -271,7 +271,7 @@ public interface InstancePackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Role Set</b></em>' container reference feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference ROLE__ROLE_SET = eINSTANCE.getRole_RoleSet();

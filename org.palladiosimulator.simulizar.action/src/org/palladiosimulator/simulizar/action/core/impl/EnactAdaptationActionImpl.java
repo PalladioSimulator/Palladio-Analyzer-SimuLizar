@@ -26,7 +26,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
     /**
      * The default value of the '{@link #getAdaptationStepURI() <em>Adaptation Step URI</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAdaptationStepURI()
      * @generated
      * @ordered
@@ -36,7 +36,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
     /**
      * The cached value of the '{@link #getAdaptationStepURI() <em>Adaptation Step URI</em>}'
      * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getAdaptationStepURI()
      * @generated
      * @ordered
@@ -45,7 +45,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected EnactAdaptationActionImpl() {
@@ -54,7 +54,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -64,7 +64,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -74,7 +74,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -90,7 +90,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -104,7 +104,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -119,7 +119,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -134,7 +134,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -149,7 +149,7 @@ public class EnactAdaptationActionImpl extends AdaptationActionImpl implements E
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

@@ -36,7 +36,7 @@ public interface ControllerCallInputVariableUsageCollection extends EObject, Ent
      * list isn't clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Controller Call Input Variable Usages</em>' containment
      *         reference list.
      * @see org.palladiosimulator.simulizar.action.parameter.ParameterPackage#getControllerCallInputVariableUsageCollection_ControllerCallInputVariableUsages()

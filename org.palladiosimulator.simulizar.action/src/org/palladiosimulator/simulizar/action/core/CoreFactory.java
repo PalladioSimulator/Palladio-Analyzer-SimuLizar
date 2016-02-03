@@ -7,14 +7,14 @@ import org.eclipse.emf.ecore.EFactory;
 /**
  * <!-- begin-user-doc --> The <b>Factory</b> for the model. It provides a create method for each
  * non-abstract class of the model. <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.action.core.CorePackage
  * @generated
  */
 public interface CoreFactory extends EFactory {
     /**
      * The singleton instance of the factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     CoreFactory eINSTANCE = org.palladiosimulator.simulizar.action.core.impl.CoreFactoryImpl.init();
@@ -22,7 +22,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Adaptation Behavior Repository</em>'. <!-- begin-user-doc
      * --> <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Adaptation Behavior Repository</em>'.
      * @generated
      */
@@ -31,7 +31,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Adaptation Behavior</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Adaptation Behavior</em>'.
      * @generated
      */
@@ -40,7 +40,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Nested Adaptation Behavior</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Nested Adaptation Behavior</em>'.
      * @generated
      */
@@ -49,7 +49,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>State Transforming Action</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>State Transforming Action</em>'.
      * @generated
      */
@@ -58,7 +58,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Enact Adaptation Action</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Enact Adaptation Action</em>'.
      * @generated
      */
@@ -67,7 +67,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Resource Demanding Action</em>'. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Resource Demanding Action</em>'.
      * @generated
      */
@@ -76,7 +76,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Guarded Action</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Guarded Action</em>'.
      * @generated
      */
@@ -85,7 +85,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Guarded Transition</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Guarded Transition</em>'.
      * @generated
      */
@@ -103,7 +103,7 @@ public interface CoreFactory extends EFactory {
     /**
      * Returns a new object of class '<em>Controller Call</em>'. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return a new object of class '<em>Controller Call</em>'.
      * @generated
      */
@@ -111,7 +111,7 @@ public interface CoreFactory extends EFactory {
 
     /**
      * Returns the package supported by this factory. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the package supported by this factory.
      * @generated
      */

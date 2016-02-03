@@ -30,7 +30,7 @@ public interface NestedAdaptationBehavior extends AbstractAdaptationBehavior {
      * really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Guarded Transition</em>' container reference.
      * @see #setGuardedTransition(GuardedTransition)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getNestedAdaptationBehavior_GuardedTransition()

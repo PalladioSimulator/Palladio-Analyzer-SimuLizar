@@ -37,7 +37,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
     /**
      * The default value of the '{@link #getControllerCompletionURI()
      * <em>Controller Completion URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getControllerCompletionURI()
      * @generated
      * @ordered
@@ -47,7 +47,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
     /**
      * The cached value of the '{@link #getControllerCompletionURI()
      * <em>Controller Completion URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getControllerCompletionURI()
      * @generated
      * @ordered
@@ -57,7 +57,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
     /**
      * The cached value of the '{@link #getControllerCalls() <em>Controller Calls</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getControllerCalls()
      * @generated
      * @ordered
@@ -66,7 +66,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ResourceDemandingActionImpl() {
@@ -75,7 +75,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -85,7 +85,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -95,7 +95,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -111,7 +111,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -126,7 +126,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -143,7 +143,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -158,7 +158,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -174,7 +174,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -194,7 +194,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -212,7 +212,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -229,7 +229,7 @@ public class ResourceDemandingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

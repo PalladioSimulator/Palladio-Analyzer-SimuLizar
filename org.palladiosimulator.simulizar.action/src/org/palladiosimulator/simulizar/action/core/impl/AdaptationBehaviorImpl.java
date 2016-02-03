@@ -44,7 +44,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
     /**
      * The cached value of the '{@link #getInvolvedRoles() <em>Involved Roles</em>}' containment
      * reference list. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getInvolvedRoles()
      * @generated
      * @ordered
@@ -54,7 +54,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
     /**
      * The cached value of the '{@link #getTransientStateProfile() <em>Transient State Profile</em>}
      * ' reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getTransientStateProfile()
      * @generated
      * @ordered
@@ -63,7 +63,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected AdaptationBehaviorImpl() {
@@ -72,7 +72,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -82,7 +82,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -96,7 +96,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -117,7 +117,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public Profile basicGetTransientStateProfile() {
@@ -126,7 +126,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -142,7 +142,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -155,7 +155,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetRepository(final AdaptationBehaviorRepository newRepository,
@@ -167,7 +167,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -198,7 +198,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -212,7 +212,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -223,7 +223,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -237,7 +237,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -248,7 +248,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -269,7 +269,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -286,7 +286,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -301,7 +301,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -322,7 +322,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @SuppressWarnings("unchecked")
@@ -345,7 +345,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -366,7 +366,7 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

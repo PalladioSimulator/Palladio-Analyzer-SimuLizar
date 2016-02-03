@@ -30,7 +30,7 @@ import org.palladiosimulator.simulizar.action.core.CorePackage;
 public abstract class AdaptationActionImpl extends EntityImpl implements AdaptationAction {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected AdaptationActionImpl() {
@@ -39,7 +39,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -49,7 +49,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -62,7 +62,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetAdaptationBehavior(final AbstractAdaptationBehavior newAdaptationBehavior,
@@ -74,7 +74,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -106,7 +106,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -123,7 +123,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -138,7 +138,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -154,7 +154,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -168,7 +168,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -183,7 +183,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -198,7 +198,7 @@ public abstract class AdaptationActionImpl extends EntityImpl implements Adaptat
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

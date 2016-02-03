@@ -48,7 +48,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
     /**
      * The cached value of the '{@link #getCalledSignature() <em>Called Signature</em>}' reference.
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getCalledSignature()
      * @generated
      * @ordered
@@ -57,7 +57,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ControllerCallImpl() {
@@ -66,7 +66,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -76,7 +76,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -96,7 +96,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public BasicComponent basicGetComponent() {
@@ -105,7 +105,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -120,7 +120,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -140,7 +140,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public OperationSignature basicGetCalledSignature() {
@@ -149,7 +149,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -164,7 +164,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -177,7 +177,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetResourceDemandingStep(final ResourceDemandingAction newResourceDemandingStep,
@@ -189,7 +189,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -221,7 +221,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -238,7 +238,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -253,7 +253,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -268,7 +268,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -292,7 +292,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -313,7 +313,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -334,7 +334,7 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

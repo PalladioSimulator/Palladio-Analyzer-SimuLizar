@@ -15,7 +15,7 @@ import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
 public class StateTransformingActionImpl extends AdaptationActionImpl implements StateTransformingAction {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected StateTransformingActionImpl() {
@@ -24,7 +24,7 @@ public class StateTransformingActionImpl extends AdaptationActionImpl implements
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

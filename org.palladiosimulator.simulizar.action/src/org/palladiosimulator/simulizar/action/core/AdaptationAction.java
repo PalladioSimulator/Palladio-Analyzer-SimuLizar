@@ -32,7 +32,7 @@ public interface AdaptationAction extends EObject, Entity {
      * really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Adaptation Behavior</em>' container reference.
      * @see #setAdaptationBehavior(AbstractAdaptationBehavior)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAdaptationAction_AdaptationBehavior()

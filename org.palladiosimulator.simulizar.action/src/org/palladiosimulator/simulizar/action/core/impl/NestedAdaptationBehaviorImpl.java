@@ -29,7 +29,7 @@ import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl implements NestedAdaptationBehavior {
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected NestedAdaptationBehaviorImpl() {
@@ -38,7 +38,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -48,7 +48,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -61,7 +61,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetGuardedTransition(final GuardedTransition newGuardedTransition,
@@ -73,7 +73,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -105,7 +105,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -122,7 +122,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -137,7 +137,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -152,7 +152,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -166,7 +166,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -181,7 +181,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -196,7 +196,7 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

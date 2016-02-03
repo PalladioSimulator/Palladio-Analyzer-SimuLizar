@@ -32,7 +32,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
     /**
      * The cached value of the '{@link #getType() <em>Type</em>}' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @see #getType()
      * @generated
      * @ordered
@@ -41,7 +41,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected RoleTypeImpl() {
@@ -50,7 +50,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -60,7 +60,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -80,7 +80,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public EClass basicGetType() {
@@ -89,7 +89,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -104,7 +104,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -117,7 +117,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetAction(final AdaptationBehavior newAction, NotificationChain msgs) {
@@ -127,7 +127,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -157,7 +157,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -174,7 +174,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -189,7 +189,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -204,7 +204,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -223,7 +223,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -241,7 +241,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -259,7 +259,7 @@ public class RoleTypeImpl extends EntityImpl implements RoleType {
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

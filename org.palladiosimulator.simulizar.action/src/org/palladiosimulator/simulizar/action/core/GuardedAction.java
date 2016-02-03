@@ -33,7 +33,7 @@ public interface GuardedAction extends AdaptationAction {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Guarded Transitions</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedAction_GuardedTransitions()
      * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction

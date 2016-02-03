@@ -39,7 +39,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
     /**
      * The cached value of the '{@link #getVariableUsage() <em>Variable Usage</em>}' containment
      * reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see #getVariableUsage()
      * @generated
      * @ordered
@@ -59,7 +59,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     protected ControllerCallInputVariableUsageImpl() {
@@ -68,7 +68,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -78,7 +78,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -88,7 +88,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetVariableUsage(final VariableUsage newVariableUsage, NotificationChain msgs) {
@@ -109,7 +109,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -139,7 +139,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -160,7 +160,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public ControllerCall basicGetCorrespondingControllerCall() {
@@ -169,7 +169,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -185,7 +185,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -198,7 +198,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     public NotificationChain basicSetContainingCollection(
@@ -210,7 +210,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -243,7 +243,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -260,7 +260,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -277,7 +277,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -293,7 +293,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -314,7 +314,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -335,7 +335,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override
@@ -356,7 +356,7 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     @Override

@@ -34,7 +34,7 @@ public interface GuardedTransition extends EObject, Entity {
      * more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Condition URI</em>' attribute.
      * @see #setConditionURI(String)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedTransition_ConditionURI()
@@ -47,7 +47,7 @@ public interface GuardedTransition extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getConditionURI
      * <em>Condition URI</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Condition URI</em>' attribute.
      * @see #getConditionURI()
@@ -65,7 +65,7 @@ public interface GuardedTransition extends EObject, Entity {
      * should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Guarded Action</em>' container reference.
      * @see #setGuardedAction(GuardedAction)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedTransition_GuardedAction()
@@ -79,7 +79,7 @@ public interface GuardedTransition extends EObject, Entity {
      * Sets the value of the '
      * {@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction
      * <em>Guarded Action</em>}' container reference. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Guarded Action</em>' container reference.
      * @see #getGuardedAction()
@@ -97,7 +97,7 @@ public interface GuardedTransition extends EObject, Entity {
      * clear, there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Nested Adaptation Behavior</em>' containment reference.
      * @see #setNestedAdaptationBehavior(NestedAdaptationBehavior)
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedTransition_NestedAdaptationBehavior()
@@ -112,7 +112,7 @@ public interface GuardedTransition extends EObject, Entity {
      * {@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getNestedAdaptationBehavior
      * <em>Nested Adaptation Behavior</em>}' containment reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @param value
      *            the new value of the '<em>Nested Adaptation Behavior</em>' containment reference.
      * @see #getNestedAdaptationBehavior()

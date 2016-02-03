@@ -17,7 +17,7 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
  * <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
- * 
+ *
  * @see org.palladiosimulator.simulizar.action.mapping.MappingFactory
  * @model kind="package"
  * @generated
@@ -25,28 +25,28 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 public interface MappingPackage extends EPackage {
     /**
      * The package name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNAME = "mapping";
 
     /**
      * The package namespace URI. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_URI = "http://simulizar.palladiosimulator.org/Actions/Mapping/1.1";
 
     /**
      * The package namespace name. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     String eNS_PREFIX = "org.palladiosimulator.action";
 
     /**
      * The singleton instance of the package. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     MappingPackage eINSTANCE = org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl.init();
@@ -55,7 +55,7 @@ public interface MappingPackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.action.mapping.impl.MappingImpl <em>Mapping</em>}'
      * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingImpl
      * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl#getMapping()
      * @generated
@@ -65,7 +65,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -74,7 +74,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -92,7 +92,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The number of structural features of the '<em>Mapping</em>' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -102,7 +102,7 @@ public interface MappingPackage extends EPackage {
      * The meta object id for the '
      * {@link org.palladiosimulator.simulizar.action.mapping.impl.ControllerMappingImpl
      * <em>Controller Mapping</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @see org.palladiosimulator.simulizar.action.mapping.impl.ControllerMappingImpl
      * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl#getControllerMapping()
      * @generated
@@ -112,7 +112,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Id</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -121,7 +121,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Entity Name</b></em>' attribute. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -130,7 +130,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Mapped Call</b></em>' reference. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -139,7 +139,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Controller Role</b></em>' reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -148,7 +148,7 @@ public interface MappingPackage extends EPackage {
     /**
      * The feature id for the '<em><b>Mapping</b></em>' container reference. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      * @ordered
      */
@@ -178,7 +178,7 @@ public interface MappingPackage extends EPackage {
      * Returns the meta object for the containment reference list '
      * {@link org.palladiosimulator.simulizar.action.mapping.Mapping#getControllerMappings
      * <em>Controller Mappings</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the containment reference list '<em>Controller Mappings</em>'.
      * @see org.palladiosimulator.simulizar.action.mapping.Mapping#getControllerMappings()
      * @see #getMapping()
@@ -190,7 +190,7 @@ public interface MappingPackage extends EPackage {
      * Returns the meta object for class '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping
      * <em>Controller Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for class '<em>Controller Mapping</em>'.
      * @see org.palladiosimulator.simulizar.action.mapping.ControllerMapping
      * @generated
@@ -201,7 +201,7 @@ public interface MappingPackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMappedCall
      * <em>Mapped Call</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Mapped Call</em>'.
      * @see org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMappedCall()
      * @see #getControllerMapping()
@@ -213,7 +213,7 @@ public interface MappingPackage extends EPackage {
      * Returns the meta object for the reference '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getControllerRole
      * <em>Controller Role</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the reference '<em>Controller Role</em>'.
      * @see org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getControllerRole()
      * @see #getControllerMapping()
@@ -225,7 +225,7 @@ public interface MappingPackage extends EPackage {
      * Returns the meta object for the container reference '
      * {@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMapping
      * <em>Mapping</em>}'. <!-- begin-user-doc --> <!-- end-user-doc -->
-     * 
+     *
      * @return the meta object for the container reference '<em>Mapping</em>'.
      * @see org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMapping()
      * @see #getControllerMapping()
@@ -236,7 +236,7 @@ public interface MappingPackage extends EPackage {
     /**
      * Returns the factory that creates the instances of the model. <!-- begin-user-doc --> <!--
      * end-user-doc -->
-     * 
+     *
      * @return the factory that creates the instances of the model.
      * @generated
      */
@@ -251,7 +251,7 @@ public interface MappingPackage extends EPackage {
      * <li>and each data type</li>
      * </ul>
      * <!-- end-user-doc -->
-     * 
+     *
      * @generated
      */
     interface Literals {
@@ -259,7 +259,7 @@ public interface MappingPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.action.mapping.impl.MappingImpl <em>Mapping</em>}'
          * class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingImpl
          * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl#getMapping()
          * @generated
@@ -269,7 +269,7 @@ public interface MappingPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Controller Mappings</b></em>' containment
          * reference list feature. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference MAPPING__CONTROLLER_MAPPINGS = eINSTANCE.getMapping_ControllerMappings();
@@ -278,7 +278,7 @@ public interface MappingPackage extends EPackage {
          * The meta object literal for the '
          * {@link org.palladiosimulator.simulizar.action.mapping.impl.ControllerMappingImpl
          * <em>Controller Mapping</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @see org.palladiosimulator.simulizar.action.mapping.impl.ControllerMappingImpl
          * @see org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl#getControllerMapping()
          * @generated
@@ -304,7 +304,7 @@ public interface MappingPackage extends EPackage {
         /**
          * The meta object literal for the '<em><b>Mapping</b></em>' container reference feature.
          * <!-- begin-user-doc --> <!-- end-user-doc -->
-         * 
+         *
          * @generated
          */
         EReference CONTROLLER_MAPPING__MAPPING = eINSTANCE.getControllerMapping_Mapping();

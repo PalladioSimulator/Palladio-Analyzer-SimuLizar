@@ -36,7 +36,7 @@ public interface AbstractAdaptationBehavior extends EObject, Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Adaptation Actions</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAbstractAdaptationBehavior_AdaptationActions()
      * @see org.palladiosimulator.simulizar.action.core.AdaptationAction#getAdaptationBehavior

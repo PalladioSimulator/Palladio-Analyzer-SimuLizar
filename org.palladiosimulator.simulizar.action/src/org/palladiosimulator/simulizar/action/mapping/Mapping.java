@@ -35,7 +35,7 @@ public interface Mapping extends EObject, Entity {
      * there really should be more of a description here...
      * </p>
      * <!-- end-user-doc -->
-     * 
+     *
      * @return the value of the '<em>Controller Mappings</em>' containment reference list.
      * @see org.palladiosimulator.simulizar.action.mapping.MappingPackage#getMapping_ControllerMappings()
      * @see org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMapping

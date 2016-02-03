@@ -12,6 +12,8 @@
         disposableProviderFactory="true" fileExtensions="actions" ecorePackage="actions.ecore#//core">
       <genClasses ecoreClass="actions.ecore#//core/AdaptationBehaviorRepository">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/actions"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/includedRepositories"/>
       </genClasses>
       <genClasses image="false" ecoreClass="actions.ecore#//core/AbstractAdaptationBehavior">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AbstractAdaptationBehavior/adaptationActions"/>
