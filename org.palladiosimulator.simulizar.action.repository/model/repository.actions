@@ -81,8 +81,8 @@
         <nestedAdaptationBehavior id="_zxA1wLXxEeWwq5FFmcVJMw">
           <adaptationActions xsi:type="org.palladiosimulator.action:ResourceDemandingAction" id="_Becv0rUmEeW-zrkZJ6KTtQ" entityName="Resource demands for load balancing" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/loadbalancer_completion.qvto">
             <controllerCalls id="_Yp_pYLUmEeW-zrkZJ6KTtQ" entityName="Load balancing controller call">
-              <component href="../../../plugin/ActionsProviderPlugin/model/loadbalancer.repository#_eNducLUlEeW-zrkZJ6KTtQ"/>
-              <calledSignature href="../../../plugin/ActionsProviderPlugin/model/loadbalancer.repository#_nGT-cLUlEeW-zrkZJ6KTtQ"/>
+              <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/loadbalancer.repository#_eNducLUlEeW-zrkZJ6KTtQ"/>
+              <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/loadbalancer.repository#_nGT-cLUlEeW-zrkZJ6KTtQ"/>
             </controllerCalls>
           </adaptationActions>
           <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_mSnbMrUmEeW-zrkZJ6KTtQ" entityName="Load balancer adaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/loadbalancer_adaptation.qvto"/>
