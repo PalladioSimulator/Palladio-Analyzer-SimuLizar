@@ -10,19 +10,13 @@ import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.stopcondition.ConfidenceStopCondition;
 import de.uka.ipd.sdq.statistics.IBatchAlgorithm;
 import de.uka.ipd.sdq.statistics.estimation.ConfidenceInterval;
 import de.uka.ipd.sdq.statistics.estimation.IConfidenceEstimator;
 
 public class ReconfigurationTimeAggregatorWithConfidence implements IMeasurementSourceListener {
 
-	private static final Logger LOGGER = Logger.getLogger(ConfidenceStopCondition.class);
-
-    private final SimuComModel model;
-
-    private final String usageScenarioName;
+	private static final Logger LOGGER = Logger.getLogger(ReconfigurationTimeAggregatorWithConfidence.class);
 
     /** mean of the observations and the corresponding confidence interval */
     private ConfidenceInterval confidence;
@@ -42,19 +36,12 @@ public class ReconfigurationTimeAggregatorWithConfidence implements IMeasurement
     /**
      *
      */
-    public ReconfigurationTimeAggregatorWithConfidence(final SimuComModel model, final IBatchAlgorithm batchAlgorithm,
+    public ReconfigurationTimeAggregatorWithConfidence(final IBatchAlgorithm batchAlgorithm,
             final IConfidenceEstimator estimator, final double confidenceLevel, final double halfWidth) {
-    	this.model = model;
         this.batchAlgorithm = batchAlgorithm;
         this.estimator = estimator;
         this.confidenceLevel = confidenceLevel;
         this.halfWidth = halfWidth;
-
-        if (model.getConfiguration().getConfidenceModelElementName() == null) {
-            throw new RuntimeException(
-                    "SimuCom tried to set up a ConfidenceStopCondition, but no usage scenario name was given to measure the confidence for.");
-        }
-        this.usageScenarioName = model.getConfiguration().getConfidenceModelElementName();
         this.minBatches = 0;
     }
 
@@ -70,6 +57,9 @@ public class ReconfigurationTimeAggregatorWithConfidence implements IMeasurement
     	final Measure<Double, Duration> responseTimeMeasure = measurement
                 .getMeasureForMetric(MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC);
         final double responseTime = responseTimeMeasure.doubleValue(SI.SECOND);
+        if(responseTime == 0.0){
+        	return;
+        }
 
         batchAlgorithm.offerSample(responseTime);
         if (batchAlgorithm.hasValidBatches() && batchAlgorithm.getBatchMeans().size() >= minBatches) {
@@ -79,7 +69,18 @@ public class ReconfigurationTimeAggregatorWithConfidence implements IMeasurement
             if (ci != null) {
                 // construct target confidence interval
                 final ConfidenceInterval targetCI = new ConfidenceInterval(ci.getMean(), halfWidth, confidenceLevel);
-
+                StringBuilder sb = new StringBuilder();
+                sb.append("\n\tLevel:\t\t" + ci.getLevel());
+                sb.append("\n\tTarget level:\t" + targetCI.getLevel());
+                sb.append("\n\n\tMean:\t\t" + ci.getMean());
+                sb.append("\n\tTarget mean:\t" + targetCI.getMean());
+                sb.append("\n\n\tTarget lower bound:\t" + targetCI.getLowerBound());
+                sb.append("\n\tLower bound:\t\t" + ci.getLowerBound());
+                sb.append("\n\tDifference:\t\t" + (ci.getLowerBound() - targetCI.getLowerBound()));
+                sb.append("\n\n\tUpper bound: \t\t" + ci.getUpperBound());
+                sb.append("\n\tTarget upper bound: \t" + targetCI.getUpperBound());
+                sb.append("\n\tDifference:\t\t" + (targetCI.getUpperBound() - ci.getUpperBound()));
+                LOGGER.info(sb.toString());
                 if (targetCI.contains(ci)) {
                     if (LOGGER.isEnabledFor(Level.INFO)) {
                         LOGGER.info("Requested confidence reached.");
@@ -122,6 +123,10 @@ public class ReconfigurationTimeAggregatorWithConfidence implements IMeasurement
 		return confidenceReached;
 	}
 
+    public ConfidenceInterval getConfidence() {
+        return confidence;
+    }
+	
 	public void setConfidenceReached(boolean confidenceReached) {
 		this.confidenceReached = confidenceReached;
 	}

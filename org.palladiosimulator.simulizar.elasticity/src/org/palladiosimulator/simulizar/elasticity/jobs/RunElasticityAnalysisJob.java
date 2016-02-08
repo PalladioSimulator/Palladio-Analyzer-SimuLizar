@@ -1,21 +1,36 @@
 package org.palladiosimulator.simulizar.elasticity.jobs;
 
+import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
+
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
-import org.palladiosimulator.simulizar.elasticity.listener.ProbeFrameworkListenerForElasticity;
+import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
+import de.uka.ipd.sdq.statistics.StaticBatchAlgorithm;
+import de.uka.ipd.sdq.statistics.estimation.SampleMeanEstimator;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -23,20 +38,20 @@ import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDBlackboard> {
-	private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(RunElasticityAnalysisJob.class.getName());
 
 	private MDSDBlackboard blackboard;
 
 	private final SimuLizarWorkflowConfiguration configuration;
 
-	private ReconfigurationTimeAggregatorWithConfidence aggregatorWithConfidence;
+	private static ReconfigurationTimeAggregatorWithConfidence aggregatorWithConfidence;
 	
-	private ProbeFrameworkListenerForElasticity probeFrameworkListener;
+	public static ProbeFrameworkListenerForElasticity probeFrameworkListener;
+
+	private static int NUMBER_OF_RUNS_LIMIT = 50;
 
 	private static final double ONE_HUNDERT_PERCENT = 100.0;
 
-	private static int NUMBER_OF_RUNS_LIMIT = 20;
-	
 	private LoadSimuLizarModelsIntoBlackboardJob loadSimuLizarModelsIntoBlackboardJob;
 
 	/**
@@ -45,10 +60,12 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	 * @param configuration
 	 *            the SimuCom workflow configuration.
 	 */
-	public RunElasticityAnalysisJob(final SimuLizarWorkflowConfiguration configuration, LoadSimuLizarModelsIntoBlackboardJob loadSimuLizarModelsIntoBlackboardJob) {
+	public RunElasticityAnalysisJob(final SimuLizarWorkflowConfiguration configuration,
+			LoadSimuLizarModelsIntoBlackboardJob loadSimuLizarModelsIntoBlackboardJob) {
 		super();
 		this.configuration = configuration;
 		this.loadSimuLizarModelsIntoBlackboardJob = loadSimuLizarModelsIntoBlackboardJob;
+		aggregatorWithConfidence = null;
 	}
 
 	/**
@@ -58,6 +75,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
 		int numberOfRuns = 0;
 		while ((aggregatorWithConfidence == null || !aggregatorWithConfidence.isConfidenceReached()) && numberOfRuns++ < NUMBER_OF_RUNS_LIMIT) {
+			LOGGER.info("Elasticity analysis, run No. " + numberOfRuns);
+
 			LOGGER.info("Start job: " + this);
 
 			LOGGER.info("Initialise Simulizar runtime state");
@@ -79,7 +98,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
-			final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
+			final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration,
 					new ModelAccessUseOriginalReferences(this.blackboard));
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -103,7 +122,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	 */
 	@Override
 	public String getName() {
-		return "Run SimuLizar";
+		return "Run SimuLizar Elasticity Analysis";
 	}
 
 	/**
@@ -120,4 +139,52 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	public void setBlackboard(final MDSDBlackboard blackboard) {
 		this.blackboard = blackboard;
 	}
+	
+	private class SimuLizarRuntimeStateElasticity extends SimuLizarRuntimeState {
+		
+		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, ModelAccess modelAccess) {
+			super(configuration, modelAccess);
+		}
+
+		@Override
+		protected void initializeInterpreterListeners(Reconfigurator reconfigurator) {
+			LOGGER.debug("Adding Debug and monitoring interpreter listeners");
+	        this.eventHelper.addObserver(new LogDebugListener());
+	        this.eventHelper.addObserver(new ProbeFrameworkListenerForElasticity(this.getModelAccess(),  this.getModel(), reconfigurator));
+		}
+
+	}
+	
+	private class ProbeFrameworkListenerForElasticity extends ProbeFrameworkListener {
+
+		public ProbeFrameworkListenerForElasticity(IModelAccess modelAccess, SimuComModel simuComModel,
+				Reconfigurator reconfigurator) {
+			super(modelAccess, simuComModel, reconfigurator);
+		}
+
+		@Override
+		protected void initReconfigurationTimeMeasurement() {
+			for (final MeasurementSpecification reconfigurationTimeMeasurementSpec : this
+					.getMeasurementSpecificationsForMetricDescription(
+							MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
+				final MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+				final Probe probe = CalculatorHelper.getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE,
+						this.getSimuComModel().getSimulationControl(),
+						new TakeReconfigurationDurationProbe(reconfigurator));
+				try {
+					final Calculator calculator = this.getCalculatorFactory()
+							.buildReconfigurationTimeCalculator(measuringPoint, probe);
+					calculator.addObserver(RunElasticityAnalysisJob.aggregatorWithConfidence == null ? RunElasticityAnalysisJob.aggregatorWithConfidence = new ReconfigurationTimeAggregatorWithConfidence(
+																								new StaticBatchAlgorithm(5, 5),
+																								new SampleMeanEstimator(), 
+																								this.getSimuComModel().getConfiguration().getConfidenceLevel() / ONE_HUNDERT_PERCENT,
+																								this.getSimuComModel().getConfiguration().getConfidenceHalfWidth() / ONE_HUNDERT_PERCENT) 
+																			: RunElasticityAnalysisJob.aggregatorWithConfidence);
+				} catch (IllegalArgumentException iae) {
+					LOGGER.info("Tried to add a calculator that already exists");
+				}
+			}
+		}
+	}
+	
 }
