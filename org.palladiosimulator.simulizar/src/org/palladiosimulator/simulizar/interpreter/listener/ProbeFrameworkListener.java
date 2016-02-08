@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,12 +35,10 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
-import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 
 /**
  * Class for listening to interpreter events in order to store collected data using the
@@ -50,15 +46,15 @@ import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
  *
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
-public class ProbeFrameworkListener extends AbstractInterpreterListener {
+public abstract class ProbeFrameworkListener extends AbstractInterpreterListener {
 
     private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
-    private final SimuComModel simuComModel;
-    private final ICalculatorFactory calculatorFactory;
-    private final Reconfigurator reconfigurator;
+    protected final SimuComModel simuComModel;
+    protected final ICalculatorFactory calculatorFactory;
+    protected final Reconfigurator reconfigurator;
     private final IModelAccess modelAccess;
 
     private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
@@ -333,20 +329,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
     /**
      * Initializes reconfiguration time measurement.
      */
-    private void initReconfigurationTimeMeasurement() {
-        for (final MeasurementSpecification reconfigurationTimeMeasurementSpec : this
-                .getMeasurementSpecificationsForMetricDescription(
-                        MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC)) {
-            final MeasuringPoint measuringPoint = reconfigurationTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-
-            LOGGER.info("Created Reconfiguration Time Measuring Point");
-
-            final Probe probe = CalculatorHelper.getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE,
-                    this.simuComModel.getSimulationControl(),
-                    new TakeReconfigurationDurationProbe(this.reconfigurator));
-            this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probe);
-        }
-    }
+    protected abstract void initReconfigurationTimeMeasurement();
 
     private boolean simulationIsRunning() {
         return this.simuComModel.getSimulationControl().isRunning();
