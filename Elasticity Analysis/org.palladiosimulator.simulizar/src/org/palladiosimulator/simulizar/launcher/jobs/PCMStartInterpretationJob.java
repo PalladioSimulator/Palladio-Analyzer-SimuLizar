@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateBasic;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
@@ -65,7 +66,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences.
         // After we find a way to copy models so that their links do not point to intermediary, but
         // to the models directly.
-        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
+        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateBasic(this.configuration,
                 new ModelAccessUseOriginalReferences(this.blackboard));
 
         this.initializeRuntimeStateAccessors(runtimeState);

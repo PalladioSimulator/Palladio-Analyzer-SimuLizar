@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
-Bundle-Version: 2.0.1.qualifier
+Bundle-Version: 2.0.2.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
 Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
@@ -120,7 +120,8 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.eclipse.emf.common.notify,
    org.palladiosimulator.simulizar.interpreter.listener,
    org.palladiosimulator.commons.designpatterns",
-    org.palladiosimulator.simulizar.runconfig;uses:="org.eclipse.debug.core,de.uka.ipd.sdq.codegen.simucontroller.runconfig,de.uka.ipd.sdq.workflow.launchconfig",
+ org.palladiosimulator.simulizar.reconfiguration.probes,
+ org.palladiosimulator.simulizar.runconfig;uses:="org.eclipse.debug.core,de.uka.ipd.sdq.codegen.simucontroller.runconfig,de.uka.ipd.sdq.workflow.launchconfig",
  org.palladiosimulator.simulizar.runtimestate;
   uses:="org.palladiosimulator.simulizar.interpreter,
    org.palladiosimulator.pcm.repository,
