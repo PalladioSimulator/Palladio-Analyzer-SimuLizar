@@ -28,5 +28,4 @@ Import-Package: de.uka.ipd.sdq.statistics,
  org.palladiosimulator.probeframework.calculator,
  org.palladiosimulator.probeframework.probes,
  org.palladiosimulator.simulizar.ui.configuration.extensions
-Export-Package: org.palladiosimulator.simulizar.elasticity.aggregator,
- org.palladiosimulator.simulizar.elasticity.listener
+Export-Package: org.palladiosimulator.simulizar.elasticity.aggregator
