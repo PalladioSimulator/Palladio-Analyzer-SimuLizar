@@ -27,7 +27,7 @@ import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.CostModel;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 import org.palladiosimulator.simulizar.simulationevents.ContainerCostProbe;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredContainerEntity;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredCostModelEntity;
@@ -63,7 +63,7 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
      * @param runtimeState
      *            the SimuCom model.
      */
-    public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
+    public ResourceEnvironmentSyncer(final SimuLizarRuntimeStateAbstract runtimeState) {
         super(Objects.requireNonNull(runtimeState), runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation());
 
