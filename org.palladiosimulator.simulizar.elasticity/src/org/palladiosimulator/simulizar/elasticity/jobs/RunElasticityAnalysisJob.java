@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
+import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListenerAbstract;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
@@ -25,7 +25,7 @@ import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -98,7 +98,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
-			final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration,
+			final SimuLizarRuntimeStateAbstract runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration,
 					new ModelAccessUseOriginalReferences(this.blackboard));
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -107,7 +107,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		}
 	}
 
-	private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
+	private void initializeRuntimeStateAccessors(final SimuLizarRuntimeStateAbstract runtimeState) {
 		final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
 				SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
 				SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
@@ -140,7 +140,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		this.blackboard = blackboard;
 	}
 	
-	private class SimuLizarRuntimeStateElasticity extends SimuLizarRuntimeState {
+	private class SimuLizarRuntimeStateElasticity extends SimuLizarRuntimeStateAbstract {
 		
 		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, ModelAccess modelAccess) {
 			super(configuration, modelAccess);
@@ -155,7 +155,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 
 	}
 	
-	private class ProbeFrameworkListenerForElasticity extends ProbeFrameworkListener {
+	private class ProbeFrameworkListenerForElasticity extends ProbeFrameworkListenerAbstract {
 
 		public ProbeFrameworkListenerForElasticity(IModelAccess modelAccess, SimuComModel simuComModel,
 				Reconfigurator reconfigurator) {
