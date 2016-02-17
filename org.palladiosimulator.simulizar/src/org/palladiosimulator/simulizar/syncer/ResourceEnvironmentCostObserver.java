@@ -38,12 +38,6 @@ public class ResourceEnvironmentCostObserver extends AbstractResourceEnvironment
     }
 
     private void removeSimulatedResource(final ResourceContainer resourceContainer) {
-
-        // FIXME shutdown the simulated resource container now (...somehow ;) )
-        // AbstractSimulatedResourceContainer simulatedResourceContainer =
-        // findSimuComFrameworkResourceContainer();
-        // simulatedResourceContainer.shutdown() ???
-
         final PeriodicallyTriggeredContainerEntity triggeredEntity = this.periodicallyTriggeredContainerEntities
                 .get(resourceContainer.getId());
         if (triggeredEntity == null)
