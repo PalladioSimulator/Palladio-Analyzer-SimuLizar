@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.syncer;
 
-import java.util.Objects;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -57,8 +55,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      */
     @Override
     public void initialize(final SimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
-                .getTargetResourceEnvironment_Allocation(), Objects.requireNonNull(runtimeState));
+        super.initialize(runtimeState);
+
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
         this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
 
