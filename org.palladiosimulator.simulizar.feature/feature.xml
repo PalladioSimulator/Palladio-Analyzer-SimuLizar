@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="Palladio Component Model - Analyzer: SimuLizar"
-      version="2.0.1.qualifier"
+      version="2.0.2.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -60,6 +60,7 @@
       <import plugin="org.eclipse.core.runtime" version="3.10.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.debug.ui" version="3.10.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.analyzer.workflow" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.common"/>
@@ -88,7 +89,6 @@
       <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.mdsdprofiles.api"/>
-      <import plugin="org.palladiosimulator.simulizar" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex.analyser" version="2.0.0" match="greaterOrEqual"/>
@@ -107,6 +107,7 @@
       <import plugin="de.uka.ipd.sdq.statistics"/>
       <import plugin="org.palladiosimulator.edp2.dao" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction.math"/>
+      <import plugin="org.palladiosimulator.probeframework" version="2.0.1" match="greaterOrEqual"/>
    </requires>
 
    <plugin
