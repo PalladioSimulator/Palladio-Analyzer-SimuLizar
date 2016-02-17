@@ -32,7 +32,8 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.syncer.IModelSyncer;
+import org.palladiosimulator.simulizar.syncer.IModelObserver;
+import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentCostObserver;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
@@ -68,7 +69,7 @@ public class SimuLizarRuntimeState {
     private final SimulatedUsageModels usageModels;
     private final ModelAccess modelAccess;
     private final Reconfigurator reconfigurator;
-    private final IModelSyncer[] modelSyncers;
+    private final IModelObserver[] modelObservers;
 
     private long numberOfContainers = 0;
 
@@ -87,7 +88,7 @@ public class SimuLizarRuntimeState {
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelSyncers = this.initializeModelSyncers();
+        this.modelObservers = this.initializeModelSyncers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
@@ -154,8 +155,8 @@ public class SimuLizarRuntimeState {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (final IModelSyncer modelSyncer : this.modelSyncers) {
-            modelSyncer.stopSyncer();
+        for (final IModelObserver modelObserver : this.modelObservers) {
+            modelObserver.unregister();
         }
     }
 
@@ -267,13 +268,13 @@ public class SimuLizarRuntimeState {
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
-    private IModelSyncer[] initializeModelSyncers() {
+    private IModelObserver[] initializeModelSyncers() {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
 
-        final IModelSyncer[] modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this),
-                new UsageModelSyncer(this) };
-        for (final IModelSyncer modelSyncer : modelSyncers) {
-            modelSyncer.initializeSyncer();
+        final IModelObserver[] modelSyncers = new IModelObserver[] { new ResourceEnvironmentSyncer(),
+                new UsageModelSyncer(), new ResourceEnvironmentCostObserver() };
+        for (final IModelObserver modelObserver : modelSyncers) {
+            modelObserver.initialize(this);
         }
 
         return modelSyncers;

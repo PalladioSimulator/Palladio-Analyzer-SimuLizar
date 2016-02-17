@@ -1,16 +1,10 @@
 package org.palladiosimulator.simulizar.syncer;
 
-import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.COST_OVER_TIME;
-
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.mdsdprofiles.api.StereotypeAPI;
-import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -18,23 +12,13 @@ import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
-import org.palladiosimulator.probeframework.probes.EventProbeList;
-import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
-import org.palladiosimulator.simulizar.runtimestate.CostModel;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.simulationevents.ContainerCostProbe;
-import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredContainerEntity;
-import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredCostModelEntity;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -49,39 +33,35 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
  *
  * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker
  */
-public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironment> implements IModelSyncer {
+public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserver {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
-    private final MonitorRepository monitorRepository;
-    private final RuntimeMeasurementModel runtimeMeasurementModel;
-    private final CostModel costModel;
-    private final HashMap<String, PeriodicallyTriggeredContainerEntity> periodicallyTriggeredContainerEntities;
+    private MonitorRepository monitorRepository;
+    private RuntimeMeasurementModel runtimeMeasurementModel;
 
     /**
+     *
      * Constructor
      *
      * @param runtimeState
      *            the SimuCom model.
      */
-    public ResourceEnvironmentSyncer(final SimuLizarRuntimeState runtimeState) {
-        super(Objects.requireNonNull(runtimeState), runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
-                .getTargetResourceEnvironment_Allocation());
-
-        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
-        this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
-
-        this.costModel = new CostModel();
-        this.initPeriodicCostModelCalculator();
-        this.periodicallyTriggeredContainerEntities = new HashMap<String, PeriodicallyTriggeredContainerEntity>();
+    public ResourceEnvironmentSyncer() {
+        super();
     }
 
     /*
      * (non-Javadoc)
      *
-     * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#initializeSyncer()
+     * @see org.palladiosimulator.simulizar.syncer.IModelObserver#initializeSyncer()
      */
     @Override
-    public void initializeSyncer() {
+    public void initialize(final SimuLizarRuntimeState runtimeState) {
+        super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
+                .getTargetResourceEnvironment_Allocation(), Objects.requireNonNull(runtimeState));
+        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
+        this.runtimeMeasurementModel = runtimeState.getModelAccess().getRuntimeMeasurementModel();
+
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initializing Simulated ResourcesContainer");
         }
@@ -96,121 +76,79 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
     }
 
     @Override
-    protected void synchronizeSimulationEntities(final Notification notification) {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Synching ResourceContainer and Simulated ResourcesContainer");
-        }
-
-        switch (notification.getEventType()) {
-        case Notification.ADD:
-            if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
-                this.addSimulatedResource((ResourceContainer) notification.getNewValue());
-            } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
-                this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
-            } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceEnvironment_LinkingResources__ResourceEnvironment()
-                    || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                            .getLinkingResource_CommunicationLinkResourceSpecifications_LinkingResource()
-                    || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                            .getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Ignoring sync (add) of linking resources");
-                }
-            } else {
-                throw new RuntimeException(
-                        "Unsupported Notification.ADD for feature \"" + notification.getFeature() + "\"");
-            }
-            break;
-
-        case Notification.REMOVE:
-            if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
-                this.removeSimulatedResource((ResourceContainer) notification.getOldValue());
-            } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceEnvironment_LinkingResources__ResourceEnvironment()
-                    || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                            .getLinkingResource_CommunicationLinkResourceSpecifications_LinkingResource()
-                    || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                            .getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Ignoring sync (remove) of linking resources");
-                }
-            } else {
-                throw new RuntimeException(
-                        "Unsupported Notification.ADD for feature \"" + notification.getFeature() + "\"");
-            }
-            break;
-
-        case Notification.SET:
-            if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getProcessingResourceSpecification_ProcessingRate_ProcessingResourceSpecification()) {
-                this.syncProcessingRate((ProcessingResourceSpecification) notification.getNotifier(),
-                        notification.getNewStringValue());
-            } else if (notification.getFeature() == CorePackage.eINSTANCE
-                    .getPCMRandomVariable_ProcessingResourceSpecification_processingRate_PCMRandomVariable()) {
-                final PCMRandomVariable pcmRandomVariable = (PCMRandomVariable) notification.getNotifier();
-                final EObject parent = pcmRandomVariable.eContainer();
-
-                if (parent instanceof ProcessingResourceSpecification) {
-                    this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
-                } else {
-                    throw new RuntimeException(
-                            "Unsupported Notification.SET for a PCMRandomVariable with parent " + parent);
-                }
-            } else if (notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
-                final RandomVariable randomVariable = (RandomVariable) notification.getNotifier();
-                final EObject parent = randomVariable.eContainer();
-
-                if (parent instanceof ProcessingResourceSpecification) {
-                    this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
-                } else {
-                    throw new RuntimeException(
-                            "Unsupported Notification.SET for a RandomVariable with parent " + parent);
-                }
-            } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
-                    .getResourceContainer_ResourceEnvironment_ResourceContainer()) {
-                if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug("Ignoring syncing that links resource containers to their environment");
-                }
-            } else {
-                throw new RuntimeException(
-                        "Unsupported Notification.SET for feature \"" + notification.getFeature() + "\"");
-            }
-            break;
-
-        case Notification.MOVE:
+    protected void add(final Notification notification) {
+        if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
+            this.addSimulatedResource((ResourceContainer) notification.getNewValue());
+        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
+            this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
+        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceEnvironment_LinkingResources__ResourceEnvironment()
+                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                        .getLinkingResource_CommunicationLinkResourceSpecifications_LinkingResource()
+                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                        .getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Ignoring sync of move events; e.g., rewiring of linking resources");
+                LOGGER.debug("Ignoring sync (add) of linking resources");
             }
-            break;
-        case MDSDProfilesNotifier.SET_TAGGED_VALUE:
-            final MDSDProfilesNotifier.TaggedValueTuple taggedValueTuple = ((MDSDProfilesNotifier.TaggedValueTuple) notification
-                    .getNewValue());
-            if (ResourceenvironmentPackage.eINSTANCE.getResourceContainer().isInstance(notification.getNotifier())
-                    && taggedValueTuple.getStereotypeName().equals("Price")
-                    && taggedValueTuple.getTaggedValueName().equals("unit")) {
-                // "unit" is the last tagged value expected for a complete specification to
-                // initialize a periodic cost calculator.
-                initPeriodicCostCalculator((ResourceContainer) notification.getNotifier());
-            }
-            break;
-        case MDSDProfilesNotifier.APPLY_PROFILE:
-        case MDSDProfilesNotifier.APPLY_STEREOTYPE:
-        case MDSDProfilesNotifier.UNAPPLY_PROFILE:
-        case MDSDProfilesNotifier.UNAPPLY_STEREOTYPE:
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Ignoring sync of profiles and stereotypes");
-            }
-            break;
-
-        default:
-            throw new RuntimeException("Ignoring notification with event type \"" + notification.getEventType() + "\"");
+        } else {
+            this.logDebugInfo(notification);
         }
+    }
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Synching done");
+    @Override
+    protected void remove(final Notification notification) {
+        if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
+            this.removeSimulatedResource((ResourceContainer) notification.getOldValue());
+        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceEnvironment_LinkingResources__ResourceEnvironment()
+                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                        .getLinkingResource_CommunicationLinkResourceSpecifications_LinkingResource()
+                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                        .getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Ignoring sync (remove) of linking resources");
+            }
+        } else {
+            this.logDebugInfo(notification);
+        }
+    }
+
+    @Override
+    protected void set(final Notification notification) {
+        if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getProcessingResourceSpecification_ProcessingRate_ProcessingResourceSpecification()) {
+            this.syncProcessingRate((ProcessingResourceSpecification) notification.getNotifier(),
+                    notification.getNewStringValue());
+        } else if (notification.getFeature() == CorePackage.eINSTANCE
+                .getPCMRandomVariable_ProcessingResourceSpecification_processingRate_PCMRandomVariable()) {
+            final PCMRandomVariable pcmRandomVariable = (PCMRandomVariable) notification.getNotifier();
+            final EObject parent = pcmRandomVariable.eContainer();
+
+            if (parent instanceof ProcessingResourceSpecification) {
+                this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+            } else {
+                throw new RuntimeException(
+                        "Unsupported Notification.SET for a PCMRandomVariable with parent " + parent);
+            }
+        } else if (notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
+            final RandomVariable randomVariable = (RandomVariable) notification.getNotifier();
+            final EObject parent = randomVariable.eContainer();
+
+            if (parent instanceof ProcessingResourceSpecification) {
+                this.syncProcessingRate((ProcessingResourceSpecification) parent, notification.getNewStringValue());
+            } else {
+                throw new RuntimeException("Unsupported Notification.SET for a RandomVariable with parent " + parent);
+            }
+        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                .getResourceContainer_ResourceEnvironment_ResourceContainer()) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Ignoring syncing that links resource containers to their environment");
+            }
+        } else {
+            this.logDebugInfo(notification);
         }
     }
 
@@ -218,8 +156,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         final AbstractSimulatedResourceContainer simulatedResourceContainer = this
                 .addSimulatedResource(resourceContainer);
         this.addActiveResources(resourceContainer, simulatedResourceContainer);
-        initPeriodicCostCalculator(resourceContainer);
-
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
                     + simulatedResourceContainer);
@@ -239,16 +175,6 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
         // findSimuComFrameworkResourceContainer();
         // simulatedResourceContainer.shutdown() ???
 
-        // FIXME when the next line is active, exceptions occur (trying to find non existing
-        // container)
-        // this.runtimeModel.getModel().getResourceRegistry()
-        // .removeResourceContainerFromRegistry(resourceContainer.getId());
-
-        if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
-            return;
-        }
-        this.periodicallyTriggeredContainerEntities.get(resourceContainer.getId()).removeEvent();
-        this.periodicallyTriggeredContainerEntities.remove(resourceContainer.getId());
     }
 
     private void addActiveResources(final ResourceContainer resourceContainer,
@@ -388,42 +314,5 @@ public class ResourceEnvironmentSyncer extends AbstractSyncer<ResourceEnvironmen
             final ScheduledResource scheduledResource, final MeasurementSpecification measurementSpecification) {
         new ResourceStateListener(scheduledResource, this.runtimeModel.getModel().getSimulationControl(),
                 measurementSpecification, resourceContainer, this.runtimeMeasurementModel);
-    }
-
-    private void initPeriodicCostCalculator(final ResourceContainer resourceContainer) {
-        if (!StereotypeAPI.isStereotypeApplied(resourceContainer, "Price")) {
-            return;
-        }
-
-        this.periodicallyTriggeredContainerEntities.put(resourceContainer.getId(),
-                new PeriodicallyTriggeredContainerEntity(this.runtimeModel.getModel(), this.costModel,
-                        resourceContainer));
-    }
-
-    private void initPeriodicCostModelCalculator() {
-        if (!StereotypeAPI.isStereotypeApplied(this.model, "CostReport")) {
-            return;
-        }
-        final double interval = StereotypeAPI.getTaggedValue(this.model, "interval", "CostReport");
-
-        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                .getMeasurementSpecificationsForElement(this.monitorRepository, this.model)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
-
-            if (metricID.equals(COST_OVER_TIME.getId())) {
-
-                final SimuComModel simuComModel = this.runtimeModel.getModel();
-
-                final Probe probe = new EventProbeList(COST_OVER_TIME,
-                        new ContainerCostProbe(new PeriodicallyTriggeredCostModelEntity(simuComModel, this.costModel,
-                                interval, interval)),
-                        Arrays.asList((TriggeredProbe) new TakeCurrentSimulationTimeProbe(
-                                simuComModel.getSimulationControl())));
-
-                simuComModel.getProbeFrameworkContext().getCalculatorFactory()
-                        .buildCostOverTimeCalculator(measurementSpecification.getMonitor().getMeasuringPoint(), probe);
-            }
-        }
-
     }
 }

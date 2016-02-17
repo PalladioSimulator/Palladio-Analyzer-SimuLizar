@@ -6,21 +6,28 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
-public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer {
+public abstract class AbstractModelObserver<T extends EObject> implements IModelObserver {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractSyncer.class);
+    protected static final Logger LOGGER = Logger.getLogger(AbstractModelObserver.class);
 
-    protected final SimuLizarRuntimeState runtimeModel;
-    protected final T model;
+    protected SimuLizarRuntimeState runtimeModel;
+    protected T model;
 
-    private final EContentAdapter adapter;
+    private EContentAdapter adapter;
 
     /**
      * @param simuComModel
      */
-    protected AbstractSyncer(final SimuLizarRuntimeState simuComModel, final T model) {
+    protected AbstractModelObserver() {
         super();
-        this.runtimeModel = simuComModel;
+    }
+
+    public void initialize(final T model, final SimuLizarRuntimeState runtimeState) {
+        this.initialize(model);
+        this.runtimeModel = runtimeState;
+    }
+
+    private void initialize(final T model) {
         this.model = model;
         this.adapter = new EContentAdapter() {
 
@@ -33,7 +40,7 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
                             + notification);
 
                     try {
-                        AbstractSyncer.this.synchronizeSimulationEntities(notification);
+                        AbstractModelObserver.this.synchronizeSimulationEntities(notification);
                     } catch (final Exception e) {
                         LOGGER.error("Sync Exception: " + e);
                     }
@@ -46,13 +53,8 @@ public abstract class AbstractSyncer<T extends EObject> implements IModelSyncer 
 
     protected abstract void synchronizeSimulationEntities(final Notification notification);
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see org.palladiosimulator.simulizar.syncer.IModelSyncer#stopSyncer()
-     */
     @Override
-    public void stopSyncer() {
+    public void unregister() {
         this.model.eAdapters().remove(this.adapter);
     }
 

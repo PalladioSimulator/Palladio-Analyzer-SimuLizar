@@ -1,11 +1,12 @@
 package org.palladiosimulator.simulizar.syncer;
 
+import java.util.Objects;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
-import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
@@ -15,16 +16,12 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
-public class UsageModelSyncer extends AbstractSyncer<UsageModel>implements IModelSyncer {
+public class UsageModelSyncer extends AbstractModelObserver<UsageModel> implements IModelObserver {
 
     private static final Logger LOGGER = Logger.getLogger(UsageModelSyncer.class);
 
-    public UsageModelSyncer(final SimuLizarRuntimeState runtimeModel) {
-        super(runtimeModel, runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel());
-    }
-
-    @Override
-    public void initializeSyncer() {
+    public UsageModelSyncer() {
+        super();
     }
 
     @Override
@@ -87,4 +84,10 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel>implements IMode
         this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setPopulation(newPopulation);
     }
+
+    @Override
+    public void initialize(final SimuLizarRuntimeState runtimeState) {
+        super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getUsageModel(), Objects.requireNonNull(runtimeState));
+    }
+
 }
