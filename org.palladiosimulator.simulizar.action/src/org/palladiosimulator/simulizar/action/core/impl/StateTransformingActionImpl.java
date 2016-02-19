@@ -1,0 +1,35 @@
+/**
+ */
+package org.palladiosimulator.simulizar.action.core.impl;
+
+import org.eclipse.emf.ecore.EClass;
+import org.palladiosimulator.simulizar.action.core.CorePackage;
+import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
+
+/**
+ * <!-- begin-user-doc --> An implementation of the model object '
+ * <em><b>State Transforming Action</b></em>'. <!-- end-user-doc -->
+ *
+ * @generated
+ */
+public class StateTransformingActionImpl extends AdaptationActionImpl implements StateTransformingAction {
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    protected StateTransformingActionImpl() {
+        super();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    protected EClass eStaticClass() {
+        return CorePackage.Literals.STATE_TRANSFORMING_ACTION;
+    }
+
+} // StateTransformingActionImpl
