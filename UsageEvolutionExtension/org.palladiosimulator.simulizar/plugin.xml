@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-   <extension-point id="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor" name="Simulizar Runtime State Accessor" schema="schema/org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.interpreter.listener.probeframework" name="Simulizar Probe Framework Listener Decorator" schema="schema/org.palladiosimulator.simulizar.interpreter.listener.probeframework.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.reconfigurationengine" name="SimuLizar Reconfiguration Engine" schema="schema/org.palladiosimulator.simulizar.reconfigurationengine.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.launcher.modelload" name="Simulizar Launcher Model Loader" schema="schema/org.palladiosimulator.simulizar.launcher.modelload.exsd"/>
-
-</plugin>
