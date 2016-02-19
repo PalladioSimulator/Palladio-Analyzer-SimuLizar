@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension-point id="org.palladiosimulator.simulizar.ui.configuration.fileinput" name="Simulizar Configuration File Input Tab Extension Point" schema="schema/org.palladiosimulator.simulizar.ui.configuration.fileinput.exsd"/>
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+	    <launchConfigurationType
+           delegate="org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher"
+           id="de.upb.pcm.interpreter.SimuLizarLaunching"
+           modes="run, debug"
+           name="SimuLizar"
+           public="true">        
+	    </launchConfigurationType>
+	</extension>
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+	    <launchConfigurationTypeImage
+	        icon="./icon/play_16.png"
+	        configTypeID="de.upb.pcm.interpreter.SimuLizarLaunching"
+	        id="de.upb.pcm.interpreter.launchConfigurationTypeImage">
+	    </launchConfigurationTypeImage>
+	</extension>
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+	    <launchConfigurationTabGroup
+	        type="de.upb.pcm.interpreter.SimuLizarLaunching"
+	        class="org.palladiosimulator.simulizar.ui.configuration.InterpreterConfigurationTab"
+	        id="de.upb.pcm.interpreter.launchConfigurationTabGroup">
+	    </launchConfigurationTabGroup>
+	</extension>
+ <extension
+       point="de.uka.ipd.sdq.codegen.simucontroller.simulator">
+    <simulator
+          id="de.uka.ipd.sdq.codegen.simucontroller.simulizar"
+          launchDelegate="org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher"
+          name="SimuLizar (Interpreted Simulation)">
+    </simulator>
+ </extension>
+</plugin>
