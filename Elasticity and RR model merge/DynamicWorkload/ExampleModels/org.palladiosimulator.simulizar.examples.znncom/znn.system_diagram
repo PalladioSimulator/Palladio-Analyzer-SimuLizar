@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" type="CompositeModel" name="znn.system_diagram" measurementUnit="Pixel">
+  <children xsi:type="notation:Shape" type="2002" fontName="Segoe UI">
+    <children xsi:type="notation:DecorationNode" type="5012"/>
+    <children xsi:type="notation:DecorationNode" type="7002">
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#__SXsIKnmEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_AjiZEKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="znn.system#_nvrBYKnnEeO_FKTWaHXFBg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="5" y="180"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_cy6_8KnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_-3KhYKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#__V1aYKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#__yEqcKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="znn.system#_s0iCYKnnEeO_FKTWaHXFBg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="215" y="175"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="znn.system#_EDus4KnoEeO_FKTWaHXFBg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="454" y="35"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="znn.system#_Fd5k0KnoEeO_FKTWaHXFBg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="458" y="149"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="znn.system#_GXW8YKnoEeO_FKTWaHXFBg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="468" y="259"/>
+      </children>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Segoe UI">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="znn.system#_k-bo0KnnEeO_FKTWaHXFBg"/>
+      <layoutConstraint xsi:type="notation:Bounds"/>
+    </children>
+    <element href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="35" y="25" width="701"/>
+  </children>
+  <styles xsi:type="notation:DiagramStyle"/>
+  <element href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.2" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="znn.system#_r3Rv8KnnEeO_FKTWaHXFBg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -80, 60]$[108, -65, -2, -5]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.0/@children.2" target="//@children.0/@children.1/@children.1/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="znn.system#_v0t14KnnEeO_FKTWaHXFBg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -50, 55]$[56, -54, -1, 1]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.4" target="//@children.0/@children.1/@children.2/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="znn.system#_IjbyYKnoEeO_FKTWaHXFBg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -101, 63]$[97, -78, -4, -7]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.7,0.23333333333333334)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.3" target="//@children.0/@children.1/@children.3/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="znn.system#_I_RZ0KnoEeO_FKTWaHXFBg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -68, -12]$[73, 7, -2, -5]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.2" target="//@children.0/@children.1/@children.4/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="znn.system#_JrdKYKnoEeO_FKTWaHXFBg"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -78, -84]$[85, 83, 0, -1]"/>
+  </edges>
+</notation:Diagram>

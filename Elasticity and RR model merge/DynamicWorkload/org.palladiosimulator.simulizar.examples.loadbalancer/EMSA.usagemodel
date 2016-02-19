@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0">
+  <usageScenario_UsageModel id="_CuQU4HQhEeSK-_whxGSJsg" entityName="secureLoginUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_CuovYHQhEeSK-_whxGSJsg" entityName="defaultUsageScenarioBehaviour">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_CvGpcHQhEeSK-_whxGSJsg" successor="_Pd3bEHQhEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Cv7v4HQhEeSK-_whxGSJsg" predecessor="_Pd3bEHQhEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_Pd3bEHQhEeSK-_whxGSJsg" successor="_Cv7v4HQhEeSK-_whxGSJsg" predecessor="_CvGpcHQhEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_bGFo0HMYEeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_raW7IHQhEeSK-_whxGSJsg" entityName="uploadMediaUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_uu3_4HQhEeSK-_whxGSJsg">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_uvWhAHQhEeSK-_whxGSJsg" successor="_1rHZQHQhEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_uvXIEHQhEeSK-_whxGSJsg" predecessor="_1rHZQHQhEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_1rHZQHQhEeSK-_whxGSJsg" successor="_uvXIEHQhEeSK-_whxGSJsg" predecessor="_uvWhAHQhEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_qCvq0HMXEeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_FvXgAHQiEeSK-_whxGSJsg" entityName="downloadMediaUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_Q_oTUHQiEeSK-_whxGSJsg">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_Q_oTUXQiEeSK-_whxGSJsg" successor="_UB5KcHQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Q_o6YHQiEeSK-_whxGSJsg" predecessor="_UB5KcHQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_UB5KcHQiEeSK-_whxGSJsg" successor="_Q_o6YHQiEeSK-_whxGSJsg" predecessor="_Q_oTUXQiEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_1PZJcHMXEeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_b8b_IHQiEeSK-_whxGSJsg" entityName="shareMediaUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_gp3XkHQiEeSK-_whxGSJsg">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_gp3XkXQiEeSK-_whxGSJsg" successor="_p6Qk4HQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_gp3-oHQiEeSK-_whxGSJsg" predecessor="_p6Qk4HQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_p6Qk4HQiEeSK-_whxGSJsg" successor="_gp3-oHQiEeSK-_whxGSJsg" predecessor="_gp3XkXQiEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_f-PDgHMYEeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_vRIi8HQiEeSK-_whxGSJsg" entityName="browseMediaUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_27rz0HQiEeSK-_whxGSJsg">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_27rz0XQiEeSK-_whxGSJsg" successor="_7O-1AHQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_27sa4HQiEeSK-_whxGSJsg" predecessor="_7O-1AHQiEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_7O-1AHQiEeSK-_whxGSJsg" successor="_27sa4HQiEeSK-_whxGSJsg" predecessor="_27rz0XQiEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_oE8E4HMYEeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+  <usageScenario_UsageModel id="_IrUeUHQjEeSK-_whxGSJsg" entityName="removeMediaUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_NgVFcHQjEeSK-_whxGSJsg">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_NgVsgHQjEeSK-_whxGSJsg" successor="_ShR20HQjEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_NgVsgXQjEeSK-_whxGSJsg" predecessor="_ShR20HQjEeSK-_whxGSJsg"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_ShR20HQjEeSK-_whxGSJsg" successor="_NgVsgXQjEeSK-_whxGSJsg" predecessor="_NgVsgHQjEeSK-_whxGSJsg">
+        <providedRole_EntryLevelSystemCall href="loadbalancer.system#_4A2jYAEnEeS7FKokKTKFow"/>
+        <operationSignature__EntryLevelSystemCall href="loadbalancer.repository#_GM2tIHM5EeS9EcBdU2sJWQ"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+  </usageScenario_UsageModel>
+</usagemodel:UsageModel>

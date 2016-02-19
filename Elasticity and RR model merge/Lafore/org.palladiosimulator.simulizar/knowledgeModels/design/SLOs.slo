@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slo:ServiceLevelObjectiveRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0">
+  <servicelevelobjectives id="_nbsm0B7_EeWeaaDcKbFJ5A" name="ResponseTimeHardThSlo" description="SLO for the Response Time (Hard Threshold)">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_93K44h8AEeWeaaDcKbFJ5A" thresholdLimit="3"/>
+    <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="__luscB8AEeWeaaDcKbFJ5A" name="ResponseTimeFuzzyThSlo" description="SLO for the Response Time (Linear Fuzzy Threshold)">
+    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_GuYKIx8BEeWeaaDcKbFJ5A" thresholdLimit="3" softLimit="2"/>
+    <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_L6_Y8B8BEeWeaaDcKbFJ5A" name="PoolSizeHardThSlo" description="SLO for the Number of active servers in the pool (Hard Threshold)">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_UyKN8h8BEeWeaaDcKbFJ5A" thresholdLimit="5"/>
+    <measurementSpecification href="MonitorsRep.monitorrepository#_La38EOhnEeSkZ7YVP-H6TQ"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_aS3dcB8BEeWeaaDcKbFJ5A" name="OverprovisionedResourcesHardThSlo" description="SLO for the overprovisioned number of active servers in the pool (Hard Threshold)">
+    <lowerThreshold xsi:type="slo:HardThreshold" id="_pDhOUB8BEeWeaaDcKbFJ5A" thresholdLimit="0.5"/>
+    <measurementSpecification href="MonitorsRep.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
+  </servicelevelobjectives>
+</slo:ServiceLevelObjectiveRepository>

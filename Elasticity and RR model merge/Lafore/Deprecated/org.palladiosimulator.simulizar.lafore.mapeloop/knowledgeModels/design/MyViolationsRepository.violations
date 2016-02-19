@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<violations:ViolationsRepository xmlns:violations="http://simulizar.palladiosimulator.org/lafore/violations/1.0" id="_dxcdsNPBEeSHt-YvO79WHQ" entityName="MyViolationsTypes">
+  <violationTypes id="_nB8lwOOFEeSWd8lY2QHrZg" entityName="ResponseTimeViolated">
+    <slo href="My.slo#_YRf38N6dEeSFR4acpbZ8HQ"/>
+  </violationTypes>
+  <violationTypes id="_4qELoOhqEeSkZ7YVP-H6TQ" entityName="ResponseTimeFuzzyViolated">
+    <slo href="My.slo#_JgcVEN62EeSFR4acpbZ8HQ"/>
+  </violationTypes>
+  <violationTypes id="_8oUJ4OhqEeSkZ7YVP-H6TQ" entityName="PoolSizeViolated">
+    <slo href="My.slo#_x173UOOGEeSWd8lY2QHrZg"/>
+  </violationTypes>
+  <violationTypes id="_IxeUEOhrEeSkZ7YVP-H6TQ" entityName="OverprovisionedResourcesViolated">
+    <slo href="My.slo#_1SdokOhoEeSkZ7YVP-H6TQ"/>
+  </violationTypes>
+</violations:ViolationsRepository>

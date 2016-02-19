@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExperimentAutomation.Experiments:ExperimentRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExperimentAutomation.Experiments="http://palladiosimulator.org/ExperimentAutomation/Experiments/1.0" xmlns:ExperimentAutomation.Experiments.AbstractSimulation="http://palladiosimulator.org/ExperimentAutomation/AbstractSimulation/1.0" xmlns:simulizartooladapter="http://palladiosimulator.org/ExperimentAutomation/ToolAdapter/SimuLizar/1.0">
+  <experiments id="" name="00" description="" repetitions="100">
+    <toolConfiguration xsi:type="simulizartooladapter:SimuLizarConfiguration" name="Default EDP2 SimuLizar Configuration Media Store">
+      <stopConditions xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:MeasurementCountStopCondition" measurementCount="-1"/>
+      <stopConditions xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:SimTimeStopCondition" simulationTime="1800000"/>
+      <datasource xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:FileDatasource" location="C:/data/experimentAutomation"/>
+    </toolConfiguration>
+    <stopConditions xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:SimTimeStopCondition" simulationTime="1800000"/>
+    <initialModel>
+      <usageModel href="../ms_base_usage_realistic.usagemodel#/"/>
+      <allocation href="../msoneadditionalserver.allocation#_fC4jAKl-EeW7dt0FphOHdw"/>
+      <reconfigurationRules href="reconf.experiments#/"/>
+      <monitorRepository href="../monitors/ms.monitorrepository#_stq4cKGxEeWc24RAWmuF8Q"/>
+      <usageEvolution href="../loadsimulation/fourthscenario.usageevolution#_dll9EKlnEeW7dt0FphOHdw"/>
+      <adaptationBehaviorRepository href="platform:/plugin/org.palladiosimulator.simulizar.action.repository/model/repository.actions#_fYQfAKAbEeWZkvqD6d6Miw"/>
+    </initialModel>
+  </experiments>
+</ExperimentAutomation.Experiments:ExperimentRepository>

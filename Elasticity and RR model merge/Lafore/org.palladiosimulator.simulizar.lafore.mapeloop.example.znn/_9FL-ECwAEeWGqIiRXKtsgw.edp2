@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ASCII"?>
+<org.palladiosimulator.edp2.models:ExperimentGroup xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/ExperimentData/0.9.1" xmlns:org.palladiosimulator.edp2.models_1="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.0" id="_9FL-ECwAEeWGqIiRXKtsgw" purpose="SimuLizar_ZNNCOM">
+  <experimentSettings id="_9FzCECwAEeWGqIiRXKtsgw" description="Default Variation" measuringTypes="_9G_U4CwAEeWGqIiRXKtsgw _9flloCwBEeWGqIiRXKtsgw">
+    <experimentRuns id="_9FzCESwAEeWGqIiRXKtsgw" duration="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAAAAAGTgHNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==" startTime="2015-07-16T23:23:51.601+0200">
+      <measurement id="_9G_U4SwAEeWGqIiRXKtsgw" measuringType="_9G_U4CwAEeWGqIiRXKtsgw">
+        <measurementRanges endTime="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAFOmMIcMXNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==" startTime="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAFOmMCIsXNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==">
+          <rawMeasurements id="_9G_U4iwAEeWGqIiRXKtsgw">
+            <dataSeries xsi:type="org.palladiosimulator.edp2.models:DoubleBinaryMeasurements" valuesUuid="_9G_U4ywAEeWGqIiRXKtsgw" storageUnit="ACED00057372001B6A617661782E6D6561737572652E756E69742E42617365556E697400000000000000010200014C00075F73796D626F6C7400124C6A6176612F6C616E672F537472696E673B787200176A617661782E6D6561737572652E756E69742E556E6974CDC8DE1678CD5267020000787074000173"/>
+            <dataSeries xsi:type="org.palladiosimulator.edp2.models:DoubleBinaryMeasurements" valuesUuid="_9G_U5CwAEeWGqIiRXKtsgw" storageUnit="ACED00057372001B6A617661782E6D6561737572652E756E69742E42617365556E697400000000000000010200014C00075F73796D626F6C7400124C6A6176612F6C616E672F537472696E673B787200176A617661782E6D6561737572652E756E69742E556E6974CDC8DE1678CD5267020000787074000173"/>
+          </rawMeasurements>
+        </measurementRanges>
+      </measurement>
+    </experimentRuns>
+    <experimentRuns id="_9ek5ACwBEeWGqIiRXKtsgw" duration="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAAAAAGXpnNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==" startTime="2015-07-16T23:31:03.696+0200">
+      <measurement id="_9fmMsCwBEeWGqIiRXKtsgw" measuringType="_9flloCwBEeWGqIiRXKtsgw">
+        <measurementRanges endTime="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAFOmMi4NnNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==" startTime="rO0ABXNyABpqYXZheC5tZWFzdXJlLk1lYXN1cmUkTG9uZwAAAAAAAAABAgACSgAGX3ZhbHVlTAAFX3VuaXR0ABlMamF2YXgvbWVhc3VyZS91bml0L1VuaXQ7eHIAFWphdmF4Lm1lYXN1cmUuTWVhc3VyZRLhH5KGpamaAgAAeHAAAAFOmMcgkHNyABtqYXZheC5tZWFzdXJlLnVuaXQuQmFzZVVuaXQAAAAAAAAAAQIAAUwAB19zeW1ib2x0ABJMamF2YS9sYW5nL1N0cmluZzt4cgAXamF2YXgubWVhc3VyZS51bml0LlVuaXTNyN4WeM1SZwIAAHhwdAABcw==">
+          <rawMeasurements id="_9fmMsSwBEeWGqIiRXKtsgw">
+            <dataSeries xsi:type="org.palladiosimulator.edp2.models:DoubleBinaryMeasurements" valuesUuid="_9fmMsiwBEeWGqIiRXKtsgw" storageUnit="ACED00057372001B6A617661782E6D6561737572652E756E69742E42617365556E697400000000000000010200014C00075F73796D626F6C7400124C6A6176612F6C616E672F537472696E673B787200176A617661782E6D6561737572652E756E69742E556E6974CDC8DE1678CD5267020000787074000173"/>
+            <dataSeries xsi:type="org.palladiosimulator.edp2.models:DoubleBinaryMeasurements" valuesUuid="_9fmMsywBEeWGqIiRXKtsgw" storageUnit="ACED00057372001B6A617661782E6D6561737572652E756E69742E42617365556E697400000000000000010200014C00075F73796D626F6C7400124C6A6176612F6C616E672F537472696E673B787200176A617661782E6D6561737572652E756E69742E556E6974CDC8DE1678CD5267020000787074000173"/>
+          </rawMeasurements>
+        </measurementRanges>
+      </measurement>
+    </experimentRuns>
+  </experimentSettings>
+  <measuringTypes id="_9G_U4CwAEeWGqIiRXKtsgw" experimentSettings="_9FzCECwAEeWGqIiRXKtsgw" measuringPoint="//@measuringPointRepositories.0/@measuringPoints.2">
+    <metric xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_mZb3MdoLEeO-WvSDaR6unQ"/>
+  </measuringTypes>
+  <measuringTypes id="_9flloCwBEeWGqIiRXKtsgw" experimentSettings="_9FzCECwAEeWGqIiRXKtsgw">
+    <metric xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_mZb3MdoLEeO-WvSDaR6unQ"/>
+    <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="palladio.znncom/monitor/ZnnMeasuringPoints.measuringpoint#//@measuringPoints.2"/>
+  </measuringTypes>
+  <measuringPointRepositories id="_XPTTgB65EeWEk-p9lX9HbQ">
+    <measuringPoints xsi:type="org.palladiosimulator.edp2.models_1:ResourceURIMeasuringPoint" stringRepresentation="Repository" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_UKg1IKnmEeO_FKTWaHXFBg" measuringPoint="Repository" resourceURI="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_UKg1IKnmEeO_FKTWaHXFBg"/>
+    <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: OverloadUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg">
+      <usageScenario href="palladio.znncom/clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: OverprovisionedUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overprovisioned.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg">
+      <usageScenario href="palladio.znncom/clients_overprovisioned.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:SystemOperationMeasuringPoint" stringRepresentation="ZnnInitialStateSystem.Required_INews_LoadBalancer.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationRequiredRole" href="palladio.znncom/znn.repository#__yEqcKnnEeO_FKTWaHXFBg"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <system href="palladio.znncom/znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:SystemOperationMeasuringPoint" stringRepresentation="ZnnInitialStateSystem.Required_INews_LoadBalancer.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationRequiredRole" href="palladio.znncom/znn.repository#_2cWmQBjjEeWbbI-GSZtKbQ"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <system href="palladio.znncom/znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:SystemOperationMeasuringPoint" stringRepresentation="ZnnInitialStateSystem.Required_INews_LoadBalancer.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationRequiredRole" href="palladio.znncom/znn.repository#_1OGqcBjjEeWbbI-GSZtKbQ"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <system href="palladio.znncom/znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:SystemOperationMeasuringPoint" stringRepresentation="ZnnInitialStateSystem.Required_INews_LoadBalancer.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationRequiredRole" href="palladio.znncom/znn.repository#__V1aYKnnEeO_FKTWaHXFBg"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <system href="palladio.znncom/znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:SystemOperationMeasuringPoint" stringRepresentation="ZnnInitialStateSystem.Required_INews_LoadBalancer.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationRequiredRole" href="palladio.znncom/znn.repository#_-3KhYKnnEeO_FKTWaHXFBg"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <system href="palladio.znncom/znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+    </measuringPoints>
+    <measuringPoints xsi:type="pcmmeasuringpoint:AssemblyOperationMeasuringPoint" stringRepresentation="Operation: Assembly_NewsService 1 &lt;NewsService>.Provided_INews_NewsService.getNews" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg">
+      <role xsi:type="repository:OperationProvidedRole" href="palladio.znncom/znn.repository#_liPIIBjbEeWNAuA7wCUwzg"/>
+      <operationSignature href="palladio.znncom/znn.repository#_16dhkKnmEeO_FKTWaHXFBg"/>
+      <assembly href="palladio.znncom/znn.system#_XdkvABjlEeWbbI-GSZtKbQ"/>
+    </measuringPoints>
+  </measuringPointRepositories>
+</org.palladiosimulator.edp2.models:ExperimentGroup>

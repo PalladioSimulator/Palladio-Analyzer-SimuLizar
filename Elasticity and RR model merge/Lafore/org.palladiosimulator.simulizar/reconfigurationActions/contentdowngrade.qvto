@@ -1,0 +1,38 @@
+/*
+ * This simple QVTO transformation implements the ContentDowngrade reconfiguration action for the ZNN.COM example. 
+ * It simply changes the values of the branch probability for providing multimedia or textual news content.
+ *
+ */
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.0';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.0';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.0';
+
+transformation ContentDowngrade(		
+							inout pcmAllocation : PCM_ALLOC,
+							inout pcmRep : PCM_REP, 
+							inout pcmSystem : PCM_SYS ) {
+								
+		main() {
+			assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+			var basicComponents := pcmAllocation.rootObjects()[Allocation].allocationContexts_Allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext[BasicComponent];
+			var servers := basicComponents->select(c | c.entityName = "NewsService")->any(true);
+			var loadBalancer := basicComponents->select(c | c.entityName = "LoadBalancer")->any(true);
+			
+			var prob1 := servers.serviceEffectSpecifications__BasicComponent[ResourceDemandingBehaviour]->any(true).steps_Behaviour[BranchAction]->any(true).branches_Branch[ProbabilisticBranchTransition];
+			var prob2 := loadBalancer.serviceEffectSpecifications__BasicComponent[ResourceDemandingBehaviour]->any(true).steps_Behaviour[BranchAction]->any(true).branches_Branch[ProbabilisticBranchTransition];
+			
+			var numActiveServers = (prob2->select(p | p.branchProbability != 0.0)->size());
+			log ("Active: " + numActiveServers.toString());
+			if (numActiveServers > 1) then 
+			{
+				prob1->select(c | c.entityName = "selectMultimedia")->any(true).branchProbability := 0.0;
+				prob1->select(c | c.entityName = "selectTextual")->any(true).branchProbability := 1.0;
+			} 
+			endif;
+			
+		}					
+								
+	}

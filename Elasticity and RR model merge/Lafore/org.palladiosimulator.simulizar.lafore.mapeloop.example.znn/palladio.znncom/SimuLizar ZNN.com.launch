@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
+<stringAttribute key="EDP2RepositoryID" value="_TQdesCwHEeWJT8rfMwezuQ"/>
+<stringAttribute key="accuracyQualityAnnotationFile" value=""/>
+<stringAttribute key="allocationFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/znn.allocation"/>
+<booleanAttribute key="clear" value="true"/>
+<stringAttribute key="confidenceBatchSize" value="200"/>
+<stringAttribute key="confidenceHalfWidth" value="10"/>
+<stringAttribute key="confidenceLevel" value="95"/>
+<stringAttribute key="confidenceMinNumberOfBatches" value="60"/>
+<stringAttribute key="confidenceModelElementName" value=""/>
+<stringAttribute key="confidenceModelElementURI" value=""/>
+<booleanAttribute key="confidenceUseAutomaticBatches" value="true"/>
+<intAttribute key="datasourceID" value="0"/>
+<intAttribute key="de.uka.ipd.sdq.workflowengine.debuglevel" value="2"/>
+<stringAttribute key="experimentRun" value="SimuLizar_ZNNCOM"/>
+<stringAttribute key="featureConfig" value="pathmap://PCM_MODELS/ConnectorConfig.featureconfig"/>
+<stringAttribute key="fixedSeed0" value="0"/>
+<stringAttribute key="fixedSeed1" value="1"/>
+<stringAttribute key="fixedSeed2" value="2"/>
+<stringAttribute key="fixedSeed3" value="3"/>
+<stringAttribute key="fixedSeed4" value="4"/>
+<stringAttribute key="fixedSeed5" value="5"/>
+<stringAttribute key="infrastructureModelFile" value=""/>
+<stringAttribute key="maximum" value=""/>
+<stringAttribute key="maximumMeasurementCount" value="10000"/>
+<stringAttribute key="minimum" value=""/>
+<stringAttribute key="monitorRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/monitor/MonitorsRep.monitorrepository"/>
+<stringAttribute key="outpath" value="org.palladiosimulator.temporary"/>
+<stringAttribute key="persistenceFramework" value="Experiment Data Persistency &amp; Presentation (EDP2)"/>
+<stringAttribute key="reconfigurationRulesFolder" value=""/>
+<booleanAttribute key="reliability.simulateFailures" value="false"/>
+<stringAttribute key="serviceLevelObjectiveRepositoryFile" value=""/>
+<stringAttribute key="simTime" value="200"/>
+<booleanAttribute key="simulateAccuracy" value="false"/>
+<booleanAttribute key="simulateFailures" value="false"/>
+<booleanAttribute key="simulateLinkingResources" value="false"/>
+<stringAttribute key="simulatorId" value="de.uka.ipd.sdq.codegen.simucontroller.simulizar"/>
+<stringAttribute key="stepwidth" value=""/>
+<stringAttribute key="strategiesRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/knowledgeModels/design/ZnnStrategiesRepository.strategies"/>
+<stringAttribute key="usageEvolutionFile" value=""/>
+<stringAttribute key="usageFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/clients_overprovisioned.usagemodel"/>
+<booleanAttribute key="useConfidenceStopCondition" value="false"/>
+<booleanAttribute key="useFixedSeed" value="false"/>
+<stringAttribute key="variable" value=""/>
+<stringAttribute key="variationId" value="Default Variation"/>
+<booleanAttribute key="verboseLogging" value="false"/>
+<stringAttribute key="violationsRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/knowledgeModels/design/ZnnViolationsRepository.violations"/>
+<stringAttribute key="violationstrategymappingsRepositoryFile" value="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/knowledgeModels/design/ZnnViolationStrategyMappingsRepository.violationstrategymappings"/>
+</launchConfiguration>

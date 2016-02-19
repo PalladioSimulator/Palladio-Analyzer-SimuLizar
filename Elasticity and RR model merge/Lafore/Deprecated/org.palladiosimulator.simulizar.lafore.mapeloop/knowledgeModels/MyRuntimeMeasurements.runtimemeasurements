@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="ASCII"?>
+<srm:RuntimeMeasurementModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:srm="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0" id="_5Hyy4BEOEeWUvpgQcCh0yw">
+  <measurements id="_5iNeABEOEeWUvpgQcCh0yw" measuringValue="5.047060747068966">
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/monitor/usagescenario.measuringpoint#/"/>
+    <measurementSpecification href="platform:/resource/org.palladiosimulator.simulizar.lafore.mapeloop.example.znn/palladio.znncom/monitor/MyMonitors.monitorrepository#_QfOkENh_EeSCTeOPoRaaPQ"/>
+  </measurements>
+</srm:RuntimeMeasurementModel>
