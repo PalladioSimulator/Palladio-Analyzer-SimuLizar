@@ -59,7 +59,8 @@ public class SimuComModelMock extends SimuComModel {
         configuration.put(SimuComConfig.EXPERIMENT_RUN, SimuComConfig.DEFAULT_EXPERIMENT_RUN);
         configuration.put(SimuComConfig.SIMULATION_TIME, SimuComConfig.DEFAULT_SIMULATION_TIME);
         configuration.put(SimuComConfig.MAXIMUM_MEASUREMENT_COUNT, SimuComConfig.DEFAULT_MAXIMUM_MEASUREMENT_COUNT);
-        configuration.put(SimuComConfig.PERSISTENCE_RECORDER_NAME, "Experiment Data Persistency & Presentation (EDP2)");
+        configuration.put(SimuComConfig.PERSISTENCE_RECORDER_NAME,
+                org.palladiosimulator.recorderframework.edp2.Activator.EDP2_ID);
         configuration.put(SimuComConfig.USE_FIXED_SEED, false);
         configuration.put("EDP2RepositoryID", repoId);
 
@@ -96,6 +97,7 @@ public class SimuComModelMock extends SimuComModel {
     }
 
     private static class MockWindowMoveOnTriggeredEvent extends PeriodicallyTriggeredSimulationEntity {
+
         private final SimulizarSlidingWindow window;
 
         private MockWindowMoveOnTriggeredEvent(final SimuComModel model, final SimulizarSlidingWindow window) {

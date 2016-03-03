@@ -96,7 +96,7 @@ public class SimulizarRunConfigTest {
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(USAGEMODEL_EXTENSION,
                 new UsagemodelResourceFactoryImpl());
 
-        Map<URI, URI> uriMap = URIConverter.URI_MAP;
+        final Map<URI, URI> uriMap = URIConverter.URI_MAP;
         uriMap.put(URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP), URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP_TARGET));
         uriMap.put(URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP), URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP_TARGET));
 
@@ -115,7 +115,7 @@ public class SimulizarRunConfigTest {
                 .initializeLocalDirectoryRepository(this.tempFolder.newFolder("testRepo"));
         RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), this.repo);
 
-        Map<String, Object> properties = createSimulationProperties();
+        final Map<String, Object> properties = createSimulationProperties();
 
         this.simulizarConfiguration = new SimuLizarWorkflowConfiguration(properties);
         this.simulizarConfiguration.setAllocationFiles(Arrays.asList(allocationUri.toString()));
@@ -126,7 +126,7 @@ public class SimulizarRunConfigTest {
         this.simulizarConfiguration.setUsageEvolutionFile(SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
         this.simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
 
-        MDSDBlackboard blackboard = new MDSDBlackboard();
+        final MDSDBlackboard blackboard = new MDSDBlackboard();
         this.simulizarJob = new MinimalPCMInterpreterRootCompositeJob(this.simulizarConfiguration, blackboard);
     }
 
@@ -161,7 +161,7 @@ public class SimulizarRunConfigTest {
 
     @Test
     public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder() throws IOException {
-        File emptyRulesFolder = this.tempFolder.newFolder();
+        final File emptyRulesFolder = this.tempFolder.newFolder();
         this.simulizarConfiguration
                 .setReconfigurationRulesFolder(emptyRulesFolder.toPath().normalize().toAbsolutePath().toString());
         runSuccessfulSimulation();
@@ -199,12 +199,13 @@ public class SimulizarRunConfigTest {
     }
 
     private Map<String, Object> createSimulationProperties() {
-        Map<String, Object> properties = new HashMap<>();
+        final Map<String, Object> properties = new HashMap<>();
 
         properties.put(SimuComConfig.SIMULATE_FAILURES, false);
         properties.put(SimuComConfig.SIMULATE_LINKING_RESOURCES, false);
         properties.put(SimuComConfig.USE_FIXED_SEED, false);
-        properties.put(SimuComConfig.PERSISTENCE_RECORDER_NAME, "Experiment Data Persistency & Presentation (EDP2)");
+        properties.put(SimuComConfig.PERSISTENCE_RECORDER_NAME,
+                org.palladiosimulator.recorderframework.edp2.Activator.EDP2_ID);
         properties.put("EDP2RepositoryID", this.repo.getId());
         properties.put(SimuComConfig.SIMULATOR_ID, "de.uka.ipd.sdq.codegen.simucontroller.simulizar");
         properties.put(SimuComConfig.EXPERIMENT_RUN, SimuComConfig.DEFAULT_EXPERIMENT_RUN);
@@ -220,23 +221,23 @@ public class SimulizarRunConfigTest {
     }
 
     private void runSuccessfulSimulation() {
-        IProgressMonitor progressMonitor = new NullProgressMonitor();
+        final IProgressMonitor progressMonitor = new NullProgressMonitor();
         try {
             this.simulizarJob.execute(progressMonitor);
-        } catch (Throwable anyException) {
+        } catch (final Throwable anyException) {
             failDueToException(anyException);
         }
     }
 
-    private static void failDueToException(Throwable unexpectedException) {
+    private static void failDueToException(final Throwable unexpectedException) {
         fail("Unexpected exception thrown by test case:\n---------------------\nType: " + unexpectedException
                 + "\nStack Trace: " + stacktraceToString(unexpectedException) + "\n---------------------");
     }
 
-    private static String stacktraceToString(Throwable exception) {
-        StringBuilder result = new StringBuilder();
+    private static String stacktraceToString(final Throwable exception) {
+        final StringBuilder result = new StringBuilder();
         if (exception.getStackTrace() != null) {
-            for (StackTraceElement element : exception.getStackTrace()) {
+            for (final StackTraceElement element : exception.getStackTrace()) {
                 result.append(element.toString() + "\n");
             }
         }
