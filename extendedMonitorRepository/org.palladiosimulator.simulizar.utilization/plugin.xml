@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.palladiosimulator.utilization"
+         name="Utilization Analysis Extension"
+         point="org.palladiosimulator.simulizar.interpreter.listener.probeframework">
+      <probeFrameworkListenerDecorator
+            decorator="org.palladiosimulator.simulizar.utilization.probeframework.UtilizationProbeFrameworkListenerDecorator">
+      </probeFrameworkListenerDecorator>
+   </extension>
+
+</plugin>
