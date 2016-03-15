@@ -193,9 +193,11 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 .getResourceContainer_ProcessingResourceSpecification();
         final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) this
                 .getSimulatedResourceContainer(processingResource);
-        final String schedulingStrategy = this.getSchedulingStrategy(processingResource);
+        // ScheduledResource takes care about loading (extendend) scheduled resources
+        final String schedulingStrategy = processingResource.getSchedulingPolicy().getId();
         final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
                 processingResource, new String[] {}, resourceContainer.getId(), schedulingStrategy);
+        scheduledResource.activateResource();
 
         this.attachMonitors(processingResource, resourceContainer, schedulingStrategy, scheduledResource);
 
@@ -237,19 +239,6 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             }
         }
         throw new RuntimeException("Did not find scheduled resource for type ID " + typeId);
-    }
-
-    private String getSchedulingStrategy(final ProcessingResourceSpecification processingResource) {
-        final String schedulingStrategy = processingResource.getSchedulingPolicy().getId();
-        if (schedulingStrategy.equals("ProcessorSharing")) {
-            return SchedulingStrategy.PROCESSOR_SHARING;
-        } else if (schedulingStrategy.equals("FCFS")) {
-            return SchedulingStrategy.FCFS;
-        } else if (schedulingStrategy.equals("Delay")) {
-            return SchedulingStrategy.DELAY;
-        } else {
-            throw new RuntimeException("Unknown scheduling strategy");
-        }
     }
 
     /**
