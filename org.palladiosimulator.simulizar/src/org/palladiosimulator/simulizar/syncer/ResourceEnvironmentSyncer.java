@@ -194,16 +194,15 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) this
                 .getSimulatedResourceContainer(processingResource);
         // ScheduledResource takes care about loading (extendend) scheduled resources
-        final String schedulingStrategy = processingResource.getSchedulingPolicy().getId();
         final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
-                processingResource, new String[] {}, resourceContainer.getId(), schedulingStrategy);
+                processingResource, new String[] {}, resourceContainer.getId(), processingResource.getSchedulingPolicy().getId());
         scheduledResource.activateResource();
 
-        this.attachMonitors(processingResource, resourceContainer, schedulingStrategy, scheduledResource);
+        this.attachMonitors(processingResource, resourceContainer, scheduledResource.getSchedulingStrategyID(), scheduledResource);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: " + this.getActiveResourceTypeID(processingResource)
-                    + ", Description: " + ", SchedulingStrategy: " + schedulingStrategy);
+                    + ", Description: " + ", SchedulingStrategy: " + scheduledResource.getSchedulingStrategyID());
         }
     }
 
