@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_hmj3UHjDEeWM9vp-oUqXhQ">
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in server" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment#_jdsi4LwoEeSjHMSRTqzAVg">
+    <activeResource href="../server.resourceenvironment#_jdsi4LwoEeSjHMSRTqzAVg"/>
+  </measuringPoints>
+</org.palladiosimulator.edp2.models:MeasuringPointRepository>
