@@ -1,11 +1,15 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -27,13 +31,14 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
  * models) that can be parameters of QVTo transformations. To store a model in the cache, its
  * corresponding {@link EPackage} (its meta-model) is used as tag.
  * 
- * @author Florian Rosenthal
+ * @author Florian Rosenthal, Sebastian Krach
  *
  */
 public class QVToModelCache {
 
     // use a map: EPackage, i.e, meta-model serves as key/tag
-    private final Map<EPackage, EObject> cache;
+    private final Map<EPackage, Set<EObject>> cache;
+    
     private final IModelAccess modelAccess;
 
     // put EClass objects of blackboard models that are not intended to be transformation parameters
@@ -90,7 +95,8 @@ public class QVToModelCache {
     private QVToModelCache(QVToModelCache from) {
         this.cache = new HashMap<>();
         this.modelAccess = from.modelAccess;
-        this.cache.putAll(from.cache);
+        Objects.requireNonNull(from);
+        from.cache.values().stream().flatMap(Collection::stream).forEach(this::storeModel);
     }
 
     /**
@@ -105,12 +111,21 @@ public class QVToModelCache {
     public void storeModel(EObject modelInstance) {
         if (modelInstance != null) {
             EPackage metaModel = MODELTYPE_RETRIEVER.doSwitch(modelInstance);
-            // if (this.cache.containsKey(metaModel)) {
-            // throw new IllegalArgumentException("Already one instance of meta-model " +
-            // metaModel.getName()
-            // + " in store.");
-            // }
-            this.cache.put(metaModel, modelInstance);
+            
+            // The following is to circumvent problems of providing EPackages as model instances 
+            // to transformations, as the meta model instances are identified using their namespace
+            // uri, which is the same for the EPackage instance and the model instance.
+            // Simplified: We do not want to transform meta models.
+            if (modelInstance.equals(metaModel))
+                return;
+            
+            //Optional.ofNullable(this.namespaceIndex.get(metaModel.getNsURI())
+            Optional.ofNullable(this.cache.get(metaModel))
+                .orElseGet(() -> 
+                {
+                    this.cache.put(metaModel, new HashSet<>());
+                    return this.cache.get(metaModel);
+                }).add(modelInstance);
         }
     }
 
@@ -144,7 +159,7 @@ public class QVToModelCache {
     }
 
     /**
-     * Removes the currently stored model that is an instance of the meta-model represented by the
+     * Removes all of the currently stored models which are instances of the meta-model represented by the
      * given ePackage.<br>
      * In case {@code null} is passed, this method does nothing.
      * 
@@ -165,8 +180,8 @@ public class QVToModelCache {
      *            The {@link EObject} to remove from the cache.
      */
     public void removeModel(EObject model) {
-        if (model != null && this.cache.containsValue(model)) {
-            removeModelOfType(MODELTYPE_RETRIEVER.doSwitch(model));
+        if (model != null) {
+            this.cache.get(MODELTYPE_RETRIEVER.doSwitch(model)).remove(model);
         }
     }
 
@@ -199,10 +214,15 @@ public class QVToModelCache {
      * @throws NullPointerException
      *             In case {@code ePackage == null}.
      */
-    public Optional<EObject> getModelByType(EPackage ePackage) {
+    public Collection<EObject> getModelsByType(EPackage ePackage) {
         String namespace = Objects.requireNonNull(ePackage.getNsURI());
-        return this.cache.keySet().stream().filter(key -> key.getNsURI().equals(namespace)).findAny()
-                .map(this.cache::get);
+        Collection<EPackage> res =  this.cache.keySet().stream()
+                .filter(key -> key.getNsURI().equals(namespace)).collect(Collectors.toList());
+        Collection<Set<EObject>> result = res.stream()
+                .map(this.cache::get).collect(Collectors.toList());
+        return result.stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
     /**
@@ -215,7 +235,7 @@ public class QVToModelCache {
      * @throws NullPointerException
      *             In case {@code ePackage == null}.
      * 
-     * @see #getModelByType(EPackage)
+     * @see #getModelsByType(EPackage)
      */
     public boolean containsModelOfType(EPackage ePackage) {
         return this.cache.containsKey(Objects.requireNonNull(ePackage));

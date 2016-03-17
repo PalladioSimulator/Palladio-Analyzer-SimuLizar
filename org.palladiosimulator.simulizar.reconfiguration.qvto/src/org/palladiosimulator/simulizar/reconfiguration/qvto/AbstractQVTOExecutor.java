@@ -1,13 +1,22 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collector;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.Diagnostic;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContext;
 import org.eclipse.m2m.qvt.oml.ExecutionContextImpl;
@@ -43,25 +52,31 @@ public abstract class AbstractQVTOExecutor {
     // this switch encapsulates the special treatment of the RuntimeMeasurementModel
     // to incorporate other special cases, use nested switches within the 'defaultCase(EObject)'
     // method
-    private static final RuntimeMeasurementSwitch<ModelExtent> CREATE_NON_EMPTY_MODEL_EXTENT_SWITCH = new RuntimeMeasurementSwitch<ModelExtent>() {
+    private static final RuntimeMeasurementSwitch<Collection<EObject>> CREATE_NON_EMPTY_MODEL_ELEMENTS_SWITCH = new RuntimeMeasurementSwitch<Collection<EObject>>() {
 
         // special treatment for RuntimeMeasurementModel: directly pass contained measurements to
         // model extent
         @Override
-        public ModelExtent caseRuntimeMeasurementModel(RuntimeMeasurementModel runtimeMeasurementModel) {
-            return new BasicModelExtent(runtimeMeasurementModel.getMeasurements());
+        public Collection<EObject> caseRuntimeMeasurementModel(RuntimeMeasurementModel runtimeMeasurementModel) {
+            return new ArrayList<EObject>(runtimeMeasurementModel.getMeasurements());
         }
 
         // default case to handle all other models
         // to incorporate other special treatments, call nested switches inside this method
         @Override
-        public ModelExtent defaultCase(EObject model) {
-            final BasicModelExtent result = new BasicModelExtent();
-            result.add(model);
-            return result;
+        public Collection<EObject> defaultCase(EObject model) {
+            return Collections.singletonList(model);
         }
     };
-
+    
+    /**
+     * Accumulates the model elements and finally creates a basic model extent
+     */
+    private static final Collector<EObject, List<EObject>, ModelExtent> BASIC_MODEL_EXTENT_COLLECTOR = 
+            Collector.of(ArrayList::new, 
+                         (acc, t) -> acc.add(t), 
+                         (l, r) -> {l.addAll(r); return l;},
+                         BasicModelExtent::new);
     /**
      * Initializes a new instance of the {@link AbstractQVTOExecutor} class with the given
      * parameters.
@@ -239,11 +254,16 @@ public abstract class AbstractQVTOExecutor {
         ModelExtent[] modelExtents = new ModelExtent[transformationData.getParameterCount()];
         // prepare the in/inout params first
         for (TransformationParameterInformation inParams : transformationData.getInParameters()) {
-            EObject sourceModel = this.availableModels.getModelByType(inParams.getParameterType())
-                    .orElseThrow(() -> new IllegalStateException("No model in QVTo model cache for "
-                            + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
-                            + transformationData.getTransformationName() + "'"));
-            modelExtents[inParams.getParameterIndex()] = CREATE_NON_EMPTY_MODEL_EXTENT_SWITCH.doSwitch(sourceModel);
+            Collection<EObject> sourceModel = this.availableModels.getModelsByType(inParams.getParameterType());
+            if (sourceModel.size() < 1) {
+                throw new IllegalStateException("No model in QVTo model cache for "
+                        + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
+                        + transformationData.getTransformationName() + "'");
+            }
+            modelExtents[inParams.getParameterIndex()] = sourceModel.stream()
+                    .map(CREATE_NON_EMPTY_MODEL_ELEMENTS_SWITCH::doSwitch)
+                    .flatMap(Collection::stream)
+                    .collect(BASIC_MODEL_EXTENT_COLLECTOR);
         }
         // now the pure out params, they need empty model extents
         transformationData.getPureOutParameters().stream()
