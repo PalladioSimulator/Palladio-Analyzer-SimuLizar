@@ -1,0 +1,19 @@
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation changepowerstatecompletion(in pcmControllerRepository : PCM_REP,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE,
+							out actionMapping : ACTION_MAPPING);
+
+main() {
+	pcmControllerRepository.rootObjects()[Repository]->any(true)->xmap createDummy();	
+}
+
+mapping Repository::createDummy() : Mapping@actionMapping {
+		result.controllerMappings := OrderedSet {};
+		result.entityName := "dummy";
+		result.id := "dummyId";
+}
