@@ -51,12 +51,12 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     Optional<Mapping> executeControllerCompletion(Repository controllerCompletionRepository,
             String controllerCompletionPath) {
         // cache repo, if present
-        Optional<EObject> cachedRepo = this.getModelByType(REPOSITORY_EPACKAGE);
+        Collection<EObject> cachedRepo = this.getModelsByType(REPOSITORY_EPACKAGE);
         this.storeModel(controllerCompletionRepository);
         URI controllerCompletionUri = URI.createURI(controllerCompletionPath);
         boolean result = this.executeTransformation(controllerCompletionUri);
         // restore if necessary
-        cachedRepo.ifPresent(repoInCache -> this.storeModel(repoInCache));
+        cachedRepo.forEach(repoInCache -> this.storeModel(repoInCache));
         if (result) {
             return this.getModelByType(MAPPING_EPACKAGE).map(obj -> (Mapping) obj);
         }
@@ -102,8 +102,13 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         return getAvailableTransformations().get(Objects.requireNonNull(transformationId));
     }
 
+    Collection<EObject> getModelsByType(EPackage modelType) {
+        return getAvailableModels().getModelsByType(Objects.requireNonNull(modelType));
+    }
+    
     Optional<EObject> getModelByType(EPackage modelType) {
-        return getAvailableModels().getModelByType(Objects.requireNonNull(modelType));
+        Collection<EObject> modelsOfType = this.getModelsByType(Objects.requireNonNull(modelType)); 
+        return modelsOfType.isEmpty() ? Optional.empty() : Optional.of(modelsOfType.iterator().next());
     }
 
     @Override
