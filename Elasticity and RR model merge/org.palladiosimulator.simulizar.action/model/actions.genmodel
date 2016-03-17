@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/org.palladiosimulator.simulizar.action/src" modelPluginID="org.palladiosimulator.simulizar.action"
+    modelName="Actions" rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container"
+    codeFormatting="true" importerID="org.eclipse.emf.importer.ecore" complianceLevel="8.0"
+    copyrightFields="false" usedGenPackages="../../org.eclipse.emf.ecore/model/Ecore.genmodel#//ecore ../../org.modelversioning.emfprofile/model/emfprofiles.genmodel#//emfprofile ../../de.uka.ipd.sdq.identifier/model/identifier.genmodel#//identifier ../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm ../../de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel#//probfunction ../../de.uka.ipd.sdq.stoex/model/stoex.genmodel#//stoex ../../de.uka.ipd.sdq.units/model/Units.genmodel#//units"
+    importOrganizing="true" cleanup="true">
+  <foreignModel>actions.ecore</foreignModel>
+  <genPackages prefix="Action" basePackage="org.palladiosimulator.simulizar" disposableProviderFactory="true"
+      ecorePackage="actions.ecore#/">
+    <nestedGenPackages prefix="Core" basePackage="org.palladiosimulator.simulizar.action"
+        disposableProviderFactory="true" fileExtensions="actions" ecorePackage="actions.ecore#//core">
+      <genClasses ecoreClass="actions.ecore#//core/AdaptationBehaviorRepository">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/actions"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehaviorRepository/includedRepositories"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="actions.ecore#//core/AbstractAdaptationBehavior">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AbstractAdaptationBehavior/adaptationActions"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/AdaptationBehavior">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/involvedRoles"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/transientStateProfile"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationBehavior/repository"/>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute/controllerCallsVariableUsages"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute.1">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.1/affectedRoleSet"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync/controllerCallsVariableUsages"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync.1">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.1/affectedRoleSet"/>
+        </genOperations>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/NestedAdaptationBehavior">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/NestedAdaptationBehavior/guardedTransition"/>
+      </genClasses>
+      <genClasses image="false" ecoreClass="actions.ecore#//core/AdaptationAction">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/AdaptationAction/adaptationBehavior"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/StateTransformingAction"/>
+      <genClasses ecoreClass="actions.ecore#//core/EnactAdaptationAction">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/EnactAdaptationAction/adaptationStepURI"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/ResourceDemandingAction">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/ResourceDemandingAction/controllerCompletionURI"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ResourceDemandingAction/controllerCalls"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/GuardedAction">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedAction/guardedTransitions"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/GuardedTransition">
+        <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/GuardedTransition/conditionURI"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/guardedAction"/>
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/nestedAdaptationBehavior"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/RoleType">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/type"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/RoleType/action"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//core/ControllerCall">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/ControllerCall/component"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//core/ControllerCall/calledSignature"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/ControllerCall/resourceDemandingStep"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Mapping" basePackage="org.palladiosimulator.simulizar.action"
+        disposableProviderFactory="true" ecorePackage="actions.ecore#//mapping">
+      <genClasses ecoreClass="actions.ecore#//mapping/Mapping">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//mapping/Mapping/controllerMappings"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//mapping/ControllerMapping">
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/mappedCall"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/controllerRole"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//mapping/ControllerMapping/mapping"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Instance" basePackage="org.palladiosimulator.simulizar.action"
+        disposableProviderFactory="true" ecorePackage="actions.ecore#//instance">
+      <genClasses ecoreClass="actions.ecore#//instance/RoleSet">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//instance/RoleSet/roles"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//instance/Role">
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//instance/Role/roleSet"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//instance/Role/roleType"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//instance/Role/value"/>
+      </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Parameter" basePackage="org.palladiosimulator.simulizar.action"
+        disposableProviderFactory="true" ecorePackage="actions.ecore#//parameter">
+      <genClasses ecoreClass="actions.ecore#//parameter/ControllerCallInputVariableUsage">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//parameter/ControllerCallInputVariableUsage/variableUsage"/>
+        <genFeatures notify="false" createChild="false" propertySortChoices="true"
+            ecoreFeature="ecore:EReference actions.ecore#//parameter/ControllerCallInputVariableUsage/correspondingControllerCall"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//parameter/ControllerCallInputVariableUsage/containingCollection"/>
+      </genClasses>
+      <genClasses ecoreClass="actions.ecore#//parameter/ControllerCallInputVariableUsageCollection">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//parameter/ControllerCallInputVariableUsageCollection/controllerCallInputVariableUsages"/>
+      </genClasses>
+    </nestedGenPackages>
+  </genPackages>
+</genmodel:GenModel>
