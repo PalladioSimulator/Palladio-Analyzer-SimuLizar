@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.syncer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -266,12 +267,11 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                     // setup utilization calculators depending on their scheduling strategy
                     // and number of cores (e.g., more than 1 cores requires overall utilization)
                     if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
-                        if (scheduledResource.getNumberOfInstances() == 1) {
-                            CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                                    this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
-                        } else {
-                            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource,
-                                    this.runtimeModel.getModel(), measuringPoint);
+                        CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
+                                this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
+                        if (measuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
+                        	MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource, scheduledResource.getNumberOfInstances());
+                            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(), utilization);
                         }
                     } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
                             || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
@@ -281,8 +281,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                         CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
                                 this.runtimeModel.getModel(), measuringPoint, 0);
                     } else {
-                        throw new IllegalArgumentException(
-                                "Unknown active resource type instrumented with state metric");
+                        CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
+                                this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
                     }
                 } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
                     // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
