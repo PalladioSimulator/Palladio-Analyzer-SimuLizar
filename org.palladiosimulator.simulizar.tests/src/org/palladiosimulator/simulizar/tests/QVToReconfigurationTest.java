@@ -324,29 +324,6 @@ public class QVToReconfigurationTest {
         responeTimeRuntimeMeasuremnt.setMeasuringValue(m);
         responeTimeRuntimeMeasuremnt.setMeasurementSpecification(measurementSpecification);
 
-        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
-        // new RepositoryResourceFactoryImpl());
-        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-        // new ResourceenvironmentResourceFactoryImpl());
-        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
-        // new SystemResourceFactoryImpl());
-        // Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
-        // new AllocationResourceFactoryImpl());
-
-        /*
-         * Get the URIs of the files needed to create the model
-         */
-        // URI repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
-        // repositoryURI = CommonPlugin.resolve(repositoryURI);
-        // URI resourceEnvironmentURI = URI.createPlatformPluginURI(RESOURCE_ENVIRONMENT_PATH,
-        // true);
-        // resourceEnvironmentURI = CommonPlugin.resolve(resourceEnvironmentURI);
-        // URI systemURI = URI.createPlatformPluginURI(SYSTEM_PATH, true);
-        // systemURI = CommonPlugin.resolve(systemURI);
-        // URI allocationURI = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
-        // allocationURI = CommonPlugin.resolve(allocationURI);
-        // URI pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
-        // pmsURI = CommonPlugin.resolve(pmsURI);
         URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
         // reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
 
@@ -389,9 +366,9 @@ public class QVToReconfigurationTest {
         swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
 
         QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess, swfc);
-        reconfigurator.setConfiguration(swfc);
         reconfigurator.setModelAccess(modelAccess);
-        boolean checkedAndExceuted = reconfigurator.checkAndExecute(monitoredElement);
+        // TODO @Igor: Pass some reconfigurations to execute
+        boolean checkedAndExceuted = reconfigurator.runExecute(null, monitoredElement);
         assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
 
         return pcmResourceSet;
