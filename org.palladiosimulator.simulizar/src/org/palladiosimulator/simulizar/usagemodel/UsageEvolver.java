@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 import org.scaledl.usageevolution.Usage;
 
 public class UsageEvolver {
@@ -9,9 +9,9 @@ public class UsageEvolver {
     private static final Logger LOGGER = Logger.getLogger(UsageEvolver.class);
 
     /** Runtime state of the simulation. Required to start evolution(s). */
-	private final SimuLizarRuntimeState runtimeState;
+	private final SimuLizarRuntimeStateAbstract runtimeState;
 
-    public UsageEvolver(final SimuLizarRuntimeState runtimeState) {
+    public UsageEvolver(final SimuLizarRuntimeStateAbstract runtimeState) {
         super();
         this.runtimeState = runtimeState;
     }

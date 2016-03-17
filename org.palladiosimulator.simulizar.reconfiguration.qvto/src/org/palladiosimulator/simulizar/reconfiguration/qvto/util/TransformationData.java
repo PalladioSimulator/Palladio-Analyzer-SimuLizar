@@ -8,6 +8,7 @@ import org.apache.commons.collections15.Predicate;
 import org.apache.commons.collections15.PredicateUtils;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 
 /**
  * Convenience class to store required information about a QVTo transformation:

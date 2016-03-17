@@ -11,7 +11,7 @@ import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
@@ -19,7 +19,7 @@ public class UsageModelSyncer extends AbstractSyncer<UsageModel>implements IMode
 
     private static final Logger LOGGER = Logger.getLogger(UsageModelSyncer.class);
 
-    public UsageModelSyncer(final SimuLizarRuntimeState runtimeModel) {
+    public UsageModelSyncer(final SimuLizarRuntimeStateAbstract runtimeModel) {
         super(runtimeModel, runtimeModel.getModelAccess().getGlobalPCMModel().getUsageModel());
     }
 

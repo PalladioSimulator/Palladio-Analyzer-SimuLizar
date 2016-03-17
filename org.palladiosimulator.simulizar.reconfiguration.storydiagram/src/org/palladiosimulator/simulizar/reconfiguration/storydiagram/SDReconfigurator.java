@@ -11,8 +11,6 @@ import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.storydriven.storydiagrams.activities.Activity;
 
 /**
@@ -31,16 +29,9 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
     private static final Logger LOGGER = Logger.getLogger(SDReconfigurator.class);
 
     /**
-     * Access interface to access all loaded SDs.
-     */
-    private StoryDiagramModelAccess modelAccess;
-
-    /**
      * SD Interpreter used internally to interpret the SDs.
      */
     private SDExecutor sdExecutor;
-
-    private SimuLizarWorkflowConfiguration configuration;
 
     /**
      * Story Diagram Reconfigurator default constructor.
@@ -51,12 +42,24 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
     public SDReconfigurator() {
         super();
     }
+    
+    /**
+     * Story Diagram Reconfigurator default constructor.
+     * 
+     * @param modelAccessFactory
+     *            Model access factory used to access the SDs.
+     */
+    public SDReconfigurator(IModelAccess modelAccess) {
+        super();
+        this.modelAccessFactory = modelAccess;
+    }
 
-    @Override
-    public boolean runCheck(EList<ModelTransformation<?>> checks, final EObject monitoredElement) {
+    @SuppressWarnings("unchecked")
+	@Override
+    public boolean runCheck(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> checks, final EObject monitoredElement) {
    
     	ArrayList<Activity> activities = new ArrayList<Activity>();
-    	for(ModelTransformation<?> check : checks){
+    	for(org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?> check : checks){
     		try {
     			ModelTransformation<Activity> sdModelTransformation = (ModelTransformation<Activity>)check;
     			activities.add(sdModelTransformation.getModelTransformation());
@@ -80,11 +83,12 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
         }
 	}
     
+	@SuppressWarnings("unchecked")
 	@Override
-	public boolean runExecute(EList<ModelTransformation<?>> actions, EObject monitoredElement) {
+	public boolean runExecute(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> actions, EObject monitoredElement) {
     	ArrayList<Activity> activities = new ArrayList<Activity>();
     	LOGGER.info("Executing Story Diagram Model Transformation.");
-    	for(ModelTransformation<?> action : actions){
+    	for(org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?> action : actions){
     		try {
     			ModelTransformation<Activity> sdModelTransformation = (ModelTransformation<Activity>)action;
     			activities.add(sdModelTransformation.getModelTransformation());
@@ -98,19 +102,9 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
 
     private SDExecutor getSDExecutor(List<Activity> actvities) {
         if (this.sdExecutor == null) {
-            this.sdExecutor = new SDExecutor(this.modelAccess, actvities);
+            this.sdExecutor = new SDExecutor(this.modelAccessFactory, actvities);
         }
         return this.sdExecutor;
-    }
-
-    @Override
-    public void setModelAccess(IModelAccess modelAccess) {
-        this.modelAccess = new StoryDiagramModelAccess(modelAccess, this.configuration);
-    }
-
-    @Override
-    public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
-        this.configuration = configuration;
     }
 
 	@Override

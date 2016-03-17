@@ -3,9 +3,13 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationFactory;
 
 /**
  * This cache implementation is used to store QVTo transformations (in terms of
@@ -16,11 +20,12 @@ import org.eclipse.emf.common.util.URI;
  * @author Florian Rosenthal
  *
  */
+@SuppressWarnings("restriction")
 public class TransformationCache {
 
     // cache is backed by map: use URI of transformation as key/tag
-    private final Map<URI, TransformationData> cache;
-    private final TransformationDataFactory transformationDataFactory;
+    private final Map<URI, ModelTransformation<OperationalTransformation>> cache;
+    private final ModelTransformationFactory transformationDataFactory;
 
     private static final Logger LOGGER = Logger.getLogger(TransformationCache.class);
 
@@ -34,7 +39,7 @@ public class TransformationCache {
     @SafeVarargs
     public TransformationCache(URI... initialTransformations) {
         this.cache = new HashMap<>();
-        this.transformationDataFactory = new TransformationDataFactory();
+        this.transformationDataFactory = new ModelTransformationFactory();
         store(initialTransformations);
     }
 
@@ -81,7 +86,7 @@ public class TransformationCache {
             }
             LOGGER.info("Cache reconfiguration rule \"" + transformationUri + "\"");
             this.cache.put(transformationUri,
-                    this.transformationDataFactory.createTransformationData(transformationUri));
+                    this.transformationDataFactory.createModelTransformation(transformationUri));
         }
     }
 
@@ -111,8 +116,8 @@ public class TransformationCache {
      *             In case the given URI is {@code null}.
      * @see #contains(URI)
      */
-    public TransformationData get(URI transformationUri) {
-        return this.cache.get(Objects.requireNonNull(transformationUri));
+    public Optional<ModelTransformation<OperationalTransformation>> get(URI transformationUri) {
+        return Optional.of(this.cache.get(Objects.requireNonNull(transformationUri)));
     }
 
     /**
@@ -136,7 +141,7 @@ public class TransformationCache {
      * 
      * @return An {@link Iterable} of all the stored transformations.
      */
-    public Iterable<TransformationData> getAll() {
+    public Iterable<ModelTransformation<OperationalTransformation>> getAll() {
         return this.cache.values();
     }
 

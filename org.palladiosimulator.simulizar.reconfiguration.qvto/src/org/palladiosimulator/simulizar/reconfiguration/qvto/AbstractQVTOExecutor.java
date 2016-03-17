@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import java.util.Objects;
+import java.util.Optional;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -19,8 +20,9 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationParameterInformation;
-
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 /**
  * This class is intended to be the base of all classes that wish to execute QVTo transformations.
  * The set of transformations that can be executed are passed to each instance upon construction in
@@ -34,10 +36,10 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationP
  */
 public abstract class AbstractQVTOExecutor {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractQVTOExecutor.class);
-    private final TransformationCache transformationCache;
+	private static final Logger LOGGER = Logger.getLogger(AbstractQVTOExecutor.class);
     // store mapping model type -> model instance
-    private final QVToModelCache availableModels;
+    private final Optional<QVToModelCache> availableModels;
+    protected final ModelTransformationCache transformationCache;
 
     // this switch encapsulates the special treatment of the RuntimeMeasurementModel
     // to incorporate other special cases, use nested switches within the 'defaultCase(EObject)'
@@ -74,18 +76,18 @@ public abstract class AbstractQVTOExecutor {
      * @throws NullPointerException
      *             If either parameter is {@code null}.
      */
-    protected AbstractQVTOExecutor(TransformationCache knownTransformations, QVToModelCache knownModels) {
+    protected AbstractQVTOExecutor(ModelTransformationCache knownTransformations, QVToModelCache knownModels) {
         this.transformationCache = Objects.requireNonNull(knownTransformations);
-        this.availableModels = Objects.requireNonNull(knownModels);
+        this.availableModels = Optional.of(Objects.requireNonNull(knownModels));
     }
-
+    
     /**
      * Gets the underlying transformation cache used by this instance.
      * 
      * @return The {@link TransformationCache} which contains all transformations that can be
      *         executed by this instance.
      */
-    protected TransformationCache getAvailableTransformations() {
+    protected ModelTransformationCache getAvailableTransformations() {
         return this.transformationCache;
     }
 
@@ -94,40 +96,17 @@ public abstract class AbstractQVTOExecutor {
      * 
      * @return The {@link QVToModelCache} which contains all models that can serve as parameters.
      */
-    protected QVToModelCache getAvailableModels() {
+    protected Optional<QVToModelCache> getAvailableModels() {
         return this.availableModels;
-    }
-
-    /**
-     * Attempts to execute the transformation that corresponds to the given URI.
-     * 
-     * @param transformationURI
-     *            An {@link URI} that points to a QVTo transformation.
-     * @return A boolean that indicates whether the transformation succeeded.
-     * @throws NullPointerException
-     *             In case the given URI is {@code null}.
-     * @throws IllegalArgumentException
-     *             In case the transformation is not known, i.e., not stored in the internal cache.
-     * @see #executeTransformation(TransformationData)
-     * @see #AbstractQVTOExecutor(TransformationCache, QVToModelCache)
-     */
-    public boolean executeTransformation(URI transformationURI) {
-        TransformationData data = this.transformationCache.get(Objects.requireNonNull(transformationURI));
-        if (data == null) {
-            throw new IllegalArgumentException("Given transformation not present in transformation cache.");
-        }
-        return executeTransformation(data);
     }
 
     /**
      * Template method to execute a QVTo transformation. Within this method, the following
      * (primitive) steps are conducted:
      * <ol>
-     * <li>
-     * The required model {@link ModelExtent ModelExtents} are created:
+     * <li>The required model {@link ModelExtent ModelExtents} are created:
      * {@link #setupModelExtents(TransformationData)}</li>
-     * <li>
-     * The {@link ExecutionContext} is setup: {@link #setupExecutionContext()}</li>
+     * <li>The {@link ExecutionContext} is setup: {@link #setupExecutionContext()}</li>
      * <li>The transformation is executed:
      * {@link #doExecution(TransformationExecutor, ExecutionContext, ModelExtent[])}</li>
      * <li>The {@link ExecutionDiagnostic} that describes the execution result is processed:
@@ -144,12 +123,41 @@ public abstract class AbstractQVTOExecutor {
      * @throws NullPointerException
      *             In case {@code transformationData == null}
      */
-    protected final boolean executeTransformation(TransformationData transformationData) {
-        ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(transformationData));
+    public final boolean executeTransformation(String modelTransformation) {
+        URI modelTransformationUri = URI.createURI(modelTransformation);
+    	Optional<QvtoModelTransformation> qvtoModelTransformation = this.transformationCache.get(modelTransformationUri);
+    	return executeTransformation(qvtoModelTransformation.get());
+    }
+    
+    /**
+     * Template method to execute a QVTo transformation. Within this method, the following
+     * (primitive) steps are conducted:
+     * <ol>
+     * <li>The required model {@link ModelExtent ModelExtents} are created:
+     * {@link #setupModelExtents(TransformationData)}</li>
+     * <li>The {@link ExecutionContext} is setup: {@link #setupExecutionContext()}</li>
+     * <li>The transformation is executed:
+     * {@link #doExecution(TransformationExecutor, ExecutionContext, ModelExtent[])}</li>
+     * <li>The {@link ExecutionDiagnostic} that describes the execution result is processed:
+     * {@link #handleExecutionResult(ExecutionDiagnostic)}</li>
+     * </ol>
+     * <br>
+     * Note, that all of the steps are implemented by this class, but are open to re-implementation
+     * by subclasses (apart from the execution step).
+     * 
+     * @param transformationData
+     *            The {@link TransformationData} which describes the transformation to be executed.
+     * @return The result of the last step, i.e., a boolean that indicates whether the
+     *         transformation succeeded.
+     * @throws NullPointerException
+     *             In case {@code transformationData == null}
+     */
+    public final boolean executeTransformation(QvtoModelTransformation modelTransformation) {
+        ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
         ExecutionContext executionContext = setupExecutionContext();
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
-        ExecutionDiagnostic result = doExecution(transformationData, executionContext, modelExtents);
+        ExecutionDiagnostic result = doExecution(modelTransformation, executionContext, modelExtents);
         // check the result for success
         return handleExecutionResult(result);
     }
@@ -168,9 +176,9 @@ public abstract class AbstractQVTOExecutor {
      * @return An {@link ExecutionDiagnostic} which indicates the execution result status.
      * @see #executeTransformation(TransformationData)
      */
-    protected final ExecutionDiagnostic doExecution(TransformationData data, ExecutionContext context,
+    protected final ExecutionDiagnostic doExecution(QvtoModelTransformation modelTransformation, ExecutionContext context,
             ModelExtent[] params) {
-        return data.getTransformationExecutor().execute(context, params);
+        return modelTransformation.getTransformationExecutor().execute(context, params);
     }
 
     /**
@@ -227,7 +235,7 @@ public abstract class AbstractQVTOExecutor {
      * First step of the {@link #executeTransformation(TransformationData)} template method.
      * Examines the required transformation parameters and creates appropriate model extents.
      * 
-     * @param transformationData
+     * @param modelTransformation
      *            The {@link TransformationData} that represents the transformation to be executed.
      * @return An array of {@link ModelExtent ModelExtents}, one for each parameter, in order of
      *         appearance.
@@ -236,24 +244,23 @@ public abstract class AbstractQVTOExecutor {
      *             'inout' parameter.
      * @see #doExecution(TransformationData, ExecutionContext, ModelExtent[])
      */
-    protected ModelExtent[] setupModelExtents(TransformationData transformationData) {
-        assert transformationData != null && transformationData.getTransformationExecutor() != null;
+    protected ModelExtent[] setupModelExtents(QvtoModelTransformation modelTransformation) {
+        assert modelTransformation != null && modelTransformation.getTransformationExecutor() != null;
 
-        ModelExtent[] modelExtents = new ModelExtent[transformationData.getParameterCount()];
+        ModelExtent[] modelExtents = new ModelExtent[modelTransformation.getParameterCount()];
         // prepare the in/inout params first
-        for (TransformationParameterInformation inParams : transformationData.getInParameters()) {
-            EObject sourceModel = this.availableModels.getModelByType(inParams.getParameterType());
-            if (sourceModel == null) {
-                throw new IllegalStateException("No model in QVTo model cache for "
-                        + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
-                        + transformationData.getTransformationName() + "'");
-            }
+        for (TransformationParameterInformation inParams : modelTransformation.getInParameters()) {
+            EObject sourceModel = this.availableModels.get().getModelByType(inParams.getParameterType())
+                    .orElseThrow(() -> new IllegalStateException("No model in QVTo model cache for "
+                            + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
+                            + modelTransformation.getTransformationName() + "'"));
             modelExtents[inParams.getParameterIndex()] = CREATE_NON_EMPTY_MODEL_EXTENT_SWITCH.doSwitch(sourceModel);
         }
         // now the pure out params, they need empty model extents
-        for (TransformationParameterInformation outParam : transformationData.getPureOutParameters()) {
-            modelExtents[outParam.getParameterIndex()] = new BasicModelExtent();
-        }
+        modelTransformation.getPureOutParameters().stream()
+                .mapToInt(TransformationParameterInformation::getParameterIndex)
+                .forEach(index -> modelExtents[index] = new BasicModelExtent());
+
         return modelExtents;
     }
 }

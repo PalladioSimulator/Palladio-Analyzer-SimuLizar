@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
@@ -196,11 +197,11 @@ public class QVToModelCache {
      * @throws NullPointerException
      *             In case {@code ePackage == null}.
      */
-    public EObject getModelByType(EPackage ePackage) {
+    public Optional<EObject> getModelByType(EPackage ePackage) {
         String namespace = Objects.requireNonNull(ePackage.getNsURI());
         for (EPackage key : this.cache.keySet()) {
             if (key.getNsURI().equals(namespace)) {
-                return this.cache.get(key);
+                return Optional.of(this.cache.get(key));
             }
         }
         return null;

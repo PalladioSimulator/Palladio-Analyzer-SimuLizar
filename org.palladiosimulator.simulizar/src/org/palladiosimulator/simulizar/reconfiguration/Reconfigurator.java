@@ -16,6 +16,7 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -58,7 +59,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     /**
      * Set of all registered reconfigurators, i.e., objects that can change the PCM@Runtime.
      */
-    private final List<IReconfigurator> reconfigurators;
+    private final List<IReconfigurationEngine> reconfigurators;
 
     private final SimuComModel model;
 
@@ -66,6 +67,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     private ReconfigurationProcess reconfigurationProcess;
 
     private double lastReconfigurationTime = 0;
+    
+    private SimuLizarWorkflowConfiguration configuration;
 
     /**
      * Constructor.
@@ -79,11 +82,12 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
      *            monitoring data arrives.
      */
     public Reconfigurator(final SimuComModel model, final IModelAccess modelAccessFactory,
-            final ISimulationControl simulationcontrol, final List<IReconfigurator> reconfigurators) {
+            final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators, SimuLizarWorkflowConfiguration configuration) {
         super();
         this.model = model;
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         this.reconfigurators = reconfigurators;
+        this.configuration = configuration;
     }
 
     /**
@@ -201,4 +205,10 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         return this.reconfigurationProcess;
     }
 
+	public SimuLizarWorkflowConfiguration getConfiguration() {
+		return configuration;
+	}
+
+    
+    
 }
