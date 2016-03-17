@@ -25,7 +25,7 @@ public class QVTOReconfigurationLogger implements Log {
 
     @Override
     public void log(String message) {
-        logger.log(Level.DEBUG, message);
+        logger.log(Level.INFO, message);
 
     }
 

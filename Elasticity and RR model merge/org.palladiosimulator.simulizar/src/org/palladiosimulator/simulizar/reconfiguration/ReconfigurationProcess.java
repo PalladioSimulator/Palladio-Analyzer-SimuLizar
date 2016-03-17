@@ -5,11 +5,20 @@ import java.util.List;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
+import org.palladiosimulator.commons.eclipseutils.FileHelper;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -23,15 +32,19 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * @see Reconfigurator
  * @see IReconfigurator
  */
+@SuppressWarnings("restriction")
 public class ReconfigurationProcess extends SimuComSimProcess {
 
     private EObject monitoredElement;
-    private final Iterable<IReconfigurator> reconfigurators;
+    private final Iterable<IReconfigurationEngine> reconfigurators;
     private final ISimulationControl simControl;
     private final List<Notification> currentReconfigNotifications;
     private final Reconfigurator reconfigurator;
     // volatile is sufficient as flag is only set once
     private volatile boolean terminationRequested = false;
+    private List<ModelTransformation<Activity>> sdmTransformations;
+    private List<ModelTransformation<OperationalTransformation>> qvtoTransformations;
+    private static final String QVTO_FILE_EXTENSION = ".qvto";
 
     /**
      * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -45,13 +58,46 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * @throws NullPointerException
      *             In case any of the given parameters is {@code null}.
      */
-    protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurator> reconfigurators,
+    protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurationEngine> reconfigurators,
             final Reconfigurator reconfigurator) {
         super(model, "Reconfiguration Process");
         this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
         this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
         this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
         this.currentReconfigNotifications = new ArrayList<>();
+        URI[] qvtoFiles = getQvtoFiles(this.reconfigurator.getConfiguration().getReconfigurationRulesFolder());
+        ModelTransformationCache transformationCache = new ModelTransformationCache(
+                getQvtoFiles(reconfigurator.getConfiguration().getReconfigurationRulesFolder()));
+        qvtoTransformations = new ArrayList<ModelTransformation<OperationalTransformation>>();
+        for(QvtoModelTransformation mt : transformationCache.getAll()){
+        	qvtoTransformations.add(mt);
+        }
+    }
+    
+    /**
+     * Gets the QVTO files within the specified path.
+     * 
+     * @param path
+     *            Path to reconfiguration rules.
+     * @return The QVTO files within the given path. Returns an empty array in case no files are
+     *         found.
+     */
+    private static URI[] getQvtoFiles(final String path) {
+        assert path != null;
+        if (path.equals("")) {
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("No path to QVTo rules given.");
+            }
+            return new URI[0];
+        }
+
+        final URI[] uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
+
+        if (uris.length == 0) {
+            LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
+        }
+
+        return uris;
     }
 
     /**
@@ -154,7 +200,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         while (!this.isTerminationRequested()) {
             final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
-                for (final IReconfigurator reconfigurator : this.reconfigurators) {
+                for (final IReconfigurationEngine reconfigurator : this.reconfigurators) {
                     // Lehrig: I moved from simulation time to System.nanoTime() since
                     // reconfigurations currently execute in 0-simulation time. Nano time made more
                     // sense to me. Inform me if I'm wrong here since there is already some code
@@ -162,7 +208,9 @@ public class ReconfigurationProcess extends SimuComSimProcess {
                     final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
                             System.nanoTime());
                     this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+//                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
+                    EList<ModelTransformation<?>> qvtoTr = new BasicEList<ModelTransformation<?>>(qvtoTransformations);
+                    final boolean reconfigResult = reconfigurator.runCheck(qvtoTr, monitoredElement);
                     final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
                             EventResult.fromBoolean(reconfigResult), System.nanoTime());
                     this.fireEndReconfigurationEvent(endReconfigurationEvent);
