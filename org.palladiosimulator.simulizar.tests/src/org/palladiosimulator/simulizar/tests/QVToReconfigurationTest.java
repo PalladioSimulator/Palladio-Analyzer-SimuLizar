@@ -366,9 +366,9 @@ public class QVToReconfigurationTest {
         swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
 
         QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess, swfc);
+        reconfigurator.setConfiguration(swfc);
         reconfigurator.setModelAccess(modelAccess);
-        // TODO @Igor: Pass some reconfigurations to execute
-        boolean checkedAndExceuted = reconfigurator.runExecute(null, monitoredElement);
+        boolean checkedAndExceuted = reconfigurator.checkAndExecute(monitoredElement);
         assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
 
         return pcmResourceSet;
