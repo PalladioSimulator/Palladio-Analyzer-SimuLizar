@@ -266,13 +266,13 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                         || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
                     // setup utilization calculators depending on their scheduling strategy
                     // and number of cores (e.g., more than 1 cores requires overall utilization)
+                    if (measuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
+                    	MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource, scheduledResource.getNumberOfInstances());
+                        CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(), utilization);
+                    }
                     if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
                         CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
                                 this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
-                        if (measuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
-                        	MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource, scheduledResource.getNumberOfInstances());
-                            CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(), utilization);
-                        }
                     } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
                             || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
                         assert (scheduledResource
