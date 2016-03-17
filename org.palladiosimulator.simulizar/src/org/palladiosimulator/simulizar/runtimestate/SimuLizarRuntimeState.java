@@ -35,9 +35,10 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelObserver;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentCostObserver;
 import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
+import org.palladiosimulator.simulizar.syncer.UsageEvolutionSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
-import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
+import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
@@ -45,6 +46,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
+import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
@@ -70,24 +72,31 @@ public class SimuLizarRuntimeState {
     private final ModelAccess modelAccess;
     private final Reconfigurator reconfigurator;
     private final IModelObserver[] modelObservers;
-
+    private final SimulationCancelationDelegate cancelationDelegate;
+    private final UsageEvolverFacade usageEvolverFacade;
+    
     private long numberOfContainers = 0;
+
+    
 
     /**
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess) {
+    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
+            final SimulationCancelationDelegate cancelationDelegate) {
         super();
         this.modelAccess = modelAccess;
-        this.model = SimuComModelFactory.createSimuComModel(configuration);
+        this.cancelationDelegate = cancelationDelegate;
+        this.model = SimuComModelFactory.createSimuComModel(configuration);     
+        
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
         this.usageModels = new SimulatedUsageModels(this.mainContext);
         this.initializeWorkloadDrivers();
-
-        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        
+                this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
         this.modelObservers = this.initializeModelSyncers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
@@ -95,7 +104,9 @@ public class SimuLizarRuntimeState {
         // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
         // calculators of
         // resources created in ResourceEnvironmentSyncer!
+        this.initializeCancelation();
         this.initializeInterpreterListeners(this.reconfigurator);
+        this.usageEvolverFacade = new UsageEvolverFacade(this);
         this.initializeUsageEvolver();
         this.modelAccess.startObservingPcmChanges();
     }
@@ -128,6 +139,10 @@ public class SimuLizarRuntimeState {
 
     public IModelAccess getModelAccess() {
         return this.modelAccess;
+    }
+    
+    public boolean isCanceled() {
+        return this.cancelationDelegate.isCanceled();
     }
 
     /**
@@ -162,7 +177,7 @@ public class SimuLizarRuntimeState {
 
     private void initializeWorkloadDrivers() {
         LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
+        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers());
     }
 
     private void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
@@ -272,7 +287,7 @@ public class SimuLizarRuntimeState {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
 
         final IModelObserver[] modelSyncers = new IModelObserver[] { new ResourceEnvironmentSyncer(),
-                new UsageModelSyncer(), new ResourceEnvironmentCostObserver() };
+                new UsageModelSyncer(), new ResourceEnvironmentCostObserver(), new UsageEvolutionSyncer()};
         for (final IModelObserver modelObserver : modelSyncers) {
             modelObserver.initialize(this);
         }
@@ -284,7 +299,20 @@ public class SimuLizarRuntimeState {
         if (this.modelAccess.getUsageEvolutionModel() != null) {
             LOGGER.debug("Start the code to evolve the usage model over time");
 
-            new UsageEvolver(this).start();
+            this.usageEvolverFacade.start();
         }
+    }
+    
+    private void initializeCancelation() {
+        this.model.getSimulationControl().addStopCondition(new SimCondition() {
+            @Override
+            public boolean check() {
+                return cancelationDelegate.isCanceled();
+            }
+        });
+    }
+
+    public UsageEvolverFacade getUsageEvolverFacade() {
+        return usageEvolverFacade;
     }
 }

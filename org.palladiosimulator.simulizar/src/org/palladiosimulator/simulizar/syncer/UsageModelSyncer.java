@@ -7,9 +7,12 @@ import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
+import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 
+import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
+import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 public class UsageModelSyncer extends AbstractUsageModelObserver {
@@ -19,6 +22,30 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
     public UsageModelSyncer() {
         super();
     }
+    
+    @Override
+    protected void add(Notification notification) {
+        if (UsagemodelPackage.eINSTANCE.getUsageModel().isInstance(notification.getNotifier())
+                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel().equals(notification.getFeature())) {
+            this.syncUsageScenarioAddition(notification);
+        } else {
+            LOGGER.error(
+                    "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+        }
+    }
+    
+    @Override
+    protected void remove(Notification notification) {
+        if (UsagemodelPackage.eINSTANCE.getUsageModel().isInstance(notification.getNotifier())
+                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel().equals(notification.getFeature())) {
+            this.syncUsageScenarioRemoval(notification);
+        } else {
+            LOGGER.error(
+                    "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
+        }
+    }
+
+
 
     @Override
     protected void set(final Notification notification) {
@@ -68,5 +95,22 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
         this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setPopulation(newPopulation);
     }
-
+    
+    private void syncUsageScenarioAddition(Notification notification) {
+        LOGGER.debug("Initializing execution of new usage scenario");
+        IWorkloadDriver newDriver =
+                this.runtimeModel.getUsageModels().createAndAddWorkloadDriver((UsageScenario) notification.getNewValue());
+        newDriver.run();
+        this.runtimeModel.getModel().getUsageScenarios().add(newDriver);
+        LOGGER.debug("Execution of new usage scenario started");
+    }
+    
+    private void syncUsageScenarioRemoval(Notification notification) {
+        LOGGER.debug("Stopping execution of specific usage scenario");
+        ICancellableWorkloadDriver driver = this.runtimeModel.getUsageModels()
+                .getWorkloadDriver(((UsageScenario) notification.getNewValue()).getWorkload_UsageScenario());
+        driver.cancel();
+        this.runtimeModel.getModel().getUsageScenarios().remove(driver);
+        LOGGER.debug("Execution of new usage scenario started");
+    }
 }
