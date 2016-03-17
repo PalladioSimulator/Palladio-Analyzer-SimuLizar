@@ -73,9 +73,9 @@ public abstract class AbstractQVTOExecutor {
      * Accumulates the model elements and finally creates a basic model extent
      */
     private static final Collector<EObject, List<EObject>, ModelExtent> BASIC_MODEL_EXTENT_COLLECTOR = 
-            Collector.of(ArrayList::new, 
-                         (acc, t) -> acc.add(t), 
-                         (l, r) -> {l.addAll(r); return l;},
+            Collector.of(ArrayList<EObject>::new, 
+                         (List<EObject> acc, EObject t) -> acc.add(t), 
+                         (List<EObject> l, List<EObject> r) -> {l.addAll(r); return l;},
                          BasicModelExtent::new);
     /**
      * Initializes a new instance of the {@link AbstractQVTOExecutor} class with the given
