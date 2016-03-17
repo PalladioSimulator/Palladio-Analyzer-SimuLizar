@@ -287,9 +287,13 @@ public class SimuLizarRuntimeState {
         LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
 
         final IModelObserver[] modelSyncers = new IModelObserver[] { new ResourceEnvironmentSyncer(),
-                new UsageModelSyncer(), new ResourceEnvironmentCostObserver(), new UsageEvolutionSyncer()};
+                new UsageModelSyncer(), new ResourceEnvironmentCostObserver()};
         for (final IModelObserver modelObserver : modelSyncers) {
             modelObserver.initialize(this);
+        }
+        
+        if (this.getModelAccess().getUsageEvolutionModel() != null) {
+            (new UsageEvolutionSyncer()).initialize(this);
         }
 
         return modelSyncers;
