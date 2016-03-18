@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<henshin:Module xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:henshin="http://www.eclipse.org/emf/2011/Henshin" xmi:id="_RYItgNk5EeSwNdS3EBkAdA" name="loadbalancer">
+  <imports href="http://palladiosimulator.org/PalladioComponentModel/5.1#/"/>
+  <imports href="http://www.eclipse.org/emf/2002/Ecore#/"/>
+  <imports href="http:///org/eclipse/datatools/modelbase/sql/datatypes.ecore#/"/>
+  <imports href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#/"/>
+  <units xsi:type="henshin:Rule" xmi:id="_SP7RINk5EeSwNdS3EBkAdA" name="execute">
+    <parameters xmi:id="_E9a_IOHSEeSqcp-gk-R59g" name="componentname" description="">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_STCroOKyEeSfPvPeSQ9_wg" name="delegateToServer1" description="">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_WmihIOKyEeSfPvPeSQ9_wg" name="delegateToServer2">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    </parameters>
+    <parameters xmi:id="_5dp0gOKzEeSfPvPeSQ9_wg" name="oldValueServer1">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameters>
+    <parameters xmi:id="_8WDlAOKzEeSfPvPeSQ9_wg" name="oldValueServer2">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameters>
+    <lhs xmi:id="_SQFCINk5EeSwNdS3EBkAdA" name="Lhs">
+      <nodes xmi:id="_WxsWsNk6EeSwNdS3EBkAdA" name="" outgoing="_Lizm8Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent"/>
+        <attributes xmi:id="_dEcHINk6EeSwNdS3EBkAdA" value="componentname">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_xwS1sNk7EeSwNdS3EBkAdA" incoming="_xwUq49k7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+        <attributes xmi:id="_xwS1sdk7EeSwNdS3EBkAdA" value="delegateToServer2">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+        <attributes xmi:id="_t539wNk7EeSwNdS3EBkAdA" value="oldValueServer2">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_xwUq4dk7EeSwNdS3EBkAdA" name="adaptiveRandomLoadBalancing" incoming="_MzEU8Nk7EeSwNdS3EBkAdA" outgoing="_xwUq49k7EeSwNdS3EBkAdA _1V8txNk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction"/>
+      </nodes>
+      <nodes xmi:id="_1V8twNk7EeSwNdS3EBkAdA" name="" incoming="_1V8txNk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+        <attributes xmi:id="_1V8twdk7EeSwNdS3EBkAdA" value="delegateToServer1">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+        <attributes xmi:id="_rLAjwNk7EeSwNdS3EBkAdA" value="oldValueServer1">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_y-QTENk6EeSwNdS3EBkAdA" name="processRequest" incoming="_Lizm8Nk7EeSwNdS3EBkAdA" outgoing="_MzEU8Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingSEFF"/>
+      </nodes>
+      <edges xmi:id="_xwUq49k7EeSwNdS3EBkAdA" source="_xwUq4dk7EeSwNdS3EBkAdA" target="_xwS1sNk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </edges>
+      <edges xmi:id="_1V8txNk7EeSwNdS3EBkAdA" source="_xwUq4dk7EeSwNdS3EBkAdA" target="_1V8twNk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </edges>
+      <edges xmi:id="_Lizm8Nk7EeSwNdS3EBkAdA" source="_WxsWsNk6EeSwNdS3EBkAdA" target="_y-QTENk6EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
+      </edges>
+      <edges xmi:id="_MzEU8Nk7EeSwNdS3EBkAdA" source="_y-QTENk6EeSwNdS3EBkAdA" target="_xwUq4dk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_SQFCIdk5EeSwNdS3EBkAdA" name="Rhs">
+      <nodes xmi:id="_ZCNn0Nk6EeSwNdS3EBkAdA" outgoing="_3uLJYtk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent"/>
+        <attributes xmi:id="_dEcuMNk6EeSwNdS3EBkAdA" value="componentname">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_xwVR8Nk7EeSwNdS3EBkAdA" incoming="_xwVR9tk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+        <attributes xmi:id="_xwVR8dk7EeSwNdS3EBkAdA" value="delegateToServer2">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+        <attributes xmi:id="_xwVR99k7EeSwNdS3EBkAdA" value="oldValueServer2 + 0.1">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_xwVR9Nk7EeSwNdS3EBkAdA" name="adaptiveRandomLoadBalancing" description="" incoming="_3uLJY9k7EeSwNdS3EBkAdA" outgoing="_xwVR9tk7EeSwNdS3EBkAdA _1V9U1Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction"/>
+      </nodes>
+      <nodes xmi:id="_1V9U0Nk7EeSwNdS3EBkAdA" incoming="_1V9U1Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+        <attributes xmi:id="_1V9U0dk7EeSwNdS3EBkAdA" value="delegateToServer1">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+        </attributes>
+        <attributes xmi:id="_1V9U1dk7EeSwNdS3EBkAdA" value="oldValueServer1 - 0.1">
+          <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+        </attributes>
+      </nodes>
+      <nodes xmi:id="_3uLJYNk7EeSwNdS3EBkAdA" name="processRequest" incoming="_3uLJYtk7EeSwNdS3EBkAdA" outgoing="_3uLJY9k7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingSEFF"/>
+      </nodes>
+      <edges xmi:id="_xwVR9tk7EeSwNdS3EBkAdA" source="_xwVR9Nk7EeSwNdS3EBkAdA" target="_xwVR8Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </edges>
+      <edges xmi:id="_1V9U1Nk7EeSwNdS3EBkAdA" source="_xwVR9Nk7EeSwNdS3EBkAdA" target="_1V9U0Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </edges>
+      <edges xmi:id="_3uLJYtk7EeSwNdS3EBkAdA" source="_ZCNn0Nk6EeSwNdS3EBkAdA" target="_3uLJYNk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
+      </edges>
+      <edges xmi:id="_3uLJY9k7EeSwNdS3EBkAdA" source="_3uLJYNk7EeSwNdS3EBkAdA" target="_xwVR9Nk7EeSwNdS3EBkAdA">
+        <type href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
+      </edges>
+    </rhs>
+    <attributeConditions xmi:id="_sJ2cIOKzEeSfPvPeSQ9_wg" name="" description="" conditionText="oldServerValue1 > 0.0"/>
+    <attributeConditions xmi:id="_wNFoEOKzEeSfPvPeSQ9_wg" name="" conditionText="oldServerValue2 &lt; 0.5"/>
+    <attributeConditions xmi:id="_Ua4Q4ONtEeSdx5XUWaGDww" conditionText="componentname == &quot;LoadBalancer&quot;"/>
+    <attributeConditions xmi:id="_shrRwONtEeSdx5XUWaGDww" conditionText="delegateToServer1 == &quot;delegateToServer1&quot;"/>
+    <attributeConditions xmi:id="_u7jTMONtEeSdx5XUWaGDww" conditionText="delegateToServer1 == &quot;delegateToServer1&quot;"/>
+    <mappings xmi:id="_ZCNn0dk6EeSwNdS3EBkAdA" origin="_WxsWsNk6EeSwNdS3EBkAdA" image="_ZCNn0Nk6EeSwNdS3EBkAdA"/>
+    <mappings xmi:id="_xwVR89k7EeSwNdS3EBkAdA" origin="_xwS1sNk7EeSwNdS3EBkAdA" image="_xwVR8Nk7EeSwNdS3EBkAdA"/>
+    <mappings xmi:id="_xwVR9dk7EeSwNdS3EBkAdA" origin="_xwUq4dk7EeSwNdS3EBkAdA" image="_xwVR9Nk7EeSwNdS3EBkAdA"/>
+    <mappings xmi:id="_1V9U09k7EeSwNdS3EBkAdA" origin="_1V8twNk7EeSwNdS3EBkAdA" image="_1V9U0Nk7EeSwNdS3EBkAdA"/>
+    <mappings xmi:id="_3uLJYdk7EeSwNdS3EBkAdA" origin="_y-QTENk6EeSwNdS3EBkAdA" image="_3uLJYNk7EeSwNdS3EBkAdA"/>
+  </units>
+  <units xsi:type="henshin:Rule" xmi:id="_Ca0OcONREeSdx5XUWaGDww" name="analyze">
+    <parameters xmi:id="_RJaw4ONREeSdx5XUWaGDww" name="measuredValue">
+      <type xsi:type="ecore:EDataType" href="http://www.eclipse.org/emf/2002/Ecore#//EDouble"/>
+    </parameters>
+    <lhs xmi:id="_Ca340ONREeSdx5XUWaGDww" name="Lhs">
+      <nodes xmi:id="_aA-mEOplEeS4KPKTRGorBg" outgoing="_bcjMMOplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
+      </nodes>
+      <nodes xmi:id="_apvPMOplEeS4KPKTRGorBg" incoming="_bcjMMOplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement"/>
+        <attributes xmi:id="_dg97AOplEeS4KPKTRGorBg" value="measuredValue">
+          <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement/measuringValue"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_bcjMMOplEeS4KPKTRGorBg" source="_aA-mEOplEeS4KPKTRGorBg" target="_apvPMOplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel/measurements"/>
+      </edges>
+    </lhs>
+    <rhs xmi:id="_Ca340eNREeSdx5XUWaGDww" name="Rhs">
+      <nodes xmi:id="_aBEFoOplEeS4KPKTRGorBg" outgoing="_bcjMMeplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
+      </nodes>
+      <nodes xmi:id="_apvPMeplEeS4KPKTRGorBg" incoming="_bcjMMeplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement"/>
+        <attributes xmi:id="_dg-iEOplEeS4KPKTRGorBg" value="measuredValue">
+          <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement/measuringValue"/>
+        </attributes>
+      </nodes>
+      <edges xmi:id="_bcjMMeplEeS4KPKTRGorBg" source="_aBEFoOplEeS4KPKTRGorBg" target="_apvPMeplEeS4KPKTRGorBg">
+        <type href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel/measurements"/>
+      </edges>
+    </rhs>
+    <attributeConditions xmi:id="_KY0m0ONREeSdx5XUWaGDww" name="" conditionText="measuredValue >= 3.0"/>
+    <mappings xmi:id="_aBEFoeplEeS4KPKTRGorBg" origin="_aA-mEOplEeS4KPKTRGorBg" image="_aBEFoOplEeS4KPKTRGorBg"/>
+    <mappings xmi:id="_apvPMuplEeS4KPKTRGorBg" origin="_apvPMOplEeS4KPKTRGorBg" image="_apvPMeplEeS4KPKTRGorBg"/>
+  </units>
+</henshin:Module>
