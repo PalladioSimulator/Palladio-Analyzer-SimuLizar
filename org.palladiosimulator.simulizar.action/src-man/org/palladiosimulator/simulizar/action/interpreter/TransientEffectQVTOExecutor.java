@@ -105,9 +105,9 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     Collection<EObject> getModelsByType(EPackage modelType) {
         return getAvailableModels().getModelsByType(Objects.requireNonNull(modelType));
     }
-    
+
     Optional<EObject> getModelByType(EPackage modelType) {
-        Collection<EObject> modelsOfType = this.getModelsByType(Objects.requireNonNull(modelType)); 
+        Collection<EObject> modelsOfType = this.getModelsByType(Objects.requireNonNull(modelType));
         return modelsOfType.isEmpty() ? Optional.empty() : Optional.of(modelsOfType.iterator().next());
     }
 

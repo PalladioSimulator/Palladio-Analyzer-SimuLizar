@@ -26,9 +26,13 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.simulizar.ui,
  org.modelversioning.emfprofile.registry,
- org.palladiosimulator.analyzer.workflow;bundle-version="1.0.0"
+ de.uka.ipd.sdq.workflow;bundle-version="2.1.0",
+ de.uka.ipd.sdq.simucomframework.simucomstatus
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: org.palladiosimulator.simulizar.action.core;
+Export-Package: org.palladiosimulator.simulizar.action.context,
+ org.palladiosimulator.simulizar.action.context.impl,
+ org.palladiosimulator.simulizar.action.context.util,
+ org.palladiosimulator.simulizar.action.core;
   uses:="org.eclipse.emf.ecore,
    org.eclipse.emf.common.util,
    org.palladiosimulator.simulizar.action.instance,

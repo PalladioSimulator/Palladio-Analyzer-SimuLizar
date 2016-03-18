@@ -10,6 +10,8 @@ import org.modelversioning.emfprofile.EMFProfilePackage;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.simulizar.action.context.ContextPackage;
+import org.palladiosimulator.simulizar.action.context.impl.ContextPackageImpl;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl;
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
@@ -107,18 +109,23 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
                 .getEPackage(ParameterPackage.eNS_URI) instanceof ParameterPackageImpl
                         ? EPackage.Registry.INSTANCE.getEPackage(ParameterPackage.eNS_URI)
                         : ParameterPackage.eINSTANCE);
+        final ContextPackageImpl theContextPackage = (ContextPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(ContextPackage.eNS_URI) instanceof ContextPackageImpl
+                        ? EPackage.Registry.INSTANCE.getEPackage(ContextPackage.eNS_URI) : ContextPackage.eINSTANCE);
 
         // Create package meta-data objects
         theMappingPackage.createPackageContents();
         theCorePackage.createPackageContents();
         theInstancePackage.createPackageContents();
         theParameterPackage.createPackageContents();
+        theContextPackage.createPackageContents();
 
         // Initialize created meta-data
         theMappingPackage.initializePackageContents();
         theCorePackage.initializePackageContents();
         theInstancePackage.initializePackageContents();
         theParameterPackage.initializePackageContents();
+        theContextPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theMappingPackage.freeze();

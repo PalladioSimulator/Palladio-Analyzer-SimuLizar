@@ -136,6 +136,7 @@ import org.palladiosimulator.pcm.seff.seff_reliability.provider.SeffReliabilityI
 import org.palladiosimulator.pcm.subsystem.provider.SubsystemItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.system.provider.SystemItemProviderAdapterFactory;
 import org.palladiosimulator.pcm.usagemodel.provider.UsagemodelItemProviderAdapterFactory;
+import org.palladiosimulator.simulizar.action.context.provider.ContextItemProviderAdapterFactory;
 import org.palladiosimulator.simulizar.action.core.presentation.ActionsEditorPlugin;
 import org.palladiosimulator.simulizar.action.core.provider.CoreItemProviderAdapterFactory;
 import org.palladiosimulator.simulizar.action.instance.provider.InstanceItemProviderAdapterFactory;
@@ -668,6 +669,7 @@ public class MappingEditor extends MultiPageEditorPart
         this.adapterFactory.addAdapterFactory(new MappingItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new InstanceItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new ParameterItemProviderAdapterFactory());
+        this.adapterFactory.addAdapterFactory(new ContextItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EcoreItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new EMFProfileItemProviderAdapterFactory());
         this.adapterFactory.addAdapterFactory(new IdentifierItemProviderAdapterFactory());

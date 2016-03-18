@@ -18,29 +18,66 @@
     <eClassifiers xsi:type="ecore:EClass" name="AdaptationBehavior" eSuperTypes="#//core/AbstractAdaptationBehavior">
       <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);&#xD;&#xA;"/>
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this).getExecutionResultAsBoolean();&#xD;&#xA;"/>
+          <details key="documentation" value="Executes this AdaptationBehavior for the given RoleSet and with the given VariableUsages.&#xD;&#xA;As no ExecutionContext is passed, this behavior will be processed by the main thread, i.e. by the underlying ReconfigurationProcess."/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
         <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
       </eOperations>
       <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this);"/>
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).addExecutionContext(executionContext).build().doSwitch(this).getExecutionResultAsBoolean();&#xD;&#xA;"/>
+          <details key="documentation" value="Executes this AdaptationBehavior for the given RoleSet and with the given VariableUsages.&#xD;&#xA;Note that the behavior is synchronously executed by the process that is associated with the given context."/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+        <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
+        <eParameters name="executionContext" eType="#//context/ExecutionContext"/>
+      </eOperations>
+      <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this).getExecutionResultAsBoolean();"/>
+          <details key="documentation" value="Executes this AdaptationBehavior for the given RoleSet.&#xD;&#xA;As no ExecutionContext is passed, this behavior will be processed by the main thread, i.e. by the underlying ReconfigurationProcess."/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
       </eOperations>
-      <eOperations name="executeAsync" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eOperations name="execute" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this);&#xD;&#xA;"/>
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addExecutionContext(executionContext).build().doSwitch(this).getExecutionResultAsBoolean();&#xD;&#xA;"/>
+          <details key="documentation" value="Executes this AdaptationBehavior for the given RoleSet and with the given VariableUsages.&#xD;&#xA;Note that the behavior is synchronously executed by the process that is associated with the given context."/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+        <eParameters name="executionContext" eType="#//context/ExecutionContext"/>
+      </eOperations>
+      <eOperations name="executeAsync" lowerBound="1" eType="#//context/ExecutionContext">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this).getContext().get();&#xD;&#xA;"/>
+          <details key="documentation" value="Triggers the asynchronous execution of this AdaptationBehavior for the given RoleSet and VariableUsages.&#xD;&#xA;The ExecutionContext of the executing process, which is created before the async process is spawned, is returned.&#xD;&#xA;It should be passed to synchronous adaptation behavior executions that are done within."/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
         <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
       </eOperations>
-      <eOperations name="executeAsync" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean">
+      <eOperations name="executeAsync" eType="#//context/ExecutionContext">
         <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
-          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this);"/>
+          <details key="body" value="org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);&#xD;&#xA;return asyncExecutionContext;&#xD;&#xA;"/>
+          <details key="documentation" value="Triggers the asynchronous execution of this AdaptationBehavior for the given RoleSet and VariableUsages in the given ExecutionContext.&#xD;&#xA;To conform to ome overloaded versions of this method, this context  is also returned.&#xD;&#xA;It should be passed to synchronous adaptation behavior executions that are done within."/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" eType="#//instance/RoleSet"/>
+        <eParameters name="controllerCallsVariableUsages" lowerBound="1" eType="#//parameter/ControllerCallInputVariableUsageCollection"/>
+        <eParameters name="asyncExecutionContext" eType="#//context/ExecutionContext"/>
+      </eOperations>
+      <eOperations name="executeAsync" lowerBound="1" eType="#//context/ExecutionContext">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this).getContext().get();"/>
         </eAnnotations>
         <eParameters name="affectedRoleSet" lowerBound="1" eType="#//instance/RoleSet"/>
+      </eOperations>
+      <eOperations name="executeAsync" eType="#//context/ExecutionContext">
+        <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+          <details key="body" value="org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).build().doSwitch(this);&#xD;&#xA;return asyncExecutionContext;&#xD;&#xA;"/>
+          <details key="documentation" value="Triggers the asynchronous execution of this AdaptationBehavior for the given RoleSet in the given ExecutionContext.&#xD;&#xA;To conform to ome overloaded versions of this method, this context  is also returned.&#xD;&#xA;It should be passed to synchronous adaptation behavior executions that are done within."/>
+        </eAnnotations>
+        <eParameters name="affectedRoleSet" eType="#//instance/RoleSet"/>
+        <eParameters name="asyncExecutionContext" eType="#//context/ExecutionContext"/>
       </eOperations>
       <eStructuralFeatures xsi:type="ecore:EReference" name="involvedRoles" lowerBound="1"
           upperBound="-1" eType="#//core/RoleType" containment="true" eOpposite="#//core/RoleType/action"/>
@@ -142,5 +179,9 @@
           upperBound="-1" eType="#//parameter/ControllerCallInputVariableUsage" containment="true"
           eOpposite="#//parameter/ControllerCallInputVariableUsage/containingCollection"/>
     </eClassifiers>
+  </eSubpackages>
+  <eSubpackages name="context" nsURI="http://simulizar.palladiosimulator.org/Actions/Context/1.1"
+      nsPrefix="org.palladiosimulator.action">
+    <eClassifiers xsi:type="ecore:EClass" name="ExecutionContext" eSuperTypes="../../de.uka.ipd.sdq.identifier/model/identifier.ecore#//Identifier"/>
   </eSubpackages>
 </ecore:EPackage>

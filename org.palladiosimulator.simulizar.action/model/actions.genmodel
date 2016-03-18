@@ -29,6 +29,15 @@
         </genOperations>
         <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute.1">
           <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.1/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.1/controllerCallsVariableUsages"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.1/executionContext"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute.2">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.2/affectedRoleSet"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/execute.3">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.3/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/execute.3/executionContext"/>
         </genOperations>
         <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync">
           <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync/affectedRoleSet"/>
@@ -36,6 +45,15 @@
         </genOperations>
         <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync.1">
           <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.1/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.1/controllerCallsVariableUsages"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.1/asyncExecutionContext"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync.2">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.2/affectedRoleSet"/>
+        </genOperations>
+        <genOperations ecoreOperation="actions.ecore#//core/AdaptationBehavior/executeAsync.3">
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.3/affectedRoleSet"/>
+          <genParameters ecoreParameter="actions.ecore#//core/AdaptationBehavior/executeAsync.3/asyncExecutionContext"/>
         </genOperations>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/NestedAdaptationBehavior">
@@ -110,6 +128,10 @@
       <genClasses ecoreClass="actions.ecore#//parameter/ControllerCallInputVariableUsageCollection">
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//parameter/ControllerCallInputVariableUsageCollection/controllerCallInputVariableUsages"/>
       </genClasses>
+    </nestedGenPackages>
+    <nestedGenPackages prefix="Context" basePackage="org.palladiosimulator.simulizar.action"
+        disposableProviderFactory="true" ecorePackage="actions.ecore#//context">
+      <genClasses ecoreClass="actions.ecore#//context/ExecutionContext"/>
     </nestedGenPackages>
   </genPackages>
 </genmodel:GenModel>

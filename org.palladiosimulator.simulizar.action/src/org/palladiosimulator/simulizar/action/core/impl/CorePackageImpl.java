@@ -13,6 +13,8 @@ import org.modelversioning.emfprofile.EMFProfilePackage;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.simulizar.action.context.ContextPackage;
+import org.palladiosimulator.simulizar.action.context.impl.ContextPackageImpl;
 import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationAction;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
@@ -190,18 +192,23 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
                 .getEPackage(ParameterPackage.eNS_URI) instanceof ParameterPackageImpl
                         ? EPackage.Registry.INSTANCE.getEPackage(ParameterPackage.eNS_URI)
                         : ParameterPackage.eINSTANCE);
+        final ContextPackageImpl theContextPackage = (ContextPackageImpl) (EPackage.Registry.INSTANCE
+                .getEPackage(ContextPackage.eNS_URI) instanceof ContextPackageImpl
+                        ? EPackage.Registry.INSTANCE.getEPackage(ContextPackage.eNS_URI) : ContextPackage.eINSTANCE);
 
         // Create package meta-data objects
         theCorePackage.createPackageContents();
         theMappingPackage.createPackageContents();
         theInstancePackage.createPackageContents();
         theParameterPackage.createPackageContents();
+        theContextPackage.createPackageContents();
 
         // Initialize created meta-data
         theCorePackage.initializePackageContents();
         theMappingPackage.initializePackageContents();
         theInstancePackage.initializePackageContents();
         theParameterPackage.initializePackageContents();
+        theContextPackage.initializePackageContents();
 
         // Mark meta-data to indicate it can't be changed
         theCorePackage.freeze();
@@ -640,6 +647,8 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
                 .getEPackage(InstancePackage.eNS_URI);
         final ParameterPackage theParameterPackage = (ParameterPackage) EPackage.Registry.INSTANCE
                 .getEPackage(ParameterPackage.eNS_URI);
+        final ContextPackage theContextPackage = (ContextPackage) EPackage.Registry.INSTANCE
+                .getEPackage(ContextPackage.eNS_URI);
         final EcorePackage theEcorePackage = (EcorePackage) EPackage.Registry.INSTANCE
                 .getEPackage(EcorePackage.eNS_URI);
         final RepositoryPackage theRepositoryPackage = (RepositoryPackage) EPackage.Registry.INSTANCE
@@ -704,16 +713,44 @@ public class CorePackageImpl extends EPackageImpl implements CorePackage {
         op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "execute", 1, 1,
                 IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theParameterPackage.getControllerCallInputVariableUsageCollection(),
+                "controllerCallsVariableUsages", 1, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theContextPackage.getExecutionContext(), "executionContext", 0, 1, IS_UNIQUE,
+                IS_ORDERED);
 
-        op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "executeAsync", 1, 1,
+        op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "execute", 1, 1,
                 IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "execute", 1, 1,
+                IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theContextPackage.getExecutionContext(), "executionContext", 0, 1, IS_UNIQUE,
+                IS_ORDERED);
+
+        op = this.addEOperation(this.adaptationBehaviorEClass, theContextPackage.getExecutionContext(), "executeAsync",
+                1, 1, IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theParameterPackage.getControllerCallInputVariableUsageCollection(),
                 "controllerCallsVariableUsages", 1, 1, IS_UNIQUE, IS_ORDERED);
 
-        op = this.addEOperation(this.adaptationBehaviorEClass, this.ecorePackage.getEBoolean(), "executeAsync", 1, 1,
-                IS_UNIQUE, IS_ORDERED);
+        op = this.addEOperation(this.adaptationBehaviorEClass, theContextPackage.getExecutionContext(), "executeAsync",
+                0, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 0, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theParameterPackage.getControllerCallInputVariableUsageCollection(),
+                "controllerCallsVariableUsages", 1, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theContextPackage.getExecutionContext(), "asyncExecutionContext", 0, 1, IS_UNIQUE,
+                IS_ORDERED);
+
+        op = this.addEOperation(this.adaptationBehaviorEClass, theContextPackage.getExecutionContext(), "executeAsync",
+                1, 1, IS_UNIQUE, IS_ORDERED);
         this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 1, 1, IS_UNIQUE, IS_ORDERED);
+
+        op = this.addEOperation(this.adaptationBehaviorEClass, theContextPackage.getExecutionContext(), "executeAsync",
+                0, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theInstancePackage.getRoleSet(), "affectedRoleSet", 0, 1, IS_UNIQUE, IS_ORDERED);
+        this.addEParameter(op, theContextPackage.getExecutionContext(), "asyncExecutionContext", 0, 1, IS_UNIQUE,
+                IS_ORDERED);
 
         this.initEClass(this.nestedAdaptationBehaviorEClass, NestedAdaptationBehavior.class, "NestedAdaptationBehavior",
                 !IS_ABSTRACT, !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);

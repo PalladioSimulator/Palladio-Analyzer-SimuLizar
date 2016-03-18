@@ -8,7 +8,8 @@ Bundle-Activator: org.palladiosimulator.simulizar.action.core.presentation.Actio
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.palladiosimulator.simulizar.action.core.presentation,
+Export-Package: org.palladiosimulator.simulizar.action.context.presentation,
+ org.palladiosimulator.simulizar.action.core.presentation,
  org.palladiosimulator.simulizar.action.instance.presentation,
  org.palladiosimulator.simulizar.action.mapping.presentation,
  org.palladiosimulator.simulizar.action.parameter.presentation
