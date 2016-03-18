@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sda:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:expr="http://www.storydriven.org/core/expressions/0.3.1" xmlns:sda="http://www.storydriven.org/storydiagrams/activities/0.2.1" xmlns:sdcec="http://www.storydriven.org/core/expressions/common/0.3.1" xmlns:sdp="http://www.storydriven.org/storydiagrams/patterns/0.2.1" xmlns:sdpe="http://www.storydriven.org/storydiagrams/patterns/expressions/0.2.1" name="Balance Reconfiguration">
+  <annotation source="http://www.storydriven.org/storydiagrams/types">
+    <details key="http://palladiosimulator.org/PalladioComponentModel/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Core/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Protocol/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/QoSAnnotations/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/QoSAnnotations/QoS_Performance/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/QoSAnnotations/QoS_Reliability/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Reliability/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Reliability/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/System/5.1" value="true"/>
+    <details key="http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1" value="true"/>
+    <details key="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0" value="true"/>
+    <details key="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" value="true"/>
+    <details key="http://palladiosimulator.org/MetricSpec/1.0" value="true"/>
+    <details key="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" value="true"/>
+    <details key="http://palladiosimulator.org/MonitorRepository/1.0" value="true"/>
+  </annotation>
+  <ownedActivityEdge target="//@ownedActivityNode.2" source="//@ownedActivityNode.0"/>
+  <ownedActivityEdge target="//@ownedActivityNode.3" source="//@ownedActivityNode.2" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.4" source="//@ownedActivityNode.3" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.5" source="//@ownedActivityNode.4" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.5"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.3" guard="FAILURE"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.2" guard="FAILURE"/>
+  <ownedActivityNode xsi:type="sda:InitialNode" name="StartNode" outgoing="//@ownedActivityEdge.0"/>
+  <ownedActivityNode xsi:type="sda:FlowFinalNode" name="StopNode" incoming="//@ownedActivityEdge.4 //@ownedActivityEdge.5 //@ownedActivityEdge.6"/>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="Bind Parameter" outgoing="//@ownedActivityEdge.1 //@ownedActivityEdge.6" incoming="//@ownedActivityEdge.0">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="runtimeMeasurementModel" bindingState="BOUND">
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="repositoryModel" bindingState="BOUND">
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/Repository"/>
+      </variable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="Check Threshold exceeded" outgoing="//@ownedActivityEdge.2 //@ownedActivityEdge.5" incoming="//@ownedActivityEdge.1">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="runtimeMeasurementModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="elementMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="GREATER">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
+              <attribute href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement/measuringValue"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="2.0"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurement"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="a" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
+        <targetEnd href="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0#//RuntimeMeasurementModel/measurements"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="get BranchAction" outgoing="//@ownedActivityEdge.3" incoming="//@ownedActivityEdge.2">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="basicComponent" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.3" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.0">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;LoadBalancer&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="ressourceDemandingSeff" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1">
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingSEFF"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.2">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;adaptiveRandomLoadBalancing&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="1.0"/>
+          </constraintExpression>
+        </constraint>
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer2&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="repositoryModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.3">
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/Repository"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="serviceEffectSpecifications__BasicComponent" source="//@ownedActivityNode.4/@ownedRule/@variable.0" target="//@ownedActivityNode.4/@ownedRule/@variable.1">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="steps_Behaviour" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.2">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.4/@ownedRule/@variable.2" target="//@ownedActivityNode.4/@ownedRule/@variable.3">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="components" source="//@ownedActivityNode.4/@ownedRule/@variable.4" target="//@ownedActivityNode.4/@ownedRule/@variable.0">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//repository/Repository/components__Repository"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="balance" outgoing="//@ownedActivityEdge.4" incoming="//@ownedActivityEdge.3">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" bindingState="BOUND" outgoingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0 //@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition1" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.1">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer1&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <attributeAssignment>
+          <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability - 0.1" language="OCL" languageVersion="1.0"/>
+        </attributeAssignment>
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer2&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <attributeAssignment>
+          <attribute href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition/branchProbability"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability + 0.1" language="OCL" languageVersion="1.0"/>
+        </attributeAssignment>
+        <classifier href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.1">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.2">
+        <targetEnd href="http://palladiosimulator.org/PalladioComponentModel/5.1#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+</sda:Activity>

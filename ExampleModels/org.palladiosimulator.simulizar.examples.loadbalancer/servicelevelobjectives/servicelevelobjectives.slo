@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slo:ServiceLevelObjectiveRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0">
+  <servicelevelobjectives id="_lPPpcNhKEeSTmNg1QcMViQ" name="ResponseTimeSLO" description="The mean response time of requests in a batch of 10s shall not be higher than 2.0s if possible, but never higher than 3.0s.">
+    <lowerThreshold xsi:type="slo:HardThreshold" id="_n6bdUNhKEeSTmNg1QcMViQ" thresholdLimit="0 s"/>
+    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_qP6uA9hKEeSTmNg1QcMViQ" thresholdLimit="3 s" softLimit="2 s"/>
+    <measurementSpecification href="../monitors/monitoring.monitorrepository#_vZLk8Mu0EeSC07Pn0gpm5Q"/>
+  </servicelevelobjectives>
+  <servicelevelobjectives id="_0iOEQNhKEeSTmNg1QcMViQ" name="NumberOfResourcesSLO" description="Number of resources shall not be higher than 2">
+    <upperThreshold xsi:type="slo:HardThreshold" id="_8DVFQthKEeSTmNg1QcMViQ" thresholdLimit="2"/>
+    <measurementSpecification href="../monitors/monitoring.monitorrepository#_wH_LsMu0EeSC07Pn0gpm5Q"/>
+  </servicelevelobjectives>
+</slo:ServiceLevelObjectiveRepository>
