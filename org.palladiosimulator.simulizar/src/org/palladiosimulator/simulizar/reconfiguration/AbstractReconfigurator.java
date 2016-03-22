@@ -1,12 +1,10 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 public abstract class AbstractReconfigurator implements IReconfigurationEngine {
 
     protected IModelAccess modelAccessFactory;
-//    protected SimuLizarWorkflowConfiguration configuration;
 
     public void setModelAccess(final IModelAccess modelAccess) {
         if (modelAccess == null) {
@@ -14,13 +12,5 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
         }
         this.modelAccessFactory = modelAccess;
     }
-
-//    @Override
-//    public void setConfiguration(final SimuLizarWorkflowConfiguration configuration) {
-//        if (configuration == null) {
-//            throw new IllegalArgumentException("Given configuration must not be null.");
-//        }
-//        this.configuration = configuration;
-//    }
 
 }

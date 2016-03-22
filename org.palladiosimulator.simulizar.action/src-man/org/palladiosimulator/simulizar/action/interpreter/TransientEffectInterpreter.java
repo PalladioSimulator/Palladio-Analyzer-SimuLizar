@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -52,8 +53,11 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -81,6 +85,7 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
     private final TransientEffectQVTOExecutor qvtoExecutor;
     private final QVToModelCache availableModels;
     private final boolean isAsync;
+    private final ModelTransformationCache transformationCache;
 
     /**
      * Stores the {@link SimuComSimProcess} that creates and starts the user processes for the
@@ -128,6 +133,8 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
         this.availableModels.storeModel(this.roleSet);
         this.qvtoExecutor = new TransientEffectQVTOExecutor(this.availableModels.snapshot());
         this.executingProcess = this.associatedReconfigurationProcess;
+        URI[] qvtoFiles = FileUtil.getQvtoFiles(this.state.getReconfigurator().getConfiguration().getReconfigurationRulesFolder());
+        this.transformationCache = new ModelTransformationCache(qvtoFiles);
     }
 
     private void spawnAsyncInterpreterProcess(AdaptationBehavior behaviorToInterpret) {
@@ -146,6 +153,16 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
             }
         };
         asyncInterpreter.scheduleAt(0);
+    }
+    
+    /**
+     * Gets the underlying transformation cache used by this instance.
+     * 
+     * @return The {@link TransformationCache} which contains all transformations that can be
+     *         executed by this instance.
+     */
+    protected ModelTransformationCache getAvailableTransformations() {
+        return this.transformationCache;
     }
 
     @Override
@@ -178,10 +195,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseGuardedTransition(GuardedTransition guardedTransition) {
-        this.qvtoExecutor.enableForTransformationExecution(guardedTransition);
-        TransientEffectQVTOExecutorUtil.validateGuardedTransition(this.qvtoExecutor, guardedTransition);
-
-        return this.qvtoExecutor.executeGuardedTransition(guardedTransition);
+        TransientEffectQVTOExecutorUtil.validateGuardedTransition(this, guardedTransition);
+        URI guardedTransitionUri = URI.createURI(guardedTransition.getConditionURI());
+        QvtoModelTransformation transformation = this.transformationCache.get(guardedTransitionUri).get();
+        return this.qvtoExecutor.executeTransformation(transformation);
     }
 
     @Override
@@ -196,8 +213,6 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseStateTransformingAction(StateTransformingAction stateTransformingAction) {
-        this.qvtoExecutor.enableForTransformationExecution(stateTransformingAction);
-
         String extensionId = stateTransformingAction.getId();
         AbstractStateTransformation transformation = getStateTransformation(extensionId);
         transformation.setSimulationState(this.state);
@@ -234,8 +249,6 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseResourceDemandingAction(final ResourceDemandingAction resourceDemandingAction) {
-        this.qvtoExecutor.enableForTransformationExecution(resourceDemandingAction);
-
         // perform controller completion
         Mapping mapping = executeResourceDemandingAction(resourceDemandingAction)
                 .orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
@@ -266,11 +279,11 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
 
     @Override
     public Boolean caseEnactAdaptationAction(EnactAdaptationAction enactAdaptationAction) {
-        this.qvtoExecutor.enableForTransformationExecution(enactAdaptationAction);
-
         // execute adaptation
-        TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationAction);
-        final boolean result = this.qvtoExecutor.executeTransformation(enactAdaptationAction.getAdaptationStepURI());
+        TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this, enactAdaptationAction);
+        URI adaptationStepUri = URI.createURI(enactAdaptationAction.getAdaptationStepURI());
+        QvtoModelTransformation transformation = this.transformationCache.get(adaptationStepUri).get();
+        final boolean result = this.qvtoExecutor.executeTransformation(transformation);
         if (result && !this.isAsync) {
             this.forwardReconfigurationNotification(new AdaptationActionExecutedNotification(enactAdaptationAction));
         }
@@ -327,9 +340,10 @@ public class TransientEffectInterpreter extends CoreSwitch<Boolean> {
          */
         Repository repository = resourceDemandingAction.getControllerCalls().get(0).getComponent()
                 .getRepository__RepositoryComponent();
-        TransientEffectQVTOExecutorUtil.validateResourceDemandingAction(this.qvtoExecutor, resourceDemandingAction);
-        return this.qvtoExecutor.executeControllerCompletion(repository,
-                resourceDemandingAction.getControllerCompletionURI());
+        TransientEffectQVTOExecutorUtil.validateResourceDemandingAction(this, resourceDemandingAction);
+        URI controllerCompletionUri = URI.createURI(resourceDemandingAction.getControllerCompletionURI());
+        QvtoModelTransformation controllerCompletion = this.transformationCache.get(controllerCompletionUri).get();
+        return this.qvtoExecutor.executeControllerCompletion(repository, controllerCompletion);
     }
 
     private void forwardReconfigurationNotification(Notification notification) {

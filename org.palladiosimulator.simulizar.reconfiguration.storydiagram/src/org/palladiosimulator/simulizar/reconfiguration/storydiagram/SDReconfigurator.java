@@ -10,7 +10,6 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.storydriven.storydiagrams.activities.Activity;
 
 /**
@@ -56,7 +55,7 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
 
     @SuppressWarnings("unchecked")
 	@Override
-    public boolean runCheck(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> checks, final EObject monitoredElement) {
+    public boolean runCheck(EList<? extends org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> checks, final EObject monitoredElement) {
    
     	ArrayList<Activity> activities = new ArrayList<Activity>();
     	for(org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?> check : checks){
@@ -85,7 +84,7 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
     
 	@SuppressWarnings("unchecked")
 	@Override
-	public boolean runExecute(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> actions, EObject monitoredElement) {
+	public boolean runExecute(EList<? extends org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> actions, EObject monitoredElement) {
     	ArrayList<Activity> activities = new ArrayList<Activity>();
     	LOGGER.info("Executing Story Diagram Model Transformation.");
     	for(org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?> action : actions){
@@ -106,10 +105,4 @@ public class SDReconfigurator extends AbstractReconfigurator implements IReconfi
         }
         return this.sdExecutor;
     }
-
-	@Override
-	public void setReconfigurator(Reconfigurator reconfigurator) {
-		// TODO Auto-generated method stub
-		
-	}
 }
