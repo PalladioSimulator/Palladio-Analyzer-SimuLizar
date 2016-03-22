@@ -18,6 +18,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecu
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.utils.FileUtil;
 import org.storydriven.storydiagrams.activities.Activity;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -43,8 +44,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
     // volatile is sufficient as flag is only set once
     private volatile boolean terminationRequested = false;
     private List<ModelTransformation<Activity>> sdmTransformations;
-    private List<ModelTransformation<OperationalTransformation>> qvtoTransformations;
-    private static final String QVTO_FILE_EXTENSION = ".qvto";
+    private List<QvtoModelTransformation> qvtoTransformations;
 
     /**
      * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -65,39 +65,12 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
         this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
         this.currentReconfigNotifications = new ArrayList<>();
-        URI[] qvtoFiles = getQvtoFiles(this.reconfigurator.getConfiguration().getReconfigurationRulesFolder());
-        ModelTransformationCache transformationCache = new ModelTransformationCache(
-                getQvtoFiles(reconfigurator.getConfiguration().getReconfigurationRulesFolder()));
-        qvtoTransformations = new ArrayList<ModelTransformation<OperationalTransformation>>();
+        URI[] qvtoFiles = FileUtil.getQvtoFiles(this.reconfigurator.getConfiguration().getReconfigurationRulesFolder());
+        ModelTransformationCache transformationCache = new ModelTransformationCache(qvtoFiles);
+        qvtoTransformations = new ArrayList<QvtoModelTransformation>();
         for(QvtoModelTransformation mt : transformationCache.getAll()){
         	qvtoTransformations.add(mt);
         }
-    }
-    
-    /**
-     * Gets the QVTO files within the specified path.
-     * 
-     * @param path
-     *            Path to reconfiguration rules.
-     * @return The QVTO files within the given path. Returns an empty array in case no files are
-     *         found.
-     */
-    private static URI[] getQvtoFiles(final String path) {
-        assert path != null;
-        if (path.equals("")) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("No path to QVTo rules given.");
-            }
-            return new URI[0];
-        }
-
-        final URI[] uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
-
-        if (uris.length == 0) {
-            LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
-        }
-
-        return uris;
     }
 
     /**
@@ -209,7 +182,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
                             System.nanoTime());
                     this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
 //                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
-                    EList<ModelTransformation<?>> qvtoTr = new BasicEList<ModelTransformation<?>>(qvtoTransformations);
+                    EList<QvtoModelTransformation> qvtoTr = new BasicEList<QvtoModelTransformation>(qvtoTransformations);
                     final boolean reconfigResult = reconfigurator.runCheck(qvtoTr, monitoredElement);
                     final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
                             EventResult.fromBoolean(reconfigResult), System.nanoTime());

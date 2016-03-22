@@ -29,7 +29,7 @@ public interface IReconfigurationEngine {
 	 * @return <code>true</code> if the check was positive/matched,
 	 *         <code>false</code> if it was negative/did not match
 	 */
-	public boolean runCheck(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> checks, EObject monitoredElement);
+	public boolean runCheck(EList<? extends org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> checks, EObject monitoredElement);
 
 	/**
 	 * Trigger a reconfiguration of the model@runtime. This method should only
@@ -41,16 +41,6 @@ public interface IReconfigurationEngine {
 	 * @return <code>true</code> if the reconfiguration was executed,
 	 *         <code>false</code> if it was not executed or did not succeed.
 	 */
-	public boolean runExecute(EList<org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> actions, EObject monitoredElement);
-
-	/**
-	 * Configures the reconfiguration framework in which <code>this</code> is
-	 * used.
-	 * 
-	 * @param reconfigurator
-	 *            The reconfiguration framework in which <code>this</code> is
-	 *            used.
-	 */
-	public void setReconfigurator(Reconfigurator reconfigurator);
+	public boolean runExecute(EList<? extends org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation<?>> actions, EObject monitoredElement);
 
 }

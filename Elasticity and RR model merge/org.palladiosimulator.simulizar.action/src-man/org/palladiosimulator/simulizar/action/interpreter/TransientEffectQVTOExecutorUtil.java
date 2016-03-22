@@ -28,9 +28,9 @@ public class TransientEffectQVTOExecutorUtil {
         return param -> param.getParameterType().equals(desiredType);
     }
 
-    static void validateGuardedTransition(TransientEffectQVTOExecutor executor, GuardedTransition guardedTransition) {
+    static void validateGuardedTransition(TransientEffectInterpreter interpreter, GuardedTransition guardedTransition) {
         URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
-        Optional<QvtoModelTransformation> preconditionData = executor.getTransformationByUri(conditionUri);
+        Optional<QvtoModelTransformation> preconditionData = interpreter.getAvailableTransformations().get(conditionUri);
 
         Collection<TransformationParameterInformation> inParams = preconditionData
                 .map(QvtoModelTransformation::getInParameters)
@@ -44,11 +44,11 @@ public class TransientEffectQVTOExecutorUtil {
 
     }
 
-    static void validateResourceDemandingAction(TransientEffectQVTOExecutor executor,
+    static void validateResourceDemandingAction(TransientEffectInterpreter interpreter,
             ResourceDemandingAction resourceDemandingAction) {
         URI controllerCompletionUri = URI.createURI(resourceDemandingAction.getControllerCompletionURI());
-        Optional<QvtoModelTransformation> controllerCompletionData = executor
-                .getTransformationByUri(controllerCompletionUri);
+        Optional<QvtoModelTransformation> controllerCompletionData = interpreter
+                .getAvailableTransformations().get(controllerCompletionUri);
 
         Collection<TransformationParameterInformation> outParams = controllerCompletionData
                 .orElseThrow(() -> new RuntimeException("Controller completion transformation not available!"))
@@ -67,10 +67,10 @@ public class TransientEffectQVTOExecutorUtil {
         }
     }
 
-    static void validateEnactAdaptationStep(TransientEffectQVTOExecutor executor,
+    static void validateEnactAdaptationStep(TransientEffectInterpreter interpreter,
             EnactAdaptationAction enactAdaptationAction) {
         URI adaptationStepUri = URI.createURI(Objects.requireNonNull(enactAdaptationAction.getAdaptationStepURI()));
-        Optional<QvtoModelTransformation> adaptationActionData = executor.getTransformationByUri(adaptationStepUri);
+        Optional<QvtoModelTransformation> adaptationActionData = interpreter.getAvailableTransformations().get(adaptationStepUri);
 
         Collection<TransformationParameterInformation> inParams = adaptationActionData
                 .orElseThrow(() -> new RuntimeException("Adaptation step transformation not available!"))
