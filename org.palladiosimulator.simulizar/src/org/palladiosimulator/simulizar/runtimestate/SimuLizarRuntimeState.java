@@ -33,7 +33,6 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelObserver;
-import org.palladiosimulator.simulizar.syncer.UsageEvolutionSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
@@ -288,10 +287,6 @@ public class SimuLizarRuntimeState {
             modelObserver.initialize(this);
         }
 
-        if (this.getModelAccess().getUsageEvolutionModel() != null) {
-            (new UsageEvolutionSyncer()).initialize(this);
-        }
-
         return modelObservers;
     }
 
@@ -305,6 +300,7 @@ public class SimuLizarRuntimeState {
 
     private void initializeCancelation() {
         this.model.getSimulationControl().addStopCondition(new SimCondition() {
+
             @Override
             public boolean check() {
                 return SimuLizarRuntimeState.this.cancelationDelegate.isCanceled();
