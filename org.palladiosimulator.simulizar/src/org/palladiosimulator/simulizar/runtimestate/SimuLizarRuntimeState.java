@@ -28,11 +28,11 @@ import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.syncer.IModelObserver;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
@@ -91,7 +91,7 @@ public class SimuLizarRuntimeState {
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelObservers = this.initializeModelSyncers();
+        this.modelObservers = this.initializeModelObservers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
@@ -277,7 +277,7 @@ public class SimuLizarRuntimeState {
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
-    private List<IModelObserver> initializeModelSyncers() {
+    private List<IModelObserver> initializeModelObservers() {
         LOGGER.debug(
                 "Initialize model observers, e.g., to keep simucom framework objects in sync with global PCM model");
 

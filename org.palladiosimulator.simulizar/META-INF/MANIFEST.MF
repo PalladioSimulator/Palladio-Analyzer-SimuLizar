@@ -112,6 +112,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.monitorrepository,
    org.palladiosimulator.measurementframework,
    de.uka.ipd.sdq.simucomframework.model",
+ org.palladiosimulator.simulizar.modelobserver,
  org.palladiosimulator.simulizar.reconfiguration;
   uses:="org.eclipse.emf.ecore,
    org.palladiosimulator.simulizar.access,
@@ -128,7 +129,6 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    de.uka.ipd.sdq.simucomframework.model,
    org.palladiosimulator.simulizar.usagemodel",
  org.palladiosimulator.simulizar.simulationevents;uses:="de.uka.ipd.sdq.simulation.abstractsimengine,de.uka.ipd.sdq.simucomframework.entities,de.uka.ipd.sdq.simucomframework.model",
- org.palladiosimulator.simulizar.syncer,
  org.palladiosimulator.simulizar.usagemodel;
   uses:="org.palladiosimulator.simulizar.interpreter,
    org.palladiosimulator.pcm.usagemodel,

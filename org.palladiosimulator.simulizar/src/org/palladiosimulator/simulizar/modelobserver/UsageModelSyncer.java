@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.syncer;
+package org.palladiosimulator.simulizar.modelobserver;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;

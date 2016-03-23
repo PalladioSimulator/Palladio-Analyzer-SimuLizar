@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.syncer;
+package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.Objects;
 
