@@ -10,15 +10,19 @@
 	   <extension
          point="org.palladiosimulator.simulizar.modelobserver">
       <modelObserver
-            modelObserver="org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer"
-            >
+            modelObserver="org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer">
       </modelObserver>
    </extension>
    <extension
          point="org.palladiosimulator.simulizar.modelobserver">
       <modelObserver
-            modelObserver="org.palladiosimulator.simulizar.syncer.UsageModelSyncer"
-            >
+            modelObserver="org.palladiosimulator.simulizar.syncer.UsageModelSyncer">
+      </modelObserver>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.modelobserver">
+      <modelObserver
+            modelObserver="org.palladiosimulator.simulizar.syncer.UsageEvolutionSyncer">
       </modelObserver>
    </extension>
 </plugin>
