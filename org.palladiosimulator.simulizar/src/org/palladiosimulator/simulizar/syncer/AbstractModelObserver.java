@@ -16,15 +16,12 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
 
     private EContentAdapter adapter;
 
-    /**
-     * @param simuComModel
-     */
     protected AbstractModelObserver() {
         super();
     }
 
     public void initialize(final T model, final SimuLizarRuntimeState runtimeState) {
-        this.initialize(model);
+        initialize(model);
         this.runtimeModel = runtimeState;
     }
 
@@ -41,7 +38,7 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
                             + notification);
 
                     try {
-                        AbstractModelObserver.this.synchronizeSimulationEntities(notification);
+                        AbstractModelObserver.this.notifyModelObservers(notification);
                     } catch (final Exception e) {
                         LOGGER.error("Sync Exception: " + e);
                     }
@@ -57,7 +54,7 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
         this.model.eAdapters().remove(this.adapter);
     }
 
-    protected void synchronizeSimulationEntities(final Notification notification) {
+    private void notifyModelObservers(final Notification notification) {
 
         switch (notification.getEventType()) {
         case Notification.ADD:

@@ -6,5 +6,19 @@
    <extension-point id="org.palladiosimulator.simulizar.reconfigurationengine" name="SimuLizar Reconfiguration Engine" schema="schema/org.palladiosimulator.simulizar.reconfigurationengine.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.launcher.modelload" name="Simulizar Launcher Model Loader" schema="schema/org.palladiosimulator.simulizar.launcher.modelload.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.configurator" name="SimuLizar Workflow Configuration Customization" schema="schema/org.palladiosimulator.simulizar.configurator.exsd"/>
-
+   <extension-point id="org.palladiosimulator.simulizar.modelobserver" name="Simulizar Model Observer" schema="schema/org.palladiosimulator.simulizar.modelobserver.exsd"/>
+	   <extension
+         point="org.palladiosimulator.simulizar.modelobserver">
+      <modelObserver
+            modelObserver="org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer"
+            >
+      </modelObserver>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.modelobserver">
+      <modelObserver
+            modelObserver="org.palladiosimulator.simulizar.syncer.UsageModelSyncer"
+            >
+      </modelObserver>
+   </extension>
 </plugin>

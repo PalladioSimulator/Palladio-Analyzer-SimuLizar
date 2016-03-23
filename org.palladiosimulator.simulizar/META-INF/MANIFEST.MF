@@ -34,7 +34,6 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.probfunction.math,
  org.palladiosimulator.mdsdprofiles.api,
  org.modelversioning.emfprofile;bundle-version="1.1.0"
-Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.access;
@@ -120,7 +119,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.eclipse.emf.common.notify,
    org.palladiosimulator.simulizar.interpreter.listener,
    org.palladiosimulator.commons.designpatterns",
-    org.palladiosimulator.simulizar.runconfig;uses:="org.eclipse.debug.core,de.uka.ipd.sdq.codegen.simucontroller.runconfig,de.uka.ipd.sdq.workflow.launchconfig",
+ org.palladiosimulator.simulizar.runconfig;uses:="org.eclipse.debug.core,de.uka.ipd.sdq.codegen.simucontroller.runconfig,de.uka.ipd.sdq.workflow.launchconfig",
  org.palladiosimulator.simulizar.runtimestate;
   uses:="org.palladiosimulator.simulizar.interpreter,
    org.palladiosimulator.pcm.repository,
@@ -129,7 +128,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    de.uka.ipd.sdq.simucomframework.model,
    org.palladiosimulator.simulizar.usagemodel",
  org.palladiosimulator.simulizar.simulationevents;uses:="de.uka.ipd.sdq.simulation.abstractsimengine,de.uka.ipd.sdq.simucomframework.entities,de.uka.ipd.sdq.simucomframework.model",
- org.palladiosimulator.simulizar.syncer;uses:="org.eclipse.emf.common.notify,org.palladiosimulator.simulizar.runtimestate",
+ org.palladiosimulator.simulizar.syncer,
  org.palladiosimulator.simulizar.usagemodel;
   uses:="org.palladiosimulator.simulizar.interpreter,
    org.palladiosimulator.pcm.usagemodel,

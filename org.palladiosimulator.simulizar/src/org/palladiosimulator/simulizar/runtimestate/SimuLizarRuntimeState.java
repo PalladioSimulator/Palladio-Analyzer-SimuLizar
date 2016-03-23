@@ -33,10 +33,7 @@ import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.syncer.IModelObserver;
-import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentCostObserver;
-import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.syncer.UsageEvolutionSyncer;
-import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
@@ -71,13 +68,11 @@ public class SimuLizarRuntimeState {
     private final SimulatedUsageModels usageModels;
     private final ModelAccess modelAccess;
     private final Reconfigurator reconfigurator;
-    private final IModelObserver[] modelObservers;
+    private final List<IModelObserver> modelObservers;
     private final SimulationCancelationDelegate cancelationDelegate;
     private final UsageEvolverFacade usageEvolverFacade;
-    
-    private long numberOfContainers = 0;
 
-    
+    private long numberOfContainers = 0;
 
     /**
      * @param configuration
@@ -88,15 +83,15 @@ public class SimuLizarRuntimeState {
         super();
         this.modelAccess = modelAccess;
         this.cancelationDelegate = cancelationDelegate;
-        this.model = SimuComModelFactory.createSimuComModel(configuration);     
-        
+        this.model = SimuComModelFactory.createSimuComModel(configuration);
+
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
         this.usageModels = new SimulatedUsageModels(this.mainContext);
         this.initializeWorkloadDrivers();
-        
-                this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+
+        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
         this.modelObservers = this.initializeModelSyncers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
@@ -140,7 +135,7 @@ public class SimuLizarRuntimeState {
     public IModelAccess getModelAccess() {
         return this.modelAccess;
     }
-    
+
     public boolean isCanceled() {
         return this.cancelationDelegate.isCanceled();
     }
@@ -283,20 +278,21 @@ public class SimuLizarRuntimeState {
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
-    private IModelObserver[] initializeModelSyncers() {
-        LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
+    private List<IModelObserver> initializeModelSyncers() {
+        LOGGER.debug(
+                "Initialize model observers, e.g., to keep simucom framework objects in sync with global PCM model");
 
-        final IModelObserver[] modelSyncers = new IModelObserver[] { new ResourceEnvironmentSyncer(),
-                new UsageModelSyncer(), new ResourceEnvironmentCostObserver()};
-        for (final IModelObserver modelObserver : modelSyncers) {
+        final List<IModelObserver> modelObservers = ExtensionHelper
+                .getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver", "modelObserver");
+        for (final IModelObserver modelObserver : modelObservers) {
             modelObserver.initialize(this);
         }
-        
+
         if (this.getModelAccess().getUsageEvolutionModel() != null) {
             (new UsageEvolutionSyncer()).initialize(this);
         }
 
-        return modelSyncers;
+        return modelObservers;
     }
 
     private void initializeUsageEvolver() {
@@ -306,17 +302,17 @@ public class SimuLizarRuntimeState {
             this.usageEvolverFacade.start();
         }
     }
-    
+
     private void initializeCancelation() {
         this.model.getSimulationControl().addStopCondition(new SimCondition() {
             @Override
             public boolean check() {
-                return cancelationDelegate.isCanceled();
+                return SimuLizarRuntimeState.this.cancelationDelegate.isCanceled();
             }
         });
     }
 
     public UsageEvolverFacade getUsageEvolverFacade() {
-        return usageEvolverFacade;
+        return this.usageEvolverFacade;
     }
 }
