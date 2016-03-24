@@ -21,7 +21,12 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
     }
 
     public void initialize(final T model, final SimuLizarRuntimeState runtimeState) {
-        initialize(model);
+	if (model != null) {
+	    initialize(model);
+	} else {
+	    LOGGER.info(this.getClass().getName() + " cannot observer model, as none has been specified");
+	}
+        
         this.runtimeModel = runtimeState;
     }
 
@@ -51,7 +56,9 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
 
     @Override
     public void unregister() {
-        this.model.eAdapters().remove(this.adapter);
+	if (this.adapter != null && this.model.eAdapters().contains(this.adapter)) {
+	    this.model.eAdapters().remove(this.adapter);
+	}
     }
 
     private void notifyModelObservers(final Notification notification) {
