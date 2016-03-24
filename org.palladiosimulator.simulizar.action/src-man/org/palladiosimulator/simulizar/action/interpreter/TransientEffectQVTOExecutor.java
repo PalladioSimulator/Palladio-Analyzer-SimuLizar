@@ -12,10 +12,13 @@ import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
+import org.palladiosimulator.simulizar.action.context.ContextPackage;
+import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
+import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.AbstractQVTOExecutor;
@@ -80,6 +83,11 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         }
     }
 
+    void addTransformationParameters(RoleSet roleSet, ExecutionContext context) {
+    	 storeModel(roleSet);
+         storeModel(context);
+    }
+    
     void enableForTransformationExecution(EnactAdaptationAction enactAdaptationAction) {
         storeModel(Objects.requireNonNull(enactAdaptationAction));
         prepareTransformation(enactAdaptationAction.getAdaptationStepURI());
