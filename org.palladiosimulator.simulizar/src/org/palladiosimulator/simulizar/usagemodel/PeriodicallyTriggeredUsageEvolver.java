@@ -58,6 +58,13 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
         this.evolvedScenarioId = evolvedScenario.getId();
         this.rtState = rtState;
     }
+    
+    /**
+     * Stops the usage evolver from being scheduled in the simulation.
+     */
+    public void stop() {
+        this.removeEvent();
+    }
 
     /**
      * Get the load evaluator for <code>this</code>.

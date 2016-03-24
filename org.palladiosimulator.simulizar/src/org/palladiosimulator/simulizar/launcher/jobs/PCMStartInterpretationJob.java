@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
@@ -56,9 +57,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
                 SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ID,
                 SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE);
 
-        for (final IConfigurator configurator : configurators) {
-            configurator.configure(this.configuration, this.blackboard);
-        }
+        configurators.forEach(c -> c.configure(this.configuration, this.blackboard));
 
         this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
@@ -66,7 +65,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // After we find a way to copy models so that their links do not point to intermediary, but
         // to the models directly.
         final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
-                new ModelAccessUseOriginalReferences(this.blackboard));
+                new ModelAccessUseOriginalReferences(this.blackboard),
+                new SimulationCancelationDelegate(monitor::isCanceled));
 
         this.initializeRuntimeStateAccessors(runtimeState);
 
@@ -80,9 +80,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
                 SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
                 SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
 
-        for (final IRuntimeStateAccessor accessor : stateAccessors) {
-            accessor.setRuntimeStateModel(runtimeState);
-        }
+        stateAccessors.forEach(accessor -> accessor.setRuntimeStateModel(runtimeState));
     }
 
     /**

@@ -211,7 +211,7 @@ public class ProbeFrameworkListener extends AbstractInterpreterListener {
      *
      * @param soughtFor
      *            A {@link MetricDescription} denoting the target metric to look for.
-     * @return An UNMODIFIABLE {@link Collection} containing all found measurement Specifications,
+     * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
      *         which might be empty but never {@code null}.
      */
     public Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
