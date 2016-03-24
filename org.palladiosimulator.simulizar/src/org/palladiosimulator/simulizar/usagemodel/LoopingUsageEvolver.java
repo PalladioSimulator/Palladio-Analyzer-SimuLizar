@@ -16,6 +16,8 @@ import tools.descartes.dlim.generator.ModelEvaluator;
 public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
 
     static final Logger LOGGER = Logger.getLogger(LoopingUsageEvolver.class);
+    
+    private final double simulationTimeOffset;
 
     /**
      * Constructs the looping usage evolver.
@@ -28,18 +30,20 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      *            The interval in which the evolver should evolve the load.
      * @param evolvedScenario
      *            The evolved scenario.
+     * @param simulationTimeOffset 
      */
     public LoopingUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
-            final UsageScenario evolvedScenario) {
+            final UsageScenario evolvedScenario, double simulationTimeOffset) {
         super(rtState, firstOccurrence, delay, evolvedScenario);
         if (!this.getCorrespondingUsage().isRepeatingPattern()) {
             throw new IllegalArgumentException("The corresponding usage model must contain a repeating pattern.");
         }
+        this.simulationTimeOffset = simulationTimeOffset;
     }
 
     @Override
     protected double getNewRate(final ModelEvaluator evaluator) {
-        return evaluator.getArrivalRateAtTime(floorMod(this.getCurrentTime(), this.getDLIMFinalDuration()));
+        return evaluator.getArrivalRateAtTime(floorMod(this.getCurrentTime() - this.simulationTimeOffset, this.getDLIMFinalDuration()));
     }
 
     /**

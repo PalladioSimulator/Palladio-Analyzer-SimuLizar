@@ -41,8 +41,14 @@ public class UsageEvolverFacade {
         if (usage.getEvolutionStepWidth() != 0d) {
             timePerStep = usage.getEvolutionStepWidth();
         }
+        
+        double simulationTimeOffset = 0d; 
+        if (this.runtimeState.getModel().getSimulationControl().isRunning()) {
+            simulationTimeOffset = this.runtimeState.getModel().getSimulationControl().getCurrentSimulationTime();
+        }
+        
         if (usage.isRepeatingPattern()) {
-            return new LoopingUsageEvolver(this.runtimeState, 0d, timePerStep, usage.getScenario());
+            return new LoopingUsageEvolver(this.runtimeState, 0d, timePerStep, usage.getScenario(), simulationTimeOffset);
         } else {
             // TODO remove this line once 'legacy' support is no longer needed.
             timePerStep = this.runtimeState.getModel().getConfiguration().getSimuTime()
