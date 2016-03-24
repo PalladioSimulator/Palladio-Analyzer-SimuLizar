@@ -1,0 +1,151 @@
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1';
+
+transformation outsource_completion(inout pcmAllocation : PCM_ALLOC,
+								   in pcmControllerRepository : PCM_REP,
+								   in actionRoleSet : ACTION_INSTANCE,
+								   in actionStep : ACTION_CORE,
+								   out actionMapping : ACTION_MAPPING) {
+	
+	property probabilisticBranchTransition1 : ProbabilisticBranchTransition;	
+	
+	main(){
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		allocation.printTheSystemsState();
+		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
+		var calls := step.controllerCalls;
+		var call := calls->any(true);
+		
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var roles := roleSet.roles;
+		var roleForBranchCondidtion1 := roles->select(role | role.roleType.id = "_j4aNJLUnEeW-zrkZJ6KTtQ")->any(true);
+		probabilisticBranchTransition1 := roleForBranchCondidtion1.value.oclAsType(ProbabilisticBranchTransition);
+		
+		var resourceContainerForLoadBalancerTransientAC :=  allocation.getResourceContainerForTheProbabilisticBranchTransition(probabilisticBranchTransition1);
+		
+		var componentRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
+		var loadBalancerTransientComponent : BasicComponent := componentRepository.getComponentById("_eNducLUlEeW-zrkZJ6KTtQ");
+		
+		var loadBalancerTransientAC := allocation.getAssemblyContext(loadBalancerTransientComponent);
+		if(loadBalancerTransientAC = null){
+			call.map createMapping(allocation, loadBalancerTransientComponent, resourceContainerForLoadBalancerTransientAC);
+		} else{
+			call.map createMappingForExistingAssembly(allocation, loadBalancerTransientAC);
+		};
+		allocation.printTheSystemsState();
+		log("Completions executed.");
+	}
+	
+	helper Allocation::printTheSystemsState(){
+		//log("printTheSystemsState START");
+		self.allocationContexts_Allocation->forEach(allocationContext){
+			var rc := allocationContext.resourceContainer_AllocationContext;
+			//log("ResourceContainer - " + rc.entityName + ":" + rc.id);
+			var assemblyContexts := self.allocationContexts_Allocation->select(ac | ac.resourceContainer_AllocationContext.id = rc.id).assemblyContext_AllocationContext;
+			assemblyContexts->forEach(assemblyContext){
+				//log("    AssemblyContext - " + assemblyContext.entityName + ":" + assemblyContext.id);
+			}
+		};
+		//log("printTheSystemsState STOP");
+	}
+	
+	helper Allocation::getResourceContainerForTheProbabilisticBranchTransition(pb : ProbabilisticBranchTransition) : ResourceContainer {
+		var res : ResourceContainer;
+		self.allocationContexts_Allocation->forEach(allocationContext){
+			allocationContext.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff){
+				var targetPB := seff.oclAsType(ResourceDemandingSEFF).allSubobjects()[ProbabilisticBranchTransition]->any(id=probabilisticBranchTransition1.id);
+				if(targetPB <> null){
+					res := allocationContext.resourceContainer_AllocationContext;
+					break;
+				};
+			};
+		};
+		return res;
+	}
+	
+	mapping ControllerCall::createMappingForExistingAssembly(allocation : Allocation, dummyAssembly : AssemblyContext) : Mapping@actionMapping {
+		var system : System := allocation.system_Allocation;
+		var providedDelegationConnectorForDummyAssembly : ProvidedDelegationConnector := system.connectors__ComposedStructure->
+								select(c | c.oclIsTypeOf(ProvidedDelegationConnector))->
+								select(pdc | pdc.oclAsType(ProvidedDelegationConnector).assemblyContext_ProvidedDelegationConnector = dummyAssembly)->
+								any(true).oclAsType(ProvidedDelegationConnector);
+		result.controllerMappings += self.map createControllerMapping(providedDelegationConnectorForDummyAssembly.outerProvidedRole_ProvidedDelegationConnector);
+	}
+	
+	mapping ControllerCall::createMapping(allocation : Allocation, bc : BasicComponent, rc : ResourceContainer) : Mapping@actionMapping {
+		var transientAssembly : AssemblyContext := bc.createAssembly(rc);
+		
+		var system : System := allocation.system_Allocation;
+		
+		system.assemblyContexts__ComposedStructure += transientAssembly;
+		transientAssembly.allocateAt(allocation, rc);
+		
+		var systemsProvidedRole := object OperationProvidedRole {
+			entityName := 'QVTo created OperationProvidedRole';
+			providingEntity_ProvidedRole := bc;
+			providedInterface__OperationProvidedRole := self.calledSignature.interface__OperationSignature;
+		};
+		
+		system.providedRoles_InterfaceProvidingEntity += systemsProvidedRole;
+		var systemsDelegationConnector := object ProvidedDelegationConnector {
+			entityName := 'QVTo created ProvidedDelegationConnector';
+			innerProvidedRole_ProvidedDelegationConnector := bc.selectProvidedRoleById('_pzQs4LUlEeW-zrkZJ6KTtQ');
+			outerProvidedRole_ProvidedDelegationConnector := systemsProvidedRole;
+			assemblyContext_ProvidedDelegationConnector := transientAssembly;
+		};
+		
+		system.connectors__ComposedStructure += systemsDelegationConnector;
+		result.controllerMappings += self.map createControllerMapping(systemsProvidedRole);
+	}
+	
+	query Allocation::getAssemblyContext(encapsulatedComponent : BasicComponent) : AssemblyContext {
+		var assemblyContextsForTheComponent := self.allocationContexts_Allocation.assemblyContext_AllocationContext->select(assemblyContext | assemblyContext.encapsulatedComponent__AssemblyContext.id = encapsulatedComponent.id);
+		//log("Found " + assemblyContextsForTheComponent->size().toString() + " AssemblyContexts for the component " + encapsulatedComponent.id);
+		return assemblyContextsForTheComponent->any(true);
+		
+	} 
+	
+	helper BasicComponent::createAssembly(inout container : ResourceContainer) : AssemblyContext {
+		var nameInput := self.entityName;
+		return object AssemblyContext {
+			entityName :=  nameInput + "AssemblyCtxOn" + container.entityName;
+			encapsulatedComponent__AssemblyContext := self;
+		}
+	}
+	
+	helper AssemblyContext::allocateAt(inout allocation : Allocation, container : ResourceContainer) {
+		//log("Allocating ...");
+		//log("    ResourceContainer - " + container.entityName + ":" + container.id);
+		//log("    AssemblyContext - " + self.entityName + ":" + self.id);
+		allocation.allocationContexts_Allocation += object AllocationContext {
+			entityName := self.entityName + 'At' + container.entityName;
+			resourceContainer_AllocationContext := container;
+			assemblyContext_AllocationContext := self;
+		}
+	}
+	
+	query BasicComponent::selectProvidedRoleById(id : String) : OperationProvidedRole {
+		return self.providedRoles_InterfaceProvidingEntity->select(c | c. id = id)->any(true).oclAsType(OperationProvidedRole)
+	}
+	
+	query AssemblyContext::getControllerHost(allocation : Allocation) : ResourceContainer {
+		return allocation.allocationContexts_Allocation->select(allocationContext |allocationContext.assemblyContext_AllocationContext.id = self.id)->any(true).resourceContainer_AllocationContext;
+	}
+	
+	query Repository::getComponentById(id : String) : BasicComponent {
+		return self.components__Repository->select(component | component.id = id)->any(true)->oclAsType(BasicComponent)->any(true);
+	}
+	
+	mapping ControllerCall::createControllerMapping(role : OperationProvidedRole) : ControllerMapping {
+		result.mappedCall := self;
+		result.entityName := 'QVTo created ControllerMapping';
+		result.controllerRole := role;
+	}
+}
