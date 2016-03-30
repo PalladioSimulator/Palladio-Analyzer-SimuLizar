@@ -8,7 +8,6 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
 import org.storydriven.storydiagrams.activities.Activity;
 
@@ -20,7 +19,7 @@ import org.storydriven.storydiagrams.activities.Activity;
  * @author snowball
  *
  */
-public class SDReconfigurator extends AbstractReconfigurator implements IReconfigurationEngine {
+public class SDReconfigurator extends AbstractReconfigurator {
 
     /**
      * This class' internal LOGGER.

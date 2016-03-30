@@ -57,8 +57,7 @@ public interface ParameterPackage extends EPackage {
      * <em>Controller Call Input Variable Usage</em>}' class. <!-- begin-user-doc --> <!--
      * end-user-doc -->
      *
-     * @see org.palladiosimulator.simulizar.action.parameter.impl.
-     *      ControllerCallInputVariableUsageImpl
+     * @see org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageImpl
      * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsage()
      * @generated
      */
@@ -124,8 +123,7 @@ public interface ParameterPackage extends EPackage {
      * <em>Controller Call Input Variable Usage Collection</em>}' class. <!-- begin-user-doc -->
      * <!-- end-user-doc -->
      *
-     * @see org.palladiosimulator.simulizar.action.parameter.impl.
-     *      ControllerCallInputVariableUsageCollectionImpl
+     * @see org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl
      * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsageCollection()
      * @generated
      */
@@ -224,8 +222,7 @@ public interface ParameterPackage extends EPackage {
      * end-user-doc -->
      *
      * @return the meta object for class '<em>Controller Call Input Variable Usage Collection</em>'.
-     * @see org.palladiosimulator.simulizar.action.parameter.
-     *      ControllerCallInputVariableUsageCollection
+     * @see org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection
      * @generated
      */
     EClass getControllerCallInputVariableUsageCollection();
@@ -272,8 +269,7 @@ public interface ParameterPackage extends EPackage {
          * <em>Controller Call Input Variable Usage</em>}' class. <!-- begin-user-doc --> <!--
          * end-user-doc -->
          *
-         * @see org.palladiosimulator.simulizar.action.parameter.impl.
-         *      ControllerCallInputVariableUsageImpl
+         * @see org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageImpl
          * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsage()
          * @generated
          */
@@ -312,8 +308,7 @@ public interface ParameterPackage extends EPackage {
          * <em>Controller Call Input Variable Usage Collection</em>}' class. <!-- begin-user-doc -->
          * <!-- end-user-doc -->
          *
-         * @see org.palladiosimulator.simulizar.action.parameter.impl.
-         *      ControllerCallInputVariableUsageCollectionImpl
+         * @see org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl
          * @see org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl#getControllerCallInputVariableUsageCollection()
          * @generated
          */

@@ -48,7 +48,7 @@ transformation vmMigration(
 		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
 		log("Executing step " + step.entityName);
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
-		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
+		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->select(cr | cr.id = "_y7TzUOp-EeS1xrjFer2CUg")->any(true);
 		
 		migrationController := controllerRepository.getComponentById("_63lUEOqDEeS1xrjFer2CUg");
 		migrationSourceController := controllerRepository.getComponentById("_CizTUOqEEeS1xrjFer2CUg");
@@ -67,6 +67,7 @@ transformation vmMigration(
 		targetContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		
 		var assembly : AssemblyContext := getMigrationControllerAssembly(allocation, migrationControllerContainer, migratedAssembly.getControllerHost(allocation), targetContainer);
+		var res := assembly = null;
 		if(assembly = null) {
 			step.map vmMigrate(allocation, controllerRepository, roleSet);	
 		} else {

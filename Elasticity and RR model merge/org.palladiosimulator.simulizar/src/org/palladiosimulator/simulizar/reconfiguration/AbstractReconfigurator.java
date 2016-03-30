@@ -6,6 +6,7 @@ public abstract class AbstractReconfigurator implements IReconfigurationEngine {
 
     protected IModelAccess modelAccessFactory;
 
+    @Override
     public void setModelAccess(final IModelAccess modelAccess) {
         if (modelAccess == null) {
             throw new IllegalArgumentException("Given modelAccess must not be null.");

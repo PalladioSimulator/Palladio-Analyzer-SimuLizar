@@ -12,6 +12,7 @@ import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**
@@ -33,6 +34,18 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	 */
 	private QVTOExecutor qvtoExecutor;
 
+    /**
+     * QVTO Reconfigurator default constructor.
+     * 
+     * @param modelAccessFactory
+     *            ModelAccessFactory giving access to PCM and PRM models
+     * @param configuration
+     *            Simulation configuration
+     */
+    public QVTOReconfigurator() {
+        super();
+    }
+	
 	/**
 	 * QVTO Reconfigurator constructor.
 	 * 
@@ -48,7 +61,7 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 
 	private QVTOExecutor getQVTOExecutor() {
 		if (this.qvtoExecutor == null) {
-			this.qvtoExecutor = new QVTOExecutor(new QVToModelCache(this.modelAccessFactory));
+			this.qvtoExecutor = new QVTOExecutor(new ModelTransformationCache(), new QVToModelCache(this.modelAccessFactory));
 		}
 		return this.qvtoExecutor;
 	}

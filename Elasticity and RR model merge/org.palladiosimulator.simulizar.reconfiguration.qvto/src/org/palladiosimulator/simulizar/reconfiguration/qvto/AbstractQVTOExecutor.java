@@ -23,6 +23,7 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 /**
@@ -41,6 +42,7 @@ public abstract class AbstractQVTOExecutor {
 	private static final Logger LOGGER = Logger.getLogger(AbstractQVTOExecutor.class);
     // store mapping model type -> model instance
     private final QVToModelCache availableModels;
+    private final ModelTransformationCache transformationCache;
 
  // this switch encapsulates the special treatment of the RuntimeMeasurementModel
     // to incorporate other special cases, use nested switches within the 'defaultCase(EObject)'
@@ -84,8 +86,19 @@ public abstract class AbstractQVTOExecutor {
      * @throws NullPointerException
      *             If either parameter is {@code null}.
      */
-    protected AbstractQVTOExecutor(QVToModelCache knownModels) {
+    protected AbstractQVTOExecutor(ModelTransformationCache knownTransformations, QVToModelCache knownModels) {
+    	this.transformationCache = Objects.requireNonNull(knownTransformations);
         this.availableModels = Objects.requireNonNull(knownModels);
+    }
+    
+    /**
+     * Gets the underlying transformation cache used by this instance.
+     * 
+     * @return The {@link TransformationCache} which contains all transformations that can be
+     *         executed by this instance.
+     */
+    protected ModelTransformationCache getAvailableTransformations() {
+        return this.transformationCache;
     }
 
     /**

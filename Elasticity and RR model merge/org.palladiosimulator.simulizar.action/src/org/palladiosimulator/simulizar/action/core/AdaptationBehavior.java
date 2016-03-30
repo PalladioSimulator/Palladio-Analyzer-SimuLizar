@@ -4,6 +4,7 @@ package org.palladiosimulator.simulizar.action.core;
 
 import org.eclipse.emf.common.util.EList;
 import org.modelversioning.emfprofile.Profile;
+import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 
@@ -111,42 +112,105 @@ public interface AdaptationBehavior extends AbstractAdaptationBehavior {
     void setRepository(AdaptationBehaviorRepository value);
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Executes this
+     * AdaptationBehavior for the given RoleSet and with the given VariableUsages. As no
+     * ExecutionContext is passed, this behavior will be processed by the main thread, i.e. by the
+     * underlying ReconfigurationProcess. <!-- end-model-doc -->
      *
      * @model required="true" affectedRoleSetRequired="true"
      *        controllerCallsVariableUsagesRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);\r\n'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this).getExecutionResultAsBoolean();\r\n'"
      * @generated
      */
     boolean execute(RoleSet affectedRoleSet, ControllerCallInputVariableUsageCollection controllerCallsVariableUsages);
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Executes this
+     * AdaptationBehavior for the given RoleSet and with the given VariableUsages. As no
+     * ExecutionContext is passed, this behavior will be processed by the main thread, i.e. by the
+     * underlying ReconfigurationProcess. <!-- end-model-doc -->
+     *
+     * @model required="true" affectedRoleSetRequired="true"
+     *        controllerCallsVariableUsagesRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).addExecutionContext(executionContext).build().doSwitch(this).getExecutionResultAsBoolean();\r\n'"
+     * @generated
+     */
+    boolean execute(RoleSet affectedRoleSet, ControllerCallInputVariableUsageCollection controllerCallsVariableUsages,
+            ExecutionContext executionContext);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Executes this
+     * AdaptationBehavior for the given RoleSet. As no ExecutionContext is passed, this behavior
+     * will be processed by the main thread, i.e. by the underlying ReconfigurationProcess. <!--
+     * end-model-doc -->
      *
      * @model required="true" affectedRoleSetRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this);'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).build().doSwitch(this).getExecutionResultAsBoolean();'"
      * @generated
      */
     boolean execute(RoleSet affectedRoleSet);
 
     /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Executes this
+     * AdaptationBehavior for the given RoleSet and with the given VariableUsages. As no
+     * ExecutionContext is passed, this behavior will be processed by the main thread, i.e. by the
+     * underlying ReconfigurationProcess. <!-- end-model-doc -->
+     *
+     * @model required="true" affectedRoleSetRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addExecutionContext(executionContext).build().doSwitch(this).getExecutionResultAsBoolean();\r\n'"
+     * @generated
+     */
+    boolean execute(RoleSet affectedRoleSet, ExecutionContext executionContext);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Triggers the
+     * asynchronous execution of this AdaptationBehavior for the given RoleSet and VariableUsages.
+     * The ExecutionContext of the executing process is returned which should be passed to
+     * synchronous adaptation behavior executions that are done within. <!-- end-model-doc -->
      *
      * @model required="true" affectedRoleSetRequired="true"
      *        controllerCallsVariableUsagesRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this);\r\n'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this).getContext().get();\r\n'"
      * @generated
      */
-    boolean executeAsync(RoleSet affectedRoleSet,
+    ExecutionContext executeAsync(RoleSet affectedRoleSet,
             ControllerCallInputVariableUsageCollection controllerCallsVariableUsages);
 
     /**
      * <!-- begin-user-doc --> <!-- end-user-doc -->
      *
      * @model required="true" affectedRoleSetRequired="true" annotation=
-     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this);'"
+     *        "http://www.eclipse.org/emf/2002/GenModel body='return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this).getContext().get();'"
      * @generated
      */
-    boolean executeAsync(RoleSet affectedRoleSet);
+    ExecutionContext executeAsync(RoleSet affectedRoleSet);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Triggers the
+     * asynchronous execution of this AdaptationBehavior for the given RoleSet in the given
+     * ExecutionContext. To conform to ome overloaded versions of this method, this context is also
+     * returned. It should be passed to synchronous adaptation behavior executions that are done
+     * within. <!-- end-model-doc -->
+     *
+     * @model annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).build().doSwitch(this);\r\nreturn asyncExecutionContext;\r\n'"
+     * @generated
+     */
+    ExecutionContext executeAsync(RoleSet affectedRoleSet, ExecutionContext asyncExecutionContext);
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc --> <!-- begin-model-doc --> Triggers the
+     * asynchronous execution of this AdaptationBehavior for the given RoleSet and VariableUsages in
+     * the given ExecutionContext. To conform to ome overloaded versions of this method, this
+     * context is also returned. It should be passed to synchronous adaptation behavior executions
+     * that are done within. <!-- end-model-doc -->
+     *
+     * @model controllerCallsVariableUsagesRequired="true" annotation=
+     *        "http://www.eclipse.org/emf/2002/GenModel body='org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);\r\nreturn asyncExecutionContext;\r\n'"
+     * @generated
+     */
+    ExecutionContext executeAsync(RoleSet affectedRoleSet,
+            ControllerCallInputVariableUsageCollection controllerCallsVariableUsages,
+            ExecutionContext asyncExecutionContext);
 
 } // AdaptationBehavior
