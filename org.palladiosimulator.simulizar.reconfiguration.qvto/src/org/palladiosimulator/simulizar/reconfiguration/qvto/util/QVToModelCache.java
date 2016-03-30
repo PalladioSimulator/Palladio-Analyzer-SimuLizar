@@ -110,6 +110,7 @@ public class QVToModelCache {
      */
     public void storeModel(EObject modelInstance) {
         if (modelInstance != null) {
+        	
             EPackage metaModel = MODELTYPE_RETRIEVER.doSwitch(modelInstance);
             
             // The following is to circumvent problems of providing EPackages as model instances 

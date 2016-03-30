@@ -14,6 +14,7 @@ import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
 import org.modelversioning.emfprofile.Profile;
+import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
@@ -206,7 +207,24 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
             final ControllerCallInputVariableUsageCollection controllerCallsVariableUsages) {
         return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
                 .getInterpreterBuilder(affectedRoleSet, this.getRepository())
-                .addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);
+                .addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this)
+                .getExecutionResultAsBoolean();
+
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public boolean execute(final RoleSet affectedRoleSet,
+            final ControllerCallInputVariableUsageCollection controllerCallsVariableUsages,
+            final ExecutionContext executionContext) {
+        return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository())
+                .addControllerCallVariableUsages(controllerCallsVariableUsages).addExecutionContext(executionContext)
+                .build().doSwitch(this).getExecutionResultAsBoolean();
 
     }
 
@@ -218,7 +236,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
     @Override
     public boolean execute(final RoleSet affectedRoleSet) {
         return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
-                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).build().doSwitch(this);
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).build().doSwitch(this)
+                .getExecutionResultAsBoolean();
     }
 
     /**
@@ -227,11 +246,25 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
      * @generated
      */
     @Override
-    public boolean executeAsync(final RoleSet affectedRoleSet,
+    public boolean execute(final RoleSet affectedRoleSet, final ExecutionContext executionContext) {
+        return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).addExecutionContext(executionContext)
+                .build().doSwitch(this).getExecutionResultAsBoolean();
+
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ExecutionContext executeAsync(final RoleSet affectedRoleSet,
             final ControllerCallInputVariableUsageCollection controllerCallsVariableUsages) {
         return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
                 .getInterpreterBuilder(affectedRoleSet, this.getRepository())
-                .addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this);
+                .addControllerCallVariableUsages(controllerCallsVariableUsages).isAsync().build().doSwitch(this)
+                .getContext().get();
 
     }
 
@@ -241,9 +274,40 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
      * @generated
      */
     @Override
-    public boolean executeAsync(final RoleSet affectedRoleSet) {
+    public ExecutionContext executeAsync(final RoleSet affectedRoleSet) {
         return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
-                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).isAsync().build().doSwitch(this);
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).isAsync().build().doSwitch(this)
+                .getContext().get();
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ExecutionContext executeAsync(final RoleSet affectedRoleSet, final ExecutionContext asyncExecutionContext) {
+        org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).isAsync(asyncExecutionContext).build()
+                .doSwitch(this);
+        return asyncExecutionContext;
+
+    }
+
+    /**
+     * <!-- begin-user-doc --> <!-- end-user-doc -->
+     *
+     * @generated
+     */
+    @Override
+    public ExecutionContext executeAsync(final RoleSet affectedRoleSet,
+            final ControllerCallInputVariableUsageCollection controllerCallsVariableUsages,
+            final ExecutionContext asyncExecutionContext) {
+        org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+                .getInterpreterBuilder(affectedRoleSet, this.getRepository()).isAsync(asyncExecutionContext)
+                .addControllerCallVariableUsages(controllerCallsVariableUsages).build().doSwitch(this);
+        return asyncExecutionContext;
+
     }
 
     /**

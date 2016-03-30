@@ -162,10 +162,10 @@ public abstract class SimuLizarRuntimeStateAbstract {
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
 
-//        for (final IReconfigurationEngine reconfigEngine : reconfigEngines) {
+        for (final IReconfigurationEngine reconfigEngine : reconfigEngines) {
 //            reconfigEngine.setConfiguration(configuration);
-//            reconfigEngine.setModelAccess(this.modelAccess);
-//        }
+            reconfigEngine.setModelAccess(this.modelAccess);
+        }
 
         final Reconfigurator reconfigurator = new Reconfigurator(this.model, this.modelAccess, simulationControl,
                 reconfigEngines, configuration);

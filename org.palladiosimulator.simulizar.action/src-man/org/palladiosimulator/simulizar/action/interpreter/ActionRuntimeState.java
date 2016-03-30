@@ -1,13 +1,16 @@
 package org.palladiosimulator.simulizar.action.interpreter;
 
 import java.util.Objects;
+import java.util.Optional;
 
+import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.action.parameter.ParameterFactory;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 public class ActionRuntimeState implements IRuntimeStateAccessor {
@@ -57,10 +60,12 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      *
      */
     public static class TransientEffectInterpreterBuilder {
+
         private final SimuLizarRuntimeStateAbstract state = ActionRuntimeState.state;
         private final RoleSet roleSet;
         private final AdaptationBehaviorRepository repository;
 
+        private ExecutionContext context = null;
         private ControllerCallInputVariableUsageCollection controllerCallVariableUsages = EMPTY_VARIABLE_USAGE_COLLECTION;
         private boolean isAsync = false;
 
@@ -78,6 +83,10 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
         public TransientEffectInterpreterBuilder isAsync() {
             this.isAsync = true;
             return this;
+        }
+
+        public TransientEffectInterpreterBuilder isAsync(ExecutionContext context) {
+            return isAsync().addExecutionContext(Objects.requireNonNull(context));
         }
 
         /**
@@ -98,15 +107,20 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
             return this;
         }
 
+        public TransientEffectInterpreterBuilder addExecutionContext(ExecutionContext executionContext) {
+            this.context = Objects.requireNonNull(executionContext);
+            return this;
+        }
+
         /**
-         * Constructs a {@link TransientEffectInterpreter} instance by using the current builder
+         * Constructs an appropriate {@link TransientEffectInterpreter} by using the current builder
          * configuration.
          * 
          * @return A newly created {@link TransientEffectInterpreter} instance.
          */
         public TransientEffectInterpreter build() {
             return new TransientEffectInterpreter(this.state, this.roleSet, this.controllerCallVariableUsages,
-                    this.repository, this.isAsync);
+                    this.repository, this.isAsync, Optional.ofNullable(this.context));
         }
     }
 }

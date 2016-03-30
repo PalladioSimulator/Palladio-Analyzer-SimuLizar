@@ -9,8 +9,6 @@ import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
-import org.palladiosimulator.commons.eclipseutils.FileHelper;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
@@ -33,7 +31,6 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * @see Reconfigurator
  * @see IReconfigurator
  */
-@SuppressWarnings("restriction")
 public class ReconfigurationProcess extends SimuComSimProcess {
 
     private EObject monitoredElement;
