@@ -7,12 +7,10 @@ Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.palladiosimulator.simulizar.reconfiguration,
- org.palladiosimulator.simulizar.reconfiguration.impl,
- org.palladiosimulator.simulizar.reconfiguration.util,
- org.palladiosimulator.simulizar.reconfigurationrule,
+Export-Package: org.palladiosimulator.simulizar.reconfigurationrule,
  org.palladiosimulator.simulizar.reconfigurationrule.impl,
  org.palladiosimulator.simulizar.reconfigurationrule.qvto,
+ org.palladiosimulator.simulizar.reconfigurationrule.storydiagram,
  org.palladiosimulator.simulizar.reconfigurationrule.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
@@ -29,5 +27,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.storydriven.storydiagrams;bundle-version="1.0.1",
  org.eclipse.m2m.qvt.oml;bundle-version="3.5.0",
  org.apache.commons.collections15;bundle-version="1.0.0",
- org.apache.log4j;bundle-version="1.2.15"
+ org.apache.log4j;bundle-version="1.2.15",
+ org.palladiosimulator.simulizar.runtimemeasurement
 Bundle-ActivationPolicy: lazy

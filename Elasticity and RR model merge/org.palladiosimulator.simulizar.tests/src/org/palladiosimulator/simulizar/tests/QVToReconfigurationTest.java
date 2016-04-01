@@ -367,8 +367,8 @@ public class QVToReconfigurationTest {
 
         QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess);
         reconfigurator.setModelAccess(modelAccess);
-        boolean checkedAndExceuted = reconfigurator.runExecute(null, monitoredElement);
-        assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
+//        boolean checkedAndExceuted = reconfigurator.runExecute(null, monitoredElement);
+//        assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
 
         return pcmResourceSet;
     }

@@ -70,7 +70,7 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	public boolean runCheck(EList<? extends ModelTransformation<?>> checks, EObject monitoredElement) {
 		LOGGER.debug("Checking reconfiguration rules due to PRM change");
 		ArrayList<QvtoModelTransformation> transformations = new ArrayList<QvtoModelTransformation>();
-		for (ModelTransformation check : checks) {
+		for (ModelTransformation<? extends Object> check : checks) {
 			try {
 				if (check instanceof QvtoModelTransformation) {
 					transformations.add((QvtoModelTransformation) check);
@@ -89,7 +89,7 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	public boolean runExecute(EList<? extends ModelTransformation<?>> actions, EObject monitoredElement) {
 		LOGGER.debug("Checking reconfiguration rules due to PRM change");
 		ArrayList<QvtoModelTransformation> transformations = new ArrayList<QvtoModelTransformation>();
-		for (ModelTransformation action : actions) {
+		for (ModelTransformation<? extends Object> action : actions) {
 			try {
 				if (action instanceof QvtoModelTransformation) {
 					transformations.add((QvtoModelTransformation) action);
@@ -103,4 +103,6 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 				: "No reconfiguration rule was executed, all conditions were false");
 		return result;
 	}
+	
+	
 }

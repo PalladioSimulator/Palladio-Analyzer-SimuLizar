@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.reconfiguration.storydiagram;
+package org.palladiosimulator.simulizar.reconfigurationrule.storydiagram;
 
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EClass;

@@ -134,8 +134,7 @@ public class ParameterAdapterFactory extends AdapterFactoryImpl {
      * a case when inheritance will catch all the cases anyway. <!-- end-user-doc -->
      *
      * @return the new adapter.
-     * @see org.palladiosimulator.simulizar.action.parameter.
-     *      ControllerCallInputVariableUsageCollection
+     * @see org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection
      * @generated
      */
     public Adapter createControllerCallInputVariableUsageCollectionAdapter() {
