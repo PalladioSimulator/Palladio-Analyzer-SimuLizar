@@ -1,24 +1,26 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagram;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcoreFactory;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.pcm.allocation.AllocationPackage;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
+import org.palladiosimulator.pcm.system.SystemPackage;
+import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
+import org.palladiosimulator.simulizar.reconfigurationrule.storydiagram.SDModelTransformation;
 import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
 import org.storydriven.storydiagrams.activities.ActivityEdge;
@@ -31,13 +33,6 @@ import org.storydriven.storydiagrams.patterns.StoryPattern;
 import de.mdelab.sdm.interpreter.core.SDMException;
 import de.mdelab.sdm.interpreter.core.notifications.OutputStreamNotificationReceiver;
 import de.mdelab.sdm.interpreter.core.variables.Variable;
-
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.pcm.allocation.AllocationPackage;
-import org.palladiosimulator.pcm.repository.RepositoryPackage;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
-import org.palladiosimulator.pcm.system.SystemPackage;
-import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 
 /**
  * 
@@ -55,88 +50,27 @@ public class SDExecutor {
      */
     private static final Logger LOGGER = Logger.getLogger(SDExecutor.class);
 
-    /**
-    * 
-    */
-    private static final EClass EOBJECT_ECLASS = EcorePackage.eINSTANCE.getEObject();
-
-    /**
-    * 
-    */
-    private static final String MONITORED_ELEMENT = "monitoredElement";
-
-    /**
-    * 
-    */
-    private static final EClass PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS = RuntimeMeasurementPackage.eINSTANCE
-            .getRuntimeMeasurementModel();
-
-    /**
-    * 
-    */
-    private static final EClass RESOURCE_ENVIRONMENT_MODEL_ECLASS = ResourceenvironmentPackage.eINSTANCE
+    private static final String USAGE_MODEL = "usageModel";
+	private static final EClass USAGE_MODEL_ECLASS = UsagemodelPackage.eINSTANCE.getUsageModel();
+	private static final String SYSTEM_MODEL = "systemModel";
+	private static final EClass SYSTEM_MODEL_ECLASS = SystemPackage.eINSTANCE.getSystem();
+	private static final String ALLOCATION_MODEL = "allocationModel";
+	private static final EClass ALLOCATION_MODEL_ECLASS = AllocationPackage.eINSTANCE.getAllocation();
+	private static final String RESOURCE_ENVIRONMENT_MODEL = "resourceEnvironmentModel";
+	private static final EClass RESOURCE_ENVIRONMENT_MODEL_ECLASS = ResourceenvironmentPackage.eINSTANCE
             .getResourceEnvironment();
-
-    /**
-    * 
-    */
-    private static final EClass ALLOCATION_MODEL_ECLASS = AllocationPackage.eINSTANCE.getAllocation();
-
-    /**
-    * 
-    */
-    private static final EClass REPOSITORY_MODEL_ECLASS = RepositoryPackage.eINSTANCE.getRepository();
-
-    /**
-    * 
-    */
-    private static final EClass SYSTEM_MODEL_ECLASS = SystemPackage.eINSTANCE.getSystem();
-
-    /**
-    * 
-    */
-    private static final EClass USAGE_MODEL_ECLASS = UsagemodelPackage.eINSTANCE.getUsageModel();
-
-    /**
-    * 
-    */
-    private static final String PRM_MODEL = "runtimeMeasurementModel";
-
-    /**
-    * 
-    */
-    private static final String RESOURCE_ENVIRONMENT_MODEL = "resourceEnvironmentModel";
-
-    /**
-    * 
-    */
-    private static final String ALLOCATION_MODEL = "allocationModel";
-
-    /**
-    * 
-    */
-    private static final String REPOSITORY_MODEL = "repositoryModel";
-
-    /**
-    * 
-    */
-    private static final String SYSTEM_MODEL = "systemModel";
-
+	private static final String PRM_MODEL = "runtimeMeasurementModel";
+	private static final String MONITORED_ELEMENT = "monitoredElement";
+	private static final EClass PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS = RuntimeMeasurementPackage.eINSTANCE
+            .getRuntimeMeasurementModel();
+	private static final EClass EOBJECT_ECLASS = EcorePackage.eINSTANCE.getEObject();
+    
     private static final String RETURN_VALUE = "returnValue";
     private static final EClass BOOLEAN_ECLASS = EcorePackage.eINSTANCE.getEBoolean().eClass();
 
-    /**
-    * 
-    */
-    private static final String USAGE_MODEL = "usageModel";
-
     private final List<Variable<EClassifier>> staticParameters;
 
-    private final Collection<Activity> activities;
-
     private final StoryDrivenEclipseInterpreter sdmInterpreter;
-
-    private final Collection<Activity> storyDiagrams;
     private final PCMResourceSetPartition globalPcmResourceSetPartition;
     private final RuntimeMeasurementModel runtimeMeasurementModel;
     private final SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression> sdNotificationReceiver;
@@ -150,7 +84,6 @@ public class SDExecutor {
      */
     public SDExecutor(final StoryDiagramModelAccess modelAccessFactory) {
         super();
-        this.storyDiagrams = modelAccessFactory.getStoryDiagrams();
         this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
         try {
@@ -171,7 +104,6 @@ public class SDExecutor {
         }
 
         this.staticParameters = this.createParameter();
-        this.activities = this.createBindingsForActivities();
     }
     
     /**
@@ -181,9 +113,8 @@ public class SDExecutor {
      *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
      *            models.
      */
-    public SDExecutor(final IModelAccess modelAccess, final List<Activity> storydiagramActivities) {
+    public SDExecutor(final IModelAccess modelAccess) {
         super();
-        this.storyDiagrams = storydiagramActivities;
         this.globalPcmResourceSetPartition = modelAccess.getGlobalPCMModel();
         this.runtimeMeasurementModel = modelAccess.getRuntimeMeasurementModel();
         try {
@@ -204,29 +135,6 @@ public class SDExecutor {
         }
 
         this.staticParameters = this.createParameter();
-        this.activities = this.createBindingsForActivities();
-    }
-
-    /**
-     * Creates parameter bindings for all activities of the sdm models.
-     * 
-     * @return list of activities with bound parameters.
-     */
-    private Collection<Activity> createBindingsForActivities() {
-        final Collection<Activity> ActivitiesFromModels = this.storyDiagrams;
-        final Collection<Activity> result = new LinkedList<Activity>();
-
-        for (final Activity activity : ActivitiesFromModels) {
-            final Activity activityWithBindings = ActivityLoader.createBindings(activity, new String[] { USAGE_MODEL,
-                    SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL, RESOURCE_ENVIRONMENT_MODEL, PRM_MODEL,
-                    MONITORED_ELEMENT }, new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS,
-                    REPOSITORY_MODEL_ECLASS, ALLOCATION_MODEL_ECLASS, RESOURCE_ENVIRONMENT_MODEL_ECLASS,
-                    PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS, EOBJECT_ECLASS });
-
-            result.add(activityWithBindings);
-        }
-
-        return result;
     }
 
     /**
@@ -270,7 +178,7 @@ public class SDExecutor {
      * @throws SDMException
      *             in case the SD Activity could not be executed
      */
-    private boolean execute(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
+    private boolean executeActivity(final Activity activity, final List<Variable<EClassifier>> parameters) throws SDMException {
         this.sdNotificationReceiver.reset();
         final Map<String, Variable<EClassifier>> result = this.sdmInterpreter.executeActivity(activity, parameters);
         // TODO: Get info on activity success?
@@ -289,7 +197,7 @@ public class SDExecutor {
      * @return true if at least one reconfiguration's check was positive and it reconfigured the
      *         model.
      */
-    public boolean executeActivities(final EObject monitoredElement) {
+    public boolean executeTransformations(List<SDModelTransformation> transformations, final EObject monitoredElement) {
         final EObject returnvalue = EcoreFactory.eINSTANCE.create(BOOLEAN_ECLASS);
         final Variable<EClassifier> monitoredElementParameter = new Variable<EClassifier>(MONITORED_ELEMENT,
                 EOBJECT_ECLASS, monitoredElement);
@@ -300,10 +208,10 @@ public class SDExecutor {
         paramterList.add(monitoredElementParameter);
         paramterList.add(returnValueParameter);
         boolean result = false;
-        for (final Activity activity : this.activities) {
+        for (final SDModelTransformation transformation : transformations) {
             try {
-                LOGGER.debug("Trying to execute Story Diagram " + activity.getName() + ".");
-                result |= this.execute(activity, paramterList);
+                LOGGER.debug("Trying to execute Story Diagram " + transformation.getModelTransformation().getName() + ".");
+                result |= this.executeActivity(transformation.getModelTransformation(), paramterList);
 
             } catch (final SDMException e) {
                 LOGGER.error("SD failed", e);

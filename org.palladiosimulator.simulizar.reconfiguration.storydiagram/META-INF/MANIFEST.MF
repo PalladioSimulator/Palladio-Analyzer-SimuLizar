@@ -20,5 +20,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.reconfigurationrule
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram,
+ org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
  org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess

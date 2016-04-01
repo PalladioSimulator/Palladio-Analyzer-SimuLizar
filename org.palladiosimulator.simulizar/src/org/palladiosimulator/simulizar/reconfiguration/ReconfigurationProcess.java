@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.util.BasicEList;
@@ -16,6 +17,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecu
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.storydiagram.SDModelTransformation;
 import org.palladiosimulator.simulizar.utils.FileUtil;
 import org.storydriven.storydiagrams.activities.Activity;
 
@@ -40,8 +42,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
     private final Reconfigurator reconfigurator;
     // volatile is sufficient as flag is only set once
     private volatile boolean terminationRequested = false;
-    private List<ModelTransformation<Activity>> sdmTransformations;
-    private List<QvtoModelTransformation> qvtoTransformations;
+    private EList<ModelTransformation<? extends Object>> transformations;
 
     /**
      * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -64,9 +65,9 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         this.currentReconfigNotifications = new ArrayList<>();
         URI[] qvtoFiles = FileUtil.getQvtoFiles(this.reconfigurator.getConfiguration().getReconfigurationRulesFolder());
         ModelTransformationCache transformationCache = new ModelTransformationCache(qvtoFiles);
-        qvtoTransformations = new ArrayList<QvtoModelTransformation>();
+        transformations = new BasicEList<ModelTransformation<? extends Object>>();
         for(QvtoModelTransformation mt : transformationCache.getAll()){
-        	qvtoTransformations.add(mt);
+        	transformations.add(mt);
         }
     }
 
@@ -164,32 +165,31 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         this.scheduleAt(0);
     }
 
+    private Consumer<IReconfigurationEngine> doReconfiguration(double currentSimulationTime, EObject monitoredElement) {
+        return r -> {
+            BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(currentSimulationTime);
+            ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
+            final boolean reconfigResult = r.runCheck(transformations, monitoredElement);
+            EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
+                    EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+            ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);
+            if (reconfigResult) {
+                LOGGER.debug("Successfully executed reconfiguration.");
+                ReconfigurationProcess.this.fireReconfigurationExecutedEvent(beginReconfigurationEvent,
+                        endReconfigurationEvent);
+            }
+            ReconfigurationProcess.this.clearNotifications();
+        };
+    }
+
     @Override
     protected void internalLifeCycle() {
         // execute reconfigurations until termination requested
         while (!this.isTerminationRequested()) {
             final EObject monitoredElement = this.getMonitoredElement();
             if (monitoredElement != null) {
-                for (final IReconfigurationEngine reconfigurator : this.reconfigurators) {
-                    // Lehrig: I moved from simulation time to System.nanoTime() since
-                    // reconfigurations currently execute in 0-simulation time. Nano time made more
-                    // sense to me. Inform me if I'm wrong here since there is already some code
-                    // depending on the assumption that the duration is greater than 0.
-                    final BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(
-                            System.nanoTime());
-                    this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-//                    final boolean reconfigResult = reconfigurator.checkAndExecute(monitoredElement);
-                    EList<QvtoModelTransformation> qvtoTr = new BasicEList<QvtoModelTransformation>(qvtoTransformations);
-                    final boolean reconfigResult = reconfigurator.runCheck(qvtoTr, monitoredElement);
-                    final EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-                            EventResult.fromBoolean(reconfigResult), System.nanoTime());
-                    this.fireEndReconfigurationEvent(endReconfigurationEvent);
-                    if (reconfigResult) {
-                        LOGGER.debug("Successfully executed reconfiguration.");
-                        this.fireReconfigurationExecutedEvent(beginReconfigurationEvent, endReconfigurationEvent);
-                    }
-                    this.clearNotifications();
-                }
+                this.reconfigurators
+                        .forEach(this.doReconfiguration(this.simControl.getCurrentSimulationTime(), monitoredElement));
                 // all reconfigurators did their job, so we can go to sleep
                 this.passivate();
             }

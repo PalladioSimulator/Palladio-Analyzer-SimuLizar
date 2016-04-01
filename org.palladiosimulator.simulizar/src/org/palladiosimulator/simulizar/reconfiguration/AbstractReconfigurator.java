@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 
 public abstract class AbstractReconfigurator implements IReconfigurationEngine {
-
     protected IModelAccess modelAccessFactory;
 
     @Override

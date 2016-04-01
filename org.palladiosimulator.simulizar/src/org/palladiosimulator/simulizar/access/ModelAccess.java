@@ -23,8 +23,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
-import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationPackage;
+import org.palladiosimulator.simulizar.reconfigurationrule.Reconfiguration;
+import org.palladiosimulator.simulizar.reconfigurationrule.ReconfigurationPackage;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 

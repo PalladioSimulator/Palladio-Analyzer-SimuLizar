@@ -4,7 +4,7 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
+import org.palladiosimulator.simulizar.reconfigurationrule.Reconfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
