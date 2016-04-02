@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.reconfigurationrule.qvto;
+package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**
  * This cache implementation is used to store QVTo transformations (in terms of

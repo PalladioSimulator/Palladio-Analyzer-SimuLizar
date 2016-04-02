@@ -4,6 +4,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
  * Interface for a component that is able to reconfigure the PCM model@runtime.
@@ -46,5 +47,7 @@ public interface IReconfigurationEngine {
 	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement);
 	
 	public void setModelAccess(IModelAccess modelAccess);
+	
+	public void setConfiguration(final SimuLizarWorkflowConfiguration configuration);
 
 }

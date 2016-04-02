@@ -7,8 +7,10 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.storydiagram.SDModelTransformation;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 /**
  * A reconfigurator implementation which relies on story diagrams to do the
@@ -87,6 +89,11 @@ public class SDReconfigurator extends AbstractReconfigurator {
 		}
 
 		return executeTransformations(monitoredElement, activities);
+	}
+	
+	@Override
+	public void setModelAccess(IModelAccess modelAccess) {
+		this.modelAccessFactory = new StoryDiagramModelAccess(modelAccess, this.configuration);
 	}
 	
 	private boolean executeTransformations(final EObject monitoredElement, ArrayList<SDModelTransformation> transformations) {

@@ -30,11 +30,10 @@ public class SDModelTransformation extends ModelTransformationImpl<Activity> {
 	private static final EClass PALLADIO_RUNTIME_MEASUREMENT_MODEL_ECLASS = RuntimeMeasurementPackage.eINSTANCE
             .getRuntimeMeasurementModel();
 	private static final EClass EOBJECT_ECLASS = EcorePackage.eINSTANCE.getEObject();
-	private Activity activity;
 
 	public SDModelTransformation(Activity activity) {
 
-		this.activity = ActivityLoader.createBindings(activity,
+		this.modelTransformation = ActivityLoader.createBindings(activity,
 				new String[] { USAGE_MODEL, SYSTEM_MODEL, REPOSITORY_MODEL, ALLOCATION_MODEL,
 						RESOURCE_ENVIRONMENT_MODEL, PRM_MODEL, MONITORED_ELEMENT },
 				new EClassifier[] { USAGE_MODEL_ECLASS, SYSTEM_MODEL_ECLASS, REPOSITORY_MODEL_ECLASS,

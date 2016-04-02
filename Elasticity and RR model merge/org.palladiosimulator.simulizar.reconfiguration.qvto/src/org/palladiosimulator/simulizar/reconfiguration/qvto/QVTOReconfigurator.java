@@ -10,9 +10,9 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**

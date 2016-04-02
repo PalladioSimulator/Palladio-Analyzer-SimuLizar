@@ -20,10 +20,9 @@ import org.eclipse.m2m.qvt.oml.TransformationExecutor;
 import org.eclipse.m2m.qvt.oml.util.Log;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 /**

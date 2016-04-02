@@ -6,5 +6,6 @@
    <extension-point id="org.palladiosimulator.simulizar.reconfigurationengine" name="SimuLizar Reconfiguration Engine" schema="schema/org.palladiosimulator.simulizar.reconfigurationengine.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.launcher.modelload" name="Simulizar Launcher Model Loader" schema="schema/org.palladiosimulator.simulizar.launcher.modelload.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.configurator" name="SimuLizar Workflow Configuration Customization" schema="schema/org.palladiosimulator.simulizar.configurator.exsd"/>
+   <extension-point id="org.palladiosimulator.simulizar.reconfigurationloader" name="Loader of various reconfigurations" schema="schema/org.palladiosimulator.simulizar.reconfigurationloader.exsd"/>
 
 </plugin>

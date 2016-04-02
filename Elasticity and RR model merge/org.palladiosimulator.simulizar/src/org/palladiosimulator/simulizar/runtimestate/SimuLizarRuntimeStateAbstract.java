@@ -163,7 +163,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
 
         for (final IReconfigurationEngine reconfigEngine : reconfigEngines) {
-//            reconfigEngine.setConfiguration(configuration);
+            reconfigEngine.setConfiguration(configuration);
             reconfigEngine.setModelAccess(this.modelAccess);
         }
 
