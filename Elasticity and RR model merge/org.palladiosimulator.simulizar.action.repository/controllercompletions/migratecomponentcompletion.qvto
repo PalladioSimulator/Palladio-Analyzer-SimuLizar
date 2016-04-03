@@ -37,6 +37,9 @@ transformation vmMigration(
 	property migrationControllerContainer : ResourceContainer;
 	property migratedAssembly : AssemblyContext;
 	property targetContainer : ResourceContainer;
+	property controllerRepositoryId : String = '_y7TzUOp-EeS1xrjFer2CUg';
+	property migrateControllerCompletionActionId : String = '_4nuZAOp9EeS7J-g-NrN0TQ';
+	
 							
 	/**
 	 * The main transformation.
@@ -45,10 +48,10 @@ transformation vmMigration(
 	main() {	
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
-		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
+		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = migrateControllerCompletionActionId);
 		log("Executing step " + step.entityName);
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
-		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->select(cr | cr.id = "_y7TzUOp-EeS1xrjFer2CUg")->any(true);
+		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(id = controllerRepositoryId);
 		
 		migrationController := controllerRepository.getComponentById("_63lUEOqDEeS1xrjFer2CUg");
 		migrationSourceController := controllerRepository.getComponentById("_CizTUOqEEeS1xrjFer2CUg");
