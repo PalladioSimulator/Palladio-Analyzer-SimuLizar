@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.Vector;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -165,15 +165,14 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
      * @return a list of seffs corresponding to the operation signature.
      */
     private List<ServiceEffectSpecification> getSeffsForCall(
-            final EList<ServiceEffectSpecification> serviceEffectSpecifications, final Signature operationSignature) {
-        final List<ServiceEffectSpecification> seffs = new Vector<ServiceEffectSpecification>();
+            EList<ServiceEffectSpecification> serviceEffectSpecifications, Signature operationSignature) {
 
-        for (final ServiceEffectSpecification serviceEffectSpecification : serviceEffectSpecifications) {
-            if (serviceEffectSpecification.getDescribedService__SEFF().equals(operationSignature)) {
-                seffs.add(serviceEffectSpecification);
-            }
-        }
-        return seffs;
+        assert serviceEffectSpecifications != null && operationSignature != null;
+
+        // use equality of ids as filter criterion, do not rely on signature equality
+        return serviceEffectSpecifications.stream()
+                .filter(seff -> seff.getDescribedService__SEFF().getId().equals(operationSignature.getId()))
+                .collect(Collectors.toList());
     }
 
     /**

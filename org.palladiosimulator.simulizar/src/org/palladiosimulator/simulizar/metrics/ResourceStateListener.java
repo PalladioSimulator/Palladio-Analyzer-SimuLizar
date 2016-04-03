@@ -55,7 +55,14 @@ public class ResourceStateListener implements IStateListener {
             final ISimulationControl iSimulationControl, final MeasurementSpecification measurementSpecification,
             final ResourceContainer resourceContainer, final RuntimeMeasurementModel prm) {
         super();
-        this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
+        if (measurementSpecification.getTemporalRestriction() == null) {
+        	/* The interval is only used within the simulation and not for persisting measurements.
+        	 * No specified interval means that no values are calculated or available during simulation but stored in the persistence framework.
+        	 */
+        	this.timeIntervall = Double.MAX_VALUE;
+        } else {
+        	this.timeIntervall = ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall();
+        }
         this.simulationControl = iSimulationControl;
         this.lastSimulationTime = this.simulationControl.getCurrentSimulationTime();
 

@@ -1,11 +1,11 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Stack;
-import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -392,10 +392,10 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      */
     private List<ForkedBehaviourProcess> combineProcesses(final List<ForkedBehaviourProcess> asyncProcesses,
             final List<ForkedBehaviourProcess> syncProcesses) {
-        final List<ForkedBehaviourProcess> combinedProcesses = new Vector<ForkedBehaviourProcess>();
+        final List<ForkedBehaviourProcess> combinedProcesses = new LinkedList<ForkedBehaviourProcess>();
         combinedProcesses.addAll(asyncProcesses);
         combinedProcesses.addAll(syncProcesses);
-        return combinedProcesses;
+        return Collections.synchronizedList(combinedProcesses);
     }
 
     /**
@@ -446,7 +446,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                      * context including its stack.
                      */
                     final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
-                            RDSeffSwitch.this.context.getRuntimeState(), false);
+                            RDSeffSwitch.this.context.getRuntimeState(), true);
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.basicComponentInstance);
