@@ -28,7 +28,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
         for (final PassiveResource passiveResource : passiveResources) {
             final long initialCount = (long) StackContext.evaluateStatic(
-                    passiveResource.getCapacity_PassiveResource().getSpecification(), Integer.class,
+                    passiveResource.getCapacity_PassiveResource().getSpecification(), Long.class,
                     context.getStack().currentStackFrame());
             final IPassiveResource simulatedResource = new SimSimpleFairPassiveResource(passiveResource, myAssCtx,
                     this.getRuntimeState().getModel(), initialCount);

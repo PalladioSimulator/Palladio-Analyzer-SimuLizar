@@ -26,15 +26,13 @@ import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEv
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.syncer.IModelSyncer;
-import org.palladiosimulator.simulizar.syncer.ResourceEnvironmentSyncer;
-import org.palladiosimulator.simulizar.syncer.UsageModelSyncer;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
-import org.palladiosimulator.simulizar.usagemodel.UsageEvolver;
+import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
@@ -42,19 +40,34 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
+import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
 
+/**
+ * This class provides access to all simulation and SimuLizar related objects. This includes access
+ * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
+ * SimuLizars central simulator event distribution object, and to simulated component instances
+ * (e.g. to access their current state of passive resources, etc.).
+ *
+ * Per simulation run, there should be exactly one instance of this class and all of its managed
+ * information objects.
+ *
+ * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
+ *
+ */
 public abstract class SimuLizarRuntimeStateAbstract {
 
-    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeStateAbstract.class);
+    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
-    private final SimuComModel model;
+    protected final SimuComModel model;
     protected final EventNotificationHelper eventHelper;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
     private final ModelAccess modelAccess;
     private final Reconfigurator reconfigurator;
-    private final IModelSyncer[] modelSyncers;
+    private final List<IModelObserver> modelObservers;
+    private final SimulationCancelationDelegate cancelationDelegate;
+    private final UsageEvolverFacade usageEvolverFacade;
 
     private long numberOfContainers = 0;
 
@@ -62,10 +75,13 @@ public abstract class SimuLizarRuntimeStateAbstract {
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeStateAbstract(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess) {
+    public SimuLizarRuntimeStateAbstract(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
+            final SimulationCancelationDelegate cancelationDelegate) {
         super();
         this.modelAccess = modelAccess;
+        this.cancelationDelegate = cancelationDelegate;
         this.model = SimuComModelFactory.createSimuComModel(configuration);
+
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         this.mainContext = new InterpreterDefaultContext(this);
@@ -73,14 +89,16 @@ public abstract class SimuLizarRuntimeStateAbstract {
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelSyncers = this.initializeModelSyncers();
+        this.modelObservers = this.initializeModelObservers();
         // ensure to initialize model syncers (in particular
         // ResourceEnvironmentSyncer) prior to
         // interpreter listeners
         // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
         // calculators of
         // resources created in ResourceEnvironmentSyncer!
+        this.initializeCancelation();
         this.initializeInterpreterListeners(this.reconfigurator);
+        this.usageEvolverFacade = new UsageEvolverFacade(this);
         this.initializeUsageEvolver();
         this.modelAccess.startObservingPcmChanges();
     }
@@ -115,6 +133,10 @@ public abstract class SimuLizarRuntimeStateAbstract {
         return this.modelAccess;
     }
 
+    public boolean isCanceled() {
+        return this.cancelationDelegate.isCanceled();
+    }
+
     /**
      * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
      * of changes.
@@ -140,14 +162,14 @@ public abstract class SimuLizarRuntimeStateAbstract {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (final IModelSyncer modelSyncer : this.modelSyncers) {
-            modelSyncer.stopSyncer();
+        for (final IModelObserver modelObserver : this.modelObservers) {
+            modelObserver.unregister();
         }
     }
 
     private void initializeWorkloadDrivers() {
         LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.getWorkloadDrivers());
+        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers());
     }
 
     protected abstract void initializeInterpreterListeners(final Reconfigurator reconfigurator);
@@ -195,7 +217,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
 
                     if (numberOfResourceCalculatorsProbes != null
                             && SimuLizarRuntimeStateAbstract.this.numberOfContainers != getNumberOfResourceContainers()) {
-                        SimuLizarRuntimeStateAbstract.this.numberOfContainers = getNumberOfResourceContainers();
+                    	SimuLizarRuntimeStateAbstract.this.numberOfContainers = getNumberOfResourceContainers();
                         numberOfResourceCalculatorsProbes.takeMeasurement();
                     }
                 }
@@ -249,24 +271,38 @@ public abstract class SimuLizarRuntimeStateAbstract {
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
-    private IModelSyncer[] initializeModelSyncers() {
-        LOGGER.debug("Initialize model syncers to keep simucom framework objects in sync with global PCM model");
+    private List<IModelObserver> initializeModelObservers() {
+        LOGGER.debug(
+                "Initialize model observers, e.g., to keep simucom framework objects in sync with global PCM model");
 
-        final IModelSyncer[] modelSyncers = new IModelSyncer[] { new ResourceEnvironmentSyncer(this),
-                new UsageModelSyncer(this) };
-        for (final IModelSyncer modelSyncer : modelSyncers) {
-            modelSyncer.initializeSyncer();
+        final List<IModelObserver> modelObservers = ExtensionHelper
+                .getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver", "modelObserver");
+        for (final IModelObserver modelObserver : modelObservers) {
+            modelObserver.initialize(this);
         }
 
-        return modelSyncers;
+        return modelObservers;
     }
 
     private void initializeUsageEvolver() {
         if (this.modelAccess.getUsageEvolutionModel() != null) {
             LOGGER.debug("Start the code to evolve the usage model over time");
 
-            new UsageEvolver(this).start();
+            this.usageEvolverFacade.start();
         }
     }
 
+    private void initializeCancelation() {
+        this.model.getSimulationControl().addStopCondition(new SimCondition() {
+
+            @Override
+            public boolean check() {
+                return SimuLizarRuntimeStateAbstract.this.cancelationDelegate.isCanceled();
+            }
+        });
+    }
+
+    public UsageEvolverFacade getUsageEvolverFacade() {
+        return this.usageEvolverFacade;
+    }
 }

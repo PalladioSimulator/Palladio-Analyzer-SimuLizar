@@ -22,13 +22,14 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 public class SimuLizarRuntimeState extends SimuLizarRuntimeStateAbstract {
 
 	private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeStateAbstract.class);
-	
+
     /**
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess) {
-        super(configuration, modelAccess);
+    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
+            final SimulationCancelationDelegate cancelationDelegate) {
+        super(configuration, modelAccess, cancelationDelegate);
     }
 
     protected void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
