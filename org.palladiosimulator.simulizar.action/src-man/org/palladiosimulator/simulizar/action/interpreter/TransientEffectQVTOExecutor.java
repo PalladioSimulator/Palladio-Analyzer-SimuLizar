@@ -128,10 +128,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     @Override
-    protected ModelExtent[] setupModelExtents(QvtoModelTransformation modelTransformation) {
+    protected ModelExtent[] setupModelExtents(QvtoModelTransformation transformation) {
         this.currentPureOutParams.clear();
-        ModelExtent[] result = super.setupModelExtents(modelTransformation);
-        modelTransformation.getPureOutParameters().stream().mapToInt(TransformationParameterInformation::getParameterIndex)
+        ModelExtent[] result = super.setupModelExtents(transformation);
+        transformation.getPureOutParameters().stream().mapToInt(TransformationParameterInformation::getParameterIndex)
                 .mapToObj(index -> result[index]).forEach(this.currentPureOutParams::add);
         return result;
     }
