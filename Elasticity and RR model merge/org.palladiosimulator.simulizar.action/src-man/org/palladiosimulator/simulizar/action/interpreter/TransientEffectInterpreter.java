@@ -57,7 +57,6 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -112,7 +111,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	 *            interpreted asynchronously in a dedicated
 	 *            {@link SimuComSimProcess}.
 	 */
-	public TransientEffectInterpreter(SimuLizarRuntimeStateAbstract state, RoleSet set,
+	TransientEffectInterpreter(SimuLizarRuntimeStateAbstract state, RoleSet set,
 			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
 			AdaptationBehaviorRepository repository, boolean executeAsync,
 			Optional<ExecutionContext> executionContext) {
