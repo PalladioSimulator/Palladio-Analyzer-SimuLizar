@@ -103,6 +103,4 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 				: "No reconfiguration rule was executed, all conditions were false");
 		return result;
 	}
-	
-	
 }

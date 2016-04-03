@@ -7,12 +7,14 @@ import org.eclipse.m2m.qvt.oml.util.Log;
 /**
  * QVTo Reconfigurator Logging Class
  * 
- * @author Matthias Becker
+ * @author Matthias Becker, Sebastian Krach
  *
  */
 public class QVTOReconfigurationLogger implements Log {
 
     private static Logger logger;
+    
+    private static Level DEFAULT_LOG_LEVEL = Level.DEBUG;
 
     /**
      * 
@@ -26,25 +28,23 @@ public class QVTOReconfigurationLogger implements Log {
     @Override
     public void log(String message) {
         logger.log(Level.INFO, message);
-
     }
 
     @Override
-    public void log(int arg0, String arg1) {
-        // TODO Auto-generated method stub
-
+    public void log(int logLevel, String message) {
+        Level level = Level.toLevel(logLevel, DEFAULT_LOG_LEVEL);
+        logger.log(level, message);
     }
 
     @Override
-    public void log(String arg0, Object arg1) {
-        // TODO Auto-generated method stub
-
+    public void log(String message, Object parameter) {
+        logger.log(DEFAULT_LOG_LEVEL, String.format(message, parameter));
     }
 
     @Override
-    public void log(int arg0, String arg1, Object arg2) {
-        // TODO Auto-generated method stub
-
+    public void log(int logLevel, String message, Object parameter) {
+        Level level = Level.toLevel(logLevel, DEFAULT_LOG_LEVEL);
+        logger.log(level, String.format(message, parameter));
     }
 
 }
