@@ -36,6 +36,9 @@ transformation instantiateComponent(
 	
 	property componentInstantiationControllerRequiredRoleId : String = '_od2lpaJMEeWC7_GU8VFHHA';
 	property componentInstantiationLocationProvidedRoleId : String = 'jeP4EKJMEeWC7_GU8VFHHA';
+	
+	property controllerRepositoryId : String = '_y7TzUOp-EeS1xrjFer2CUg';
+	property instantiationOverheadActionId : String = '_NjOzsqHHEeWc24RAWmuF8Q';
 							
 	/**
 	 * The main transformation.
@@ -45,11 +48,11 @@ transformation instantiateComponent(
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
-		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(true);
+		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = instantiationOverheadActionId);
 		log("Executing step " + step.entityName);
-		log("Test");
+		
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
-		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
+		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(id = controllerRepositoryId);
 		var roles := roleSet.roles;
 		var targetResourceContainerRole : instance::Role := roles[roleType.id = targetResourceContainerRoleId]->any(true);
 		var instantiatedComponentRole : instance::Role := roles[roleType.id = instantiatedComponentRoleId]->any(true);
