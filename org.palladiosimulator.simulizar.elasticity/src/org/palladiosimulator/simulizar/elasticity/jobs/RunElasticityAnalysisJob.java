@@ -26,6 +26,7 @@ import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfiguratio
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -99,7 +100,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// point to intermediary, but
 			// to the models directly.
 			final SimuLizarRuntimeStateAbstract runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration,
-					new ModelAccessUseOriginalReferences(this.blackboard));
+					new ModelAccessUseOriginalReferences(this.blackboard),
+					new SimulationCancelationDelegate(monitor::isCanceled));
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
 			runtimeState.cleanUp();
@@ -142,8 +144,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	
 	private class SimuLizarRuntimeStateElasticity extends SimuLizarRuntimeStateAbstract {
 		
-		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, ModelAccess modelAccess) {
-			super(configuration, modelAccess);
+		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, ModelAccess modelAccess, final SimulationCancelationDelegate cancelationDelegate) {
+			super(configuration, modelAccess, cancelationDelegate);
 		}
 
 		@Override
