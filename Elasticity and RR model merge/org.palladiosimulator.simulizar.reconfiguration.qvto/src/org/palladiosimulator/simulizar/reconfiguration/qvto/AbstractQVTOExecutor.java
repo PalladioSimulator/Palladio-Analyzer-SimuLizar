@@ -5,11 +5,13 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collector;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.Diagnostic;
+import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.m2m.qvt.oml.BasicModelExtent;
 import org.eclipse.m2m.qvt.oml.ExecutionContext;
@@ -22,7 +24,6 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 /**
@@ -107,6 +108,25 @@ public abstract class AbstractQVTOExecutor {
      */
     protected QVToModelCache getAvailableModels() {
         return this.availableModels;
+    }
+    
+        /**
+     * Attempts to execute the transformation that corresponds to the given URI.
+     * 
+     * @param transformationURI
+     *            An {@link URI} that points to a QVTo transformation.
+     * @return A boolean that indicates whether the transformation succeeded.
+     * @throws NullPointerException
+     *             In case the given URI is {@code null}.
+     * @throws IllegalArgumentException
+     *             In case the transformation is not known, i.e., not stored in the internal cache.
+     * @see #executeTransformation(TransformationData)
+     * @see #AbstractQVTOExecutor(TransformationCache, QVToModelCache)
+     */
+    public boolean executeTransformation(URI transformationURI) {
+        Optional<QvtoModelTransformation> data = this.transformationCache.get(Objects.requireNonNull(transformationURI));
+        return executeTransformation(data.orElseThrow(
+                () -> new IllegalArgumentException("Given transformation not present in transformation cache.")));
     }
     
     /**

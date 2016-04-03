@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -65,21 +66,6 @@ public class ModelTransformationCache {
 	}
 
 	/**
-	 * Removes the QVTo transformations specified by the given URIs from this
-	 * cache, if present.
-	 * 
-	 * @param transformationUris
-	 *            A set of {@link URI URIs} that point to QVTo transformations.
-	 */
-	@SafeVarargs
-	public final void remove(URI... transformationUris) {
-		URI[] uris = Objects.requireNonNull(transformationUris);
-		for (URI transformationURI : uris) {
-			this.cache.remove(Objects.requireNonNull(transformationURI));
-		}
-	}
-
-	/**
 	 * Attempts to retrieve the QVTo transformation that is associated with the
 	 * given URI from the cache.
 	 * 
@@ -97,6 +83,19 @@ public class ModelTransformationCache {
 		}
 		return Optional.ofNullable(this.cache.get(Objects.requireNonNull(transformationUri)));
 	}
+    /**
+     * Removes the QVTo transformations specified by the given URIs from this cache, if present.
+     * 
+     * @param transformationUris
+     *            A set of {@link URI URIs} that point to QVTo transformations.
+     * @throws NullPointerException
+     *             In case any of the given uris is {@code null}.
+     */
+    @SafeVarargs
+    public final void remove(URI... transformationUris) {
+        URI[] uris = Objects.requireNonNull(transformationUris);
+        Arrays.stream(uris).map(Objects::requireNonNull).forEach(this.cache::remove);
+    }
 
 	/**
 	 * Gets whether the QVTo transformation which the given URI points to, is
