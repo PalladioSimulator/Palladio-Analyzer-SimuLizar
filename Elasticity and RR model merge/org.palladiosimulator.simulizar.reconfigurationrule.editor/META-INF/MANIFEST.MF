@@ -8,8 +8,7 @@ Bundle-Activator: org.palladiosimulator.simulizar.reconfigurationrule.presentati
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.presentation,
- org.palladiosimulator.simulizar.reconfigurationrule.presentation
+Export-Package: org.palladiosimulator.simulizar.reconfigurationrule.presentation
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources;visibility:=reexport,
  org.palladiosimulator.simulizar.reconfigurationrule.edit;visibility:=reexport,
