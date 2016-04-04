@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation.Kind;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 public class SimulationStateLibrary {
