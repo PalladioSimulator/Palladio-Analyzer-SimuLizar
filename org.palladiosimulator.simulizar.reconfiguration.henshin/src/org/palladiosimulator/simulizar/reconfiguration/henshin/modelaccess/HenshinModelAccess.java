@@ -12,8 +12,9 @@ import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfiguration;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.jobs.LoadHenshinModelsIntoBlackboardJob;
+import org.palladiosimulator.simulizar.reconfigurationrule.Reconfiguration;
+import org.palladiosimulator.simulizar.reconfigurationrule.ReconfigurationPackage;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.scaledl.usageevolution.UsageEvolution;
 
@@ -118,6 +119,14 @@ public class HenshinModelAccess implements IModelAccess {
 
 	@Override
 	public Reconfiguration getReconfigurationModel() {
-		return modelAccess.getReconfigurationModel();
+		try {
+			LOGGER.debug("Retrieving Reconfiguration model from blackboard partition");
+			List<Reconfiguration> result = this.henshinPartition
+					.getElement(ReconfigurationPackage.eINSTANCE.getReconfiguration());
+			return result.get(0);
+		} catch (Exception e) {
+			LOGGER.info("No Reconfiguration model found. Reconfiguration will not be simulated.");
+			return null;
+		}
 	}
 }

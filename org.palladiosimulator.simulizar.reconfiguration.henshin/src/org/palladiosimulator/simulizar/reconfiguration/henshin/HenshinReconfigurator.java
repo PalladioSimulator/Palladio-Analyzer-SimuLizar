@@ -14,14 +14,12 @@ import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
 import org.eclipse.emf.henshin.interpreter.impl.UnitApplicationImpl;
 import org.eclipse.emf.henshin.model.Unit;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.ModelTransformation;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-public class HenshinReconfigurator extends AbstractReconfigurator implements IReconfigurator {
+public class HenshinReconfigurator implements IReconfigurationEngine {
 
     private HenshinModelAccess modelAccess;
     private SimuLizarWorkflowConfiguration configuration;
@@ -89,43 +87,23 @@ public class HenshinReconfigurator extends AbstractReconfigurator implements IRe
     }
 
 	@Override
-	public boolean runCheck(EList<ModelTransformation<?>> checks, EObject monitoredElement) {
-    	ArrayList<Unit> units = new ArrayList<Unit>();
-    	for(ModelTransformation<?> check : checks){
-    		try {
-    			ModelTransformation<Unit> henshinModelTransformation = (ModelTransformation<Unit>)check;
-    			units.add(henshinModelTransformation.getModelTransformation());
-    		} catch (ClassCastException e){
-    			LOGGER.debug("Not a Henshin model transformation check.");
-    		}
-    	}
-		return executeUnits(units, monitoredElement);
+	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement) {
+		return this.runExecute(checks, monitoredElement);
 	}
 
 	@Override
-	public boolean runExecute(EList<ModelTransformation<?>> actions, EObject monitoredElement) {
-    	ArrayList<Unit> modules = new ArrayList<Unit>();
-    	for(ModelTransformation<?> action : actions){
-    		try {
-    			ModelTransformation<Unit> henshinModelTransformation = (ModelTransformation<Unit>)action;
-    			modules.add(henshinModelTransformation.getModelTransformation());
-    		} catch (ClassCastException e){
-    			LOGGER.debug("Not a Henshin model transformation action.");
-    		}
-    	}
+	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions,
+			EObject monitoredElement) {
+		ArrayList<Unit> modules = new ArrayList<Unit>();
+		for(ModelTransformation<? extends Object> action : actions){
+			try {
+				ModelTransformation<Unit> henshinModelTransformation = (ModelTransformation<Unit>)action;
+				modules.add(henshinModelTransformation.getModelTransformation());
+			} catch (ClassCastException e){
+				LOGGER.debug("Not a Henshin model transformation action.");
+			}
+		}
 		return executeUnits(modules, monitoredElement);
-	}
-
-	@Override
-	public void setReconfigurator(Reconfigurator reconfigurator) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public boolean checkAndExecute(EObject monitoredElement) {
-		// TODO Auto-generated method stub
-		return false;
 	}
 
 }
