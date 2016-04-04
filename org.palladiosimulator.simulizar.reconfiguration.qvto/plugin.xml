@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.simulizar.reconfigurationengine">
+      <reconfigurationEngine
+            reconfigurationEngine="org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator">
+      </reconfigurationEngine>
+   </extension>
+
+	<extension
+			point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformation">
+		<library
+		      file="simulizar_qvto_helper/logHelper.qvto"
+		      id="simulizar_qvto_helper.logHelper">
+		</library>
+	</extension>
+	<extension
+	      point="org.eclipse.m2m.qvt.oml.runtime.qvtTransformationContainer">
+	   <sourceContainer path="simulizar_qvto_helper/">
+	   </sourceContainer>
+	</extension>
+	
+	<extension
+         point="org.palladiosimulator.simulizar.reconfigurationloader">
+      <reconfigurationLoader
+            reconfigurationLoader="org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader">
+      </reconfigurationLoader>
+   </extension>
+</plugin>
