@@ -7,7 +7,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
 
-    private final PeriodicSimulationEvent myTriggerEvent;
+    private PeriodicSimulationEvent myTriggerEvent;
     private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
 
     public PeriodicallyTriggeredSimulationEntity(final SimuComModel model, final double firstOccurrence,
@@ -23,6 +23,16 @@ public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
                     + this.getModel().getSimulationControl().getCurrentSimulationTime());
         }
         this.triggerInternal();
+    }
+    
+    public double getSimulationTimeOfNextEventTrigger() {
+	return this.myTriggerEvent.scheduledAtTime();
+    }
+    
+    public void setDelayAndReinitialize(final double nextOccurrence, final double delay) {
+	this.removeEvent();
+	this.myTriggerEvent = new PeriodicSimulationEvent(this.getModel(), delay);
+	this.myTriggerEvent.schedule(this, nextOccurrence);
     }
 
     protected void triggerInternal() {
