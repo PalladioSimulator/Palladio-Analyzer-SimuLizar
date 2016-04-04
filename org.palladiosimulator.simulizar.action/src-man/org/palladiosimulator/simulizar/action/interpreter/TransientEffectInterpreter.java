@@ -87,7 +87,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
 	private final boolean isAsync;
 
-	private final Optional<ExecutionContext> executionContext;
+	private Optional<ExecutionContext> executionContext;
 
 	/**
 	 * Initializes a new instance of the {@link TransientEffectInterpreter}
@@ -170,6 +170,8 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			AsyncInterpretationProcess asyncProcess = createAsyncProcess(adaptationBehavior);
 			ExecutionContextKeeper.getInstance().addContextProcessMapping(asyncProcess.getCorrespondingContext(),
 					asyncProcess);
+			TransientEffectInterpreter.this.executionContext = 
+				Optional.of(asyncProcess.getCorrespondingContext());
 			asyncProcess.activate();
 			LOGGER.info("Scheduled process for async interpretation of adaptation behavior.");
 			result = new TransientEffectExecutionResult(EventResult.SUCCESS, asyncProcess.getCorrespondingContext());
