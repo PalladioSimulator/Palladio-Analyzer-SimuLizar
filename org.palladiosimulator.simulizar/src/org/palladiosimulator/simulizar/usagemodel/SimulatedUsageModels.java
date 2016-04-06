@@ -118,14 +118,15 @@ public class SimulatedUsageModels {
                 final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
                         SimulatedUsageModels.this.rootContext, thread);
                 final UsageModel usageModel = newContext.getModelAccess().getLocalPCMModel().getUsageModel();
-                UsageScenario myUsageScenarioCopy = null;
-                for(UsageScenario curScenario : usageModel.getUsageScenario_UsageModel()) {
-                    if(curScenario.getId().equals(scenario.getId())) {
-                        myUsageScenarioCopy = curScenario;
-                        break;
-                    }
-                }
-                new UsageScenarioSwitch<Object>(newContext).doSwitch(myUsageScenarioCopy);
+                
+                // If the UsageScenario is not contained in the UsageModel (e.g. it has
+                // been removed after the workload scheduled the new user, and before the 
+                // user starts execution) simply exit without processing the scenario.
+                usageModel.getUsageScenario_UsageModel().stream()
+                	.filter(sc -> sc.getId().equals(scenario.getId()))
+                	.findAny().ifPresent(sc -> {
+                	    new UsageScenarioSwitch<Object>(newContext).doSwitch(sc);
+                	});
             }
         };
     }
