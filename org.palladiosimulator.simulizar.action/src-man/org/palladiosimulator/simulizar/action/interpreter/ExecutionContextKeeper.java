@@ -21,7 +21,7 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
  * @author Florian Rosenthal
  *
  */
-final class ExecutionContextKeeper {
+public final class ExecutionContextKeeper {
 
     private static final ExecutionContextKeeper instance = new ExecutionContextKeeper();
 
@@ -35,7 +35,7 @@ final class ExecutionContextKeeper {
      * 
      * @return The sole {@link ExecutionContextKeeper} instance.
      */
-    static ExecutionContextKeeper getInstance() {
+    public static ExecutionContextKeeper getInstance() {
         return instance;
     }
 
@@ -87,7 +87,7 @@ final class ExecutionContextKeeper {
      * @throws NullPointerException
      *             In case {@code context == null}.
      */
-    Optional<SimuComSimProcess> getProcessForContext(ExecutionContext context) {
+    public Optional<SimuComSimProcess> getProcessForContext(ExecutionContext context) {
         return Optional.ofNullable(this.contextProcessMapping
                 .get(computeKey(Objects.requireNonNull(context, "Context to lookup must not be null."))));
     }

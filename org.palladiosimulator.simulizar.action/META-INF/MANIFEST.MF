@@ -77,6 +77,7 @@ Export-Package: org.palladiosimulator.simulizar.action.context,
    org.eclipse.emf.common.notify,
    org.eclipse.emf.common.notify.impl,
    org.eclipse.emf.ecore.util",
+ org.palladiosimulator.simulizar.action.interpreter,
  org.palladiosimulator.simulizar.action.mapping;
   uses:="org.eclipse.emf.ecore,
    org.palladiosimulator.simulizar.action.core,
