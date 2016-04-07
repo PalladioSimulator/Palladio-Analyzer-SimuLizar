@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.eclipse.emf.common.CommonPlugin;
+import org.eclipse.emf.common.util.BasicEList;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.common.util.URI;
@@ -45,6 +46,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -365,10 +368,13 @@ public class QVToReconfigurationTest {
         swfc.setMonitorRepositoryFile(Paths.get(pmsURI.path()).toAbsolutePath().toString());
         swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
 
-        QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess, swfc);
-        reconfigurator.setConfiguration(swfc);
+        QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess);
         reconfigurator.setModelAccess(modelAccess);
-        boolean checkedAndExceuted = reconfigurator.checkAndExecute(monitoredElement);
+        QvtoReconfigurationLoader reconfigurationLoader = new QvtoReconfigurationLoader();
+        reconfigurationLoader.setConfiguration(swfc);
+        reconfigurationLoader.setModelAccess(modelAccess);
+        EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(reconfigurationLoader.getTransformations());
+        boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement);
         assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
 
         return pcmResourceSet;
