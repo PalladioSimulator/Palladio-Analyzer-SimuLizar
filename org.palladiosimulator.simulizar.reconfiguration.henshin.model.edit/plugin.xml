@@ -10,20 +10,13 @@
       <!-- @generated henshinreconfiguration -->
       <factory
             uri="http://palladiosimulator.org/simulizar/reconfigurationrule/henshin/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.provider.HenshinReconfigurationItemProviderAdapterFactory"
+            class="org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.provider.HenshinreconfigurationItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
                org.eclipse.emf.edit.provider.ITreeItemContentProvider
                org.eclipse.emf.edit.provider.IItemLabelProvider
                org.eclipse.emf.edit.provider.IItemPropertySource"/>
-   </extension>
-
-   <extension point="org.eclipse.emf.edit.childCreationExtenders">
-      <!-- @generated henshinreconfiguration -->
-      <extender
-            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.provider.HenshinReconfigurationItemProviderAdapterFactory$reconfigurationruleChildCreationExtender"/>
    </extension>
 
 </plugin>
