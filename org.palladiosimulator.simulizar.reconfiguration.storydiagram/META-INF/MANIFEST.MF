@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfiguration.storydiagra
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.storydiagram.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.palladiosimulator.simulizar,
  org.apache.log4j,
  org.storydriven.storydiagrams,
  org.palladiosimulator.pcm,
@@ -15,8 +14,12 @@ Require-Bundle: org.eclipse.core.runtime,
  de.mdelab.sdm.interpreter.core,
  de.uka.ipd.sdq.workflow.mdsd,
  de.uka.ipd.sdq.codegen.simucontroller,
- org.scaledl.usageevolution
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.scaledl.usageevolution,
+ org.palladiosimulator.servicelevelobjective,
+ org.palladiosimulator.simulizar.reconfigurationrule,
+ org.palladiosimulator.simulizar
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram,
+ org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
  org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess
