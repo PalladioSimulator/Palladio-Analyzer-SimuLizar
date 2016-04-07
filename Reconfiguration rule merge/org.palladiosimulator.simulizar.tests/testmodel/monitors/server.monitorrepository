@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_sh5jgHjDEeWM9vp-oUqXhQ" entityName="monitors">
+  <monitors id="_t2btgHjDEeWM9vp-oUqXhQ" entityName="serverCpuMonitor">
+    <measurementSpecifications id="_xAjgIHjDEeWM9vp-oUqXhQ">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_GdKLoHjEEeWM9vp-oUqXhQ" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="server.measuringpoint#//@measuringPoints.0"/>
+  </monitors>
+</monitorrepository:MonitorRepository>

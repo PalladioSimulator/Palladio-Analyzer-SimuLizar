@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" type="CompositeModel" name="server.system_diagram" measurementUnit="Pixel">
+  <children xsi:type="notation:Shape" type="2002" fontName=".Helvetica Neue DeskInterface">
+    <children xsi:type="notation:DecorationNode" type="5012"/>
+    <children xsi:type="notation:DecorationNode" type="7002">
+      <children xsi:type="notation:Shape" type="3006" fontName=".Helvetica Neue DeskInterface">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName=".Helvetica Neue DeskInterface">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" x="45" y="46"/>
+          </children>
+          <element href="server.repository#_mKQvQLwGEeSxGbiYbg6Waw"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="server.system#_CQWXwLwpEeSjHMSRTqzAVg"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="328" y="94"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName=".Helvetica Neue DeskInterface">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3008" fontName=".Helvetica Neue DeskInterface">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="12" y="46"/>
+          </children>
+          <element href="server.repository#_M9_kYMiZEeSwuLsOH33EQA"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName=".Helvetica Neue DeskInterface">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="40" y="-24"/>
+          </children>
+          <element href="server.repository#_iB_SsM1nEeSB6dFjhlvUmg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="server.system#_gfrbUMiZEeSwuLsOH33EQA"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="4" y="94"/>
+      </children>
+    </children>
+    <element href="server.system#_9Rml0LwoEeSjHMSRTqzAVg"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="225" y="90" height="311"/>
+  </children>
+  <styles xsi:type="notation:DiagramStyle"/>
+  <element href="server.system#_9Rml0LwoEeSjHMSRTqzAVg"/>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.1" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName=".Helvetica Neue DeskInterface"/>
+    <element href="server.system#_BNWLYMiaEeSwuLsOH33EQA"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -159, 1]$[159, -2, -7, -1]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.23333333333333334,0.4666666666666667)"/>
+  </edges>
+</notation:Diagram>
