@@ -20,4 +20,10 @@
 	   <sourceContainer path="simulizar_qvto_helper/">
 	   </sourceContainer>
 	</extension>
+ <extension
+       point="org.palladiosimulator.simulizar.reconfigurationloader">
+    <reconfigurationLoader
+          reconfigurationLoader="org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader">
+    </reconfigurationLoader>
+ </extension>
 </plugin>

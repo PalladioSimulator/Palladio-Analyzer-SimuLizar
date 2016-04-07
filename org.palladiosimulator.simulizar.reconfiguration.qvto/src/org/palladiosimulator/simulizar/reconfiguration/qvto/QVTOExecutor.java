@@ -1,9 +1,10 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
-import org.eclipse.emf.ecore.EObject;
+import java.util.List;
+
+import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.
@@ -24,22 +25,15 @@ public class QVTOExecutor extends AbstractQVTOExecutor {
      *            A {@link QVToModelCache} that contains all models that can serve as a
      *            transformation parameter.
      */
-    public QVTOExecutor(TransformationCache knownTransformations, QVToModelCache knownModels) {
+	public QVTOExecutor(ModelTransformationCache knownTransformations, QVToModelCache knownModels) {
         super(knownTransformations, knownModels);
     }
-
-    /**
-     * Executes all QVTo rules found in the configured reconfiguration rule folder.
-     * 
-     * @param monitoredElement
-     *            the monitored PCM model element.
-     * @return true if at least one reconfiguration was executed successfully
-     */
-    public boolean executeRules(final EObject monitoredElement) {
-        boolean result = false;
-        for (TransformationData data : super.getAvailableTransformations().getAll()) {
-            result |= executeTransformation(data);
-        }
-        return result;
-    }
+    
+    public boolean executeTransformations(List<QvtoModelTransformation> transformations){
+		boolean result = true;
+    	for(QvtoModelTransformation transformation : transformations){
+			result &= executeTransformation(transformation);
+		}
+    	return result;
+	}
 }
