@@ -3,7 +3,6 @@
 package org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration;
 
 import org.eclipse.emf.henshin.model.Unit;
-
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 /**
@@ -12,7 +11,7 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
  * <!-- end-user-doc -->
  *
  *
- * @see org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.HenshinReconfigurationPackage#getHenshinTransformation()
+ * @see org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.HenshinreconfigurationPackage#getHenshinTransformation()
  * @model
  * @generated
  */

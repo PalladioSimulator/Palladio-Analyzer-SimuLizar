@@ -1,44 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:description_1="http://www.eclipse.org/sirius/diagram/description/1.1.0" xmlns:diagram="http://www.eclipse.org/sirius/diagram/1.1.0" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:style="http://www.eclipse.org/sirius/diagram/description/style/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description http://www.eclipse.org/sirius/diagram/description/style/1.1.0 http://www.eclipse.org/sirius/diagram/1.1.0#//description/style" xmi:id="_W5x5MAtiEeW1v9LJaz53Kw" selectedViews="_XHe-AAtiEeW1v9LJaz53Kw" version="8.1.1">
-  <models xmi:type="ecore:EPackage" href="platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#/"/>
-  <models xmi:type="ecore:EPackage" href="http://www.eclipse.org/emf/2002/Ecore#/"/>
-  <models xmi:type="ecore:EPackage" href="platform:/resource/org.eclipse.emf.henshin.model/model/henshin.ecore#/"/>
-  <models xmi:type="ecore:EPackage" href="henshinreconfiguration.ecore#/"/>
-  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_XHe-AAtiEeW1v9LJaz53Kw" initialized="true">
-    <ownedRepresentations xmi:type="diagram:DSemanticDiagram" xmi:id="_XT_I8AtiEeW1v9LJaz53Kw" name="HenshinReconfiguration class diagram">
-      <ownedAnnotationEntries xmi:type="description:AnnotationEntry" xmi:id="_XUhUcAtiEeW1v9LJaz53Kw" source="GMF_DIAGRAMS">
-        <data xmi:type="notation:Diagram" xmi:id="_XUhUcQtiEeW1v9LJaz53Kw" type="Sirius" element="_XT_I8AtiEeW1v9LJaz53Kw" measurementUnit="Pixel">
-          <children xmi:type="notation:Node" xmi:id="_XU6WAAtiEeW1v9LJaz53Kw" type="2001" element="_XT_I8QtiEeW1v9LJaz53Kw">
-            <children xmi:type="notation:Node" xmi:id="_XVchgAtiEeW1v9LJaz53Kw" type="5002">
-              <layoutConstraint xmi:type="notation:Location" xmi:id="_XVchgQtiEeW1v9LJaz53Kw" y="5"/>
-            </children>
-            <children xmi:type="notation:Node" xmi:id="_XfWrcAtiEeW1v9LJaz53Kw" type="3005" element="_XT_I8gtiEeW1v9LJaz53Kw">
-              <styles xmi:type="notation:ShapeStyle" xmi:id="_XfWrcQtiEeW1v9LJaz53Kw" fontName="Segoe UI"/>
-              <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XfWrcgtiEeW1v9LJaz53Kw"/>
-            </children>
-            <styles xmi:type="notation:ShapeStyle" xmi:id="_XU6WAQtiEeW1v9LJaz53Kw" fontName="Segoe UI" fontHeight="8"/>
-            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_XU6WAgtiEeW1v9LJaz53Kw" width="672" height="67"/>
-          </children>
-          <styles xmi:type="notation:DiagramStyle" xmi:id="_XUhUcgtiEeW1v9LJaz53Kw"/>
-        </data>
-      </ownedAnnotationEntries>
-      <ownedDiagramElements xmi:type="diagram:DNode" xmi:id="_XT_I8QtiEeW1v9LJaz53Kw" width="-1" height="-1">
-        <target xmi:type="ecore:EPackage" href="HenshinReconfiguration.ecore#/"/>
-        <semanticElements xmi:type="ecore:EPackage" href="HenshinReconfiguration.ecore#/"/>
-        <ownedStyle xmi:type="diagram:WorkspaceImage" xmi:id="_XT_I8gtiEeW1v9LJaz53Kw" showIcon="false" labelPosition="node" workspacePath="/org.eclipse.emf.ecoretools.design/icons/full/back/empty.svg">
-          <labelColor xmi:type="viewpoint:RGBValues" xmi:id="_XT_wAAtiEeW1v9LJaz53Kw"/>
-          <description xmi:type="style:WorkspaceImageDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@nodeMappings[name='Empty%20Diagram']/@style"/>
-          <borderColor xmi:type="viewpoint:RGBValues" xmi:id="_XT_wAQtiEeW1v9LJaz53Kw"/>
-        </ownedStyle>
-        <actualMapping xmi:type="description_1:NodeMapping" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer/@nodeMappings[name='Empty%20Diagram']"/>
-      </ownedDiagramElements>
-      <description xmi:type="description_1:DiagramDescription" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']"/>
-      <filterVariableHistory xmi:type="diagram:FilterVariableHistory" xmi:id="_XT_wAgtiEeW1v9LJaz53Kw"/>
-      <activatedLayers xmi:type="description_1:Layer" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@defaultLayer"/>
-      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@additionalLayers[name='Package']"/>
-      <activatedLayers xmi:type="description_1:AdditionalLayer" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']/@ownedRepresentations[name='Entities']/@additionalLayers[name='Validation']"/>
-      <target xmi:type="ecore:EPackage" href="HenshinReconfiguration.ecore#/"/>
-    </ownedRepresentations>
+<viewpoint:DAnalysis xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:description="http://www.eclipse.org/sirius/description/1.1.0" xmlns:viewpoint="http://www.eclipse.org/sirius/1.1.0" xsi:schemaLocation="http://www.eclipse.org/sirius/description/1.1.0 http://www.eclipse.org/sirius/1.1.0#//description" xmi:id="_tDMgoPzDEeWo1ufHIgNi0w" selectedViews="_t6nQ0PzDEeWo1ufHIgNi0w _t6wawPzDEeWo1ufHIgNi0w _t6zeEPzDEeWo1ufHIgNi0w" version="10.1.0.201509162000">
+  <semanticResources>henshinreconfiguration.ecore</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore</semanticResources>
+  <semanticResources>platform:/resource/org.eclipse.emf.henshin.model/model/henshin.ecore</semanticResources>
+  <semanticResources>http://www.eclipse.org/emf/2002/Ecore</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.monitorrepository/model/monitorrepository.ecore</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.ecore</semanticResources>
+  <semanticResources>platform:/plugin/org.palladiosimulator.edp2/model/EDP2.ecore</semanticResources>
+  <semanticResources>platform:/plugin/org.palladiosimulator.pcm/model/pcm.ecore</semanticResources>
+  <semanticResources>platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.ecore</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.units/model/Units.ecore</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.ecore</semanticResources>
+  <semanticResources>henshinreconfiguration.genmodel</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.edp2/model/EDP2.genmodel</semanticResources>
+  <semanticResources>platform:/resource/org.eclipse.emf.henshin.model/model/henshin.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.identifier/model/identifier.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/org.palladiosimulator.metricspec/model/metricspec.genmodel</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.monitorrepository/model/monitorrepository.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/org.palladiosimulator.pcm/model/pcm.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.probfunction/model/ProbabilityFunction.genmodel</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.genmodel</semanticResources>
+  <semanticResources>platform:/resource/org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.stoex/model/stoex.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/de.uka.ipd.sdq.units/model/Units.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/org.eclipse.emf.ecore/model/Ecore.genmodel</semanticResources>
+  <semanticResources>platform:/plugin/org.eclipse.emf.ecore/model/Ecore.ecore</semanticResources>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_t6nQ0PzDEeWo1ufHIgNi0w">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Review']"/>
+  </ownedViews>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_t6wawPzDEeWo1ufHIgNi0w">
     <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Design']"/>
+  </ownedViews>
+  <ownedViews xmi:type="viewpoint:DRepresentationContainer" xmi:id="_t6zeEPzDEeWo1ufHIgNi0w">
+    <viewpoint xmi:type="description:Viewpoint" href="platform:/plugin/org.eclipse.emf.ecoretools.design/description/ecore.odesign#//@ownedViewpoints[name='Archetype']"/>
   </ownedViews>
 </viewpoint:DAnalysis>

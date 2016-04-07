@@ -12,7 +12,16 @@ Export-Package: org.palladiosimulator.simulizar.reconfiguration.henshin.henshinr
  org.palladiosimulator.simulizar.reconfiguration.henshin.henshinreconfiguration.util
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
+ org.palladiosimulator.edp2;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.emf.henshin.model;visibility:=reexport,
- org.palladiosimulator.simulizar.reconfigurationrule;visibility:=reexport
+ de.uka.ipd.sdq.identifier;visibility:=reexport,
+ org.palladiosimulator.metricspec;visibility:=reexport,
+ org.palladiosimulator.monitorrepository;visibility:=reexport,
+ org.palladiosimulator.pcm;visibility:=reexport,
+ de.uka.ipd.sdq.probfunction;visibility:=reexport,
+ org.palladiosimulator.simulizar.reconfigurationrule;visibility:=reexport,
+ org.palladiosimulator.servicelevelobjective;visibility:=reexport,
+ de.uka.ipd.sdq.stoex;visibility:=reexport,
+ de.uka.ipd.sdq.units;visibility:=reexport
 Bundle-ActivationPolicy: lazy
