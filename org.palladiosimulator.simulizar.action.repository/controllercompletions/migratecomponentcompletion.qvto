@@ -70,6 +70,7 @@ transformation vmMigration(
 		targetContainer := targetContainerRole.value.oclAsType(ResourceContainer);
 		
 		var assembly : AssemblyContext := getMigrationControllerAssembly(allocation, migrationControllerContainer, migratedAssembly.getControllerHost(allocation), targetContainer);
+		var res := assembly = null;
 		if(assembly = null) {
 			step.map vmMigrate(allocation, controllerRepository, roleSet);	
 		} else {
