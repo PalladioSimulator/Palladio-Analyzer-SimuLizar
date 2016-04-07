@@ -23,7 +23,7 @@
       <!-- @generated storydiagramreconfiguration -->
       <factory
             uri="http://palladiosimulator.org/simulizar/reconfigurationrule/storydiagram/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.storydiagramreconfiguration.provider.StoryDiagramReconfigurationItemProviderAdapterFactory"
+            class="org.palladiosimulator.simulizar.reconfiguration.storydiagramreconfiguration.provider.StorydiagramreconfigurationItemProviderAdapterFactory"
             supportedTypes=
               "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
                org.eclipse.emf.edit.provider.IStructuredItemContentProvider
@@ -32,10 +32,17 @@
                org.eclipse.emf.edit.provider.IItemPropertySource"/>
    </extension>
 
-   <extension point="org.eclipse.emf.edit.childCreationExtenders">
-      <!-- @generated storydiagramreconfiguration -->
-      <extender
-            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.storydiagramreconfiguration.provider.StoryDiagramReconfigurationItemProviderAdapterFactory$reconfigurationruleChildCreationExtender"/>
+   <extension point="org.eclipse.emf.edit.itemProviderAdapterFactories">
+      <!-- @generated org.palladiosimulator.simulizar.reconfiguration.storydrivenreconfiguration -->
+      <factory
+            uri="http://palladiosimulator.org/simulizar/reconfigurationrule/storydiagram/1.0"
+            class="org.palladiosimulator.simulizar.reconfiguration.storydiagram.provider.StorydiagramreconfigurationItemProviderAdapterFactory"
+            supportedTypes=
+              "org.eclipse.emf.edit.provider.IEditingDomainItemProvider
+               org.eclipse.emf.edit.provider.IStructuredItemContentProvider
+               org.eclipse.emf.edit.provider.ITreeItemContentProvider
+               org.eclipse.emf.edit.provider.IItemLabelProvider
+               org.eclipse.emf.edit.provider.IItemPropertySource"/>
    </extension>
+
 </plugin>
