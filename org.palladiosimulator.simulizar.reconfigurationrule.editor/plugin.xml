@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated reconfigurationrule -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="reconfigurationrule.presentation.ReconfigurationruleModelWizardID"
+            name="%_UI_ReconfigurationruleModelWizard_label"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ReconfigurationruleModelFile.gif">
+         <description>%_UI_ReconfigurationruleModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated reconfigurationrule -->
+      <editor
+            id="reconfigurationrule.presentation.ReconfigurationruleEditorID"
+            name="%_UI_ReconfigurationruleEditor_label"
+            icon="icons/full/obj16/ReconfigurationruleModelFile.gif"
+            extensions="reconfigurationrule"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleEditor"
+            contributorClass="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleActionBarContributor">
+      </editor>
+   </extension>
+</plugin>
