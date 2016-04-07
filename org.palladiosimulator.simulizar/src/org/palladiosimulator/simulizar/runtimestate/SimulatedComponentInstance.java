@@ -7,7 +7,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 public abstract class SimulatedComponentInstance {
 
     private final FQComponentID myID;
-    private SimuLizarRuntimeState runtimeState;
+    private SimuLizarRuntimeStateAbstract runtimeState;
 
     /**
      * @param myID
@@ -17,7 +17,7 @@ public abstract class SimulatedComponentInstance {
         this.myID = new FQComponentID(assemblyContextPath);
     }
 
-    protected SimulatedComponentInstance(final SimuLizarRuntimeState runtimeState, final FQComponentID fqID) {
+    protected SimulatedComponentInstance(final SimuLizarRuntimeStateAbstract runtimeState, final FQComponentID fqID) {
         super();
         this.runtimeState = runtimeState;
         this.myID = fqID;
@@ -30,7 +30,7 @@ public abstract class SimulatedComponentInstance {
     /**
      * @return the runtimeState
      */
-    protected final SimuLizarRuntimeState getRuntimeState() {
+    protected final SimuLizarRuntimeStateAbstract getRuntimeState() {
         return this.runtimeState;
     }
 }

@@ -33,8 +33,13 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction.math,
  org.palladiosimulator.mdsdprofiles.api,
- org.modelversioning.emfprofile;bundle-version="1.1.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+ org.modelversioning.emfprofile;bundle-version="1.1.0",
+ org.storydriven.storydiagrams;bundle-version="1.0.1",
+ org.eclipse.m2m.qvt.oml;bundle-version="[3.4.0,3.6.1)",
+ org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="0.1.0",
+ org.eclipse.emf.common
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.access;
   uses:="org.scaledl.usageevolution,
@@ -120,6 +125,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.eclipse.emf.common.notify,
    org.palladiosimulator.simulizar.interpreter.listener,
    org.palladiosimulator.commons.designpatterns",
+ org.palladiosimulator.simulizar.reconfiguration.probes,
  org.palladiosimulator.simulizar.runconfig;uses:="org.eclipse.debug.core,de.uka.ipd.sdq.codegen.simucontroller.runconfig,de.uka.ipd.sdq.workflow.launchconfig",
  org.palladiosimulator.simulizar.runtimestate;
   uses:="org.palladiosimulator.simulizar.interpreter,
