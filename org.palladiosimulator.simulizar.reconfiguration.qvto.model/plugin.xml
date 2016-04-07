@@ -10,7 +10,7 @@
       <!-- @generated qvtoreconfiguration -->
       <package
             uri="http://palladiosimulator.org/simulizar/reconfigurationrule/qvto/1.0"
-            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.QvtoReconfigurationPackage"
+            class="org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.QvtoreconfigurationPackage"
             genModel="model/qvtoreconfiguration.genmodel"/>
    </extension>
 

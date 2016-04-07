@@ -3,7 +3,6 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration;
 
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
-
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 /**
@@ -12,7 +11,7 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
  * <!-- end-user-doc -->
  *
  *
- * @see org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.QvtoReconfigurationPackage#getQvtoTransformation()
+ * @see org.palladiosimulator.simulizar.reconfiguration.qvto.qvtoreconfiguration.QvtoreconfigurationPackage#getQvtoTransformation()
  * @model
  * @generated
  */
