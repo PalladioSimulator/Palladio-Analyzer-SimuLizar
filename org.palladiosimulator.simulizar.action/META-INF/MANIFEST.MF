@@ -27,7 +27,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.ui,
  org.modelversioning.emfprofile.registry,
  de.uka.ipd.sdq.workflow;bundle-version="2.1.0",
- de.uka.ipd.sdq.simucomframework.simucomstatus
+ de.uka.ipd.sdq.simucomframework.simucomstatus,
+ org.palladiosimulator.simulizar.reconfigurationrule
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.context.impl,

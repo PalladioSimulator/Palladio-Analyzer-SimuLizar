@@ -14,8 +14,8 @@ import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationParameterInformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 
 public class TransientEffectQVTOExecutorUtil {
 
@@ -30,10 +30,10 @@ public class TransientEffectQVTOExecutorUtil {
 
     static void validateGuardedTransition(TransientEffectQVTOExecutor executor, GuardedTransition guardedTransition) {
         URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
-        Optional<TransformationData> preconditionData = executor.getTransformationByUri(conditionUri);
+        Optional<QvtoModelTransformation> preconditionData = executor.getTransformationByUri(conditionUri);
 
         Collection<TransformationParameterInformation> inParams = preconditionData
-                .map(TransformationData::getInParameters)
+                .map(QvtoModelTransformation::getInParameters)
                 .orElseThrow(() -> new RuntimeException("Condition transformation not available!"));
         if (inParams.parallelStream().noneMatch(paramTypePredicate(ADAPTATION_BEHAVIOR_EPACKAGE))
                 && inParams.parallelStream().noneMatch(paramTypePredicate(ROLE_SET_EPACKAGE))) {
@@ -47,7 +47,7 @@ public class TransientEffectQVTOExecutorUtil {
     static void validateResourceDemandingAction(TransientEffectQVTOExecutor executor,
             ResourceDemandingAction resourceDemandingAction) {
         URI controllerCompletionUri = URI.createURI(resourceDemandingAction.getControllerCompletionURI());
-        Optional<TransformationData> controllerCompletionData = executor
+        Optional<QvtoModelTransformation> controllerCompletionData = executor
                 .getTransformationByUri(controllerCompletionUri);
 
         Collection<TransformationParameterInformation> outParams = controllerCompletionData
@@ -70,7 +70,7 @@ public class TransientEffectQVTOExecutorUtil {
     static void validateEnactAdaptationStep(TransientEffectQVTOExecutor executor,
             EnactAdaptationAction enactAdaptationAction) {
         URI adaptationStepUri = URI.createURI(Objects.requireNonNull(enactAdaptationAction.getAdaptationStepURI()));
-        Optional<TransformationData> adaptationActionData = executor.getTransformationByUri(adaptationStepUri);
+        Optional<QvtoModelTransformation> adaptationActionData = executor.getTransformationByUri(adaptationStepUri);
 
         Collection<TransformationParameterInformation> inParams = adaptationActionData
                 .orElseThrow(() -> new RuntimeException("Adaptation step transformation not available!"))

@@ -1,13 +1,13 @@
 package org.palladiosimulator.simulizar.action.interpreter;
 
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 public abstract class AbstractStateTransformation {
 
-    protected SimuLizarRuntimeState simulationState;
+    protected SimuLizarRuntimeStateAbstract simulationState;
 
-    public void setSimulationState(final SimuLizarRuntimeState state) {
+    public void setSimulationState(final SimuLizarRuntimeStateAbstract state) {
         this.simulationState = state;
     }
 

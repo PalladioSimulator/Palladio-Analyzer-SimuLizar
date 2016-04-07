@@ -231,7 +231,6 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
     @Override
     public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID, NotificationChain msgs) {
         switch (featureID) {
@@ -306,7 +305,6 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
      *
      * @generated
      */
-    @SuppressWarnings("unchecked")
     @Override
     public void eSet(final int featureID, final Object newValue) {
         switch (featureID) {

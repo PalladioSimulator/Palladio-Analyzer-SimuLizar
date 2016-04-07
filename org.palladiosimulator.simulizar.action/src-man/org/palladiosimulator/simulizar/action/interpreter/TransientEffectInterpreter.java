@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -30,7 +31,6 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.action.context.ContextFactory;
-import org.palladiosimulator.simulizar.action.context.ContextPackage;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationAction;
@@ -56,7 +56,9 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -81,7 +83,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 	private static final ExecutionContext DEFAULT_EXECUTION_CONTEXT = ContextFactory.eINSTANCE.createExecutionContext();
 
-	private final SimuLizarRuntimeState state;
+	private final SimuLizarRuntimeStateAbstract state;
 	private final ReconfigurationProcess associatedReconfigurationProcess;
 	private final RoleSet roleSet;
 	private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
@@ -110,7 +112,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	 *            interpreted asynchronously in a dedicated
 	 *            {@link SimuComSimProcess}.
 	 */
-	TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
+	TransientEffectInterpreter(SimuLizarRuntimeStateAbstract state, RoleSet set,
 			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
 			AdaptationBehaviorRepository repository, boolean executeAsync,
 			Optional<ExecutionContext> executionContext) {
@@ -170,7 +172,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			AsyncInterpretationProcess asyncProcess = createAsyncProcess(adaptationBehavior);
 			ExecutionContextKeeper.getInstance().addContextProcessMapping(asyncProcess.getCorrespondingContext(),
 					asyncProcess);
-			TransientEffectInterpreter.this.executionContext = 
+					TransientEffectInterpreter.this.executionContext = 
 				Optional.of(asyncProcess.getCorrespondingContext());
 			asyncProcess.activate();
 			LOGGER.info("Scheduled process for async interpretation of adaptation behavior.");
@@ -340,8 +342,10 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 			// execute adaptation
 			TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationAction);
+			URI adaptationStepUri = URI.createURI(enactAdaptationAction.getAdaptationStepURI());
+			QvtoModelTransformation adaptationStep = this.qvtoExecutor.getTransformationByUri(adaptationStepUri).get();
 			final boolean result = this.qvtoExecutor
-					.executeTransformation(enactAdaptationAction.getAdaptationStepURI());
+					.executeTransformation(adaptationStep);
 			if (result && !TransientEffectInterpreter.this.isAsync) {
 				TransientEffectInterpreter.this.forwardReconfigurationNotification(
 						new AdaptationActionExecutedNotification(enactAdaptationAction));

@@ -12,7 +12,6 @@ import org.eclipse.m2m.qvt.oml.ExecutionDiagnostic;
 import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
-import org.palladiosimulator.simulizar.action.context.ContextPackage;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
@@ -22,10 +21,10 @@ import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.AbstractQVTOExecutor;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationCache;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationData;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.util.TransformationParameterInformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 
 /**
  * Implementation of the {@link AbstractQVTOExecutor} suitable for executing {@link AdaptationStep
@@ -42,13 +41,9 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     private final Collection<ModelExtent> currentPureOutParams;
 
     protected TransientEffectQVTOExecutor(QVToModelCache availableModels) {
-        super(new TransformationCache(), Objects.requireNonNull(availableModels));
+        super(new ModelTransformationCache(), Objects.requireNonNull(availableModels));
         this.currentPureOutParams = new ArrayList<>();
 
-    }
-
-    boolean executeTransformation(String uriString) {
-        return this.executeTransformation(URI.createURI(Objects.requireNonNull(uriString)));
     }
 
     Optional<Mapping> executeControllerCompletion(Repository controllerCompletionRepository,
@@ -57,7 +52,8 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         Collection<EObject> cachedRepo = this.getModelsByType(REPOSITORY_EPACKAGE);
         this.storeModel(controllerCompletionRepository);
         URI controllerCompletionUri = URI.createURI(controllerCompletionPath);
-        boolean result = this.executeTransformation(controllerCompletionUri);
+        QvtoModelTransformation controllerCompletion = this.getTransformationByUri(controllerCompletionUri).get();
+        boolean result = this.executeTransformation(controllerCompletion);
         // restore if necessary
         cachedRepo.forEach(repoInCache -> this.storeModel(repoInCache));
         if (result) {
@@ -67,7 +63,9 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     boolean executeGuardedTransition(GuardedTransition guardedTransition) {
-        return this.executeTransformation(Objects.requireNonNull(guardedTransition).getConditionURI());
+    	URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
+		QvtoModelTransformation condition = this.getTransformationByUri(conditionUri).get();
+        return this.executeTransformation(Objects.requireNonNull(condition));
     }
 
     private void storeModel(EObject model) {
@@ -106,7 +104,7 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         prepareTransformation(Objects.requireNonNull(guardedTransition).getConditionURI());
     }
 
-    Optional<TransformationData> getTransformationByUri(URI transformationId) {
+    Optional<QvtoModelTransformation> getTransformationByUri(URI transformationId) {
         return getAvailableTransformations().get(Objects.requireNonNull(transformationId));
     }
 
@@ -130,10 +128,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     @Override
-    protected ModelExtent[] setupModelExtents(TransformationData data) {
+    protected ModelExtent[] setupModelExtents(QvtoModelTransformation transformation) {
         this.currentPureOutParams.clear();
-        ModelExtent[] result = super.setupModelExtents(data);
-        data.getPureOutParameters().stream().mapToInt(TransformationParameterInformation::getParameterIndex)
+        ModelExtent[] result = super.setupModelExtents(transformation);
+        transformation.getPureOutParameters().stream().mapToInt(TransformationParameterInformation::getParameterIndex)
                 .mapToObj(index -> result[index]).forEach(this.currentPureOutParams::add);
         return result;
     }
