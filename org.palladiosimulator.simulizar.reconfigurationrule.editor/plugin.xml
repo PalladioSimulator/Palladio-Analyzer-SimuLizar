@@ -12,12 +12,12 @@
             id="org.eclipse.emf.ecore.Wizard.category.ID"
             name="%_UI_Wizard_category"/>
       <wizard
-            id="org.palladiosimulator.simulizar.reconfigurationrule.presentation.reconfigurationruleModelWizardID"
-            name="%_UI_reconfigurationruleModelWizard_label"
-            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.reconfigurationruleModelWizard"
+            id="reconfigurationrule.presentation.ReconfigurationruleModelWizardID"
+            name="%_UI_ReconfigurationruleModelWizard_label"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleModelWizard"
             category="org.eclipse.emf.ecore.Wizard.category.ID"
-            icon="icons/full/obj16/reconfigurationruleModelFile.gif">
-         <description>%_UI_reconfigurationruleModelWizard_description</description>
+            icon="icons/full/obj16/ReconfigurationruleModelFile.gif">
+         <description>%_UI_ReconfigurationruleModelWizard_description</description>
          <selection class="org.eclipse.core.resources.IResource"/>
       </wizard>
    </extension>
@@ -25,13 +25,12 @@
    <extension point="org.eclipse.ui.editors">
       <!-- @generated reconfigurationrule -->
       <editor
-            id="org.palladiosimulator.simulizar.reconfigurationrule.presentation.reconfigurationruleEditorID"
-            name="%_UI_reconfigurationruleEditor_label"
-            icon="icons/full/obj16/reconfigurationruleModelFile.gif"
-            extensions="reconfigurationruleset"
-            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.reconfigurationruleEditor"
-            contributorClass="org.palladiosimulator.simulizar.reconfigurationrule.presentation.reconfigurationruleActionBarContributor">
+            id="reconfigurationrule.presentation.ReconfigurationruleEditorID"
+            name="%_UI_ReconfigurationruleEditor_label"
+            icon="icons/full/obj16/ReconfigurationruleModelFile.gif"
+            extensions="reconfigurationrule"
+            class="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleEditor"
+            contributorClass="org.palladiosimulator.simulizar.reconfigurationrule.presentation.ReconfigurationruleActionBarContributor">
       </editor>
    </extension>
-
 </plugin>
