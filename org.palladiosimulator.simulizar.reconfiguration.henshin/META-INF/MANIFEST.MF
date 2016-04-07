@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.runtimemeasurement,
  de.uka.ipd.sdq.workflow.mdsd,
  de.uka.ipd.sdq.codegen.simucontroller,
- org.scaledl.usageevolution
+ org.scaledl.usageevolution,
+ org.palladiosimulator.simulizar.reconfigurationrule
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.henshin
