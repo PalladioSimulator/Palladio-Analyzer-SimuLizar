@@ -6,6 +6,7 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+import org.palladiosimulator.simulizar.reconfigurationrule.impl.ReconfigurationrulePackageImpl;
 
 /**
  * <!-- begin-user-doc -->
@@ -54,7 +55,7 @@ public interface ReconfigurationrulePackage extends EPackage {
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	ReconfigurationrulePackage eINSTANCE = org.palladiosimulator.simulizar.reconfigurationrule.impl.ReconfigurationrulePackageImpl.init();
+	ReconfigurationrulePackage eINSTANCE = ReconfigurationrulePackageImpl.init();
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.reconfigurationrule.impl.ModelTransformationImpl <em>Model Transformation</em>}' class.
