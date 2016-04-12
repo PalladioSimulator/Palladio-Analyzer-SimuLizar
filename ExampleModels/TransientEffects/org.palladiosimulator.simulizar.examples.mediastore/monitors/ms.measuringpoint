@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_yisyIKGxEeWc24RAWmuF8Q">
+  <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: RealisticUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms_base_usage_realistic.usagemodel#__hpRMHD6EeSA4fySuX9I2Q">
+    <usageScenario href="../ms_base_usage_realistic.usagemodel#__hpRMHD6EeSA4fySuX9I2Q"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" stringRepresentation="ExternalCall aName from TagWatermarking to Required_IDownload_TagWatermarking->download [_BVVtgLzYEeSAHuL4ItXOLQ]" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.repository#_BVVtgLzYEeSAHuL4ItXOLQ">
+    <externalCall href="../ms.repository#_BVVtgLzYEeSAHuL4ItXOLQ"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in Server2" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.resourceenvironment#_kkiVoLg3EeSNPorBlo7x9g">
+    <activeResource href="../ms.resourceenvironment#_kkiVoLg3EeSNPorBlo7x9g"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in Server3" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.resourceenvironment#_J5xVgOXREeSa__lJ2-JCxw">
+    <activeResource href="../ms.resourceenvironment#_J5xVgOXREeSa__lJ2-JCxw"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in Server4" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.resourceenvironment#_wZVsQKNOEeW-HtW2mCFHaw">
+    <activeResource href="../ms.resourceenvironment#_wZVsQKNOEeW-HtW2mCFHaw"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" stringRepresentation="Reconfigurations" resourceURIRepresentation="platform:/resource/MediaStore Model v3/reconfigurations/horizontalscaling.qvto" measuringPoint="Reconfigurations" resourceURI="platform:/resource/MediaStore Model v3/reconfigurations/horizontalscaling.qvto"/>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in Server5" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.resourceenvironment#_pvHaQKPuEeWsYYUki_pfEw">
+    <activeResource href="../ms.resourceenvironment#_pvHaQKPuEeWsYYUki_pfEw"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" stringRepresentation="CPU [0] in Server6" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.mediastore/ms.resourceenvironment#_y5cb0KPuEeWsYYUki_pfEw">
+    <activeResource href="../ms.resourceenvironment#_y5cb0KPuEeWsYYUki_pfEw"/>
+  </measuringPoints>
+</org.palladiosimulator.edp2.models:MeasuringPointRepository>

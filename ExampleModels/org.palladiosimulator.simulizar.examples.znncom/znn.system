@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.1" id="_is1ZoKnnEeO_FKTWaHXFBg" entityName="defaultSystem">
+  <assemblyContexts__ComposedStructure id="_nvrBYKnnEeO_FKTWaHXFBg" entityName="Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="znn.repository#_v3bBEKnmEeO_FKTWaHXFBg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_s0iCYKnnEeO_FKTWaHXFBg" entityName="Assembly_LoadBalancer &lt;LoadBalancer>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="znn.repository#_LIKOYKnnEeO_FKTWaHXFBg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_EDus4KnoEeO_FKTWaHXFBg" entityName="Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="znn.repository#_pO2KkKnmEeO_FKTWaHXFBg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_Fd5k0KnoEeO_FKTWaHXFBg" entityName="Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="znn.repository#_pO2KkKnmEeO_FKTWaHXFBg"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_GXW8YKnoEeO_FKTWaHXFBg" entityName="Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="znn.repository#_pO2KkKnmEeO_FKTWaHXFBg"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_r3Rv8KnnEeO_FKTWaHXFBg" entityName="ProvDelegation Provided_INews -> Provided_INews_NewsService" outerProvidedRole_ProvidedDelegationConnector="_k-bo0KnnEeO_FKTWaHXFBg" assemblyContext_ProvidedDelegationConnector="_nvrBYKnnEeO_FKTWaHXFBg">
+    <innerProvidedRole_ProvidedDelegationConnector href="znn.repository#__SXsIKnmEeO_FKTWaHXFBg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_v0t14KnnEeO_FKTWaHXFBg" entityName="Connector Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService> -> Assembly_LoadBalancer &lt;LoadBalancer>" requiringAssemblyContext_AssemblyConnector="_nvrBYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg">
+    <providedRole_AssemblyConnector href="znn.repository#_cy6_8KnnEeO_FKTWaHXFBg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#_AjiZEKnnEeO_FKTWaHXFBg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_IjbyYKnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_EDus4KnoEeO_FKTWaHXFBg">
+    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#__yEqcKnnEeO_FKTWaHXFBg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_I_RZ0KnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_Fd5k0KnoEeO_FKTWaHXFBg">
+    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#__V1aYKnnEeO_FKTWaHXFBg"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_JrdKYKnoEeO_FKTWaHXFBg" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_MutlimediaNewsService &lt;MutlimediaNewsService>" requiringAssemblyContext_AssemblyConnector="_s0iCYKnnEeO_FKTWaHXFBg" providingAssemblyContext_AssemblyConnector="_GXW8YKnoEeO_FKTWaHXFBg">
+    <providedRole_AssemblyConnector href="znn.repository#_H3quAKnnEeO_FKTWaHXFBg"/>
+    <requiredRole_AssemblyConnector href="znn.repository#_-3KhYKnnEeO_FKTWaHXFBg"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_k-bo0KnnEeO_FKTWaHXFBg" entityName="Provided_INews">
+    <providedInterface__OperationProvidedRole href="znn.repository#_XrqAoKnmEeO_FKTWaHXFBg"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

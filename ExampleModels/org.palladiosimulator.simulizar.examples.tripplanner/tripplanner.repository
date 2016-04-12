@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_Mlh0EKIYEeSI8vSe5jYNQg" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_fL75EKIZEeSI8vSe5jYNQg" entityName="GoogleMaps">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_x51ioKIZEeSI8vSe5jYNQg" entityName="Provided_IMapService_GoogleMaps" providedInterface__OperationProvidedRole="_joMecKIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_K0VVcKVIEeSJhPDYNMsTFg" describedService__SEFF="_nC34wKIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_LMxDkKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_LMxDkaVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_LMxDkaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_LMxDkKVIEeSJhPDYNMsTFg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_gxVwoKIZEeSI8vSe5jYNQg" entityName="PaderTouristik">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_vTSXIKIZEeSI8vSe5jYNQg" entityName="Provided_IPointOfInterestService_PaderTouristik" providedInterface__OperationProvidedRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_amEScKIfEeSI8vSe5jYNQg" entityName="Required_IPointOfInterestService_PaderTouristik" requiredInterface__OperationRequiredRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_MCJzcKVIEeSJhPDYNMsTFg" describedService__SEFF="_LST74KIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_MZUWQKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_MZUWQaVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_MZUWQaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_MZUWQKVIEeSJhPDYNMsTFg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_ieXTIKIZEeSI8vSe5jYNQg" entityName="PaderSprinter">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_y2QHkKIZEeSI8vSe5jYNQg" entityName="Provided_IPublicTransportService_PaderSprinter" providedInterface__OperationProvidedRole="_pLVW4KIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_M_V0cKVIEeSJhPDYNMsTFg" describedService__SEFF="_F3t7cKIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_NWizgKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_NWizgaVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_NWizgaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_NWizgKVIEeSJhPDYNMsTFg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_lct6oKIZEeSI8vSe5jYNQg" entityName="CineplexLocations">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ZSJMcKIfEeSI8vSe5jYNQg" entityName="Provided_IPointOfInterestService_CineplexLocations" providedInterface__OperationProvidedRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ZSLBoKIfEeSI8vSe5jYNQg" describedService__SEFF="_LST74KIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_ZSLosKIfEeSI8vSe5jYNQg" entityName="start" successor_AbstractAction="_ZSLosaIfEeSI8vSe5jYNQg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_ZSLosaIfEeSI8vSe5jYNQg" entityName="stop" predecessor_AbstractAction="_ZSLosKIfEeSI8vSe5jYNQg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_n15_kKIZEeSI8vSe5jYNQg" entityName="RestaurantLocations">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Zz8R8KIfEeSI8vSe5jYNQg" entityName="Provided_IPointOfInterestService_RestaurantLocations" providedInterface__OperationProvidedRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_Zz85AKIfEeSI8vSe5jYNQg" describedService__SEFF="_LST74KIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_Zz85AaIfEeSI8vSe5jYNQg" entityName="start" successor_AbstractAction="_Zz9gEKIfEeSI8vSe5jYNQg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_Zz9gEKIfEeSI8vSe5jYNQg" entityName="stop" predecessor_AbstractAction="_Zz85AaIfEeSI8vSe5jYNQg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_09N0EKIZEeSI8vSe5jYNQg" entityName="Foursquare">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_5fXJkKIZEeSI8vSe5jYNQg" entityName="Provided_IRatingService_Foursquare" providedInterface__OperationProvidedRole="_iWtocKIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_KBmQ8KVIEeSJhPDYNMsTFg" describedService__SEFF="_ph3qwKIcEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_KVT3IKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_KVT3IaVIEeSJhPDYNMsTFg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_KVT3IaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_KVT3IKVIEeSJhPDYNMsTFg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_JZttcKIaEeSI8vSe5jYNQg" entityName="GeneratedOrchestrator">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Md4CAKIaEeSI8vSe5jYNQg" entityName="Provided_ITripPlanner_GeneratedOrchestrator" providedInterface__OperationProvidedRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_PST4gKIaEeSI8vSe5jYNQg" entityName="Required_IMapService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_joMecKIYEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_P3OjcKIaEeSI8vSe5jYNQg" entityName="Required_IRatingService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_iWtocKIYEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_RAn0cKIaEeSI8vSe5jYNQg" entityName="Required_IPointOfInterestService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_m-4GYKIYEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_RzIPcKIaEeSI8vSe5jYNQg" entityName="Required_IPublicTransportService_GeneratedOrchestrator" requiredInterface__OperationRequiredRole="_pLVW4KIYEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_I0jPAKVIEeSJhPDYNMsTFg" describedService__SEFF="_krD6kKIhEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_JKtFMKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_29EI4KpREeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_JKtFMaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_29EI4KpREeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_29EI4KpREeSHPfe6rtAd3w" entityName="doProcessing" predecessor_AbstractAction="_JKtFMKVIEeSJhPDYNMsTFg" successor_AbstractAction="_JKtFMaVIEeSJhPDYNMsTFg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="0.3*2.67E+9"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_eTGk4KIfEeSI8vSe5jYNQg" entityName="LoadBalancer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_gfpU8KIfEeSI8vSe5jYNQg" entityName="Provided_ITripPlanner_LoadBalancer" providedInterface__OperationProvidedRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_h93mcKIfEeSI8vSe5jYNQg" entityName="AC_Server2" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_ir80cKIfEeSI8vSe5jYNQg" entityName="AC_Server1" requiredInterface__OperationRequiredRole="_Ficg8KIaEeSI8vSe5jYNQg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_H5y28KVIEeSJhPDYNMsTFg" describedService__SEFF="_krD6kKIhEeSI8vSe5jYNQg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_IMRHAKVIEeSJhPDYNMsTFg" entityName="start" successor_AbstractAction="_JLJC4KpSEeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_IMRHAaVIEeSJhPDYNMsTFg" entityName="stop" predecessor_AbstractAction="_JLJC4KpSEeSHPfe6rtAd3w"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_JLJC4KpSEeSHPfe6rtAd3w" entityName="balanceLoadProbabilistic" predecessor_AbstractAction="_IMRHAKVIEeSJhPDYNMsTFg" successor_AbstractAction="_IMRHAaVIEeSJhPDYNMsTFg">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_QbJs0KpSEeSHPfe6rtAd3w" entityName="delegateToServer1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_QbMwIKpSEeSHPfe6rtAd3w">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_QbNXMKpSEeSHPfe6rtAd3w" successor_AbstractAction="_xAfnUKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_QbN-QKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_xAfnUKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_xAfnUKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_QbNXMKpSEeSHPfe6rtAd3w" successor_AbstractAction="_QbN-QKpSEeSHPfe6rtAd3w" calledService_ExternalService="_krD6kKIhEeSI8vSe5jYNQg" role_ExternalService="_ir80cKIfEeSI8vSe5jYNQg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_TYSzYKpSEeSHPfe6rtAd3w" entityName="delegateToServer2">
+          <branchBehaviour_BranchTransition id="_TYTacKpSEeSHPfe6rtAd3w">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_TYTacapSEeSHPfe6rtAd3w" successor_AbstractAction="_03JIwKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_TYUBgKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_03JIwKpSEeSHPfe6rtAd3w"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_03JIwKpSEeSHPfe6rtAd3w" predecessor_AbstractAction="_TYTacapSEeSHPfe6rtAd3w" successor_AbstractAction="_TYUBgKpSEeSHPfe6rtAd3w" calledService_ExternalService="_krD6kKIhEeSI8vSe5jYNQg" role_ExternalService="_h93mcKIfEeSI8vSe5jYNQg"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_iWtocKIYEeSI8vSe5jYNQg" entityName="IRatingService">
+    <signatures__OperationInterface id="_ph3qwKIcEeSI8vSe5jYNQg" entityName="getRating"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_joMecKIYEeSI8vSe5jYNQg" entityName="IMapService">
+    <signatures__OperationInterface id="_nC34wKIcEeSI8vSe5jYNQg" entityName="getMap" returnType__OperationSignature="_8un-EKIdEeSI8vSe5jYNQg">
+      <parameters__OperationSignature parameterName="latitude">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="longitude">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+      <parameters__OperationSignature parameterName="radius">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_m-4GYKIYEeSI8vSe5jYNQg" entityName="IPointOfInterestService">
+    <signatures__OperationInterface id="_LST74KIcEeSI8vSe5jYNQg" entityName="getPoiList" returnType__OperationSignature="_vdzy0KIeEeSI8vSe5jYNQg">
+      <parameters__OperationSignature dataType__Parameter="_6iExgKIeEeSI8vSe5jYNQg" parameterName="currentPosition"/>
+      <parameters__OperationSignature parameterName="radius">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_pLVW4KIYEeSI8vSe5jYNQg" entityName="IPublicTransportService">
+    <signatures__OperationInterface id="_F3t7cKIcEeSI8vSe5jYNQg" entityName="getRoute">
+      <parameters__OperationSignature dataType__Parameter="_6iExgKIeEeSI8vSe5jYNQg" parameterName="fromPosition"/>
+      <parameters__OperationSignature dataType__Parameter="_6iExgKIeEeSI8vSe5jYNQg" parameterName="toPosition"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Ficg8KIaEeSI8vSe5jYNQg" entityName="ITripPlanner">
+    <signatures__OperationInterface id="_krD6kKIhEeSI8vSe5jYNQg" entityName="getTripPlan" returnType__OperationSignature="_rRrpQKIhEeSI8vSe5jYNQg">
+      <parameters__OperationSignature dataType__Parameter="_6iExgKIeEeSI8vSe5jYNQg" parameterName="position"/>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_8un-EKIdEeSI8vSe5jYNQg" entityName="Map">
+    <innerDeclaration_CompositeDataType entityName="mapVector">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType entityName="mapImage">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+    </innerDeclaration_CompositeDataType>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_kGFsoKIeEeSI8vSe5jYNQg" entityName="Poi">
+    <innerDeclaration_CompositeDataType entityName="name">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType entityName="latitude">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType entityName="longitude">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType entityName="openhours">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.1"/>
+    </innerDeclaration_CompositeDataType>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CollectionDataType" id="_vdzy0KIeEeSI8vSe5jYNQg" entityName="PoiList" innerType_CollectionDataType="_kGFsoKIeEeSI8vSe5jYNQg"/>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_6iExgKIeEeSI8vSe5jYNQg" entityName="position">
+    <innerDeclaration_CompositeDataType entityName="latitude">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+    </innerDeclaration_CompositeDataType>
+    <innerDeclaration_CompositeDataType entityName="longitude">
+      <datatype_InnerDeclaration xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+    </innerDeclaration_CompositeDataType>
+  </dataTypes__Repository>
+  <dataTypes__Repository xsi:type="repository:CompositeDataType" id="_rRrpQKIhEeSI8vSe5jYNQg" entityName="TripPlan">
+    <innerDeclaration_CompositeDataType entityName="poiList" datatype_InnerDeclaration="_vdzy0KIeEeSI8vSe5jYNQg"/>
+    <innerDeclaration_CompositeDataType entityName="map" datatype_InnerDeclaration="_8un-EKIdEeSI8vSe5jYNQg"/>
+  </dataTypes__Repository>
+</repository:Repository>

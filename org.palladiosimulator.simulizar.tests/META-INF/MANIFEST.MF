@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SimuLizar Tests
+Bundle-SymbolicName: org.palladiosimulator.simulizar.tests;singleton:=true
+Bundle-Version: 1.0.1.qualifier
+Bundle-Vendor: palladiosimulator.org
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: org.junit;bundle-version="4.11.0",
+ de.uka.ipd.sdq.simucomframework.simucomstatus;bundle-version="1.0.0",
+ org.palladiosimulator.analyzer.workflow;bundle-version="1.0.0",
+ de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.runtimemeasurement,
+ de.uka.ipd.sdq.simucomframework,
+ org.palladiosimulator.edp2.repository.local,
+ org.eclipse.emf.ecore,
+ org.palladiosimulator.pcm.resources;bundle-version="4.0.0",
+ de.desmoj;bundle-version="2.3.3",
+ org.palladiosimulator.metricspec.resources;bundle-version="1.0.0",
+ de.uka.ipd.sdq.simulation.abstractsimengine.desmoj;bundle-version="1.0.0",
+ org.palladiosimulator.recorderframework.edp2;bundle-version="2.0.2",
+ org.palladiosimulator.simulizar;bundle-version="2.0.4",
+ org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="1.0.0",
+ org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="0.1.0"

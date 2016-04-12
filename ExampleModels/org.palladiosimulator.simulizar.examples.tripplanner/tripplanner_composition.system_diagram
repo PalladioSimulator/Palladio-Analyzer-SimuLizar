@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" type="CompositeModel" name="tripplanner_composition.system_diagram" measurementUnit="Pixel">
+  <children xsi:type="notation:Shape" type="2002" fontName="Segoe UI">
+    <children xsi:type="notation:DecorationNode" type="5012"/>
+    <children xsi:type="notation:DecorationNode" type="7002">
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_gfpU8KIfEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_h93mcKIfEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_ir80cKIfEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_azV5sKjTEeSevOHdCiUaXQ"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="73" y="167"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_Md4CAKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_PST4gKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_P3OjcKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_RAn0cKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="172" y="-18"/>
+          </children>
+          <element href="tripplanner.repository#_RzIPcKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_gD7CgKjTEeSevOHdCiUaXQ"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="300" y="74"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_Md4CAKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="62" y="64"/>
+          </children>
+          <element href="tripplanner.repository#_PST4gKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_P3OjcKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="195" y="3"/>
+          </children>
+          <element href="tripplanner.repository#_RAn0cKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" x="159" y="-32"/>
+          </children>
+          <element href="tripplanner.repository#_RzIPcKIaEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_lYhIoKjTEeSevOHdCiUaXQ"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="327" y="313"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_x51ioKIZEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_nmUIsKpOEeSHPfe6rtAd3w"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="971" y="90"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_vTSXIKIZEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <children xsi:type="notation:Shape" type="3008" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5008">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_amEScKIfEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_pTT2AKpOEeSHPfe6rtAd3w"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="867" y="205"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_5fXJkKIZEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_rGDmAKpOEeSHPfe6rtAd3w"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="886" y="405"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_Zz8R8KIfEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_tgnj8KpOEeSHPfe6rtAd3w"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="1008" y="317"/>
+      </children>
+      <children xsi:type="notation:Shape" type="3006" fontName="Segoe UI">
+        <children xsi:type="notation:DecorationNode" type="5009"/>
+        <children xsi:type="notation:Shape" type="3007" fontName="Segoe UI">
+          <children xsi:type="notation:DecorationNode" type="5007">
+            <layoutConstraint xsi:type="notation:Location" y="5"/>
+          </children>
+          <element href="tripplanner.repository#_y2QHkKIZEeSI8vSe5jYNQg"/>
+          <layoutConstraint xsi:type="notation:Bounds"/>
+        </children>
+        <element href="tripplanner_composition.system#_6-BkQKpOEeSHPfe6rtAd3w"/>
+        <layoutConstraint xsi:type="notation:Bounds" x="625" y="525"/>
+      </children>
+    </children>
+    <children xsi:type="notation:Shape" type="3011" fontName="Segoe UI">
+      <children xsi:type="notation:DecorationNode" type="5013">
+        <layoutConstraint xsi:type="notation:Location" y="5"/>
+      </children>
+      <element href="tripplanner_composition.system#_XoGFsKjTEeSevOHdCiUaXQ"/>
+      <layoutConstraint xsi:type="notation:Bounds"/>
+    </children>
+    <element href="tripplanner_composition.system#_V5MT4KjTEeSevOHdCiUaXQ"/>
+    <layoutConstraint xsi:type="notation:Bounds" x="130" y="10" width="1311" height="681"/>
+  </children>
+  <styles xsi:type="notation:DiagramStyle"/>
+  <element href="tripplanner_composition.system#_V5MT4KjTEeSevOHdCiUaXQ"/>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.0/@children.3" target="//@children.0/@children.1/@children.1/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_ko6QoKjTEeSevOHdCiUaXQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -52, 55]$[59, -56, 0, -1]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.8666666666666667,0.5)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.0/@children.2" target="//@children.0/@children.1/@children.2/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_m73xwKjTEeSevOHdCiUaXQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -79, -146]$[80, 138, -6, -8]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.8666666666666667,0.43333333333333335)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4006" source="//@children.0/@children.2" target="//@children.0/@children.1/@children.0/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_nxRIsKjTEeSevOHdCiUaXQ"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[30, 0, -53, 14]$[78, -15, -5, -1]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.15,0.45)"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.16666666666666666,0.4666666666666667)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.4/@children.2" target="//@children.0/@children.1/@children.6/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_wdOfAKpOEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, 42, -111]$[-42, 110, -7, -1]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.7666666666666667,0.5)"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.23333333333333334,0.4666666666666667)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.3" target="//@children.0/@children.1/@children.5/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_x1CmgKpOEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -384, -130]$[388, 135, -3, 5]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.8,0.4)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.4" target="//@children.0/@children.1/@children.4/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_1FaLEKpOEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -402, 31]$[401, -39, -1, 0]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.2" target="//@children.0/@children.1/@children.3/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_6AioUKpOEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -458, 225]$[461, -226, -4, -1]"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.13333333333333333,0.43333333333333335)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.2/@children.5" target="//@children.0/@children.1/@children.7/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_9R8HoKpOEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -190, -286]$[183, 275, -7, -3]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.5333333333333333,0.13333333333333333)"/>
+    <targetAnchor xsi:type="notation:IdentityAnchor" id="(0.23333333333333334,0.4)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.5" target="//@children.0/@children.1/@children.7/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_AVDTUKpPEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -225, -528]$[223, 522, -2, 2]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.4,0.2)"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.4" target="//@children.0/@children.1/@children.4/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_B5gIoKpPEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[0, -8, -429, -208]$[423, 206, -6, 6]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.3" target="//@children.0/@children.1/@children.5/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_EDi-UKpPEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -411, -369]$[415, 373, -3, 4]"/>
+  </edges>
+  <edges xsi:type="notation:Connector" type="4004" source="//@children.0/@children.1/@children.1/@children.2" target="//@children.0/@children.1/@children.3/@children.1">
+    <styles xsi:type="notation:FontStyle" fontName="Segoe UI"/>
+    <element href="tripplanner_composition.system#_FvuMQKpPEeSHPfe6rtAd3w"/>
+    <bendpoints xsi:type="notation:RelativeBendpoints" points="[7, 0, -496, -16]$[500, 20, -3, 4]"/>
+    <sourceAnchor xsi:type="notation:IdentityAnchor" id="(0.8666666666666667,0.5333333333333333)"/>
+  </edges>
+</notation:Diagram>
