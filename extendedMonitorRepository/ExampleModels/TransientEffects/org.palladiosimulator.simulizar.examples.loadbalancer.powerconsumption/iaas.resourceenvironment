@@ -15,7 +15,7 @@
     </activeResourceSpecifications_ResourceContainer>
   </resourceContainer_ResourceEnvironment>
   <resourceContainer_ResourceEnvironment id="_yaTfsAEpEeS7FKokKTKFow" entityName="ServerNode1">
-    <activeResourceSpecifications_ResourceContainer id="_GAVEEAEqEeS7FKokKTKFow">
+    <activeResourceSpecifications_ResourceContainer id="_GAVEEAEqEeS7FKokKTKFow" numberOfReplicas="4">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
       <processingRate_ProcessingResourceSpecification specification="1000"/>
@@ -27,7 +27,7 @@
     </activeResourceSpecifications_ResourceContainer>
   </resourceContainer_ResourceEnvironment>
   <resourceContainer_ResourceEnvironment id="_3uVlIAEpEeS7FKokKTKFow" entityName="ServerNode2">
-    <activeResourceSpecifications_ResourceContainer id="_JPnqkAEqEeS7FKokKTKFow">
+    <activeResourceSpecifications_ResourceContainer id="_JPnqkAEqEeS7FKokKTKFow" numberOfReplicas="2">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
       <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
       <processingRate_ProcessingResourceSpecification specification="1000"/>
