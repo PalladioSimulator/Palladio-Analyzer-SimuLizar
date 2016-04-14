@@ -16,6 +16,7 @@ modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Pa
 modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
 modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype ACTION_PARAM uses 'http://simulizar.palladiosimulator.org/Actions/Parameter/1.1';
+modeltype ACTION_CONTEXT uses 'http://simulizar.palladiosimulator.org/Actions/Context/1.1';
 modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
 modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
@@ -112,7 +113,9 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 						variableCharacterisation_VariableUsage := object VariableCharacterisation {
 							type := VariableCharacterisationType::VALUE;
 							specification_VariableCharacterisation := object PCMRandomVariable {
-								specification := '100'; -- trivially, pass a constant value
+
+								specification := '10000'; -- trivially, pass a constant value
+	
 							};
 						};
 						namedReference__VariableUsage := object VariableReference {
@@ -124,7 +127,8 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 				var variableUsages := object ControllerCallInputVariableUsageCollection {
 					controllerCallInputVariableUsages += inputVariableUsage;
 				};				
-				vmMigrate.execute(roleSet, variableUsages);
+				var context := object ExecutionContext {}; 
+				var res := vmMigrate.execute(roleSet, variableUsages);
 				log('Migration executed');
 			}
 		};
