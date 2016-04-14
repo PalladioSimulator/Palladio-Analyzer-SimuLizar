@@ -4,11 +4,11 @@ import java.util.Optional;
 
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation.Kind;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 public class SimulationStateLibrary {
 
-    private static Optional<SimuLizarRuntimeStateAbstract> state = Optional.empty();
+    private static Optional<AbstractSimuLizarRuntimeState> state = Optional.empty();
 
     public SimulationStateLibrary() {
     }
@@ -26,7 +26,7 @@ public class SimulationStateLibrary {
                 () -> new RuntimeException("Could not query simulation time. Maybe runtime state has not been set!"));
     }
 
-    static void injectRuntimeStateModel(SimuLizarRuntimeStateAbstract state) {
+    static void injectRuntimeStateModel(AbstractSimuLizarRuntimeState state) {
         SimulationStateLibrary.state = Optional.ofNullable(state);
     }
 }
