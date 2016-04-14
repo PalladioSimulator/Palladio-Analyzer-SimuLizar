@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
@@ -55,7 +55,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      * @see org.palladiosimulator.simulizar.syncer.IModelObserver#initializeSyncer()
      */
     @Override
-    public void initialize(final SimuLizarRuntimeStateAbstract runtimeState) {
+    public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
         super.initialize(runtimeState);
 
         this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();

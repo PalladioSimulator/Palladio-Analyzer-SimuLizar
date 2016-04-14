@@ -54,7 +54,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
  * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
-public abstract class SimuLizarRuntimeStateAbstract {
+public abstract class AbstractSimuLizarRuntimeState {
 
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
@@ -75,7 +75,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeStateAbstract(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
+    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
             final SimulationCancelationDelegate cancelationDelegate) {
         super();
         this.modelAccess = modelAccess;
@@ -216,8 +216,8 @@ public abstract class SimuLizarRuntimeStateAbstract {
                     });
 
                     if (numberOfResourceCalculatorsProbes != null
-                            && SimuLizarRuntimeStateAbstract.this.numberOfContainers != getNumberOfResourceContainers()) {
-                    	SimuLizarRuntimeStateAbstract.this.numberOfContainers = getNumberOfResourceContainers();
+                            && AbstractSimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
+                    	AbstractSimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
                         numberOfResourceCalculatorsProbes.takeMeasurement();
                     }
                 }
@@ -297,7 +297,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
 
             @Override
             public boolean check() {
-                return SimuLizarRuntimeStateAbstract.this.cancelationDelegate.isCanceled();
+                return AbstractSimuLizarRuntimeState.this.cancelationDelegate.isCanceled();
             }
         });
     }

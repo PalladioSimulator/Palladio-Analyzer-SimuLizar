@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.scaledl.usageevolution.Usage;
 
 public class UsageEvolverFacade {
@@ -11,9 +11,9 @@ public class UsageEvolverFacade {
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;
     
     /** Runtime state of the simulation. Required to start evolution(s). */
-    private final SimuLizarRuntimeStateAbstract runtimeState;
+    private final AbstractSimuLizarRuntimeState runtimeState;
 
-    public UsageEvolverFacade(final SimuLizarRuntimeStateAbstract runtimeState) {
+    public UsageEvolverFacade(final AbstractSimuLizarRuntimeState runtimeState) {
         this.runtimeState = runtimeState;
         this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
     }

@@ -22,7 +22,7 @@ import de.uka.ipd.sdq.simucomframework.SimuComConfig;
  */
 public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
-    private ProbeFrameworkListenerAbstract probeFrameworkListener;
+    private AbstractProbeFrameworkListener probeFrameworkListener;
 
     /**
      * Injects the probe framework listener that is decorated by this class.
@@ -30,7 +30,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      * @param probeFrameworkListener
      *            The {@link ProbeFrameworkListener} used during the current simulation run.
      */
-    public void setProbeFrameworkListener(final ProbeFrameworkListenerAbstract probeFrameworkListener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         this.probeFrameworkListener = probeFrameworkListener;
     }
 
@@ -49,10 +49,10 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     /**
      * Gets the current {@link ProbeFrameworkListener} instance.
      *
-     * @return The current {@link ProbeFrameworkListenerAbstract} that has been passed to this instance via
-     *         {@link #setProbeFrameworkListener(ProbeFrameworkListenerAbstract)}.
+     * @return The current {@link AbstractProbeFrameworkListener} that has been passed to this instance via
+     *         {@link #setProbeFrameworkListener(AbstractProbeFrameworkListener)}.
      */
-    protected ProbeFrameworkListenerAbstract getProbeFrameworkListener() {
+    protected AbstractProbeFrameworkListener getProbeFrameworkListener() {
         return this.probeFrameworkListener;
     }
 

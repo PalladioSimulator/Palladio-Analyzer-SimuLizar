@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.Workload;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -31,7 +31,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
     static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredUsageEvolver.class);
 
-    protected SimuLizarRuntimeStateAbstract rtState;
+    protected AbstractSimuLizarRuntimeState rtState;
     protected final String evolvedScenarioId;
     protected final double deltaTime;
 
@@ -51,7 +51,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      * @param evolvedScenario
      *            The evolved scenario.
      */
-    public PeriodicallyTriggeredUsageEvolver(final SimuLizarRuntimeStateAbstract rtState, final double firstOccurrence,
+    public PeriodicallyTriggeredUsageEvolver(final AbstractSimuLizarRuntimeState rtState, final double firstOccurrence,
             final double delay, final UsageScenario evolvedScenario) {
         super(rtState.getModel(), firstOccurrence, delay);
         this.deltaTime = delay;

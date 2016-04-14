@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.modelobserver;
 import java.util.Objects;
 
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 public abstract class AbstractUsageModelObserver extends AbstractModelObserver<UsageModel> {
 
@@ -12,7 +12,7 @@ public abstract class AbstractUsageModelObserver extends AbstractModelObserver<U
     }
 
     @Override
-    public void initialize(final SimuLizarRuntimeStateAbstract runtimeState) {
+    public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
         super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getUsageModel(),
                 Objects.requireNonNull(runtimeState));
     }

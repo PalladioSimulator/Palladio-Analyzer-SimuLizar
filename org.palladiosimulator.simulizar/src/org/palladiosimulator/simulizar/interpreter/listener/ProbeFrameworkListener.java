@@ -14,7 +14,7 @@ import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfiguratio
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 
-public class ProbeFrameworkListener extends ProbeFrameworkListenerAbstract {
+public class ProbeFrameworkListener extends AbstractProbeFrameworkListener {
 
 	private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
 	

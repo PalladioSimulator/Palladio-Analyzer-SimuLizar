@@ -46,9 +46,9 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  *
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal
  */
-public abstract class ProbeFrameworkListenerAbstract extends AbstractInterpreterListener {
+public abstract class AbstractProbeFrameworkListener extends AbstractInterpreterListener {
 
-    private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListenerAbstract.class);
+    private static final Logger LOGGER = Logger.getLogger(AbstractProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
@@ -65,7 +65,7 @@ public abstract class ProbeFrameworkListenerAbstract extends AbstractInterpreter
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public ProbeFrameworkListenerAbstract(final IModelAccess modelAccess, final SimuComModel simuComModel,
+    public AbstractProbeFrameworkListener(final IModelAccess modelAccess, final SimuComModel simuComModel,
             final Reconfigurator reconfigurator) {
         super();
         this.modelAccess = modelAccess;
