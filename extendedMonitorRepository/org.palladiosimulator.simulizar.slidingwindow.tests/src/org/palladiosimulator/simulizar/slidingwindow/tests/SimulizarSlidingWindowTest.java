@@ -9,7 +9,9 @@ import javax.measure.unit.SI;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 import org.palladiosimulator.experimentanalysis.tests.SlidingWindowTest;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.tests.utils.SimuComModelMock;
@@ -20,12 +22,15 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
 
     private SimuComModel model = null;
 
+    @Rule
+    public TemporaryFolder tempFolder = new TemporaryFolder();
+
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        this.model = SimuComModelMock.obtainMockModel();
+        this.model = SimuComModelMock.obtainMockModel(this.tempFolder);
         this.slidingWindowUnderTest = new SimulizarSlidingWindow(windowLength, increment, windowMetricDescription,
                 dummyStrategy, this.model);
     }
@@ -55,8 +60,8 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCtorIllegalWindowLengthDefinedNegativeValue() {
-        new SimulizarSlidingWindow(Measure.valueOf(-10d, SI.SECOND), increment, windowMetricDescription,
-                dummyStrategy, this.model);
+        new SimulizarSlidingWindow(Measure.valueOf(-10d, SI.SECOND), increment, windowMetricDescription, dummyStrategy,
+                this.model);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -95,8 +100,8 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
         // sim time is Double.MAX_VALUE now according to mocked model
         this.model.getSimulationControl().setMaxSimTime(5); // window is longer than simulation now
         // hence, check if upper bound has been adjusted
-        Measure<Double, Duration> expected = Measure.valueOf(this.model.getSimulationControl()
-                .getCurrentSimulationTime(), SI.SECOND);
+        Measure<Double, Duration> expected = Measure
+                .valueOf(this.model.getSimulationControl().getCurrentSimulationTime(), SI.SECOND);
         assertEquals(expected, this.slidingWindowUnderTest.getCurrentUpperBound());
     }
 
@@ -108,8 +113,8 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
         this.model.getSimulationControl().setMaxSimTime(5); // window is longer than simulation now
         // thus, check if length has been adjusted
         assertTrue(this.slidingWindowUnderTest.getEffectiveWindowLength().compareTo(this.windowLength) < 0);
-        assertEquals(this.model.getSimulationControl().getCurrentSimulationTime(), this.slidingWindowUnderTest
-                .getEffectiveWindowLength().getValue(), Double.MIN_NORMAL);
+        assertEquals(this.model.getSimulationControl().getCurrentSimulationTime(),
+                this.slidingWindowUnderTest.getEffectiveWindowLength().getValue(), Double.MIN_NORMAL);
     }
 
     @Override
@@ -117,16 +122,17 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
     public void testMoveOn() {
         super.testMoveOn();
         // mock periodic window full/move on event controlled by model
-        ((SimuComModelMock) this.model)
-                .triggerMockWindowMoveOn((SimulizarSlidingWindow) this.slidingWindowUnderTest);
+        ((SimuComModelMock) this.model).triggerMockWindowMoveOn((SimulizarSlidingWindow) this.slidingWindowUnderTest);
         // assert that the window bounds have been adjusted (moved forward) correctly
-        Measure<Double, Duration> expectedNewUpperBound = Measure.valueOf(this.currentLowerBound.getValue()
-                + this.increment.getValue() + this.windowLength.getValue(), SI.SECOND);
+        Measure<Double, Duration> expectedNewUpperBound = Measure.valueOf(
+                this.currentLowerBound.getValue() + this.increment.getValue() + this.windowLength.getValue(),
+                SI.SECOND);
         assertEquals(expectedNewUpperBound, this.slidingWindowUnderTest.getCurrentUpperBound());
 
         // test with different units
         SimulizarSlidingWindow window = new SimulizarSlidingWindow(Measure.valueOf(1d, SI.SECOND),
-                Measure.valueOf(500d, SI.MILLI(SI.SECOND)), measurementsMetricDescription, this.dummyStrategy, this.model);
+                Measure.valueOf(500d, SI.MILLI(SI.SECOND)), measurementsMetricDescription, this.dummyStrategy,
+                this.model);
         ((SimuComModelMock) this.model).triggerMockWindowMoveOn(window);
         expectedNewUpperBound = Measure.valueOf(1.5d, SI.SECOND);
         assertEquals(expectedNewUpperBound, window.getCurrentUpperBound());

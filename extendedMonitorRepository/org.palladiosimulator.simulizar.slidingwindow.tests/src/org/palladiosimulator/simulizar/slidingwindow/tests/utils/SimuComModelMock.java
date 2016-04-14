@@ -1,11 +1,12 @@
 package org.palladiosimulator.simulizar.slidingwindow.tests.utils;
 
-import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.rules.TemporaryFolder;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
@@ -24,12 +25,11 @@ public class SimuComModelMock extends SimuComModel {
 
     private static Repository repo = null;
     private static String repoId = null;
-    private static File repoFile = new File("testRepo");
 
     private static SimuComModelMock instance = null;
 
-    private static void createRepository() {
-        repo = LocalDirectoryRepositoryHelper.initializeLocalDirectoryRepository(repoFile);
+    private static void createRepository(TemporaryFolder repoFolder) throws IOException {
+        repo = LocalDirectoryRepositoryHelper.initializeLocalDirectoryRepository(repoFolder.newFolder("testRepo"));
         repoId = repo.getId();
         RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), repo);
     }
@@ -38,14 +38,6 @@ public class SimuComModelMock extends SimuComModel {
         RepositoryManager.removeRepository(RepositoryManager.getCentralRepository(), repo);
         repo = null;
         repoId = null;
-        if (repoFile.canRead() && repoFile.canWrite()) {
-            if (repoFile.isDirectory()) {
-                for (final File f : repoFile.listFiles()) {
-                    f.delete();
-                }
-            }
-            repoFile.delete();
-        }
     }
 
     private static Map<String, Object> createMockedConfiguration() {
@@ -74,9 +66,9 @@ public class SimuComModelMock extends SimuComModel {
         new MockWindowMoveOnTriggeredEvent(this, window).triggerInternal();
     }
 
-    public static SimuComModel obtainMockModel() {
+    public static SimuComModel obtainMockModel(TemporaryFolder repoFolder) throws IOException {
         if (instance == null) {
-            createRepository();
+            createRepository(repoFolder);
             instance = new SimuComModelMock();
         }
         return instance;
