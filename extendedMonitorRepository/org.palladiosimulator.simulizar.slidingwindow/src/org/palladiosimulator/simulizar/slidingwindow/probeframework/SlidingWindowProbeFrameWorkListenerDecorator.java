@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.experimentanalysis.FlushWindowStrategy;
@@ -14,13 +15,16 @@ import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggr
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
+import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
+import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 
@@ -30,10 +34,26 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
 
     private static final EClass TIME_DRIVEN_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.TIME_DRIVEN_AGGREGATION;
 
+    private RegisterCalculatorFactoryDecorator calculatorFactory = null;
+    private SimuComModel model;
+    private RuntimeMeasurementModel runtimeMeasurementModel;
+    private RetrieveCalculatorSwitch retrieveCalculatorSwitch;
+    private ISlidingWindowMoveOnStrategy moveOnStrategy = null;
+
     @Override
     public void registerMeasurements() {
         super.registerMeasurements();
         initSlidingWindowBasedMeasurements();
+    }
+
+    @Override
+    public void setProbeFrameworkListener(ProbeFrameworkListener listener) {
+        super.setProbeFrameworkListener(listener);
+        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
+                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.model = getProbeFrameworkListener().getSimuComModel();
+        this.runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
+        this.retrieveCalculatorSwitch = new RetrieveCalculatorSwitch();
     }
 
     private void initSlidingWindowBasedMeasurements() {
@@ -47,39 +67,24 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
 
     private void initTimeDrivenAggregators(Collection<MeasurementSpecification> measurementSpecs) {
         if (!measurementSpecs.isEmpty()) {
-            RegisterCalculatorFactoryDecorator calcFactory = RegisterCalculatorFactoryDecorator.class
-                    .cast(getProbeFrameworkListener().getCalculatorFactory());
-            ISlidingWindowMoveOnStrategy strategy = new FlushWindowStrategy();
-            SimuComModel model = getProbeFrameworkListener().getSimuComModel();
-            measurementSpecs.forEach(m -> initAggregatorForMeasSpec(m, calcFactory, strategy, model));
+            this.moveOnStrategy = new FlushWindowStrategy();
+            measurementSpecs.forEach(m -> initAggregatorForMeasSpec(m));
         }
     }
 
-    private void initAggregatorForMeasSpec(MeasurementSpecification measurementSpec,
-            RegisterCalculatorFactoryDecorator calcFactory, ISlidingWindowMoveOnStrategy strategy, SimuComModel model) {
+    private void initAggregatorForMeasSpec(MeasurementSpecification measurementSpec) {
 
-        MeasuringPoint mp = measurementSpec.getMonitor().getMeasuringPoint();
+        MeasuringPoint measuringPoint = measurementSpec.getMonitor().getMeasuringPoint();
         MetricDescription expectedMetric = measurementSpec.getMetricDescription();
-        Optional<Calculator> calculator;
-        BaseMetricDescription[] subsumedBaseMetrics = MetricDescriptionUtility.toBaseMetricDescriptions(expectedMetric);
-        if (subsumedBaseMetrics.length == 1) {
-            // check for the base metric manually
-            calculator = calcFactory.getCalculatorsForMeasuringPoint(mp).stream()
-                    .filter(calc -> MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
-                            subsumedBaseMetrics[0], calc.getMetricDesciption()))
-                    .findAny();
-        } else {
-            // use convenience method that matches complete tuple metrics
-            calculator = Optional.ofNullable(calcFactory.getCalculatorByMeasuringPointAndMetricDescription(mp,
-                    measurementSpec.getMetricDescription()));
-        }
+        Optional<Calculator> calculator = this.retrieveCalculatorSwitch.retrieveCalculator(measuringPoint,
+                expectedMetric);
 
         if (!calculator.isPresent()) {
             throw new IllegalStateException(
                     "Time driven aggregation of measurements (sliding window based) cannot be initialized.\n" + "No '"
                             + measurementSpec.getMetricDescription().getName() + "' calculator available for: "
-                            + "MeasuringPoint '" + mp.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
-                            + measurementSpec.getMonitor().getEntityName() + "'\n"
+                            + "MeasuringPoint '" + measuringPoint.getStringRepresentation() + "'.\n"
+                            + "Affected Monitor: '" + measurementSpec.getMonitor().getEntityName() + "'\n"
                             + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!");
         }
 
@@ -87,16 +92,43 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         WindowCharacterization windowCharacterization = aggregation.getWindowCharacterization();
 
         SlidingWindow window = new SimulizarSlidingWindow(windowCharacterization.getWindowLengthAsMeasure(),
-                windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, strategy, model);
-
-        SlidingWindowRuntimeMeasurementsRecorder runtimeMeasurementsRecorder = new SlidingWindowRuntimeMeasurementsRecorder(
-                getProbeFrameworkListener().getRuntimeMeasurementModel(), measurementSpec,
-                measurementSpec.getMonitor().getMeasuringPoint());
+                windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, this.moveOnStrategy, this.model);
 
         StatisticalCharacterizationAggregator aggregator = aggregation.getStatisticalCharacterization()
                 .getAggregator((NumericalBaseMetricDescription) expectedMetric);
-        aggregator.addRecorder(runtimeMeasurementsRecorder);
+        aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.runtimeMeasurementModel,
+                measurementSpec, measuringPoint));
 
-        registerMeasurementsRecorder(calculator.get(), new SlidingWindowRecorder(window, aggregator));
+        super.registerMeasurementsRecorder(calculator.get(), new SlidingWindowRecorder(window, aggregator));
+    }
+
+    private class RetrieveCalculatorSwitch extends MetricSpecSwitch<Optional<Calculator>> {
+
+        private MeasuringPoint currentMeasuringPoint;
+
+        @Override
+        public Optional<Calculator> caseMetricDescription(MetricDescription metricDescription) {
+            return Optional.ofNullable(SlidingWindowProbeFrameWorkListenerDecorator.this.calculatorFactory
+                    .getCalculatorByMeasuringPointAndMetricDescription(this.currentMeasuringPoint, metricDescription));
+        }
+
+        @Override
+        public Optional<Calculator> caseBaseMetricDescription(BaseMetricDescription baseMetricDescription) {
+            return SlidingWindowProbeFrameWorkListenerDecorator.this.calculatorFactory
+                    .getCalculatorsForMeasuringPoint(this.currentMeasuringPoint).stream()
+                    .filter(calc -> MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
+                            baseMetricDescription, calc.getMetricDesciption()))
+                    .findAny();
+        }
+
+        @Override
+        public Optional<Calculator> defaultCase(EObject eObject) {
+            return Optional.empty();
+        }
+
+        private Optional<Calculator> retrieveCalculator(MeasuringPoint mp, MetricDescription expectedMetric) {
+            this.currentMeasuringPoint = mp;
+            return this.doSwitch(expectedMetric);
+        }
     }
 }
