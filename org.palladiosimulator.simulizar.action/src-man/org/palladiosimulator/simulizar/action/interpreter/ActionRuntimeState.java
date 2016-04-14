@@ -11,10 +11,10 @@ import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVaria
 import org.palladiosimulator.simulizar.action.parameter.ParameterFactory;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 public class ActionRuntimeState implements IRuntimeStateAccessor {
-    private static SimuLizarRuntimeStateAbstract state;
+    private static AbstractSimuLizarRuntimeState state;
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE
             .createControllerCallInputVariableUsageCollection();
@@ -48,7 +48,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      *             In case the given instance is {@code null}.
      */
     @Override
-    public void setRuntimeStateModel(SimuLizarRuntimeStateAbstract passedState) {
+    public void setRuntimeStateModel(AbstractSimuLizarRuntimeState passedState) {
         ActionRuntimeState.state = Objects.requireNonNull(passedState);
     }
 
@@ -61,7 +61,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      */
     public static class TransientEffectInterpreterBuilder {
 
-        private final SimuLizarRuntimeStateAbstract state = ActionRuntimeState.state;
+        private final AbstractSimuLizarRuntimeState state = ActionRuntimeState.state;
         private final RoleSet roleSet;
         private final AdaptationBehaviorRepository repository;
 
