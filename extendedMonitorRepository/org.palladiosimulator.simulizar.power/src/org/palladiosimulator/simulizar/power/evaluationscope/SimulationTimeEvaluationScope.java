@@ -4,7 +4,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.ListIterator;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.measure.Measure;
@@ -76,13 +79,11 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      *            This {@link Measure} indicates the increment by what the underlying sliding window
      *            is moved on, given in any arbitrary {@link Duration}.
      * @return A valid {@link SimulationTimeEvaluationScope} instance with the given properties.
+     * @throws NullPointerException
+     *             If {@code entityUnderMeasurement} or {@code model} are {@code null}.
      * @throws IllegalArgumentException
-     *             In one of the following cases:
-     *             <ul>
-     *             <li>{@code windowLength} or {@code windowIncrement} are {@code null} or denote a
-     *             negative duration</li>
-     *             <li>{@code entityUnderMeasurement} or {@code model} are {@code null}</li>
-     *             </ul>
+     *             In case {@code windowLength} or {@code windowIncrement} are {@code null} or
+     *             denote a negative duration.
      * @throws IllegalStateException
      *             This exception is thrown, if any of the {@link ProcessingResourceSpecification}s
      *             subsumed by the given {@code entityUnderMeasurement} is not associated with
@@ -107,28 +108,20 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @param model
      *            A reference indicating the {@link SimuComModel} that is used for the current
      *            simulation run.
-     * @throws IllegalArgumentException
-     *             If either of the arguments is {@code null}, an {@link IllegalArgumentException}
-     *             is thrown.
+     * @throws NullPointerException
+     *             If either of the arguments is {@code null}, an {@link NullPointerException} is
+     *             thrown.
      * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
      * @see #initialize(Measure, Measure)
      */
     protected SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
-        if (entityUnderMeasurement == null) {
-            throw new IllegalArgumentException("Given PowerProvidingEntity must not be null.");
-        }
-        if (model == null) {
-            throw new IllegalArgumentException("Given SimuComModel must not be null.");
-        }
-        this.simModel = model;
-        this.processingResourceSpecs = InterpreterUtils
-                .getProcessingResourceSpecsFromInfrastructureElement(entityUnderMeasurement);
+        this.simModel = Objects.requireNonNull(model, "Given SimuComModel must not be null.");
+        this.processingResourceSpecs = InterpreterUtils.getProcessingResourceSpecsFromInfrastructureElement(
+                Objects.requireNonNull(entityUnderMeasurement, "Given PowerProvidingEntity must not be null."));
         this.collector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
 
-        for (ProcessingResourceSpecification spec : this.processingResourceSpecs) {
-            IDataStream<MeasuringValue> stream = new SingletonDataStream();
-            this.resourceMeasurements.put(spec, Collections.singleton(stream));
-        }
+        this.processingResourceSpecs
+                .forEach(spec -> this.resourceMeasurements.put(spec, Collections.singleton(new SingletonDataStream())));
     }
 
     /**
@@ -169,7 +162,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             SlidingWindow slidingWindow = new SimulizarSlidingWindow(windowLength, windowIncrement,
                     RESOURCE_STATE_METRIC, moveOnStrategy, this.simModel);
             SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
-                    new SlidingWindowUtilizationAggregator(new ScopeRecorder(proc)));
+                    new SlidingWindowUtilizationAggregator(RESOURCE_STATE_METRIC, new ScopeRecorder(proc)));
 
             resourceStateCalculator.addObserver(windowRecorder);
         }
@@ -217,9 +210,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * {@link #removeListener(ISimulationEvaluationScopeListener)} once per attached listener.
      */
     public void removeAllListeners() {
-        for (ISimulationEvaluationScopeListener listener : this.collector.getObservers()) {
-            removeListener(listener);
-        }
+        this.collector.getObservers().forEach(this::removeListener);
     }
 
     /**
@@ -239,26 +230,23 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      *
      */
     private static final class SingletonDataStream implements IDataStream<MeasuringValue> {
-        private MeasuringValue innerElement;
+        private Optional<MeasuringValue> innerElement;
         private boolean isClosed;
 
-        private static final Iterator<MeasuringValue> EMPTY_ITERATOR = Collections.emptyIterator();
+        private static final ListIterator<MeasuringValue> EMPTY_ITERATOR = Collections.emptyListIterator();
 
         /**
          * Initializes a new instance of the class.
          */
         private SingletonDataStream() {
             this.isClosed = false;
-            this.innerElement = null;
+            this.innerElement = Optional.empty();
         }
 
         @Override
         public Iterator<MeasuringValue> iterator() {
             throwExceptionIfClosed();
-            if (this.innerElement == null) {
-                return EMPTY_ITERATOR;
-            }
-            return IteratorUtils.singletonListIterator(this.innerElement);
+            return this.innerElement.map(IteratorUtils::singletonListIterator).orElse(EMPTY_ITERATOR);
         }
 
         @Override
@@ -281,10 +269,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         @Override
         public int size() {
             throwExceptionIfClosed();
-            if (this.innerElement == null) {
-                return 0;
-            }
-            return 1;
+            return this.innerElement.map(el -> 1).orElse(0);
         }
 
         /**
@@ -297,7 +282,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
             assert m != null;
 
             throwExceptionIfClosed();
-            this.innerElement = m;
+            this.innerElement = Optional.of(m);
         }
 
         /**
@@ -377,11 +362,9 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
         @Override
         public void writeData(MeasuringValue measurement) {
-            if (measurement == null) {
-                throw new IllegalStateException("Somehow 'null' measurement was passed to recorder.");
-            }
             // we receive a new utilization measurement now
-            if (measurement.isCompatibleWith(UTILIZATION_METRIC)) {
+            if (Objects.requireNonNull(measurement, "Somehow 'null' measurement was passed to recorder.")
+                    .isCompatibleWith(UTILIZATION_METRIC)) {
                 SimulationTimeEvaluationScope.this.collector.addUtilizationMeasurementForProcessingResource(spec,
                         measurement);
             }
