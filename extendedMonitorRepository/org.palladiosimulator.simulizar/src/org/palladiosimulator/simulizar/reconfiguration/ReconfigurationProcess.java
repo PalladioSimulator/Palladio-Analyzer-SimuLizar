@@ -6,11 +6,14 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.BasicEList;
+import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -27,12 +30,13 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 public class ReconfigurationProcess extends SimuComSimProcess {
 
     private EObject monitoredElement;
-    private final Iterable<IReconfigurator> reconfigurators;
+    private final Iterable<IReconfigurationEngine> reconfigurators;
     private final ISimulationControl simControl;
     private final List<Notification> currentReconfigNotifications;
     private final Reconfigurator reconfigurator;
     // volatile is sufficient as flag is only set once
     private volatile boolean terminationRequested = false;
+    private final EList<ModelTransformation<? extends Object>> transformations;
 
     /**
      * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -46,13 +50,17 @@ public class ReconfigurationProcess extends SimuComSimProcess {
      * @throws NullPointerException
      *             In case any of the given parameters is {@code null}.
      */
-    protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurator> reconfigurators,
+    protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurationEngine> reconfigurators,
             final Reconfigurator reconfigurator) {
         super(model, "Reconfiguration Process");
         this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
         this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
         this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
         this.currentReconfigNotifications = new ArrayList<>();
+        this.transformations = new BasicEList<ModelTransformation<? extends Object>>();
+        reconfigurator.getReconfigurationLoaders().forEach(l -> {
+            this.transformations.addAll(l.getTransformations());
+        });
     }
 
     /**
@@ -149,11 +157,11 @@ public class ReconfigurationProcess extends SimuComSimProcess {
         this.scheduleAt(0);
     }
 
-    private Consumer<IReconfigurator> doReconfiguration(double currentSimulationTime, EObject monitoredElement) {
+    private Consumer<IReconfigurationEngine> doReconfiguration(double currentSimulationTime, EObject monitoredElement) {
         return r -> {
             BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(currentSimulationTime);
             ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-            boolean reconfigResult = r.checkAndExecute(monitoredElement);
+            final boolean reconfigResult = r.runCheck(transformations, monitoredElement);
             EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
                     EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
             ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);

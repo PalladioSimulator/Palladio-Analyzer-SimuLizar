@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
 
 import tools.descartes.dlim.generator.ModelEvaluator;
 
@@ -31,8 +31,8 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The scenario evolved by <code>this</code>.
      */
-    public StretchedUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
-            final UsageScenario evolvedScenario) {
+    public StretchedUsageEvolver(final SimuLizarRuntimeStateAbstract rtState, final double firstOccurrence,
+            final double delay, final UsageScenario evolvedScenario) {
         super(rtState, firstOccurrence, delay, evolvedScenario);
         this.timeFactor = this.getModel().getConfiguration().getSimuTime() / this.getDLIMFinalDuration();
     }
