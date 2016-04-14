@@ -191,7 +191,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
             registerMeasurementsRecorder(calc, createSlidingWindowRecorder(windowCharacterization, aggregator));
             // forward utilization measurements to RuntimeMeasurementModel (the
             // former PRM)
-            utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
+            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
                     utilizationMeasurementSpec, calc.getMeasuringPoint()));
         });
     }
