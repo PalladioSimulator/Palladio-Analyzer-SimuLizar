@@ -25,6 +25,8 @@ import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
+import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
@@ -139,11 +141,19 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     public SimulatedStackframe<Object> caseProvidedRole(final ProvidedRole providedRole) {
         this.context.getAssemblyContextStack().push(this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT
                 ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
+        
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
+        			EventType.BEGIN, this.context.getThread(), this.signature, this.instanceAssemblyContext));
 
         final SimulatedStackframe<Object> result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
 
         this.context.getAssemblyContextStack().pop();
-
+        
+        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+            	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
+            			EventType.END, this.context.getThread(), this.signature, this.instanceAssemblyContext));
+        
         return result;
     }
 

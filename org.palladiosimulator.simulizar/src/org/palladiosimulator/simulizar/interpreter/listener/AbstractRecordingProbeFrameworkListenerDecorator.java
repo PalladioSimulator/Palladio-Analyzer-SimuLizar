@@ -104,7 +104,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      * @return A recorder configuration {@link Map} initialized as described.
      * @see #initializeRecorder(Map)
      */
-    protected static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+    public static Map<String, Object> createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
             final MetricDescription recorderAcceptedMetric, final MeasuringPoint measuringPoint) {
         assert recorderAcceptedMetric != null;
         assert measuringPoint != null;
