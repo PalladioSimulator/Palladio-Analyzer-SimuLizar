@@ -1,10 +1,13 @@
 package org.palladiosimulator.simulizar.utilization.runtimemeasurement;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.measure.Measure;
 import javax.measure.quantity.Power;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -27,6 +30,10 @@ This class is responsible for propagating {@link MeasurementSpecification}s rela
 */
 public class UtilizationRuntimeMeasurementsRecorder extends PRMRecorder implements IRecorder {
 
+	private static final Set<String> ACCEPTED_METRICS = new HashSet<String>(Arrays.asList(
+				MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId(),
+				MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE.getId()
+			));
     /**
      * Initializes a new instance of the {@link PowerRuntimeMeasurementsRecorder} class with the given
      * arguments.
@@ -48,10 +55,10 @@ public class UtilizationRuntimeMeasurementsRecorder extends PRMRecorder implemen
         if (rmModel == null || measurementSpecification == null || measuringPoint == null) {
             throw new IllegalArgumentException("At least one argument is null.");
         }
-        if (!MetricDescriptionUtility.metricDescriptionIdsEqual(getMeasurementSpecification().getMetricDescription(),
-                MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE)) {
-            throw new IllegalArgumentException("Metric of given MeasurementSpecification instance must be "
-                    + MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE.getName() + "!");
+        if (!ACCEPTED_METRICS.contains(getMeasurementSpecification().getMetricDescription().getId())) {
+            throw new IllegalArgumentException("Metric of given MeasurementSpecification instance must be either"
+                    + MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE.getName() 
+                    + " or " + MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getName() + "!");
         }
     }
 
@@ -66,10 +73,10 @@ public class UtilizationRuntimeMeasurementsRecorder extends PRMRecorder implemen
      */
     @Override
     public void newMeasurementAvailable(MeasuringValue newMeasurement) {
-        if (newMeasurement == null
-                || !newMeasurement.isCompatibleWith(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE)) {
+        if (newMeasurement == null || !ACCEPTED_METRICS.contains(newMeasurement.getMetricDesciption().getId())) {
             throw new IllegalArgumentException("New available measurement is not a utilization tuple!");
         }
+        
         Measure<Double, Power> utilizationMeasure = newMeasurement
                 .getMeasureForMetric(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
         // forward power value (expressed as double in receiving unit!) to RuntimeMeasurementModel
