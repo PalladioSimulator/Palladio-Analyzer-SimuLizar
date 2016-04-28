@@ -32,8 +32,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
+import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 import org.palladiosimulator.simulizar.slidingwindow.util.SimulizarSlidingWindowUtil;
-import org.palladiosimulator.simulizar.utilization.runtimemeasurement.UtilizationRuntimeMeasurementsRecorder;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -153,7 +153,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
         registerMeasurementsRecorder(stateOfActiveResourceCalculator, windowRecorder);
         // forward utilization measurements to RuntimeMeasurementModel (the
         // former PRM)
-        utilizationAggregator.addRecorder(new UtilizationRuntimeMeasurementsRecorder(this.rmModel,
+        utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
                 utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
 
         overallUtilizationCalculator.ifPresent(calc -> {
@@ -164,8 +164,8 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                     createSlidingWindowRecorder(utilizationMeasurementSpec.getTemporalRestriction(), aggregator));
             // forward utilization measurements to RuntimeMeasurementModel (the
             // former PRM)
-            aggregator.addRecorder(new UtilizationRuntimeMeasurementsRecorder(this.rmModel, utilizationMeasurementSpec,
-                    utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
+            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
+                    utilizationMeasurementSpec, calc.getMeasuringPoint()));
         });
     }
 
