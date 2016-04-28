@@ -4,30 +4,18 @@ Bundle-Name: Palladio Simulizar Power Analysis Extension
 Bundle-SymbolicName: org.palladiosimulator.simulizar.power;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.power.Activator
-Require-Bundle: org.eclipse.core.runtime,
- org.palladiosimulator.pcm,
- de.uka.ipd.sdq.simucomframework,
- org.palladiosimulator.metricspec,
+Require-Bundle: de.uka.ipd.sdq.simucomframework,
  de.fzi.power.interpreter,
- de.fzi.power,
- org.jscience,
- org.palladiosimulator.edp2.datastream,
- org.palladiosimulator.measurementframework,
- org.palladiosimulator.experimentanalysis,
- org.palladiosimulator.pcm.edp2.measuringpoint,
  org.palladiosimulator.probeframework,
- org.palladiosimulator.recorderframework,
- de.uka.ipd.sdq.simulation.abstractsimengine,
  org.palladiosimulator.simulizar,
- org.apache.commons.collections15,
  org.palladiosimulator.edp2.util,
  de.fzi.power.interpreter.calculators.energy,
  org.palladiosimulator.simulizar.runtimemeasurement,
  org.palladiosimulator.simulizar.slidingwindow,
  de.uka.ipd.sdq.workflow.mdsd,
- de.uka.ipd.sdq.workflow,
  org.palladiosimulator.simulizar.ui,
- org.palladiosimulator.analyzer.workflow
+ org.palladiosimulator.analyzer.workflow,
+ de.uka.ipd.sdq.simulation.abstractsimengine
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: palladiosimulator.org

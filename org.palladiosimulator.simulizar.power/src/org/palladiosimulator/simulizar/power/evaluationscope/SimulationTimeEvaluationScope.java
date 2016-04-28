@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.power.evaluationscope;
 
+import static java.util.stream.Collectors.toMap;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,11 +11,13 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.function.Function;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.apache.commons.collections15.IteratorUtils;
+import org.eclipse.emf.ecore.EClass;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.datastream.IDataStream;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
@@ -27,6 +31,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory;
+import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.AbstractRecorder;
@@ -60,9 +65,11 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     private final Collection<ProcessingResourceSpecification> processingResourceSpecs;
     private final SimuComModel simModel;
     private final UtilizationMeasurementsCollector collector;
+    private final RegisterCalculatorFactoryDecorator calculatorFactory;
 
     private static final MetricDescription UTILIZATION_METRIC = MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE;
     private static final MetricDescription RESOURCE_STATE_METRIC = MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE;
+    private static final EClass ACTIVE_RESOURCE_MP_ECLASS = PcmmeasuringpointPackage.Literals.ACTIVE_RESOURCE_MEASURING_POINT;
 
     /**
      * Gets a {@link SimulationTimeEvaluationScope} instance initialized with the given parameters.
@@ -120,6 +127,9 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                 Objects.requireNonNull(entityUnderMeasurement, "Given PowerProvidingEntity must not be null."));
         this.collector = new UtilizationMeasurementsCollector(this.processingResourceSpecs.size());
 
+        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
+                .cast(this.simModel.getProbeFrameworkContext().getCalculatorFactory());
+
         this.processingResourceSpecs
                 .forEach(spec -> this.resourceMeasurements.put(spec, Collections.singleton(new SingletonDataStream())));
     }
@@ -141,31 +151,70 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         ISlidingWindowMoveOnStrategy moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
         PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
-        RegisterCalculatorFactoryDecorator actualCalculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(this.simModel.getProbeFrameworkContext().getCalculatorFactory());
+        Map<String, Calculator> availableOverallUtilizationCalculators = getAvailableOverallUtilizationCalculators();
 
         for (ProcessingResourceSpecification proc : this.processingResourceSpecs) {
-            ActiveResourceMeasuringPoint mp = pcmMeasuringpointFactory.createActiveResourceMeasuringPoint();
-            mp.setActiveResource(proc);
-            Calculator resourceStateCalculator = actualCalculatorFactory
-                    .getCalculatorByMeasuringPointAndMetricDescription(mp, RESOURCE_STATE_METRIC);
+            Optional<Calculator> resourceStateCalculator = null;
+            MetricDescription resourceStateMetric = null;
 
-            if (resourceStateCalculator == null) {
-                throw new IllegalStateException(
-                        "Simulation time evaluation scope (sliding window based) cannot be initialized.\n"
-                                + "No state of active resource calculator available for: "
-                                + mp.getStringRepresentation() + "\n"
-                                + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
-                                + "to initializeInterpreterListeners()!");
+            // in case of a multi-core resource, always use the "overall" state which is
+            // automatically measured
+            // confer ResourceEnvironmentSyncer in Simulizar plugin
+            if (proc.getNumberOfReplicas() > 1) {
+                resourceStateMetric = UTILIZATION_METRIC;
+                resourceStateCalculator = findOverallUtilizationCalculatorForProcessingResource(proc,
+                        availableOverallUtilizationCalculators);
+            } else {
+                ActiveResourceMeasuringPoint mp = pcmMeasuringpointFactory.createActiveResourceMeasuringPoint();
+                mp.setActiveResource(proc);
+                mp.setReplicaID(0);
+
+                resourceStateCalculator = Optional.ofNullable(this.calculatorFactory
+                        .getCalculatorByMeasuringPointAndMetricDescription(mp, RESOURCE_STATE_METRIC));
+                resourceStateMetric = RESOURCE_STATE_METRIC;
             }
 
-            SlidingWindow slidingWindow = new SimulizarSlidingWindow(windowLength, windowIncrement,
-                    RESOURCE_STATE_METRIC, moveOnStrategy, this.simModel);
-            SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
-                    new SlidingWindowUtilizationAggregator(RESOURCE_STATE_METRIC, new ScopeRecorder(proc)));
+            Calculator baseCalculator = resourceStateCalculator.orElseThrow(() -> {
+                String errorMessage = "Simulation time evaluation scope (sliding window based) cannot be initialized.\n"
+                        + ((proc.getNumberOfReplicas() == 1)
+                                ? "No 'state of active resource calculator' available for resource: " + proc + "\n"
+                                : "No 'overall utilization of active resource' calculator available for multi-core resource: "
+                                        + proc + "\n")
+                        + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
+                        + "to initializeInterpreterListeners()!";
+                throw new IllegalStateException(errorMessage);
+            });
 
-            resourceStateCalculator.addObserver(windowRecorder);
+            SlidingWindow slidingWindow = new SimulizarSlidingWindow(windowLength, windowIncrement, resourceStateMetric,
+                    moveOnStrategy, this.simModel);
+            SlidingWindowRecorder windowRecorder = new SlidingWindowRecorder(slidingWindow,
+                    new SlidingWindowUtilizationAggregator(resourceStateMetric, new ScopeRecorder(proc)));
+
+            baseCalculator.addObserver(windowRecorder);
         }
+    }
+
+    /**
+     * Retrieve the all calculators that are compatible with the
+     * {@link MetricDescriptionConstants#UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE} metric and associated
+     * with an {@link ProcessingResourceSpecification} (i.e., an active resource). These are the
+     * calculators which compute the 'overall utilization' of multi-core resources.
+     * 
+     * @return A {@link Map} with the ids of the respective resources mapped onto the found
+     *         calculators
+     */
+    private Map<String, Calculator> getAvailableOverallUtilizationCalculators() {
+        return this.calculatorFactory.getRegisteredCalculators().stream()
+                .filter(calc -> calc.isCompatibleWith(UTILIZATION_METRIC)
+                        && ACTIVE_RESOURCE_MP_ECLASS.isInstance(calc.getMeasuringPoint()))
+                .collect(toMap(
+                        calc -> ((ActiveResourceMeasuringPoint) calc.getMeasuringPoint()).getActiveResource().getId(),
+                        Function.identity()));
+    }
+
+    private static Optional<Calculator> findOverallUtilizationCalculatorForProcessingResource(
+            ProcessingResourceSpecification proc, Map<String, Calculator> availableOverallUtilizationCalculators) {
+        return Optional.ofNullable(availableOverallUtilizationCalculators.get(proc.getId()));
     }
 
     @Override
