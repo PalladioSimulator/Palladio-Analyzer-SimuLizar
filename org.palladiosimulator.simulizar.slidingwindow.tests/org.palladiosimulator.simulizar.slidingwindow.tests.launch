@@ -14,12 +14,12 @@
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../junit-workspace"/>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
-<listEntry value="/org.palladiosimulator.simulizar.slidingwindow.tests"/>
+<listEntry value="/org.palladiosimulator.simulizar.slidingwindow.tests/src"/>
 </listAttribute>
 <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
-<listEntry value="4"/>
+<listEntry value="2"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=org.palladiosimulator.simulizar.slidingwindow.tests"/>
+<stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=org.palladiosimulator.simulizar.slidingwindow.tests/src"/>
 <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
 <stringAttribute key="org.eclipse.jdt.junit.TESTNAME" value=""/>
 <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit4"/>

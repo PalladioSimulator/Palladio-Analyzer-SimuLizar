@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.slidingwindow.tests;
+package org.palladiosimulator.simulizar.slidingwindow.impl.tests;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;

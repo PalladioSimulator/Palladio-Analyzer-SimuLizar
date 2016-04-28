@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.slidingwindow.tests;
+package org.palladiosimulator.simulizar.slidingwindow.impl.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
