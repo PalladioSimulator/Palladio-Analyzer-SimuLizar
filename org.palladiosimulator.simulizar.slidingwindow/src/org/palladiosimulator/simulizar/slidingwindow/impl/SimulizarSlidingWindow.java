@@ -15,7 +15,6 @@ import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSim
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.ISimulationListener;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**
  * This class is a {@link SlidingWindow} subclass that is governed by and advances during simulation
@@ -29,8 +28,12 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * @author Florian Rosenthal
  */
 public class SimulizarSlidingWindow extends SlidingWindow {
-
-    private ISimulationControl simControl = null;
+    
+	private SimuComModel model;
+	
+    private PeriodicallyTriggeredSimulationEntity simulationEntity = null;
+    private ISimulationListener simulationListener = null;
+    
 
     /**
      * Initializes a new instance of the {@link SimulizarSlidingWindow} class with the given
@@ -88,11 +91,44 @@ public class SimulizarSlidingWindow extends SlidingWindow {
      */
     public SimulizarSlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
             MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy, SimuComModel model) {
-        super(windowLength, increment, acceptedMetrics, moveOnStrategy);
+        this(windowLength, increment, Measure.valueOf(0d, SI.SECOND), acceptedMetrics, moveOnStrategy, model);
+    }
+    
+    /**
+     * Initializes a new instance of the {@link SimulizarSlidingWindow} class with the given
+     * parameters.
+     * 
+     * @param windowLength
+     *            The length of the window, given in any arbitrary {@link Duration}.
+     * @param increment
+     *            This {@link Measure} indicates the increment by what the window is moved on, given
+     *            in any arbitrary {@link Duration}.
+     * @param initialLowerBound
+     *            This {@link Measure} indicates the lower bound value at which the algorithm starts aggregating, 
+     *            given in any arbitrary {@link Duration}.
+     * @param acceptedMetrics
+     *            As each window only accepts measurements that adhere to a certain metric, a
+     *            {@link MetricDescription} of must be specified.
+     * @param moveOnStrategy
+     *            The {@link ISlidingWindowMoveOnStrategy} instance that defines how the collected
+     *            data (i.e., the measurements) is adjusted when the window moves forward.
+     * @param model
+     *            The {@link SimuComModel} instance which governs this window.
+     * @throws IllegalArgumentException
+     *             In one of the following cases:
+     *             <ul>
+     *             <li>given window length or increment is negative</li>
+     *             <li>{@code acceptedMetrics}, {@code moveOnStrategy} or {@code model} is
+     *             {@code null}</li>
+     *             </ul>
+     */
+    public SimulizarSlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
+    		Measure<Double, Duration> initialLowerBound, MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy, SimuComModel model) {
+        super(windowLength, increment, initialLowerBound, acceptedMetrics, moveOnStrategy);
         if (model == null) {
             throw new IllegalArgumentException("Sliding window must be initialized with a valid SimComModel instance.");
         }
-        this.simControl = model.getSimulationControl();
+        this.model = model;
         initializeTriggeredSimulationEntity(model);
 
     }
@@ -100,7 +136,7 @@ public class SimulizarSlidingWindow extends SlidingWindow {
     private void initializeTriggeredSimulationEntity(SimuComModel model) {
         // ensure that point in times are given in seconds, as the simulation is
         // in sec
-        new PeriodicallyTriggeredSimulationEntity(model,
+    	simulationEntity = new PeriodicallyTriggeredSimulationEntity(model,
                 SimulizarSlidingWindow.this.getSpecifiedWindowLength().doubleValue(SI.SECOND),
                 SimulizarSlidingWindow.this.getIncrement().doubleValue(SI.SECOND)) {
 
@@ -109,7 +145,7 @@ public class SimulizarSlidingWindow extends SlidingWindow {
                 onWindowFullEvent();
             }
         };
-        model.getConfiguration().addListener(new ISimulationListener() {
+        simulationListener = new ISimulationListener() {
 
             @Override
             public void simulationStop() {
@@ -119,7 +155,8 @@ public class SimulizarSlidingWindow extends SlidingWindow {
             @Override
             public void simulationStart() {
             }
-        });
+        };
+        model.getConfiguration().addListener(simulationListener);
     }
 
     /**
@@ -156,7 +193,7 @@ public class SimulizarSlidingWindow extends SlidingWindow {
         // simulation time
         // isn't a multiple of windowLength
         double upperBoundValue = Math.min(lowerBoundValue + this.getSpecifiedWindowLength().doubleValue(unit),
-                this.simControl.getCurrentSimulationTime());
+                this.model.getSimulationControl().getCurrentSimulationTime());
 
         return Measure.valueOf(upperBoundValue, unit);
     }
@@ -179,5 +216,11 @@ public class SimulizarSlidingWindow extends SlidingWindow {
         // effective window length, might be smaller at the
         // end of simulation
         return Measure.valueOf(getCurrentUpperBound().doubleValue(unit) - this.getCurrentLowerBound().getValue(), unit);
+    }
+    
+    public void flushAndStopAggregation() {
+    	this.simulationEntity.stopScheduling();
+    	this.model.getConfiguration().getListeners().remove(this.simulationListener);
+    	this.onSimulationStop();
     }
 }
