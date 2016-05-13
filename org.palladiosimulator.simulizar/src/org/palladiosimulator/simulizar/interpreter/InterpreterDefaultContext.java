@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.Stack;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
@@ -30,17 +31,21 @@ public class InterpreterDefaultContext extends Context {
 
     private final IModelAccess modelAccess;
 
+	private PCMResourceSetPartition localPCMModelCopy;
+
     public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
         this.modelAccess = this.runtimeState.getModelAccess();
+        this.localPCMModelCopy = this.modelAccess.getLocalPCMModel();
     }
 
     InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
-            final boolean copyStack) {
+            final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
         super(context.getModel());
         this.modelAccess = runtimeState.getModelAccess().clone();
+        this.localPCMModelCopy = pcmLocalCopy;
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
         this.stack = new SimulatedStack<Object>();
@@ -62,7 +67,7 @@ public class InterpreterDefaultContext extends Context {
      * @param thread
      */
     public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getRuntimeState(), true);
+        this(context, context.getRuntimeState(), true, context.getModelAccess().getLocalPCMModel());
         this.setSimProcess(thread);
     }
 
@@ -85,4 +90,8 @@ public class InterpreterDefaultContext extends Context {
     public IModelAccess getModelAccess() {
         return this.modelAccess;
     }
+    
+    public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
+    	return this.localPCMModelCopy;
+    };
 }

@@ -81,11 +81,11 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             final SimulatedBasicComponentInstance basicComponentInstance) {
         super();
         this.context = context;
-        this.allocation = context.getModelAccess().getLocalPCMModel().getAllocation();
+        this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
-    }
+    }    
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour)
@@ -446,7 +446,8 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                      * context including its stack.
                      */
                     final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
-                            RDSeffSwitch.this.context.getRuntimeState(), true);
+                            RDSeffSwitch.this.context.getRuntimeState(), true, 
+                            RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.basicComponentInstance);

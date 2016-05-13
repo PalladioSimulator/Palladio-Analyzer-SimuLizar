@@ -34,6 +34,10 @@ public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
 	this.myTriggerEvent = new PeriodicSimulationEvent(this.getModel(), delay);
 	this.myTriggerEvent.schedule(this, nextOccurrence);
     }
+    
+    public void stopScheduling() {
+    	this.removeEvent();
+    }
 
     protected void triggerInternal() {
     }
