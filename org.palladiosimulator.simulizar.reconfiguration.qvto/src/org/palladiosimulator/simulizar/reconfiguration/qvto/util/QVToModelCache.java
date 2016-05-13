@@ -43,8 +43,7 @@ public class QVToModelCache {
 
     // put EClass objects of blackboard models that are not intended to be transformation parameters
     // here
-    private static final EClass[] MODEL_ECLASS_BLACKLIST = { ResourcetypePackage.Literals.RESOURCE_REPOSITORY,
-            MetricSpecPackage.Literals.METRIC_DESCRIPTION_REPOSITORY };
+    private static final EClass[] MODEL_ECLASS_BLACKLIST = { };
 
     // switch to determine the meta-model/EPackage of a model
     private static final EcoreSwitch<EPackage> MODELTYPE_RETRIEVER = new EcoreSwitch<EPackage>() {
