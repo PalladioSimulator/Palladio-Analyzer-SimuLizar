@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
@@ -35,6 +36,8 @@ import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationPa
  */
 class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
 
+	private static final Logger LOGGER = Logger.getLogger(TransientEffectQVTOExecutor.class);
+	
     private static final EPackage MAPPING_EPACKAGE = MappingPackage.Literals.MAPPING.getEPackage();
     private static final EPackage REPOSITORY_EPACKAGE = RepositoryPackage.Literals.REPOSITORY.getEPackage();
 
@@ -65,7 +68,8 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     boolean executeGuardedTransition(GuardedTransition guardedTransition) {
     	URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
 		QvtoModelTransformation condition = this.getTransformationByUri(conditionUri).get();
-        return this.executeTransformation(Objects.requireNonNull(condition));
+		ExecutionDiagnostic result = this.executeTransformationInternal(Objects.requireNonNull(condition));
+		return handleExecutionResultForGuardedTransition(guardedTransition, result);
     }
 
     private void storeModel(EObject model) {
@@ -125,6 +129,16 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
                     .map(contents -> contents.get(0)).forEach(getAvailableModels()::storeModel);
         }
         return result;
+    }
+    
+    protected boolean handleExecutionResultForGuardedTransition(GuardedTransition guardedTransition, ExecutionDiagnostic executionResult) {
+    	if (executionResult.getCode() == ExecutionDiagnostic.FATAL_ASSERTION) {
+    		LOGGER.info("Guard Condition of \"" + guardedTransition.getEntityName() + "\" evaluated to false. The transition is not taken.");
+    		return false;
+    	} else {
+    		return this.handleExecutionResult(executionResult);
+    	}
+    	
     }
 
     @Override

@@ -175,17 +175,22 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 					TransientEffectInterpreter.this.executionContext = 
 				Optional.of(asyncProcess.getCorrespondingContext());
 			asyncProcess.activate();
-			LOGGER.info("Scheduled process for async interpretation of adaptation behavior.");
+			LOGGER.debug("Scheduled process for async interpretation of adaptation behavior.");
 			result = new TransientEffectExecutionResult(EventResult.SUCCESS, asyncProcess.getCorrespondingContext());
 		} else {
+			LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" is taking place.");
 			boolean successful = executeAdaptationActions(adaptationBehavior.getAdaptationActions(),
 					obtainExecutingProcessForContext());
 			if (successful) {
 				this.forwardReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
+				LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" successfully done.");
+			} else{
+				LOGGER.warn("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" finished with failures.");
 			}
 			// synchronous execution: no context shall be part of the result
 			result = new TransientEffectExecutionResult(EventResult.fromBoolean(successful),
 					this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT));
+			
 		}
 		return result;
 	}
@@ -424,15 +429,19 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 		@Override
 		protected void internalLifeCycle() {
-			LOGGER.info("Async execution of adaptation behavior is taking place.");
+			LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" is taking place.");
 			// within the async process, just proceed regularly, that is, do the
 			// interpretation
 			// as usual, that is: with the async process, everything is
 			// processed
 			// synchronously
-			TransientEffectInterpreter.this.executeAdaptationActions(this.behaviorToInterpret.getAdaptationActions(),
+			boolean result = TransientEffectInterpreter.this.executeAdaptationActions(this.behaviorToInterpret.getAdaptationActions(),
 					this);
-			LOGGER.info("Async execution of adaptation behavior done.");
+			if (result) {
+				LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" successfully done.");
+			} else{
+				LOGGER.warn("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" finished with failures.");
+			}
 		}
 
 		private ExecutionContext getCorrespondingContext() {
