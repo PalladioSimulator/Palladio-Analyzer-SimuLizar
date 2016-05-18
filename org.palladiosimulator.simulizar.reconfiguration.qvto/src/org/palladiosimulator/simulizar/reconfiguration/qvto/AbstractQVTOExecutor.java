@@ -153,13 +153,17 @@ public abstract class AbstractQVTOExecutor {
      *             In case {@code transformationData == null}
      */
     public final boolean executeTransformation(QvtoModelTransformation modelTransformation) {
-        ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
+    	ExecutionDiagnostic result = executeTransformationInternal(modelTransformation);
+        // check the result for success
+        return handleExecutionResult(result);
+    }
+    
+    protected ExecutionDiagnostic executeTransformationInternal(QvtoModelTransformation modelTransformation) {
+    	ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
         ExecutionContext executionContext = setupExecutionContext();
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
-        ExecutionDiagnostic result = doExecution(modelTransformation, executionContext, modelExtents);
-        // check the result for success
-        return handleExecutionResult(result);
+        return doExecution(modelTransformation, executionContext, modelExtents);
     }
 
     /**
@@ -251,7 +255,7 @@ public abstract class AbstractQVTOExecutor {
         // prepare the in/inout params first
         for (TransformationParameterInformation inParams : transformation.getInParameters()) {
             Collection<EObject> sourceModel = this.availableModels.getModelsByType(inParams.getParameterType());
-            if (sourceModel.size() < 1) {
+            if (sourceModel.isEmpty()) {
                 throw new IllegalStateException("No model in QVTo model cache for "
                         + (inParams.getParameterIndex() + 1) + ". parameter of transformation '"
                         + transformation.getTransformationName() + "'");

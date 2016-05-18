@@ -59,7 +59,7 @@ public class ModelTransformationCache {
 			if (contains(transformationUri)) {
 				throw new IllegalArgumentException("Transformation " + transformationUri + " already in store.");
 			}
-			LOGGER.info("Cache reconfiguration rule \"" + transformationUri + "\"");
+			LOGGER.debug("Cache reconfiguration rule \"" + transformationUri + "\"");
 			this.cache.put(transformationUri,
 					this.modelTransformationFactory.createModelTransformation(transformationUri));
 		}
