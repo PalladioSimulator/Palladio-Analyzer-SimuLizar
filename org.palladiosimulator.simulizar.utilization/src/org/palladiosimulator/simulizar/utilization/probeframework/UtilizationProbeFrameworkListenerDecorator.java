@@ -54,12 +54,12 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
 
         @Override
         public Optional<ActiveResourceMeasuringPoint> caseActiveResourceMeasuringPoint(
-                ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
+                final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
             return Optional.of(activeResourceMeasuringPoint);
         }
 
         @Override
-        public Optional<ActiveResourceMeasuringPoint> defaultCase(EObject eObject) {
+        public Optional<ActiveResourceMeasuringPoint> defaultCase(final EObject eObject) {
             return Optional.empty();
         }
     };
@@ -73,7 +73,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     public void registerMeasurements() {
         super.registerMeasurements();
 
-        Collection<MeasurementSpecification> utilMeasurementSpecs = new ArrayList<>(getProbeFrameworkListener()
+        final Collection<MeasurementSpecification> utilMeasurementSpecs = new ArrayList<>(getProbeFrameworkListener()
                 .getMeasurementSpecificationsForMetricDescription(UTILIZATION_TUPLE_METRIC_DESC));
         // also consider case when utilization metric rather than utilization
         // tuple metric is chosen
@@ -83,7 +83,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     @Override
-    public void setProbeFrameworkListener(AbstractProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(probeFrameworkListener);
         this.model = getProbeFrameworkListener().getSimuComModel();
         this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
@@ -91,25 +91,25 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
     }
 
-    private void initUtilizationMeasurements(Collection<MeasurementSpecification> utilMeasurementSpecs) {
+    private void initUtilizationMeasurements(final Collection<MeasurementSpecification> utilMeasurementSpecs) {
         assert utilMeasurementSpecs != null;
 
         if (!utilMeasurementSpecs.isEmpty()) {
             this.moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
-            Collection<Calculator> overallUtilizationCalculators = getAvailableOverallUtilizationCalculators();
+            final Collection<Calculator> overallUtilizationCalculators = getAvailableOverallUtilizationCalculators();
 
-            for (MeasurementSpecification spec : utilMeasurementSpecs) {
-                MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
+            for (final MeasurementSpecification spec : utilMeasurementSpecs) {
+                final MeasuringPoint mp = spec.getMonitor().getMeasuringPoint();
 
-                Optional<ActiveResourceMeasuringPoint> activeResourceMp = ACTIVE_RESOURCE_MP_SWITCH.doSwitch(mp);
+                final Optional<ActiveResourceMeasuringPoint> activeResourceMp = ACTIVE_RESOURCE_MP_SWITCH.doSwitch(mp);
 
-                Optional<Calculator> overallUtilizationCalculator = activeResourceMp.filter(a -> a.getReplicaID() == 0)
-                        .map(ActiveResourceMeasuringPoint::getActiveResource)
+                final Optional<Calculator> overallUtilizationCalculator = activeResourceMp
+                        .filter(a -> a.getReplicaID() == 0).map(ActiveResourceMeasuringPoint::getActiveResource)
                         .filter(proc -> proc.getNumberOfReplicas() > 1)
                         .flatMap(proc -> findOverallUtilizationCalculatorForProcessingResource(proc,
                                 overallUtilizationCalculators));
 
-                Calculator stateOfActiveResourceCalculator = this.calculatorFactory
+                final Calculator stateOfActiveResourceCalculator = this.calculatorFactory
                         .getCalculatorByMeasuringPointAndMetricDescription(mp, STATE_TUPLE_METRIC_DESC);
                 if (stateOfActiveResourceCalculator == null) {
                     throw new IllegalStateException(
@@ -125,7 +125,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     private Collection<Calculator> getAvailableOverallUtilizationCalculators() {
-        Collection<Calculator> overallUtilizationCalculators = this.calculatorFactory.getRegisteredCalculators()
+        final Collection<Calculator> overallUtilizationCalculators = this.calculatorFactory.getRegisteredCalculators()
                 .stream().filter(calc -> calc.isCompatibleWith(UTILIZATION_TUPLE_METRIC_DESC)
                         && ACTIVE_RESOURCE_MP_ECLASS.isInstance(calc.getMeasuringPoint()))
                 .collect(toList());
@@ -133,16 +133,17 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     private static Optional<Calculator> findOverallUtilizationCalculatorForProcessingResource(
-            ProcessingResourceSpecification proc, Collection<Calculator> overallUtilizationCalculators) {
-        String processingResourceId = proc.getId();
+            final ProcessingResourceSpecification proc, final Collection<Calculator> overallUtilizationCalculators) {
+        final String processingResourceId = proc.getId();
         return overallUtilizationCalculators.stream()
                 .filter(calc -> ((ActiveResourceMeasuringPoint) calc.getMeasuringPoint()).getActiveResource().getId()
                         .equals(processingResourceId))
                 .findAny();
     }
 
-    private void setupUtilizationRecorder(Calculator stateOfActiveResourceCalculator,
-            MeasurementSpecification utilizationMeasurementSpec, Optional<Calculator> overallUtilizationCalculator) {
+    private void setupUtilizationRecorder(final Calculator stateOfActiveResourceCalculator,
+            final MeasurementSpecification utilizationMeasurementSpec,
+            final Optional<Calculator> overallUtilizationCalculator) {
 
         if (utilizationMeasurementSpec.getTemporalRestriction() == null) {
             throw new IllegalArgumentException(
@@ -151,44 +152,48 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                             + "' must provide a TemporalCharacterization of Type 'Interval' or 'DelayedInterval'");
         }
 
-        SlidingWindowUtilizationAggregator utilizationAggregator = createSlidingWindowAggregator(
+        final SlidingWindowUtilizationAggregator utilizationAggregator = createSlidingWindowAggregator(
                 stateOfActiveResourceCalculator, STATE_TUPLE_METRIC_DESC);
-        SlidingWindowRecorder windowRecorder = createSlidingWindowRecorder(
+        final SlidingWindowRecorder windowRecorder = createSlidingWindowRecorder(
                 utilizationMeasurementSpec.getTemporalRestriction(), utilizationAggregator);
         // register recorder at calculator
         registerMeasurementsRecorder(stateOfActiveResourceCalculator, windowRecorder);
         // forward utilization measurements to RuntimeMeasurementModel (the
         // former PRM)
-        utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
+        if (utilizationMeasurementSpec.isTriggersSelfAdaptations()) {
+            utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
+                    utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
+        }
 
         overallUtilizationCalculator.ifPresent(calc -> {
-            SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc,
+            final SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc,
                     UTILIZATION_TUPLE_METRIC_DESC);
             // register recorder at calculator
             registerMeasurementsRecorder(calc,
                     createSlidingWindowRecorder(utilizationMeasurementSpec.getTemporalRestriction(), aggregator));
             // forward utilization measurements to RuntimeMeasurementModel (the
             // former PRM)
-            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                    utilizationMeasurementSpec, calc.getMeasuringPoint()));
+            if (utilizationMeasurementSpec.isTriggersSelfAdaptations()) {
+                aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
+                        utilizationMeasurementSpec, calc.getMeasuringPoint()));
+            }
         });
     }
 
-    private SlidingWindowUtilizationAggregator createSlidingWindowAggregator(Calculator baseCalculator,
-            MetricSetDescription expectedWindowDataMetric) {
+    private SlidingWindowUtilizationAggregator createSlidingWindowAggregator(final Calculator baseCalculator,
+            final MetricSetDescription expectedWindowDataMetric) {
 
-        Map<String, Object> recorderConfigMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
+        final Map<String, Object> recorderConfigMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
                 UTILIZATION_TUPLE_METRIC_DESC, baseCalculator.getMeasuringPoint());
         return new SlidingWindowUtilizationAggregator(expectedWindowDataMetric,
                 super.initializeRecorder(recorderConfigMap));
     }
 
-    private SlidingWindowRecorder createSlidingWindowRecorder(TemporalCharacterization temporalCharacterization,
-            SlidingWindowUtilizationAggregator utilizationAggregator) {
+    private SlidingWindowRecorder createSlidingWindowRecorder(final TemporalCharacterization temporalCharacterization,
+            final SlidingWindowUtilizationAggregator utilizationAggregator) {
         assert this.model != null && this.rmModel != null;
 
-        Measure<Double, Duration>[] windowProperties = SimulizarSlidingWindowUtil
+        final Measure<Double, Duration>[] windowProperties = SimulizarSlidingWindowUtil
                 .getWindowPropertiesFromTemporalCharacterization(temporalCharacterization);
 
         return new SlidingWindowRecorder(
@@ -198,20 +203,20 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     @Override
-    protected IRecorderConfiguration createRecorderConfiguration(SimuComConfig config,
-            Map<String, Object> recorderConfigMap) {
+    protected IRecorderConfiguration createRecorderConfiguration(final SimuComConfig config,
+            final Map<String, Object> recorderConfigMap) {
 
-        IRecorderConfiguration recorderConfig = super.createRecorderConfiguration(config, recorderConfigMap);
+        final IRecorderConfiguration recorderConfig = super.createRecorderConfiguration(config, recorderConfigMap);
         if (recorderConfig instanceof EDP2RecorderConfiguration) {
             tagMeasurement((EDP2RecorderConfiguration) recorderConfig);
         }
         return recorderConfig;
     }
 
-    private void tagMeasurement(EDP2RecorderConfiguration recorderConfig) {
+    private void tagMeasurement(final EDP2RecorderConfiguration recorderConfig) {
         assert recorderConfig != null;
 
-        Measurement measurement = recorderConfig.getMeasurement();
+        final Measurement measurement = recorderConfig.getMeasurement();
         if (measurement == null) {
             throw new RuntimeException(
                     "Measurement null! Something went wrong, as this should have been created by the recorder configuration factory!");

@@ -13,6 +13,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecifica
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
+import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.ResourceStateListener;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
@@ -196,10 +197,12 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 .getSimulatedResourceContainer(processingResource);
         // ScheduledResource takes care about loading (extendend) scheduled resources
         final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
-                processingResource, new String[] {}, resourceContainer.getId(), processingResource.getSchedulingPolicy().getId());
+                processingResource, new String[] {}, resourceContainer.getId(),
+                processingResource.getSchedulingPolicy().getId());
         scheduledResource.activateResource();
 
-        this.attachMonitors(processingResource, resourceContainer, scheduledResource.getSchedulingStrategyID(), scheduledResource);
+        this.attachMonitors(processingResource, resourceContainer, scheduledResource.getSchedulingStrategyID(),
+                scheduledResource);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Added ActiveResource. TypeID: " + this.getActiveResourceTypeID(processingResource)
@@ -248,51 +251,59 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     private void attachMonitors(final ProcessingResourceSpecification processingResource,
             final ResourceContainer resourceContainer, final String schedulingStrategy,
             final ScheduledResource scheduledResource) {
-        // Processing Resource monitors
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
                 .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
+            new PcmmeasuringpointSwitch<Object>() {
 
-            if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
-                    || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())
-                    || metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())
-                    || metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())
-                    || metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-                this.attachResourceStateListener(resourceContainer, scheduledResource, measurementSpecification);
-                final ActiveResourceMeasuringPoint measuringPoint = (ActiveResourceMeasuringPoint) measurementSpecification
-                        .getMonitor().getMeasuringPoint();
+                @Override
+                public Object caseActiveResourceMeasuringPoint(
+                        final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
+                    attachMonitorForActiveResourceMeasuringPoint(activeResourceMeasuringPoint, measurementSpecification,
+                            resourceContainer, scheduledResource, schedulingStrategy);
+                    return null;
+                };
 
-                if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
-                        || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
-                    // setup utilization calculators depending on their scheduling strategy
-                    // and number of cores (e.g., more than 1 cores requires overall utilization)
-                    if (measuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
-                    	MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource, scheduledResource.getNumberOfInstances());
-                        CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(), utilization);
-                    }
-                    if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
-                        CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                                this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
-                    } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
-                            || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
-                        assert (scheduledResource
-                                .getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
-                                        + "have exactly one core";
-                        CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                                this.runtimeModel.getModel(), measuringPoint, 0);
-                    } else {
-                        CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                                this.runtimeModel.getModel(), measuringPoint, measuringPoint.getReplicaID());
-                    }
-                } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
-                    // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
-                } else if (metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())) {
-                    // CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
-                } else if (metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-                    CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
-                            measuringPoint);
-                }
+            }.doSwitch(measurementSpecification.getMonitor().getMeasuringPoint());
+        }
+    }
+
+    protected void attachMonitorForActiveResourceMeasuringPoint(
+            final ActiveResourceMeasuringPoint activeResourceMeasuringPoint,
+            final MeasurementSpecification measurementSpecification, final ResourceContainer resourceContainer,
+            final ScheduledResource scheduledResource, final String schedulingStrategy) {
+        final String metricID = measurementSpecification.getMetricDescription().getId();
+        this.attachResourceStateListener(resourceContainer, scheduledResource, measurementSpecification);
+
+        if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
+                || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
+            // setup utilization calfinal rs depending on their scheduling strategy
+            // and number of cores (e.g., more than 1 cores requires overall utilization)
+            if (activeResourceMeasuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
+                final MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource,
+                        scheduledResource.getNumberOfInstances());
+                CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        utilization);
             }
+            if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
+                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        activeResourceMeasuringPoint, activeResourceMeasuringPoint.getReplicaID());
+            } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
+                    || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
+                assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
+                        + "have exactly one core";
+                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        activeResourceMeasuringPoint, 0);
+            } else {
+                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
+                        activeResourceMeasuringPoint, activeResourceMeasuringPoint.getReplicaID());
+            }
+        } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
+            // CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
+        } else if (metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())) {
+            // CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
+        } else if (metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
+            CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
+                    activeResourceMeasuringPoint);
         }
     }
 

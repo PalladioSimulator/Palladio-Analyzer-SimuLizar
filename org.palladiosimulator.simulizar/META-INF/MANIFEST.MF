@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
-Bundle-Version: 2.0.4.qualifier
+Bundle-Version: 2.0.5.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
 Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
@@ -19,6 +19,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
  org.palladiosimulator.measurementframework;bundle-version="1.0.0",
  org.palladiosimulator.edp2.util;bundle-version="1.0.0",
  org.palladiosimulator.recorderframework;bundle-version="2.0.1",
+ org.palladiosimulator.monitorrepository;bundle-version="2.0.1",
  org.palladiosimulator.pcm.edp2.measuringpoint;bundle-version="1.0.0",
  org.palladiosimulator.edp2.datastream;bundle-version="1.0.0",
  org.apache.commons.collections15;bundle-version="1.0.0",

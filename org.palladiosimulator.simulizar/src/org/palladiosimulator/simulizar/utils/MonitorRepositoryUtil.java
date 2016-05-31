@@ -190,7 +190,7 @@ public final class MonitorRepositoryUtil {
         }.doSwitch(measuringPoint);
     }
 
-    public static List<Monitor> getMonitorsForElement(final MonitorRepository monitorRepository,
+    public static List<Monitor> getActiveMonitorsForElement(final MonitorRepository monitorRepository,
             final EObject element) {
         final List<Monitor> result = new LinkedList<Monitor>();
 
@@ -199,7 +199,8 @@ public final class MonitorRepositoryUtil {
         }
 
         for (final Monitor monitor : monitorRepository.getMonitors()) {
-            if (MonitorRepositoryUtil.elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
+            if (monitor.isActivated()
+                    && MonitorRepositoryUtil.elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
                 result.add(monitor);
             }
         }
@@ -211,7 +212,7 @@ public final class MonitorRepositoryUtil {
             final MonitorRepository monitorRepository, final EObject element) {
         final List<MeasurementSpecification> result = new LinkedList<MeasurementSpecification>();
 
-        for (final Monitor monitor : getMonitorsForElement(monitorRepository, element)) {
+        for (final Monitor monitor : getActiveMonitorsForElement(monitorRepository, element)) {
             result.addAll(monitor.getMeasurementSpecifications());
         }
 

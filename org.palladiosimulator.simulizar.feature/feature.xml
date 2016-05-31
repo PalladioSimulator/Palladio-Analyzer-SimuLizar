@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="Palladio Component Model - Analyzer: SimuLizar"
-      version="2.0.4.qualifier"
+      version="2.0.5.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -84,13 +84,13 @@
       <import plugin="de.uka.ipd.sdq.scheduler" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto"/>
       <import plugin="org.palladiosimulator.simulizar.ui"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.modelversioning.emfprofile.edit"/>
       <import plugin="org.eclipse.emf.edit.ui"/>
       <import plugin="org.modelversioning.emfprofile" version="1.1.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf" version="2.6.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.mdsdprofiles.api"/>
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.simucomframework.simucomstatus" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.probeframework" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex.analyser" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.emf.transaction" version="1.4.0" match="greaterOrEqual"/>
@@ -108,6 +108,14 @@
       <import plugin="de.uka.ipd.sdq.statistics"/>
       <import plugin="org.palladiosimulator.edp2.dao" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction.math"/>
+      <import plugin="de.uka.ipd.sdq.workflow" version="2.1.0" match="greaterOrEqual"/>
+      <import plugin="org.storydriven.storydiagrams" version="1.0.1" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.0"/>
+      <import plugin="org.palladiosimulator.simulizar.reconfigurationrule" version="0.1.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.5.0" match="greaterOrEqual"/>
+      <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.runtimemeasurement"/>
+      <import plugin="org.eclipse.emf.henshin.model" version="1.2.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

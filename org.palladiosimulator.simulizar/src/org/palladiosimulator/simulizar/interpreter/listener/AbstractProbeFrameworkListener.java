@@ -176,9 +176,10 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     public SimuComModel getSimuComModel() {
         return this.simuComModel;
     }
-    
+
     /**
      * Gets the {@link IModelAccess} attached to this instance.
+     * 
      * @return A reference to the {@code IModelAccess}.
      */
     public IModelAccess getModelAccess() {
@@ -222,16 +223,17 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
                 @Override
                 public MeasurementSpecification transform(final Monitor monitor) {
                     for (final MeasurementSpecification m : monitor.getMeasurementSpecifications()) {
-                        if (MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor)) {
+                        if (monitor.isActivated() && MetricDescriptionUtility
+                                .metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor)) {
                             return m;
                         }
                     }
                     return null;
                 }
             };
-            return Collections.unmodifiableCollection(CollectionUtils.select(
-                    CollectionUtils.collect(monitorRepositoryModel.getMonitors(), transformer),
-                    PredicateUtils.notNullPredicate()));
+            return Collections.unmodifiableCollection(
+                    CollectionUtils.select(CollectionUtils.collect(monitorRepositoryModel.getMonitors(), transformer),
+                            PredicateUtils.notNullPredicate()));
         }
         return Collections.emptyList();
     }
@@ -244,18 +246,22 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     private void initResponseTimeMeasurement() {
         for (final MeasurementSpecification responseTimeMeasurementSpec : this
                 .getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-            final List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
-            final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+            if (responseTimeMeasurementSpec.getMonitor().isActivated()) {
+                final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+                final List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
+                final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint,
+                        probeList);
 
-            if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE) {
-                try {
-                    final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
-                            this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec, measuringPoint);
-                    calculator.addObserver(aggregator);
-                } catch (final UnsupportedOperationException e) {
-                    LOGGER.error(e);
-                    throw new RuntimeException(e);
+                if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE
+                        && responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
+                    try {
+                        final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
+                                this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec, measuringPoint);
+                        calculator.addObserver(aggregator);
+                    } catch (final UnsupportedOperationException e) {
+                        LOGGER.error(e);
+                        throw new RuntimeException(e);
+                    }
                 }
             }
         }

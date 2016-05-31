@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Palladio Simulizar Utilization Analysis Extension
 Bundle-SymbolicName: org.palladiosimulator.simulizar.utilization;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 1.0.1.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.utilization.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar;bundle-version="2.0.0",

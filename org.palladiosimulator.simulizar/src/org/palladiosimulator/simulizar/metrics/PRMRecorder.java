@@ -34,6 +34,11 @@ public abstract class PRMRecorder {
     public PRMRecorder(final RuntimeMeasurementModel prmAccess, final MeasurementSpecification measurementSpecification,
             final MeasuringPoint measuringPoint) {
         super();
+
+        if (!measurementSpecification.isTriggersSelfAdaptations()) {
+            throw new RuntimeException("PRM recordering only allowed when self-adaptations shall be triggered");
+        }
+
         this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         this.measurement.setMeasuringPoint(measuringPoint);
         this.measurement.setMeasurementSpecification(measurementSpecification);
