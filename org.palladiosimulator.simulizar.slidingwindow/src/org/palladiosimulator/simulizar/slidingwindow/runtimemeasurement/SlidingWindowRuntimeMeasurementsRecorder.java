@@ -34,10 +34,9 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     private static final NumericalBaseMetricDescription POINT_IN_TIME_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.POINT_IN_TIME_METRIC;
     private final NumericalBaseMetricDescription dataMetric;
 
-    public SlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
-            MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
-        super(Objects.requireNonNull(rmModel), Objects.requireNonNull(measurementSpecification),
-                Objects.requireNonNull(measuringPoint));
+    public SlidingWindowRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel,
+            final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
+        super(Objects.requireNonNull(rmModel), Objects.requireNonNull(measurementSpecification));
         this.dataMetric = getDataMetric();
     }
 
@@ -52,11 +51,11 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     }
 
     @Override
-    public void initialize(IRecorderConfiguration recorderConfiguration) {
+    public void initialize(final IRecorderConfiguration recorderConfiguration) {
     }
 
     @Override
-    public void writeData(MeasuringValue measurement) {
+    public void writeData(final MeasuringValue measurement) {
         newMeasurementAvailable(measurement);
 
     }
@@ -66,12 +65,12 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     }
 
     @Override
-    public void newMeasurementAvailable(MeasuringValue newMeasurement) {
+    public void newMeasurementAvailable(final MeasuringValue newMeasurement) {
         if (!Objects.requireNonNull(newMeasurement)
                 .isCompatibleWith(getMeasurementSpecification().getMetricDescription())) {
             throw new IllegalArgumentException("Incompatible measurement received!");
         }
-        Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
+        final Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
         // forward value (expressed as double in receiving unit!) to RuntimeMeasurementModel
         updateMeasurementValue(measure.doubleValue(measure.getUnit()));
     }

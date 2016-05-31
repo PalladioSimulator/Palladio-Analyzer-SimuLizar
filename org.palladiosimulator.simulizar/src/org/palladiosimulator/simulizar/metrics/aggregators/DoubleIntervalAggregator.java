@@ -3,15 +3,10 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.Intervall;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -21,16 +16,29 @@ import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSim
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 /**
- * The aggregator "Response time".
- *
- * @author Joachim Meyer
- *
+ * Interval-based aggregator for any double (or integer) values. Concrete metric, e.g., response
+ * times, is determined by a given MeasurementSpecification.
+ * 
+ * Note the strategy for aggregation: only if measurements have been received within the interval,
+ * the measurements are aggregated. If measurements from previous intervals have to be taken into
+ * account, another aggregator needs to be used. Some metrics may need such a behavior, e.g., when
+ * aggregating the number of jobs, the last known number from the previous interval appears to be
+ * important.
+ * 
+ * TODO Implement further aggregators as described above.
+ * 
+ * @author Sebastian Lehrig, Marcus Hilbrich
  */
-public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementSourceListener {
+public class DoubleIntervalAggregator extends PRMRecorder implements IMeasurementSourceListener {
 
-    private final List<Double> responseTimes;
+    /** Measurements taken in a given interval. */
+    private final List<Double> measurements;
 
+    /** Aggregation strategy to be used, e.g., arithmetic mean. */
     private final IStatisticalCharacterization aggregator;
+
+    /** Metric description of the measurements to be aggregated. */
+    private final NumericalBaseMetricDescription metricDescription;
 
     /**
      * Constructor
@@ -43,10 +51,17 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      *             if temporal characterization is not supported. TODO: This class should not know
      *             about PRM, it should publish its results to a Recorder, e.g., a PRM Recorder
      */
-    public ResponseTimeAggregator(final SimuComModel model, final RuntimeMeasurementModel prmAccess,
-            final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
-        super(prmAccess, measurementSpecification, measuringPoint);
-        this.responseTimes = new LinkedList<Double>();
+    public DoubleIntervalAggregator(final SimuComModel model, final RuntimeMeasurementModel prmAccess,
+            final MeasurementSpecification measurementSpecification) {
+        super(prmAccess, measurementSpecification);
+
+        if (!(measurementSpecification.getMetricDescription() instanceof NumericalBaseMetricDescription)) {
+            throw new RuntimeException(
+                    "measurementSpecification must conform to a NumericalBaseMetricDescription for double aggregation!");
+        }
+        this.metricDescription = (NumericalBaseMetricDescription) measurementSpecification.getMetricDescription();
+
+        this.measurements = new LinkedList<Double>();
         switch (measurementSpecification.getStatisticalCharacterization()) {
         case ARITHMETIC_MEAN:
             this.aggregator = new ArithmeticMean();
@@ -71,21 +86,21 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
 
             @Override
             protected void triggerInternal() {
-                ResponseTimeAggregator.this.finalizeCurrentIntervall();
+                DoubleIntervalAggregator.this.finalizeCurrentIntervall();
             }
+
         };
     }
 
     /**
-     *
+     * Calculate StatisticalCharacterization.
      */
     private void finalizeCurrentIntervall() {
-        if (this.responseTimes.size() > 0) {
-            // calculate StatisticalCharacterization
+        if (this.measurements.size() > 0) {
             final double statisticalCharacterization = this.aggregator
-                    .calculateStatisticalCharaterization(this.responseTimes);
+                    .calculateStatisticalCharaterization(this.measurements);
             this.updateMeasurementValue(statisticalCharacterization);
-            this.responseTimes.clear();
+            this.measurements.clear();
         }
     }
 
@@ -94,12 +109,18 @@ public class ResponseTimeAggregator extends PRMRecorder implements IMeasurementS
      */
     @Override
     public void newMeasurementAvailable(final MeasuringValue measurement) {
-        final Measure<Double, Duration> responseTimeMeasure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        this.responseTimes.add(responseTimeMeasure.doubleValue(SI.SECOND));
+        this.measurements.add(getDoubleMeasurement(measurement));
     }
 
+    private double getDoubleMeasurement(final MeasuringValue measurement) {
+        return measurement.getMeasureForMetric(this.metricDescription)
+                .doubleValue(this.metricDescription.getDefaultUnit());
+    }
+
+    /**
+     * Nothing to do here.
+     */
     @Override
-    public void preUnregister() {
+    public final void preUnregister() {
     }
 }

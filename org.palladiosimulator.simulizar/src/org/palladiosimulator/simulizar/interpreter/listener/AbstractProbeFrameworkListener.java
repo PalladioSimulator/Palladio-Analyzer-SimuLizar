@@ -33,7 +33,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.metrics.aggregators.ResponseTimeAggregator;
+import org.palladiosimulator.simulizar.metrics.aggregators.DoubleIntervalAggregator;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
@@ -255,8 +255,8 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
                 if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE
                         && responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
                     try {
-                        final IMeasurementSourceListener aggregator = new ResponseTimeAggregator(this.simuComModel,
-                                this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec, measuringPoint);
+                        final IMeasurementSourceListener aggregator = new DoubleIntervalAggregator(this.simuComModel,
+                                this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec);
                         calculator.addObserver(aggregator);
                     } catch (final UnsupportedOperationException e) {
                         LOGGER.error(e);
