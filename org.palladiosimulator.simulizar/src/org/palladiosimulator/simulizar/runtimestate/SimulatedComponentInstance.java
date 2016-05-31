@@ -33,4 +33,12 @@ public abstract class SimulatedComponentInstance {
     protected final AbstractSimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
+    
+    /**
+     * Called upon shut down of the simulation in order to notify component instances of
+     * the necessity to clean up simulation runtime state (e.g. passive resources)
+     */
+    public void cleanUp() {
+    	
+    }
 }

@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -12,6 +13,8 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.scheduler.IPassiveResource;
+import de.uka.ipd.sdq.scheduler.ISchedulableProcess;
+import de.uka.ipd.sdq.scheduler.processes.IWaitingProcess;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.SimSimpleFairPassiveResource;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -87,5 +90,12 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         if (passiveResource == null || !this.passiveResourcesMap.containsKey(passiveResource.getId())) {
             throw new IllegalArgumentException("Illegal passive resource for this basic component instance passed");
         }
+    }
+    
+    @Override
+    public void cleanUp() {
+    	this.passiveResourcesMap.values().stream().map(IPassiveResource::getWaitingProcesses)
+    		.flatMap(Queue::stream).map(IWaitingProcess::getProcess).forEach(ISchedulableProcess::activate);
+    	super.cleanUp();
     }
 }

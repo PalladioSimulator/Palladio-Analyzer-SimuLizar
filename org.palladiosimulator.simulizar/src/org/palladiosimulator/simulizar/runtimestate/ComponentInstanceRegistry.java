@@ -51,4 +51,9 @@ public class ComponentInstanceRegistry {
         }
         return this.componentInstances.get(id);
     }
+    
+    public void cleanUpInstancesAndRegistry() {
+    	this.componentInstances.values().forEach(SimulatedComponentInstance::cleanUp);
+    	this.componentInstances.clear();
+    }
 }

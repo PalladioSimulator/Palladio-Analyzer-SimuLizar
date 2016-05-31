@@ -162,6 +162,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
+        this.componentInstanceRegistry.cleanUpInstancesAndRegistry();
         for (final IModelObserver modelObserver : this.modelObservers) {
             modelObserver.unregister();
         }
