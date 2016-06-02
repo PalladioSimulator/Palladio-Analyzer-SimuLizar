@@ -15,8 +15,8 @@ import org.eclipse.m2m.internal.qvt.oml.expressions.ModelType;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.util.ExpressionsSwitch;
 import org.eclipse.m2m.qvt.oml.TransformationExecutor;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.TransformationParameterInformation;
 
 /**
  * Factory class to create {@link TransformationData} objects related to QVTo transformations.

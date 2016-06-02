@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.

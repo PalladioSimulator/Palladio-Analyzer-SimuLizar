@@ -13,7 +13,6 @@ import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 
 /**
  * A reconfigurator implementation which relies on QVTo to do the

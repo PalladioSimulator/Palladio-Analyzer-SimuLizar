@@ -8,7 +8,7 @@ import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 
 /**
  * This cache implementation is used to store QVTo transformations (in terms of
