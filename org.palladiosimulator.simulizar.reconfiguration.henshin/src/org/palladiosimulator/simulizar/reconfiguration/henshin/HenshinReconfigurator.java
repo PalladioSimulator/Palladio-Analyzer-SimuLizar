@@ -16,7 +16,6 @@ import org.eclipse.emf.henshin.model.Module;
 import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.henshin.HenshinModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
