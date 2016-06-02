@@ -14,8 +14,8 @@ import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.TransformationParameterInformation;
 
 public class TransientEffectQVTOExecutorUtil {
 

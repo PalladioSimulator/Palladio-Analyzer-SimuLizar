@@ -55,8 +55,8 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 

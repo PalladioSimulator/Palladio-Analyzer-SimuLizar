@@ -22,10 +22,10 @@ import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.AbstractQVTOExecutor;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.TransformationParameterInformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.QvtoModelTransformation;
-import org.palladiosimulator.simulizar.reconfigurationrule.qvto.TransformationParameterInformation;
 
 /**
  * Implementation of the {@link AbstractQVTOExecutor} suitable for executing {@link AdaptationStep
