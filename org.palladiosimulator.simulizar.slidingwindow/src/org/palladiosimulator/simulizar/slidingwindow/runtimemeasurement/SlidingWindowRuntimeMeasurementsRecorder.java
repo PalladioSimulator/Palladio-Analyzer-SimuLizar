@@ -35,7 +35,7 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     private final NumericalBaseMetricDescription dataMetric;
 
     public SlidingWindowRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel,
-            final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
+            final MeasurementSpecification measurementSpecification) {
         super(Objects.requireNonNull(rmModel), Objects.requireNonNull(measurementSpecification));
         this.dataMetric = getDataMetric();
     }
