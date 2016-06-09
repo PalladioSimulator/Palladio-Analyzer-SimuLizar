@@ -1,6 +1,9 @@
 package org.palladiosimulator.simulizar.metrics;
 
+import java.util.Objects;
+
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.TemporalCharacterization;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
@@ -32,14 +35,16 @@ public abstract class PRMRecorder {
      */
     public PRMRecorder(final RuntimeMeasurementModel prmAccess,
             final MeasurementSpecification measurementSpecification) {
-        super();
-
+        super();        
+        
         if (!measurementSpecification.isTriggersSelfAdaptations()) {
             throw new RuntimeException("PRM recordering only allowed when self-adaptations shall be triggered");
         }
+        
+        MeasuringPoint mp = Objects.requireNonNull(measurementSpecification.getMonitor().getMeasuringPoint());
 
         this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
-        this.measurement.setMeasuringPoint(measurementSpecification.getMonitor().getMeasuringPoint());
+        this.measurement.setMeasuringPoint(mp);
         this.measurement.setMeasurementSpecification(measurementSpecification);
         this.prmAccess = prmAccess;
         this.attachToPRM();
