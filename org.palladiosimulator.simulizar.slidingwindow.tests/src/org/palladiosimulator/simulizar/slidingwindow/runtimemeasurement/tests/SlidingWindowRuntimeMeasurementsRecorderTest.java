@@ -16,6 +16,7 @@ import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.TupleMeasurement;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
@@ -26,6 +27,7 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
 
     private RuntimeMeasurementModel rmModel;
     private MeasuringPoint measuringPoint;
+    private Monitor monitor;
     private MeasurementSpecification spec;
     private MeasuringValue wrongMetricMeasurement;
     private MeasuringValue correctMeasurement;
@@ -37,8 +39,11 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
         this.rmModel = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel();
         this.spec = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
         this.measuringPoint = MeasuringpointFactory.eINSTANCE.createResourceURIMeasuringPoint();
+        this.monitor = MonitorRepositoryFactory.eINSTANCE.createMonitor();
+        this.monitor.setMeasuringPoint(this.measuringPoint);
         this.spec.setMetricDescription(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
-
+        this.spec.setMonitor(this.monitor);
+        
         Measure<Double, javax.measure.quantity.Duration> timeMeasure = Measure.valueOf(42.0, SI.SECOND);
         Measure<Double, Dimensionless> utilizationMeasure = Measure.valueOf(0.42, Dimensionless.UNIT);
         this.wrongMetricMeasurement = new BasicMeasurement<>(utilizationMeasure,
@@ -46,8 +51,7 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
         this.correctMeasurement = new TupleMeasurement(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE,
                 timeMeasure, utilizationMeasure);
 
-        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec,
-                this.measuringPoint);
+        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec);
     }
 
     @After
@@ -57,24 +61,18 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
     @Test(expected = NullPointerException.class)
     public void testCtorNullArgument() {
         RuntimeMeasurementModel m = null;
-        new SlidingWindowRuntimeMeasurementsRecorder(m, this.spec, this.measuringPoint);
+        new SlidingWindowRuntimeMeasurementsRecorder(m, this.spec);
     }
 
     @Test(expected = NullPointerException.class)
     public void testCtorNullArgument2() {
-        new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, null, this.measuringPoint);
-    }
-
-    @Test(expected = NullPointerException.class)
-    public void testCtorNullArgument3() {
-        new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec, null);
+        new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, null);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testCtorIllegalDataMetric() {
         this.spec.setMetricDescription(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec,
-                this.measuringPoint);
+        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec);
     }
 
     @Test(expected = NullPointerException.class)
@@ -99,8 +97,8 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
     private class InternalSlidingWindowRuntimeMeasurementsRecorder extends SlidingWindowRuntimeMeasurementsRecorder {
 
         public InternalSlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
-                MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
-            super(rmModel, measurementSpecification, measuringPoint);
+                MeasurementSpecification measurementSpecification) {
+            super(rmModel, measurementSpecification);
         }
 
         private RuntimeMeasurement getLastMeasurement() {
