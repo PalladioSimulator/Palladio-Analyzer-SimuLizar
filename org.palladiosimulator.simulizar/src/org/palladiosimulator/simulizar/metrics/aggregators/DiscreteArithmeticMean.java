@@ -8,7 +8,7 @@ import java.util.Collection;
  * @author Joachim Meyer
  *
  */
-public class ArithmeticMean implements IStatisticalCharacterization {
+public class DiscreteArithmeticMean implements IStatisticalCharacterization<Collection<Double>> {
 
     /**
      * Calculates the arithmetic mean of the given measurements.

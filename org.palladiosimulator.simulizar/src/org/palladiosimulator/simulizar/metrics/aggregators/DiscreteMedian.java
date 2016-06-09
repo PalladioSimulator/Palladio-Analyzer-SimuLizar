@@ -11,7 +11,7 @@ import java.util.List;
  * @author Igor Rogic
  *
  */
-public class Median implements IStatisticalCharacterization {
+public class DiscreteMedian implements IStatisticalCharacterization<Collection<Double>> {
 
     @Override
     public double calculateStatisticalCharaterization(final Collection<Double> measurements) {

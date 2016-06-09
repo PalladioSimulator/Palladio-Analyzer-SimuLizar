@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -17,7 +16,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
-import org.palladiosimulator.simulizar.metrics.aggregators.DoubleIntervalAggregator;
+import org.palladiosimulator.simulizar.metrics.aggregators.AggregatorHelper;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
@@ -270,11 +269,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
 
             }.doSwitch(measurementSpecification.getMonitor().getMeasuringPoint());
 
-            if (calculator != null && measurementSpecification.isTriggersSelfAdaptations()) {
-                final IMeasurementSourceListener aggregator = new DoubleIntervalAggregator(this.simuComModel,
-                        this.runtimeMeasurementModel, measurementSpecification);
-                calculator.addObserver(aggregator);
-            }
+            AggregatorHelper.setupAggregator(measurementSpecification, calculator, this.runtimeMeasurementModel,
+                    this.simuComModel);
         }
     }
 

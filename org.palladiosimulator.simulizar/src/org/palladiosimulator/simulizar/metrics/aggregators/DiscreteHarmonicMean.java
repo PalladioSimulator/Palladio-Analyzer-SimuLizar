@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.metrics.aggregators;
 
 import java.util.Collection;
 
-public class HarmonicMean implements IStatisticalCharacterization {
+public class DiscreteHarmonicMean implements IStatisticalCharacterization<Collection<Double>> {
 
     @Override
     public double calculateStatisticalCharaterization(final Collection<Double> measurements) {

@@ -12,6 +12,9 @@ public class PeriodicSimulationEvent extends AbstractSimEventDelegator<Periodica
 
     public PeriodicSimulationEvent(final SimuComModel model, final double delay) {
         super(model, "PeriodicSimulationEvent");
+        if (delay <= 0) {
+            throw new RuntimeException("Delay must be greater than 0!");
+        }
         this.delay = delay;
     }
 

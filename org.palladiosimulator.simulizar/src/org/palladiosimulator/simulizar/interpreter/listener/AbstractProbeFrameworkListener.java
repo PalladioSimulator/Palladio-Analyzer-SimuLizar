@@ -15,13 +15,11 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
-import org.palladiosimulator.monitorrepository.StatisticalCharacterizationEnum;
 import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
@@ -33,7 +31,7 @@ import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.metrics.aggregators.DoubleIntervalAggregator;
+import org.palladiosimulator.simulizar.metrics.aggregators.AggregatorHelper;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
@@ -252,17 +250,8 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
                 final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint,
                         probeList);
 
-                if (responseTimeMeasurementSpec.getStatisticalCharacterization() != StatisticalCharacterizationEnum.NONE
-                        && responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
-                    try {
-                        final IMeasurementSourceListener aggregator = new DoubleIntervalAggregator(this.simuComModel,
-                                this.getRuntimeMeasurementModel(), responseTimeMeasurementSpec);
-                        calculator.addObserver(aggregator);
-                    } catch (final UnsupportedOperationException e) {
-                        LOGGER.error(e);
-                        throw new RuntimeException(e);
-                    }
-                }
+                AggregatorHelper.setupAggregator(responseTimeMeasurementSpec, calculator,
+                        this.getRuntimeMeasurementModel(), this.simuComModel);
             }
         }
     }
