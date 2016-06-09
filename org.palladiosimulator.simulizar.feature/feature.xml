@@ -39,9 +39,9 @@
       <import plugin="org.eclipse.emf.ecore.xmi"/>
       <import plugin="org.palladiosimulator.edp2" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.identifier" version="2.1.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.metricspec" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.metricspec" version="1.0.2" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.pcm" version="4.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.monitorrepository" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.units" version="2.1.0" match="greaterOrEqual"/>
@@ -52,7 +52,7 @@
       <import plugin="de.uka.ipd.sdq.identifier.edit" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.metricspec.edit" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.pcm.edit" version="4.0.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.monitorrepository.edit" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.monitorrepository.edit" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction.edit" version="2.1.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.stoex.edit" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.units.edit" version="2.1.0" match="greaterOrEqual"/>
@@ -98,7 +98,6 @@
       <import plugin="org.palladiosimulator.measurementframework" version="1.0.1" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.util" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.recorderframework" version="2.0.1" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.monitorrepository" version="2.0.1" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.pcm.edp2.measuringpoint" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.edp2.datastream" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.apache.commons.collections15" version="1.0.0" match="greaterOrEqual"/>
@@ -112,7 +111,6 @@
       <import plugin="de.uka.ipd.sdq.probfunction.math"/>
       <import plugin="org.palladiosimulator.simulizar.reconfigurationrule" version="0.1.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.simulizar.runtimemeasurement"/>
    </requires>
 
    <plugin
