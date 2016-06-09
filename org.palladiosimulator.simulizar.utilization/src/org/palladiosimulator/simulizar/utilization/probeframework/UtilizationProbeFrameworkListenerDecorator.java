@@ -151,35 +151,24 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                             + "' of Monitor '" + utilizationMeasurementSpec.getMonitor().getEntityName()
                             + "' must provide a TemporalCharacterization of Type 'Interval' or 'DelayedInterval'");
         }
-
-        stateOfActiveResourceCalculator.ifPresent(calc -> {
-        	final SlidingWindowUtilizationAggregator utilizationAggregator = createSlidingWindowAggregator(
-        			calc, STATE_TUPLE_METRIC_DESC);
-            final SlidingWindowRecorder windowRecorder = createSlidingWindowRecorder(
-                    utilizationMeasurementSpec.getTemporalRestriction(), utilizationAggregator);
-            // register recorder at calculator
-            registerMeasurementsRecorder(calc, windowRecorder);
-            // forward utilization measurements to RuntimeMeasurementModel (the
-            // former PRM)
-            if (utilizationMeasurementSpec.isTriggersSelfAdaptations()) {
-                utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                        utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
-            }	
-        });
-
-        overallUtilizationCalculator.ifPresent(calc -> {
-            final SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc,
-                    UTILIZATION_TUPLE_METRIC_DESC);
-            // register recorder at calculator
-            registerMeasurementsRecorder(calc,
-                    createSlidingWindowRecorder(utilizationMeasurementSpec.getTemporalRestriction(), aggregator));
-            // forward utilization measurements to RuntimeMeasurementModel (the
-            // former PRM)
-            if (utilizationMeasurementSpec.isTriggersSelfAdaptations()) {
-                aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                        utilizationMeasurementSpec, calc.getMeasuringPoint()));
-            }
-        });
+        
+        stateOfActiveResourceCalculator.ifPresent(calc -> 
+        	setUpSlidingWindowAggregatorAndRecorder(calc, utilizationMeasurementSpec, STATE_TUPLE_METRIC_DESC));
+        overallUtilizationCalculator.ifPresent(calc -> 
+    		setUpSlidingWindowAggregatorAndRecorder(calc, utilizationMeasurementSpec, UTILIZATION_TUPLE_METRIC_DESC));
+        
+    }
+    
+    private void setUpSlidingWindowAggregatorAndRecorder(Calculator calc, MeasurementSpecification spec, MetricSetDescription desc) {	
+    	final SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc, desc);
+        // register recorder at calculator
+        registerMeasurementsRecorder(calc,
+                createSlidingWindowRecorder(spec.getTemporalRestriction(), aggregator));
+        // forward utilization measurements to RuntimeMeasurementModel (the
+        // former PRM)
+        if (spec.isTriggersSelfAdaptations()) {
+            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, spec));
+        }    
     }
 
     private SlidingWindowUtilizationAggregator createSlidingWindowAggregator(final Calculator baseCalculator,
