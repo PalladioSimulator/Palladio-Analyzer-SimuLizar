@@ -121,9 +121,9 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                         ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
                 // write measurements to RuntimeMeasurement (both power and energy measurements
                 // are forwarded)
-                triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec, measuringPoint);
+                triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec);
                 triggerRuntimeMeasurementsRecording(energyConsumptionCalculator,
-                        createSpecificationForEnergyMeasurements(powerSpec), measuringPoint);
+                        createSpecificationForEnergyMeasurements(powerSpec));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
@@ -147,11 +147,11 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     }
 
     private void triggerRuntimeMeasurementsRecording(MeasurementSource calculator,
-            MeasurementSpecification measurementSpec, MeasuringPoint measuringPoint) {
-        assert calculator != null && measurementSpec != null && measuringPoint != null;
+            MeasurementSpecification measurementSpec) {
+        assert calculator != null && measurementSpec != null;
 
         calculator.addObserver(
-                new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec, measuringPoint));
+                new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec));
     }
 
     /**
