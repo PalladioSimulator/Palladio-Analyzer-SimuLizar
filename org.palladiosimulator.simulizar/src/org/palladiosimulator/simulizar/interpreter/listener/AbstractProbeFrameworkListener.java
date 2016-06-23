@@ -249,9 +249,11 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
                 final List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
                 final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint,
                         probeList);
-
-                AggregatorHelper.setupAggregator(responseTimeMeasurementSpec, calculator,
-                        this.getRuntimeMeasurementModel(), this.simuComModel);
+                
+                if(responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
+                    AggregatorHelper.setupAggregator(responseTimeMeasurementSpec, calculator,
+                            this.getRuntimeMeasurementModel(), this.simuComModel);
+                }
             }
         }
     }
