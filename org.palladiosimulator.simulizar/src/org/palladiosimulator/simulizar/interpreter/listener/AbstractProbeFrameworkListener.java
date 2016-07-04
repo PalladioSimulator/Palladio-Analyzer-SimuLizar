@@ -6,10 +6,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-import org.apache.commons.collections15.CollectionUtils;
-import org.apache.commons.collections15.PredicateUtils;
-import org.apache.commons.collections15.Transformer;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
@@ -213,25 +213,31 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      */
     public Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
             final MetricDescription soughtFor) {
-        assert soughtFor != null;
-        final MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
-        if (monitorRepositoryModel != null) {
-            final Transformer<Monitor, MeasurementSpecification> transformer = new Transformer<Monitor, MeasurementSpecification>() {
+        Objects.requireNonNull(soughtFor, "Given MetricDescription must not be null.");
+        return filterMeasurementSpecifications(
+                m -> MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor));
+    }
 
-                @Override
-                public MeasurementSpecification transform(final Monitor monitor) {
-                    for (final MeasurementSpecification m : monitor.getMeasurementSpecifications()) {
-                        if (monitor.isActivated() && MetricDescriptionUtility
-                                .metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor)) {
-                            return m;
-                        }
-                    }
-                    return null;
-                }
-            };
-            return Collections.unmodifiableCollection(
-                    CollectionUtils.select(CollectionUtils.collect(monitorRepositoryModel.getMonitors(), transformer),
-                            PredicateUtils.notNullPredicate()));
+    /**
+     * Executes a filter, given by the passed predicate expression, on all the measurement
+     * specifications of active {@link Monitor}s, i.e., monitors for which
+     * {@link Monitor#isActivated()} returns {@code true}, contained in the associated
+     * {@link MonitorRepository}.
+     * 
+     * @param predicate
+     *            The filter {@link Predicate}.
+     * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
+     *         which might be empty but never {@code null}.
+     */
+    private Collection<MeasurementSpecification> filterMeasurementSpecifications(
+            Predicate<? super MeasurementSpecification> predicate) {
+        assert predicate != null;
+
+        MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
+        if (monitorRepositoryModel != null) {
+            return monitorRepositoryModel.getMonitors().stream().filter(Monitor::isActivated)
+                    .flatMap(monitor -> monitor.getMeasurementSpecifications().stream()).filter(predicate)
+                    .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
         }
         return Collections.emptyList();
     }
@@ -249,8 +255,8 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
                 final List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
                 final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint,
                         probeList);
-                
-                if(responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
+
+                if (responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
                     AggregatorHelper.setupAggregator(responseTimeMeasurementSpec, calculator,
                             this.getRuntimeMeasurementModel(), this.simuComModel);
                 }
