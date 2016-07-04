@@ -12,9 +12,9 @@ import org.palladiosimulator.commons.eclipseutils.FileHelper;
 
 public class FileUtil {
 
-	protected static final Logger LOGGER = Logger.getLogger(FileUtil.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(FileUtil.class.getName());
     private static final String QVTO_FILE_EXTENSION = ".qvto";
-    
+
     /**
      * Get the reconfiguration rule folder.
      *
@@ -60,39 +60,32 @@ public class FileUtil {
             // " does not exist. No reconfiguration rules will be loaded.");
             return new File[0];
         }
-        final File[] files = folder.listFiles(new FilenameFilter() {
-
-            @Override
-            public boolean accept(final File dir, final String name) {
-                return name.endsWith(fileExtension);
-            }
-        });
+        final File[] files = folder.listFiles((FilenameFilter) (dir, name) -> name.endsWith(fileExtension));
         return files;
     }
-    
+
     /**
      * Gets the QVTO files within the specified path.
      * 
      * @param path
      *            Path to reconfiguration rules.
-     * @return The QVTO files within the given path. Returns an empty array in case no files are
-     *         found.
+     * @return The {@link URI}s to all QVTO files found in the folder indicated by the given path.
+     *         Returns an empty array in case no files are found, or in case
+     *         {@code path == null || path.isEmpty()}.
      */
     public static URI[] getQvtoFiles(final String path) {
-        assert path != null;
-        if (path.equals("")) {
+        URI[] uris = null;
+        if (path == null || path.isEmpty()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("No path to QVTo rules given.");
             }
-            return new URI[0];
+            uris = new URI[0];
+        } else {
+            uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
+            if (uris.length == 0) {
+                LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
+            }
         }
-
-        final URI[] uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
-
-        if (uris.length == 0) {
-            LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
-        }
-
         return uris;
     }
 }
