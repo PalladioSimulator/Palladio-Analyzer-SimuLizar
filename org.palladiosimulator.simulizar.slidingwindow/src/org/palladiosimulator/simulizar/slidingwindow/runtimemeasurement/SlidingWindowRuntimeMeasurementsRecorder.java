@@ -6,7 +6,6 @@ import java.util.Objects;
 import javax.measure.Measure;
 import javax.measure.quantity.Quantity;
 
-import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
@@ -22,9 +21,6 @@ import org.palladiosimulator.simulizar.metrics.PRMRecorder;
  * {@link MeasurementSpecification}s to the RuntimeMeasurementModel (formerly known as PRM).<br>
  * Examples of such measurements are power or energy consumption measurements, or the sliding window
  * based computation of utilization.<br>
- * The only constraint for {@link MeasuringValue}s to be processed is (so far) that they must be
- * tuple measurements where the data value is not a point in time. This means that
- * {@link MetricDescriptionConstants#RESPONSE_TIME_METRIC_TUPLE} cannot be handle so far.
  * 
  * @author Florian Rosenthal
  *
@@ -41,12 +37,15 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     }
 
     private NumericalBaseMetricDescription getDataMetric() {
+        // find the base matric of the data:
+        // any metric that is not point in time, such as state of active resource,
+        // or, if all base metrics are point in time, return point in time
         return Arrays
                 .stream(MetricDescriptionUtility
                         .toBaseMetricDescriptions(getMeasurementSpecification().getMetricDescription()))
                 .filter(m -> !MetricDescriptionUtility.metricDescriptionIdsEqual(m, POINT_IN_TIME_METRIC)).findAny()
-                .map(m -> (NumericalBaseMetricDescription) m)
-                .orElseThrow(() -> new IllegalArgumentException("Data metric could not be found."));
+                .map(m -> (NumericalBaseMetricDescription) m).orElse(POINT_IN_TIME_METRIC);
+        // .orElseThrow(() -> new IllegalArgumentException("Data metric could not be found."));
 
     }
 

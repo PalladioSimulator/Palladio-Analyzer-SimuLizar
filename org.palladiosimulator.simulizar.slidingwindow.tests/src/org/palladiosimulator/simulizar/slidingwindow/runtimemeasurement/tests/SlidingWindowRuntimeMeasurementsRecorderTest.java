@@ -43,7 +43,7 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
         this.monitor.setMeasuringPoint(this.measuringPoint);
         this.spec.setMetricDescription(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
         this.spec.setMonitor(this.monitor);
-        
+
         Measure<Double, javax.measure.quantity.Duration> timeMeasure = Measure.valueOf(42.0, SI.SECOND);
         Measure<Double, Dimensionless> utilizationMeasure = Measure.valueOf(0.42, Dimensionless.UNIT);
         this.wrongMetricMeasurement = new BasicMeasurement<>(utilizationMeasure,
@@ -67,12 +67,6 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
     @Test(expected = NullPointerException.class)
     public void testCtorNullArgument2() {
         new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void testCtorIllegalDataMetric() {
-        this.spec.setMetricDescription(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec);
     }
 
     @Test(expected = NullPointerException.class)
