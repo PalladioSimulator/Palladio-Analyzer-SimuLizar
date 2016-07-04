@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.metrics.aggregators;
 
+import java.util.Optional;
+
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.measurementframework.measureprovider.AbstractMeasureProvider;
@@ -25,7 +27,7 @@ abstract class AbstractDoubleIntervalAggregator<DATA_TYPE> extends PRMRecorder i
     private final NumericalBaseMetricDescription metricDescription;
 
     /** Aggregation strategy to be used, e.g., arithmetic mean. */
-    private final IStatisticalCharacterization<DATA_TYPE> statisticalCharacterization;
+    private final Optional<IStatisticalCharacterization<DATA_TYPE>> statisticalCharacterization;
 
     public AbstractDoubleIntervalAggregator(final SimuComModel model, final RuntimeMeasurementModel prmAccess,
             final MeasurementSpecification measurementSpecification, final DATA_TYPE measurements) {
@@ -43,26 +45,29 @@ abstract class AbstractDoubleIntervalAggregator<DATA_TYPE> extends PRMRecorder i
         this.metricDescription = (NumericalBaseMetricDescription) measurementSpecification.getMetricDescription();
         this.model = model;
         this.measurements = measurements;
-
         switch (measurementSpecification.getStatisticalCharacterization()) {
         case MEDIAN:
-            this.statisticalCharacterization = getMedianCharacterization();
+            this.statisticalCharacterization = Optional.ofNullable(getMedianCharacterization());
             break;
         case ARITHMETIC_MEAN:
-            this.statisticalCharacterization = getArithmeticMeanCharacterization();
+            this.statisticalCharacterization = Optional.ofNullable(getArithmeticMeanCharacterization());
             break;
         case GEOMETRIC_MEAN:
-            this.statisticalCharacterization = getGeometricMeanCharacterization();
+            this.statisticalCharacterization = Optional.ofNullable(getGeometricMeanCharacterization());
             break;
         case HARMONIC_MEAN:
-            this.statisticalCharacterization = getHarmonicMeanCharacterization();
+            this.statisticalCharacterization = Optional.ofNullable(getHarmonicMeanCharacterization());
+            break;
+        case NONE:
+            this.statisticalCharacterization = Optional.empty();
             break;
         default:
             throw new UnsupportedOperationException("This aggregator is currently not supported");
         }
 
-        new PeriodicallyTriggeredSimulationEntity(model, SIMULATION_START_TIME,
-                ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall()) {
+        // only trigger aggregation if characterization is really present
+        this.statisticalCharacterization.ifPresent(c -> new PeriodicallyTriggeredSimulationEntity(model,
+                SIMULATION_START_TIME, ((Intervall) measurementSpecification.getTemporalRestriction()).getIntervall()) {
 
             @Override
             protected void triggerInternal() {
@@ -70,7 +75,7 @@ abstract class AbstractDoubleIntervalAggregator<DATA_TYPE> extends PRMRecorder i
                         AbstractDoubleIntervalAggregator.this.model.getSimulationControl().getCurrentSimulationTime());
             }
 
-        };
+        });
     }
 
     protected abstract IStatisticalCharacterization<DATA_TYPE> getMedianCharacterization();
@@ -82,9 +87,8 @@ abstract class AbstractDoubleIntervalAggregator<DATA_TYPE> extends PRMRecorder i
     protected abstract IStatisticalCharacterization<DATA_TYPE> getHarmonicMeanCharacterization();
 
     protected void finalizeCurrentIntervall(final double time) {
-        final double statisticalCharacterization = this.statisticalCharacterization
-                .calculateStatisticalCharaterization(this.measurements);
-        this.updateMeasurementValue(statisticalCharacterization);
+        this.statisticalCharacterization.map(c -> c.calculateStatisticalCharaterization(this.measurements))
+                .ifPresent(this::updateMeasurementValue);
     }
 
     /**
@@ -98,13 +102,14 @@ abstract class AbstractDoubleIntervalAggregator<DATA_TYPE> extends PRMRecorder i
      * @see org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener#newMeasurementAvailable(AbstractMeasureProvider)
      */
     @Override
-    public void newMeasurementAvailable(final MeasuringValue measurement) {
-        addMeasurement(getDoubleMeasurement(measurement), this.model.getSimulationControl().getCurrentSimulationTime());
+    public void newMeasurementAvailable(MeasuringValue measurement) {
+        this.statisticalCharacterization.ifPresent(c -> addMeasurement(getDoubleMeasurement(measurement),
+                this.model.getSimulationControl().getCurrentSimulationTime()));
     }
 
     protected abstract void addMeasurement(final double measurement, final double time);
 
-    protected double getDoubleMeasurement(final MeasuringValue measuringValue) {
+    private double getDoubleMeasurement(final MeasuringValue measuringValue) {
         return measuringValue.getMeasureForMetric(this.metricDescription)
                 .doubleValue(this.metricDescription.getDefaultUnit());
     }
