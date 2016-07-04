@@ -150,8 +150,9 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
             MeasurementSpecification measurementSpec) {
         assert calculator != null && measurementSpec != null;
 
-        calculator.addObserver(
-                new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec));
+        if (measurementSpec.isTriggersSelfAdaptations()) {
+            calculator.addObserver(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec));
+        }
     }
 
     /**
