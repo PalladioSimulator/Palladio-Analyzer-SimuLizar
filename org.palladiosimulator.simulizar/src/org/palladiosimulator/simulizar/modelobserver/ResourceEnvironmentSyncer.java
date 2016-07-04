@@ -21,7 +21,6 @@ import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeStat
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
@@ -70,9 +69,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             LOGGER.debug("Initializing Simulated ResourcesContainer");
         }
 
-        for (final ResourceContainer resourceContainer : this.model.getResourceContainer_ResourceEnvironment()) {
-            this.createSimulatedResourceContainer(resourceContainer);
-        }
+        this.model.getResourceContainer_ResourceEnvironment().forEach(this::createSimulatedResourceContainer);
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initialization done");
@@ -81,17 +78,20 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
 
     @Override
     protected void add(final Notification notification) {
-        if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+        ResourceenvironmentPackage resourceenvironmentPackage = ResourceenvironmentPackage.eINSTANCE;
+        Object changedFeature = notification.getFeature();
+
+        if (changedFeature == resourceenvironmentPackage
                 .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
             this.addSimulatedResource((ResourceContainer) notification.getNewValue());
-        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+        } else if (changedFeature == resourceenvironmentPackage
                 .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
             this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
-        } else if (notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+        } else if (changedFeature == resourceenvironmentPackage
                 .getResourceEnvironment_LinkingResources__ResourceEnvironment()
-                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                || changedFeature == resourceenvironmentPackage
                         .getLinkingResource_CommunicationLinkResourceSpecifications_LinkingResource()
-                || notification.getFeature() == ResourceenvironmentPackage.eINSTANCE
+                || changedFeature == resourceenvironmentPackage
                         .getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Ignoring sync (add) of linking resources");
@@ -183,10 +183,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
 
     private void addActiveResources(final ResourceContainer resourceContainer,
             final AbstractSimulatedResourceContainer simulatedResourceContainer) {
-        for (final ProcessingResourceSpecification processingResource : resourceContainer
-                .getActiveResourceSpecifications_ResourceContainer()) {
-            this.createSimulatedActiveResource(processingResource);
-        }
+        resourceContainer.getActiveResourceSpecifications_ResourceContainer()
+                .forEach(this::createSimulatedActiveResource);
     }
 
     /**
@@ -237,15 +235,14 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      * @return the ScheduledResource.
      */
     private ScheduledResource getScheduledResource(final ProcessingResourceSpecification processingResource) {
+        assert processingResource != null;
+
         final String typeId = this.getActiveResourceTypeID(processingResource);
 
-        for (final AbstractScheduledResource abstractScheduledResource : this
-                .getSimulatedResourceContainer(processingResource).getActiveResources()) {
-            if (abstractScheduledResource.getResourceTypeId().equals(typeId)) {
-                return (ScheduledResource) abstractScheduledResource;
-            }
-        }
-        throw new RuntimeException("Did not find scheduled resource for type ID " + typeId);
+        return getSimulatedResourceContainer(processingResource).getActiveResources().stream()
+                .filter(abstractScheduledResource -> abstractScheduledResource.getResourceTypeId().equals(typeId))
+                .findFirst().map(resource -> (ScheduledResource) resource)
+                .orElseThrow(() -> new RuntimeException("Did not find scheduled resource for type ID " + typeId));
     }
 
     /**
@@ -274,45 +271,50 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         }
     }
 
-    protected Calculator attachMonitorForActiveResourceMeasuringPoint(
+    private Calculator attachMonitorForActiveResourceMeasuringPoint(
             final ActiveResourceMeasuringPoint activeResourceMeasuringPoint,
             final MeasurementSpecification measurementSpecification, final ResourceContainer resourceContainer,
             final ScheduledResource scheduledResource, final String schedulingStrategy) {
-        final String metricID = measurementSpecification.getMetricDescription().getId();
+
+        Calculator result = null;
+        String metricID = measurementSpecification.getMetricDescription().getId();
 
         if (metricID.equals(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE.getId())
                 || metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
             // setup utilization calculators depending on their scheduling strategy
-            // and number of cores (e.g., more than 1 cores requires overall utilization)
+            // and number of cores (e.g., more than 1 core requires overall utilization
+            // in addition to state of active resource)
             if (activeResourceMeasuringPoint.getReplicaID() == 0 && scheduledResource.getNumberOfInstances() > 1) {
-                final MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource,
-                        scheduledResource.getNumberOfInstances());
-                return CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource,
-                        this.runtimeModel.getModel(), utilization);
+                includeOverallUtilizationCalculator(scheduledResource);
             }
-            if (schedulingStrategy.equals(SchedulingStrategy.PROCESSOR_SHARING)) {
-                return CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                        this.runtimeModel.getModel(), activeResourceMeasuringPoint,
-                        activeResourceMeasuringPoint.getReplicaID());
-            } else if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
+            if (schedulingStrategy.equals(SchedulingStrategy.DELAY)
                     || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
                 assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                         + "have exactly one core";
-                return CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
+                result = CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
                         this.runtimeModel.getModel(), activeResourceMeasuringPoint, 0);
             } else {
-                CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource, this.runtimeModel.getModel(),
-                        activeResourceMeasuringPoint, activeResourceMeasuringPoint.getReplicaID());
+                // the general case includes the PROCESSOR_SHARING strategy which is the most common
+                result = CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
+                        this.runtimeModel.getModel(), activeResourceMeasuringPoint,
+                        activeResourceMeasuringPoint.getReplicaID());
             }
         } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
             // return CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
         } else if (metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())) {
             // return CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
         } else if (metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
-            return CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
+            result = CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
                     activeResourceMeasuringPoint);
         }
+        return result;
+    }
 
-        return null;
+    private void includeOverallUtilizationCalculator(ScheduledResource scheduledResource) {
+
+        MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource,
+                scheduledResource.getNumberOfInstances());
+        CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
+                utilization);
     }
 }
