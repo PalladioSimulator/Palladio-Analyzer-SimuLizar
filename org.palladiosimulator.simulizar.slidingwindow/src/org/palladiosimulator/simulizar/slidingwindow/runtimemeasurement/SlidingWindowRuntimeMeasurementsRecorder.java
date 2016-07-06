@@ -17,6 +17,15 @@ import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
 
+/**
+ * This class is responsible for propagating sliding window based measurements from
+ * {@link MeasurementSpecification}s to the RuntimeMeasurementModel (formerly known as PRM).<br>
+ * Examples of such measurements are power or energy consumption measurements, or the sliding window
+ * based computation of utilization.<br>
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implements IRecorder {
 
     private static final NumericalBaseMetricDescription POINT_IN_TIME_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.POINT_IN_TIME_METRIC;
@@ -29,13 +38,22 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
         this.dataMetric = getDataMetric();
     }
 
+    public SlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
+            MeasurementSpecification measurementSpecification) {
+        this(rmModel, Objects.requireNonNull(measurementSpecification),
+                measurementSpecification.getMonitor().getMeasuringPoint());
+    }
+
     private NumericalBaseMetricDescription getDataMetric() {
+        // find the base matric of the data:
+        // any metric that is not point in time, such as state of active resource,
+        // or, if all base metrics are point in time, return point in time
         return Arrays
                 .stream(MetricDescriptionUtility
                         .toBaseMetricDescriptions(getMeasurementSpecification().getMetricDescription()))
                 .filter(m -> !MetricDescriptionUtility.metricDescriptionIdsEqual(m, POINT_IN_TIME_METRIC)).findAny()
-                .map(m -> (NumericalBaseMetricDescription) m)
-                .orElseThrow(() -> new IllegalArgumentException("Data metric could not be found."));
+                .map(m -> (NumericalBaseMetricDescription) m).orElse(POINT_IN_TIME_METRIC);
+        // .orElseThrow(() -> new IllegalArgumentException("Data metric could not be found."));
 
     }
 
@@ -55,8 +73,8 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
 
     @Override
     public void newMeasurementAvailable(MeasuringValue newMeasurement) {
-        if (newMeasurement == null
-                || !newMeasurement.isCompatibleWith(getMeasurementSpecification().getMetricDescription())) {
+        if (!Objects.requireNonNull(newMeasurement)
+                .isCompatibleWith(getMeasurementSpecification().getMetricDescription())) {
             throw new IllegalArgumentException("Incompatible measurement received!");
         }
         Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
