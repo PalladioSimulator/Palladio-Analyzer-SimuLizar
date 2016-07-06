@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 import tools.descartes.dlim.generator.ModelEvaluator;
 
@@ -29,7 +29,7 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The evolved scenario.
      */
-    public LoopingUsageEvolver(final SimuLizarRuntimeStateAbstract rtState, final double firstOccurrence,
+    public LoopingUsageEvolver(final AbstractSimuLizarRuntimeState rtState, final double firstOccurrence,
             final double delay, final UsageScenario evolvedScenario) {
         super(rtState, firstOccurrence, delay, evolvedScenario);
         if (!this.getCorrespondingUsage().isRepeatingPattern()) {

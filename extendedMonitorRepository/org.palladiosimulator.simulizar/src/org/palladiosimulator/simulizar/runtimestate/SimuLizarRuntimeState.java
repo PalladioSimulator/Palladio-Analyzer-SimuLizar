@@ -20,7 +20,7 @@ import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
  * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
-public class SimuLizarRuntimeState extends SimuLizarRuntimeStateAbstract {
+public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
 
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 

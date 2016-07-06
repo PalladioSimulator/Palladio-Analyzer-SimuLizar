@@ -4,7 +4,7 @@ import java.util.Stack;
 
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeStateAbstract;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -26,18 +26,18 @@ public class InterpreterDefaultContext extends Context {
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
-    private final SimuLizarRuntimeStateAbstract runtimeState;
+    private final AbstractSimuLizarRuntimeState runtimeState;
 
     private final IModelAccess modelAccess;
 
-    public InterpreterDefaultContext(final SimuLizarRuntimeStateAbstract simulizarModel) {
+    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
         this.modelAccess = this.runtimeState.getModelAccess();
     }
 
-    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeStateAbstract runtimeState,
+    InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
             final boolean copyStack) {
         super(context.getModel());
         this.modelAccess = runtimeState.getModelAccess().clone();
@@ -66,7 +66,7 @@ public class InterpreterDefaultContext extends Context {
         this.setSimProcess(thread);
     }
 
-    public SimuLizarRuntimeStateAbstract getRuntimeState() {
+    public AbstractSimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
 

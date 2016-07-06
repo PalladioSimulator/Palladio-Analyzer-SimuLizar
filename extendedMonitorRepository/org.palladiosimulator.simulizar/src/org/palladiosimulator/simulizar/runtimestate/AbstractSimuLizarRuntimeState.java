@@ -51,7 +51,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
  *
  */
-public abstract class SimuLizarRuntimeStateAbstract {
+public abstract class AbstractSimuLizarRuntimeState {
 
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
@@ -72,7 +72,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
      * @param configuration
      * @param modelAccess
      */
-    public SimuLizarRuntimeStateAbstract(final SimuLizarWorkflowConfiguration configuration,
+    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
             final ModelAccess modelAccess, final SimulationCancelationDelegate cancelationDelegate) {
         super();
         this.modelAccess = modelAccess;
@@ -159,9 +159,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        for (final IModelObserver modelObserver : this.modelObservers) {
-            modelObserver.unregister();
-        }
+        this.modelObservers.forEach(IModelObserver::unregister);
     }
 
     private void initializeWorkloadDrivers() {
@@ -208,8 +206,8 @@ public abstract class SimuLizarRuntimeStateAbstract {
                             notification -> LOGGER.debug(" " + notification.getNotifier()));
 
                     if (numberOfResourceCalculatorsProbes != null
-                            && SimuLizarRuntimeStateAbstract.this.numberOfContainers != getNumberOfResourceContainers()) {
-                        SimuLizarRuntimeStateAbstract.this.numberOfContainers = getNumberOfResourceContainers();
+                            && AbstractSimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
+                        AbstractSimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
                         numberOfResourceCalculatorsProbes.takeMeasurement();
                     }
                 }
@@ -269,9 +267,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
 
         final List<IModelObserver> modelObservers = ExtensionHelper
                 .getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver", "modelObserver");
-        for (final IModelObserver modelObserver : modelObservers) {
-            modelObserver.initialize(this);
-        }
+        modelObservers.forEach(m -> m.initialize(this));
 
         return modelObservers;
     }
@@ -286,7 +282,7 @@ public abstract class SimuLizarRuntimeStateAbstract {
 
     private void initializeCancelation() {
         this.model.getSimulationControl()
-                .addStopCondition(() -> SimuLizarRuntimeStateAbstract.this.cancelationDelegate.isCanceled());
+                .addStopCondition(() -> AbstractSimuLizarRuntimeState.this.cancelationDelegate.isCanceled());
     }
 
     public UsageEvolverFacade getUsageEvolverFacade() {

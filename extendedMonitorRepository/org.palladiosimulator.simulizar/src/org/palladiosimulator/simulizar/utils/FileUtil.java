@@ -69,24 +69,23 @@ public class FileUtil {
      * 
      * @param path
      *            Path to reconfiguration rules.
-     * @return The QVTO files within the given path. Returns an empty array in case no files are
-     *         found.
+     * @return The {@link URI}s to all QVTO files found in the folder indicated by the given path.
+     *         Returns an empty array in case no files are found, or in case
+     *         {@code path == null || path.isEmpty()}.
      */
     public static URI[] getQvtoFiles(final String path) {
-        assert path != null;
-        if (path.equals("")) {
+        URI[] uris = null;
+        if (path == null || path.isEmpty()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("No path to QVTo rules given.");
             }
-            return new URI[0];
+            uris = new URI[0];
+        } else {
+            uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
+            if (uris.length == 0) {
+                LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
+            }
         }
-
-        final URI[] uris = FileHelper.getURIs(path, QVTO_FILE_EXTENSION);
-
-        if (uris.length == 0) {
-            LOGGER.info("No QVTo rules found, QVTo reconfigurations disabled.");
-        }
-
         return uris;
     }
 }
