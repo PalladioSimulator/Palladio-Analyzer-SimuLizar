@@ -1,6 +1,8 @@
 package org.palladiosimulator.simulizar.utilization.probeframework;
 
 import static java.util.stream.Collectors.toList;
+import static org.palladiosimulator.edp2.util.MeasurementsUtility.SLIDING_WINDOW_BASED_MEASUREMENT_TAG_KEY;
+import static org.palladiosimulator.edp2.util.MeasurementsUtility.SLIDING_WINDOW_BASED_MEASUREMENT_TAG_VALUE;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,6 +11,7 @@ import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
@@ -28,12 +31,15 @@ import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.edp2.config.EDP2RecorderConfiguration;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 
+import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
@@ -88,7 +94,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     @Override
-    public void setProbeFrameworkListener(ProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(probeFrameworkListener);
         this.model = getProbeFrameworkListener().getSimuComModel();
         this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
@@ -173,27 +179,25 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
 
         WindowCharacterization windowCharacterization = timeDrivenProcessingType.getWindowCharacterization();
 
-        SlidingWindowUtilizationAggregator utilizationAggregator = createSlidingWindowAggregator(
-                stateOfActiveResourceCalculator, STATE_TUPLE_METRIC_DESC);
-        SlidingWindowRecorder windowRecorder = createSlidingWindowRecorder(windowCharacterization,
-                utilizationAggregator);
+        setupSlidingWindowAggregatorAndRecorder(stateOfActiveResourceCalculator, windowCharacterization,
+                utilizationMeasurementSpec, STATE_TUPLE_METRIC_DESC,
+                utilizationMeasurementSpec.getMonitor().getMeasuringPoint());
+
+        overallUtilizationCalculator
+                .ifPresent(calc -> setupSlidingWindowAggregatorAndRecorder(calc, windowCharacterization,
+                        utilizationMeasurementSpec, UTILIZATION_TUPLE_METRIC_DESC, calc.getMeasuringPoint()));
+    }
+
+    private void setupSlidingWindowAggregatorAndRecorder(Calculator calc, WindowCharacterization windowCharacterization,
+            MeasurementSpecification spec, MetricSetDescription desc, MeasuringPoint measuringPoint) {
+        final SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc, desc);
         // register recorder at calculator
-        registerMeasurementsRecorder(stateOfActiveResourceCalculator, windowRecorder);
+        registerMeasurementsRecorder(calc, createSlidingWindowRecorder(windowCharacterization, aggregator));
         // forward utilization measurements to RuntimeMeasurementModel (the
         // former PRM)
-        utilizationAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                utilizationMeasurementSpec, utilizationMeasurementSpec.getMonitor().getMeasuringPoint()));
-
-        overallUtilizationCalculator.ifPresent(calc -> {
-            SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc,
-                    UTILIZATION_TUPLE_METRIC_DESC);
-            // register recorder at calculator
-            registerMeasurementsRecorder(calc, createSlidingWindowRecorder(windowCharacterization, aggregator));
-            // forward utilization measurements to RuntimeMeasurementModel (the
-            // former PRM)
-            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel,
-                    utilizationMeasurementSpec, calc.getMeasuringPoint()));
-        });
+        if (spec.isTriggersSelfAdaptations()) {
+            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, spec, measuringPoint));
+        }
     }
 
     private SlidingWindowUtilizationAggregator createSlidingWindowAggregator(Calculator baseCalculator,
@@ -214,5 +218,28 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                         windowCharacterization.getWindowIncrementAsMeasure(),
                         utilizationAggregator.getExpectedWindowDataMetric(), this.moveOnStrategy, this.model),
                 utilizationAggregator);
+    }
+
+    @Override
+    protected IRecorderConfiguration createRecorderConfiguration(final SimuComConfig config,
+            final Map<String, Object> recorderConfigMap) {
+
+        final IRecorderConfiguration recorderConfig = super.createRecorderConfiguration(config, recorderConfigMap);
+        if (recorderConfig instanceof EDP2RecorderConfiguration) {
+            tagMeasurement((EDP2RecorderConfiguration) recorderConfig);
+        }
+        return recorderConfig;
+    }
+
+    private void tagMeasurement(final EDP2RecorderConfiguration recorderConfig) {
+        assert recorderConfig != null;
+
+        final Measurement measurement = recorderConfig.getMeasurement();
+        if (measurement == null) {
+            throw new RuntimeException(
+                    "Measurement null! Something went wrong, as this should have been created by the recorder configuration factory!");
+        }
+        measurement.getAdditionalInformation().put(SLIDING_WINDOW_BASED_MEASUREMENT_TAG_KEY,
+                SLIDING_WINDOW_BASED_MEASUREMENT_TAG_VALUE);
     }
 }

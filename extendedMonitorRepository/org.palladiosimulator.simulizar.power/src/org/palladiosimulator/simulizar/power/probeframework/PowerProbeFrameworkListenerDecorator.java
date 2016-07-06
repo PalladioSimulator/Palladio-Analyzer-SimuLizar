@@ -24,8 +24,8 @@ import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.monitorrepository.util.MonitorRepositorySwitch;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.power.calculators.SimulationTimeEnergyCalculator;
 import org.palladiosimulator.simulizar.power.calculators.SimulationTimePowerCalculator;
 import org.palladiosimulator.simulizar.power.evaluationscope.SimulationTimeEvaluationScope;
@@ -70,7 +70,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     }
 
     @Override
-    public void setProbeFrameworkListener(ProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(probeFrameworkListener);
         this.model = getProbeFrameworkListener().getSimuComModel();
         this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
@@ -136,10 +136,9 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
                 // write measurements to RuntimeMeasurement (both power and energy measurements
                 // are forwarded)
-                triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec, measuringPoint);
+                triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec);
                 triggerRuntimeMeasurementsRecording(energyConsumptionCalculator,
-                        createSpecificationForEnergyMeasurements(powerSpecMonitor, windowCharacterization),
-                        measuringPoint);
+                        createSpecificationForEnergyMeasurements(powerSpecMonitor, windowCharacterization));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
@@ -147,7 +146,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
     private static MeasurementSpecification createSpecificationForEnergyMeasurements(Monitor monitor,
             WindowCharacterization from) {
-        assert monitor != null;
+        assert monitor != null && from != null;
 
         MeasurementSpecification energySpec = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
         energySpec.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
@@ -156,7 +155,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                 .createWindowCharacterization();
 
         windowCharacterization.setWindowIncrement(from.getWindowIncrement());
-        windowCharacterization.setWindowIncrement(from.getWindowLength());
+        windowCharacterization.setWindowLength(from.getWindowLength());
 
         TimeDriven timeDrivenProcessingType = MonitorRepositoryFactory.eINSTANCE.createTimeDriven();
         timeDrivenProcessingType.setWindowCharacterization(windowCharacterization);
@@ -218,11 +217,12 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     }
 
     private void triggerRuntimeMeasurementsRecording(MeasurementSource calculator,
-            MeasurementSpecification measurementSpec, MeasuringPoint measuringPoint) {
-        assert calculator != null && measurementSpec != null && measuringPoint != null;
+            MeasurementSpecification measurementSpec) {
+        assert calculator != null && measurementSpec != null;
 
-        calculator.addObserver(
-                new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec, measuringPoint));
+        if (measurementSpec.isTriggersSelfAdaptations()) {
+            calculator.addObserver(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec));
+        }
     }
 
     /**
