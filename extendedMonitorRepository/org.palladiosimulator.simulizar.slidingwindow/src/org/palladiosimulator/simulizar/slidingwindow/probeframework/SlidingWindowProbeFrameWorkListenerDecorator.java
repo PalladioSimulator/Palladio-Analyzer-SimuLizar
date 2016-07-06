@@ -7,8 +7,9 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.experimentanalysis.FlushWindowStrategy;
+import org.palladiosimulator.experimentanalysis.DiscardAllElementsPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
+import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
@@ -23,8 +24,8 @@ import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
-import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 
@@ -38,7 +39,9 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
     private SimuComModel model;
     private RuntimeMeasurementModel runtimeMeasurementModel;
     private RetrieveCalculatorSwitch retrieveCalculatorSwitch;
-    private ISlidingWindowMoveOnStrategy moveOnStrategy = null;
+
+    private ISlidingWindowMoveOnStrategy discreteMetricScopeStrategy = null;
+    private ISlidingWindowMoveOnStrategy continuousMetricScopeStrategy = null;
 
     @Override
     public void registerMeasurements() {
@@ -47,7 +50,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
     }
 
     @Override
-    public void setProbeFrameworkListener(ProbeFrameworkListener listener) {
+    public void setProbeFrameworkListener(AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
@@ -67,15 +70,18 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
 
     private void initTimeDrivenAggregators(Collection<MeasurementSpecification> measurementSpecs) {
         if (!measurementSpecs.isEmpty()) {
-            this.moveOnStrategy = new FlushWindowStrategy();
-            measurementSpecs.forEach(m -> initAggregatorForMeasSpec(m));
+            this.discreteMetricScopeStrategy = new DiscardAllElementsPriorToLowerBoundStrategy();
+            this.continuousMetricScopeStrategy = new KeepLastElementPriorToLowerBoundStrategy();
+            measurementSpecs.forEach(this::initAggregatorForMeasSpec);
         }
     }
 
     private void initAggregatorForMeasSpec(MeasurementSpecification measurementSpec) {
 
         MeasuringPoint measuringPoint = measurementSpec.getMonitor().getMeasuringPoint();
-        MetricDescription expectedMetric = measurementSpec.getMetricDescription();
+        NumericalBaseMetricDescription expectedMetric = (NumericalBaseMetricDescription) measurementSpec
+                .getMetricDescription();
+
         Optional<Calculator> calculator = this.retrieveCalculatorSwitch.retrieveCalculator(measuringPoint,
                 expectedMetric);
 
@@ -91,13 +97,27 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         TimeDrivenAggregation aggregation = (TimeDrivenAggregation) measurementSpec.getProcessingType();
         WindowCharacterization windowCharacterization = aggregation.getWindowCharacterization();
 
+        ISlidingWindowMoveOnStrategy moveOnStrategy = null;
+        switch (expectedMetric.getScopeOfValidity()) {
+        case CONTINUOUS:
+            moveOnStrategy = this.continuousMetricScopeStrategy;
+            break;
+        case DISCRETE:
+            moveOnStrategy = this.discreteMetricScopeStrategy;
+            break;
+        default:
+            throw new AssertionError();
+        }
+
         SlidingWindow window = new SimulizarSlidingWindow(windowCharacterization.getWindowLengthAsMeasure(),
-                windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, this.moveOnStrategy, this.model);
+                windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, moveOnStrategy, this.model);
 
         StatisticalCharacterizationAggregator aggregator = aggregation.getStatisticalCharacterization()
-                .getAggregator((NumericalBaseMetricDescription) expectedMetric);
-        aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.runtimeMeasurementModel,
-                measurementSpec, measuringPoint));
+                .getAggregator(expectedMetric);
+        if (measurementSpec.isTriggersSelfAdaptations()) {
+            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.runtimeMeasurementModel,
+                    measurementSpec, measuringPoint));
+        }
 
         super.registerMeasurementsRecorder(calculator.get(), new SlidingWindowRecorder(window, aggregator));
     }
