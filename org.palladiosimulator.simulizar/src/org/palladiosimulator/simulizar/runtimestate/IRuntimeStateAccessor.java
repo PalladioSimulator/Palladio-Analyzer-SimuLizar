@@ -2,5 +2,5 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 public interface IRuntimeStateAccessor {
 
-    public void setRuntimeStateModel(SimuLizarRuntimeStateAbstract state);
+    public void setRuntimeStateModel(AbstractSimuLizarRuntimeState state);
 }

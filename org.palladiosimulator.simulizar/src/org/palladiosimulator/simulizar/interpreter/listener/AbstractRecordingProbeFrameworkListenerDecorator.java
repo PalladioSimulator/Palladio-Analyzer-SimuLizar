@@ -8,6 +8,7 @@ import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.recorderframework.IRecorder;
 import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
+import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
@@ -22,22 +23,22 @@ import de.uka.ipd.sdq.simucomframework.SimuComConfig;
  */
 public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
-    private ProbeFrameworkListener probeFrameworkListener;
+    private AbstractProbeFrameworkListener probeFrameworkListener;
 
     /**
      * Injects the probe framework listener that is decorated by this class.
      *
      * @param probeFrameworkListener
-     *            The {@link ProbeFrameworkListener} used during the current simulation run.
+     *            The {@link AbstractProbeFrameworkListener} used during the current simulation run.
      */
-    public void setProbeFrameworkListener(final ProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         this.probeFrameworkListener = probeFrameworkListener;
     }
 
     /**
      * Registers additional measurements to be observed/stored by the probe framework listener.<br>
-     * This method is called by the {@link ProbeFrameworkListener} in order to have additional
-     * measurements attached.
+     * This method is called by the {@link AbstractProbeFrameworkListener} in order to have
+     * additional measurements attached.
      */
     public void registerMeasurements() {
         if (this.probeFrameworkListener == null) {
@@ -47,34 +48,72 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     }
 
     /**
-     * Gets the current {@link ProbeFrameworkListener} instance.
+     * Gets the current {@link AbstractProbeFrameworkListener} instance.
      *
-     * @return The current {@link ProbeFrameworkListener} that has been passed to this instance via
-     *         {@link #setProbeFrameworkListener(ProbeFrameworkListener)}.
+     * @return The current {@link AbstractProbeFrameworkListener} that has been passed to this
+     *         instance via {@link #setProbeFrameworkListener(AbstractProbeFrameworkListener)}.
      */
-    protected ProbeFrameworkListener getProbeFrameworkListener() {
+    protected AbstractProbeFrameworkListener getProbeFrameworkListener() {
         return this.probeFrameworkListener;
     }
 
     /**
-     * Instantiates and initializes a {@link IRecorder} implementation based on the
+     * Template method to instantiate and initialize a {@link IRecorder} implementation based on the
      * {@link SimuComConfig} of the current SimuLizar run.
      *
      * @param recorderConfigMap
      *            A {@link Map} which contains the recorder configuration attributes.
      * @return An {@link IRecorder} initialized with the given configuration.
+     * @see #instantiateRecorder(SimuComConfig)
      * @see #createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(MetricDescription,
      *      MeasuringPoint)
      */
     protected IRecorder initializeRecorder(final Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
 
-        final SimuComConfig config = this.probeFrameworkListener.getSimuComModel().getConfiguration();
-        final IRecorder recorder = RecorderExtensionHelper
-                .instantiateRecorderImplementationForRecorder(config.getRecorderName());
-        recorder.initialize(config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap));
+        SimuComConfig config = this.probeFrameworkListener.getSimuComModel().getConfiguration();
+        IRecorder recorder = instantiateRecorder(config);
+        recorder.initialize(createRecorderConfiguration(config, recorderConfigMap));
 
         return recorder;
+    }
+
+    /**
+     * Method to instantiate an {@link IRecorder} used for the recording of the measurements. This
+     * method is called within {@link #initializeRecorder(Map)} to the initialization of the created
+     * recorder.
+     * 
+     * @param config
+     *            The {@link SimuComConfig} which contains the configuration of the current
+     *            simulation run.
+     * @return This default implementation returns the result of<br>
+     *         {@code RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config.getRecorderName());}
+     *         .
+     */
+    protected IRecorder instantiateRecorder(SimuComConfig config) {
+        assert config != null;
+        return RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config.getRecorderName());
+    }
+
+    /**
+     * Method to obtain an {@link IRecorderConfiguration} used for the recording of the
+     * measurements. This method is called within {@link #initializeRecorder(Map)} to initialize the
+     * created recorder after it has been instantiated.
+     * 
+     * @param config
+     *            The {@link SimuComConfig} which contains the configuration of the current
+     *            simulation run.
+     * @param recorderConfigMap
+     *            A {@link Map} with the configuration attributes.
+     * @return This default implementation returns the result of <br>
+     *         {@code config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap);}
+     *         .
+     */
+    protected IRecorderConfiguration createRecorderConfiguration(SimuComConfig config,
+            Map<String, Object> recorderConfigMap) {
+        assert recorderConfigMap != null && config != null;
+
+        return config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap);
     }
 
     /**
