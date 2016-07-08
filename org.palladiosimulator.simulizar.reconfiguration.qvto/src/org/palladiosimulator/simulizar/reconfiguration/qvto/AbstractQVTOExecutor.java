@@ -165,26 +165,6 @@ public abstract class AbstractQVTOExecutor {
         // input and output and execution context
         ExecutionDiagnostic result = doExecution(modelTransformation, executionContext, modelExtents);
         
-        boolean save = false;
-        if (save) {
-        	Arrays.asList(modelExtents).stream()
-        		.flatMap(ex -> ex.getContents().stream())
-        		.filter(o -> o.eResource() != null)
-        		.map(o -> o.eResource())
-        		.map(r -> r.getResourceSet())
-        		.distinct()
-        		.flatMap(s -> s.getResources().stream())
-        		.filter(r -> r.getURI() != null && r.getURI().toString().contains("platform:/resource"))
-        		.filter(r -> !r.getContents().isEmpty())
-        		.forEach(r -> {
-        			try { 
-        				r.save(Collections.emptyMap());
-        				LOGGER.info("Saved " + r.getURI().toString());
-	        		} catch (IOException ex) {
-	        			LOGGER.warn(String.format("Could not save resource %s due to exception %s", r.getURI().toString(), ex.toString()));
-	        		}
-        		});
-        }
         return result;
     }
 
