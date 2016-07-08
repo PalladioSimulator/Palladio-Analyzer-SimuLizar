@@ -73,4 +73,11 @@
       </runtimeStateAccessor>
    </extension>
 	<extension-point name="State Transformation Task" id="stratetransformation" schema="schema/org.palladiosimulator.simulizar.action.statetransformation.exsd"/>
+ <extension
+       id="org.palladiosimulator.action.util.TransientEffectTransformationCacheKeeper"
+       point="org.palladiosimulator.simulizar.modelobserver">
+    <modelObserver
+          modelObserver="org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper">
+    </modelObserver>
+ </extension>
 </plugin>

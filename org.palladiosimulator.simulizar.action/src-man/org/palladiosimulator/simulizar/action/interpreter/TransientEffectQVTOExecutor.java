@@ -19,6 +19,7 @@ import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
 import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
+import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.AbstractQVTOExecutor;
@@ -42,9 +43,11 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     private static final EPackage REPOSITORY_EPACKAGE = RepositoryPackage.Literals.REPOSITORY.getEPackage();
 
     private final Collection<ModelExtent> currentPureOutParams;
-
-    protected TransientEffectQVTOExecutor(QVToModelCache availableModels) {
-        super(new ModelTransformationCache(), Objects.requireNonNull(availableModels));
+    
+    private static ModelTransformationCache TRANSIENT_EFFECT_TRANSFORMATION_CACHE = null;
+    
+    protected TransientEffectQVTOExecutor(ModelTransformationCache transformationCache, QVToModelCache availableModels) {
+        super(transformationCache, Objects.requireNonNull(availableModels));
         this.currentPureOutParams = new ArrayList<>();
 
     }

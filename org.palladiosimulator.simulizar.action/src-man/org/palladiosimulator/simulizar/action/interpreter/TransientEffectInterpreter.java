@@ -47,6 +47,7 @@ import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationActionExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
@@ -244,14 +245,16 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		private final SimuComSimProcess executingProcess;
 		private final TransientEffectQVTOExecutor qvtoExecutor;
 		private final Map<ControllerCall, List<VariableUsage>> inputVariableUsagesPerControllerCall;
-		// private final QVToModelCache availableModels;
 
 		private InternalSwitch(SimuComSimProcess executingProcess) {
 			this.executingProcess = executingProcess;
 			QVToModelCache availableModels = new QVToModelCache(
 					Objects.requireNonNull(TransientEffectInterpreter.this.state.getModelAccess()));
 
-			this.qvtoExecutor = new TransientEffectQVTOExecutor(availableModels.snapshot());
+			this.qvtoExecutor = new TransientEffectQVTOExecutor(
+					TransientEffectTransformationCacheKeeper.getTransformationCacheForRuntimeState(
+							TransientEffectInterpreter.this.state), 
+					availableModels.snapshot());
 			this.inputVariableUsagesPerControllerCall = TransientEffectInterpreter.this.controllerCallsInputVariableUsages
 					.getControllerCallInputVariableUsages().stream()
 					.collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
