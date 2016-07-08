@@ -14,7 +14,7 @@ public class QVTOReconfigurationLogger implements Log {
 
     private static Logger logger;
     
-    private static final Level DEFAULT_LOG_LEVEL = Level.DEBUG;
+    private static final Level DEFAULT_LOG_LEVEL = Level.INFO;
 
     /**
      * 

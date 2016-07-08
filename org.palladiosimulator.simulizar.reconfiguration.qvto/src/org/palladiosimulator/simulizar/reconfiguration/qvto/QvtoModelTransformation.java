@@ -12,7 +12,7 @@ import org.palladiosimulator.simulizar.reconfigurationrule.impl.ModelTransformat
 
 @SuppressWarnings("restriction")
 public class QvtoModelTransformation extends ModelTransformationImpl<OperationalTransformation> {
-    private final TransformationExecutor transformationExecutor;
+    private final QVTOTransformationExecutor transformationExecutor;
     private final Collection<TransformationParameterInformation> inParams;
     private final Collection<TransformationParameterInformation> outParams;
     
@@ -27,7 +27,7 @@ public class QvtoModelTransformation extends ModelTransformationImpl<Operational
     private static final Predicate<TransformationParameterInformation> IN_INOUT_PARAM_PREDICATE = PredicateUtils
             .notPredicate(PURE_OUT_PARAM_PREDICATE);
 
-    public QvtoModelTransformation(OperationalTransformation transformation, TransformationExecutor executor,
+    public QvtoModelTransformation(OperationalTransformation transformation, QVTOTransformationExecutor executor,
             Collection<TransformationParameterInformation> paramInfo) {
         this.modelTransformation = transformation;
         this.transformationExecutor = executor;
@@ -79,9 +79,9 @@ public class QvtoModelTransformation extends ModelTransformationImpl<Operational
      * Gets the transformation executor that will be used to execute the associated QVT0
      * transformation.
      * 
-     * @return The {@link TransformationExecutor} that will execute the transformation.
+     * @return The {@link QVTOTransformationExecutor} that will execute the transformation.
      */
-    public TransformationExecutor getTransformationExecutor() {
+    public QVTOTransformationExecutor getTransformationExecutor() {
         return this.transformationExecutor;
     }
     

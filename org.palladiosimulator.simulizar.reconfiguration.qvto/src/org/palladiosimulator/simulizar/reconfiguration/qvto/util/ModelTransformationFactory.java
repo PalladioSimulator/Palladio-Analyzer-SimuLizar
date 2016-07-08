@@ -14,7 +14,8 @@ import org.eclipse.m2m.internal.qvt.oml.expressions.ModelParameter;
 import org.eclipse.m2m.internal.qvt.oml.expressions.ModelType;
 import org.eclipse.m2m.internal.qvt.oml.expressions.OperationalTransformation;
 import org.eclipse.m2m.internal.qvt.oml.expressions.util.ExpressionsSwitch;
-import org.eclipse.m2m.qvt.oml.TransformationExecutor;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOPoolingModelTransformation;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOTransformationExecutor;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.TransformationParameterInformation;
 
@@ -77,7 +78,7 @@ public class ModelTransformationFactory {
             throw new IllegalArgumentException(
                     "OperationalTransformation instance could not be retrieved from resource contents.");
         }
-        return new QvtoModelTransformation(transformation, new TransformationExecutor(transformationUri),
+        return new QVTOPoolingModelTransformation(transformation, () -> new QVTOTransformationExecutor(transformationUri),
                 createTransformationParameterInformation(transformation));
     }
 
