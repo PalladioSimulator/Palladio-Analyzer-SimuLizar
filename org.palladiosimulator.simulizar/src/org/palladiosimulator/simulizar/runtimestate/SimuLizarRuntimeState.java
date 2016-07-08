@@ -8,8 +8,6 @@ import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 
-import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
-
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
  * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
