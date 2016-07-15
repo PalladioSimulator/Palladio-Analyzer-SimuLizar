@@ -78,8 +78,8 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
             throw new IllegalArgumentException("Incompatible measurement received!");
         }
         Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
-        // forward value (expressed as double in receiving unit!) to RuntimeMeasurementModel
-        updateMeasurementValue(measure.doubleValue(measure.getUnit()));
+        // forward value (expressed as double in default unit!) to RuntimeMeasurementModel
+        updateMeasurementValue(measure.doubleValue(this.dataMetric.getDefaultUnit()));
     }
 
     @Override
