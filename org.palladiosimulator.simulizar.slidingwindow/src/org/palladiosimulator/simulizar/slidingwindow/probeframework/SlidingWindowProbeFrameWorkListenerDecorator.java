@@ -12,7 +12,7 @@ import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;
 import org.palladiosimulator.experimentanalysis.KeepLastElementPriorToLowerBoundStrategy;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
-import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.StatisticalCharacterizationAggregator;
+import org.palladiosimulator.experimentanalysis.statisticalcharacterization.aggregators.SlidingWindowStatisticalCharacterizationAggregator;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
@@ -112,14 +112,15 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         SlidingWindow window = new SimulizarSlidingWindow(windowCharacterization.getWindowLengthAsMeasure(),
                 windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, moveOnStrategy, this.model);
 
-        StatisticalCharacterizationAggregator aggregator = aggregation.getStatisticalCharacterization()
-                .getAggregator(expectedMetric);
+        SlidingWindowStatisticalCharacterizationAggregator windowAggregator = new SlidingWindowStatisticalCharacterizationAggregator(
+                aggregation.getStatisticalCharacterization().getAggregator(expectedMetric));
+
         if (measurementSpec.isTriggersSelfAdaptations()) {
-            aggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.runtimeMeasurementModel,
+            windowAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(this.runtimeMeasurementModel,
                     measurementSpec, measuringPoint));
         }
 
-        super.registerMeasurementsRecorder(calculator.get(), new SlidingWindowRecorder(window, aggregator));
+        super.registerMeasurementsRecorder(calculator.get(), new SlidingWindowRecorder(window, windowAggregator));
     }
 
     private class RetrieveCalculatorSwitch extends MetricSpecSwitch<Optional<Calculator>> {
