@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="org.palladiosimulator.simulizar.buckminster"
-      label="Simulizer Buckminster Feature"
+      label="SimuLizar Buckminster Feature"
       version="1.0.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
-
-   <description url="http://www.example.com/description">
-      [Enter Feature Description here.]
-   </description>
 
    <includes
          id="org.palladiosimulator.simulizar.feature"
