@@ -4,14 +4,12 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.apache.commons.collections15.IteratorUtils;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.FixedSizeAggregation;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -57,16 +55,12 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
 
     @Override
     protected Amount<Duration> getIntervalStartTime() {
-        Measure<Double, Duration> start = this.buffer.getEldestElement()
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        return Amount.valueOf(start.getValue(), start.getUnit());
+        return getPointInTimeOfMeasurement(this.buffer.getEldestElement());
     }
 
     @Override
     protected Amount<Duration> getIntervalEndTime() {
-        Measure<Double, Duration> end = this.buffer.getNewestElement()
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-        return Amount.valueOf(end.getValue(), end.getUnit());
+        return getPointInTimeOfMeasurement(this.buffer.getNewestElement());
     }
 
     @Override
@@ -107,10 +101,6 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             return this.data.length;
         }
 
-        public boolean isEmpty() {
-            return this.currentElementCount == 0;
-        }
-
         public boolean isFull() {
             return size() == capacity();
         }
@@ -132,7 +122,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             assert isFull() && newElemement != null;
 
             this.data[this.eldestElementPointer] = newElemement;
-            adjustOldestElementPointer();
+            adjustEldestElementPointer();
         }
 
         private void addNotFull(MeasuringValue elementToAdd) {
@@ -143,7 +133,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             this.currentElementCount++;
         }
 
-        private void adjustOldestElementPointer() {
+        private void adjustEldestElementPointer() {
             this.eldestElementPointer++;
             this.eldestElementPointer %= capacity();
             assert this.eldestElementPointer >= 0 && this.eldestElementPointer < capacity();

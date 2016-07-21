@@ -10,7 +10,6 @@ import javax.measure.quantity.Duration;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -77,15 +76,6 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     @Override
     protected void onPreAggregate() {
         evictMeasurements();
-    }
-
-    private static Amount<Duration> getPointInTimeOfMeasurement(MeasuringValue measurement) {
-        assert measurement != null;
-
-        Measure<Double, Duration> pointInTimeMeasure = measurement
-                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-
-        return Amount.valueOf(pointInTimeMeasure.getValue(), pointInTimeMeasure.getUnit());
     }
 
     private boolean isRetrospectionLengthReached() {

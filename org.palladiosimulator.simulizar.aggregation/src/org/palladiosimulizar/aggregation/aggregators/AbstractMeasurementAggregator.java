@@ -3,6 +3,7 @@ package org.palladiosimulizar.aggregation.aggregators;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
 import org.jscience.physics.amount.Amount;
@@ -10,6 +11,7 @@ import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.StatisticalCharacterization;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
@@ -64,11 +66,40 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
 
     protected abstract void collectMeasurement(MeasuringValue newMeasurement);
 
+    /**
+     * This method is invoked directly before an aggregation of the measurements is to be performed
+     * and is intended to be overriden by subclasses to include implementation-specific behavior.
+     * <br>
+     * The default implementation does nothing.
+     */
     protected void onPreAggregate() {
 
     }
 
+    /**
+     * This method is invoked directly after an aggregation of the measurements has been performed
+     * and is intended to be overriden by subclasses to include implementation-specific behavior.
+     * <br>
+     * The default implementation does nothing.
+     */
     protected void onPostAggregate() {
+    }
+
+    /**
+     * Convenience method for all subclasses to obtain the point in time (which is assumed to be
+     * present) a measurement was taken.
+     *
+     * @param measurement
+     *            A {@link MeasuringValue} representing the measurement.
+     * @return The corresponding point in time, expressed in terms of an {@link Amount}.
+     */
+    protected static Amount<Duration> getPointInTimeOfMeasurement(MeasuringValue measurement) {
+        assert measurement != null;
+
+        Measure<Double, Duration> pointInTimeMeasure = measurement
+                .getMeasureForMetric(MetricDescriptionConstants.POINT_IN_TIME_METRIC);
+
+        return Amount.valueOf(pointInTimeMeasure.getValue(), pointInTimeMeasure.getUnit());
     }
 
     private void aggregate() {
