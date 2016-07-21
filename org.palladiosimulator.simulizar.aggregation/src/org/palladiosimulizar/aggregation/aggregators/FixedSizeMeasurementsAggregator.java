@@ -11,7 +11,6 @@ import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.FixedSizeAggregation;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
 public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregator {
@@ -19,38 +18,26 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
     private final FixedSizeAggregation fixedSizeAggregation;
     private final InternalBuffer buffer;
 
-    private int measurementsUntilNextAggregation = 0;
-
     public FixedSizeMeasurementsAggregator(NumericalBaseMetricDescription expectedMetric,
             RuntimeMeasurementModel runtimeMeasurementModel, FixedSizeAggregation fixedSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
-                (MeasurementSpecification) Objects.requireNonNull(fixedSizeAggregation).eContainer(),
-                fixedSizeAggregation.getStatisticalCharacterization());
+                Objects.requireNonNull(fixedSizeAggregation));
 
         this.fixedSizeAggregation = fixedSizeAggregation;
-
+        // org.eclipse.emf.common.util.Diagnostic d =
+        // Diagnostician.INSTANCE.validate(this.fixedSizeAggregation);
+        // System.out.println(d.getMessage());
         this.buffer = new InternalBuffer(this.fixedSizeAggregation.getNumberOfMeasurements());
-
-        resetCounter();
-    }
-
-    private void resetCounter() {
-        this.measurementsUntilNextAggregation = this.fixedSizeAggregation.getFrequency();
-    }
-
-    private void decrementCounter() {
-        --this.measurementsUntilNextAggregation;
     }
 
     @Override
     protected void collectMeasurement(MeasuringValue newMeasurement) {
         this.buffer.add(newMeasurement);
-        decrementCounter();
     }
 
     @Override
     protected boolean aggregationRequired() {
-        return this.measurementsUntilNextAggregation == 0;
+        return this.buffer.isFull();
     }
 
     @Override
@@ -66,11 +53,6 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
     @Override
     protected Iterable<MeasuringValue> getDataToAggregate() {
         return this.buffer;
-    }
-
-    @Override
-    protected void onPostAggregate() {
-        resetCounter();
     }
 
     @Override

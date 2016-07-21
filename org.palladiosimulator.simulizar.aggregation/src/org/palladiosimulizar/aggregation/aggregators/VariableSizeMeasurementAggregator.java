@@ -10,7 +10,6 @@ import javax.measure.quantity.Duration;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
-import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
@@ -24,8 +23,7 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     public VariableSizeMeasurementAggregator(NumericalBaseMetricDescription expectedMetric,
             RuntimeMeasurementModel runtimeMeasurementModel, VariableSizeAggregation variableSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
-                (MeasurementSpecification) Objects.requireNonNull(variableSizeAggregation).eContainer(),
-                variableSizeAggregation.getStatisticalCharacterization());
+                Objects.requireNonNull(variableSizeAggregation));
 
         this.buffer = new LinkedList<>();
         this.variableSizeAggregation = variableSizeAggregation;
@@ -67,10 +65,32 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     }
 
     private void evictMeasurements() {
-        while (!this.buffer.isEmpty() && getPointInTimeOfMeasurement(this.buffer.getLast())
-                .minus(getPointInTimeOfMeasurement(this.buffer.getFirst())).isGreaterThan(this.retrospectionLength)) {
-            this.buffer.pollFirst();
+        switch (getExpectedMetric().getScopeOfValidity()) {
+        // in the case of a continuous scope
+        // maintain the first measurement prior to the left interval bound
+        case CONTINUOUS:
+            MeasuringValue first = this.buffer.peekFirst(); // null if buffer is empty
+            MeasuringValue lastPolled = null;
+            while (first != null && getPointInTimeOfMeasurement(this.buffer.getLast())
+                    .minus(getPointInTimeOfMeasurement(first)).isGreaterThan(this.retrospectionLength)) {
+                lastPolled = this.buffer.pollFirst();
+                first = this.buffer.peekFirst();
+            }
+            if (lastPolled != null) {
+                this.buffer.addFirst(lastPolled);
+            }
+            break;
+        case DISCRETE:
+            while (!this.buffer.isEmpty() && getPointInTimeOfMeasurement(this.buffer.getLast())
+                    .minus(getPointInTimeOfMeasurement(this.buffer.getFirst()))
+                    .isGreaterThan(this.retrospectionLength)) {
+                this.buffer.pollFirst();
+            }
+            break;
+        default:
+            throw new AssertionError("Should not be reached!");
         }
+
     }
 
     @Override
