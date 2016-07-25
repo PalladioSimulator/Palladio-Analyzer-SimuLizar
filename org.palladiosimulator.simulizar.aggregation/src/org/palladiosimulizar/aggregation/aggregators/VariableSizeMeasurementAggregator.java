@@ -10,9 +10,19 @@ import javax.measure.quantity.Duration;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.monitorrepository.RetrospectiveCharacterization;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
+/**
+ * Implementation of the {@link AbstractMeasurementAggregator} class dedicated to aggregate a
+ * variable number of measurements and to forward the aggregation result to a
+ * {@link RuntimeMeasurementModel}.
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggregator {
 
     // assume that the consecutive measurements are chronologically ordered
@@ -20,6 +30,28 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     private final VariableSizeAggregation variableSizeAggregation;
     private final Amount<Duration> retrospectionLength;
 
+    private static final Amount<Duration> ZERO_DURATION = Amount.valueOf(0, Duration.UNIT);
+
+    /**
+     * Initializes a new instance of the {@link VariableSizeMeasurementAggregator} class with the
+     * given parameters.
+     * 
+     * @param expectedMetric
+     *            The expected {@link NumericalBaseMetricDescription} of the aggregated measurements
+     *            to be forwarded to the runtime measurement model.
+     * @param prmAccess
+     *            The {@link RuntimeMeasurementModel} where the aggregation results are forwarded
+     *            to.
+     * @param aggregation
+     *            The {@link VariableSizeAggregation} model element specifying the properties of
+     *            measurement aggregation.
+     * @throws NullPointerException
+     *             In case any of the parameters is {@code null}.
+     * @throws IllegalStateException
+     *             If the value of the 'Retrospection Length' attribute of
+     *             {@link RetrospectiveCharacterization} associated with the passed
+     *             {@link VariableSizeAggregation} is not positive.
+     */
     public VariableSizeMeasurementAggregator(NumericalBaseMetricDescription expectedMetric,
             RuntimeMeasurementModel runtimeMeasurementModel, VariableSizeAggregation variableSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
@@ -29,6 +61,13 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
         this.variableSizeAggregation = variableSizeAggregation;
         Measure<Double, Duration> retrospectionMeasure = this.variableSizeAggregation.getRetrospection()
                 .getRetrospectionLengthAsMeasure();
+        if (retrospectionMeasure.compareTo(ZERO_DURATION) <= 0) {
+            throw new IllegalStateException("Value of '"
+                    + MonitorRepositoryPackage.Literals.RETROSPECTIVE_CHARACTERIZATION__RETROSPECTION_LENGTH.getName()
+                    + "' attribute of the '" + variableSizeAggregation.getRetrospection().eClass().getName()
+                    + "' contained by '" + variableSizeAggregation.eClass().getName() + "' with id "
+                    + variableSizeAggregation.getId() + " must be positive!");
+        }
         this.retrospectionLength = Amount.valueOf(retrospectionMeasure.getValue(), retrospectionMeasure.getUnit());
     }
 
@@ -39,12 +78,14 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
 
     @Override
     protected boolean aggregationRequired() {
-        return !this.buffer.isEmpty() && isRetrospectionLengthReached();
+        return !this.buffer.isEmpty() && !getPointInTimeOfMeasurement(this.buffer.getLast())
+                .minus(this.retrospectionLength).isLessThan(getPointInTimeOfMeasurement(this.buffer.getFirst()));
     }
 
     @Override
     protected Amount<Duration> getIntervalStartTime() {
-        return getIntervalEndTime().minus(this.retrospectionLength);
+        Amount<Duration> result = getIntervalEndTime().minus(this.retrospectionLength);
+        return result.compareTo(ZERO_DURATION) < 0 ? ZERO_DURATION : result;
     }
 
     @Override
@@ -96,12 +137,5 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     @Override
     protected void onPreAggregate() {
         evictMeasurements();
-    }
-
-    private boolean isRetrospectionLengthReached() {
-        assert !this.buffer.isEmpty();
-
-        return !getPointInTimeOfMeasurement(this.buffer.getLast()).minus(this.retrospectionLength)
-                .isLessThan(getPointInTimeOfMeasurement(this.buffer.getFirst()));
     }
 }
