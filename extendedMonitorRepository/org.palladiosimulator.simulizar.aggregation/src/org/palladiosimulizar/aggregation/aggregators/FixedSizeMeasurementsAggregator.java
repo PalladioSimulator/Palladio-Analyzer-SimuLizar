@@ -11,23 +11,59 @@ import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.FixedSizeAggregation;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
+/**
+ * Implementation of the {@link AbstractMeasurementAggregator} class dedicated to aggregate a fixed
+ * number of consecutive measurements and to forward the aggregation result to a
+ * {@link RuntimeMeasurementModel}.
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregator {
 
     private final FixedSizeAggregation fixedSizeAggregation;
     private final InternalBuffer buffer;
 
+    /**
+     * Initializes a new instance of the {@link FixedSizeMeasurementsAggregator} class with the
+     * given parameters.
+     * 
+     * @param expectedMetric
+     *            The expected {@link NumericalBaseMetricDescription} of the aggregated measurements
+     *            to be forwarded to the runtime measurement model.
+     * @param prmAccess
+     *            The {@link RuntimeMeasurementModel} where the aggregation results are forwarded
+     *            to.
+     * @param aggregation
+     *            The {@link FixedSizeAggregation} model element specifying the properties of
+     *            measurement aggregation.
+     * @throws NullPointerException
+     *             In case any of the parameters is {@code null}.
+     * @throws IllegalStateException
+     *             If the value of the 'Number Of Measurements' attribute of the passed
+     *             {@link FixedSizeAggregation} is not positive.
+     */
     public FixedSizeMeasurementsAggregator(NumericalBaseMetricDescription expectedMetric,
             RuntimeMeasurementModel runtimeMeasurementModel, FixedSizeAggregation fixedSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
                 Objects.requireNonNull(fixedSizeAggregation));
 
+        this.buffer = new InternalBuffer(checkAndGetNumberOfMeasurementsAttribute(fixedSizeAggregation));
         this.fixedSizeAggregation = fixedSizeAggregation;
-        // org.eclipse.emf.common.util.Diagnostic d =
-        // Diagnostician.INSTANCE.validate(this.fixedSizeAggregation);
-        // System.out.println(d.getMessage());
-        this.buffer = new InternalBuffer(this.fixedSizeAggregation.getNumberOfMeasurements());
+    }
+
+    private static int checkAndGetNumberOfMeasurementsAttribute(FixedSizeAggregation fixedSizeAggregation) {
+        int numMeas = fixedSizeAggregation.getNumberOfMeasurements();
+        if (numMeas < 1) {
+            throw new IllegalStateException("Value of '"
+                    + MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION__NUMBER_OF_MEASUREMENTS.getName()
+                    + "' attribute of " + "'" + fixedSizeAggregation.eClass().getName() + "' with id "
+                    + fixedSizeAggregation.getId() + " must be positive!");
+        }
+        return numMeas;
     }
 
     @Override

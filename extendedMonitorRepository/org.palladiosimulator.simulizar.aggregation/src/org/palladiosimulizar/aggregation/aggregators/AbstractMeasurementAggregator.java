@@ -13,6 +13,7 @@ import org.palladiosimulator.measurementframework.listener.IMeasurementSourceLis
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementDrivenAggregation;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.metrics.PRMRecorder;
@@ -47,6 +48,11 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * @param aggregation
      *            The {@link MeasurementDrivenAggregation} model element indicating the way of
      *            measurement aggregation.
+     * @throws NullPointerException
+     *             In case any of the parameters is {@code null}.
+     * @throws IllegalStateException
+     *             If the value of the 'Frequency' attribute of the passed
+     *             {@link MeasurementDrivenAggregation} is not positive.
      */
     AbstractMeasurementAggregator(NumericalBaseMetricDescription expectedMetric, RuntimeMeasurementModel prmAccess,
             MeasurementDrivenAggregation measurementDrivenAggregation) {
@@ -55,6 +61,12 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
         this.expectedMetric = Objects.requireNonNull(expectedMetric);
         this.aggregator = measurementDrivenAggregation.getStatisticalCharacterization().getAggregator(expectedMetric);
         this.frequencyOfAggregation = measurementDrivenAggregation.getFrequency();
+        if (this.frequencyOfAggregation < 1) {
+            throw new IllegalStateException(
+                    "Value of '" + MonitorRepositoryPackage.Literals.MEASUREMENT_DRIVEN_AGGREGATION__FREQUENCY.getName()
+                            + "' attribute of " + "'" + measurementDrivenAggregation.eClass().getName() + "' with id "
+                            + measurementDrivenAggregation.getId() + " must be positive!");
+        }
 
         resetCounter();
     }
@@ -94,9 +106,12 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * <li>{@link #decrementCounter()} is invoked</li>
      * <li>
      * {@code // check whether counter for next upcoming aggregation has reached zero && aggreationRequired() == true}
-     * }</li>
+     * </li>
+     * </ol>
+     * In case of an upcoming aggregation, the following steps are carried out additionally:
+     * <ol>
      * <li>{@link #onPreAggregate()} is invoked</li>
-     * <li>{@code aggregation is performed}</li>
+     * <li>{@code // the actual aggregation is performed}</li>
      * <li>{@link #onPostAggregate()} is invoked</li>
      * <li>{@link #resetCounter()} is invoked</li>
      * </ol>
@@ -118,6 +133,13 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
         }
     }
 
+    /**
+     * {@inheritDoc}<br>
+     * In particular, all measurements that are currently collected for aggregation are discarded
+     * upon unregistering.
+     * 
+     * @see #clear()
+     */
     @Override
     public void preUnregister() {
         super.detachFromPRM();
@@ -149,7 +171,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
     /**
      * Gets the left (lower) bound of the interval that all measurements that are aggregated lie in.
      * 
-     * @return An {@link Amount} denoting the left bound of the interval.
+     * @return A non-negative {@link Amount} denoting the left bound of the interval.
      * @see #getIntervalEndTime()
      */
     protected abstract Amount<Duration> getIntervalStartTime();
@@ -158,7 +180,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * Gets the right (upper) bound of the interval that all measurements that are aggregated lie
      * in.
      * 
-     * @return An {@link Amount} denoting the right bound of the interval.
+     * @return A non-negative {@link Amount} denoting the right bound of the interval.
      * @see #getIntervalStartTime()
      */
     protected abstract Amount<Duration> getIntervalEndTime();
@@ -204,7 +226,6 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * @see #aggregationRequired()
      */
     protected void onPostAggregate() {
-        resetCounter();
     }
 
     /**
