@@ -222,7 +222,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      * Gets all associated {@link MeasurementSpecification}s whose 'processingType' attribute is of
      * a certain type.
      *
-     * @param specificationKindEClass
+     * @param processingTypeEClass
      *            An {@link EClass} denoting the {@link ProcessingType} subclass to look for.
      * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
      *         which might be empty (for instance if none are found, or the EClass object is
