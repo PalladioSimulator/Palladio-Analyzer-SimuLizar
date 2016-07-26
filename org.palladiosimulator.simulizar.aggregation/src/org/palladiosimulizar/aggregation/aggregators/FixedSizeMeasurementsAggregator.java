@@ -24,7 +24,6 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
  */
 public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregator {
 
-    private final FixedSizeAggregation fixedSizeAggregation;
     private final InternalBuffer buffer;
 
     /**
@@ -52,7 +51,6 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
                 Objects.requireNonNull(fixedSizeAggregation));
 
         this.buffer = new InternalBuffer(checkAndGetNumberOfMeasurementsAttribute(fixedSizeAggregation));
-        this.fixedSizeAggregation = fixedSizeAggregation;
     }
 
     private static int checkAndGetNumberOfMeasurementsAttribute(FixedSizeAggregation fixedSizeAggregation) {
@@ -140,27 +138,21 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             assert isFull() && newElemement != null;
 
             this.data[this.eldestElementPointer] = newElemement;
-            adjustEldestElementPointer();
-        }
-
-        private void addNotFull(MeasuringValue elementToAdd) {
-            assert !isFull() && elementToAdd != null;
-
-            int index = (this.eldestElementPointer + this.currentElementCount) % capacity();
-            this.data[index] = elementToAdd;
-            this.currentElementCount++;
-        }
-
-        private void adjustEldestElementPointer() {
+            // adjust the pointer to the eldest/least recent element
             this.eldestElementPointer++;
             this.eldestElementPointer %= capacity();
             assert this.eldestElementPointer >= 0 && this.eldestElementPointer < capacity();
         }
 
+        private void addNotFull(MeasuringValue elementToAdd) {
+            assert !isFull() && elementToAdd != null;
+
+            this.data[this.currentElementCount++] = elementToAdd;
+        }
+
         public void clear() {
             Arrays.fill(data, null);
             this.eldestElementPointer = this.currentElementCount = 0;
-
         }
 
         public MeasuringValue getNewestElement() {
