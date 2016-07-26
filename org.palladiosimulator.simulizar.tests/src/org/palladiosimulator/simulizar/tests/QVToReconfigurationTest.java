@@ -26,7 +26,6 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.StatisticalCharacterization;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
-import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
@@ -325,12 +324,8 @@ public class QVToReconfigurationTest {
         TimeDrivenAggregation timeDrivenAggregation = MonitorRepositoryFactory.eINSTANCE.createTimeDrivenAggregation();
         timeDrivenAggregation.setStatisticalCharacterization(statisticalCharacterization);
         timeDrivenAggregation.setMeasurementSpecification(measurementSpecification);
-        WindowCharacterization windowCharacterization = MonitorRepositoryFactory.eINSTANCE
-                .createWindowCharacterization();
-        windowCharacterization.setWindowIncrement(10d);
-        windowCharacterization.setWindowLength(10d);
-        timeDrivenAggregation.setWindowCharacterization(windowCharacterization);
-        measurementSpecification.setProcessingType(timeDrivenAggregation);
+        timeDrivenAggregation.setWindowIncrement(10d);
+        timeDrivenAggregation.setWindowLength(10d);
 
         final RuntimeMeasurement responeTimeRuntimeMeasuremnt = RuntimeMeasurementFactory.eINSTANCE
                 .createRuntimeMeasurement();
