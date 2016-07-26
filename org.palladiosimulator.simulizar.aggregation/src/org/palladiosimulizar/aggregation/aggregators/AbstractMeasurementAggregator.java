@@ -64,7 +64,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
         if (this.frequencyOfAggregation < 1) {
             throw new IllegalStateException(
                     "Value of '" + MonitorRepositoryPackage.Literals.MEASUREMENT_DRIVEN_AGGREGATION__FREQUENCY.getName()
-                            + "' attribute of " + "'" + measurementDrivenAggregation.eClass().getName() + "' with id "
+                            + "' attribute of '" + measurementDrivenAggregation.eClass().getName() + "' with id "
                             + measurementDrivenAggregation.getId() + " must be positive!");
         }
         resetCounter();
