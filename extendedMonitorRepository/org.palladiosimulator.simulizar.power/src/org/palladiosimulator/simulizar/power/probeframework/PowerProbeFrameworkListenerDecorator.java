@@ -21,7 +21,6 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.TimeDriven;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
-import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.monitorrepository.util.MonitorRepositorySwitch;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -105,11 +104,10 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                 // this call crashes in case measurement specification or ppe are invalid
                 checkValidity(powerSpec, powerProvidingEntity, timeDrivenSpecification);
 
-                WindowCharacterization windowCharacterization = timeDrivenSpecification.get()
-                        .getWindowCharacterization();
+                TimeDriven timeDriven = timeDrivenSpecification.get();
 
-                Measure<Double, Duration> initialOffset = windowCharacterization.getWindowLengthAsMeasure();
-                Measure<Double, Duration> samplingPeriod = windowCharacterization.getWindowIncrementAsMeasure();
+                Measure<Double, Duration> initialOffset = timeDriven.getWindowLengthAsMeasure();
+                Measure<Double, Duration> samplingPeriod = timeDriven.getWindowIncrementAsMeasure();
                 SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(powerProvidingEntity,
                         this.model, initialOffset, samplingPeriod);
 
@@ -138,27 +136,22 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                 // are forwarded)
                 triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec);
                 triggerRuntimeMeasurementsRecording(energyConsumptionCalculator,
-                        createSpecificationForEnergyMeasurements(powerSpecMonitor, windowCharacterization));
+                        createSpecificationForEnergyMeasurements(powerSpecMonitor, timeDriven));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
     }
 
     private static MeasurementSpecification createSpecificationForEnergyMeasurements(Monitor monitor,
-            WindowCharacterization from) {
-        assert monitor != null && from != null;
+            TimeDriven fromProcessingType) {
+        assert monitor != null && fromProcessingType != null;
 
         MeasurementSpecification energySpec = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
         energySpec.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
 
-        WindowCharacterization windowCharacterization = MonitorRepositoryFactory.eINSTANCE
-                .createWindowCharacterization();
-
-        windowCharacterization.setWindowIncrement(from.getWindowIncrement());
-        windowCharacterization.setWindowLength(from.getWindowLength());
-
         TimeDriven timeDrivenProcessingType = MonitorRepositoryFactory.eINSTANCE.createTimeDriven();
-        timeDrivenProcessingType.setWindowCharacterization(windowCharacterization);
+        timeDrivenProcessingType.setWindowIncrement(fromProcessingType.getWindowIncrement());
+        timeDrivenProcessingType.setWindowLength(fromProcessingType.getWindowLength());
 
         energySpec.setProcessingType(timeDrivenProcessingType);
         monitor.getMeasurementSpecifications().add(energySpec);
