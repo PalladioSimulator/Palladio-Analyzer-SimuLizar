@@ -1,6 +1,5 @@
 package org.palladiosimulizar.aggregation.probeframework;
 
-import java.util.Collection;
 import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
@@ -42,14 +41,11 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
     public void registerMeasurements() {
         super.registerMeasurements();
 
-        Collection<MeasurementSpecification> fixedSizeAggregationMeasurementSpecs = this.getProbeFrameworkListener()
-                .getMeasurementSpecificationsForProcessingType(FIXED_SIZE_AGGREGATION_ECLASS);
-        Collection<MeasurementSpecification> variableSizeAggregationMeasurementSpecs = this.getProbeFrameworkListener()
-                .getMeasurementSpecificationsForProcessingType(VARIABLE_SIZE_AGGREGATION_ECLASS);
-
-        fixedSizeAggregationMeasurementSpecs.stream().filter(MeasurementSpecification::isTriggersSelfAdaptations)
+        this.getProbeFrameworkListener().getMeasurementSpecificationsForProcessingType(FIXED_SIZE_AGGREGATION_ECLASS)
+                .stream().filter(MeasurementSpecification::isTriggersSelfAdaptations)
                 .forEach(this::initFixedSizeAggregation);
-        variableSizeAggregationMeasurementSpecs.stream().filter(MeasurementSpecification::isTriggersSelfAdaptations)
+        this.getProbeFrameworkListener().getMeasurementSpecificationsForProcessingType(VARIABLE_SIZE_AGGREGATION_ECLASS)
+                .stream().filter(MeasurementSpecification::isTriggersSelfAdaptations)
                 .forEach(this::initVariableSizeAggregation);
     }
 
@@ -59,7 +55,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
                 .doSwitch(measurementSpecification.getMetricDescription());
 
         // fails in case optional is empty
-        checkValidity(expectedMetric);
+        checkValidity(expectedMetric, measurementSpecification);
 
         Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
                 measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
@@ -79,7 +75,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
                 .doSwitch(measurementSpecification.getMetricDescription());
 
         // fails in case optional is empty
-        checkValidity(expectedMetric);
+        checkValidity(expectedMetric, measurementSpecification);
 
         Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
                 measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
@@ -107,11 +103,13 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         return Optional.of(baseCalculator);
     }
 
-    private static void checkValidity(Optional<NumericalBaseMetricDescription> expectedMetric) {
+    private static void checkValidity(Optional<NumericalBaseMetricDescription> expectedMetric,
+            MeasurementSpecification spec) {
         if (!expectedMetric.isPresent()) {
-            throw new IllegalStateException(
-                    "So far, only " + MetricSpecPackage.Literals.NUMERICAL_BASE_METRIC_DESCRIPTION.getName()
-                            + "s are supported for fixed and variable size aggregation!");
+            throw new IllegalStateException("Cannot initialize measurements aggregation defined by "
+                    + spec.eClass().getName() + " '" + spec.getId() + "':\nSo far, only "
+                    + MetricSpecPackage.Literals.NUMERICAL_BASE_METRIC_DESCRIPTION.getName()
+                    + "s are supported for fixed and variable size aggregation!");
         }
     }
 
