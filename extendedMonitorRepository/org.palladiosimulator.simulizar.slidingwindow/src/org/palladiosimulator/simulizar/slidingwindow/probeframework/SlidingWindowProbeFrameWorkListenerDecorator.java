@@ -20,7 +20,6 @@ import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
-import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -94,9 +93,6 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
                             + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!");
         }
 
-        TimeDrivenAggregation aggregation = (TimeDrivenAggregation) measurementSpec.getProcessingType();
-        WindowCharacterization windowCharacterization = aggregation.getWindowCharacterization();
-
         ISlidingWindowMoveOnStrategy moveOnStrategy = null;
         switch (expectedMetric.getScopeOfValidity()) {
         case CONTINUOUS:
@@ -109,8 +105,9 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
             throw new AssertionError();
         }
 
-        SlidingWindow window = new SimulizarSlidingWindow(windowCharacterization.getWindowLengthAsMeasure(),
-                windowCharacterization.getWindowIncrementAsMeasure(), expectedMetric, moveOnStrategy, this.model);
+        TimeDrivenAggregation aggregation = (TimeDrivenAggregation) measurementSpec.getProcessingType();
+        SlidingWindow window = new SimulizarSlidingWindow(aggregation.getWindowLengthAsMeasure(),
+                aggregation.getWindowIncrementAsMeasure(), expectedMetric, moveOnStrategy, this.model);
 
         SlidingWindowStatisticalCharacterizationAggregator windowAggregator = new SlidingWindowStatisticalCharacterizationAggregator(
                 aggregation.getStatisticalCharacterization().getAggregator(expectedMetric));
