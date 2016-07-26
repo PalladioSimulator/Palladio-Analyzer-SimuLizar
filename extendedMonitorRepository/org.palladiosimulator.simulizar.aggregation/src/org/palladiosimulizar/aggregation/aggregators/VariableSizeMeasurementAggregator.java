@@ -11,7 +11,6 @@ import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
-import org.palladiosimulator.monitorrepository.RetrospectiveCharacterization;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 
@@ -48,8 +47,7 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
      * @throws NullPointerException
      *             In case any of the parameters is {@code null}.
      * @throws IllegalStateException
-     *             If the value of the 'Retrospection Length' attribute of
-     *             {@link RetrospectiveCharacterization} associated with the passed
+     *             If the value of the 'Retrospection Length' attribute of the passed
      *             {@link VariableSizeAggregation} is not positive.
      */
     public VariableSizeMeasurementAggregator(NumericalBaseMetricDescription expectedMetric,
@@ -59,14 +57,14 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
 
         this.buffer = new LinkedList<>();
         this.variableSizeAggregation = variableSizeAggregation;
-        Measure<Double, Duration> retrospectionMeasure = this.variableSizeAggregation.getRetrospection()
-                .getRetrospectionLengthAsMeasure();
+        Measure<Double, Duration> retrospectionMeasure = this.variableSizeAggregation.getRetrospectionLengthAsMeasure();
         if (retrospectionMeasure.compareTo(ZERO_DURATION) <= 0) {
-            throw new IllegalStateException("Value of '"
-                    + MonitorRepositoryPackage.Literals.RETROSPECTIVE_CHARACTERIZATION__RETROSPECTION_LENGTH.getName()
-                    + "' attribute of the '" + variableSizeAggregation.getRetrospection().eClass().getName()
-                    + "' contained by '" + variableSizeAggregation.eClass().getName() + "' with id "
-                    + variableSizeAggregation.getId() + " must be positive!");
+            throw new IllegalStateException(
+                    "Value of '"
+                            + MonitorRepositoryPackage.Literals.VARIABLE_SIZE_AGGREGATION__RETROSPECTION_LENGTH
+                                    .getName()
+                            + "' attribute of '" + variableSizeAggregation.eClass().getName() + "' with id "
+                            + variableSizeAggregation.getId() + " must be positive!");
         }
         this.retrospectionLength = Amount.valueOf(retrospectionMeasure.getValue(), retrospectionMeasure.getUnit());
     }
