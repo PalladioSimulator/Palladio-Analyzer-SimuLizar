@@ -23,7 +23,6 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.TimeDriven;
-import org.palladiosimulator.monitorrepository.WindowCharacterization;
 import org.palladiosimulator.monitorrepository.util.MonitorRepositorySwitch;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
@@ -177,22 +176,20 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
             MeasurementSpecification utilizationMeasurementSpec, TimeDriven timeDrivenProcessingType,
             Optional<Calculator> overallUtilizationCalculator) {
 
-        WindowCharacterization windowCharacterization = timeDrivenProcessingType.getWindowCharacterization();
-
-        setupSlidingWindowAggregatorAndRecorder(stateOfActiveResourceCalculator, windowCharacterization,
+        setupSlidingWindowAggregatorAndRecorder(stateOfActiveResourceCalculator, timeDrivenProcessingType,
                 utilizationMeasurementSpec, STATE_TUPLE_METRIC_DESC,
                 utilizationMeasurementSpec.getMonitor().getMeasuringPoint());
 
         overallUtilizationCalculator
-                .ifPresent(calc -> setupSlidingWindowAggregatorAndRecorder(calc, windowCharacterization,
+                .ifPresent(calc -> setupSlidingWindowAggregatorAndRecorder(calc, timeDrivenProcessingType,
                         utilizationMeasurementSpec, UTILIZATION_TUPLE_METRIC_DESC, calc.getMeasuringPoint()));
     }
 
-    private void setupSlidingWindowAggregatorAndRecorder(Calculator calc, WindowCharacterization windowCharacterization,
+    private void setupSlidingWindowAggregatorAndRecorder(Calculator calc, TimeDriven timeDrivenProcessingType,
             MeasurementSpecification spec, MetricSetDescription desc, MeasuringPoint measuringPoint) {
         final SlidingWindowUtilizationAggregator aggregator = createSlidingWindowAggregator(calc, desc);
         // register recorder at calculator
-        registerMeasurementsRecorder(calc, createSlidingWindowRecorder(windowCharacterization, aggregator));
+        registerMeasurementsRecorder(calc, createSlidingWindowRecorder(timeDrivenProcessingType, aggregator));
         // forward utilization measurements to RuntimeMeasurementModel (the
         // former PRM)
         if (spec.isTriggersSelfAdaptations()) {
@@ -209,13 +206,14 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                 super.initializeRecorder(recorderConfigMap));
     }
 
-    private SlidingWindowRecorder createSlidingWindowRecorder(WindowCharacterization windowCharacterization,
+    private SlidingWindowRecorder createSlidingWindowRecorder(TimeDriven timeDrivenProcessingType,
             SlidingWindowUtilizationAggregator utilizationAggregator) {
-        assert this.model != null && this.rmModel != null;
+        assert this.model != null && this.rmModel != null && timeDrivenProcessingType != null
+                && utilizationAggregator != null;
 
         return new SlidingWindowRecorder(
-                new SimulizarSlidingWindow(windowCharacterization.getWindowLengthAsMeasure(),
-                        windowCharacterization.getWindowIncrementAsMeasure(),
+                new SimulizarSlidingWindow(timeDrivenProcessingType.getWindowLengthAsMeasure(),
+                        timeDrivenProcessingType.getWindowIncrementAsMeasure(),
                         utilizationAggregator.getExpectedWindowDataMetric(), this.moveOnStrategy, this.model),
                 utilizationAggregator);
     }
