@@ -7,6 +7,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
+import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.FixedSizeAggregation;
@@ -21,8 +22,6 @@ import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingPro
 import org.palladiosimulizar.aggregation.aggregators.FixedSizeMeasurementsAggregator;
 import org.palladiosimulizar.aggregation.aggregators.VariableSizeMeasurementAggregator;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-
 public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
     private static final EClass FIXED_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION;
@@ -30,14 +29,12 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
 
     private RegisterCalculatorFactoryDecorator calculatorFactory;
     private RuntimeMeasurementModel runtimeMeasurementModel;
-    private SimuComModel model;
 
     @Override
     public void setProbeFrameworkListener(AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
-        this.model = getProbeFrameworkListener().getSimuComModel();
         this.runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
     }
 
@@ -112,8 +109,9 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
 
     private static void checkValidity(Optional<NumericalBaseMetricDescription> expectedMetric) {
         if (!expectedMetric.isPresent()) {
-            throw new IllegalStateException("So far, only " + NumericalBaseMetricDescription.class.getSimpleName()
-                    + "s are supported for fixed and variable size aggregation!");
+            throw new IllegalStateException(
+                    "So far, only " + MetricSpecPackage.Literals.NUMERICAL_BASE_METRIC_DESCRIPTION.getName()
+                            + "s are supported for fixed and variable size aggregation!");
         }
     }
 
