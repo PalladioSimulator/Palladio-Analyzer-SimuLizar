@@ -67,17 +67,18 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
                             + "' attribute of " + "'" + measurementDrivenAggregation.eClass().getName() + "' with id "
                             + measurementDrivenAggregation.getId() + " must be positive!");
         }
-
         resetCounter();
     }
 
     /**
-     * Resets the counter for the next aggregation to the value specified by 'Frequency' of the
-     * associated {@link MeasurementDrivenAggregation} model element.<br>
-     * This method is called after an aggregation was done, directly after
-     * {@link #onPostAggregate()} .
+     * Resets the counter for the next aggregation to the value specified by the 'Frequency'
+     * attribute of the associated {@link MeasurementDrivenAggregation} model element.<br>
+     * This method is called upon object construction and after the counter reached zero. In the
+     * latter case, if an aggregation was done, the call directly happens after
+     * {@link #onPostAggregate()} is invoked.
      * 
      * @see MeasurementDrivenAggregation#getFrequency()
+     * @see #decrementCounter()
      * @see #onPostAggregate()
      */
     protected final void resetCounter() {
@@ -85,7 +86,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
     }
 
     /**
-     * Resets the counter for the next upcoming aggregation.<br>
+     * Decrements the counter for the next upcoming aggregation.<br>
      * This method is invoked directly after the collection of a new measurement.
      *
      * @see #collectMeasurement(MeasuringValue)
@@ -93,6 +94,8 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * @see MeasurementDrivenAggregation#getFrequency()
      */
     protected final void decrementCounter() {
+        assert this.measurementsUntilNextAggregation > 0;
+
         --this.measurementsUntilNextAggregation;
     }
 
@@ -105,7 +108,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * <li>{@link #collectMeasurement(MeasuringValue)} is invoked</li>
      * <li>{@link #decrementCounter()} is invoked</li>
      * <li>
-     * {@code // check whether counter for next upcoming aggregation has reached zero && aggreationRequired() == true}
+     * {@code // check whether counter for next upcoming aggregation has reached zero && aggregationRequired() == true}
      * </li>
      * </ol>
      * In case of an upcoming aggregation, the following steps are carried out additionally:
@@ -113,8 +116,14 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * <li>{@link #onPreAggregate()} is invoked</li>
      * <li>{@code // the actual aggregation is performed}</li>
      * <li>{@link #onPostAggregate()} is invoked</li>
-     * <li>{@link #resetCounter()} is invoked</li>
+     * <li>{@link #resetCounter()} is invoked (<b>Note:</b> Each time the counter has reached zero
+     * this method is invoked, whether or not an aggregation was performed.)</li>
      * </ol>
+     * 
+     * @throws NullPointerException
+     *             In case {@code newMeasurement == null}.
+     * @throws IllegalStateException
+     *             In case the received measurement is not compliant with the expected metric.
      */
     @Override
     public final void newMeasurementAvailable(MeasuringValue newMeasurement) {
@@ -125,10 +134,12 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
         }
         collectMeasurement(newMeasurement);
         decrementCounter();
-        if (this.measurementsUntilNextAggregation == 0 && aggregationRequired()) {
-            onPreAggregate();
-            aggregate();
-            onPostAggregate();
+        if (this.measurementsUntilNextAggregation == 0) {
+            if (aggregationRequired()) {
+                onPreAggregate();
+                aggregate();
+                onPostAggregate();
+            }
             resetCounter();
         }
     }
@@ -165,6 +176,8 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      *         {@code false} otherwise.
      * 
      * @see #newMeasurementAvailable(MeasuringValue)
+     * @see #onPreAggregate()
+     * @see #onPostAggregate()
      */
     protected abstract boolean aggregationRequired();
 
@@ -196,11 +209,10 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * This method has to be implemented by subclasses to collect a new measurement for aggregation.
      * 
      * @param newMeasurement
-     *            A {@link MeasuringValue} denoting the measurement to include into the aggregation.
-     *            <br>
-     *            It is ensured that the measurement passed here is compliant with the expected
-     *            metric, hence no more checks with regards to this have to be done by the
-     *            subclasses.
+     *            A {@link MeasuringValue} denoting the measurement to include for aggregation. <br>
+     *            It is ensured that the measurement passed here is not {@code null} and adheres to
+     *            the expected metric, hence no more checks with regards to this have to be done by
+     *            the implementations.
      * @see #decrementCounter()
      */
     protected abstract void collectMeasurement(MeasuringValue newMeasurement);
@@ -211,10 +223,9 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      * <br>
      * The default implementation does nothing.
      * 
-     * @see AbstractMeasurementAggregator#aggregationRequired()
+     * @see #aggregationRequired()
      */
     protected void onPreAggregate() {
-
     }
 
     /**
@@ -256,11 +267,8 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
     }
 
     private void aggregate() {
-        Amount<Duration> start = getIntervalStartTime();
-        Amount<Duration> end = getIntervalEndTime();
-
-        MeasuringValue aggregatedData = this.aggregator.aggregateData(getDataToAggregate(), start, end,
-                Optional.empty());
+        MeasuringValue aggregatedData = this.aggregator.aggregateData(getDataToAggregate(), getIntervalStartTime(),
+                getIntervalEndTime(), Optional.empty());
 
         // forward aggregated data (expressed as double in default unit of numerical base metric)
         super.updateMeasurementValue(aggregatedData.getMeasureForMetric(this.expectedMetric)
