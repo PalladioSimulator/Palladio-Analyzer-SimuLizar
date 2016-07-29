@@ -1,12 +1,14 @@
 package org.palladiosimulizar.aggregation.aggregators;
 
+import static org.apache.commons.collections15.IteratorUtils.arrayIterator;
+import static org.apache.commons.collections15.IteratorUtils.unmodifiableIterator;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
 import javax.measure.quantity.Duration;
 
-import org.apache.commons.collections15.IteratorUtils;
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
@@ -161,7 +163,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
 
         @Override
         public Iterator<MeasuringValue> iterator() {
-            return IteratorUtils.arrayIterator(this.data);
+            return unmodifiableIterator(arrayIterator(this.data));
         }
 
     }

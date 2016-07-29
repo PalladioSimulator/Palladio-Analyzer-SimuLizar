@@ -1,5 +1,6 @@
 package org.palladiosimulizar.aggregation.aggregators;
 
+import java.util.Collections;
 import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -93,7 +94,7 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
 
     @Override
     protected Iterable<MeasuringValue> getDataToAggregate() {
-        return this.buffer;
+        return Collections.unmodifiableCollection(this.buffer);
     }
 
     @Override
