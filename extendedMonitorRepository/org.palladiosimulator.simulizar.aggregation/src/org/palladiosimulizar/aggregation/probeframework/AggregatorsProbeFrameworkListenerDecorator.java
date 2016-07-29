@@ -10,6 +10,7 @@ import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.FixedSizeAggregation;
+import org.palladiosimulator.monitorrepository.MeasurementDrivenAggregation;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
@@ -18,9 +19,19 @@ import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactory
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
+import org.palladiosimulizar.aggregation.aggregators.AbstractMeasurementAggregator;
 import org.palladiosimulizar.aggregation.aggregators.FixedSizeMeasurementsAggregator;
 import org.palladiosimulizar.aggregation.aggregators.VariableSizeMeasurementAggregator;
 
+/**
+ * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to
+ * initialize {@link MeasurementDrivenAggregation}s.
+ * 
+ * @see AbstractMeasurementAggregator
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
     private static final EClass FIXED_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION;
@@ -107,7 +118,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
             MeasurementSpecification spec) {
         if (!expectedMetric.isPresent()) {
             throw new IllegalStateException("Cannot initialize measurements aggregation defined by "
-                    + spec.eClass().getName() + " '" + spec.getId() + "':\nSo far, only "
+                    + spec.eClass().getName() + " with id '" + spec.getId() + "':\nSo far, only "
                     + MetricSpecPackage.Literals.NUMERICAL_BASE_METRIC_DESCRIPTION.getName()
                     + "s are supported for fixed and variable size aggregation!");
         }
