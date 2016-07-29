@@ -21,6 +21,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.OperationSignature;
@@ -203,7 +204,8 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     }
 
     /**
-     * Gets all associated {@link MeasurementSpecification}s that adhere to the given metric.
+     * Gets all associated {@link MeasurementSpecification}s of <b>active</b> {@link Monitor}s that
+     * adhere to the given metric.
      *
      * @param soughtFor
      *            A {@link MetricDescription} denoting the target metric to look for.
@@ -219,21 +221,25 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     }
 
     /**
-     * Gets all associated {@link MeasurementSpecification}s whose 'processingType' attribute is of
-     * a certain type.
+     * Gets all associated {@link MeasurementSpecification}s of <b>active</b> {@link Monitor}s whose
+     * 'processingType' attribute is of a certain type.
      *
      * @param processingTypeEClass
      *            An {@link EClass} denoting the {@link ProcessingType} subclass to look for.
      * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
-     *         which might be empty (for instance if none are found, or the EClass object is
-     *         incorrect) but never {@code null}.
+     *         which might be empty (for instance if none are found) but never {@code null}.
      * @throws NullPointerException
      *             In case {@code processingTypeEClass == null}.
+     * @throws IllegalArgumentException
+     *             In case the passed EClass does not represent a valid {@link ProcessingType}.
      */
     public Collection<MeasurementSpecification> getMeasurementSpecificationsForProcessingType(
             final EClass processingTypeEClass) {
         Objects.requireNonNull(processingTypeEClass, "Given EClass object must not be null.");
-
+        if (!MonitorRepositoryPackage.Literals.PROCESSING_TYPE.isSuperTypeOf(processingTypeEClass)) {
+            throw new IllegalArgumentException("Given EClass object does not represent a "
+                    + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + "!");
+        }
         return filterMeasurementSpecifications(m -> m.getProcessingType().eClass() == processingTypeEClass);
     }
 
