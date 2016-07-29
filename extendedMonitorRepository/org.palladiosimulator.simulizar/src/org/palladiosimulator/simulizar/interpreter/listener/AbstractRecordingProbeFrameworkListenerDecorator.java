@@ -80,8 +80,8 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
 
     /**
      * Method to instantiate an {@link IRecorder} used for the recording of the measurements. This
-     * method is called within {@link #initializeRecorder(Map)} to the initialization of the created
-     * recorder.
+     * method is called within {@link #initializeRecorder(Map)} prior to the initialization of the
+     * created recorder.
      * 
      * @param config
      *            The {@link SimuComConfig} which contains the configuration of the current
