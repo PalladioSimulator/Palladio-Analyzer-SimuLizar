@@ -49,7 +49,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
     }
 
     @Override
-    public void setProbeFrameworkListener(AbstractProbeFrameworkListener listener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
@@ -67,7 +67,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         initTimeDrivenAggregators(measurementSpecs);
     }
 
-    private void initTimeDrivenAggregators(Collection<MeasurementSpecification> measurementSpecs) {
+    private void initTimeDrivenAggregators(final Collection<MeasurementSpecification> measurementSpecs) {
         if (!measurementSpecs.isEmpty()) {
             this.discreteMetricScopeStrategy = new DiscardAllElementsPriorToLowerBoundStrategy();
             this.continuousMetricScopeStrategy = new KeepLastElementPriorToLowerBoundStrategy();
@@ -75,7 +75,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         }
     }
 
-    private void initAggregatorForMeasSpec(MeasurementSpecification measurementSpec) {
+    private void initAggregatorForMeasSpec(final MeasurementSpecification measurementSpec) {
 
         MeasuringPoint measuringPoint = measurementSpec.getMonitor().getMeasuringPoint();
         NumericalBaseMetricDescription expectedMetric = (NumericalBaseMetricDescription) measurementSpec
@@ -125,13 +125,13 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         private MeasuringPoint currentMeasuringPoint;
 
         @Override
-        public Optional<Calculator> caseMetricDescription(MetricDescription metricDescription) {
+        public Optional<Calculator> caseMetricDescription(final MetricDescription metricDescription) {
             return Optional.ofNullable(SlidingWindowProbeFrameWorkListenerDecorator.this.calculatorFactory
                     .getCalculatorByMeasuringPointAndMetricDescription(this.currentMeasuringPoint, metricDescription));
         }
 
         @Override
-        public Optional<Calculator> caseBaseMetricDescription(BaseMetricDescription baseMetricDescription) {
+        public Optional<Calculator> caseBaseMetricDescription(final BaseMetricDescription baseMetricDescription) {
             return SlidingWindowProbeFrameWorkListenerDecorator.this.calculatorFactory
                     .getCalculatorsForMeasuringPoint(this.currentMeasuringPoint).stream()
                     .filter(calc -> MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
@@ -140,11 +140,12 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         }
 
         @Override
-        public Optional<Calculator> defaultCase(EObject eObject) {
+        public Optional<Calculator> defaultCase(final EObject eObject) {
             return Optional.empty();
         }
 
-        private Optional<Calculator> retrieveCalculator(MeasuringPoint mp, MetricDescription expectedMetric) {
+        private Optional<Calculator> retrieveCalculator(final MeasuringPoint mp,
+                final MetricDescription expectedMetric) {
             this.currentMeasuringPoint = mp;
             return this.doSwitch(expectedMetric);
         }

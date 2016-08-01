@@ -31,15 +31,15 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     private static final NumericalBaseMetricDescription POINT_IN_TIME_METRIC = (NumericalBaseMetricDescription) MetricDescriptionConstants.POINT_IN_TIME_METRIC;
     private final NumericalBaseMetricDescription dataMetric;
 
-    public SlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
-            MeasurementSpecification measurementSpecification, MeasuringPoint measuringPoint) {
+    public SlidingWindowRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel,
+            final MeasurementSpecification measurementSpecification, final MeasuringPoint measuringPoint) {
         super(Objects.requireNonNull(rmModel), Objects.requireNonNull(measurementSpecification),
                 Objects.requireNonNull(measuringPoint));
         this.dataMetric = getDataMetric();
     }
 
-    public SlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
-            MeasurementSpecification measurementSpecification) {
+    public SlidingWindowRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel,
+            final MeasurementSpecification measurementSpecification) {
         this(rmModel, Objects.requireNonNull(measurementSpecification),
                 measurementSpecification.getMonitor().getMeasuringPoint());
     }
@@ -53,16 +53,15 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
                         .toBaseMetricDescriptions(getMeasurementSpecification().getMetricDescription()))
                 .filter(m -> !MetricDescriptionUtility.metricDescriptionIdsEqual(m, POINT_IN_TIME_METRIC)).findAny()
                 .map(m -> (NumericalBaseMetricDescription) m).orElse(POINT_IN_TIME_METRIC);
-        // .orElseThrow(() -> new IllegalArgumentException("Data metric could not be found."));
 
     }
 
     @Override
-    public void initialize(IRecorderConfiguration recorderConfiguration) {
+    public void initialize(final IRecorderConfiguration recorderConfiguration) {
     }
 
     @Override
-    public void writeData(MeasuringValue measurement) {
+    public void writeData(final MeasuringValue measurement) {
         newMeasurementAvailable(measurement);
 
     }
@@ -72,7 +71,7 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
     }
 
     @Override
-    public void newMeasurementAvailable(MeasuringValue newMeasurement) {
+    public void newMeasurementAvailable(final MeasuringValue newMeasurement) {
         if (!Objects.requireNonNull(newMeasurement)
                 .isCompatibleWith(getMeasurementSpecification().getMetricDescription())) {
             throw new IllegalArgumentException("Incompatible measurement received!");
