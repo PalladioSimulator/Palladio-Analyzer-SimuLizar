@@ -41,7 +41,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
     private RuntimeMeasurementModel runtimeMeasurementModel;
 
     @Override
-    public void setProbeFrameworkListener(AbstractProbeFrameworkListener listener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
@@ -60,7 +60,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
                 .forEach(this::initVariableSizeAggregation);
     }
 
-    private void initVariableSizeAggregation(MeasurementSpecification measurementSpecification) {
+    private void initVariableSizeAggregation(final MeasurementSpecification measurementSpecification) {
         MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
         Optional<NumericalBaseMetricDescription> expectedMetric = GET_NUMERICAL_BASE_METRIC_SWITCH
                 .doSwitch(measurementSpecification.getMetricDescription());
@@ -80,7 +80,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
                 this.runtimeMeasurementModel, (VariableSizeAggregation) measurementSpecification.getProcessingType()));
     }
 
-    private void initFixedSizeAggregation(MeasurementSpecification measurementSpecification) {
+    private void initFixedSizeAggregation(final MeasurementSpecification measurementSpecification) {
         MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
         Optional<NumericalBaseMetricDescription> expectedMetric = GET_NUMERICAL_BASE_METRIC_SWITCH
                 .doSwitch(measurementSpecification.getMetricDescription());
@@ -100,8 +100,8 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
                 this.runtimeMeasurementModel, (FixedSizeAggregation) measurementSpecification.getProcessingType()));
     }
 
-    private Optional<Calculator> getBaseCalculator(NumericalBaseMetricDescription metric,
-            MeasuringPoint measuringPoint) {
+    private Optional<Calculator> getBaseCalculator(final NumericalBaseMetricDescription metric,
+            final MeasuringPoint measuringPoint) {
         Calculator baseCalculator = this.calculatorFactory
                 .getCalculatorByMeasuringPointAndMetricDescription(measuringPoint, metric);
         if (baseCalculator == null) {
@@ -114,8 +114,8 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         return Optional.of(baseCalculator);
     }
 
-    private static void checkValidity(Optional<NumericalBaseMetricDescription> expectedMetric,
-            MeasurementSpecification spec) {
+    private static void checkValidity(final Optional<NumericalBaseMetricDescription> expectedMetric,
+            final MeasurementSpecification spec) {
         if (!expectedMetric.isPresent()) {
             throw new IllegalStateException("Cannot initialize measurements aggregation defined by "
                     + spec.eClass().getName() + " with id '" + spec.getId() + "':\nSo far, only "
@@ -128,12 +128,12 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
 
         @Override
         public Optional<NumericalBaseMetricDescription> caseNumericalBaseMetricDescription(
-                NumericalBaseMetricDescription numericalBaseMetricDescription) {
+                final NumericalBaseMetricDescription numericalBaseMetricDescription) {
             return Optional.of(numericalBaseMetricDescription);
         }
 
         @Override
-        public Optional<NumericalBaseMetricDescription> defaultCase(EObject eObject) {
+        public Optional<NumericalBaseMetricDescription> defaultCase(final EObject eObject) {
             return Optional.empty();
         }
     };

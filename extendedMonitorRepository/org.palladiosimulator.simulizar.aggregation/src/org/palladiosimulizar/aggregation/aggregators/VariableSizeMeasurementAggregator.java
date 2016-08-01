@@ -51,8 +51,9 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
      *             If the value of the 'Retrospection Length' attribute of the passed
      *             {@link VariableSizeAggregation} is not positive.
      */
-    public VariableSizeMeasurementAggregator(NumericalBaseMetricDescription expectedMetric,
-            RuntimeMeasurementModel runtimeMeasurementModel, VariableSizeAggregation variableSizeAggregation) {
+    public VariableSizeMeasurementAggregator(final NumericalBaseMetricDescription expectedMetric,
+            final RuntimeMeasurementModel runtimeMeasurementModel,
+            final VariableSizeAggregation variableSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
                 Objects.requireNonNull(variableSizeAggregation));
 
@@ -98,7 +99,7 @@ public class VariableSizeMeasurementAggregator extends AbstractMeasurementAggreg
     }
 
     @Override
-    protected void collectMeasurement(MeasuringValue newMeasurement) {
+    protected void collectMeasurement(final MeasuringValue newMeasurement) {
         // assume that newMeasurement is more recent than the last in buffer
         // i.e., the measurements are chronologically ordered
         this.buffer.add(newMeasurement);
