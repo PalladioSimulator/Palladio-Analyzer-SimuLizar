@@ -64,9 +64,7 @@ public abstract class PRMRecorder {
     }
 
     protected final void detachFromPRM() {
-        if (this.prmAccess.getMeasurements().contains(this.measurement)) {
-            this.prmAccess.getMeasurements().remove(this.measurement);
-        }
+        this.prmAccess.getMeasurements().remove(this.measurement);
     }
 
     /**
