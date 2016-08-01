@@ -54,8 +54,8 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      *             If the value of the 'Frequency' attribute of the passed
      *             {@link MeasurementDrivenAggregation} is not positive.
      */
-    AbstractMeasurementAggregator(NumericalBaseMetricDescription expectedMetric, RuntimeMeasurementModel prmAccess,
-            MeasurementDrivenAggregation measurementDrivenAggregation) {
+    AbstractMeasurementAggregator(final NumericalBaseMetricDescription expectedMetric,
+            final RuntimeMeasurementModel prmAccess, final MeasurementDrivenAggregation measurementDrivenAggregation) {
 
         super(prmAccess, Objects.requireNonNull(measurementDrivenAggregation).getMeasurementSpecification());
         this.expectedMetric = Objects.requireNonNull(expectedMetric);
@@ -126,7 +126,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      *             In case the received measurement is not compliant with the expected metric.
      */
     @Override
-    public final void newMeasurementAvailable(MeasuringValue newMeasurement) {
+    public final void newMeasurementAvailable(final MeasuringValue newMeasurement) {
         if (!Objects.requireNonNull(newMeasurement).isCompatibleWith(this.expectedMetric)
                 && !MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(this.expectedMetric,
                         newMeasurement.getMetricDesciption())) {
@@ -257,7 +257,7 @@ public abstract class AbstractMeasurementAggregator extends PRMRecorder implemen
      *            A {@link MeasuringValue} representing the measurement.
      * @return The corresponding point in time, expressed in terms of an {@link Amount}.
      */
-    protected static Amount<Duration> getPointInTimeOfMeasurement(MeasuringValue measurement) {
+    protected static Amount<Duration> getPointInTimeOfMeasurement(final MeasuringValue measurement) {
         assert measurement != null;
 
         Measure<Double, Duration> pointInTimeMeasure = measurement

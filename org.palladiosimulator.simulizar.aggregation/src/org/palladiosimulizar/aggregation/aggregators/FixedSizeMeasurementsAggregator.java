@@ -47,15 +47,15 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
      *             If the value of the 'Number Of Measurements' attribute of the passed
      *             {@link FixedSizeAggregation} is not positive.
      */
-    public FixedSizeMeasurementsAggregator(NumericalBaseMetricDescription expectedMetric,
-            RuntimeMeasurementModel runtimeMeasurementModel, FixedSizeAggregation fixedSizeAggregation) {
+    public FixedSizeMeasurementsAggregator(final NumericalBaseMetricDescription expectedMetric,
+            final RuntimeMeasurementModel runtimeMeasurementModel, final FixedSizeAggregation fixedSizeAggregation) {
         super(Objects.requireNonNull(expectedMetric), Objects.requireNonNull(runtimeMeasurementModel),
                 Objects.requireNonNull(fixedSizeAggregation));
 
         this.buffer = new InternalBuffer(checkAndGetNumberOfMeasurementsAttribute(fixedSizeAggregation));
     }
 
-    private static int checkAndGetNumberOfMeasurementsAttribute(FixedSizeAggregation fixedSizeAggregation) {
+    private static int checkAndGetNumberOfMeasurementsAttribute(final FixedSizeAggregation fixedSizeAggregation) {
         int numMeas = fixedSizeAggregation.getNumberOfMeasurements();
         if (numMeas < 1) {
             throw new IllegalStateException("Value of '"
@@ -67,7 +67,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
     }
 
     @Override
-    protected void collectMeasurement(MeasuringValue newMeasurement) {
+    protected void collectMeasurement(final MeasuringValue newMeasurement) {
         this.buffer.add(newMeasurement);
     }
 
@@ -106,7 +106,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
         private int eldestElementPointer = 0;
         private int currentElementCount = 0;
 
-        private InternalBuffer(int capacity) {
+        private InternalBuffer(final int capacity) {
             assert capacity > 0;
             this.data = new MeasuringValue[capacity];
         }
@@ -123,7 +123,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             return size() == capacity();
         }
 
-        public boolean add(MeasuringValue measuringValue) {
+        public boolean add(final MeasuringValue measuringValue) {
             if (isFull()) {
                 addFull(measuringValue);
             } else {
@@ -136,7 +136,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             return this.data[this.eldestElementPointer];
         }
 
-        private void addFull(MeasuringValue newElemement) {
+        private void addFull(final MeasuringValue newElemement) {
             assert isFull() && newElemement != null;
 
             this.data[this.eldestElementPointer] = newElemement;
@@ -146,7 +146,7 @@ public class FixedSizeMeasurementsAggregator extends AbstractMeasurementAggregat
             assert this.eldestElementPointer >= 0 && this.eldestElementPointer < capacity();
         }
 
-        private void addNotFull(MeasuringValue elementToAdd) {
+        private void addNotFull(final MeasuringValue elementToAdd) {
             assert !isFull() && elementToAdd != null;
 
             this.data[this.currentElementCount++] = elementToAdd;
