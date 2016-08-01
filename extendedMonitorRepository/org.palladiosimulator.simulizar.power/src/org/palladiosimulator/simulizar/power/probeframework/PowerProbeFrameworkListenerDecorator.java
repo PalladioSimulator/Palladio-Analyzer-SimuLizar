@@ -47,12 +47,12 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
     private static final MonitorRepositorySwitch<Optional<TimeDriven>> PROCESSING_TYPE_SWITCH = new MonitorRepositorySwitch<Optional<TimeDriven>>() {
         @Override
-        public Optional<TimeDriven> caseTimeDriven(TimeDriven timeDriven) {
+        public Optional<TimeDriven> caseTimeDriven(final TimeDriven timeDriven) {
             return Optional.of(timeDriven);
         }
 
         @Override
-        public Optional<TimeDriven> defaultCase(EObject eObject) {
+        public Optional<TimeDriven> defaultCase(final EObject eObject) {
             return Optional.empty();
         }
     };
@@ -69,7 +69,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     }
 
     @Override
-    public void setProbeFrameworkListener(AbstractProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(probeFrameworkListener);
         this.model = getProbeFrameworkListener().getSimuComModel();
         this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
@@ -83,7 +83,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
      * and recorders.
      * 
      */
-    private void initPowerMeasurements(Collection<MeasurementSpecification> powerMeasurementSpecs) {
+    private void initPowerMeasurements(final Collection<MeasurementSpecification> powerMeasurementSpecs) {
 
         if (!powerMeasurementSpecs.isEmpty()) {
             PowerModelRegistry powerModelRegistry = new PowerModelRegistry();
@@ -142,8 +142,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         }
     }
 
-    private static MeasurementSpecification createSpecificationForEnergyMeasurements(Monitor monitor,
-            TimeDriven fromProcessingType) {
+    private static MeasurementSpecification createSpecificationForEnergyMeasurements(final Monitor monitor,
+            final TimeDriven fromProcessingType) {
         assert monitor != null && fromProcessingType != null;
 
         MeasurementSpecification energySpec = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
@@ -155,6 +155,9 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
         energySpec.setProcessingType(timeDrivenProcessingType);
         monitor.getMeasurementSpecifications().add(energySpec);
+
+        energySpec.setTriggersSelfAdaptations(
+                fromProcessingType.getMeasurementSpecification().isTriggersSelfAdaptations());
 
         assert energySpec.getMonitor().getId().equals(monitor.getId());
         return energySpec;
@@ -183,8 +186,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
      * @throws IllegalStateException
      *             Iff {@code powerProvidingEntity == null || !aggregation.isPresent()}.
      */
-    private static void checkValidity(MeasurementSpecification powerMeasurementSpec,
-            PowerProvidingEntity powerProvidingEntity, Optional<TimeDriven> aggregation) {
+    private static void checkValidity(final MeasurementSpecification powerMeasurementSpec,
+            final PowerProvidingEntity powerProvidingEntity, final Optional<TimeDriven> aggregation) {
 
         if (powerProvidingEntity == null) {
             throw new IllegalStateException("MeasurementSpecification '" + powerMeasurementSpec.getName()
@@ -200,8 +203,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         }
     }
 
-    private void triggerMeasurementsRecording(MeasurementSource measurementSource, MeasuringPoint mp,
-            MetricDescription recorderAcceptedMetric) {
+    private void triggerMeasurementsRecording(final MeasurementSource measurementSource, final MeasuringPoint mp,
+            final MetricDescription recorderAcceptedMetric) {
         assert measurementSource != null && mp != null && recorderAcceptedMetric != null;
 
         Map<String, Object> recorderConfigurationMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
@@ -209,8 +212,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         registerMeasurementsRecorder(measurementSource, initializeRecorder(recorderConfigurationMap));
     }
 
-    private void triggerRuntimeMeasurementsRecording(MeasurementSource calculator,
-            MeasurementSpecification measurementSpec) {
+    private void triggerRuntimeMeasurementsRecording(final MeasurementSource calculator,
+            final MeasurementSpecification measurementSpec) {
         assert calculator != null && measurementSpec != null;
 
         if (measurementSpec.isTriggersSelfAdaptations()) {
@@ -229,8 +232,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
      *            {@link Collection} of scopes to clean up.
      * @see #initPowerMeasurements()
      */
-    private void triggerAfterSimulationCleanup(Collection<ConsumptionContext> contextsToCleanup,
-            Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
+    private void triggerAfterSimulationCleanup(final Collection<ConsumptionContext> contextsToCleanup,
+            final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
         assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
         assert scopesToCleanup != null && !scopesToCleanup.isEmpty();
         assert this.model != null;
