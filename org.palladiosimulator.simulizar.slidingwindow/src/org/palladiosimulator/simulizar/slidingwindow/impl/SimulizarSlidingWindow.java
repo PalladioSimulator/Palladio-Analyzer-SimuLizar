@@ -56,8 +56,8 @@ public class SimulizarSlidingWindow extends SlidingWindow {
      *             </ul>
      * @see #SlidingWindow(Measure, Measure, MetricDescription, ISlidingWindowMoveOnStrategy)
      */
-    public SimulizarSlidingWindow(Measure<Double, Duration> windowLength, MetricDescription acceptedMetrics,
-            ISlidingWindowMoveOnStrategy moveOnStrategy, SimuComModel model) {
+    public SimulizarSlidingWindow(final Measure<Double, Duration> windowLength, final MetricDescription acceptedMetrics,
+            final ISlidingWindowMoveOnStrategy moveOnStrategy, final SimuComModel model) {
         this(windowLength, windowLength, acceptedMetrics, moveOnStrategy, model);
     }
 
@@ -86,8 +86,9 @@ public class SimulizarSlidingWindow extends SlidingWindow {
      *             {@code null}</li>
      *             </ul>
      */
-    public SimulizarSlidingWindow(Measure<Double, Duration> windowLength, Measure<Double, Duration> increment,
-            MetricDescription acceptedMetrics, ISlidingWindowMoveOnStrategy moveOnStrategy, SimuComModel model) {
+    public SimulizarSlidingWindow(final Measure<Double, Duration> windowLength,
+            final Measure<Double, Duration> increment, final MetricDescription acceptedMetrics,
+            final ISlidingWindowMoveOnStrategy moveOnStrategy, final SimuComModel model) {
         super(windowLength, increment, acceptedMetrics, moveOnStrategy);
         if (model == null) {
             throw new IllegalArgumentException("Sliding window must be initialized with a valid SimComModel instance.");
@@ -97,7 +98,7 @@ public class SimulizarSlidingWindow extends SlidingWindow {
 
     }
 
-    private void initializeTriggeredSimulationEntity(SimuComModel model) {
+    private void initializeTriggeredSimulationEntity(final SimuComModel model) {
         // ensure that point in times are given in seconds, as the simulation is
         // in sec
         new PeriodicallyTriggeredSimulationEntity(model,
