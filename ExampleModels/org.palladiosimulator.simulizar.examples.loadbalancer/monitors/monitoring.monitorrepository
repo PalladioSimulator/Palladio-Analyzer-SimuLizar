@@ -4,8 +4,7 @@
     <measurementSpecifications id="_vZLk8Mu0EeSC07Pn0gpm5Q">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
       <processingType xsi:type="monitorrepository:TimeDrivenAggregation" id="_u_Mgsu0UEeWdrOr0QROn8g">
-        <windowCharacterization/>
-        <statisticalCharacterization xsi:type="monitorrepository:ArithmeticMean"/>
+       <statisticalCharacterization xsi:type="monitorrepository:ArithmeticMean"/>
       </processingType>
     </measurementSpecifications>
     <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.0"/>
