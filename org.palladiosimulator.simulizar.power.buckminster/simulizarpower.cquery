@@ -2,5 +2,6 @@
     <cq:rootRequest name="org.palladiosimulator.simulizar.power.buckminster" componentType="eclipse.feature"/>
     <cq:property key="pass" value="anonymous"/>
     <cq:property key="user" value="anonymous"/>
-    <cq:advisorNode namePattern="^org\.palladiosimulator\.simulizar.*" useWorkspace="false"/>
+    <cq:advisorNode namePattern="^org\.palladiosimulator\.simulizar\.power.*" sourceLevel="REQUIRE" useWorkspace="false"/>
+    <cq:advisorNode namePattern=".*" sourceLevel="REJECT"/>
 </cq:componentQuery>
