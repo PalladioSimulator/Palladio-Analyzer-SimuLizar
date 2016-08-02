@@ -18,6 +18,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.TimeDriven;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
@@ -154,10 +155,10 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         timeDrivenProcessingType.setWindowLength(fromProcessingType.getWindowLength());
 
         energySpec.setProcessingType(timeDrivenProcessingType);
-        monitor.getMeasurementSpecifications().add(energySpec);
-
         energySpec.setTriggersSelfAdaptations(
                 fromProcessingType.getMeasurementSpecification().isTriggersSelfAdaptations());
+
+        monitor.getMeasurementSpecifications().add(energySpec);
 
         assert energySpec.getMonitor().getId().equals(monitor.getId());
         return energySpec;
@@ -199,7 +200,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
             throw new IllegalStateException("MetricDescription (" + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
                     + ") '" + powerMeasurementSpec.getName() + "' of Monitor '"
                     + powerMeasurementSpec.getMonitor().getEntityName() + "' must provide a "
-                    + ProcessingType.class.getName() + " of Type '" + TimeDriven.class.getName() + "'!");
+                    + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + " of Type '"
+                    + MonitorRepositoryPackage.Literals.TIME_DRIVEN.getName() + "'!");
         }
     }
 
