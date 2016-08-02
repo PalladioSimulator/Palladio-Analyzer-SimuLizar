@@ -1,15 +1,16 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
+import static org.palladiosimulator.edp2.util.MetricDescriptionUtility.metricDescriptionIdsEqual;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
-import org.palladiosimulator.monitorrepository.FeedThrough;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
-import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
@@ -262,16 +263,17 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             final ScheduledResource scheduledResource, final String schedulingStrategy) {
 
         Calculator result = null;
-        String metricID = measurementSpecification.getMetricDescription().getId();
+        MetricDescription metric = measurementSpecification.getMetricDescription();
 
-        if (metricID.equals(MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getId())) {
-            if (!measurementSpecification.getProcessingType().eClass()
-                    .equals(MonitorRepositoryPackage.Literals.FEED_THROUGH)) {
+        if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC)) {
+            if (!MonitorRepositoryPackage.Literals.FEED_THROUGH
+                    .isInstance(measurementSpecification.getProcessingType())) {
                 throw new IllegalArgumentException(
                         "MetricDescription (" + MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getName()
                                 + ") '" + measurementSpecification.getName() + "' of Monitor '"
                                 + measurementSpecification.getMonitor().getEntityName() + "' must provide a "
-                                + ProcessingType.class.getName() + " of Type '" + FeedThrough.class.getName() + "'!");
+                                + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + " of Type '"
+                                + MonitorRepositoryPackage.Literals.FEED_THROUGH.getName() + "'!");
             }
 
             // setup utilization calculators depending on their scheduling strategy
@@ -292,18 +294,18 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                         this.runtimeModel.getModel(), activeResourceMeasuringPoint,
                         activeResourceMeasuringPoint.getReplicaID());
             }
-        } else if (metricID.equals(MetricDescriptionConstants.WAITING_TIME_METRIC.getId())) {
+        } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.WAITING_TIME_METRIC)) {
             // return CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
-        } else if (metricID.equals(MetricDescriptionConstants.HOLDING_TIME_METRIC.getId())) {
+        } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.HOLDING_TIME_METRIC)) {
             // return CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
-        } else if (metricID.equals(MetricDescriptionConstants.RESOURCE_DEMAND_METRIC.getId())) {
+        } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.RESOURCE_DEMAND_METRIC)) {
             result = CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
                     activeResourceMeasuringPoint);
         }
         return result;
     }
 
-    private void includeOverallUtilizationCalculator(ScheduledResource scheduledResource) {
+    private void includeOverallUtilizationCalculator(final ScheduledResource scheduledResource) {
 
         MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource,
                 scheduledResource.getNumberOfInstances());
