@@ -240,7 +240,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
             throw new IllegalArgumentException("Given EClass object does not represent a "
                     + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + "!");
         }
-        return filterMeasurementSpecifications(m -> m.getProcessingType().eClass() == processingTypeEClass);
+        return filterMeasurementSpecifications(m -> processingTypeEClass.isInstance(m.getProcessingType()));
     }
 
     /**
@@ -255,7 +255,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      *         which might be empty but never {@code null}.
      */
     private Collection<MeasurementSpecification> filterMeasurementSpecifications(
-            Predicate<? super MeasurementSpecification> predicate) {
+            final Predicate<? super MeasurementSpecification> predicate) {
         assert predicate != null;
 
         MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
