@@ -4,13 +4,13 @@
     <consumptionFactors xsi:type="de.fzi.power:FixedFactor" id="_gcoBIH1gEeWUt_x9QCHofA" name="IdleConsumption"/>
     <consumptionFactors xsi:type="de.fzi.power:FixedFactor" id="_hkCVIH1gEeWUt_x9QCHofA" name="MaxConsumption"/>
     <consumptionFactors xsi:type="de.fzi.power:MeasuredFactor" id="_ksukYX1gEeWUt_x9QCHofA" name="Utilization">
-      <metricType href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricSpec#_QIb6cikUEeSuf8LV7cHLgA"/>
+      <metricType href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricspec#_QIb6cikUEeSuf8LV7cHLgA"/>
     </consumptionFactors>
   </powerModelSpecifications>
   <powerModelSpecifications xsi:type="de.fzi.power:DeclarativePowerModelSpecification" id="_on3u0n1hEeWs5NTiSBh3Qw" name="Declarative Linear Passthrough Model (Test)" functionalExpression="SUM(Consumers)+ConstantLoss">
     <consumptionFactors xsi:type="de.fzi.power:FixedFactor" id="_tt_7JX1hEeWs5NTiSBh3Qw" name="ConstantLoss"/>
     <consumptionFactors xsi:type="de.fzi.power:MeasuredFactor" id="_u7zyEX1hEeWs5NTiSBh3Qw" name="Consumers">
-      <metricType href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricSpec#_NbIowlt_EeS0LdH-diVVEQ"/>
+      <metricType href="pathmap://METRIC_SPEC_MODELS/models/commonMetrics.metricspec#_NbIowlt_EeS0LdH-diVVEQ"/>
     </consumptionFactors>
   </powerModelSpecifications>
   <powerModelSpecifications xsi:type="de.fzi.power:DeclarativePowerModelSpecification" id="_p0__YoI6EeW9D58bfYJKTQ" name="Declarative StandBy Power Model (Test)" functionalExpression="StandbyConsumption">
