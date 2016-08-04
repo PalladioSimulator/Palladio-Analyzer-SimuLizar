@@ -8,15 +8,12 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar,
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
  org.palladiosimulator.probeframework,
- org.palladiosimulator.edp2.util,
  org.palladiosimulator.metricspec,
  org.palladiosimulator.measurementframework;bundle-version="1.0.0",
- org.palladiosimulator.experimentanalysis.statisticalcharacterization,
  org.jscience,
- de.uka.ipd.sdq.simucomframework,
- de.uka.ipd.sdq.simulation.abstractsimengine,
  org.palladiosimulator.simulizar.runtimemeasurement,
- org.apache.commons.collections15;bundle-version="1.0.0"
+ org.apache.commons.collections15;bundle-version="1.0.0",
+ org.palladiosimulator.edp2.util
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulizar.aggregation.aggregators
