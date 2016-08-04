@@ -123,12 +123,11 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		};
 						
 		// now execute the adaptation behavior which also includes wiring to load balancer component
-		var wasExecuted := instantiateVm.executeAsync(roleSet, prepareInputForControllerCall());
+		instantiateVm.executeAsync(roleSet, prepareInputForControllerCall());
 		
-		if(wasExecuted) {
-			log('Async migration execution started');
-		};
-		return wasExecuted;
+		log('Async migration execution started');
+		
+		return true; // always true, as async execution is triggered
 	}
 	
 	query AdaptationBehavior::getRoleTypeById(roleId : String) : RoleType {
