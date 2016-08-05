@@ -89,7 +89,7 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testCtorNoModelDefined() {
-        new SimulizarSlidingWindow(windowLength, Measure.valueOf(-10d, SI.SECOND), measurementsMetricDescription,
+        new SimulizarSlidingWindow(windowLength, Measure.valueOf(10d, SI.SECOND), measurementsMetricDescription,
                 dummyStrategy, null);
     }
 
