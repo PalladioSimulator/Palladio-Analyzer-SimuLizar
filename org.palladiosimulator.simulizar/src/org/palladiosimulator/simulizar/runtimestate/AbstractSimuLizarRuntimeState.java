@@ -6,12 +6,10 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.collections15.Closure;
-import org.apache.commons.collections15.CollectionUtils;
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
+import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
@@ -40,7 +38,6 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
-import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
@@ -75,8 +72,8 @@ public abstract class AbstractSimuLizarRuntimeState {
      * @param configuration
      * @param modelAccess
      */
-    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final ModelAccess modelAccess,
-            final SimulationCancelationDelegate cancelationDelegate) {
+    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
+            final ModelAccess modelAccess, final SimulationCancelationDelegate cancelationDelegate) {
         super();
         this.modelAccess = modelAccess;
         this.cancelationDelegate = cancelationDelegate;
@@ -162,10 +159,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.modelAccess.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        this.componentInstanceRegistry.cleanUpInstancesAndRegistry();
-        for (final IModelObserver modelObserver : this.modelObservers) {
-            modelObserver.unregister();
-        }
+        this.modelObservers.forEach(IModelObserver::unregister);
     }
 
     private void initializeWorkloadDrivers() {
@@ -208,17 +202,12 @@ public abstract class AbstractSimuLizarRuntimeState {
                     LOGGER.debug("Successful system reconfiguration lasted " + reconfExecutedEvent.getDuration()
                             + " time units");
                     LOGGER.debug("Collected notifications:");
-                    CollectionUtils.forAllDo(reconfExecutedEvent.getModelChanges(), new Closure<Notification>() {
-
-                        @Override
-                        public void execute(final Notification notification) {
-                            LOGGER.debug(" " + notification.getNotifier());
-                        }
-                    });
+                    reconfExecutedEvent.getModelChanges()
+                            .forEach(notification -> LOGGER.debug(" " + notification.getNotifier()));
 
                     if (numberOfResourceCalculatorsProbes != null
                             && AbstractSimuLizarRuntimeState.this.numberOfContainers != getNumberOfResourceContainers()) {
-                    	AbstractSimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
+                        AbstractSimuLizarRuntimeState.this.numberOfContainers = getNumberOfResourceContainers();
                         numberOfResourceCalculatorsProbes.takeMeasurement();
                     }
                 }
@@ -241,9 +230,9 @@ public abstract class AbstractSimuLizarRuntimeState {
 
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
                 .getMeasurementSpecificationsForElement(monitorRepository, resourceEnvironment)) {
-            final String metricID = measurementSpecification.getMetricDescription().getId();
 
-            if (metricID.equals(NUMBER_OF_RESOURCE_CONTAINERS.getId())) {
+            if (MetricDescriptionUtility.metricDescriptionIdsEqual(measurementSpecification.getMetricDescription(),
+                    NUMBER_OF_RESOURCE_CONTAINERS)) {
 
                 final MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
 
@@ -278,9 +267,7 @@ public abstract class AbstractSimuLizarRuntimeState {
 
         final List<IModelObserver> modelObservers = ExtensionHelper
                 .getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver", "modelObserver");
-        for (final IModelObserver modelObserver : modelObservers) {
-            modelObserver.initialize(this);
-        }
+        modelObservers.forEach(m -> m.initialize(this));
 
         return modelObservers;
     }
@@ -294,13 +281,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     }
 
     private void initializeCancelation() {
-        this.model.getSimulationControl().addStopCondition(new SimCondition() {
-
-            @Override
-            public boolean check() {
-                return AbstractSimuLizarRuntimeState.this.cancelationDelegate.isCanceled();
-            }
-        });
+        this.model.getSimulationControl().addStopCondition(this::isCanceled);
     }
 
     public UsageEvolverFacade getUsageEvolverFacade() {

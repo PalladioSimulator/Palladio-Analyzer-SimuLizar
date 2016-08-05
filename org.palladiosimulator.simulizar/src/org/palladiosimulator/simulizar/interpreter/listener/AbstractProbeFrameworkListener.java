@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import org.apache.log4j.Logger;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -20,18 +20,18 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.metrics.aggregators.AggregatorHelper;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
@@ -46,7 +46,6 @@ import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
  */
 public abstract class AbstractProbeFrameworkListener extends AbstractInterpreterListener {
 
-    private static final Logger LOGGER = Logger.getLogger(AbstractProbeFrameworkListener.class);
     private static final int START_PROBE_INDEX = 0;
     private static final int STOP_PROBE_INDEX = 1;
 
@@ -66,21 +65,20 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     public AbstractProbeFrameworkListener(final IModelAccess modelAccess, final SimuComModel simuComModel,
             final Reconfigurator reconfigurator) {
         super();
-        this.modelAccess = modelAccess;
-        this.calculatorFactory = simuComModel.getProbeFrameworkContext().getCalculatorFactory();
+        this.modelAccess = Objects.requireNonNull(modelAccess);
+        this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
-        this.reconfigurator = reconfigurator;
+        this.reconfigurator = Objects.requireNonNull(reconfigurator);
 
-        this.initResponseTimeMeasurement();
+        this.initResponseTimeMeasurements();
         this.initReconfigurationTimeMeasurement();
         this.initExtensionMeasurements();
     }
 
     private void initExtensionMeasurements() {
-        final Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper
-                .getExecutableExtensions("org.palladiosimulator.simulizar.interpreter.listener.probeframework",
-                        "decorator");
-        for (final AbstractRecordingProbeFrameworkListenerDecorator decorator : extensions) {
+        Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper.getExecutableExtensions(
+                "org.palladiosimulator.simulizar.interpreter.listener.probeframework", "decorator");
+        for (AbstractRecordingProbeFrameworkListenerDecorator decorator : extensions) {
             decorator.setProbeFrameworkListener(this);
             decorator.registerMeasurements();
         }
@@ -204,18 +202,43 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     }
 
     /**
-     * Gets all associated {@link MeasurementSpecification}s that adhere to the given metric.
+     * Gets all associated {@link MeasurementSpecification}s of <b>active</b> {@link Monitor}s that
+     * adhere to the given metric.
      *
      * @param soughtFor
      *            A {@link MetricDescription} denoting the target metric to look for.
-     * @return An UNMODIFIABLE {@link Collection} containing all found measurement Specifications,
+     * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
      *         which might be empty but never {@code null}.
      */
     public Collection<MeasurementSpecification> getMeasurementSpecificationsForMetricDescription(
             final MetricDescription soughtFor) {
         Objects.requireNonNull(soughtFor, "Given MetricDescription must not be null.");
+
         return filterMeasurementSpecifications(
                 m -> MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(), soughtFor));
+    }
+
+    /**
+     * Gets all associated {@link MeasurementSpecification}s of <b>active</b> {@link Monitor}s whose
+     * 'processingType' attribute is of a certain type.
+     *
+     * @param processingTypeEClass
+     *            An {@link EClass} denoting the {@link ProcessingType} subclass to look for.
+     * @return An UNMODIFIABLE {@link Collection} containing all found measurement specifications,
+     *         which might be empty (for instance if none are found) but never {@code null}.
+     * @throws NullPointerException
+     *             In case {@code processingTypeEClass == null}.
+     * @throws IllegalArgumentException
+     *             In case the passed EClass does not represent a valid {@link ProcessingType}.
+     */
+    public Collection<MeasurementSpecification> getMeasurementSpecificationsForProcessingType(
+            final EClass processingTypeEClass) {
+        Objects.requireNonNull(processingTypeEClass, "Given EClass object must not be null.");
+        if (!MonitorRepositoryPackage.Literals.PROCESSING_TYPE.isSuperTypeOf(processingTypeEClass)) {
+            throw new IllegalArgumentException("Given EClass object does not represent a "
+                    + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + "!");
+        }
+        return filterMeasurementSpecifications(m -> processingTypeEClass.isInstance(m.getProcessingType()));
     }
 
     /**
@@ -230,7 +253,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      *         which might be empty but never {@code null}.
      */
     private Collection<MeasurementSpecification> filterMeasurementSpecifications(
-            Predicate<? super MeasurementSpecification> predicate) {
+            final Predicate<? super MeasurementSpecification> predicate) {
         assert predicate != null;
 
         MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
@@ -244,23 +267,15 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
 
     /**
      * Initializes the <i>response time</i> measurements. First gets the monitored elements from the
-     * monitor repository, then creates corresponding calculators and aggregators.
+     * monitor repository, then creates corresponding calculators.
      *
      */
-    private void initResponseTimeMeasurement() {
-        for (final MeasurementSpecification responseTimeMeasurementSpec : this
+    private void initResponseTimeMeasurements() {
+        for (MeasurementSpecification responseTimeMeasurementSpec : this
                 .getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            if (responseTimeMeasurementSpec.getMonitor().isActivated()) {
-                final MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-                final List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
-                final Calculator calculator = this.calculatorFactory.buildResponseTimeCalculator(measuringPoint,
-                        probeList);
-
-                if (responseTimeMeasurementSpec.isTriggersSelfAdaptations()) {
-                    AggregatorHelper.setupAggregator(responseTimeMeasurementSpec, calculator,
-                            this.getRuntimeMeasurementModel(), this.simuComModel);
-                }
-            }
+            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+            List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
+            this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
         }
     }
 

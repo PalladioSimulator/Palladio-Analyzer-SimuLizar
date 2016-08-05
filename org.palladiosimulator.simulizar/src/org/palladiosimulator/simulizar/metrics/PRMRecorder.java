@@ -2,10 +2,8 @@ package org.palladiosimulator.simulizar.metrics;
 
 import java.util.Objects;
 
-import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
-import org.palladiosimulator.monitorrepository.TemporalCharacterization;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -28,26 +26,36 @@ public abstract class PRMRecorder {
      *            the model helper.
      * @param measurementSpecification
      *            the measurement specification.
-     * @param monitoredElement
-     *            The model object under consideration, e.g., the {@link EObject} associated with
-     *            the given measurement specification.
+     * @param measuringPoint
+     *            The measuring point to be used.
+     *
+     */
+    public PRMRecorder(final RuntimeMeasurementModel prmAccess, final MeasurementSpecification measurementSpecification,
+            final MeasuringPoint measuringPoint) {
+        super();
+        if (!measurementSpecification.isTriggersSelfAdaptations()) {
+            throw new RuntimeException("PRM recordering only allowed when self-adaptations shall be triggered");
+        }
+        this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
+        this.measurement.setMeasuringPoint(measuringPoint);
+        this.measurement.setMeasurementSpecification(measurementSpecification);
+        this.prmAccess = prmAccess;
+        this.attachToPRM();
+    }
+
+    /**
+     * Constructor
+     *
+     * @param prmModel
+     *            the model helper.
+     * @param measurementSpecification
+     *            the measurement specification.
      *
      */
     public PRMRecorder(final RuntimeMeasurementModel prmAccess,
             final MeasurementSpecification measurementSpecification) {
-        super();        
-        
-        if (!measurementSpecification.isTriggersSelfAdaptations()) {
-            throw new RuntimeException("PRM recordering only allowed when self-adaptations shall be triggered");
-        }
-        
-        MeasuringPoint mp = Objects.requireNonNull(measurementSpecification.getMonitor().getMeasuringPoint());
-
-        this.measurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
-        this.measurement.setMeasuringPoint(mp);
-        this.measurement.setMeasurementSpecification(measurementSpecification);
-        this.prmAccess = prmAccess;
-        this.attachToPRM();
+        this(Objects.requireNonNull(prmAccess), Objects.requireNonNull(measurementSpecification),
+                measurementSpecification.getMonitor().getMeasuringPoint());
     }
 
     private void attachToPRM() {
@@ -57,9 +65,7 @@ public abstract class PRMRecorder {
     }
 
     protected final void detachFromPRM() {
-        if (this.prmAccess.getMeasurements().contains(this.measurement)) {
-            this.prmAccess.getMeasurements().remove(this.measurement);
-        }
+        this.prmAccess.getMeasurements().remove(this.measurement);
     }
 
     /**
@@ -95,12 +101,4 @@ public abstract class PRMRecorder {
     protected RuntimeMeasurementModel getPrmModel() {
         return this.prmAccess;
     }
-
-    /**
-     * @return returns the temporalCharacterization.
-     */
-    protected TemporalCharacterization getTemporalCharacterization() {
-        return this.getMeasurementSpecification().getTemporalRestriction();
-    }
-
 }

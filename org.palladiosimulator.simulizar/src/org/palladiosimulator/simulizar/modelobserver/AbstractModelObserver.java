@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
+import java.util.Objects;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -21,13 +23,12 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
     }
 
     public void initialize(final T model, final AbstractSimuLizarRuntimeState runtimeState) {
-	if (model != null) {
-	    initialize(model);
-	} else {
-	    LOGGER.info(this.getClass().getName() + " cannot observer model, as none has been specified");
-	}
-        
-        this.runtimeModel = runtimeState;
+        if (model != null) {
+            initialize(model);
+        } else {
+            LOGGER.info(this.getClass().getName() + " cannot observe model, as none has been specified");
+        }
+        this.runtimeModel = Objects.requireNonNull(runtimeState);
     }
 
     private void initialize(final T model) {
@@ -56,9 +57,9 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
 
     @Override
     public void unregister() {
-	if (this.adapter != null && this.model.eAdapters().contains(this.adapter)) {
-	    this.model.eAdapters().remove(this.adapter);
-	}
+        if (this.adapter != null && this.model.eAdapters().contains(this.adapter)) {
+            this.model.eAdapters().remove(this.adapter);
+        }
     }
 
     private void notifyModelObservers(final Notification notification) {

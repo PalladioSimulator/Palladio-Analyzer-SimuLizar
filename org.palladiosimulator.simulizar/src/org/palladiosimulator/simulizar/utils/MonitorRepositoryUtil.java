@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.utils;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.emfutils.EMFLoadHelper;
@@ -9,6 +10,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.ResourceURIMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.StringMeasuringPoint;
 import org.palladiosimulator.edp2.models.measuringpoint.util.MeasuringpointSwitch;
+import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
@@ -64,16 +66,12 @@ public final class MonitorRepositoryUtil {
     public static MeasurementSpecification isMonitored(final MonitorRepository monitorRepositoryModel,
             final EObject element, final MetricDescription metricDescription) {
         if (monitorRepositoryModel != null) {
-            for (final Monitor monitor : monitorRepositoryModel.getMonitors()) {
-                if (elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
-                    for (final MeasurementSpecification measurementSpecification : monitor
-                            .getMeasurementSpecifications()) {
-                        if (measurementSpecification.getMetricDescription().getId().equals(metricDescription.getId())) {
-                            return measurementSpecification;
-                        }
-                    }
-                }
-            }
+            return monitorRepositoryModel.getMonitors().stream()
+                    .filter(monitor -> elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint()))
+                    .flatMap(monitor -> monitor.getMeasurementSpecifications().stream())
+                    .filter(m -> MetricDescriptionUtility.metricDescriptionIdsEqual(m.getMetricDescription(),
+                            metricDescription))
+                    .findFirst().orElse(null);
         }
         return null;
     }
@@ -197,26 +195,17 @@ public final class MonitorRepositoryUtil {
         if (monitorRepository == null) {
             return result;
         }
-
-        for (final Monitor monitor : monitorRepository.getMonitors()) {
-            if (monitor.isActivated()
-                    && MonitorRepositoryUtil.elementConformingToMeasuringPoint(element, monitor.getMeasuringPoint())) {
-                result.add(monitor);
-            }
-        }
-
-        return result;
+        return monitorRepository.getMonitors().stream()
+                .filter(m -> m.isActivated()
+                        && MonitorRepositoryUtil.elementConformingToMeasuringPoint(element, m.getMeasuringPoint()))
+                .collect(Collectors.toList());
     }
 
     public static List<MeasurementSpecification> getMeasurementSpecificationsForElement(
             final MonitorRepository monitorRepository, final EObject element) {
-        final List<MeasurementSpecification> result = new LinkedList<MeasurementSpecification>();
 
-        for (final Monitor monitor : getActiveMonitorsForElement(monitorRepository, element)) {
-            result.addAll(monitor.getMeasurementSpecifications());
-        }
-
-        return result;
+        return getActiveMonitorsForElement(monitorRepository, element).stream()
+                .flatMap(monitor -> monitor.getMeasurementSpecifications().stream()).collect(Collectors.toList());
     }
 
     public static boolean elementConformingToMeasuringPoint(final EObject element,
