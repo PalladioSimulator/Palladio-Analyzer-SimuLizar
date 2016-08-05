@@ -97,8 +97,9 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      *             {@link MetricDescriptionConstants#STATE_OF_ACTIVE_RESOURCE_METRIC_TUPLE}
      *             measurements.
      */
-    public static SimulationTimeEvaluationScope createScope(PowerProvidingEntity entityUnderMeasurement,
-            SimuComModel model, Measure<Double, Duration> windowLength, Measure<Double, Duration> windowIncrement) {
+    public static SimulationTimeEvaluationScope createScope(final PowerProvidingEntity entityUnderMeasurement,
+            final SimuComModel model, final Measure<Double, Duration> windowLength,
+            final Measure<Double, Duration> windowIncrement) {
 
         SimulationTimeEvaluationScope scope = new SimulationTimeEvaluationScope(entityUnderMeasurement, model);
         scope.initialize(windowLength, windowIncrement);
@@ -121,7 +122,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
      * @see #initialize(Measure, Measure)
      */
-    protected SimulationTimeEvaluationScope(PowerProvidingEntity entityUnderMeasurement, SimuComModel model) {
+    protected SimulationTimeEvaluationScope(final PowerProvidingEntity entityUnderMeasurement,
+            final SimuComModel model) {
         this.simModel = Objects.requireNonNull(model, "Given SimuComModel must not be null.");
         this.processingResourceSpecs = InterpreterUtils.getProcessingResourceSpecsFromInfrastructureElement(
                 Objects.requireNonNull(entityUnderMeasurement, "Given PowerProvidingEntity must not be null."));
@@ -147,7 +149,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @see #createScope(PowerProvidingEntity, SimuComModel, Measure, Measure)
      * @see #SimulationTimeEvaluationScope(PowerProvidingEntity, SimuComModel)
      */
-    private void initialize(Measure<Double, Duration> windowLength, Measure<Double, Duration> windowIncrement) {
+    private void initialize(final Measure<Double, Duration> windowLength,
+            final Measure<Double, Duration> windowIncrement) {
         ISlidingWindowMoveOnStrategy moveOnStrategy = new KeepLastElementPriorToLowerBoundStrategy();
         PcmmeasuringpointFactory pcmMeasuringpointFactory = PcmmeasuringpointFactory.eINSTANCE;
 
@@ -174,16 +177,16 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
                 resourceStateMetric = RESOURCE_STATE_METRIC;
             }
 
-            Calculator baseCalculator = resourceStateCalculator.orElseThrow(() -> {
-                String errorMessage = "Simulation time evaluation scope (sliding window based) cannot be initialized.\n"
-                        + ((proc.getNumberOfReplicas() == 1)
-                                ? "No 'state of active resource calculator' available for resource: " + proc + "\n"
-                                : "No 'overall utilization of active resource' calculator available for multi-core resource: "
-                                        + proc + "\n")
-                        + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
-                        + "to initializeInterpreterListeners()!";
-                throw new IllegalStateException(errorMessage);
-            });
+            Calculator baseCalculator = resourceStateCalculator.orElseThrow(() ->
+
+            new IllegalStateException(
+                    "Simulation time evaluation scope (sliding window based) cannot" + " be initialized.\n"
+                            + ((proc.getNumberOfReplicas() == 1)
+                                    ? "No 'state of active resource calculator' available for resource: " + proc + "\n"
+                                    : "No 'overall utilization of active resource' calculator available for multi-core"
+                                            + " resource: " + proc + "\n")
+                            + "Ensure that initializeModelSyncers() in SimulizarRuntimeState is called prior "
+                            + "to initializeInterpreterListeners()!"));
 
             SlidingWindow slidingWindow = new SimulizarSlidingWindow(windowLength, windowIncrement, resourceStateMetric,
                     moveOnStrategy, this.simModel);
@@ -213,7 +216,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
     }
 
     private static Optional<Calculator> findOverallUtilizationCalculatorForProcessingResource(
-            ProcessingResourceSpecification proc, Map<String, Calculator> availableOverallUtilizationCalculators) {
+            final ProcessingResourceSpecification proc,
+            final Map<String, Calculator> availableOverallUtilizationCalculators) {
         return Optional.ofNullable(availableOverallUtilizationCalculators.get(proc.getId()));
     }
 
@@ -233,7 +237,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @see #removeListener(ISimulationEvaluationScopeListener)
      * @see #removeAllListeners()
      */
-    public void addListener(ISimulationEvaluationScopeListener listener) {
+    public void addListener(final ISimulationEvaluationScopeListener listener) {
         this.collector.addObserver(listener);
     }
 
@@ -249,7 +253,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * @see #addListener(ISimulationEvaluationScopeListener)
      * @see #removeAllListeners()
      */
-    public void removeListener(ISimulationEvaluationScopeListener listener) {
+    public void removeListener(final ISimulationEvaluationScopeListener listener) {
         listener.preUnregister();
         this.collector.removeObserver(listener);
     }
@@ -266,7 +270,8 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
      * This implementation does nothing.
      */
     @Override
-    public void setResourceMetricsToEvaluate(Map<ProcessingResourceSpecification, Set<MetricDescription>> metricsMap) {
+    public void setResourceMetricsToEvaluate(
+            final Map<ProcessingResourceSpecification, Set<MetricDescription>> metricsMap) {
         // implementation is not required here
     }
 
@@ -304,7 +309,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         }
 
         @Override
-        public boolean isCompatibleWith(MetricDescription other) {
+        public boolean isCompatibleWith(final MetricDescription other) {
             return getMetricDesciption().equals(other);
         }
 
@@ -327,7 +332,7 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
          * @param m
          *            The {@link MeasuringValue} to be stored in the stream.
          */
-        public void exchangeElement(MeasuringValue m) {
+        public void exchangeElement(final MeasuringValue m) {
             assert m != null;
 
             throwExceptionIfClosed();
@@ -350,15 +355,15 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
         private final Map<ProcessingResourceSpecification, MeasuringValue> collectedMeasurements;
         private final int measurementsToCollect;
 
-        public UtilizationMeasurementsCollector(int measurementsToCollect) {
+        public UtilizationMeasurementsCollector(final int measurementsToCollect) {
             assert measurementsToCollect > 0;
             this.collectedMeasurements = new HashMap<ProcessingResourceSpecification, MeasuringValue>(
                     measurementsToCollect);
             this.measurementsToCollect = measurementsToCollect;
         }
 
-        private void addUtilizationMeasurementForProcessingResource(ProcessingResourceSpecification spec,
-                MeasuringValue utilMeasurement) {
+        private void addUtilizationMeasurementForProcessingResource(final ProcessingResourceSpecification spec,
+                final MeasuringValue utilMeasurement) {
             assert spec != null && utilMeasurement != null;
 
             if (this.collectedMeasurements.put(spec, utilMeasurement) == null
@@ -400,17 +405,17 @@ public class SimulationTimeEvaluationScope extends AbstractEvaluationScope {
 
         private final ProcessingResourceSpecification spec;
 
-        public ScopeRecorder(ProcessingResourceSpecification spec) {
+        public ScopeRecorder(final ProcessingResourceSpecification spec) {
             this.spec = spec;
         }
 
         @Override
-        public void initialize(IRecorderConfiguration recorderConfiguration) {
+        public void initialize(final IRecorderConfiguration recorderConfiguration) {
             // implementation is not required
         }
 
         @Override
-        public void writeData(MeasuringValue measurement) {
+        public void writeData(final MeasuringValue measurement) {
             // we receive a new utilization measurement now
             if (Objects.requireNonNull(measurement, "Somehow 'null' measurement was passed to recorder.")
                     .isCompatibleWith(UTILIZATION_METRIC)) {

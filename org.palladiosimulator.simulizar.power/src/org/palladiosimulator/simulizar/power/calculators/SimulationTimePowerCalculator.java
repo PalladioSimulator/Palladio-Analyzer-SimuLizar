@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.power.calculators;
 
+import java.util.Objects;
+
 import javax.measure.Measurable;
 import javax.measure.Measure;
 import javax.measure.quantity.Power;
@@ -19,12 +21,18 @@ import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.interpreter.ConsumptionContext;
 import de.fzi.power.interpreter.PowerConsumptionSwitch;
 
-public class SimulationTimePowerCalculator extends MeasurementSource implements
-        ISimulationEvaluationScopeListener {
+/**
+ * Implementation of a {@link MeasurementSource} which uses measurements provided by a
+ * {@link SimulationTimeEvaluationScope} to compute the power consumption of a
+ * {@link PowerProvidingEntity} at simulation-time.
+ * 
+ * @author Florian Rosenthal
+ *
+ */
+public class SimulationTimePowerCalculator extends MeasurementSource implements ISimulationEvaluationScopeListener {
 
     private static final Unit<Power> DEFAULT_POWER_UNIT;
-    private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC =
-            MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
+    private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
 
     static {
         DEFAULT_POWER_UNIT = MetricDescriptionUtility.getDefaultUnit(
@@ -35,41 +43,52 @@ public class SimulationTimePowerCalculator extends MeasurementSource implements
     private final SimulationTimeEvaluationScope scope;
     private final PowerProvidingEntity ppe;
 
-    public SimulationTimePowerCalculator(ConsumptionContext consumptionContext,
-            SimulationTimeEvaluationScope scope, PowerProvidingEntity ppe) {
+    /**
+     * Initializes a new instance of the {@link SimulationTimePowerCalculator} class with the given
+     * arguments.
+     * 
+     * @param consumptionContext
+     *            The {@link ConsumptionContext} used for evaluating the power consumption.
+     * @param scope
+     *            The {@link SimulationTimeEvaluationScope} this instance will observe.
+     * @param ppe
+     *            The {@link PowerProvidingEntity} whose consumption is to be calculated.
+     * @throws NullPointerException
+     *             In case any of the arguments is {@code null}.
+     */
+    public SimulationTimePowerCalculator(final ConsumptionContext consumptionContext,
+            final SimulationTimeEvaluationScope scope, final PowerProvidingEntity ppe) {
         super(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
 
-        if (consumptionContext == null) {
-            throw new IllegalArgumentException("Given ConsumptionContext instance must not be null.");
-        }
-        if (scope == null) {
-            throw new IllegalArgumentException("Given SimulationTimeEvaluationScope instance must not be null.");
-        }
-        if (ppe == null) {
-            throw new IllegalArgumentException("Given PowerProvidingEntity instance must not be null.");
-        }
-        this.scope = scope;
-        this.consumptionSwitch = PowerConsumptionSwitch.createPowerConsumptionSwitch(consumptionContext);
-        this.ppe = ppe;
+        this.scope = Objects.requireNonNull(scope, "Given SimulationTimeEvaluationScope instance must not be null.");
+        this.consumptionSwitch = PowerConsumptionSwitch.createPowerConsumptionSwitch(
+                Objects.requireNonNull(consumptionContext, "Given ConsumptionContext instance must not be null."));
+        this.ppe = Objects.requireNonNull(ppe, "Given PowerProvidingEntity instance must not be null.");
     }
 
+    /**
+     * {@inheritDoc}<br>
+     * <br>
+     * This implementation obtains a new power consumption measurement based on the new measurement
+     * provided by the evaluation scope and forwards it to all attached listeners.
+     */
     @Override
     public void newElementAvailable() {
         if (this.scope.hasNext()) {
             this.scope.next();
             Measurable<Power> calculatedConsumption = this.consumptionSwitch.doSwitch(this.ppe);
             TupleMeasurement newPowerMeasurement = new TupleMeasurement(POWER_CONSUMPTION_TUPLE_METRIC_DESC,
-                    this.scope.getCurrentPointInTime(), Measure.valueOf(
-                            calculatedConsumption.doubleValue(DEFAULT_POWER_UNIT), DEFAULT_POWER_UNIT));
+                    this.scope.getCurrentPointInTime(),
+                    Measure.valueOf(calculatedConsumption.doubleValue(DEFAULT_POWER_UNIT), DEFAULT_POWER_UNIT));
             informListeners(newPowerMeasurement);
         } else {
             throw new IllegalStateException("Calculator was informed by scope that new measurement "
                     + "would be available but scope.hasNext() yields false");
         }
-        
+
     }
 
-    private void informListeners(TupleMeasurement newPowerMeasurement) {
+    private void informListeners(final TupleMeasurement newPowerMeasurement) {
         assert newPowerMeasurement != null;
         assert newPowerMeasurement.isCompatibleWith(POWER_CONSUMPTION_TUPLE_METRIC_DESC);
 
