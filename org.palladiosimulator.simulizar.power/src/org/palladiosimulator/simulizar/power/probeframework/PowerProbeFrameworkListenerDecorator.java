@@ -3,10 +3,12 @@ package org.palladiosimulator.simulizar.power.probeframework;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
 
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
@@ -16,6 +18,11 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
+import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.monitorrepository.TimeDriven;
+import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
+import org.palladiosimulator.monitorrepository.util.MonitorRepositorySwitch;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
@@ -23,7 +30,6 @@ import org.palladiosimulator.simulizar.power.calculators.SimulationTimeEnergyCal
 import org.palladiosimulator.simulizar.power.calculators.SimulationTimePowerCalculator;
 import org.palladiosimulator.simulizar.power.evaluationscope.SimulationTimeEvaluationScope;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
-import org.palladiosimulator.simulizar.slidingwindow.util.SimulizarSlidingWindowUtil;
 
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.interpreter.ConsumptionContext;
@@ -31,15 +37,34 @@ import de.fzi.power.interpreter.InterpreterUtils;
 import de.fzi.power.interpreter.PowerModelRegistry;
 import de.fzi.power.interpreter.PowerModelUpdaterSwitch;
 import de.fzi.power.interpreter.calculators.ExtensibleCalculatorInstantiatorImpl;
-import de.fzi.power.interpreter.calculators.energy.AbstractCumulativeEnergyCalculator;
 import de.fzi.power.interpreter.calculators.energy.SimpsonRuleCumulativeEnergyCalculator;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.ISimulationListener;
 
+/**
+ * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to
+ * initialize sliding-window based (i.e., {@link TimeDriven}) computations of power and energy
+ * consumption (based on utilization measurements).
+ * 
+ * @author Florian Rosenthal
+ *
+ */
 public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
     private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
     private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
+
+    private static final MonitorRepositorySwitch<Optional<TimeDriven>> PROCESSING_TYPE_SWITCH = new MonitorRepositorySwitch<Optional<TimeDriven>>() {
+        @Override
+        public Optional<TimeDriven> caseTimeDriven(final TimeDriven timeDriven) {
+            return Optional.of(timeDriven);
+        }
+
+        @Override
+        public Optional<TimeDriven> defaultCase(final EObject eObject) {
+            return Optional.empty();
+        }
+    };
 
     private SimuComModel model = null;
     private RuntimeMeasurementModel rmModel;
@@ -53,7 +78,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     }
 
     @Override
-    public void setProbeFrameworkListener(AbstractProbeFrameworkListener probeFrameworkListener) {
+    public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(probeFrameworkListener);
         this.model = getProbeFrameworkListener().getSimuComModel();
         this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
@@ -67,8 +92,7 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
      * and recorders.
      * 
      */
-    private void initPowerMeasurements(Collection<MeasurementSpecification> powerMeasurementSpecs) {
-        assert getProbeFrameworkListener() != null;
+    private void initPowerMeasurements(final Collection<MeasurementSpecification> powerMeasurementSpecs) {
 
         if (!powerMeasurementSpecs.isEmpty()) {
             PowerModelRegistry powerModelRegistry = new PowerModelRegistry();
@@ -81,34 +105,31 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                 Monitor powerSpecMonitor = powerSpec.getMonitor();
                 MeasuringPoint measuringPoint = powerSpecMonitor.getMeasuringPoint();
 
-                final PowerProvidingEntity ppe = InterpreterUtils
+                Optional<TimeDriven> timeDrivenSpecification = PROCESSING_TYPE_SWITCH
+                        .doSwitch(powerSpec.getProcessingType());
+                PowerProvidingEntity powerProvidingEntity = InterpreterUtils
                         .getPowerProvidingEntityFromMeasuringPoint(this.globalPCMModelResourceSet, measuringPoint);
-                if (ppe == null) {
-                    throw new IllegalStateException(
-                            "MeasurementSpecification for metric " + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
-                                    + " has to be related to a PowerProvidingEntity!");
-                }
 
-                Measure<Double, Duration>[] windowProperties = SimulizarSlidingWindowUtil
-                        .getWindowPropertiesFromTemporalCharacterization(powerSpec.getTemporalRestriction());
-                Measure<Double, Duration> initialOffset = windowProperties[0];
-                Measure<Double, Duration> samplingPeriod = windowProperties[1];
-                SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(ppe, this.model,
-                        initialOffset, samplingPeriod);
+                // this call crashes in case measurement specification or ppe are invalid
+                checkValidity(powerSpec, powerProvidingEntity, timeDrivenSpecification);
 
-                modelUpdaterSwitch.doSwitch(ppe);
-                ConsumptionContext context = ConsumptionContext.createConsumptionContext(ppe, scope,
+                TimeDriven timeDriven = timeDrivenSpecification.get();
+
+                Measure<Double, Duration> initialOffset = timeDriven.getWindowLengthAsMeasure();
+                Measure<Double, Duration> samplingPeriod = timeDriven.getWindowIncrementAsMeasure();
+                SimulationTimeEvaluationScope scope = SimulationTimeEvaluationScope.createScope(powerProvidingEntity,
+                        this.model, initialOffset, samplingPeriod);
+
+                modelUpdaterSwitch.doSwitch(powerProvidingEntity);
+                ConsumptionContext context = ConsumptionContext.createConsumptionContext(powerProvidingEntity, scope,
                         powerModelRegistry);
-
-                AbstractCumulativeEnergyCalculator energyCalculator = new SimpsonRuleCumulativeEnergyCalculator(
-                        samplingPeriod, initialOffset);
 
                 createdContexts.add(context);
                 createdScopes.add(scope);
                 SimulationTimePowerCalculator powerConsumptionCalculator = new SimulationTimePowerCalculator(context,
-                        scope, ppe);
+                        scope, powerProvidingEntity);
                 SimulationTimeEnergyCalculator energyConsumptionCalculator = new SimulationTimeEnergyCalculator(
-                        energyCalculator);
+                        new SimpsonRuleCumulativeEnergyCalculator(samplingPeriod, initialOffset));
 
                 // calculate power and energy consumption
                 scope.addListener(powerConsumptionCalculator);
@@ -119,26 +140,81 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
                         POWER_CONSUMPTION_TUPLE_METRIC_DESC);
                 triggerMeasurementsRecording(energyConsumptionCalculator, measuringPoint,
                         ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
+
                 // write measurements to RuntimeMeasurement (both power and energy measurements
                 // are forwarded)
                 triggerRuntimeMeasurementsRecording(powerConsumptionCalculator, powerSpec);
                 triggerRuntimeMeasurementsRecording(energyConsumptionCalculator,
-                        createSpecificationForEnergyMeasurements(powerSpec));
+                        createSpecificationForEnergyMeasurements(powerSpecMonitor, timeDriven));
             }
             triggerAfterSimulationCleanup(createdContexts, createdScopes);
         }
     }
 
-    private MeasurementSpecification createSpecificationForEnergyMeasurements(MeasurementSpecification powerSpec) {
+    private static MeasurementSpecification createSpecificationForEnergyMeasurements(final Monitor monitor,
+            final TimeDriven fromProcessingType) {
+        assert monitor != null && fromProcessingType != null;
+
         MeasurementSpecification energySpec = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
         energySpec.setMetricDescription(ENERGY_CONSUMPTION_TUPLE_METRIC_DESC);
-        energySpec.setMonitor(powerSpec.getMonitor());
-        energySpec.setTemporalRestriction(powerSpec.getTemporalRestriction());
+
+        TimeDriven timeDrivenProcessingType = MonitorRepositoryFactory.eINSTANCE.createTimeDriven();
+        timeDrivenProcessingType.setWindowIncrement(fromProcessingType.getWindowIncrement());
+        timeDrivenProcessingType.setWindowLength(fromProcessingType.getWindowLength());
+
+        energySpec.setProcessingType(timeDrivenProcessingType);
+        energySpec.setTriggersSelfAdaptations(
+                fromProcessingType.getMeasurementSpecification().isTriggersSelfAdaptations());
+
+        monitor.getMeasurementSpecifications().add(energySpec);
+
+        assert energySpec.getMonitor().getId().equals(monitor.getId());
         return energySpec;
     }
 
-    private void triggerMeasurementsRecording(MeasurementSource measurementSource, MeasuringPoint mp,
-            MetricDescription recorderAcceptedMetric) {
+    /**
+     * Checks whether the given measurement specification is valid. If this methods returns, then it
+     * is valid:<br>
+     * For validity, it is required that
+     * <ul>
+     * <li>the associated power providing entity exist (i.e., non-null),</li>
+     * <li>the passed optional be not empty, i.e., the ProcessingType specified in the measurement
+     * specification must be a {@link TimeDrivenAggregation}.</li>
+     * </ul>
+     * 
+     * @param powerMeasurementSpec
+     *            A {@link MeasurementSpecification} for power measurements.
+     * @param powerProvidingEntity
+     *            The {@link PowerProvidingEntity} associated with the given measurement
+     *            specification.
+     * @param aggregation
+     *            An {@link Optional} that contains the {@link TimeDrivenAggregation}
+     *            {@link ProcessingType} that has been extracted from the given measurement
+     *            specification.
+     * 
+     * @throws IllegalStateException
+     *             Iff {@code powerProvidingEntity == null || !aggregation.isPresent()}.
+     */
+    private static void checkValidity(final MeasurementSpecification powerMeasurementSpec,
+            final PowerProvidingEntity powerProvidingEntity, final Optional<TimeDriven> aggregation) {
+
+        if (powerProvidingEntity == null) {
+            throw new IllegalStateException("MeasurementSpecification '" + powerMeasurementSpec.getName()
+                    + "' for metric " + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
+                    + " has to be related to a PowerProvidingEntity!");
+        }
+
+        if (!aggregation.isPresent()) {
+            throw new IllegalStateException("MetricDescription (" + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
+                    + ") '" + powerMeasurementSpec.getName() + "' of Monitor '"
+                    + powerMeasurementSpec.getMonitor().getEntityName() + "' must provide a "
+                    + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + " of Type '"
+                    + MonitorRepositoryPackage.Literals.TIME_DRIVEN.getName() + "'!");
+        }
+    }
+
+    private void triggerMeasurementsRecording(final MeasurementSource measurementSource, final MeasuringPoint mp,
+            final MetricDescription recorderAcceptedMetric) {
         assert measurementSource != null && mp != null && recorderAcceptedMetric != null;
 
         Map<String, Object> recorderConfigurationMap = createRecorderConfigMapWithAcceptedMetricAndMeasuringPoint(
@@ -146,8 +222,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         registerMeasurementsRecorder(measurementSource, initializeRecorder(recorderConfigurationMap));
     }
 
-    private void triggerRuntimeMeasurementsRecording(MeasurementSource calculator,
-            MeasurementSpecification measurementSpec) {
+    private void triggerRuntimeMeasurementsRecording(final MeasurementSource calculator,
+            final MeasurementSpecification measurementSpec) {
         assert calculator != null && measurementSpec != null;
 
         if (measurementSpec.isTriggersSelfAdaptations()) {
@@ -166,8 +242,8 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
      *            {@link Collection} of scopes to clean up.
      * @see #initPowerMeasurements()
      */
-    private void triggerAfterSimulationCleanup(Collection<ConsumptionContext> contextsToCleanup,
-            Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
+    private void triggerAfterSimulationCleanup(final Collection<ConsumptionContext> contextsToCleanup,
+            final Collection<SimulationTimeEvaluationScope> scopesToCleanup) {
         assert contextsToCleanup != null && !contextsToCleanup.isEmpty();
         assert scopesToCleanup != null && !scopesToCleanup.isEmpty();
         assert this.model != null;
