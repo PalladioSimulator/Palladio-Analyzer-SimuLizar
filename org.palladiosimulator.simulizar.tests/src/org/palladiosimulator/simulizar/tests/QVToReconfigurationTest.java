@@ -24,7 +24,8 @@ import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJ
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
-import org.palladiosimulator.monitorrepository.StatisticalCharacterizationEnum;
+import org.palladiosimulator.monitorrepository.StatisticalCharacterization;
+import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
@@ -58,7 +59,7 @@ public class QVToReconfigurationTest {
     private final static String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment";
     private final static String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.system";
     private final static String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.allocation";
-    private final static String PMS_MODEL_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.pms";
+    private final static String PMS_MODEL_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.monitorrepository";
     private final static String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addClonedServer";
     private final static String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addNewServer";
     private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
@@ -318,17 +319,21 @@ public class QVToReconfigurationTest {
                 .createMeasurementSpecification();
         measurementSpecification.setId("_sEx-cMLAEeSZr8oGpigbHA");
         measurementSpecification.setMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        measurementSpecification.setStatisticalCharacterization(StatisticalCharacterizationEnum.ARITHMETIC_MEAN);
-        measurementSpecification.setTemporalRestriction(null);
+        StatisticalCharacterization statisticalCharacterization = MonitorRepositoryFactory.eINSTANCE
+                .createArithmeticMean();
+        TimeDrivenAggregation timeDrivenAggregation = MonitorRepositoryFactory.eINSTANCE.createTimeDrivenAggregation();
+        timeDrivenAggregation.setStatisticalCharacterization(statisticalCharacterization);
+        timeDrivenAggregation.setMeasurementSpecification(measurementSpecification);
+        timeDrivenAggregation.setWindowIncrement(10d);
+        timeDrivenAggregation.setWindowLength(10d);
 
-        final RuntimeMeasurement responeTimeRuntimeMeasuremnt = RuntimeMeasurementFactory.eINSTANCE
+        final RuntimeMeasurement responeTimeRuntimeMeasurement = RuntimeMeasurementFactory.eINSTANCE
                 .createRuntimeMeasurement();
-        responeTimeRuntimeMeasuremnt.setId("");
-        responeTimeRuntimeMeasuremnt.setMeasuringValue(m);
-        responeTimeRuntimeMeasuremnt.setMeasurementSpecification(measurementSpecification);
+        responeTimeRuntimeMeasurement.setId("");
+        responeTimeRuntimeMeasurement.setMeasuringValue(m);
+        responeTimeRuntimeMeasurement.setMeasurementSpecification(measurementSpecification);
 
         URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
-        // reconfRulesURI = CommonPlugin.resolve(reconfRulesURI);
 
         /*
          * Read in the PCM model.
@@ -355,7 +360,7 @@ public class QVToReconfigurationTest {
         final MDSDBlackboard blackboard = new MDSDBlackboard();
         blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
         final IModelAccess modelAccess = new ModelAccess(blackboard);
-        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(responeTimeRuntimeMeasuremnt);
+        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(responeTimeRuntimeMeasurement);
 
         /*
          * Create the configuration for the QVTo reconfigurator.
@@ -373,7 +378,8 @@ public class QVToReconfigurationTest {
         QvtoReconfigurationLoader reconfigurationLoader = new QvtoReconfigurationLoader();
         reconfigurationLoader.setConfiguration(swfc);
         reconfigurationLoader.setModelAccess(modelAccess);
-        EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(reconfigurationLoader.getTransformations());
+        EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(
+                reconfigurationLoader.getTransformations());
         boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement);
         assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
 
