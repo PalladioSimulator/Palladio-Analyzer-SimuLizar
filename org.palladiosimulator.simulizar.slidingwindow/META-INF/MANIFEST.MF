@@ -24,4 +24,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.slidingwindow.aggregators,
  org.palladiosimulator.simulizar.slidingwindow.impl,
- org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement
+ org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement,
+ org.palladiosimulator.simulizar.slidingwindow.utils
