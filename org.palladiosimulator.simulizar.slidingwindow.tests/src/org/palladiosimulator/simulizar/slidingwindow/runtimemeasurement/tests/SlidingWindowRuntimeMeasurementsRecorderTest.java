@@ -81,7 +81,20 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
     }
 
     @Test
-    public void testNewMeasurementAvailable() {
+    public void testNewMeasurementAvailableCompatibleMetric() {
+        this.recorderUnderTest.newMeasurementAvailable(this.correctMeasurement);
+        RuntimeMeasurement rmMeasurement = this.recorderUnderTest.getLastMeasurement();
+
+        assertEquals(0.42, rmMeasurement.getMeasuringValue(), Math.pow(10, -8));
+        assertEquals(this.spec.getId(), rmMeasurement.getMeasurementSpecification().getId());
+    }
+
+    @Test
+    public void testNewMeasurementAvailableSubsumedMetric() {
+        // slightly change metric
+        this.spec.setMetricDescription(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
+        this.recorderUnderTest = new InternalSlidingWindowRuntimeMeasurementsRecorder(this.rmModel, this.spec);
+
         this.recorderUnderTest.newMeasurementAvailable(this.correctMeasurement);
         RuntimeMeasurement rmMeasurement = this.recorderUnderTest.getLastMeasurement();
 
