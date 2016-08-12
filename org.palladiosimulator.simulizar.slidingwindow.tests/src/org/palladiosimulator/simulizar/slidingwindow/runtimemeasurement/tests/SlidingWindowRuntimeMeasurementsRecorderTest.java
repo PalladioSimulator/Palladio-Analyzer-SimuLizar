@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Dimensionless;
+import javax.measure.unit.NonSI;
 import javax.measure.unit.SI;
 
 import org.junit.After;
@@ -46,8 +47,8 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
 
         Measure<Double, javax.measure.quantity.Duration> timeMeasure = Measure.valueOf(42.0, SI.SECOND);
         Measure<Double, Dimensionless> utilizationMeasure = Measure.valueOf(0.42, Dimensionless.UNIT);
-        this.wrongMetricMeasurement = new BasicMeasurement<>(utilizationMeasure,
-                MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE);
+        this.wrongMetricMeasurement = new BasicMeasurement<>(Measure.valueOf(3.5d, NonSI.HOUR),
+                MetricDescriptionConstants.WAITING_TIME_METRIC);
         this.correctMeasurement = new TupleMeasurement(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE,
                 timeMeasure, utilizationMeasure);
 
@@ -90,8 +91,8 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
 
     private class InternalSlidingWindowRuntimeMeasurementsRecorder extends SlidingWindowRuntimeMeasurementsRecorder {
 
-        public InternalSlidingWindowRuntimeMeasurementsRecorder(RuntimeMeasurementModel rmModel,
-                MeasurementSpecification measurementSpecification) {
+        public InternalSlidingWindowRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel,
+                final MeasurementSpecification measurementSpecification) {
             super(rmModel, measurementSpecification);
         }
 
