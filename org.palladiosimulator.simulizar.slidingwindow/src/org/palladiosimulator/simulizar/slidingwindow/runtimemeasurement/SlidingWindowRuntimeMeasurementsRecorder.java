@@ -124,13 +124,17 @@ public class SlidingWindowRuntimeMeasurementsRecorder extends PRMRecorder implem
      */
     @Override
     public void newMeasurementAvailable(final MeasuringValue newMeasurement) {
-        if (!Objects.requireNonNull(newMeasurement)
-                .isCompatibleWith(getMeasurementSpecification().getMetricDescription())) {
+        if (Objects.requireNonNull(newMeasurement)
+                .isCompatibleWith(getMeasurementSpecification().getMetricDescription())
+                || MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(this.dataMetric,
+                        newMeasurement.getMetricDesciption())) {
+
+            Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
+            // forward value (expressed as double in default unit!) to RuntimeMeasurementModel
+            updateMeasurementValue(measure.doubleValue(this.dataMetric.getDefaultUnit()));
+        } else {
             throw new IllegalArgumentException("Incompatible measurement received!");
         }
-        Measure<Double, Quantity> measure = newMeasurement.getMeasureForMetric(this.dataMetric);
-        // forward value (expressed as double in default unit!) to RuntimeMeasurementModel
-        updateMeasurementValue(measure.doubleValue(this.dataMetric.getDefaultUnit()));
     }
 
     @Override
