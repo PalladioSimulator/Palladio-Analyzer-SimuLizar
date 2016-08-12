@@ -9,6 +9,7 @@ import org.palladiosimulator.experimentanalysis.SlidingWindowRecorder;
 import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -25,11 +26,35 @@ public final class AggregatorHelper {
 
     }
 
+    /**
+     * Initializes sliding window based aggregation (i.e., {@link TimeDrivenAggregation}) of
+     * measurements and the propagation of the aggregated values to a
+     * {@link RuntimeMeasurementModel}.<br>
+     * This method does nothing if the associated {@link Monitor} is not active, or the measurements
+     * do not trigger self-adaptations.
+     * 
+     * @param measurementSpecification
+     *            The {@link MeasurementSpecification} which specifies the aggregation.
+     * @param calculator
+     *            The {@link Calculator} which produces the measurements for the aggregation.
+     * @param runtimeMeasurementModel
+     *            The {@link RuntimeMeasurementModel} to which the aggregated values are forwarded.
+     * @param model
+     *            The {@link SimuComModel} of the current simulation run.
+     * @throws NullPointerException
+     *             In case any argument is {@code null}.
+     * @throws IllegalArgumentException
+     *             If the given measurement specification does not specify a time-driven
+     *             aggregation, or if the metric of the measurements is not a
+     *             {@link NumericalBaseMetricDescription}.
+     * @see MeasurementSpecification#isTriggersSelfAdaptations()
+     * @see Monitor#isActivated()
+     */
     public static void setupRuntimeAggregatorForMeasurementSpecification(
             final MeasurementSpecification measurementSpecification, final Calculator calculator,
             final RuntimeMeasurementModel runtimeMeasurementModel, final SimuComModel model) {
 
-        if (measurementSpecification.isTriggersSelfAdaptations()
+        if (Objects.requireNonNull(measurementSpecification).isTriggersSelfAdaptations()
                 && measurementSpecification.getMonitor().isActivated()) {
 
             // fails in case of wrong processing type
@@ -54,14 +79,14 @@ public final class AggregatorHelper {
                     aggregation.getStatisticalCharacterization().getAggregator(expectedMetric));
 
             Objects.requireNonNull(calculator)
-                    .addObserver(new SlidingWindowRecorder(
-                            new SimulizarSlidingWindow(aggregation.getWindowLengthAsMeasure(),
-                                    aggregation.getWindowIncrementAsMeasure(), expectedMetric, moveOnStrategy, model),
-                            windowAggregator));
+                    .addObserver(new SlidingWindowRecorder(new SimulizarSlidingWindow(
+                            aggregation.getWindowLengthAsMeasure(), aggregation.getWindowIncrementAsMeasure(),
+                            expectedMetric, moveOnStrategy, Objects.requireNonNull(model)), windowAggregator));
 
             // forward to PRM (i.e., RuntimeMeasurementModel)
-            windowAggregator.addRecorder(new SlidingWindowRuntimeMeasurementsRecorder(runtimeMeasurementModel,
-                    measurementSpecification, measurementSpecification.getMonitor().getMeasuringPoint()));
+            windowAggregator.addRecorder(
+                    new SlidingWindowRuntimeMeasurementsRecorder(Objects.requireNonNull(runtimeMeasurementModel),
+                            measurementSpecification, measurementSpecification.getMonitor().getMeasuringPoint()));
         }
     }
 
