@@ -12,6 +12,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
+import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -31,6 +32,7 @@ import org.palladiosimulator.simulizar.power.calculators.SimulationTimePowerCalc
 import org.palladiosimulator.simulizar.power.evaluationscope.SimulationTimeEvaluationScope;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 
+import de.fzi.power.infrastructure.InfrastructurePackage;
 import de.fzi.power.infrastructure.PowerProvidingEntity;
 import de.fzi.power.interpreter.ConsumptionContext;
 import de.fzi.power.interpreter.InterpreterUtils;
@@ -52,6 +54,7 @@ import de.uka.ipd.sdq.simulation.ISimulationListener;
 public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
     private static final MetricSetDescription POWER_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.POWER_CONSUMPTION_TUPLE;
+    private static final BaseMetricDescription POWER_CONSUMPTION_METRIC_DESC = MetricDescriptionConstants.POWER_CONSUMPTION;
     private static final MetricSetDescription ENERGY_CONSUMPTION_TUPLE_METRIC_DESC = MetricDescriptionConstants.CUMULATIVE_ENERGY_CONSUMPTION_TUPLE;
 
     private static final MonitorRepositorySwitch<Optional<TimeDriven>> PROCESSING_TYPE_SWITCH = new MonitorRepositorySwitch<Optional<TimeDriven>>() {
@@ -73,8 +76,13 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
     @Override
     public void registerMeasurements() {
         super.registerMeasurements();
-        initPowerMeasurements(getProbeFrameworkListener()
+
+        Collection<MeasurementSpecification> powerMeasurementSpecs = new ArrayList<>(getProbeFrameworkListener()
+                .getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_METRIC_DESC));
+        // also consider case when power metric tuple rather than power metric is chosen
+        powerMeasurementSpecs.addAll(getProbeFrameworkListener()
                 .getMeasurementSpecificationsForMetricDescription(POWER_CONSUMPTION_TUPLE_METRIC_DESC));
+        initPowerMeasurements(powerMeasurementSpecs);
     }
 
     @Override
@@ -199,15 +207,16 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
             final PowerProvidingEntity powerProvidingEntity, final Optional<TimeDriven> aggregation) {
 
         if (powerProvidingEntity == null) {
-            throw new IllegalStateException("MeasurementSpecification '" + powerMeasurementSpec.getName()
-                    + "' for metric " + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
-                    + " has to be related to a PowerProvidingEntity!");
+            throw new IllegalStateException(
+                    "MeasurementSpecification '" + powerMeasurementSpec.getName() + "' for metric "
+                            + powerMeasurementSpec.getMetricDescription().getName() + " has to be related to a "
+                            + InfrastructurePackage.Literals.POWER_PROVIDING_ENTITY.getName() + "!");
         }
 
         if (!aggregation.isPresent()) {
-            throw new IllegalStateException("MetricDescription (" + POWER_CONSUMPTION_TUPLE_METRIC_DESC.getName()
-                    + ") '" + powerMeasurementSpec.getName() + "' of Monitor '"
-                    + powerMeasurementSpec.getMonitor().getEntityName() + "' must provide a "
+            throw new IllegalStateException("MetricDescription ("
+                    + powerMeasurementSpec.getMetricDescription().getName() + ") '" + powerMeasurementSpec.getName()
+                    + "' of Monitor '" + powerMeasurementSpec.getMonitor().getEntityName() + "' must provide a "
                     + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + " of Type '"
                     + MonitorRepositoryPackage.Literals.TIME_DRIVEN.getName() + "'!");
         }
