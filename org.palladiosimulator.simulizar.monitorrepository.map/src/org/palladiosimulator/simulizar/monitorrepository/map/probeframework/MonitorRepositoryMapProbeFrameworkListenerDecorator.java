@@ -85,6 +85,6 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
                     .findAny();
 
         }
-        return Optional.of(baseCalculator);
+        return Optional.ofNullable(baseCalculator);
     }
 }
