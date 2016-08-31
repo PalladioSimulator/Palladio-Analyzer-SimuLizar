@@ -2,6 +2,9 @@ package org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement
 
 import java.util.Objects;
 
+import javax.measure.quantity.Quantity;
+import javax.measure.unit.Unit;
+
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
@@ -31,6 +34,7 @@ public class MonitorRepositoryMapRuntimeMeasurementsRecorder extends PRMRecorder
     private final Map mapProcessingType;
     private final MetricDescription expectedInputMetric;
     private final NumericalBaseMetricDescription expectedOutputMetric;
+    private final Unit<Quantity> defaultOutputUnit;
     private final boolean expectsBaseMetric;
 
     /**
@@ -68,6 +72,7 @@ public class MonitorRepositoryMapRuntimeMeasurementsRecorder extends PRMRecorder
         }
         this.expectedOutputMetric = (NumericalBaseMetricDescription) this.mapProcessingType
                 .getOutputMetricDescription();
+        this.defaultOutputUnit = this.expectedOutputMetric.getDefaultUnit();
 
     }
 
@@ -90,7 +95,7 @@ public class MonitorRepositoryMapRuntimeMeasurementsRecorder extends PRMRecorder
             // forward transformed data (expressed as double in default unit of output numerical
             // base metric)
             super.updateMeasurementValue(transformedMeasurement.getMeasureForMetric(this.expectedOutputMetric)
-                    .doubleValue(this.expectedOutputMetric.getDefaultUnit()));
+                    .doubleValue(this.defaultOutputUnit));
         } else {
             throw new IllegalStateException("Somehow a wrong measurement kind was passed.");
         }
