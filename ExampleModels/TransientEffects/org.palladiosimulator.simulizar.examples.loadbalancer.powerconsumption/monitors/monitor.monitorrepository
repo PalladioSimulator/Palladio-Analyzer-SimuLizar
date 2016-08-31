@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_cwWzENIfEeSvYrDsAIgQPw" entityName="loadBalancerMonitorRepo">
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:map="http://palladiosimulator.org/MonitorRepository/Map/1.0" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_cwWzENIfEeSvYrDsAIgQPw" entityName="loadBalancerMonitorRepo">
   <monitors id="_Ea4AgNIgEeSvYrDsAIgQPw" entityName="rackPduMonitor">
     <measurementSpecifications id="_EyJ4ENIgEeSvYrDsAIgQPw">
       <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
@@ -10,7 +10,7 @@
   <monitors id="_h41d4NIhEeSvYrDsAIgQPw" entityName="cpuServer1Monitor">
     <measurementSpecifications id="_kcfGYNIhEeSvYrDsAIgQPw">
       <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_mhws4SkUEeSuf8LV7cHLgA"/>
-      <processingType xsi:type="monitorrepository:TimeDriven" id="_5AziAVigEea91qwI_2Q04w" windowLength="1.0" windowIncrement="0.5"/>
+      <processingType xsi:type="monitorrepository:TimeDriven" id="_5AziAVigEea91qwI_2Q04w"/>
     </measurementSpecifications>
     <measurementSpecifications id="_zPcHQPmHEeSpp_9_vIv4FA">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
@@ -68,11 +68,21 @@
     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.7"/>
   </monitors>
-  <monitors id="_hBc-YNIrEeSQpcXFBkptHw" entityName="usageScenarioMonitor">
+  <monitors id="_hBc-YNIrEeSQpcXFBkptHw" entityName="usageScenarioMonitor" activated="false">
     <measurementSpecifications id="_kzPN8NIrEeSQpcXFBkptHw">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
       <processingType xsi:type="monitorrepository:TimeDrivenAggregation" id="_sqg5yFirEea91qwI_2Q04w">
         <statisticalCharacterization xsi:type="monitorrepository:ArithmeticMean"/>
+      </processingType>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.8"/>
+  </monitors>
+  <monitors id="_sb7MQWCPEea3r455wdEfvg" entityName="usageScenarioMonitor2">
+    <measurementSpecifications id="_xZQo8GCPEea3r455wdEfvg">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+      <processingType xsi:type="map:Map" id="_0op9JWCPEea3r455wdEfvg" entityName="usageScenarioResponseTimeMapping">
+        <outputMetricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+        <mapper xsi:type="map:ExponentialSmoothing" id="_9m7fsGCPEea3r455wdEfvg" smoothingFactor="0.75"/>
       </processingType>
     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.8"/>
@@ -86,7 +96,7 @@
   </monitors>
   <monitors id="_8JAEENOXEeS6f_AUbSENiQ" entityName="server1PduMonitor">
     <measurementSpecifications id="__b2U4NOXEeS6f_AUbSENiQ">
-      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_NbIowlt_EeS0LdH-diVVEQ"/>
       <processingType xsi:type="monitorrepository:TimeDriven" id="_QoXukVi0Eea4XqDtmt5UDg" windowIncrement="5.0"/>
     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.10"/>
