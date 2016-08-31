@@ -1,6 +1,9 @@
 package org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement.tests;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
+import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
@@ -116,6 +119,16 @@ public class MonitorRepositoryMapRuntimeMeasurementsRecorderTest {
         assertEquals(0.75, measurement.getMeasuringValue(), DELTA);
     }
 
+    @Test
+    public void testPreUnregister() {
+        List<RuntimeMeasurement> allMeasurements = this.rtMeasurementsRecorderUnderTest.getModel().getMeasurements();
+        int size = allMeasurements.size();
+        this.rtMeasurementsRecorderUnderTest.preUnregister();
+
+        assertEquals(size - 1, this.rtMeasurementsRecorderUnderTest.getModel().getMeasurements().size());
+        assertFalse(this.rmModel.getMeasurements().contains(this.rtMeasurementsRecorderUnderTest.getMeasurement()));
+    }
+
     private class InternalRuntimeMeasurementsRecorder extends MonitorRepositoryMapRuntimeMeasurementsRecorder {
 
         public InternalRuntimeMeasurementsRecorder(final RuntimeMeasurementModel rmModel, final Map mapProcessingType) {
@@ -124,6 +137,10 @@ public class MonitorRepositoryMapRuntimeMeasurementsRecorderTest {
 
         public RuntimeMeasurement getMeasurement() {
             return super.getPRMMeasurement();
+        }
+
+        public RuntimeMeasurementModel getModel() {
+            return super.getPrmModel();
         }
 
     }
