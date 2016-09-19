@@ -63,7 +63,7 @@ public class ProfilesLibrary {
     private static Optional<Profile> queryProfileByStereotypeName(Entity pcmEntity, String stereotypeName) {
         assert stereotypeName != null && pcmEntity != null;
 
-        return ProfileAPI.getApplicableProfiles(pcmEntity.eResource()).stream()
+        return ProfileAPI.getApplicableProfiles().stream()
                 .filter(profile -> profile.getStereotype(stereotypeName) != null).findAny();
     }
 
