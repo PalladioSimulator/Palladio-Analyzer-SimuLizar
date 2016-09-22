@@ -86,7 +86,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
                 LOGGER.debug("FQComponentID is " + fqID);
             }
             this.context.getRuntimeState().getComponentInstanceRegistry()
-                    .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
+                    .addComponentInstance(new SimulatedBasicComponentInstance(this.context, this.computeFQComponentIDUsingGlobalPCMModel(),
                             basicComponent.getPassiveResource_BasicComponent()));
         }
 
@@ -119,7 +119,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
                 LOGGER.debug("FQComponentID is " + fqID);
             }
             this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
-                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID));
+                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), this.computeFQComponentIDUsingGlobalPCMModel()));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
@@ -216,12 +216,31 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
     private FQComponentID computeFQComponentID() {
         return new FQComponentID(this.computeAssemblyContextPath());
     }
+    
+    private FQComponentID computeFQComponentIDUsingGlobalPCMModel() {
+        return new FQComponentID(this.computeAssemblyContextPathUsingGlobalPCMModel());
+    }
 
     private List<AssemblyContext> computeAssemblyContextPath() {
         final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
         final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
         for (int i = 0; i < stack.size(); i++) {
             result.add(stack.get(i));
+        }
+        return result;
+    }
+    
+    private List<AssemblyContext> computeAssemblyContextPathUsingGlobalPCMModel() {
+        final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
+        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
+        for (int i = 0; i < stack.size(); i++) {
+        	AssemblyContext tempContext = stack.get(i);
+        	if (tempContext.eResource() != null) {
+	        	result.add(this.context.getModelAccess().getGlobalPCMModel().getSystem().getAssemblyContexts__ComposedStructure()
+	            		.stream().filter(ctx -> ctx.getId().equals(tempContext.getId())).findAny().get());
+        	} else {
+        		result.add(tempContext);
+        	}
         }
         return result;
     }
