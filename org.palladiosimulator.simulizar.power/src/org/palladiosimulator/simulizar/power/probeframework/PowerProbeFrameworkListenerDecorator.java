@@ -16,6 +16,7 @@ import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
+import org.palladiosimulator.monitorrepository.FeedThrough;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -236,7 +237,17 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
         assert calculator != null && measurementSpec != null;
 
         if (measurementSpec.isTriggersSelfAdaptations()) {
-            calculator.addObserver(new SlidingWindowRuntimeMeasurementsRecorder(this.rmModel, measurementSpec));
+            new MonitorRepositorySwitch<Void>() {
+                // TODO Christian implement this.                 */
+                public Void caseFeedThrough(FeedThrough feedThrough) {
+                    return null;
+                };
+                public Void caseTimeDrivenAggregation(TimeDrivenAggregation aggr) {
+                    calculator.addObserver(new SlidingWindowRuntimeMeasurementsRecorder(rmModel, measurementSpec));
+                    return null;
+                }
+            }.doSwitch(measurementSpec.getProcessingType());
+
         }
     }
 
