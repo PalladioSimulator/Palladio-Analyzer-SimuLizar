@@ -14,8 +14,13 @@ import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.repository.Parameter;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.resourcetype.ResourceInterface;
+import org.palladiosimulator.pcm.resourcetype.ResourceRepository;
+import org.palladiosimulator.pcm.resourcetype.ResourceSignature;
+import org.palladiosimulator.pcm.resourcetype.ResourceType;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AcquireAction;
@@ -32,6 +37,7 @@ import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
+import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
@@ -46,6 +52,7 @@ import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
+import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -173,6 +180,9 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         if (internalAction.getInternalFailureOccurrenceDescriptions__InternalAction().size() > 0) {
             throw new UnsupportedOperationException("Simulation of failures not yet supported by Simulizar");
         }
+		if (internalAction.getResourceCall__Action().size() > 0) {
+			this.interpretResourceCall(internalAction);
+		}
         return SUCCESS;
     }
 
@@ -572,10 +582,54 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
             resourceRegistry.getResourceContainer(resourceContainer.getId())
-                    .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
+					.loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
 
         }
     }
+
+	/**
+	 * @param internalAction
+	 */
+	private void interpretResourceCall(final InternalAction internalAction) {
+		final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
+		final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
+
+		for (final ResourceCall resourceCall : internalAction.getResourceCall__Action()) {
+
+			// find the corresponding resource type which was invoked by the resource call
+			ResourceInterface resourceInterface = resourceCall.getSignature__ResourceCall()
+					.getResourceInterface__ResourceSignature();
+			ResourceRepository resourceRepository = resourceInterface.getResourceRepository__ResourceInterface();
+			ResourceType currentResourceType = null;
+
+			for (ResourceType resourceType : resourceRepository.getAvailableResourceTypes_ResourceRepository()) {
+				for (ResourceProvidedRole resourceProvidedRole : resourceType
+						.getResourceProvidedRoles__ResourceInterfaceProvidingEntity()) {
+					if (resourceProvidedRole.getProvidedResourceInterface__ResourceProvidedRole().getId()
+							.equals(resourceInterface.getId())) {
+						currentResourceType = resourceType;
+						break;
+					}
+				}
+			}
+
+			ResourceSignature resourceSignature = resourceCall.getSignature__ResourceCall();
+			final int resourceServiceId = resourceSignature.getResourceServiceId();
+
+			final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
+			final Double evaluatedDemand = NumberConverter.toDouble(
+					StackContext.evaluateStatic(resourceCall.getNumberOfCalls__ResourceCall().getSpecification(),
+							Double.class, currentStackFrame));
+			final String idRequiredResourceType = currentResourceType.getId();
+
+			final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
+
+			resourceRegistry.getResourceContainer(resourceContainer.getId())
+					.loadActiveResource(this.context.getThread(), resourceServiceId, idRequiredResourceType,
+							evaluatedDemand);
+
+		}
+	}
 
     /**
      * Gets the allocation context for the current assembly context stack. The stack is investigated
