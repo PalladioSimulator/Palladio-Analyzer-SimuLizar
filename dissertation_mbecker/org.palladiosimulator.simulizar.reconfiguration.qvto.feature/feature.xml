@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
+      label="Palladio Component Model - Analyzer: SimuLizar - QVT Operational Reconfiguations"
+      version="1.0.0.qualifier"
+      plugin="org.palladiosimulator.branding"
+      license-feature="org.palladiosimulator.license"
+      license-feature-version="1.0.0">
+
+   <description url="http://www.example.com/description">
+      [Enter Feature Description here.]
+   </description>
+
+   <requires>
+      <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.palladiosimulator.simulizar"/>
+      <import plugin="org.apache.log4j"/>
+      <import plugin="org.eclipse.m2m.qvt.oml" version="3.4.0" match="compatible"/>
+      <import plugin="org.palladiosimulator.simulizar.runtimemeasurement"/>
+      <import plugin="org.palladiosimulator.analyzer.workflow"/>
+      <import plugin="de.uka.ipd.sdq.workflow.mdsd"/>
+      <import plugin="org.scaledl.usageevolution"/>
+      <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework" version="2.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.reconfiguration.qvto"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pms:PMSModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:pms="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0" guid="_kzK1MKpaEeSHPfe6rtAd3w">
+  <performanceMeasurements guid="_mFEh8KpaEeSHPfe6rtAd3w" measuringPoint="pcmmeasuringpoint:UsageScenarioMeasuringPoint usagescenario.pcmmeasuringpoint#/">
+    <measurementSpecification guid="_BI1DMKpbEeSHPfe6rtAd3w" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_EI0pcKpbEeSHPfe6rtAd3w" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_Pch1gKpfEeSS45zWjBfcvg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint service_instance1.measuringpoint#/">
+    <measurementSpecification guid="_XMys0KpfEeSS45zWjBfcvg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_a_HH4KpfEeSS45zWjBfcvg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+  <performanceMeasurements guid="_V3GsQKpfEeSS45zWjBfcvg" measuringPoint="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint service_instance2.measuringpoint#/">
+    <measurementSpecification guid="_Xu1p8KpfEeSS45zWjBfcvg" performanceMetric="ResponseTime" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="pms:Intervall" guid="_dpg4oKpfEeSS45zWjBfcvg" intervall="10.0"/>
+    </measurementSpecification>
+  </performanceMeasurements>
+</pms:PMSModel>

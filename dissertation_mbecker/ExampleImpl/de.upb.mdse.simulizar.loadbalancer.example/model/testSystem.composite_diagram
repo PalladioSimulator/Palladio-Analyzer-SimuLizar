@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:system="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" xsi:schemaLocation="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0 http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//system" xmi:id="_O_WF8PGwEeGLPZ1Np9QG_w" type="CompositeModel" measurementUnit="Pixel">
+  <children xmi:type="notation:Shape" xmi:id="_PPh3APGwEeGLPZ1Np9QG_w" type="2002" fontName="Lucida Grande">
+    <children xmi:type="notation:DecorationNode" xmi:id="_PPlhYPGwEeGLPZ1Np9QG_w" type="5012"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_PPmIcPGwEeGLPZ1Np9QG_w" type="7002">
+      <children xmi:type="notation:Shape" xmi:id="_PSK7UPGwEeGLPZ1Np9QG_w" type="3006" fontName="Lucida Grande">
+        <children xmi:type="notation:DecorationNode" xmi:id="_PSLiYfGwEeGLPZ1Np9QG_w" type="5009"/>
+        <children xmi:type="notation:Shape" xmi:id="_PSTeMPGwEeGLPZ1Np9QG_w" type="3007" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_PSTeMvGwEeGLPZ1Np9QG_w" type="5007">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_PSTeM_GwEeGLPZ1Np9QG_w" y="5"/>
+          </children>
+          <element xmi:type="repository:OperationProvidedRole" href="testSystem.repository#_h7jCYOuSEeCuhfIsXFGDcQ"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSTeMfGwEeGLPZ1Np9QG_w"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_PSTeNPGwEeGLPZ1Np9QG_w" type="3008" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_PSUFQfGwEeGLPZ1Np9QG_w" type="5008">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_PSUFQvGwEeGLPZ1Np9QG_w" y="5"/>
+          </children>
+          <element xmi:type="repository:OperationRequiredRole" href="testSystem.repository#_6EqiAOuTEeCuhfIsXFGDcQ"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSUFQPGwEeGLPZ1Np9QG_w"/>
+        </children>
+        <children xmi:type="notation:Shape" xmi:id="_PSUFQ_GwEeGLPZ1Np9QG_w" type="3008" fontName="Lucida Grande">
+          <children xmi:type="notation:DecorationNode" xmi:id="_PSUsUPGwEeGLPZ1Np9QG_w" type="5008">
+            <layoutConstraint xmi:type="notation:Location" xmi:id="_PSUsUfGwEeGLPZ1Np9QG_w" x="50" y="-20"/>
+          </children>
+          <element xmi:type="repository:OperationRequiredRole" href="testSystem.repository#_Q4Mx8OuZEeCuhfIsXFGDcQ"/>
+          <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSUFRPGwEeGLPZ1Np9QG_w"/>
+        </children>
+        <element xmi:type="composition:AssemblyContext" href="testSystem.system#_bIrK8OuTEeCuhfIsXFGDcQ"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSLiYPGwEeGLPZ1Np9QG_w" x="110" y="99"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_PSLiYvGwEeGLPZ1Np9QG_w" type="3006" fontName="Lucida Grande">
+        <children xmi:type="notation:DecorationNode" xmi:id="_PSMJcPGwEeGLPZ1Np9QG_w" type="5009"/>
+        <element xmi:type="composition:AssemblyContext" href="testSystem.system#_gBXYMOuTEeCuhfIsXFGDcQ"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSLiY_GwEeGLPZ1Np9QG_w" x="235" y="359"/>
+      </children>
+      <children xmi:type="notation:Shape" xmi:id="_PSMJcfGwEeGLPZ1Np9QG_w" type="3006" fontName="Lucida Grande">
+        <children xmi:type="notation:DecorationNode" xmi:id="_PSMJc_GwEeGLPZ1Np9QG_w" type="5009"/>
+        <element xmi:type="composition:AssemblyContext" href="testSystem.system#_g7v80OuTEeCuhfIsXFGDcQ"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PSMJcvGwEeGLPZ1Np9QG_w" x="343" y="211"/>
+      </children>
+    </children>
+    <element xmi:type="system:System" href="testSystem.system#_Vl6tAOuTEeCuhfIsXFGDcQ"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_PPh3AfGwEeGLPZ1Np9QG_w" x="188" y="56"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_O_WF8fGwEeGLPZ1Np9QG_w"/>
+  <element xmi:type="system:System" href="testSystem.system#_Vl6tAOuTEeCuhfIsXFGDcQ"/>
+</notation:Diagram>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<de.fzi.power:PowerInfrastructureRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/Infrastructure/1.0">
+  <containedPowerProvidingEntities xsi:type="de.fzi.power:PowerDistributionUnit" id="_qhVc8JgGEeS8naF2VwaQgQ" name="pdu" suppliablePeakPower="5,000 W">
+    <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerDistributionUnit" id="_q2nJYJgGEeS8naF2VwaQgQ" name="rackPdu" suppliablePeakPower="4,000 W">
+      <nestedPowerConsumingEntities xsi:type="de.fzi.power:MountedPowerDistributionUnit" id="_yAbrwZgGEeS8naF2VwaQgQ" name="nestedMountedPduServer1" suppliablePeakPower="2,000 W">
+        <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_Cr6xopgHEeS8naF2VwaQgQ" name="powerConsumingCpu1">
+          <processingResourceSpecification href="iaas.resourceenvironment#_GAVEEAEqEeS7FKokKTKFow"/>
+          <resourcePowerAssemblyContext href="iaas.binding#_Hcn9AJgGEeS8naF2VwaQgQ"/>
+        </nestedPowerConsumingEntities>
+        <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_NOeKYpgHEeS8naF2VwaQgQ" name="powerConsumingHdd1">
+          <processingResourceSpecification href="iaas.resourceenvironment#_HwZ6kAEqEeS7FKokKTKFow"/>
+          <resourcePowerAssemblyContext href="iaas.binding#_Hcn9AJgGEeS8naF2VwaQgQ"/>
+        </nestedPowerConsumingEntities>
+        <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+        <resourceContainer href="iaas.resourceenvironment#_yaTfsAEpEeS7FKokKTKFow"/>
+      </nestedPowerConsumingEntities>
+      <nestedPowerConsumingEntities xsi:type="de.fzi.power:MountedPowerDistributionUnit" id="_2PWjRJgGEeS8naF2VwaQgQ" name="nestedMountedPduServer2" suppliablePeakPower="3,000 W">
+        <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_UX0LopgHEeS8naF2VwaQgQ" name="powerConsumingCpu2">
+          <processingResourceSpecification href="iaas.resourceenvironment#_JPnqkAEqEeS7FKokKTKFow"/>
+          <resourcePowerAssemblyContext href="iaas.binding#_JQXykJgGEeS8naF2VwaQgQ"/>
+        </nestedPowerConsumingEntities>
+        <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_UzCvEpgHEeS8naF2VwaQgQ" name="powerConsumingHdd2">
+          <processingResourceSpecification href="iaas.resourceenvironment#_K2xOkAEqEeS7FKokKTKFow"/>
+          <resourcePowerAssemblyContext href="iaas.binding#_JQXykJgGEeS8naF2VwaQgQ"/>
+        </nestedPowerConsumingEntities>
+        <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+        <resourceContainer href="iaas.resourceenvironment#_3uVlIAEpEeS7FKokKTKFow"/>
+      </nestedPowerConsumingEntities>
+      <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+    </nestedPowerConsumingEntities>
+    <nestedPowerConsumingEntities xsi:type="de.fzi.power:MountedPowerDistributionUnit" id="_fZKZMZgHEeS8naF2VwaQgQ" name="loadBalancerPdu" suppliablePeakPower="1,500 W">
+      <nestedPowerConsumingEntities xsi:type="de.fzi.power:PowerConsumingResource" id="_j0SgspgHEeS8naF2VwaQgQ" name="powerConsumingCpuLoadBalancer">
+        <processingResourceSpecification href="iaas.resourceenvironment#_EKwpkAEqEeS7FKokKTKFow"/>
+        <resourcePowerAssemblyContext href="iaas.binding#_JQXykJgGEeS8naF2VwaQgQ"/>
+      </nestedPowerConsumingEntities>
+      <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+      <resourceContainer href="iaas.resourceenvironment#_xISeMAEpEeS7FKokKTKFow"/>
+    </nestedPowerConsumingEntities>
+    <distributionPowerAssemblyContext href="iaas.binding#_I4tggZgGEeS8naF2VwaQgQ"/>
+  </containedPowerProvidingEntities>
+</de.fzi.power:PowerInfrastructureRepository>

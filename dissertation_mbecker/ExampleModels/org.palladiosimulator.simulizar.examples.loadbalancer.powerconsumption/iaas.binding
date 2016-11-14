@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<de.fzi.power:PowerBindingRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/Binding/1.0" id="_GEZl0JgGEeS8naF2VwaQgQ">
+  <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_Hcn9AJgGEeS8naF2VwaQgQ" name="highEndCpu">
+    <fixedFactorValues id="_Rat90JgGEeS8naF2VwaQgQ" value="600 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_yosvQDgXEeS9Ksbwfez2QA"/>
+    </fixedFactorValues>
+    <fixedFactorValues id="_R18hQJgGEeS8naF2VwaQgQ" value="400 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_vkR8ADgXEeS9Ksbwfez2QA"/>
+    </fixedFactorValues>
+    <resourcePowerModelSpecification href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_daqEMDgXEeSFuYf_V61WsQ"/>
+  </powerBindings>
+  <powerBindings xsi:type="de.fzi.power:DistributionPowerBinding" id="_I4tggZgGEeS8naF2VwaQgQ" name="loslessDistribution">
+    <fixedFactorValues id="_kYZIwJgGEeS8naF2VwaQgQ" value="0 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_b_IXADqsEeSeEKsoUNmaIw"/>
+    </fixedFactorValues>
+    <distributionPowerModel href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_EzkPUDqsEeSeEKsoUNmaIw"/>
+  </powerBindings>
+  <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_JQXykJgGEeS8naF2VwaQgQ" name="efficientCpu">
+    <fixedFactorValues id="_ZrMmQJgGEeS8naF2VwaQgQ" value="300 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_yosvQDgXEeS9Ksbwfez2QA"/>
+    </fixedFactorValues>
+    <fixedFactorValues id="_aA6XkJgGEeS8naF2VwaQgQ" value="200 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_vkR8ADgXEeS9Ksbwfez2QA"/>
+    </fixedFactorValues>
+    <resourcePowerModelSpecification href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_daqEMDgXEeSFuYf_V61WsQ"/>
+  </powerBindings>
+</de.fzi.power:PowerBindingRepository>
