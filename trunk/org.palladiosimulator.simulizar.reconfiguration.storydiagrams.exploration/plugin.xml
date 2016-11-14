@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.launcher.SimuLizarReconfigurationSpaceExplorationLauncher"
+            id="org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration"
+            modes="run, debug"
+            name="SimuLizar Scalability"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+	    <launchConfigurationTabGroup
+	        type="org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration"
+	        class="org.palladiosimulator.simulizar.ui.configuration.InterpreterConfigurationTab"
+	        id="de.upb.pcm.interpreter.launchConfigurationTabGroup">
+	    </launchConfigurationTabGroup>
+	</extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration"
+            icon="icon/play_16.png"
+            id="org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.launchConfigurationTypeImage1">
+      </launchConfigurationTypeImage>
+   </extension>
+</plugin>

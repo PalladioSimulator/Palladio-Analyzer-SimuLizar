@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" measuringPoint="Service Instance 2" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.tripplanner/tripplanner.repository#_03JIwKpSEeSHPfe6rtAd3w"/>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<srm:RuntimeMeasurementModel
+    xmi:version="2.0"
+    xmlns:xmi="http://www.omg.org/XMI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:srm="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0"
+    xsi:schemaLocation="http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0 ../../org.palladiosimulator.simulizar.RuntimeMeasurement/model/runtimemeasurement.ecore">
+  <measurements
+      id="_BessUO5FEeSE4Lhf74rWOQ"
+      measuringValue="3.0"/>
+</srm:RuntimeMeasurementModel>

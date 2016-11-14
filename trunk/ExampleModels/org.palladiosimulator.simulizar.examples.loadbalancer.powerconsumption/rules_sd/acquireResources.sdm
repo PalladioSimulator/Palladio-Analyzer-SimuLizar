@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sda:Activity xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:expr="http://www.storydriven.org/core/expressions/0.3.1" xmlns:sda="http://www.storydriven.org/storydiagrams/activities/0.2.1" xmlns:sdcec="http://www.storydriven.org/core/expressions/common/0.3.1" xmlns:sdp="http://www.storydriven.org/storydiagrams/patterns/0.2.1" xmlns:sdpe="http://www.storydriven.org/storydiagrams/patterns/expressions/0.2.1" name="Balance Reconfiguration">
+  <annotation source="http://www.storydriven.org/storydiagrams/types">
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Core/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Protocol/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/QoSAnnotations/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/QoSAnnotations/QoS_Performance/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/QoSAnnotations/QoS_Reliability/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Reliability/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/SEFF_Performance/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/SEFF_Reliability/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/SubSystem/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" value="true"/>
+    <details key="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0" value="true"/>
+  </annotation>
+  <ownedActivityEdge target="//@ownedActivityNode.2" source="//@ownedActivityNode.0"/>
+  <ownedActivityEdge target="//@ownedActivityNode.3" source="//@ownedActivityNode.2" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.4" source="//@ownedActivityNode.3" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.5" source="//@ownedActivityNode.4" guard="SUCCESS"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.5"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.3" guard="FAILURE"/>
+  <ownedActivityEdge target="//@ownedActivityNode.1" source="//@ownedActivityNode.2" guard="FAILURE"/>
+  <ownedActivityNode xsi:type="sda:InitialNode" name="StartNode" outgoing="//@ownedActivityEdge.0"/>
+  <ownedActivityNode xsi:type="sda:FlowFinalNode" name="StopNode" incoming="//@ownedActivityEdge.4 //@ownedActivityEdge.5 //@ownedActivityEdge.6"/>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="pb bound parameter" outgoing="//@ownedActivityEdge.1 //@ownedActivityEdge.6" incoming="//@ownedActivityEdge.0">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="monitoredElement" bindingState="BOUND">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/Entity"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND">
+        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="systemModel" bindingState="BOUND">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//system/System"/>
+      </variable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="find and check measurement for monitored element" outgoing="//@ownedActivityEdge.2 //@ownedActivityEdge.5" incoming="//@ownedActivityEdge.1">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="prmModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0">
+        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="elementMeasurement" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1 //@ownedActivityNode.3/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="GREATER">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.1">
+              <attribute href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/measurementValue"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="2.0"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="element" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.1">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.2/@ownedRule/@variable.0">
+              <attribute href="http://sdq.ipd.uka.de/Identifier/2.1#//Identifier/id"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.3/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/Identifier/2.1#//Identifier/id"/>
+            </rightExpression>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/Entity"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="measurementSpecification" incomingLink="//@ownedActivityNode.3/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
+              <attribute href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification/performanceMetric"/>
+            </leftExpression>
+            <rightExpression xsi:type="expr:TextualExpression" expressionText="PerformanceMetricEnum::ResponseTime" language="OCL" languageVersion="1.0"/>
+          </constraintExpression>
+        </constraint>
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.3/@ownedRule/@variable.3">
+              <attribute href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification/statisticalCharacterization"/>
+            </leftExpression>
+            <rightExpression xsi:type="expr:TextualExpression" expressionText="StatisticalCharacterizationEnum::ArithmeticMean" language="OCL" languageVersion="1.0"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://simulizar.palladiosimulator.org/PalladioMonitoringSpecification/1.0#//MeasurementSpecification"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="a" source="//@ownedActivityNode.3/@ownedRule/@variable.0" target="//@ownedActivityNode.3/@ownedRule/@variable.1">
+        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PRMModel/pcmModelElementMeasurements"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="b" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.2">
+        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/pcmModelElement"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="c" source="//@ownedActivityNode.3/@ownedRule/@variable.1" target="//@ownedActivityNode.3/@ownedRule/@variable.3">
+        <targetEnd href="http://simulizar.palladiosimulator.org/PalladioRuntimeMonitoring/1.0#//PCMModelElementMeasurement/measurementSpecification"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="get BranchAction" outgoing="//@ownedActivityEdge.3" incoming="//@ownedActivityEdge.2">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="basicComponent" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.4" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.0">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;LoadBalancer&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/BasicComponent"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="ressourceDemandingSeff" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.0" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ResourceDemandingSEFF"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.1" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" comment="" object="//@ownedActivityNode.4/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;adaptiveRandomLoadBalancing&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.2">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="1.0"/>
+          </constraintExpression>
+        </constraint>
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer2&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="systemModel" bindingState="BOUND" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.3">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//system/System"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="assCtx" incomingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.3" outgoingLink="//@ownedActivityNode.4/@ownedRule/@linkVariable.4">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition/AssemblyContext"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="serviceEffectSpecifications__BasicComponent" source="//@ownedActivityNode.4/@ownedRule/@variable.0" target="//@ownedActivityNode.4/@ownedRule/@variable.1">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//repository/BasicComponent/serviceEffectSpecifications__BasicComponent"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="steps_Behaviour" source="//@ownedActivityNode.4/@ownedRule/@variable.1" target="//@ownedActivityNode.4/@ownedRule/@variable.2">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ResourceDemandingBehaviour/steps_Behaviour"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.4/@ownedRule/@variable.2" target="//@ownedActivityNode.4/@ownedRule/@variable.3">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.4" target="//@ownedActivityNode.4/@ownedRule/@variable.5">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition/ComposedStructure/assemblyContexts__ComposedStructure"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" source="//@ownedActivityNode.4/@ownedRule/@variable.5" target="//@ownedActivityNode.4/@ownedRule/@variable.0">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/composition/AssemblyContext/encapsulatedComponent__AssemblyContext"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+  <ownedActivityNode xsi:type="sda:ModifyingStoryNode" name="balance" outgoing="//@ownedActivityEdge.4" incoming="//@ownedActivityEdge.3">
+    <ownedRule>
+      <variable xsi:type="sdp:ObjectVariable" name="branchAction" bindingState="BOUND" outgoingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0 //@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition1" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.0">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.1">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer1&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <attributeAssignment>
+          <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability - 0.1" language="OCL" languageVersion="1.0"/>
+        </attributeAssignment>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <variable xsi:type="sdp:ObjectVariable" name="branchTransition2" incomingLink="//@ownedActivityNode.5/@ownedRule/@linkVariable.1">
+        <constraint>
+          <constraintExpression xsi:type="sdcec:ComparisonExpression" operator="EQUAL">
+            <leftExpression xsi:type="sdpe:AttributeValueExpression" object="//@ownedActivityNode.5/@ownedRule/@variable.2">
+              <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//core/entity/NamedElement/entityName"/>
+            </leftExpression>
+            <rightExpression xsi:type="sdcec:LiteralExpression" value="&quot;delegateToServer2&quot;"/>
+          </constraintExpression>
+        </constraint>
+        <attributeAssignment>
+          <attribute href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition/branchProbability"/>
+          <valueExpression xsi:type="expr:TextualExpression" expressionText="branchProbability + 0.1" language="OCL" languageVersion="1.0"/>
+        </attributeAssignment>
+        <classifier href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/ProbabilisticBranchTransition"/>
+      </variable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.1">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+      <linkVariable xsi:type="sdp:LinkVariable" name="branches_Branch" source="//@ownedActivityNode.5/@ownedRule/@variable.0" target="//@ownedActivityNode.5/@ownedRule/@variable.2">
+        <targetEnd href="http://sdq.ipd.uka.de/PalladioComponentModel/5.0#//seff/BranchAction/branches_Branch"/>
+      </linkVariable>
+    </ownedRule>
+  </ownedActivityNode>
+</sda:Activity>

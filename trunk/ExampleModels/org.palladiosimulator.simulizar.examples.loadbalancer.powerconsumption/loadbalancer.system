@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:system="http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0" id="_lhnn8AEnEeS7FKokKTKFow" entityName="adpativeLoadBalancerSystem">
+  <assemblyContexts__ComposedStructure id="_6F6LYAEnEeS7FKokKTKFow" entityName="AC_LoadBalancer">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="loadbalancer.repository#_NvLi8AEmEeS7FKokKTKFow"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_70Ar8AEnEeS7FKokKTKFow" entityName="Server1">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="loadbalancer.repository#_QHOYYAEmEeS7FKokKTKFow"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_8x5QgAEnEeS7FKokKTKFow" entityName="Server2">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="loadbalancer.repository#_QHOYYAEmEeS7FKokKTKFow"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_7d88YAEnEeS7FKokKTKFow" entityName="ProvDelegation Provided_IApplicationServer -> Provided_IApplicationServer_LoadBalancer" outerProvidedRole_ProvidedDelegationConnector="_4A2jYAEnEeS7FKokKTKFow" assemblyContext_ProvidedDelegationConnector="_6F6LYAEnEeS7FKokKTKFow">
+    <innerProvidedRole_ProvidedDelegationConnector href="loadbalancer.repository#_yALaYAEnEeS7FKokKTKFow"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_-zLy0AEnEeS7FKokKTKFow" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_ApplicationServer &lt;ApplicationServer>" requiringAssemblyContext_AssemblyConnector="_6F6LYAEnEeS7FKokKTKFow" providingAssemblyContext_AssemblyConnector="_70Ar8AEnEeS7FKokKTKFow">
+    <providedRole_AssemblyConnector href="loadbalancer.repository#_UkRLcAEmEeS7FKokKTKFow"/>
+    <requiredRole_AssemblyConnector href="loadbalancer.repository#_WDUjYAEmEeS7FKokKTKFow"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="__TwwUAEnEeS7FKokKTKFow" entityName="Connector Assembly_LoadBalancer &lt;LoadBalancer> -> Assembly_ApplicationServer &lt;ApplicationServer>" requiringAssemblyContext_AssemblyConnector="_6F6LYAEnEeS7FKokKTKFow" providingAssemblyContext_AssemblyConnector="_8x5QgAEnEeS7FKokKTKFow">
+    <providedRole_AssemblyConnector href="loadbalancer.repository#_UkRLcAEmEeS7FKokKTKFow"/>
+    <requiredRole_AssemblyConnector href="loadbalancer.repository#_VOiQcAEmEeS7FKokKTKFow"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_4A2jYAEnEeS7FKokKTKFow" entityName="Provided_IApplicationServer">
+    <providedInterface__OperationProvidedRole href="loadbalancer.repository#_J930gAEmEeS7FKokKTKFow"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

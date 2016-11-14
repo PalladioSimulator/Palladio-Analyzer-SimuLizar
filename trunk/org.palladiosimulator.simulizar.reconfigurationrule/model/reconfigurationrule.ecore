@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="reconfigurationrule" nsURI="http://palladiosimulator.org/simulizar/reconfiguration/1.0"
+    nsPrefix="reconf">
+  <eClassifiers xsi:type="ecore:EClass" name="ModelTransformation" abstract="true">
+    <eTypeParameters name="ExecutableTransformationElement">
+      <eBounds eClassifier="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+    </eTypeParameters>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="modelTransformation">
+      <eGenericType eTypeParameter="#//ModelTransformation/ExecutableTransformationElement"/>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Reconfiguration" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="strategies" upperBound="-1"
+        eType="#//Strategy" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Tactic" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="priority" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt" defaultValueLiteral="-1">
+      <eAnnotations source="http://www.eclipse.org/emf/2002/GenModel">
+        <details key="documentation" value="Priority of the reconfiguration rule represented as Integer. Values from 0 to n are the priority in a ruleset which determine the order of which a reconfiguration rule is executed. Lower values are higher priority, earlier execution. The value -1 means unspecified priority and is equal to the latest execution within the ruleset. The order in which multiple rules with unspecified priority are executed is non-deterministic."/>
+      </eAnnotations>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="condition" lowerBound="1"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//ModelTransformation">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="action" lowerBound="1"
+        upperBound="-1" containment="true">
+      <eGenericType eClassifier="#//ModelTransformation">
+        <eTypeArguments/>
+      </eGenericType>
+    </eStructuralFeatures>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Strategy" eSuperTypes="#//NamedElement">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="slos" lowerBound="1" eType="ecore:EClass ../../org.palladiosimulator.servicelevelobjective/model/servicelevelobjective.ecore#//ServiceLevelObjectiveRepository"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tactics" upperBound="-1"
+        eType="#//Tactic" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="NamedElement" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+</ecore:EPackage>

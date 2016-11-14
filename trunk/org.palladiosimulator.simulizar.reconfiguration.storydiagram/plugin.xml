@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.simulizar.reconfigurationengine">
+      <reconfigurationEngine
+            reconfigurationEngine="org.palladiosimulator.simulizar.reconfiguration.storydiagram.SDReconfigurator">
+      </reconfigurationEngine>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.reconfigurationloader">
+      <reconfigurationLoader
+            reconfigurationLoader="org.palladiosimulator.simulizar.reconfiguration.storydiagram.SDReconfigurationLoader">
+      </reconfigurationLoader>
+   </extension>
+
+</plugin>

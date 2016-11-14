@@ -1,0 +1,155 @@
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
+modeltype PCM_ASSEMBLY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype ACTION_PARAM uses 'http://simulizar.palladiosimulator.org/Actions/Parameter/1.1';
+modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
+modeltype SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1';
+modeltype SEFF_PERFORMANCE uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.1';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
+modeltype PCM_SYSTEM uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
+modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+/*
+ * The transformation signature declares that a RuntimeMeasurement modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The RuntimeMeasurement modeltype is referenced as 'RuntimeMeasurement' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
+							inout pcmAllocation : PCM_ALLOC,
+							inout actionsInput : ACTIONS,
+							out roleSets : INSTANCE
+							) {
+							
+							
+	// Define Threshold and Scale Out
+	property threshold : Real = 52000.0;
+	property adaptationBehaviorRepository : AdaptationBehaviorRepository = actionsInput.objectsOfType(core::AdaptationBehaviorRepository)->any(true);
+	
+	property reconfigurationTimeMetricId : String = '_VYg6MujFEeSB6OBq2SKZxQ';
+	property responseTimeMetricId : String = '_6rYmYs7nEeOX_4BzImuHbA';
+	property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
+	property instantiatedComponentRoleId : String = '_p7wp4RwMEeW4AMv4FxCz8w';
+	property controllerContainerRoleId : String = '_MEXt8RwNEeW4AMv4FxCz8w';
+	property encapsulatedComponentAssemblyCtxId : String = '_Fslt8OXSEeSa__lJ2-JCxw2';
+	property loadbalancerDownloadRequiredRole : String = '_LEN58OXSEeSa__lJ2-JCxw2';
+	property branchId : String = '_nqCD0OXSEeSa__lJ2-JCxw2';
+	property instantiateVmAdaptationBehaviorId : String = '_s5GsIRwJEeWmcO0Zlkc2yA';
+	
+	// id of the controller call 'instantiateController' in the 'omponentInstantiation' adaptation behavior
+	property controllerCallId : String = '_l9HvsKHHEeWc24RAWmuF8Q';
+	// name of the parameter used by the controller call identified by the above id
+	property inputVariableName : String = 'factor';
+	
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+		var runtimeMeasurements = runtimeMeasurement.objectsOfType(RuntimeMeasurement);
+	
+		log('SimuLizar Outsource Rule Transformation started');
+		
+		assert fatal(runtimeMeasurements->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		
+		runtimeMeasurements->any(measurementSpecification.metricDescription.id = responseTimeMetricId)->checkScalingCondition();	
+	}
+	
+	helper RuntimeMeasurement :: checkScalingCondition() : Boolean {
+		log('Measured value is ' + self.measuringValue.toString());
+		if (self.measuringValue > threshold and getSimulationTime() > 0.0) {
+	
+			log('Threshold is exceeded');
+			pcmAllocation.rootObjects()[Allocation]->forEach(allocation) {
+				log(allocation.targetResourceEnvironment_Allocation.resourceContainer_ResourceEnvironment->asSet()->size().toString() + " " + allocation.allocationContexts_Allocation.resourceContainer_AllocationContext->asSet()->size().toString());
+				if(allocation.targetResourceEnvironment_Allocation.resourceContainer_ResourceEnvironment->asSet()->size() > allocation.allocationContexts_Allocation.resourceContainer_AllocationContext->asSet()->size()) {
+					scaleUp(allocation);
+				} else {
+					assert fatal(false) with log('Maximum scaleout factor reached.');
+				};
+			};
+			return true;
+		};
+		
+		log('No measurements match the condition. Number of measurements is ' + self->size().toString());
+		assert fatal(false) with log('No measurements match the condition.');
+		return false;
+	}
+	
+	/**
+	 * outsource Processing.
+	 */
+	helper scaleUp(allocation : Allocation) : Boolean {
+		var instantiatedComponent : BasicComponent := allocation.system_Allocation.assemblyContexts__ComposedStructure.encapsulatedComponent__AssemblyContext[BasicComponent]
+					->any(id = "_o10-YHDrEeSqnN80MQ2uGw" or id = '_j5vZQLhEEeSNPorBlo7x9g');
+	
+		log('Found ' +  allocation.allocationContexts_Allocation->size().toString() + ' AllocationContexts');
+		var instantiateVm : AdaptationBehavior := adaptationBehaviorRepository.actions->any(id = instantiateVmAdaptationBehaviorId).oclAsType(AdaptationBehavior);
+		var targetContainers := allocation.targetResourceEnvironment_Allocation.resourceContainer_ResourceEnvironment
+			->reject(r | allocation.allocationContexts_Allocation.resourceContainer_AllocationContext->includes(r));
+		log('Potential migration targets: ' + targetContainers->size().toString());
+		var targetResourceContainer : ResourceContainer := targetContainers->any(true);
+		var controllerContainer : ResourceContainer := allocation.allocationContexts_Allocation
+			[assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.id = encapsulatedComponentAssemblyCtxId].resourceContainer_AllocationContext->any(true);
+		var roleSet : RoleSet := object RoleSet@roleSets {
+			roles += object instance::Role {
+				roleType := instantiateVm.getRoleTypeById(targetResourceContainerRoleId);
+				value := targetResourceContainer.oclAsType(EObject);
+			};
+			roles += object instance::Role {
+				roleType := instantiateVm.getRoleTypeById(instantiatedComponentRoleId);
+				value := instantiatedComponent.oclAsType(EObject);
+			};
+			roles += object instance::Role {
+				roleType := instantiateVm.getRoleTypeById(controllerContainerRoleId);
+				value := controllerContainer.oclAsType(EObject);
+			};	
+		};
+						
+		// now execute the adaptation behavior which also includes wiring to load balancer component
+		instantiateVm.executeAsync(roleSet, prepareInputForControllerCall());
+		
+		log('Async migration execution started');
+		
+		return true; // always true, as async execution is triggered
+	}
+	
+	query AdaptationBehavior::getRoleTypeById(roleId : String) : RoleType {
+		return self.involvedRoles->any(id = roleId);
+	}
+	
+	helper prepareInputForControllerCall() : ControllerCallInputVariableUsageCollection {
+		return object ControllerCallInputVariableUsageCollection {
+			controllerCallInputVariableUsages += object ControllerCallInputVariableUsage {
+					correspondingControllerCall := actionsInput.objectsOfType(ControllerCall)->any(id = controllerCallId);
+					variableUsage := object VariableUsage {
+						variableCharacterisation_VariableUsage := object VariableCharacterisation {
+							type := VariableCharacterisationType::VALUE;
+							specification_VariableCharacterisation := object PCMRandomVariable {
+								specification := '2.5'; -- trivially, pass a constant value
+							};
+						};
+						namedReference__VariableUsage := object VariableReference {
+							referenceName := inputVariableName;
+						}
+					};
+				};
+		};
+	}
+}
