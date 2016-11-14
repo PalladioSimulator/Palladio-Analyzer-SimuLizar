@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:usagemodel="http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1" xsi:schemaLocation="http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1 http://palladiosimulator.org/PalladioComponentModel/5.1#//usagemodel" xmi:id="_75qjwFLcEeWQFNkTDVnSQQ" type="PCM Usage Model" measurementUnit="Pixel">
+  <children xmi:type="notation:Node" xmi:id="_IabVoFLdEeWQFNkTDVnSQQ" type="2004">
+    <children xmi:type="notation:DecorationNode" xmi:id="_Iab8sFLdEeWQFNkTDVnSQQ" type="5017"/>
+    <children xmi:type="notation:DecorationNode" xmi:id="_Iab8sVLdEeWQFNkTDVnSQQ" type="7012">
+      <children xmi:type="notation:Shape" xmi:id="_Iadx4FLdEeWQFNkTDVnSQQ" type="3014" fontName=".Helvetica Neue DeskInterface">
+        <children xmi:type="notation:DecorationNode" xmi:id="_Iadx4lLdEeWQFNkTDVnSQQ" type="7013">
+          <children xmi:type="notation:Node" xmi:id="_IafAAFLdEeWQFNkTDVnSQQ" type="3001">
+            <styles xmi:type="notation:DescriptionStyle" xmi:id="_IafAAVLdEeWQFNkTDVnSQQ"/>
+            <styles xmi:type="notation:FontStyle" xmi:id="_IafAAlLdEeWQFNkTDVnSQQ" fontName=".Helvetica Neue DeskInterface"/>
+            <styles xmi:type="notation:LineStyle" xmi:id="_IafAA1LdEeWQFNkTDVnSQQ"/>
+            <element xmi:type="usagemodel:Start" href="clients_overload.usagemodel#_9fGQUKnpEeO_FKTWaHXFBg"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IafABFLdEeWQFNkTDVnSQQ" x="46" y="3"/>
+          </children>
+          <children xmi:type="notation:Shape" xmi:id="_IafnEFLdEeWQFNkTDVnSQQ" type="3002" fontName=".Helvetica Neue DeskInterface">
+            <element xmi:type="usagemodel:Stop" href="clients_overload.usagemodel#_9fGQUanpEeO_FKTWaHXFBg"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IafnEVLdEeWQFNkTDVnSQQ" x="37" y="102"/>
+          </children>
+          <children xmi:type="notation:Shape" xmi:id="_IafnElLdEeWQFNkTDVnSQQ" type="3003" fontName=".Helvetica Neue DeskInterface">
+            <children xmi:type="notation:DecorationNode" xmi:id="_IafnFFLdEeWQFNkTDVnSQQ" type="5004"/>
+            <children xmi:type="notation:DecorationNode" xmi:id="_IafnFVLdEeWQFNkTDVnSQQ" type="7002">
+              <styles xmi:type="notation:SortingStyle" xmi:id="_IafnFlLdEeWQFNkTDVnSQQ"/>
+              <styles xmi:type="notation:FilteringStyle" xmi:id="_IafnF1LdEeWQFNkTDVnSQQ"/>
+            </children>
+            <element xmi:type="usagemodel:EntryLevelSystemCall" href="clients_overload.usagemodel#_IR5rkKnqEeO_FKTWaHXFBg"/>
+            <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IafnE1LdEeWQFNkTDVnSQQ" x="1" y="39"/>
+          </children>
+        </children>
+        <element xmi:type="usagemodel:ScenarioBehaviour" href="clients_overload.usagemodel#_9fFpQKnpEeO_FKTWaHXFBg"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Iadx4VLdEeWQFNkTDVnSQQ" y="11" width="124" height="145"/>
+      </children>
+      <children xmi:type="notation:Node" xmi:id="_Iadx41LdEeWQFNkTDVnSQQ" type="3016">
+        <children xmi:type="notation:DecorationNode" xmi:id="_Iadx6FLdEeWQFNkTDVnSQQ" type="5016"/>
+        <styles xmi:type="notation:DescriptionStyle" xmi:id="_Iadx5FLdEeWQFNkTDVnSQQ"/>
+        <styles xmi:type="notation:FontStyle" xmi:id="_Iadx5VLdEeWQFNkTDVnSQQ" fontName=".Helvetica Neue DeskInterface"/>
+        <styles xmi:type="notation:LineStyle" xmi:id="_Iadx5lLdEeWQFNkTDVnSQQ"/>
+        <element xmi:type="usagemodel:OpenWorkload" href="clients_overload.usagemodel#//@usageScenario_UsageModel.0/@workload_UsageScenario"/>
+        <layoutConstraint xmi:type="notation:Bounds" xmi:id="_Iadx51LdEeWQFNkTDVnSQQ" x="146" y="16"/>
+      </children>
+    </children>
+    <styles xmi:type="notation:DescriptionStyle" xmi:id="_IabVoVLdEeWQFNkTDVnSQQ"/>
+    <styles xmi:type="notation:FontStyle" xmi:id="_IabVolLdEeWQFNkTDVnSQQ" fontName=".Helvetica Neue DeskInterface"/>
+    <styles xmi:type="notation:FillStyle" xmi:id="_IabVo1LdEeWQFNkTDVnSQQ"/>
+    <element xmi:type="usagemodel:UsageScenario" href="clients_overload.usagemodel#_9fFCMKnpEeO_FKTWaHXFBg"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_IabVpFLdEeWQFNkTDVnSQQ" width="307" height="208"/>
+  </children>
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_75qjwVLcEeWQFNkTDVnSQQ"/>
+  <element xmi:type="usagemodel:UsageModel" href="clients_overload.usagemodel#/"/>
+</notation:Diagram>

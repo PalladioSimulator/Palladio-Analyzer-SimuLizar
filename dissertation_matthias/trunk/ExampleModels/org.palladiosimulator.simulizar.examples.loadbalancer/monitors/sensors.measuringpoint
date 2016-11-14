@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" xmlns:simulizarmeasuringpoint="http://palladiosimulator.org/simulizar/measuringpoint" id="_3a_GIMltEeSsG6YHnSxiuA">
+  <measuringPoints xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" stringRepresentation="Usage Scenario: overloadUsageScenario" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/overload.usagemodel#_YtqF4AEqEeS7FKokKTKFow">
+    <usageScenario href="../overload.usagemodel#_YtqF4AEqEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ResourceEnvironmentMeasuringPoint" stringRepresentation="Resource Environment: IaaS" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/iaas.resourceenvironment#/">
+    <resourceEnvironment href="../iaas.resourceenvironment#/"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" stringRepresentation="ExternalCall aName from LoadBalancer to AC_Server1->processRequest [_8nlBcAEoEeS7FKokKTKFow]" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow">
+    <externalCall href="../loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" stringRepresentation="ExternalCall aName from LoadBalancer to AC_Server2->processRequest [_-fSxAAEoEeS7FKokKTKFow]" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow">
+    <externalCall href="../loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" stringRepresentation="Server1" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow" measuringPoint="Server1" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_8nlBcAEoEeS7FKokKTKFow"/>
+  <measuringPoints xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" stringRepresentation="Server2" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow" measuringPoint="Server2" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer.repository#_-fSxAAEoEeS7FKokKTKFow"/>
+  <measuringPoints xsi:type="simulizarmeasuringpoint:ReconfigurationMeasuringPoint" stringRepresentation="Reconfiguration" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/reconfigurations_active/acquire.sdm" measuringPoint="Reconfiguration" resourceURI="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/reconfigurations_active/acquire.sdm"/>
+</org.palladiosimulator.edp2.models:MeasuringPointRepository>

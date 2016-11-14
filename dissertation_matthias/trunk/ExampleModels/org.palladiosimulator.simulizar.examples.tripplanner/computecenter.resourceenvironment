@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0">
+  <linkingResources__ResourceEnvironment id="_xh6DsKjQEeSevOHdCiUaXQ" entityName="Internet" connectedResourceContainers_LinkingResource="_uLN0sKjQEeSevOHdCiUaXQ _WKauIKjQEeSevOHdCiUaXQ _SOH3sKjQEeSevOHdCiUaXQ _OoemsKjQEeSevOHdCiUaXQ _Bww0oKpVEeSHPfe6rtAd3w _6-OJ0KpUEeSHPfe6rtAd3w">
+    <communicationLinkResourceSpecifications_LinkingResource id="_xiD0sKjQEeSevOHdCiUaXQ">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="10"/>
+      <throughput_CommunicationLinkResourceSpecification specification="100000"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <linkingResources__ResourceEnvironment id="_UViXYKpVEeSHPfe6rtAd3w" entityName="GigabitLAN" connectedResourceContainers_LinkingResource="_6-OJ0KpUEeSHPfe6rtAd3w _Bww0oKpVEeSHPfe6rtAd3w _JIODIKjQEeSevOHdCiUaXQ">
+    <communicationLinkResourceSpecifications_LinkingResource id="_UVpsIKpVEeSHPfe6rtAd3w">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="0"/>
+      <throughput_CommunicationLinkResourceSpecification specification="10.0E+9"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_JIODIKjQEeSevOHdCiUaXQ" entityName="LoadBalancer">
+    <activeResourceSpecifications_ResourceContainer id="_6fqo4KjQEeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_OoemsKjQEeSevOHdCiUaXQ" entityName="GoogleMapsServer">
+    <activeResourceSpecifications_ResourceContainer id="_9UYzQKjQEeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_SOH3sKjQEeSevOHdCiUaXQ" entityName="PaderbornCityServer">
+    <activeResourceSpecifications_ResourceContainer id="__RO6cKjQEeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_WKauIKjQEeSevOHdCiUaXQ" entityName="LocationsDatabaseServer">
+    <activeResourceSpecifications_ResourceContainer id="_BEH0YKjREeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+    <activeResourceSpecifications_ResourceContainer id="_FRP8IKjREeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#FCFS"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_BIjHoQ3KEdyouMqirZIhzQ"/>
+      <processingRate_ProcessingResourceSpecification specification="10000"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_uLN0sKjQEeSevOHdCiUaXQ" entityName="RatingServer">
+    <activeResourceSpecifications_ResourceContainer id="_C1ENkKjREeSevOHdCiUaXQ">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_6-OJ0KpUEeSHPfe6rtAd3w" entityName="ComputeCenterMediumServer">
+    <activeResourceSpecifications_ResourceContainer id="_MMnIcKpVEeSHPfe6rtAd3w">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="2.67E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_Bww0oKpVEeSHPfe6rtAd3w" entityName="ComputerCenterLargeServer">
+    <activeResourceSpecifications_ResourceContainer id="_QPnq4KpVEeSHPfe6rtAd3w">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="4.3E+9"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+</resourceenvironment:ResourceEnvironment>

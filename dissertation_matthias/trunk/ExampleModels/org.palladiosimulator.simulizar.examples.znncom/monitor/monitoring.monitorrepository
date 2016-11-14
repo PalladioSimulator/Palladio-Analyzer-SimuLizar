@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" id="_eRIwAFIpEeW-x--luvSVjA">
+  <monitors id="_sH988FIpEeW-x--luvSVjA" entityName="UsageScenario">
+    <measurementSpecifications id="_TtE9kFI4EeWakYF9bsK_fA" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_2iLCQFI6EeWakYF9bsK_fA" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.0"/>
+  </monitors>
+  <monitors id="_OlQvMFI4EeWakYF9bsK_fA" entityName="Server1">
+    <measurementSpecifications id="_INO5UFI8EeWakYF9bsK_fA" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_N3AlQFI8EeWakYF9bsK_fA" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.1"/>
+  </monitors>
+  <monitors id="_PCQNMFI4EeWakYF9bsK_fA" entityName="Server2">
+    <measurementSpecifications id="_UbtoYFI8EeWakYF9bsK_fA" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_YHxDYFI8EeWakYF9bsK_fA" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.2"/>
+  </monitors>
+  <monitors id="_PdhM4FI4EeWakYF9bsK_fA" entityName="Server3">
+    <measurementSpecifications id="_daVwQFI8EeWakYF9bsK_fA" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_gwKckFI8EeWakYF9bsK_fA" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.3"/>
+  </monitors>
+</monitorrepository:MonitorRepository>

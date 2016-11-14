@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/de.upb.mdse.simulizer.loadbalancer.example/src/Main.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="Main"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-d data -n LoadBalancer -s calib -m 1000 -u 10 -R 127.0.0.1 -a LOW"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="de.upb.mdse.simulizer.loadbalancer.example"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-javaagent:lib/kieker-1.5_aspectj.jar"/>
+</launchConfiguration>

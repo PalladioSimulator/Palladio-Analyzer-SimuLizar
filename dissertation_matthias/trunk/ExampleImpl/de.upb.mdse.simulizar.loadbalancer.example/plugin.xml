@@ -1,0 +1,10 @@
+<?xml version='1.0'?>
+<plugin>
+   <extension
+         point="de.uka.ipd.sdq.simucomframework.controller">
+      <actionDelegate
+            class="main.SimuComControl"
+            id="de.uka.ipd.sdq.codegen.simucominstance.actionDelegate">
+      </actionDelegate>
+   </extension>
+</plugin>

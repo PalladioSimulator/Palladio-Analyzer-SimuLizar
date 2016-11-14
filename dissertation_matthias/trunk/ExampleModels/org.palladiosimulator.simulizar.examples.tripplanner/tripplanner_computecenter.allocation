@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="__FOCIKpZEeSHPfe6rtAd3w" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="computecenter.resourceenvironment#/"/>
+  <system_Allocation href="tripplanner_composition.system#_V5MT4KjTEeSevOHdCiUaXQ"/>
+  <allocationContexts_Allocation id="_DbMj4KpaEeSHPfe6rtAd3w" entityName="Allocation_LoadBalancer">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_JIODIKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_azV5sKjTEeSevOHdCiUaXQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_EcFZIKpaEeSHPfe6rtAd3w" entityName="Allocation_Server1 &lt;GeneratedOrchestrator>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_6-OJ0KpUEeSHPfe6rtAd3w"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_gD7CgKjTEeSevOHdCiUaXQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_FVdRIKpaEeSHPfe6rtAd3w" entityName="Allocation_Server2 &lt;GeneratedOrchestrator>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_Bww0oKpVEeSHPfe6rtAd3w"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_lYhIoKjTEeSevOHdCiUaXQ"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_GVa5UKpaEeSHPfe6rtAd3w" entityName="Allocation_Assembly_Foursquare &lt;Foursquare> &lt;Foursquare>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_uLN0sKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_rGDmAKpOEeSHPfe6rtAd3w"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_HoHQQKpaEeSHPfe6rtAd3w" entityName="Allocation_Assembly_GoogleMaps &lt;GoogleMaps> &lt;GoogleMaps>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_OoemsKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_nmUIsKpOEeSHPfe6rtAd3w"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_I6EnYKpaEeSHPfe6rtAd3w" entityName="Allocation_Assembly_PaderTouristik &lt;PaderTouristik> &lt;PaderTouristik>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_SOH3sKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_pTT2AKpOEeSHPfe6rtAd3w"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_Ke2z4KpaEeSHPfe6rtAd3w" entityName="Allocation_Assembly_RestaurantLocations &lt;RestaurantLocations> &lt;RestaurantLocations>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_WKauIKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_tgnj8KpOEeSHPfe6rtAd3w"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_L9FscKpaEeSHPfe6rtAd3w" entityName="Allocation_Assembly_PaderSprinter &lt;PaderSprinter> &lt;PaderSprinter>">
+    <resourceContainer_AllocationContext href="computecenter.resourceenvironment#_SOH3sKjQEeSevOHdCiUaXQ"/>
+    <assemblyContext_AllocationContext href="tripplanner_composition.system#_6-BkQKpOEeSHPfe6rtAd3w"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

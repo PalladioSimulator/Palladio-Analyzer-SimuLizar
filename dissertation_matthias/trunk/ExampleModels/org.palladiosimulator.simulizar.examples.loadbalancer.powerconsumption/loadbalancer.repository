@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" id="_FjtWUAEmEeS7FKokKTKFow" entityName="defaultRepository" repositoryDescription="">
+  <components__Repository xsi:type="repository:BasicComponent" id="_NvLi8AEmEeS7FKokKTKFow" entityName="LoadBalancer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_yALaYAEnEeS7FKokKTKFow" entityName="Provided_IApplicationServer_LoadBalancer" providedInterface__OperationProvidedRole="_J930gAEmEeS7FKokKTKFow"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_VOiQcAEmEeS7FKokKTKFow" entityName="AC_Server2" requiredInterface__OperationRequiredRole="_J930gAEmEeS7FKokKTKFow"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_WDUjYAEmEeS7FKokKTKFow" entityName="AC_Server1" requiredInterface__OperationRequiredRole="_J930gAEmEeS7FKokKTKFow"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_yAN2oAEnEeS7FKokKTKFow" describedService__SEFF="_f0xPUAEmEeS7FKokKTKFow">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_yAN2oQEnEeS7FKokKTKFow" entityName="start" successor_AbstractAction="_m2PcEAEoEeS7FKokKTKFow"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_yAN2ogEnEeS7FKokKTKFow" entityName="stop" predecessor_AbstractAction="_m2PcEAEoEeS7FKokKTKFow"/>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_m2PcEAEoEeS7FKokKTKFow" entityName="adaptiveRandomLoadBalancing" predecessor_AbstractAction="_yAN2oQEnEeS7FKokKTKFow" successor_AbstractAction="_yAN2ogEnEeS7FKokKTKFow">
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_ridTkAEoEeS7FKokKTKFow" entityName="delegateToServer1" branchProbability="1.0">
+          <branchBehaviour_BranchTransition id="_riehsAEoEeS7FKokKTKFow">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_riehsQEoEeS7FKokKTKFow" successor_AbstractAction="_8nlBcAEoEeS7FKokKTKFow"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_riehsgEoEeS7FKokKTKFow" predecessor_AbstractAction="_8nlBcAEoEeS7FKokKTKFow"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_8nlBcAEoEeS7FKokKTKFow" predecessor_AbstractAction="_riehsQEoEeS7FKokKTKFow" successor_AbstractAction="_riehsgEoEeS7FKokKTKFow" calledService_ExternalService="_f0xPUAEmEeS7FKokKTKFow" role_ExternalService="_WDUjYAEmEeS7FKokKTKFow"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:ProbabilisticBranchTransition" id="_tjFukAEoEeS7FKokKTKFow" entityName="delegateToServer2">
+          <branchBehaviour_BranchTransition id="_tjFukQEoEeS7FKokKTKFow">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_tjFukgEoEeS7FKokKTKFow" successor_AbstractAction="_-fSxAAEoEeS7FKokKTKFow"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_tjFukwEoEeS7FKokKTKFow" predecessor_AbstractAction="_-fSxAAEoEeS7FKokKTKFow"/>
+            <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_-fSxAAEoEeS7FKokKTKFow" predecessor_AbstractAction="_tjFukgEoEeS7FKokKTKFow" successor_AbstractAction="_tjFukwEoEeS7FKokKTKFow" calledService_ExternalService="_f0xPUAEmEeS7FKokKTKFow" role_ExternalService="_VOiQcAEmEeS7FKokKTKFow"/>
+          </branchBehaviour_BranchTransition>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_QHOYYAEmEeS7FKokKTKFow" entityName="ApplicationServer">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_UkRLcAEmEeS7FKokKTKFow" entityName="Provided_IApplicationServer_ApplicationServer" providedInterface__OperationProvidedRole="_J930gAEmEeS7FKokKTKFow"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_xb2awAEmEeS7FKokKTKFow" describedService__SEFF="_f0xPUAEmEeS7FKokKTKFow">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_xwxh4AEmEeS7FKokKTKFow" entityName="start" successor_AbstractAction="_7FXSsAEmEeS7FKokKTKFow"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_xwxh4QEmEeS7FKokKTKFow" entityName="stop" predecessor_AbstractAction="_7FXSsAEmEeS7FKokKTKFow"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_7FXSsAEmEeS7FKokKTKFow" entityName="processData" predecessor_AbstractAction="_xwxh4AEmEeS7FKokKTKFow" successor_AbstractAction="_xwxh4QEmEeS7FKokKTKFow">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="300"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_J930gAEmEeS7FKokKTKFow" entityName="IApplicationServer">
+    <signatures__OperationInterface id="_f0xPUAEmEeS7FKokKTKFow" entityName="processRequest">
+      <parameters__OperationSignature parameterName="payload">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.5"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+</repository:Repository>

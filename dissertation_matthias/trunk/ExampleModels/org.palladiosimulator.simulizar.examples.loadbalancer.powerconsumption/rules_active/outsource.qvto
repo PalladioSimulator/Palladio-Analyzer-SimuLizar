@@ -1,0 +1,165 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule increases the processing rate of all
+ * resources in case the monitored mean response time is greater than 2.0 (seconds). 
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0';
+modeltype PCM_REP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0';
+modeltype PCM_SEFF uses 'http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0';
+modeltype PCM_SYS uses 'http://sdq.ipd.uka.de/PalladioComponentModel/System/5.0';
+modeltype PCM_RES_ENV uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceEnvironment/5.0';
+modeltype PCM_RES_TYPE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/ResourceType/5.0';
+modeltype PCM_USAGE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/5.0';
+modeltype PCM_COMP uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Composition/5.0';
+modeltype PCM_ENTITY uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Core/Entity/5.0';
+modeltype PCM_PARAM uses 'http://sdq.ipd.uka.de/PalladioComponentModel/Parameter/5.0';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PMR uses 'http://palladiosimulator.org/MonitorRepository/1.0';
+modeltype POWER uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+
+/*
+ * The transformation signature declares that a PRM modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The PRM modeltype is referenced as 'prm' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation outsource(	in prm : PRM,
+							//inout pcmRepository : PCM_REP,
+							//in pcmSystem : PCM_SYS,
+							inout pcmAllocation : PCM_ALLOC,
+							inout powerInfrastructure : POWER
+							//in pcmResources : PCM_RES_ENV
+							) {
+							
+							
+	// Define Threshold and Scale Out
+	property responseTimeThreshold : Real = 2.0;
+	property outsourceFactor : Real = 0.1;
+	property powerConsumptionThreshold : Real = 1100; //in Watts
+	property utilizationThreshold : Real = 0.99;
+
+
+	property responseTimeMetricName : String = "Response Time";
+	property energyConsumptionMetricName : String = "Cumulative Energy Consumption Tuple";
+	property powerConsumptionMetricName : String = "Power Consumption Tuple";
+	property utilizationMetricName : String = "Utilization of Active Resource Tuple";
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+		log('SimuLizar Outsource Rule Transformation started');
+	
+		assert fatal(prm.rootObjects()[RuntimeMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+		assert fatal(powerInfrastructure.rootObjects()[PowerInfrastructureRepository]->size() > 0)
+			with log ("Infrastructure Model does not contain Repository!");	
+			
+		//prm.rootObjects()[PRMMeasurement][measurementSpecification.metricDescription.name = responseTimeMetricName]->checkResponseTimeThresholdExceeded();
+		
+		prm.rootObjects()[RuntimeMeasurement][measurementSpecification.metricDescription.name = powerConsumptionMetricName]->checkPowerConsumptionThresholdExceeded();
+		//prm.rootObjects()[RuntimeMeasurement][measurementSpecification.metricDescription.name = utilizationMetricName]->checkUtilizationThresholdExceeded();
+	}
+	
+	helper Set(RuntimeMeasurement) :: checkUtilizationThresholdExceeded() : Boolean {
+		log('Number of utilization measurements is ' + self->size().toString());
+		self->forEach(measurement) {
+			var measurementValue : Real = measurement.measuringValue;
+			log(measurement.measuringPoint.stringRepresentation + ': Measured utilization is ' 
+				+ measurementValue.toString());
+			if (measurementValue > utilizationThreshold) {
+				log('Utilization threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation | outSourceProcessing(allocation.allocationContexts_Allocation)
+				);
+				return true;
+			};
+		};
+		return false;
+	}
+	
+	helper Set(RuntimeMeasurement) :: checkPowerConsumptionThresholdExceeded() : Boolean {
+		log('Number of power consumption measurements is ' + self->size().toString());
+		self->forEach(measurement) {
+			var measurementValue : Real = measurement.measuringValue;
+			log(measurement.measuringPoint.stringRepresentation + ': Measured power consumption is ' 
+				+ measurementValue.toString() + 'W');
+			if (measurementValue > powerConsumptionThreshold) {
+				log('Power consumption threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation | outSourceProcessing(allocation.allocationContexts_Allocation)
+				);
+				return true;
+			};
+		};
+		return false;
+	}
+	
+	helper Set(RuntimeMeasurement) :: checkResponseTimeThresholdExceeded() : Boolean {
+		log('Number of response time measurements is ' + self->size().toString());
+		self->forEach(measurement) {
+			var measurementValue : Real = measurement.measuringValue;
+			log(measurement.measuringPoint.stringRepresentation + ': Measured response time is ' 
+				+ measurementValue.toString() + 's');
+			if (measurementValue > responseTimeThreshold) {
+				log('Response time threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation | outSourceProcessing(allocation.allocationContexts_Allocation)
+				);
+				return true;
+			};
+		};
+		log("Response time threshold has not been exceeded.");
+		return false;
+	}
+	
+	/**
+	 * outsource Processing.
+	 */
+	helper outSourceProcessing(allocationContexts : Set(AllocationContext)) : Boolean {
+	
+	log('Found ' +  allocationContexts->size().toString() + ' AllocationContexts');
+	
+		allocationContexts->forEach(allocation){
+
+			if( allocation.assemblyContext_AllocationContext.entityName = "AC_LoadBalancer" ) {
+			
+				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer1");
+						log('Branch1: ' + branch1.toString());
+						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer2");
+						log('Branch2: ' + branch2.toString());
+						if(branch2.branchProbability < 0.5 and branch1.branchProbability > 0.5) {
+							log('Balancing Load...');
+							branch2.branchProbability := branch2.branchProbability + outsourceFactor;
+							log('Set branchProbability to ' + branch2.branchProbability.toString());
+							branch1.branchProbability := branch1.branchProbability - outsourceFactor;
+							log('Set branchProbability to ' + branch1.branchProbability.toString());
+							return true;
+						}
+					}
+				}
+			}
+		};
+		
+		return false;
+	}
+	
+}
