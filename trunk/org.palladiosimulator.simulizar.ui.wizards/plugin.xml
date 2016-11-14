@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="org.palladiosimulator.simulizar.ui.wizards.category"
+            name="SimuLizar Examples"
+            parentCategory="org.eclipse.ui.Examples">
+      </category>
+      <wizard
+            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizards.category"
+            class="org.palladiosimulator.simulizar.ui.wizards.ExampleWizardLoadBalancer"
+            finalPerspective="org.palladiosimulator.simulizar.ui.perspective"
+            icon="icons/simulizar.png"
+            id="org.palladiosimulator.simulizar.ui.wizards.example.loadbalancer"
+            name="Load Balancer"
+            project="true">
+      </wizard>
+      <wizard
+            category="org.eclipse.ui.Examples/org.palladiosimulator.simulizar.ui.wizards.category"
+            class="org.palladiosimulator.simulizar.ui.wizards.ExampleWizardZnnCom"
+            finalPerspective="org.palladiosimulator.simulizar.ui.perspective"
+            icon="icons/simulizar.png"
+            id="org.palladiosimulator.simulizar.ui.wizards.example.znncom"
+            name="Znn.com"
+            project="true">
+      </wizard>
+   </extension>
+   <extension
+         id="org.palladiosimulator.simulizar.simulizarNature"
+         point="org.eclipse.core.resources.natures">
+      <runtime>
+         <run
+               class="org.palladiosimulator.simulizar.ui.wizards.nature.SimulizarNature">
+         </run>
+      </runtime>
+   </extension>
+
+</plugin>

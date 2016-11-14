@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<usagemodel:UsageModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:usagemodel="http://sdq.ipd.uka.de/PalladioComponentModel/UsageModel/5.0">
+  <usageScenario_UsageModel id="_Z4Hd4KpPEeSHPfe6rtAd3w" entityName="defaultUsageScenario">
+    <scenarioBehaviour_UsageScenario id="_Z4LIQKpPEeSHPfe6rtAd3w" entityName="defaultUsageScenarioBehaviour">
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Start" id="_Z4TEEKpPEeSHPfe6rtAd3w" successor="_RioGsKpcEeSHPfe6rtAd3w"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:Stop" id="_Z4U5QKpPEeSHPfe6rtAd3w" predecessor="_RioGsKpcEeSHPfe6rtAd3w"/>
+      <actions_ScenarioBehaviour xsi:type="usagemodel:EntryLevelSystemCall" id="_RioGsKpcEeSHPfe6rtAd3w" successor="_Z4U5QKpPEeSHPfe6rtAd3w" predecessor="_Z4TEEKpPEeSHPfe6rtAd3w">
+        <providedRole_EntryLevelSystemCall href="tripplanner_composition.system#_XoGFsKjTEeSevOHdCiUaXQ"/>
+        <operationSignature__EntryLevelSystemCall href="tripplanner.repository#_krD6kKIhEeSI8vSe5jYNQg"/>
+      </actions_ScenarioBehaviour>
+    </scenarioBehaviour_UsageScenario>
+    <workload_UsageScenario xsi:type="usagemodel:OpenWorkload">
+      <interArrivalTime_OpenWorkload specification="Exp(4.0)"/>
+    </workload_UsageScenario>
+  </usageScenario_UsageModel>
+</usagemodel:UsageModel>

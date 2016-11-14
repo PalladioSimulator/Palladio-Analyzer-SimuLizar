@@ -1,0 +1,131 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule increases the processing rate of all
+ * resources in case the monitored mean response time is greater than 3.0 (seconds). 
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.1';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.1';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+/*
+ * The transformation signature declares that a PRM modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The PRM modeltype is referenced as 'prm' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation outsource(	in prm : PRM,
+							inout pcmAllocation : PCM_ALLOC ) {
+							
+							
+	// Define Threshold and Scale Out
+	property threshold : Real = 2.0;
+	property outsourceFactor : Real = 0.1;
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+		log('SimuLizar Outsource Rule Transformation started');
+		
+		assert fatal(prm.rootObjects()[RuntimeMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+		prm.rootObjects()[RuntimeMeasurement]->checkCondition();	
+
+	}
+	
+	helper Set(RuntimeMeasurement) :: checkCondition() : Boolean {
+	
+		self->forEach(measurement) {
+		log('Measured value is ' + measurement.measuringValue.toString());
+		
+			if (measurement.measuringValue > threshold) {
+		
+				log('Threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation : Allocation | 
+					outSourceProcessing(allocation.allocationContexts_Allocation, measurement.measuringValue)
+				);
+				return true;
+			};
+		};
+		
+		log('No measurements match the condition. Number of measurements is ' + self->size().toString());
+		return false;
+	}
+	
+	/**
+	 * outsource Processing.
+	 */
+	helper outSourceProcessing(allocationContexts : Set(AllocationContext), measurement : Real) : Boolean {
+	
+	log('Found ' +  allocationContexts->size().toString() + 'AllocationContexts');
+	
+		allocationContexts->forEach(allocation){
+
+			if( allocation.assemblyContext_AllocationContext.entityName = "Assembly_LoadBalancer <LoadBalancer>" ) {
+			log('Lastverteiler gefunden');
+				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+					
+						var branchSet : Set(ProbabilisticBranchTransition);
+														
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="selectNewsServer1");
+						var branch2 : ProbabilisticBranchTransition  = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="selectNewsServer2");
+						var branch3 : ProbabilisticBranchTransition  = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="selectNewsServer3");
+						
+						branchSet += branch1;
+						branchSet += branch2;
+						branchSet += branch3;
+						
+						if (measurement < 2.0) {
+							branchSet->forEach(branch) {
+								branch.branchProbability := 0;
+								log('Set branchProbability to ' + branch.branchProbability.toString());
+							};
+							branch1.branchProbability := 1;
+						} else if (measurement > 2.0 and measurement < 3.0) {
+							branchSet->forEach(branch) {
+								branch.branchProbability := 0.5;
+								log('Set branchProbability to ' + branch.branchProbability.toString());
+							};
+							branch3.branchProbability := 0;
+						} else if (measurement > 3.0) {
+							branchSet->forEach(branch) {
+								branch.branchProbability := 1 / 3;
+								log('Set branchProbability to ' + branch.branchProbability.toString());
+							}
+						};
+
+					}
+				}
+			}
+		};
+		
+		return false;
+	}
+	
+}

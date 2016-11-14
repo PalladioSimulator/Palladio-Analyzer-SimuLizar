@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<notation:Diagram xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" xsi:schemaLocation="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1 http://palladiosimulator.org/PalladioComponentModel/5.1#//seff" xmi:id="_QS33EMGqEeSz64GaeLaXLA" type="PCM SEFF Model" name="default.seff_diagram" measurementUnit="Pixel">
+  <styles xmi:type="notation:DiagramStyle" xmi:id="_QS4eIMGqEeSz64GaeLaXLA"/>
+  <element xmi:type="seff:ResourceDemandingSEFF" href="default.repository#_QSVEgMGqEeSz64GaeLaXLA"/>
+</notation:Diagram>

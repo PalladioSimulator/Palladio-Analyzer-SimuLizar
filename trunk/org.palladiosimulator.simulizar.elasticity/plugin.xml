@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            delegate="org.palladiosimulator.simulizar.elasticity.launcher.SimuLizarElasticityAnalysisLauncher"
+            id="org.palladiosimulator.simulizar.elasticity.Launcher"
+            modes="run, debug"
+            name="SimuLizar Elasticity"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.palladiosimulator.simulizar.elasticity.configuration.InterpreterConfigurationTab"
+            id="org.palladiosimulator.simulizar.elasticity.TabGroup"
+            type="org.palladiosimulator.simulizar.elasticity.Launcher">
+      </launchConfigurationTabGroup>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="org.palladiosimulator.simulizar.elasticity.Launcher"
+            icon="./icon/play_16.png"
+            id="ReconfigurationWithConfidence.launchConfigurationTypeImage1">
+      </launchConfigurationTypeImage>
+   </extension>
+
+</plugin>

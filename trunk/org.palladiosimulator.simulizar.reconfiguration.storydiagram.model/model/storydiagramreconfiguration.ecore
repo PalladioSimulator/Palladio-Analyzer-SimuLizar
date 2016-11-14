@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="storydiagramreconfiguration" nsURI="http://palladiosimulator.org/simulizar/reconfigurationrule/storydiagram/1.0"
+    nsPrefix="storydiagram">
+  <eClassifiers xsi:type="ecore:EClass" name="StoryDiagramActivity">
+    <eGenericSuperTypes eClassifier="ecore:EClass ../../org.palladiosimulator.simulizar.reconfigurationrule/model/reconfigurationrule.ecore#//ModelTransformation">
+      <eTypeArguments eClassifier="ecore:EClass ../../org.storydriven.storydiagrams/model/storydiagrams.ecore#//activities/Activity"/>
+    </eGenericSuperTypes>
+  </eClassifiers>
+</ecore:EPackage>
