@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Core/1.1"
+            class="org.palladiosimulator.simulizar.action.core.CorePackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Mapping/1.1"
+            class="org.palladiosimulator.simulizar.action.mapping.MappingPackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Instance/1.1"
+            class="org.palladiosimulator.simulizar.action.instance.InstancePackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Parameter/1.1"
+            class="org.palladiosimulator.simulizar.action.parameter.ParameterPackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
+
+   <extension point="org.eclipse.emf.ecore.generated_package">
+      <!-- @generated actions -->
+      <package
+            uri="http://simulizar.palladiosimulator.org/Actions/Context/1.1"
+            class="org.palladiosimulator.simulizar.action.context.ContextPackage"
+            genModel="model/actions.genmodel"/>
+   </extension>
+   <extension
+         id="org.palladiosimulator.action"
+         name="Adaptation Behavior Repository File Input Handler"
+         point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
+      <fileInputConfigurationBuilder
+            fileInputConfigurationBuilder="org.palladiosimulator.simulizar.action.ui.configuration.AdaptationBehaviorRepositoryFileInputConfigBuilder">
+      </fileInputConfigurationBuilder>
+   </extension>
+
+   <extension
+         id="org.palladiosimulator.action"
+         name="Action Model Load Job"
+         point="org.palladiosimulator.simulizar.launcher.modelload">
+      <loadJob
+            blackboardPartitionId="org.palladiosimulator.simulizar.action"
+            loadJob="org.palladiosimulator.simulizar.action.jobs.LoadAdaptationBehaviorRepositoryIntoBlackBoardJob"
+            loadJobConfigBuilder="org.palladiosimulator.simulizar.action.jobs.config.LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfigBuilder">
+      </loadJob>
+   </extension>
+   <extension
+         id="org.palladiosimulator.action"
+         name="Action Runtime State Accessor"
+         point="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor">
+      <runtimeStateAccessor
+            accessor="org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState">
+      </runtimeStateAccessor>
+   </extension>
+	<extension-point name="State Transformation Task" id="stratetransformation" schema="schema/org.palladiosimulator.simulizar.action.statetransformation.exsd"/>
+ <extension
+       id="org.palladiosimulator.action.util.TransientEffectTransformationCacheKeeper"
+       point="org.palladiosimulator.simulizar.modelobserver">
+    <modelObserver
+          modelObserver="org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper">
+    </modelObserver>
+ </extension>
+</plugin>

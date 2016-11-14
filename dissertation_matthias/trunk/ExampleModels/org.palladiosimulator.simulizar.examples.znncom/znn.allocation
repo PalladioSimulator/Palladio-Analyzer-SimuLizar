@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1" id="_1xPCMKnoEeO_FKTWaHXFBg" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="znn.resourceenvironment#/"/>
+  <system_Allocation href="znn.system#_is1ZoKnnEeO_FKTWaHXFBg"/>
+  <allocationContexts_Allocation id="_2sRuIKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_SelfAdaptiveNewsService &lt;SelfAdaptiveNewsService> &lt;SelfAdaptiveNewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_Q4BewKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_nvrBYKnnEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_4eB_oKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_LoadBalancer &lt;LoadBalancer> &lt;LoadBalancer>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_VremsKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_s0iCYKnnEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_6kjAMKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_MutlimediaNewsService &lt;MutlimediaNewsService> &lt;MutlimediaNewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_XNdW0KnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_EDus4KnoEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_7spQsKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_MutlimediaNewsService &lt;MutlimediaNewsService> &lt;MutlimediaNewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_YlCNwKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_Fd5k0KnoEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_8slDsKnoEeO_FKTWaHXFBg" entityName="Allocation_Assembly_MutlimediaNewsService &lt;MutlimediaNewsService> &lt;MutlimediaNewsService>">
+    <resourceContainer_AllocationContext href="znn.resourceenvironment#_bIY7UKnoEeO_FKTWaHXFBg"/>
+    <assemblyContext_AllocationContext href="znn.system#_GXW8YKnoEeO_FKTWaHXFBg"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

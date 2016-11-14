@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.palladiosimulator.slidingwindow"
+         name="Sliding Window Extension"
+         point="org.palladiosimulator.simulizar.interpreter.listener.probeframework">
+      <probeFrameworkListenerDecorator
+            decorator="org.palladiosimulator.simulizar.slidingwindow.probeframework.SlidingWindowProbeFrameWorkListenerDecorator">
+      </probeFrameworkListenerDecorator>
+   </extension>
+
+</plugin>

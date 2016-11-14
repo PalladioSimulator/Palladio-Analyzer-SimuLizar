@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://sdq.ipd.uka.de/PalladioComponentModel/Allocation/5.0" id="_CX1d8AErEeS7FKokKTKFow" entityName="defaultAllocation">
+  <targetResourceEnvironment_Allocation href="iaas.resourceenvironment#/"/>
+  <system_Allocation href="loadbalancer.system#_lhnn8AEnEeS7FKokKTKFow"/>
+  <allocationContexts_Allocation id="_C-3BsAErEeS7FKokKTKFow" entityName="AC_LoadBalancer">
+    <resourceContainer_AllocationContext href="iaas.resourceenvironment#_xISeMAEpEeS7FKokKTKFow"/>
+    <assemblyContext_AllocationContext href="loadbalancer.system#_6F6LYAEnEeS7FKokKTKFow"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_EPHvsAErEeS7FKokKTKFow" entityName="Allocation_Server1 &lt;ApplicationServer>">
+    <resourceContainer_AllocationContext href="iaas.resourceenvironment#_yaTfsAEpEeS7FKokKTKFow"/>
+    <assemblyContext_AllocationContext href="loadbalancer.system#_70Ar8AEnEeS7FKokKTKFow"/>
+  </allocationContexts_Allocation>
+  <allocationContexts_Allocation id="_FQz2MAErEeS7FKokKTKFow" entityName="Allocation_Server2 &lt;ApplicationServer>">
+    <resourceContainer_AllocationContext href="iaas.resourceenvironment#_3uVlIAEpEeS7FKokKTKFow"/>
+    <assemblyContext_AllocationContext href="loadbalancer.system#_8x5QgAEnEeS7FKokKTKFow"/>
+  </allocationContexts_Allocation>
+</allocation:Allocation>

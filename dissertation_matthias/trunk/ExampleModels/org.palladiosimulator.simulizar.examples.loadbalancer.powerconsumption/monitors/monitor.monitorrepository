@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/0.9.1" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_cwWzENIfEeSvYrDsAIgQPw" entityName="loadBalancerMonitorRepo">
+  <monitors id="_Ea4AgNIgEeSvYrDsAIgQPw" entityName="rackPduMonitor">
+    <measurementSpecifications id="_EyJ4ENIgEeSvYrDsAIgQPw">
+      <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_uiVVAdIhEeSvYrDsAIgQPw" intervall="10.0" delay="5.0"/>
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.0"/>
+  </monitors>
+  <monitors id="_h41d4NIhEeSvYrDsAIgQPw" entityName="cpuServer1Monitor">
+    <measurementSpecifications id="_kcfGYNIhEeSvYrDsAIgQPw">
+      <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_mNhmMdIhEeSvYrDsAIgQPw" intervall="1.0" delay="0.5"/>
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_mhws4SkUEeSuf8LV7cHLgA"/>
+    </measurementSpecifications>
+    <measurementSpecifications id="_zPcHQPmHEeSpp_9_vIv4FA">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9G" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.1"/>
+  </monitors>
+  <monitors id="_67cJofmHEeSpp_9_vIv4FA" entityName="hddServer1Monitor">
+    <measurementSpecifications id="_9ErHAPmHEeSpp_9_vIv4FA">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9D" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.2"/>
+  </monitors>
+  <monitors id="_AWHCkfmIEeSpp_9_vIv4FA" entityName="cpuServer2">
+    <measurementSpecifications id="_Dn6xkvmIEeSpp_9_vIv4FA">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9A" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.3"/>
+  </monitors>
+  <monitors id="_FaKyUfmIEeSpp_9_vIv4FA" entityName="hddServer2Monitor">
+    <measurementSpecifications id="_HJv5kPmIEeSpp_9_vIv4FA">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9C" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.4"/>
+  </monitors>
+  <monitors id="_yZWXUfmIEeSpp_9_vIv4FA" entityName="cpuLoadbalancerMonitor">
+    <measurementSpecifications id="_1EcEkPmIEeSpp_9_vIv4FA">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_D2kmsPmKEeSgcKEBYDFz9B" intervall="42.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_paDhIs7qEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:ActiveResourceMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.5"/>
+  </monitors>
+  <monitors id="_MBd9cNIrEeSQpcXFBkptHw" entityName="server1Monitor">
+    <measurementSpecifications id="_OVAGUNIrEeSQpcXFBkptHw" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_WvzIYNIrEeSQpcXFBkptHw" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.6"/>
+  </monitors>
+  <monitors id="_agB4wNIrEeSQpcXFBkptHw" entityName="server2Monitor">
+    <measurementSpecifications id="_b24-ANIrEeSQpcXFBkptHw" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_eRkQsNIrEeSQpcXFBkptHw" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.7"/>
+  </monitors>
+  <monitors id="_hBc-YNIrEeSQpcXFBkptHw" entityName="usageScenarioMonitor">
+    <measurementSpecifications id="_kzPN8NIrEeSQpcXFBkptHw" statisticalCharacterization="ArithmeticMean">
+      <temporalRestriction xsi:type="monitorrepository:Intervall" id="_mv5u8NIrEeSQpcXFBkptHw" intervall="10.0"/>
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.8"/>
+  </monitors>
+  <monitors id="_yJYOsNOWEeS6f_AUbSENiQ" entityName="loadBalancerPduMonitor">
+    <measurementSpecifications id="_0i0yUNOWEeS6f_AUbSENiQ">
+      <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_2vZ-odOWEeS6f_AUbSENiQ" intervall="5.0" delay="2.5"/>
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.9"/>
+  </monitors>
+  <monitors id="_8JAEENOXEeS6f_AUbSENiQ" entityName="server1PduMonitor">
+    <measurementSpecifications id="__b2U4NOXEeS6f_AUbSENiQ">
+      <temporalRestriction xsi:type="monitorrepository:DelayedIntervall" id="_AdZ4gdOYEeS6f_AUbSENiQ" intervall="10.0" delay="5.0"/>
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_EZBPQV91EeSUTcC2MkYv_Q"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.10"/>
+  </monitors>
+</monitorrepository:MonitorRepository>

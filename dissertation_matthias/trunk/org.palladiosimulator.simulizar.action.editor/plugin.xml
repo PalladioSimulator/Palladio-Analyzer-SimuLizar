@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+
+<!--
+-->
+
+<plugin>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.core.presentation.CoreModelWizardID"
+            name="%_UI_CoreModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.core.presentation.CoreModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/CoreModelFile.gif">
+         <description>%_UI_CoreModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.core.presentation.CoreEditorID"
+            name="%_UI_CoreEditor_label"
+            icon="icons/full/obj16/CoreModelFile.gif"
+            extensions="actions"
+            class="org.palladiosimulator.simulizar.action.core.presentation.CoreEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.core.presentation.CoreActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.mapping.presentation.MappingModelWizardID"
+            name="%_UI_MappingModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.mapping.presentation.MappingModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/MappingModelFile.gif">
+         <description>%_UI_MappingModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.mapping.presentation.MappingEditorID"
+            name="%_UI_MappingEditor_label"
+            icon="icons/full/obj16/MappingModelFile.gif"
+            extensions="mapping"
+            class="org.palladiosimulator.simulizar.action.mapping.presentation.MappingEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.mapping.presentation.MappingActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.instance.presentation.InstanceModelWizardID"
+            name="%_UI_InstanceModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.instance.presentation.InstanceModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/InstanceModelFile.gif">
+         <description>%_UI_InstanceModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.instance.presentation.InstanceEditorID"
+            name="%_UI_InstanceEditor_label"
+            icon="icons/full/obj16/InstanceModelFile.gif"
+            extensions="instance"
+            class="org.palladiosimulator.simulizar.action.instance.presentation.InstanceEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.instance.presentation.InstanceActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterModelWizardID"
+            name="%_UI_ParameterModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ParameterModelFile.gif">
+         <description>%_UI_ParameterModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterEditorID"
+            name="%_UI_ParameterEditor_label"
+            icon="icons/full/obj16/ParameterModelFile.gif"
+            extensions="parameter"
+            class="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.parameter.presentation.ParameterActionBarContributor">
+      </editor>
+   </extension>
+
+   <extension point="org.eclipse.ui.newWizards">
+      <!-- @generated actions -->
+      <category
+            id="org.eclipse.emf.ecore.Wizard.category.ID"
+            name="%_UI_Wizard_category"/>
+      <wizard
+            id="org.palladiosimulator.simulizar.action.context.presentation.ContextModelWizardID"
+            name="%_UI_ContextModelWizard_label"
+            class="org.palladiosimulator.simulizar.action.context.presentation.ContextModelWizard"
+            category="org.eclipse.emf.ecore.Wizard.category.ID"
+            icon="icons/full/obj16/ContextModelFile.gif">
+         <description>%_UI_ContextModelWizard_description</description>
+         <selection class="org.eclipse.core.resources.IResource"/>
+      </wizard>
+   </extension>
+
+   <extension point="org.eclipse.ui.editors">
+      <!-- @generated actions -->
+      <editor
+            id="org.palladiosimulator.simulizar.action.context.presentation.ContextEditorID"
+            name="%_UI_ContextEditor_label"
+            icon="icons/full/obj16/ContextModelFile.gif"
+            extensions="context"
+            class="org.palladiosimulator.simulizar.action.context.presentation.ContextEditor"
+            contributorClass="org.palladiosimulator.simulizar.action.context.presentation.ContextActionBarContributor">
+      </editor>
+   </extension>
+
+</plugin>
