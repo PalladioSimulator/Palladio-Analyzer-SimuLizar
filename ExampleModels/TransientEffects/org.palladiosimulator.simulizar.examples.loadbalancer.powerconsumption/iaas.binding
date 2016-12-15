@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<de.fzi.power:PowerBindingRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/Binding/1.0" id="_GEZl0JgGEeS8naF2VwaQgQ">
+<de.fzi.power:PowerBindingRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/Binding/1.0" xmlns:tools.descartes.dlim="http://descartes.tools/dlim/0.1" id="_GEZl0JgGEeS8naF2VwaQgQ">
   <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_Hcn9AJgGEeS8naF2VwaQgQ" name="highEndCpu">
     <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_Rat90JgGEeS8naF2VwaQgQ" value="600 W">
       <boundFactor href="declarativePowerModels.spec#_hkCVIH1gEeWUt_x9QCHofA"/>
@@ -31,13 +31,32 @@
     <distributionPowerModel href="declarativePowerModels.spec#_on3u0n1hEeWs5NTiSBh3Qw"/>
   </powerBindings>
   <powerBindings xsi:type="de.fzi.power:StatefulResourcePowerBinding" id="_2AXlgoI5EeWCRu5beQNLXQ" name="highEndCpu (Stateful)">
-    <powerStates id="_5pzKUII5EeWCRu5beQNLXQ" name="ON" binding="_Hcn9AJgGEeS8naF2VwaQgQ"/>
-    <powerStates id="_88K6AII5EeWCRu5beQNLXQ" name="STANDBY" binding="_8uoX0II6EeW9D58bfYJKTQ"/>
+    <powerStates xsi:type="de.fzi.power:PowerState" id="_5pzKUII5EeWCRu5beQNLXQ" name="ON" binding="_Hcn9AJgGEeS8naF2VwaQgQ"/>
+    <powerStates xsi:type="de.fzi.power:PowerState" id="_88K6AII5EeWCRu5beQNLXQ" name="STANDBY" binding="_8uoX0II6EeW9D58bfYJKTQ"/>
+    <powerStates xsi:type="de.fzi.power:TransitionState" id="_f4YzMIyBEea70vOMG5t1AA" name="SHUTDOWN" initialState="_5pzKUII5EeWCRu5beQNLXQ" targetState="_88K6AII5EeWCRu5beQNLXQ">
+      <transitionConsumption id="_CvPA0IyDEeaxGbcVqEuYGQ" name="shutdown consumption" unit="ACED0005737200206A617661782E6D6561737572652E756E69742E416C7465726E617465556E697400000000000000010200024C00075F706172656E747400194C6A617661782F6D6561737572652F756E69742F556E69743B4C00075F73796D626F6C7400124C6A6176612F6C616E672F537472696E673B7872001E6A617661782E6D6561737572652E756E69742E44657269766564556E69749F6578D133D91866020000787200176A617661782E6D6561737572652E756E69742E556E6974CDC8DE1678CD526702000078707372001E6A617661782E6D6561737572652E756E69742E50726F64756374556E697400000000000000010200024900095F68617368436F64655B00095F656C656D656E74737400295B4C6A617661782F6D6561737572652F756E69742F50726F64756374556E697424456C656D656E743B7871007E000300000000757200295B4C6A617661782E6D6561737572652E756E69742E50726F64756374556E697424456C656D656E743B1C0C2BE72EF16818020000787000000002737200266A617661782E6D6561737572652E756E69742E50726F64756374556E697424456C656D656E7400000000000000010200034900045F706F774900055F726F6F744C00055F756E697471007E0001787000000001000000017371007E00007371007E0006000000007571007E0009000000027371007E000B00000001000000017371007E00007371007E0006000000007571007E0009000000037371007E000B00000001000000017372001B6A617661782E6D6561737572652E756E69742E42617365556E697400000000000000010200014C00075F73796D626F6C71007E00027871007E00047400016D7371007E000B00000001000000017371007E00157400026B677371007E000BFFFFFFFE000000017371007E0015740001737400014E7371007E000B000000010000000171007E00167400014A7371007E000BFFFFFFFF0000000171007E001C74000157">
+        <powerCurve name="" terminateAfterLoops="1" firstIterationEnd="1.7976931348623157E308" loopDuration="300.0" finalDuration="1.7976931348623157E308">
+          <sequenceFunctionContainers name="" duration="300.0" firstIterationEnd="300.0">
+            <function xsi:type="tools.descartes.dlim:Constant" constant="260.0">
+              <combine operator="SUB">
+                <function xsi:type="tools.descartes.dlim:LogarithmicTrend" functionOutputAtEnd="260.0" order="8.0"/>
+              </combine>
+            </function>
+          </sequenceFunctionContainers>
+        </powerCurve>
+      </transitionConsumption>
+    </powerStates>
   </powerBindings>
   <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_8uoX0II6EeW9D58bfYJKTQ" name="standByCpu">
     <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_BNUJoII7EeW9D58bfYJKTQ" value="50 W">
       <boundFactor href="declarativePowerModels.spec#_19KEAII6EeW9D58bfYJKTQ"/>
     </fixedFactorValues>
     <resourcePowerModelSpecification href="declarativePowerModels.spec#_p0__YoI6EeW9D58bfYJKTQ"/>
+  </powerBindings>
+  <powerBindings xsi:type="de.fzi.power:DistributionPowerBinding" id="_YJZGUaD9EeaU6oPEi7L-uA" name="Non-null">
+    <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_dTlTQKD9EeaU6oPEi7L-uA" value="10 W">
+      <boundFactor href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_b_IXADqsEeSeEKsoUNmaIw"/>
+    </fixedFactorValues>
+    <distributionPowerModel href="pathmap://POWER_MODELS_MODELS/models/commonSpecification.spec#_R_P5QmOQEeWW76L-WpK6kQ"/>
   </powerBindings>
 </de.fzi.power:PowerBindingRepository>

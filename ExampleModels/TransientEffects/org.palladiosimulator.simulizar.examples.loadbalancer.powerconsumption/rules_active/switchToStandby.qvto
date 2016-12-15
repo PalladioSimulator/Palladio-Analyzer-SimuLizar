@@ -54,31 +54,32 @@ transformation SwitchToStandby(
 		assert fatal (not currentAllocation.oclIsUndefined()) 
 			with log ('No valid allocation model found!');
 			
-		var runningStatefulResource = powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON"]->any(true);
-		if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
-			var idleMeasurementsOfResource := runtimeMeasurements->filterIdleUtilMeasurementsOfResource(runningStatefulResource);
-			if (idleMeasurementsOfResource->notEmpty()) {
-				var changePowerStateAdaptationBehavior : AdaptationBehavior := adaptationBehaviorRepository.actions[id = changePowerStateAdaptationBehaviorId]->any(true);
-				var adaptationBehaviorRoleSet := object RoleSet@roleSets {
-					//the desired power state
-					roles += object instance::Role {
-						roleType := changePowerStateAdaptationBehavior.involvedRoles[id = desiredPowerStateRoleId]->any(true);
-						value := runningStatefulResource.statefulResourcePowerBinding.powerStates->any(name = "STANDBY").oclAsType(EObject);
+		powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON" and id = "_pElrkoI5EeWCRu5beQNLXQ"]->forEach(runningStatefulResource) {
+			if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
+				var idleMeasurementsOfResource := runtimeMeasurements->filterIdleUtilMeasurementsOfResource(runningStatefulResource);
+				if (idleMeasurementsOfResource->notEmpty()) {
+					var changePowerStateAdaptationBehavior : AdaptationBehavior := adaptationBehaviorRepository.actions[id = changePowerStateAdaptationBehaviorId]->any(true);
+					var adaptationBehaviorRoleSet := object RoleSet@roleSets {
+						//the desired power state
+						roles += object instance::Role {
+							roleType := changePowerStateAdaptationBehavior.involvedRoles[id = desiredPowerStateRoleId]->any(true);
+							value := runningStatefulResource.statefulResourcePowerBinding.powerStates->any(name = "SHUTDOWN").oclAsType(EObject);
+						};
+						//the affected stateful resource
+						roles += object instance::Role {
+							roleType := changePowerStateAdaptationBehavior.involvedRoles[id=affectedResourceRoleId]->any(true);
+							value := runningStatefulResource.oclAsType(EObject);
+						};
+						//finally, pass the current allocation
+						roles += object instance::Role {
+							roleType := changePowerStateAdaptationBehavior.involvedRoles[id=currentAllocationRoleId]->any(true);
+							value := currentAllocation.oclAsType(EObject);
+						};
 					};
-					//the affected stateful resource
-					roles += object instance::Role {
-						roleType := changePowerStateAdaptationBehavior.involvedRoles[id=affectedResourceRoleId]->any(true);
-						value := runningStatefulResource.oclAsType(EObject);
-					};
-					//finally, pass the current allocation
-					roles += object instance::Role {
-						roleType := changePowerStateAdaptationBehavior.involvedRoles[id=currentAllocationRoleId]->any(true);
-						value := currentAllocation.oclAsType(EObject);
-					};
+					changePowerStateAdaptationBehavior.execute(adaptationBehaviorRoleSet);
+					log("Change of Power State executed");
+					log("Changed power state of stateful resource to: " + runningStatefulResource.powerState.name);
 				};
-				changePowerStateAdaptationBehavior.execute(adaptationBehaviorRoleSet);
-				log("Change of Power State executed");
-				log("Changed power state of stateful resource to: " + runningStatefulResource.powerState.name);
 			};
 		};
 	}
