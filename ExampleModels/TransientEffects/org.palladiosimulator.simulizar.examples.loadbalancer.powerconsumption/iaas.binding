@@ -4,7 +4,7 @@
     <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_Rat90JgGEeS8naF2VwaQgQ" value="600 W">
       <boundFactor href="declarativePowerModels.spec#_hkCVIH1gEeWUt_x9QCHofA"/>
     </fixedFactorValues>
-    <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_R18hQJgGEeS8naF2VwaQgQ" value="400 W">
+    <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_R18hQJgGEeS8naF2VwaQgQ" value="300 W">
       <boundFactor href="declarativePowerModels.spec#_gcoBIH1gEeWUt_x9QCHofA"/>
     </fixedFactorValues>
     <resourcePowerModelSpecification href="declarativePowerModels.spec#_culCEn1gEeWUt_x9QCHofA"/>
@@ -39,7 +39,7 @@
           <sequenceFunctionContainers name="" duration="300.0" firstIterationEnd="300.0">
             <function xsi:type="tools.descartes.dlim:Constant" constant="260.0">
               <combine operator="SUB">
-                <function xsi:type="tools.descartes.dlim:LogarithmicTrend" functionOutputAtEnd="260.0" order="8.0"/>
+                <function xsi:type="tools.descartes.dlim:LogarithmicTrend" functionOutputAtEnd="250.0" order="8.0"/>
               </combine>
             </function>
           </sequenceFunctionContainers>
@@ -48,7 +48,7 @@
     </powerStates>
   </powerBindings>
   <powerBindings xsi:type="de.fzi.power:ResourcePowerBinding" id="_8uoX0II6EeW9D58bfYJKTQ" name="standByCpu">
-    <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_BNUJoII7EeW9D58bfYJKTQ" value="50 W">
+    <fixedFactorValues xsi:type="de.fzi.power:FixedFactorValuePower" id="_BNUJoII7EeW9D58bfYJKTQ" value="10 W">
       <boundFactor href="declarativePowerModels.spec#_19KEAII6EeW9D58bfYJKTQ"/>
     </fixedFactorValues>
     <resourcePowerModelSpecification href="declarativePowerModels.spec#_p0__YoI6EeW9D58bfYJKTQ"/>
