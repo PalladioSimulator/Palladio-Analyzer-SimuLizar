@@ -39,8 +39,6 @@ main() {
 	var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
 	
 	step.xmap getOrCreateChangePowerStateMapping(allocation, affectedStatefulResource, selectedPowerState);
-	
-	//pcmControllerRepository.rootObjects()[Repository]->any(true)->xmap createDummy();	
 }
 
 mapping ResourceDemandingAction::getOrCreateChangePowerStateMapping(inout allocation : Allocation, 

@@ -12,6 +12,7 @@ transformation changePowerState(
 							in actionMapping : ACTION_MAPPING
 							) {
 		
+	property statefulPowerConsumingResourceName : String = 'TransitioningStatefulPowerConsumingResource';
 							
 	/**
 	 * The main transformation.
@@ -26,20 +27,12 @@ transformation changePowerState(
 		assert fatal (statefulPowerConsumingResources[id = affectedStatefulPowerConsumingResource.id]->notEmpty())
 			with log ("Inconsistency occurred!");
 			
-		affectedStatefulPowerConsumingResource->xmap changePowerState(roleSet.getDesiredPowerStateFromRoles());
+		affectedStatefulPowerConsumingResource.map setToTargetState();
+		affectedStatefulPowerConsumingResource.removeStereotypeApplications(statefulPowerConsumingResourceName);
 	}
 	
-	mapping inout StatefulPowerConsumingResource::changePowerState(desiredPowerState : AbstractPowerState) {
-		var binding := self.statefulResourcePowerBinding;
-		log('Desired state id: ' + desiredPowerState.id);
-		if (binding.powerStates[id = desiredPowerState.id]->notEmpty()) {
-			log('Desired state: ' + desiredPowerState.name);
-			self.powerState := desiredPowerState;
-		};	
-	}
-	
-	query RoleSet::getDesiredPowerStateFromRoles() : AbstractPowerState {
-		return self.roles[value.oclIsKindOf(AbstractPowerState)]->any(true).value.oclAsType(AbstractPowerState);
+	mapping inout StatefulPowerConsumingResource::setToTargetState() {
+		self.powerState := self.powerState.oclAsType(TransitionState).targetState;
 	}
 	
 	query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResource {

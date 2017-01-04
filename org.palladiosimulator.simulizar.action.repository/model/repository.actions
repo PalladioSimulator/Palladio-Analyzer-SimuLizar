@@ -4,6 +4,7 @@
     <adaptationActions xsi:type="org.palladiosimulator.action:GuardedAction" id="_DW_XM6AcEeWZkvqD6d6Miw" entityName="PowerStateChanging Precondition GuardedAction">
       <guardedTransitions id="_TbofgKAcEeWZkvqD6d6Miw" entityName="PowerStateChanging GuardedTransition" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/changepowerstatecondition.qvto">
         <nestedAdaptationBehavior id="_g2zrMKAcEeWZkvqD6d6Miw" entityName="PowerStateChanging Adaptation">
+          <adaptationActions xsi:type="org.palladiosimulator.action:EnactAdaptationAction" id="_WdReUdJ3Eea2FJoINunJaA" entityName="changingToTransitionState" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/changetotransitionstate.qvto"/>
           <adaptationActions xsi:type="org.palladiosimulator.action:ResourceDemandingAction" id="_X4kwQIn0EeWm8ose-zjfHg" entityName="PowerStateChanging" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/changepowerstatecompletion.qvto">
             <controllerCalls id="_kn6SMIoLEeWm8ose-zjfHg" entityName="delay">
               <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_XwPVkNHIEeaNAIlD4-dfHg"/>

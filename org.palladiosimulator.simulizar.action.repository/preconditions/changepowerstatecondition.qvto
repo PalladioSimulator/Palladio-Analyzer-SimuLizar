@@ -14,10 +14,10 @@ transformation checkPreconditions(
 							in actionStep : ACTION_CORE
 							) {
 							
-property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
-property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
-property currentAllocationRoleId : String = '_7ldKUZTzEeWUYbZGIbhTfA';
-property statefulPowerConsumingResourceName : String = 'TransitioningStatefulPowerConsumingResource';
+	property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
+	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+	property currentAllocationRoleId : String = '_7ldKUZTzEeWUYbZGIbhTfA';
+	property statefulPowerConsumingResourceName : String = 'TransitioningStatefulPowerConsumingResource';
 
 	/**
 	 * The main transformation.
@@ -44,8 +44,8 @@ property statefulPowerConsumingResourceName : String = 'TransitioningStatefulPow
 			with log('Precondition for the action not met: Condition already executing');
 		assert fatal (not resourceContainersWithAllocationContext->includes(associatedResourceContainer))
 			with log('Precondition for the action not met: '  
-			+ ' Resource container of affected stateful power consuming resource is not allocated!');
-		
+			+ ' Resource container of affected stateful power consuming resource is not allocated!'); 
+			
 		affectedStatefulResource.applyStereotype(statefulPowerConsumingResourceName);
 	}
 	
