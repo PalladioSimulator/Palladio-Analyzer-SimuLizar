@@ -29,15 +29,17 @@ transformation changePowerState(
 		affectedStatefulPowerConsumingResource->xmap changePowerState(roleSet.getDesiredPowerStateFromRoles());
 	}
 	
-	mapping inout StatefulPowerConsumingResource::changePowerState(desiredPowerState : PowerState) {
+	mapping inout StatefulPowerConsumingResource::changePowerState(desiredPowerState : AbstractPowerState) {
 		var binding := self.statefulResourcePowerBinding;
+		log('Desired state id: ' + desiredPowerState.id);
 		if (binding.powerStates[id = desiredPowerState.id]->notEmpty()) {
+			log('Desired state: ' + desiredPowerState.name);
 			self.powerState := desiredPowerState;
 		};	
 	}
 	
-	query RoleSet::getDesiredPowerStateFromRoles() : PowerState {
-		return self.roles[value.oclIsTypeOf(PowerState)]->any(true).value.oclAsType(PowerState);
+	query RoleSet::getDesiredPowerStateFromRoles() : AbstractPowerState {
+		return self.roles[value.oclIsKindOf(AbstractPowerState)]->any(true).value.oclAsType(AbstractPowerState);
 	}
 	
 	query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResource {

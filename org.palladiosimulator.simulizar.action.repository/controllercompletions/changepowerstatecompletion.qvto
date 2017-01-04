@@ -1,19 +1,124 @@
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
 modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
+modeltype PCM_RT uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.1';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+modeltype BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
+modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
-transformation changepowerstatecompletion(in pcmControllerRepository : PCM_REP,
+// TODO: Proper way would be to create proxy component with specific delays per transition.
+transformation changepowerstatecompletion(
+							inout pcmAllocation : PCM_ALLOC,
+							in pcmControllerRepository : PCM_REP,
 							in actionRoleSet : ACTION_INSTANCE,
 							in actionStep : ACTION_CORE,
 							out actionMapping : ACTION_MAPPING);
 
+property powerstateDelayId : String = '_X4kwQIn0EeWm8ose-zjfHg';
+property affectedStatefulResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
+property selectedPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+property operationProvidedRoleId : String = '_drfzENHIEeaNAIlD4-dfHg';
+property delayResourceTypeId : String = '_nvHX4KkREdyEA_b89s7q9w';
+
 main() {
-	pcmControllerRepository.rootObjects()[Repository]->any(true)->xmap createDummy();	
+	var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+	var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = powerstateDelayId);
+	var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);	
+	var roles := roleSet.roles;
+	var affectedStatefulResourceRole : instance::Role := roles[roleType.id = affectedStatefulResourceRoleId]->any(true);
+	var selectedPowerStateRole : instance::Role := roles[roleType.id = selectedPowerStateRoleId]->any(true);
+	var affectedStatefulResource : StatefulPowerConsumingResource := affectedStatefulResourceRole.value.oclAsType(StatefulPowerConsumingResource);
+	var selectedPowerState : AbstractPowerState := selectedPowerStateRole.value.oclAsType(AbstractPowerState);
+	var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
+	
+	step.xmap getOrCreateChangePowerStateMapping(allocation, affectedStatefulResource, selectedPowerState);
+	
+	//pcmControllerRepository.rootObjects()[Repository]->any(true)->xmap createDummy();	
 }
 
-mapping Repository::createDummy() : Mapping@actionMapping {
-		result.controllerMappings := OrderedSet {};
-		result.entityName := "dummy";
-		result.id := "dummyId";
+mapping ResourceDemandingAction::getOrCreateChangePowerStateMapping(inout allocation : Allocation, 
+	affectedStatefulResource : StatefulPowerConsumingResource, selectedPowerState : AbstractPowerState) : Mapping@actionMapping { 
+	var delayControllerComponent : BasicComponent := self.controllerCalls->any(c | c.id = '_kn6SMIoLEeWm8ose-zjfHg').component;
+	var parameter : VariableUsage := delayControllerComponent.componentParameterUsage_ImplementationComponentType->any(true);
+	parameter.variableCharacterisation_VariableUsage->any(true).specification_VariableCharacterisation.specification
+		:= selectedPowerState.oclAsType(TransitionState).transitionConsumption.powerCurve.finalDuration.toString();
+	var container : ResourceContainer := affectedStatefulResource.processingResourceSpecification.resourceContainer_ProcessingResourceSpecification;
+	var allocations := allocation.allocationContexts_Allocation->select(a | a.resourceContainer_AllocationContext.id = container.id 
+		and a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.id = delayControllerComponent.id);
+	var allocationCtx : AllocationContext;
+	if (not allocations->isEmpty()) {
+		allocationCtx := allocations->any(true)
+	} else {
+		allocationCtx := delayControllerComponent.xmap createComponentOnContainer(container, allocation.system_Allocation);
+		allocationCtx.assemblyContext_AllocationContext.xmap createSystemInterface(allocation.system_Allocation);
+		allocation.allocationContexts_Allocation += allocationCtx;
+		if(not container.hasDelayResource()) {
+			container.activeResourceSpecifications_ResourceContainer += container.xmap createDelayResource();
+		};
+	};
+	controllerMappings += object ControllerMapping {
+		entityName := "Delay Mapping for " + affectedStatefulResource.name;
+		mappedCall := self.controllerCalls->any(id = '_kn6SMIoLEeWm8ose-zjfHg');
+		var connector : ProvidedDelegationConnector := allocation.system_Allocation.connectors__ComposedStructure[ProvidedDelegationConnector]
+			->any(c | c.assemblyContext_ProvidedDelegationConnector.id = allocationCtx.assemblyContext_AllocationContext.id);
+		controllerRole := connector.outerProvidedRole_ProvidedDelegationConnector
+	};
+}
+
+query ResourceContainer::hasDelayResource() : Boolean {
+	return self.activeResourceSpecifications_ResourceContainer->exists(a | a.activeResourceType_ActiveResourceSpecification.id = delayResourceTypeId);
+}
+
+mapping ResourceContainer::createDelayResource() : ProcessingResourceSpecification {
+	var repos := self.activeResourceSpecifications_ResourceContainer.activeResourceType_ActiveResourceSpecification
+		.resourceRepository_ResourceType;
+	activeResourceType_ActiveResourceSpecification := repos
+		.availableResourceTypes_ResourceRepository[ProcessingResourceType]->any(s | s.id = delayResourceTypeId);
+	schedulingPolicy := repos.schedulingPolicies__ResourceRepository->any(s | s.id = 'Delay'); 
+	processingRate_ProcessingResourceSpecification := object PCMRandomVariable {
+		specification := '1';
+	};
+}
+
+mapping AssemblyContext::createSystemInterface(inout system : System) {
+	var controller : BasicComponent := self.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent);
+	var opInterface : OperationInterface := controller.providedRoles_InterfaceProvidingEntity[OperationProvidedRole].providedInterface__OperationProvidedRole->any(true);
+	var createdRole := object OperationProvidedRole {
+		entityName := "Provided " + self.entityName;
+		providedInterface__OperationProvidedRole := opInterface;
+		providingEntity_ProvidedRole := self.encapsulatedComponent__AssemblyContext;
+	};
+	system.providedRoles_InterfaceProvidingEntity += createdRole;
+	system.connectors__ComposedStructure += object ProvidedDelegationConnector {
+		innerProvidedRole_ProvidedDelegationConnector := controller.providedRoles_InterfaceProvidingEntity[OperationProvidedRole]->any(p | p.id = operationProvidedRoleId);
+		outerProvidedRole_ProvidedDelegationConnector := createdRole;
+		assemblyContext_ProvidedDelegationConnector := self;
+	}
+}
+
+mapping BasicComponent::createComponentOnContainer(inout container : ResourceContainer, inout system : System) : AllocationContext {
+	entityName := self.entityName;
+	resourceContainer_AllocationContext := container;
+	var newCtx := self.createAssembly(container);
+	system.assemblyContexts__ComposedStructure += newCtx;
+	assemblyContext_AllocationContext := newCtx;
+}
+
+helper BasicComponent::createAssembly(inout container : ResourceContainer) : AssemblyContext {
+	var nameInput := self.entityName;
+	return object AssemblyContext {
+		entityName :=  nameInput + "AssemblyCtxOn" + container.entityName;
+		encapsulatedComponent__AssemblyContext := self;
+	}
+}
+
+query Repository::getComponentById(id : String) : BasicComponent {
+	return self.components__Repository->select(component | component.id = id)->any(true)->oclAsType(BasicComponent)->any(true);
 }

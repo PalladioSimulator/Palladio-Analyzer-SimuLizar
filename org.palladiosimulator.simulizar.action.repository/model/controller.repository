@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" id="_y7TzUOp-EeS1xrjFer2CUg" entityName="ControllerInterfaces" repositoryDescription="">
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.1" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/2.2" id="_y7TzUOp-EeS1xrjFer2CUg" entityName="ControllerInterfaces" repositoryDescription="">
   <components__Repository xsi:type="repository:BasicComponent" id="_63lUEOqDEeS1xrjFer2CUg" entityName="MigrationController">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ITgtsOqEEeS1xrjFer2CUg" entityName="Provided_IComponentMigration_MigrationController" providedInterface__OperationProvidedRole="_wMjRkOp_EeS1xrjFer2CUg"/>
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Jh2wIOqEEeS1xrjFer2CUg" entityName="Required_IMigrationSource_MigrationController" requiredInterface__OperationRequiredRole="_3nb5UOqAEeS1xrjFer2CUg"/>
@@ -72,9 +72,41 @@
       <steps_Behaviour xsi:type="seff:StopAction" id="_jeRGMaJMEeWC7_GU8VFHHA2" entityName="stop" predecessor_AbstractAction="_jeRGMKJMEeWC7_GU8VFHHA"/>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_nH4QwJR5Eeake9YPyNtTvg" entityName="DelayedExecutionController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_3uCxwJR5Eeake9YPyNtTvg" entityName="Provided_IDelayedExecution_DelayedExecutionController" providedInterface__OperationProvidedRole="_qEz78JR5Eeake9YPyNtTvg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_3uHDMJR5Eeake9YPyNtTvg" describedService__SEFF="_taWUYJR5Eeake9YPyNtTvg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_3uHqQJR5Eeake9YPyNtTvg" entityName="start" successor_AbstractAction="__EgB8JR5Eeake9YPyNtTvg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_3uIRUJR5Eeake9YPyNtTvg" entityName="stop" predecessor_AbstractAction="__EgB8JR5Eeake9YPyNtTvg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="__EgB8JR5Eeake9YPyNtTvg" entityName="delayExecution" predecessor_AbstractAction="_3uHqQJR5Eeake9YPyNtTvg" successor_AbstractAction="_3uIRUJR5Eeake9YPyNtTvg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="delayInSeconds.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_XwPVkNHIEeaNAIlD4-dfHg" entityName="DelayController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_drfzENHIEeaNAIlD4-dfHg" entityName="Provided_IDelay_DelayController" providedInterface__OperationProvidedRole="_b60foNHIEeaNAIlD4-dfHg"/>
+    <componentParameterUsage_ImplementationComponentType>
+      <variableCharacterisation_VariableUsage type="VALUE">
+        <specification_VariableCharacterisation specification="1"/>
+      </variableCharacterisation_VariableUsage>
+      <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="delay"/>
+    </componentParameterUsage_ImplementationComponentType>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_gmgLoNHIEeaNAIlD4-dfHg" describedService__SEFF="_etpMkNHIEeaNAIlD4-dfHg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_g6v9UNHIEeaNAIlD4-dfHg" entityName="start" successor_AbstractAction="_h6gKINHIEeaNAIlD4-dfHg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_g6wkYNHIEeaNAIlD4-dfHg" entityName="stop" predecessor_AbstractAction="_h6gKINHIEeaNAIlD4-dfHg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_h6gKINHIEeaNAIlD4-dfHg" entityName="executeDelay" predecessor_AbstractAction="_g6v9UNHIEeaNAIlD4-dfHg" successor_AbstractAction="_g6wkYNHIEeaNAIlD4-dfHg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="delay.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_wMjRkOp_EeS1xrjFer2CUg" entityName="IComponentMigration">
     <signatures__OperationInterface id="_zm-xEOp_EeS1xrjFer2CUg" entityName="migrate">
-      <parameters__OperationSignature parameterName="dummyInput" modifier__Parameter="in">
+      <parameters__OperationSignature parameterName="input" modifier__Parameter="in">
         <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
       </parameters__OperationSignature>
     </signatures__OperationInterface>
@@ -90,5 +122,15 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_rliaN6JKEeWC7_GU8VFHHA" entityName="IComponentInstantiation">
     <signatures__OperationInterface id="_veoLoKJKEeWC7_GU8VFHHA" entityName="instantiate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_qEz78JR5Eeake9YPyNtTvg" entityName="IDelayedExecution">
+    <signatures__OperationInterface id="_taWUYJR5Eeake9YPyNtTvg" entityName="execute">
+      <parameters__OperationSignature parameterName="delayInSeconds">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_b60foNHIEeaNAIlD4-dfHg" entityName="IDelay">
+    <signatures__OperationInterface id="_etpMkNHIEeaNAIlD4-dfHg" entityName="execute"/>
   </interfaces__Repository>
 </repository:Repository>
