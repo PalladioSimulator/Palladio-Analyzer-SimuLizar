@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<de.fzi.power:PowerStateRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/State/1.0" id="_lLrtMNQcEeaaWdru_ltUkw">
+  <powerStateMachines id="_1SOBANQeEea_NoslWKZGGA" name="binary">
+    <powerStates xsi:type="de.fzi.power:PowerState" id="_5pzKUII5EeWCRu5beQNLXQ" name="ON"/>
+    <powerStates xsi:type="de.fzi.power:PowerState" id="_88K6AII5EeWCRu5beQNLXQ" name="STANDBY"/>
+    <powerStates xsi:type="de.fzi.power:TransitionState" id="_f4YzMIyBEea70vOMG5t1AA" name="SHUTDOWN" initialState="_5pzKUII5EeWCRu5beQNLXQ" targetState="_88K6AII5EeWCRu5beQNLXQ"/>
+  </powerStateMachines>
+</de.fzi.power:PowerStateRepository>

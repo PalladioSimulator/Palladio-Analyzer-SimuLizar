@@ -63,7 +63,7 @@ transformation SwitchToStandby(
 						//the desired power state
 						roles += object instance::Role {
 							roleType := changePowerStateAdaptationBehavior.involvedRoles[id = desiredPowerStateRoleId]->any(true);
-							value := runningStatefulResource.statefulResourcePowerBinding.powerStates->any(name = "SHUTDOWN").oclAsType(EObject);
+							value := runningStatefulResource.statefulResourcePowerBinding.powerStateBindings->any(name = "SHUTDOWN").oclAsType(EObject);
 						};
 						//the affected stateful resource
 						roles += object instance::Role {
