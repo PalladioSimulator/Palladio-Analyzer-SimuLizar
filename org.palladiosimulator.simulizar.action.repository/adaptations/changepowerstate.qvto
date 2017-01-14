@@ -32,7 +32,8 @@ transformation changePowerState(
 	}
 	
 	mapping inout StatefulPowerConsumingResource::setToTargetState() {
-		self.powerState := self.powerState.oclAsType(TransitionState).targetState;
+		var transitionState := self.powerState.oclAsType(TransitionStateBinding).transitionState;
+		self.powerState := self.powerState.statefulResourcePowerBinding.powerStateBindings[PowerStateBinding]->any(s | s.powerState.id = transitionState.targetState.id);
 	}
 	
 	query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResource {

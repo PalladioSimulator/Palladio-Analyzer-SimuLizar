@@ -21,8 +21,8 @@
     <involvedRoles id="_7ldKUZTzEeWUYbZGIbhTfA" entityName="CurrentAllocation">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//allocation/Allocation"/>
     </involvedRoles>
-    <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="TargetPowerState">
-      <type href="../../../plugin/de.fzi.power/model/power.ecore#//binding/AbstractPowerState"/>
+    <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="targetPowerStateBinding">
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//binding/AbstractPowerStateBinding"/>
     </involvedRoles>
   </actions>
   <actions id="_g-Ud4KAbEeWZkvqD6d6Miw" entityName="ComponentMigration">

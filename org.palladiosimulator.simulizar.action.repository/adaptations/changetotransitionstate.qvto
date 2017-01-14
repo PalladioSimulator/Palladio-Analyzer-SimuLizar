@@ -16,20 +16,19 @@ main() {
 	var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
 	var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
 	var affectedStatefulPowerConsumingResource = roleSet.getAffectedStatefulPowerConsumingResourceFromRoles();
-	var desiredPowerState := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerState);
+	var desiredPowerStateBinding := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerStateBinding);
 	
-	if(not desiredPowerState.oclIsKindOf(TransitionState)) {
-		var potentialStates := desiredPowerState.statefulResourcePowerBinding.powerStates[TransitionState]
-			->select(t | t.targetState.id = desiredPowerState.id);
+	if(not desiredPowerStateBinding.oclIsKindOf(TransitionStateBinding)) {
+		var potentialStates := desiredPowerStateBinding.statefulResourcePowerBinding.powerStateBindings[TransitionStateBinding]
+			->select(t | t.transitionState.targetState.id = desiredPowerStateBinding.oclAsType(PowerStateBinding).powerState.id);
 		assert warning (potentialStates->size() > 1) with log('More than one transitions to target state. One chosen at random.');
 		affectedStatefulPowerConsumingResource.map changeToTransitionState(potentialStates->any(true));
 	} else {
-		affectedStatefulPowerConsumingResource.powerState := desiredPowerState;
+		affectedStatefulPowerConsumingResource.powerState := desiredPowerStateBinding;
 	};
-	
 }
 
-mapping inout StatefulPowerConsumingResource::changeToTransitionState(chosenState : AbstractPowerState) {
+mapping inout StatefulPowerConsumingResource::changeToTransitionState(chosenState : TransitionStateBinding) {
 	self.powerState := chosenState;
 }
 

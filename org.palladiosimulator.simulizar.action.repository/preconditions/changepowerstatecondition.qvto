@@ -27,7 +27,7 @@ transformation checkPreconditions(
 		var roleSet := actionRoleSet.objectsOfType(RoleSet)->any(true);
 		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
 		var affectedStatefulResource := roleSet.roles[roleType.id = affectedResourceRoleId]->any(true).value.oclAsType(StatefulPowerConsumingResource);
-		var desiredPowerState := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerState);
+		var desiredPowerState := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerStateBinding);
 		var currentAllocation := roleSet.roles[roleType.id=currentAllocationRoleId]->any(true).value.oclAsType(Allocation);
 		
 		log('Desired Power State: ' + desiredPowerState.name.toString());
