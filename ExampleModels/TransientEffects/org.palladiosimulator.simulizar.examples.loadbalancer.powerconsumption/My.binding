@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<de.fzi.power:PowerBindingRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:de.fzi.power="http://www.fzi.de/Power/Binding/1.0" xmlns:de.fzi.power_1="http://www.fzi.de/Power/Specification/1.0" id="_dRf2cN70Eea6tP6MxhJ4YA">
+  <powerBindings xsi:type="de.fzi.power:DistributionPowerBinding" id="_djPGsd70Eea6tP6MxhJ4YA">
+    <distributionPowerModel xsi:type="de.fzi.power_1:DeclarativeDistributionPowerModelSpecification" href="declarativePowerModels.spec#_on3u0n1hEeWs5NTiSBh3Qw"/>
+  </powerBindings>
+</de.fzi.power:PowerBindingRepository>
