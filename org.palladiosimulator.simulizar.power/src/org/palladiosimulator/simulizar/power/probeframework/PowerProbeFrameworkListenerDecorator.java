@@ -7,9 +7,11 @@ import java.util.Optional;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
+import javax.measure.unit.SI;
 
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
@@ -40,6 +42,7 @@ import de.fzi.power.interpreter.InterpreterUtils;
 import de.fzi.power.interpreter.PowerModelRegistry;
 import de.fzi.power.interpreter.PowerModelUpdaterSwitch;
 import de.fzi.power.interpreter.calculators.ExtensibleCalculatorInstantiatorImpl;
+import de.fzi.power.interpreter.calculators.ITimeProvider;
 import de.fzi.power.interpreter.calculators.energy.SimpsonRuleCumulativeEnergyCalculator;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.ISimulationListener;
@@ -105,8 +108,15 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
         if (!powerMeasurementSpecs.isEmpty()) {
             PowerModelRegistry powerModelRegistry = new PowerModelRegistry();
+            // Register simulation time provider. This is used to calculate transitions between power states.
+            ITimeProvider provider = new ITimeProvider() {
+                @Override
+                public Amount<Duration> getCurrentTime() {
+                    return Amount.valueOf(model.getSimulationControl().getCurrentSimulationTime(), SI.SECOND);
+                }
+            };
             PowerModelUpdaterSwitch modelUpdaterSwitch = new PowerModelUpdaterSwitch(powerModelRegistry,
-                    new ExtensibleCalculatorInstantiatorImpl());
+                    new ExtensibleCalculatorInstantiatorImpl(provider));
             Collection<ConsumptionContext> createdContexts = new ArrayList<>(powerMeasurementSpecs.size());
             Collection<SimulationTimeEvaluationScope> createdScopes = new ArrayList<>(powerMeasurementSpecs.size());
 
@@ -238,7 +248,6 @@ public class PowerProbeFrameworkListenerDecorator extends AbstractRecordingProbe
 
         if (measurementSpec.isTriggersSelfAdaptations()) {
             new MonitorRepositorySwitch<Void>() {
-                // TODO Christian implement this.                 */
                 public Void caseFeedThrough(FeedThrough feedThrough) {
                     return null;
                 };
