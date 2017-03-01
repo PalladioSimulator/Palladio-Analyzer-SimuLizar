@@ -11,6 +11,7 @@
   <rm:locator pattern="^org\.scaledl\.usageevolution.*" searchPathRef="UsageEvolution" failOnError="false"/>
   <rm:locator pattern="^org\.eclipse\.emf\.henshin.*" searchPathRef="Henshin" failOnError="false"/>
   <rm:locator pattern="^tools.descartes.dlim.*" searchPathRef="Limbo" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="false"/>
 
   <rm:redirect pattern="^org\.palladiosimulator\.servicelevelobjective.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
   <rm:redirect pattern="^org\.palladiosimulator\.monitorrepository.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
@@ -28,6 +29,15 @@
       <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/SimuLizar/trunk/{0}">
         <bc:propertyRef key="buckminster.component"/>
       </rm:uri>
+    </rm:provider>
+  </rm:searchPath>
+  
+  <rm:searchPath name="ExperimentAnalysis">
+    <rm:provider resolutionFilter="(resolveFrom=nightly)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
+    </rm:provider>
+    <rm:provider resolutionFilter="(resolveFrom=release)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/latest/"/>
     </rm:provider>
   </rm:searchPath> 
   
