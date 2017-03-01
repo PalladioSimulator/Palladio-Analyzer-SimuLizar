@@ -3,15 +3,14 @@
   
   <rm:property key="resolveFrom" value="release"/>
   
-  <rm:locator pattern="^org\.palladiosimulator\.simulizar.*" searchPathRef="SimuLizar" failOnError="true"/>
-  
+  <rm:locator pattern="^org\.palladiosimulator\.simulizar.*" searchPathRef="SimuLizar" failOnError="true"/>  
   <rm:locator pattern="^org\.storydriven\..*" searchPathRef="StoryDiagrams" failOnError="false"/>
   <rm:locator pattern="^de\.mdelab\..*" searchPathRef="StoryDiagrams" failOnError="false"/>
   <rm:locator pattern="^de\.upb\.swt\.core.*" searchPathRef="StoryDiagrams" failOnError="false"/>
   <rm:locator pattern="^org\.scaledl\.usageevolution.*" searchPathRef="UsageEvolution" failOnError="false"/>
   <rm:locator pattern="^org\.eclipse\.emf\.henshin.*" searchPathRef="Henshin" failOnError="false"/>
   <rm:locator pattern="^tools.descartes.dlim.*" searchPathRef="Limbo" failOnError="false"/>
-  <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="false"/>
+  <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="true"/>
   <rm:redirect pattern="^org\.palladiosimulator\.servicelevelobjective.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
   <rm:redirect pattern="^org\.palladiosimulator\.monitorrepository.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
   <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Analyzer/SimuCom/trunk/org.palladiosimulator.simucom.buckminster/simucom.rmap"/>
