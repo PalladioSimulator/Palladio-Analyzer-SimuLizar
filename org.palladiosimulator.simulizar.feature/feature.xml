@@ -111,6 +111,7 @@
       <import plugin="de.uka.ipd.sdq.probfunction.math"/>
       <import plugin="org.palladiosimulator.simulizar.reconfigurationrule" version="0.1.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.experimentanalysis"/>
    </requires>
 
    <plugin
@@ -241,6 +242,13 @@
 
    <plugin
          id="org.palladiosimulator.simulizar.aggregation"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.slidingwindow"
          download-size="0"
          install-size="0"
          version="0.0.0"
