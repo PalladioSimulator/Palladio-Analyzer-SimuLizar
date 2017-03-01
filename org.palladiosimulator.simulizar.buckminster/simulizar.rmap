@@ -35,7 +35,7 @@
       <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/nightly/"/>
     </rm:provider>
     <rm:provider resolutionFilter="(resolveFrom=release)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" mutable="false">
-      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/latest/"/>
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/palladio/addons/experimentanalysis/releases/latest/"/>
     </rm:provider>
     <rm:provider componentTypes="eclipse.feature,osgi.bundle" readerType="svn">
       <rm:uri format="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ExperimentAnalysis/trunk/{0}">
