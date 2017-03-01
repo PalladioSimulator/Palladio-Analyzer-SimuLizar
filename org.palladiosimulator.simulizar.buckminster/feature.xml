@@ -43,6 +43,7 @@
       <import plugin="org.palladiosimulator.monitorrepository" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.simulizar.reconfiguration.qvto" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime"/>
+      <import plugin="org.palladiosimulator.experimentanalysis"/>
    </requires>
 
    <plugin
@@ -54,6 +55,13 @@
 
    <plugin
          id="org.palladiosimulator.branding"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.slidingwindow.tests"
          download-size="0"
          install-size="0"
          version="0.0.0"
