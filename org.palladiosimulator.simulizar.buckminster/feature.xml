@@ -23,6 +23,10 @@
          id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature"
          version="0.0.0"/>
 
+   <includes
+         id="org.palladiosimulator.experimentanalysis.feature"
+         version="0.0.0"/>
+
    <requires>
       <import plugin="org.junit" version="4.11.0" match="greaterOrEqual"/>
       <import plugin="org.jscience" version="4.1.3" match="greaterOrEqual"/>
