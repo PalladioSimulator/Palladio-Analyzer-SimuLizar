@@ -10,6 +10,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.util.ComposedSwitch;
+import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ComposedStructure;
 import org.palladiosimulator.pcm.core.composition.CompositionFactory;
@@ -45,8 +47,9 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
-
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
+    public static final String RDSEFFSWITCH_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.interpreter.rdseffswitch";
+    public static final String RDSEFFSWITCH_EXTENSION_ATTRIBUTE = "rdseffswitch";
 
     private final Signature signature;
     private final ProvidedRole providedRole;
@@ -209,10 +212,16 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             final FQComponentID componentID = this.computeFQComponentID();
             final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
                     .getRuntimeState().getComponentInstanceRegistry().getComponentInstance(componentID);
-            final RDSeffSwitch rdSeffInterpreter = new RDSeffSwitch(this.context, basicComponentInstance);
-
+            
+            final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
+            		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
+            final  ComposedSwitch<Object> interpreter = new ComposedSwitch<Object>();
+            switchFactories.stream().forEach(s -> interpreter.addSwitch(
+            		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
+            // add default RDSeffSwitch
+            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter));
             // interpret called seff
-            return (SimulatedStackframe<Object>) rdSeffInterpreter.doSwitch(calledSeffs.get(0));
+            return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
     }
 

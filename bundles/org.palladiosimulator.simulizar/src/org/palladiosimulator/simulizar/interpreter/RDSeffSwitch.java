@@ -9,6 +9,8 @@ import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.util.ComposedSwitch;
+import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
@@ -61,11 +63,12 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker, Sebastian Lehrig
  *
  */
-class RDSeffSwitch extends SeffSwitch<Object> {
+class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
     private static final Boolean SUCCESS = true;
-
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
+
+    private ComposedSwitch<Object> parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
     private final Allocation allocation;
@@ -77,12 +80,10 @@ class RDSeffSwitch extends SeffSwitch<Object> {
     /**
      * Constructor.
      *
+     * @param context
+     *            Default context for the pcm interpreter.
      * @param basicComponentInstance
-     *
-     * @param modelInterpreter
-     *            the corresponding pcm model interpreter holding this switch.
-     * @param assemblyContext
-     *            the assembly context of the component of the SEFF.
+     *            Simulated component
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance) {
@@ -92,6 +93,23 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
+    }
+
+
+    /**
+     * Constructor.
+     *
+     * @param context
+     *				Default context for the pcm interpreter.
+     * @param basicComponentInstance
+     *				Simulated component
+     * @param parentSwitch
+     *				The composed switch which is containing this switch
+     */
+    public RDSeffSwitch(final InterpreterDefaultContext context,
+            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch) {
+    	this(context, basicComponentInstance);
+    	this.parentSwitch = parentSwitch;
     }
 
     /**
@@ -120,7 +138,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                 LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
-            this.doSwitch(currentAction);
+            this.getParentSwitch().doSwitch(currentAction);
             this.firePassedEvent(currentAction, EventType.END);
             currentAction = currentAction.getSuccessor_AbstractAction();
         }
@@ -271,7 +289,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             LOGGER.error("No branch's condition evaluated to true, no branch selected: " + object);
             throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
-            this.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
+            this.getParentSwitch().doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
 
         return SUCCESS;
@@ -487,6 +505,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
                                 + " forked baviour: " + this);
                     }
+                    // no use of parentSwitch.doSwitch() because we want the inner switches
                     seffInterpreter.doSwitch(forkedBehaviour);
                 }
 
@@ -508,7 +527,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
-            this.doSwitch(object.getBodyBehaviour_Loop());
+            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
@@ -520,7 +539,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
      *
      * @param object
      *            the CollectionIteratorAction.
-     * @param parameterthe
+     * @param parameter
      *            parameter of the collection.
      * @return
      */
@@ -566,7 +585,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
              * within an iteration.
              */
 
-            this.doSwitch(object.getBodyBehaviour_Loop());
+            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
 
             // remove stack frame for value characterisations of inner
             // collection variable
@@ -587,6 +606,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
 
     /**
      * @param internalAction
+     * 				The internal action containing the resource demand
      */
     private void interpretResourceDemands(final InternalAction internalAction) {
         final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
@@ -607,6 +627,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
 
         }
     }
+
 
     /**
      * @param internalAction
@@ -652,6 +673,7 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         }
     }
 
+
     /**
      * Gets the allocation context for the current assembly context stack. The stack is investigated
      * in a FIFO-manner, i.e., first upper elements are checked. This is needed for the case of sub
@@ -679,4 +701,14 @@ class RDSeffSwitch extends SeffSwitch<Object> {
         throw new PCMModelAccessException("No AllocationContext in Allocation " + allocation + " for AssemblyContext "
                 + this.context.getAssemblyContextStack().peek() + " or its parents.");
     }
+
+
+	@Override
+	public Switch<Object> getParentSwitch() {
+		if (this.parentSwitch != null) {
+			return this.parentSwitch;
+		}
+
+		return this;
+	}
 }
