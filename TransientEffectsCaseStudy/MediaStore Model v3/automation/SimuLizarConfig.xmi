@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<simulizartooladapter:SimuLizarConfiguration xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ExperimentAutomation.Experiments.AbstractSimulation="http://palladiosimulator.org/ExperimentAutomation/AbstractSimulation/1.0" xmlns:simulizartooladapter="http://palladiosimulator.org/ExperimentAutomation/ToolAdapter/SimuLizar/1.0" name="Default EDP2 SimuLizar Configuration Media Store">
-  <stopConditions xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:MeasurementCountStopCondition" measurementCount="-1"/>
-  <stopConditions xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:SimTimeStopCondition" simulationTime="3000000"/>
-  <datasource xsi:type="ExperimentAutomation.Experiments.AbstractSimulation:FileDatasource" id="" location="C:/data/experimentAutomation"/>
-</simulizartooladapter:SimuLizarConfiguration>

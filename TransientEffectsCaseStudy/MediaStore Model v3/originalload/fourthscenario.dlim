@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<tools.descartes.dlim:Sequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tools.descartes.dlim="http://descartes.tools/dlim/0.1" name="firstscenario" terminateAfterLoops="1" firstIterationEnd="180.0" loopDuration="180.0" finalDuration="180.0">
-  <sequenceFunctionContainers duration="600.0" firstIterationEnd="60.0">
-    <function xsi:type="tools.descartes.dlim:Constant" constant="0.0344827586206897"/>
-  </sequenceFunctionContainers>
-  <sequenceFunctionContainers duration="1200.0" firstIterationStart="60.0" firstIterationEnd="180.0">
-    <function xsi:type="tools.descartes.dlim:Constant" constant="0.0666666666666667"/>
-  </sequenceFunctionContainers>
-</tools.descartes.dlim:Sequence>

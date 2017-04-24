@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="ASCII"?>
-<usageevolution:UsageEvolution xmlns:usageevolution="http://usageevolution/1.0" id="_dll9EKlnEeW7dt0FphOHdw" entityName="Evolution">
-  <usages id="_dlwVIKlnEeW7dt0FphOHdw" entityName="Initial" evolutionStepWidth="1000.0">
-    <loadEvolution href="fourthscenario.dlim#/"/>
-    <scenario href="../ms_base_usage_realistic.usagemodel#__hpRMHD6EeSA4fySuX9I2Q"/>
-  </usages>
-</usageevolution:UsageEvolution>
