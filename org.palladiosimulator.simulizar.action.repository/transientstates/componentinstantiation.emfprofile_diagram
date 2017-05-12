@@ -4,7 +4,7 @@
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_VNKzYDHjEeWdSYCtx3_mDA" name="InstantiatedComponentResourceContainer">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_nUGjkDHjEeWdSYCtx3_mDA">
-        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.1#//resourceenvironment/ResourceContainer"/>
+        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
       </extensions>
     </eClassifiers>
   </emfprofile:Profile>
@@ -34,7 +34,7 @@
       </children>
       <styles xmi:type="notation:DescriptionStyle" xmi:id="_mOoJQTHjEeWdSYCtx3_mDA"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_mOoJQjHjEeWdSYCtx3_mDA" fontName="Segoe UI"/>
-      <element xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.1#//resourceenvironment/ResourceContainer"/>
+      <element xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mOoJQzHjEeWdSYCtx3_mDA" x="355" y="210"/>
     </children>
     <edges xmi:type="notation:Edge" xmi:id="_nUGjkTHjEeWdSYCtx3_mDA" type="4005" element="_nUGjkDHjEeWdSYCtx3_mDA" source="_VNm4QDHjEeWdSYCtx3_mDA" target="_mOoJQDHjEeWdSYCtx3_mDA">

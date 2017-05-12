@@ -11,13 +11,13 @@
  */
 import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
 
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
-modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
-modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
-modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.1';
-modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
-modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
-modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 

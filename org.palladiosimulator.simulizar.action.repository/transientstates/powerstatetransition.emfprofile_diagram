@@ -4,7 +4,7 @@
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_VNKzYDHjEeWdSYCtx3_mDA" name="InstantiatedComponentResourceContainer">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_nUGjkDHjEeWdSYCtx3_mDA">
-        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.1#//resourceenvironment/ResourceContainer"/>
+        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
       </extensions>
     </eClassifiers>
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_koye4NHUEeaCUu6IRk1Alg" name="TransitioningStatefulPowerConsumingResource">

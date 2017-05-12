@@ -1,7 +1,7 @@
 import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
-modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
-modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 

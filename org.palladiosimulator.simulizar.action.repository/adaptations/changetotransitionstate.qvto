@@ -1,5 +1,5 @@
 modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
 modeltype POWER_BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';

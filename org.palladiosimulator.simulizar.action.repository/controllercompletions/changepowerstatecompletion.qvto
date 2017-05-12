@@ -1,16 +1,16 @@
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
-modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
-modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
-modeltype PCM_RT uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.1';
-modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
-modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RT uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
 modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
 modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
 modeltype BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
-modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
-modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
 modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
 // TODO: Proper way would be to create proxy component with specific delays per transition.
