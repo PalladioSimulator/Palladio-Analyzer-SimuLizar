@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1" id="_CX1d8AErEeS7FKokKTKFow" entityName="defaultAllocation">
+<allocation:Allocation xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:allocation="http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2" id="_CX1d8AErEeS7FKokKTKFow" entityName="defaultAllocation">
   <targetResourceEnvironment_Allocation href="iaas.resourceenvironment#/"/>
   <system_Allocation href="loadbalancer.system#_lhnn8AEnEeS7FKokKTKFow"/>
   <allocationContexts_Allocation id="_C-3BsAErEeS7FKokKTKFow" entityName="AC_LoadBalancer">

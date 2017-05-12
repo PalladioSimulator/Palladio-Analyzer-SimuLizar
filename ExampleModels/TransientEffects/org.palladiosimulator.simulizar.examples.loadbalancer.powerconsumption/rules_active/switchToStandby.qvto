@@ -10,7 +10,7 @@ import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLi
  * in conjunction with mappings defined in the project properties.
  */
 modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
 modeltype POWER_INF uses 'http://www.fzi.de/Power/Infrastructure/1.0';
 modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
