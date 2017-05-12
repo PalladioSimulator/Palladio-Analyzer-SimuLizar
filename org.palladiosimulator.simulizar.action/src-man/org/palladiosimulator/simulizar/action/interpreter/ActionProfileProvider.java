@@ -32,10 +32,4 @@ public class ActionProfileProvider implements IProfileProvider {
     public String getProfileNsURI() {
         return adaptationBehavior.getTransientStateProfile().getNsURI();
     }
-
-    // TODO FIXME
-    private Profile obtainProfileFromResource(Resource resource) {
-        return adaptationBehavior.getTransientStateProfile();
-    }
-
 }
