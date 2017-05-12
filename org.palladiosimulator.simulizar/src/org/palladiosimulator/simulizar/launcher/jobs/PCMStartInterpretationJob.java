@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.access.ModelAccess;
 import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
@@ -67,7 +68,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // After we find a way to copy models so that their links do not point to intermediary, but
         // to the models directly.
         final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration,
-                new ModelAccessUseOriginalReferences(this.blackboard),
+                new ModelAccess(this.blackboard),
                 new SimulationCancelationDelegate(monitor::isCanceled));
 
         this.initializeRuntimeStateAccessors(runtimeState);
