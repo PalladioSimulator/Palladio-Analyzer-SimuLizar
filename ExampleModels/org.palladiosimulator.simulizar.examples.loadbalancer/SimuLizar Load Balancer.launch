@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="de.upb.pcm.interpreter.SimuLizarLaunching">
-<stringAttribute key="EDP2RepositoryID" value="file:/Users/lehrig/data"/>
+<stringAttribute key="EDP2RepositoryID" value="_3dVrQCMtEeWsuafx9HRZfQ"/>
 <stringAttribute key="accuracyQualityAnnotationFile" value=""/>
+<stringAttribute key="actionModelFile" value="platform:/plugin/org.palladiosimulator.simulizar.action.repository/model/repository.actions"/>
 <stringAttribute key="allocationFile" value="platform:/resource/org.palladiosimulator.simulizar.examples.loadbalancer/loadbalancer_on_iaas.allocation"/>
 <booleanAttribute key="clear" value="true"/>
 <listAttribute key="completion.config"/>
