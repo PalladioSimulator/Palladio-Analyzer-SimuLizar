@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rm:rmap xmlns:bc="http://www.eclipse.org/buckminster/Common-1.0" xmlns:rm="http://www.eclipse.org/buckminster/RMap-1.0">
   
-  <rm:property key="resolveFrom" value="release"/>
+  <rm:property key="resolveFrom" value="nightly"/>
   
   <rm:locator pattern="^org\.palladiosimulator\.simulizar.*" searchPathRef="SimuLizar" failOnError="true"/>  
   <rm:locator pattern="^org\.storydriven\..*" searchPathRef="StoryDiagrams" failOnError="false"/>
