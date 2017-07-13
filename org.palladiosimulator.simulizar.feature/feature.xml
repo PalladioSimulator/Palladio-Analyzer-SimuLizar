@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="Palladio Component Model - Analyzer: SimuLizar"
-      version="2.0.8.qualifier"
+      version="2.0.9.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
