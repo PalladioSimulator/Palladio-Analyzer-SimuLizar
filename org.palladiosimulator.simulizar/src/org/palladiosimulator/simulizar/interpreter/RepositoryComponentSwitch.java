@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,8 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.RepositoryComponent;
+import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
@@ -235,14 +238,28 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
         for (int i = 0; i < stack.size(); i++) {
         	AssemblyContext tempContext = stack.get(i);
+        	final int prevIndex = i - 1;
         	if (tempContext.eResource() != null) {
-	        	result.add(this.context.getModelAccess().getGlobalPCMModel().getSystem().getAssemblyContexts__ComposedStructure()
-	            		.stream().filter(ctx -> ctx.getId().equals(tempContext.getId())).findAny().get());
+        		result.add(
+        				this.context.getModelAccess().getGlobalPCMModel().getSystem().getAssemblyContexts__ComposedStructure()
+        					.stream().filter(ctx -> ctx.getId().equals(tempContext.getId())).findAny()
+        				.orElseGet(() -> getNestedComponentInstanceFromAssembly(tempContext, result.get(prevIndex))
+        						.orElseThrow(() -> new IllegalStateException("Component instance could not be found in the global PCM model."))));
+	        	
         	} else {
         		result.add(tempContext);
         	}
         }
         return result;
+    }
+    
+    private Optional<AssemblyContext> getNestedComponentInstanceFromAssembly(AssemblyContext contextToFind, AssemblyContext compositeAssembly) {
+    	RepositoryComponent comp = compositeAssembly.getEncapsulatedComponent__AssemblyContext();
+    	if (!RepositoryPackage.eINSTANCE.getCompositeComponent().isInstance(comp)) {
+    		throw new IllegalArgumentException("Nested component instance only available for instances of composite components.");
+    	}
+    	return ((ComposedStructure)comp).getAssemblyContexts__ComposedStructure().stream()
+    			.filter(ctx -> ctx.getId().equals(contextToFind.getId())).findAny();
     }
 
     /**
