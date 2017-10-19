@@ -331,7 +331,7 @@ public final class MonitorRepositoryUtil {
                         return false;
                     };
 
-                }.doSwitch(mp);
+                }.doSwitch(element);
             }
 
             private boolean checkSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint mp) {
@@ -342,7 +342,7 @@ public final class MonitorRepositoryUtil {
                         return entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall().getId()
                                 .equals(mp.getOperationSignature().getId())
                                 && entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall().getId()
-                                        .equals(mp.getRole().getId());
+                                .equals(mp.getRole().getId());
                     }
 
                     @Override
