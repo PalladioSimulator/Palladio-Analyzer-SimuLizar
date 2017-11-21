@@ -4,7 +4,7 @@ Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
 Bundle-Version: 2.1.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
-Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="2.1.0",
+Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.simucomstatus;bundle-version="1.0.0",
  org.palladiosimulator.analyzer.workflow;bundle-version="1.0.0",
