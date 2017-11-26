@@ -61,7 +61,7 @@
   </rm:searchPath>
   <rm:searchPath name="Limbo">
     <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:uri format="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
+      <rm:uri format="https://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
     </rm:provider>
   </rm:searchPath>
 </rm:rmap>
