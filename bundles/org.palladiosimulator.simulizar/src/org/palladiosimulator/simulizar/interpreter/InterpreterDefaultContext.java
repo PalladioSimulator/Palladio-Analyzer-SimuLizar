@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.util.Optional;
 import java.util.Stack;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
@@ -33,7 +34,9 @@ public class InterpreterDefaultContext extends Context {
 
     private final PCMPartitionManager pcmPartitionManager;
 
-    private PCMResourceSetPartition localPCMModelCopy;
+	private PCMResourceSetPartition localPCMModelCopy;
+	
+	private Stack<FailureStackFrame> failureStack;
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
@@ -42,8 +45,10 @@ public class InterpreterDefaultContext extends Context {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
+
         this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
         this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
+        this.failureStack = new Stack<>();
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
@@ -57,6 +62,7 @@ public class InterpreterDefaultContext extends Context {
         this.setSimProcess(context.getThread());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = runtimeState;
+        this.failureStack = new Stack<>();
         if (copyStack && context.getStack().size() > 0) {
             this.stack.pushStackFrame(context.getStack().currentStackFrame().copyFrame());
         } else {
@@ -98,4 +104,30 @@ public class InterpreterDefaultContext extends Context {
     public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
         return this.assemblyAllocationLookup;
     };
+
+    
+    public void raiseFailure(FailureStackFrame failure) {
+    	failureStack.push(failure);
+    }
+    
+    public Optional<FailureStackFrame> peekFailure() {
+    	if(failureStack.isEmpty()) {
+    		return Optional.empty();
+    	} else {
+        	return Optional.of(failureStack.peek());    		
+    	}
+    }
+    
+    public Optional<FailureStackFrame> popFailure() {
+    	if(failureStack.isEmpty()) {
+    		return Optional.empty();
+    	} else {
+        	return Optional.of(failureStack.pop());    		
+    	}
+    }
+    
+    public boolean hasFailureOccurred() {
+    	return !failureStack.isEmpty();
+    }
+
 }

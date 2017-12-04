@@ -27,4 +27,10 @@
             modelObserver="org.palladiosimulator.simulizar.modelobserver.UsageEvolutionSyncer">
       </modelObserver>
    </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.interpreter.rdseffswitch">
+      <rdseffswitch
+            rdseffswitch="org.palladiosimulator.simulizar.interpreter.ReliabilitySwitchFactory">
+      </rdseffswitch>
+   </extension>
 </plugin>

@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Optional;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
@@ -17,6 +18,8 @@ import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
+import org.palladiosimulator.pcm.reliability.FailureType;
+import org.palladiosimulator.pcm.reliability.InternalFailureOccurrenceDescription;
 import org.palladiosimulator.pcm.repository.Parameter;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourcetype.ResourceInterface;
@@ -40,6 +43,7 @@ import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
+import org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
@@ -140,7 +144,12 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             this.firePassedEvent(currentAction, EventType.BEGIN);
             this.getParentSwitch().doSwitch(currentAction);
             this.firePassedEvent(currentAction, EventType.END);
-            currentAction = currentAction.getSuccessor_AbstractAction();
+            if(context.hasFailureOccurred()) {
+                currentAction = locateFailureHandlingAction(currentAction);           	
+                LOGGER.debug("Failure Occurred! Skipping to "+ currentAction.eClass().getName() + ": " + currentAction);  
+            } else {
+                currentAction = currentAction.getSuccessor_AbstractAction();            	
+            }
         }
 
         if (this.context.getStack().size() != stacksize) {
@@ -171,12 +180,24 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     @Override
     public Object caseInternalAction(final InternalAction internalAction) {
+    	if (context.getModel().getConfiguration().getSimulateFailures()) {
+    		double rnd = context.getModel().getConfiguration().getRandomGenerator().random();
+        	for(InternalFailureOccurrenceDescription failureDescription: internalAction.getInternalFailureOccurrenceDescriptions__InternalAction()) {
+        		rnd -= failureDescription.getFailureProbability();
+        		if(rnd<0) { //failure occurred
+        			FailureType failure = failureDescription.getSoftwareInducedFailureType__InternalFailureOccurrenceDescription();
+        			context.raiseFailure(new FailureStackFrame(failure));
+                	return SUCCESS; //in case of a failure no resource demands and no infrastructure calls
+        		}
+        	}
+        }
         if (internalAction.getResourceDemand_Action().size() > 0) {
             interpretResourceDemands(internalAction);
         }
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
             interpretInfrastructureCalls(internalAction);
         }
+
         if (internalAction.getInternalFailureOccurrenceDescriptions__InternalAction().size() > 0) {
             interpretFailures(internalAction);
         }
@@ -531,6 +552,10 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
+           if(context.hasFailureOccurred()) {
+               LOGGER.debug("Exiting Loop due to failure");
+           		break;
+           }
         }
     }
 
@@ -600,6 +625,10 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             this.context.getStack().removeStackFrame();
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
+            }
+            if(context.hasFailureOccurred()) {
+                LOGGER.debug("Exiting Loop due to failure");
+        		break;
             }
         }
     }
@@ -701,7 +730,20 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         throw new PCMModelAccessException("No AllocationContext in Allocation " + allocation + " for AssemblyContext "
                 + this.context.getAssemblyContextStack().peek() + " or its parents.");
     }
-
+    
+    /**
+     * Returns the next Recovery Action after the given action or the Stop Action if none is found.
+     * @param lastExecutedAction the action to start scanning after.
+     * @return A failrue Handling Action or the StopAction if none is found
+     */
+    private AbstractAction locateFailureHandlingAction(AbstractAction lastExecutedAction) {
+    	AbstractAction current = lastExecutedAction;
+    	do {
+    		current = current.getSuccessor_AbstractAction();
+    	}while(!SeffPackage.eINSTANCE.getStopAction().isInstance(current) && !SeffReliabilityPackage.eINSTANCE.getRecoveryAction().isInstance(current));
+    	return current;
+    	
+    }
 
 	@Override
 	public Switch<Object> getParentSwitch() {
