@@ -23,5 +23,5 @@ public abstract class AbstractRDSeffSwitchFactory {
 	 * @return a composable switch
 	 */
 	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch);
+            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch);
 }
