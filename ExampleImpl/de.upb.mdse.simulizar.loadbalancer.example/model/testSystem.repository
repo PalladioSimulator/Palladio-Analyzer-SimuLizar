@@ -2,8 +2,8 @@
 <repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://sdq.ipd.uka.de/PalladioComponentModel/Repository/5.0" xmlns:seff="http://sdq.ipd.uka.de/PalladioComponentModel/SEFF/5.0" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/1.0" id="_6vCRgOuPEeCuhfIsXFGDcQ" entityName="defaultRepository">
   <components__Repository xsi:type="repository:BasicComponent" id="_V-N_oOuQEeCuhfIsXFGDcQ" entityName="lastverteiler">
     <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_h7jCYOuSEeCuhfIsXFGDcQ" entityName="Angeboten_ILastverteiler_Lastverteiler" providedInterface__OperationProvidedRole="_lBFscOuREeCuhfIsXFGDcQ"/>
-    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_6EqiAOuTEeCuhfIsXFGDcQ" entityName="Benötigt_IServer1_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
-    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Q4Mx8OuZEeCuhfIsXFGDcQ" entityName="Benötigt_IServer2_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_6EqiAOuTEeCuhfIsXFGDcQ" entityName="BenÃ¶tigt_IServer1_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Q4Mx8OuZEeCuhfIsXFGDcQ" entityName="BenÃ¶tigt_IServer2_Lastverteiler" requiredInterface__OperationRequiredRole="_qaVMkOuSEeCuhfIsXFGDcQ"/>
     <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_h7k3kOuSEeCuhfIsXFGDcQ" describedService__SEFF="_olfnUOuREeCuhfIsXFGDcQ">
       <steps_Behaviour xsi:type="seff:StartAction" id="_h7leoOuSEeCuhfIsXFGDcQ" successor_AbstractAction="_BP7O0OuUEeCuhfIsXFGDcQ"/>
       <steps_Behaviour xsi:type="seff:StopAction" id="_h7leoeuSEeCuhfIsXFGDcQ" predecessor_AbstractAction="_BP7O0OuUEeCuhfIsXFGDcQ"/>

@@ -87,7 +87,7 @@ implements defaultrepository.impl.Ilastverteiler, java.io.Serializable {
 
 						de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe<Object> callResult =
 
-						myContext.getRoleBenötigt_IServer2_Lastverteiler()
+						myContext.getRoleBenÃ¶tigt_IServer2_Lastverteiler()
 								.entpacke0(ctx);
 
 						// Stop the time measurement
@@ -129,7 +129,7 @@ implements defaultrepository.impl.Ilastverteiler, java.io.Serializable {
 
 						de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe<Object> callResult =
 
-						myContext.getRoleBenötigt_IServer1_Lastverteiler()
+						myContext.getRoleBenÃ¶tigt_IServer1_Lastverteiler()
 								.entpacke0(ctx);
 
 						// Stop the time measurement
