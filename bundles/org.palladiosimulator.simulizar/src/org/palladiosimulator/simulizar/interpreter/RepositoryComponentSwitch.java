@@ -215,7 +215,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
             
             final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
             		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
-            final  ComposedSwitch<Object> interpreter = new ComposedSwitch<Object>();
+            final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
             // add default RDSeffSwitch
