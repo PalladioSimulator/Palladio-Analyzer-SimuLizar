@@ -12,7 +12,7 @@
   <rm:locator pattern="^tools\.descartes\.dlim.*" searchPathRef="Limbo" failOnError="true"/>
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="true"/>
   <rm:redirect pattern="^org\.palladiosimulator\.servicelevelobjective.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
-  <rm:redirect pattern="^org\.palladiosimulator\.monitorrepository.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
+  <rm:redirect pattern="^org\.palladiosimulator\.monitorrepository.*" href="https://raw.githubusercontent.com/PalladioSimulator/Palladio-QuAL-MonitorRepository/master/org.palladiosimulator.monitorrepository.buckminster/monitorrepository.rmap"/>
   <rm:redirect pattern=".*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Analyzer/SimuCom/trunk/org.palladiosimulator.simucom.buckminster/simucom.rmap"/>
   
   
