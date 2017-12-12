@@ -188,6 +188,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret " + object.getSuccessor().eClass().getName() + ": " + object);
             }
+            //TODO: nur successor aufrufen, falls keine exception vorliegt
             this.doSwitch(object.getSuccessor());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished Interpretation of " + object.getSuccessor().eClass().getName() + ": " + object);

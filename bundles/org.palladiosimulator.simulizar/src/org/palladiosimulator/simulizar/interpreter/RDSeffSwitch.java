@@ -192,7 +192,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         	}
         }
         if (internalAction.getResourceDemand_Action().size() > 0) {
-            interpretResourceDemands(internalAction);
+        	//TODO: HW exception catch
+            this.interpretResourceDemands(internalAction);
         }
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
             interpretInfrastructureCalls(internalAction);
@@ -202,6 +203,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             interpretFailures(internalAction);
         }
         if (internalAction.getResourceCall__Action().size() > 0) {
+        	//TODO: HW exceptions catchen
             interpretResourceCall(internalAction);
         }
         return SUCCESS;
