@@ -50,6 +50,17 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
      * (non-Javadoc)
      *
      * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
+     * usageScenarioFailure
+     * (de.upb.pcm.interpreter.interpreter.listener.FailureOccurredEvent)
+     */
+    @Override
+	public void usageScenarioFailure(FailureOccurredEvent<UsageScenario> event) {
+	}
+
+	/*
+     * (non-Javadoc)
+     *
+     * @see de.upb.pcm.interpreter.interpreter.listener.IInterpreterListener#
      * beginEntryLevelSystemCallInterpretation
      * (de.upb.pcm.interpreter.interpreter.listener.ModelElementPassedEvent)
      */

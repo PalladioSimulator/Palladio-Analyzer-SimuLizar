@@ -45,6 +45,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
+import org.palladiosimulator.reliability.MarkovFailureType;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
@@ -55,6 +56,7 @@ import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.exceptions.FailureException;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -192,8 +194,12 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         	}
         }
         if (internalAction.getResourceDemand_Action().size() > 0) {
-        	//TODO: HW exception catch
-            this.interpretResourceDemands(internalAction);
+        	try {
+                this.interpretResourceDemands(internalAction);
+        	} catch(FailureException ex) {
+        		//TODO: Markov FailureType erbt nicht von FailureType! Wie konvertieren?
+        		//context.raiseFailure(new FailureStackFrame(ex.getFailureType().getId());
+        	}
         }
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
             interpretInfrastructureCalls(internalAction);

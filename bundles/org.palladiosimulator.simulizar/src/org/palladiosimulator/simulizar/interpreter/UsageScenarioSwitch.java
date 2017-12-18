@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
@@ -184,16 +185,19 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseAbstractUserAction(final AbstractUserAction object) {
-        if (object.getSuccessor() != null) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Interpret " + object.getSuccessor().eClass().getName() + ": " + object);
+    	if(context.hasFailureOccurred()) {
+            LOGGER.debug("Aborting UsageScenario due to unhandled failure!");   
+    	} else {
+            if (object.getSuccessor() != null) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Interpret " + object.getSuccessor().eClass().getName() + ": " + object);
+                }
+                this.doSwitch(object.getSuccessor());
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Finished Interpretation of " + object.getSuccessor().eClass().getName() + ": " + object);
+                }
             }
-            //TODO: nur successor aufrufen, falls keine exception vorliegt
-            this.doSwitch(object.getSuccessor());
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Finished Interpretation of " + object.getSuccessor().eClass().getName() + ": " + object);
-            }
-        }
+    	}
         return super.caseAbstractUserAction(object);
     }
 
@@ -209,6 +213,13 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
+        if(context.hasFailureOccurred()) {
+
+            FailureStackFrame failure = context.popFailure().get();
+            FailureOccurredEvent<UsageScenario> ev = new FailureOccurredEvent<UsageScenario>(usageScenario, failure, context.getThread());
+            context.getRuntimeState().getEventNotificationHelper().fireFailureEvent(ev);
+        }
+        
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context));
         return super.caseUsageScenario(usageScenario);

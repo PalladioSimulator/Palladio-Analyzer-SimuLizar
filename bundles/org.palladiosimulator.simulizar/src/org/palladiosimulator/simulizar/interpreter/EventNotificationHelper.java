@@ -16,12 +16,15 @@ import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
+import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
@@ -127,6 +130,13 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
 			.filter(Optional::isPresent).map(Optional::get).findFirst()
 			.orElse(UNKNOWN_ELEMENT_NOTIFICATOR_SELECTOR)
 			.accept(event);
+    }
+
+    @SuppressWarnings("unchecked")
+	public <T extends EObject> void fireFailureEvent(final FailureOccurredEvent<T> event) {
+    	if(UsagemodelPackage.eINSTANCE.getUsageScenario().isInstance(event.getModelElement())) {
+    		getEventDispatcher().usageScenarioFailure((FailureOccurredEvent<UsageScenario>)event);
+    	}
     }
     
     public void removeAllListener() {

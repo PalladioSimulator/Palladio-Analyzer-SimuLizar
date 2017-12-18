@@ -13,6 +13,8 @@ public interface IInterpreterListener {
     public void beginUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
 
     public void endUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
+    
+    public void usageScenarioFailure(FailureOccurredEvent<UsageScenario> event);
 
     public void beginEntryLevelSystemCallInterpretation(ModelElementPassedEvent<EntryLevelSystemCall> event);
 

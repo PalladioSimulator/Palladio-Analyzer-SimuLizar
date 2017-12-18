@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.pcm.seff.AbstractAction;
+import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.seff_reliability.RecoveryAction;
 import org.palladiosimulator.pcm.seff.seff_reliability.RecoveryActionBehaviour;
 import org.palladiosimulator.pcm.seff.seff_reliability.util.SeffReliabilitySwitch;
@@ -18,10 +19,10 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
     private static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(SeffReliabilitySwitch.class);
 
-	private ComposedSwitch<Object> parentSwitch;
+	private ExplicitDispatchComposedSwitch<Object> parentSwitch;
 	private InterpreterDefaultContext context;
 
-	public ReliabilitySwitch(InterpreterDefaultContext context, ComposedSwitch<Object> parentSwitch) {
+	public ReliabilitySwitch(InterpreterDefaultContext context, ExplicitDispatchComposedSwitch<Object> parentSwitch) {
 		this.context = context;
 		this.parentSwitch = parentSwitch;
 	}
@@ -48,8 +49,7 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
 		if(context.hasFailureOccurred()) {
 			context.popFailure();
 			//proceed as if it is a normal behaviour
-//TODO: wie hier sicherstellen, dass keine rekursion auftritt?
-			//seffSwitch.caseResourceDemandingBehaviour(behaviour);
+			parentSwitch.doSwitch(SeffPackage.eINSTANCE.getResourceDemandingBehaviour(), behaviour);
 			//if an exception occurred, find the matching alternative, if available
 			if(context.hasFailureOccurred()) {
 				FailureType failure = context.peekFailure().get().getType();
@@ -66,3 +66,4 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
 	}
 
 }
+
