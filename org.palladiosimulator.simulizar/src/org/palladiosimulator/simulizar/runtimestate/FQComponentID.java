@@ -2,8 +2,12 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.entity.NamedElement;
+
+import de.uka.ipd.sdq.identifier.Identifier;
 
 public class FQComponentID {
 
@@ -69,7 +73,11 @@ public class FQComponentID {
         }
         return true;
     }
-
+    
+    public String getFQIDString() {
+    	return this.assembyContextPath.stream().map(Identifier::getId)
+        		.collect(Collectors.joining("::"));
+    }
     /*
      * (non-Javadoc)
      *
@@ -77,13 +85,8 @@ public class FQComponentID {
      */
     @Override
     public String toString() {
-        final StringBuilder pathBuilder = new StringBuilder();
-        for (final AssemblyContext assembyContext : this.assembyContextPath) {
-            pathBuilder.append(assembyContext.getEntityName());
-            pathBuilder.append("::");
-        }
-        pathBuilder.delete(pathBuilder.length() - 2, pathBuilder.length());
-        return "FQComponentID [assembyContextPath=" + pathBuilder.toString() + "]";
+    	return this.assembyContextPath.stream().map(NamedElement::getEntityName)
+    		.collect(Collectors.joining("::", "FQComponentID [assembyContextPath=", "]"));
     }
 
 }

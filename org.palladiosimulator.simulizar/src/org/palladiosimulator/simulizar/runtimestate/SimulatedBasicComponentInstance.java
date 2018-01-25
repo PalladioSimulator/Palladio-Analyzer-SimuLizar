@@ -25,7 +25,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
 
     public SimulatedBasicComponentInstance(final InterpreterDefaultContext context, final FQComponentID fqID,
             final List<PassiveResource> passiveResources) {
-        super(context.getRuntimeState(), fqID);
+        super(context.getRuntimeState(), fqID.getFQIDString());
 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
         final AssemblyContext myAssCtx = fqID.getAssembyContextPath().get(fqID.getAssembyContextPath().size() - 1);
