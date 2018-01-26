@@ -1,0 +1,119 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule increases the processing rate of all
+ * resources in case the monitored mean response time is greater than 3.0 (seconds). 
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+/*
+ * The transformation signature declares that a RuntimeMeasurement modeltype is required as input, while an PCM
+ * modeltype is transformed inplace. The RuntimeMeasurement modeltype is referenced as 'RuntimeMeasurement' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
+							//inout pcmRepository : PCM_REP,
+							//in pcmSystem : PCM_SYS,
+							inout pcmAllocation : PCM_ALLOC
+							//in pcmResources : PCM_RES_ENV
+							) {
+							
+							
+	// Define Threshold and Scale Out
+	property threshold : Real = 2.0;
+	property outsourceFactor : Real = 0.1;
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+		log('SimuLizar Outsource Rule Transformation started');
+		
+		assert fatal(runtimeMeasurement.rootObjects()[RuntimeMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+			
+		// Assert true for the return value of the condition check to get correct reconfiguration time measuring points
+		assert error (runtimeMeasurement.rootObjects()[RuntimeMeasurement]->checkCondition() = true)
+			with log ("No reconfiguration required");	
+
+	}
+	
+	helper Set(RuntimeMeasurement) :: checkCondition() : Boolean {
+	
+		self->forEach(measurement) {
+		log('Measured value at ' + measurement.measuringPoint.stringRepresentation + ' is ' + measurement.measuringValue.toString());
+		
+			if (measurement.measuringValue > threshold) {
+		
+				log('Threshold is exceeded');
+				pcmAllocation.rootObjects()[Allocation]->forAll(
+					allocation : Allocation | 
+					outSourceProcessing(allocation.allocationContexts_Allocation)
+				);
+				return true;
+			};
+		};
+		
+		log('No measurements match the condition. Number of measurements is ' + self->size().toString());
+		return false;
+	}
+	
+	/**
+	 * outsource Processing.
+	 */
+	helper outSourceProcessing(allocationContexts : Set(AllocationContext)) : Boolean {
+	
+	log('Found ' +  allocationContexts->size().toString() + ' AllocationContexts');
+	
+		allocationContexts->forEach(allocation){
+
+			if( allocation.assemblyContext_AllocationContext.entityName = "AC_LoadBalancer" ) {
+			
+				allocation.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).serviceEffectSpecifications__BasicComponent->forEach(seff) {
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						var branch1 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer1");
+						log('Branch1: ' + branch1.toString());
+						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="delegateToServer2");
+						log('Branch2: ' + branch2.toString());
+						if(branch2.branchProbability < 0.5 and branch1.branchProbability > 0.5) {
+						log('Balancing Load...');
+							branch2.branchProbability := branch2.branchProbability + outsourceFactor;
+							log('Set branchProbability to ' + branch2.branchProbability.toString());
+							branch1.branchProbability := branch1.branchProbability - outsourceFactor;
+							log('Set branchProbability to ' + branch1.branchProbability.toString());
+							return true;
+						};
+					}
+				}
+			}
+		};
+		
+		return false;
+	}
+	
+}

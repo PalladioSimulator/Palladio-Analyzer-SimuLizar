@@ -28,14 +28,18 @@
   <monitors id="_qh0UkAOzEeWk4qXEVpjV-g" entityName="Server1">
     <measurementSpecifications id="_t9ApEAOzEeWk4qXEVpjV-g">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
-      <processingType xsi:type="monitorrepository:FeedThrough" id="_ietwxO0WEeWdrOr0QROn8g"/>
+      <processingType xsi:type="monitorrepository:TimeDrivenAggregation" id="_F-A_ogJ9Eeii4a_bO5GIsg">
+        <statisticalCharacterization xsi:type="monitorrepository:ArithmeticMean"/>
+      </processingType>
     </measurementSpecifications>
     <measuringPoint xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.2"/>
   </monitors>
   <monitors id="_sxfRIAOzEeWk4qXEVpjV-g" entityName="Server2">
     <measurementSpecifications id="_5osNEAOzEeWk4qXEVpjV-g">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
-      <processingType xsi:type="monitorrepository:FeedThrough" id="_tST2NO0WEeWdrOr0QROn8g"/>
+      <processingType xsi:type="monitorrepository:TimeDrivenAggregation" id="_HQTt8gJ9Eeii4a_bO5GIsg">
+        <statisticalCharacterization xsi:type="monitorrepository:ArithmeticMean"/>
+      </processingType>
     </measurementSpecifications>
     <measuringPoint xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" href="sensors.measuringpoint#//@measuringPoints.3"/>
   </monitors>
