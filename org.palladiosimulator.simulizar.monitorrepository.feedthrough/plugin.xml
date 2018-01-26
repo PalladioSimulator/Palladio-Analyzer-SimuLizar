@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.palladiosimulator.simulizar.monitorrepository.feedthrough"
+         name="org.palladiosimulator.simulizar.monitorrepository.feedthrough"
+         point="org.palladiosimulator.simulizar.interpreter.listener.probeframework">
+      <probeFrameworkListenerDecorator
+            decorator="org.palladiosimulator.simulizar.monitorrepository.feedthrough.FeedThroughDecorator">
+      </probeFrameworkListenerDecorator>
+   </extension>
+
+</plugin>
