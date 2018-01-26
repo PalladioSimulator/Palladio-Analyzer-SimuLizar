@@ -34,9 +34,11 @@ import org.palladiosimulizar.aggregation.aggregators.VariableSizeMeasurementAggr
  */
 public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordingProbeFrameworkListenerDecorator {
 
-    private static final EClass FIXED_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION;
+    private static final String FIXED_EXCEPTION_MESSAGE = "Fixed size aggregation of measurements cannot be initialized.\n";
+	private static final String VARIABLE_EXCEPTION_MESSAGE = "Variable size aggregation of measurements cannot be initialized.\n";
+	private static final EClass FIXED_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION;
     private static final EClass VARIABLE_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.VARIABLE_SIZE_AGGREGATION;
-
+   
     private RegisterCalculatorFactoryDecorator calculatorFactory;
     private RuntimeMeasurementModel runtimeMeasurementModel;
 
@@ -68,13 +70,8 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         // fails in case optional is empty
         checkValidity(expectedMetric, measurementSpecification);
 
-        Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
-                measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
-                        "Variable size aggregation of measurements cannot be initialized.\n" + "No '"
-                                + expectedMetric.get().getName() + "' calculator available for: " + "MeasuringPoint '"
-                                + measuringPoint.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
-                                + measurementSpecification.getMonitor().getEntityName() + "'\n"
-                                + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!"));
+        Calculator correspondingBaseCalculator = getBaseCalculator(measurementSpecification, measuringPoint,
+				expectedMetric, VARIABLE_EXCEPTION_MESSAGE);
 
         correspondingBaseCalculator.addObserver(new VariableSizeMeasurementAggregator(expectedMetric.get(),
                 this.runtimeMeasurementModel, (VariableSizeAggregation) measurementSpecification.getProcessingType()));
@@ -88,17 +85,25 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         // fails in case optional is empty
         checkValidity(expectedMetric, measurementSpecification);
 
-        Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
-                measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
-                        "Fixed size aggregation of measurements cannot be initialized.\n" + "No '"
-                                + expectedMetric.get().getName() + "' calculator available for: " + "MeasuringPoint '"
-                                + measuringPoint.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
-                                + measurementSpecification.getMonitor().getEntityName() + "'\n"
-                                + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!"));
+        Calculator correspondingBaseCalculator = getBaseCalculator(measurementSpecification, measuringPoint,
+				expectedMetric, FIXED_EXCEPTION_MESSAGE);
 
         correspondingBaseCalculator.addObserver(new FixedSizeMeasurementsAggregator(expectedMetric.get(),
                 this.runtimeMeasurementModel, (FixedSizeAggregation) measurementSpecification.getProcessingType()));
     }
+
+	private Calculator getBaseCalculator(final MeasurementSpecification measurementSpecification,
+			MeasuringPoint measuringPoint, Optional<NumericalBaseMetricDescription> expectedMetric,
+			String message) {
+		Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
+                measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
+                        message + "No '"
+                                + expectedMetric.get().getName() + "' calculator available for: " + "MeasuringPoint '"
+                                + measuringPoint.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
+                                + measurementSpecification.getMonitor().getEntityName() + "'\n"
+                                + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!"));
+		return correspondingBaseCalculator;
+	}
 
     private Optional<Calculator> getBaseCalculator(final NumericalBaseMetricDescription metric,
             final MeasuringPoint measuringPoint) {
