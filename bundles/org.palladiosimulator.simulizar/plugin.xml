@@ -33,4 +33,10 @@
             rdseffswitch="org.palladiosimulator.simulizar.interpreter.ReliabilitySwitchFactory">
       </rdseffswitch>
    </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.modelobserver">
+      <modelObserver
+            modelObserver="org.palladiosimulator.simulizar.failureprobe.FailureMonitorRepoSyncer">
+      </modelObserver>
+   </extension>
 </plugin>

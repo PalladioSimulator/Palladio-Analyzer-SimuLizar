@@ -215,7 +215,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         }
         if(context.hasFailureOccurred()) {
 
-            FailureStackFrame failure = context.popFailure().get();
+            FailureStackFrame<?> failure = context.popFailure().get();
             FailureOccurredEvent<UsageScenario> ev = new FailureOccurredEvent<UsageScenario>(usageScenario, failure, context.getThread());
             context.getRuntimeState().getEventNotificationHelper().fireFailureEvent(ev);
         }

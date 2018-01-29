@@ -1,31 +1,60 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.cdo.CDOLock;
+import org.eclipse.emf.cdo.CDOObjectHistory;
+import org.eclipse.emf.cdo.CDOState;
+import org.eclipse.emf.cdo.common.id.CDOID;
+import org.eclipse.emf.cdo.common.lock.CDOLockState;
+import org.eclipse.emf.cdo.common.revision.CDORevision;
+import org.eclipse.emf.cdo.common.security.CDOPermission;
+import org.eclipse.emf.cdo.eresource.CDOResource;
+import org.eclipse.emf.cdo.view.CDOView;
+import org.eclipse.emf.common.notify.Adapter;
+import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EOperation;
+import org.eclipse.emf.ecore.EReference;
+import org.eclipse.emf.ecore.EStructuralFeature;
+import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
+import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.reliability.FailureType;
+import org.palladiosimulator.pcm.reliability.HardwareInducedFailureType;
 import org.palladiosimulator.pcm.reliability.InternalFailureOccurrenceDescription;
+import org.palladiosimulator.pcm.reliability.ReliabilityPackage;
+import org.palladiosimulator.pcm.reliability.SoftwareInducedFailureType;
 import org.palladiosimulator.pcm.repository.Parameter;
+import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.resourcetype.ProcessingResourceType;
 import org.palladiosimulator.pcm.resourcetype.ResourceInterface;
 import org.palladiosimulator.pcm.resourcetype.ResourceRepository;
 import org.palladiosimulator.pcm.resourcetype.ResourceSignature;
 import org.palladiosimulator.pcm.resourcetype.ResourceType;
+import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AcquireAction;
@@ -46,6 +75,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.reliability.MarkovFailureType;
+import org.palladiosimulator.reliability.MarkovHardwareInducedFailureType;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
@@ -187,8 +217,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         	for(InternalFailureOccurrenceDescription failureDescription: internalAction.getInternalFailureOccurrenceDescriptions__InternalAction()) {
         		rnd -= failureDescription.getFailureProbability();
         		if(rnd<0) { //failure occurred
-        			FailureType failure = failureDescription.getSoftwareInducedFailureType__InternalFailureOccurrenceDescription();
-        			context.raiseFailure(new FailureStackFrame(failure));
+        			SoftwareInducedFailureType failure = failureDescription.getSoftwareInducedFailureType__InternalFailureOccurrenceDescription();
+        			context.raiseFailure(new SoftwareInducedFailureStackFrame(failure, internalAction));
                 	return SUCCESS; //in case of a failure no resource demands and no infrastructure calls
         		}
         	}
@@ -197,8 +227,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         	try {
                 this.interpretResourceDemands(internalAction);
         	} catch(FailureException ex) {
-        		//TODO: Markov FailureType erbt nicht von FailureType! Wie konvertieren?
-        		//context.raiseFailure(new FailureStackFrame(ex.getFailureType().getId());
+        		translateAndRaiseFailure(internalAction, ex);
+        		
         	}
         }
         if (internalAction.getInfrastructureCall__Action().size() > 0) {
@@ -208,10 +238,15 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         if (internalAction.getInternalFailureOccurrenceDescriptions__InternalAction().size() > 0) {
             interpretFailures(internalAction);
         }
-        if (internalAction.getResourceCall__Action().size() > 0) {
-        	//TODO: HW exceptions catchen
-            interpretResourceCall(internalAction);
-        }
+		if (internalAction.getResourceCall__Action().size() > 0) {
+			try {
+				this.interpretResourceCall(internalAction);
+        	} catch(FailureException ex) {
+        		translateAndRaiseFailure(internalAction, ex);
+        		
+        	}
+		}
+
         return SUCCESS;
     }
 
@@ -458,6 +493,52 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(new RDSEFFElementPassedEvent<T>(
                 abstractAction, eventType, this.context, this.context.getAssemblyContextStack().peek()));
     }
+
+    /**
+     * Translates the given FailureException into a FailureStackFrame and puts it onto the failure stack
+     */
+	private void translateAndRaiseFailure(final InternalAction currentAction, FailureException ex) {
+		MarkovFailureType mft = ex.getFailureType();
+		if(mft instanceof MarkovHardwareInducedFailureType) {
+			
+			MarkovHardwareInducedFailureType mhft = (MarkovHardwareInducedFailureType)mft;
+			final String resourceTypeId = mhft.getResourceTypeId();
+			final String containerId = mhft.getResourceContainerId();
+			
+			//TODO: Add a cache as these lookups are expensive
+			
+			HardwareInducedFailureType failureType = 
+			context.getLocalPCMModelAtContextCreation().getElement(ResourcetypePackage.eINSTANCE.getResourceRepository())
+			.stream()
+			.filter(ResourceRepository.class::isInstance )
+			.map(ResourceRepository.class::cast)
+			.map(ResourceRepository::getAvailableResourceTypes_ResourceRepository)
+			.flatMap(EList::stream)
+			.filter(ProcessingResourceType.class::isInstance)
+			.map(ProcessingResourceType.class::cast)
+			.filter(r -> r.getId() == resourceTypeId)
+			.findFirst().get().getHardwareInducedFailureType__ProcessingResourceType();
+
+			ResourceContainer container = null; 
+			TreeIterator<Object> contents = EcoreUtil.getAllContents(context.getLocalPCMModelAtContextCreation().getResourceEnvironment()
+					.getResourceContainer_ResourceEnvironment(), true);
+			while(contents.hasNext()) {
+				Object elem = contents.next();
+				if(elem instanceof ResourceContainer) {
+					ResourceContainer rc = (ResourceContainer) elem;
+					if(rc.getId().equals(containerId)) {
+						container = rc;
+					}
+				}
+			}
+			
+			HardwareFailureStackFrame hwfailure = new HardwareFailureStackFrame(failureType, container, currentAction);
+			context.raiseFailure(hwfailure);  
+		} else {
+			//TODO: Add network failures
+			throw new RuntimeException("Unhandled Failure Type", ex);
+		}
+	}
 
     /**
      * Combines synced and asynced processes in a combined list.
