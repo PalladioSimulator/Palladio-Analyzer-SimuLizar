@@ -36,10 +36,7 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
 
 	@Override
 	public Object caseRecoveryAction(RecoveryAction action) {
-		
-		if(context.hasFailureOccurred()) {
-			parentSwitch.doSwitch(action.getPrimaryBehaviour__RecoveryAction());
-		}
+		parentSwitch.doSwitch(action.getPrimaryBehaviour__RecoveryAction());
 		return SUCCESS;
 	}
 
@@ -47,15 +44,18 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
 	@Override
 	public Object caseRecoveryActionBehaviour(RecoveryActionBehaviour behaviour) {
 		if(context.hasFailureOccurred()) {
-			context.popFailure();
-			//proceed as if it is a normal behaviour
-			parentSwitch.doSwitch(SeffPackage.eINSTANCE.getResourceDemandingBehaviour(), behaviour);
+			//sanity check, this should not happen
+			throw new RuntimeException("RecoverActionBehaviour cannot be executed when there are already failures!");
+		}
+		parentSwitch.doSwitch(SeffPackage.eINSTANCE.getResourceDemandingBehaviour(), behaviour);
+		if(context.hasFailureOccurred()) {
 			//if an exception occurred, find the matching alternative, if available
 			if(context.hasFailureOccurred()) {
 				FailureType failure = context.peekFailure().get().getType();
 				for(RecoveryActionBehaviour alternative : behaviour.getFailureHandlingAlternatives__RecoveryActionBehaviour()) {
 					List<FailureType> handledTypes = alternative.getFailureTypes_FailureHandlingEntity();
 					if(handledTypes.contains(failure)) {
+						context.popFailure();
 						parentSwitch.doSwitch(alternative);
 						break; //found an alternative, at most one exists
 					}
@@ -66,4 +66,3 @@ public class ReliabilitySwitch extends SeffReliabilitySwitch<Object>{
 	}
 
 }
-

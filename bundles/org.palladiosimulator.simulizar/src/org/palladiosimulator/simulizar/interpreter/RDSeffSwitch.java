@@ -176,9 +176,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             this.firePassedEvent(currentAction, EventType.BEGIN);
             this.getParentSwitch().doSwitch(currentAction);
             this.firePassedEvent(currentAction, EventType.END);
-            if(context.hasFailureOccurred()) {
-                currentAction = locateFailureHandlingAction(currentAction);           	
-                LOGGER.debug("Failure Occurred! Skipping to "+ currentAction.eClass().getName() + ": " + currentAction);  
+            if(context.hasFailureOccurred()) {     	
+                LOGGER.debug("Failure Occurred! Leaving behaviour "+ object.getId());  
+                break;
             } else {
                 currentAction = currentAction.getSuccessor_AbstractAction();            	
             }
@@ -820,20 +820,6 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                 + this.context.getAssemblyContextStack().peek() + " or its parents.");
     }
     
-    /**
-     * Returns the next Recovery Action after the given action or the Stop Action if none is found.
-     * @param lastExecutedAction the action to start scanning after.
-     * @return A failrue Handling Action or the StopAction if none is found
-     */
-    private AbstractAction locateFailureHandlingAction(AbstractAction lastExecutedAction) {
-    	AbstractAction current = lastExecutedAction;
-    	do {
-    		current = current.getSuccessor_AbstractAction();
-    	}while(!SeffPackage.eINSTANCE.getStopAction().isInstance(current) && !SeffReliabilityPackage.eINSTANCE.getRecoveryAction().isInstance(current));
-    	return current;
-    	
-    }
-
 	@Override
 	public Switch<Object> getParentSwitch() {
 		if (this.parentSwitch != null) {
