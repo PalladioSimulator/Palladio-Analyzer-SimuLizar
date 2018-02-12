@@ -15,6 +15,7 @@ import org.palladiosimulator.monitorrepository.Aggregation;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
@@ -23,7 +24,6 @@ import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.reliability.FailureStatistics;
 import org.palladiosimulator.simulizar.modelobserver.AbstractModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 
@@ -31,10 +31,7 @@ public class FailureMonitorRepoSyncer extends AbstractModelObserver<MonitorRepos
 
 	@Override
 	public void initialize(AbstractSimuLizarRuntimeState runtimeState) {
-		PCMPartitionManager manager = runtimeState.getPCMPartitionManager();
-        
-		
-		Optional.ofNullable(manager.<MonitorRepository>findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()))
+		Optional.ofNullable(runtimeState.getPCMPartitionManager().<MonitorRepository>findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()))
 		.ifPresent(repo -> initialize(repo, runtimeState));			
 		
 	}
@@ -76,17 +73,13 @@ public class FailureMonitorRepoSyncer extends AbstractModelObserver<MonitorRepos
 			.buildExecutionResultCalculator(mp, 
 					new EventProbeList(
 							execOverTime,
-                            new FailureProbe(mp.getUsageScenario(), runtimeState.getEventNotificationHelper(),
-        							runtimeState.getMainContext(), runtimeState.getModel().getFailureStatistics()),
+                            new FailureProbe(mp.getUsageScenario(), runtimeState.getEventDispatcher(), runtimeState.getModel().getFailureStatistics()),
                             Arrays.asList(
                                     (TriggeredProbe) new TakeCurrentSimulationTimeProbe(runtimeState.getModel().getSimulationControl())
                                     )
                             )
                     );		
 		});
-		//TODO: Probes erzeugen
-		//recorder:
-		//siehe AbstractMain.prepareSimulation
 		
 	}
 	

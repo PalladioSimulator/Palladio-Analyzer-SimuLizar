@@ -1,39 +1,22 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.simulizar.interpreter.FailureStackFrame;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
-public class FailureOccurredEvent<T extends EObject> {
+public class FailureOccurredEvent<T extends EObject, F extends FailureType> extends FailureEvent<F>{
 
-    private final T modelElement;
-	private final FailureStackFrame failure;
-    private final double passageTime;
-    private final SimuComSimProcess thread;
+    private final T failureRaisingElement;
     
-	public FailureOccurredEvent(T modelElement, FailureStackFrame failure, SimuComSimProcess thread) {
-		super();
-		this.modelElement = modelElement;
-		this.failure = failure;
-        this.passageTime = thread.getModel().getSimulationControl().getCurrentSimulationTime();
-		this.thread = thread;
+	public FailureOccurredEvent(T failureRaisingElement, FailureStackFrame<? extends F> failure, SimuComSimProcess thread) {
+		super(failure, thread);
+		this.failureRaisingElement = failureRaisingElement;
 	}
 
-	public T getModelElement() {
-		return modelElement;
-	}
-
-	public FailureStackFrame getFailure() {
-		return failure;
-	}
-
-	public double getPassageTime() {
-		return passageTime;
-	}
-
-	public SimuComSimProcess getThread() {
-		return thread;
+	public T getFailureRaisingElement() {
+		return failureRaisingElement;
 	}
     
 }

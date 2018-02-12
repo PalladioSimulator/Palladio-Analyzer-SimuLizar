@@ -148,7 +148,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         this.context.getAssemblyContextStack().push(this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT
                 ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
         
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
         	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
         			EventType.BEGIN, this.context, this.signature, this.instanceAssemblyContext));
 
@@ -156,7 +156,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
 
         this.context.getAssemblyContextStack().pop();
         
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
             	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
             			EventType.END, this.context, this.signature, this.instanceAssemblyContext));
         

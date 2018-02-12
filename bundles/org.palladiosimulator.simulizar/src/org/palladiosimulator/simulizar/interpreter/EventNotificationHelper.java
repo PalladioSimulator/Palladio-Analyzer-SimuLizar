@@ -16,15 +16,14 @@ import org.palladiosimulator.pcm.repository.OperationProvidedRole;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
-import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.IEventListener;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
@@ -32,9 +31,14 @@ import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedE
 /**
  * @author snowball, Sebastian Krach
  *
+ * @deprecated Use the generic {@link IEventListener} and {@link EventDispatcher} with EMFSwitches instead
  */
-public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> {
-    
+@Deprecated
+public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> implements IEventListener<ModelElementPassedEvent<?>>{
+    	
+	public EventNotificationHelper(EventDispatcher evDispatcher) {
+		evDispatcher.addObserver(this);
+	}
     
     private static BinaryOperator<Consumer<ModelElementPassedEvent<? extends EObject>>> BEGIN_END_SWITCH = (beginFunc, endFunc) -> 
     	((ModelElementPassedEvent<? extends EObject> event) -> {
@@ -124,22 +128,21 @@ public class EventNotificationHelper extends AbstractObservable<IInterpreterList
 		REPOSITORY_NOTIFICATOR_SELECTOR::doSwitch,
 		SEFF_NOTIFICATOR_SELECTOR::doSwitch);
     
-    public <T extends EObject> void firePassedEvent(final ModelElementPassedEvent<T> event) {
+    public void eventOccurred(final ModelElementPassedEvent<?> event) {
 		NOTIFICATOR_SELECTOR_SWITCHES.stream()
 			.map(sw -> sw.apply(event.getModelElement()))
 			.filter(Optional::isPresent).map(Optional::get).findFirst()
 			.orElse(UNKNOWN_ELEMENT_NOTIFICATOR_SELECTOR)
 			.accept(event);
     }
-
-    @SuppressWarnings("unchecked")
-	public <T extends EObject> void fireFailureEvent(final FailureOccurredEvent<T> event) {
-    	if(UsagemodelPackage.eINSTANCE.getUsageScenario().isInstance(event.getModelElement())) {
-    		getEventDispatcher().usageScenarioFailure((FailureOccurredEvent<UsageScenario>)event);
-    	}
-    }
     
     public void removeAllListener() {
         this.removeAllObserver();
     }
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Class<ModelElementPassedEvent<?>> getEventType() {
+		return ( Class<ModelElementPassedEvent<?>>)(Class<?>) ModelElementPassedEvent.class;
+	}
 }

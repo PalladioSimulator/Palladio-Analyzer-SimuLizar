@@ -7,14 +7,16 @@ import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-
+/**
+ * 
+ * @deprecated Use the generic {@link IEventListener} and {@link EventDispatcher} with EMFSwitches instead
+ */
+@Deprecated
 public interface IInterpreterListener {
 
     public void beginUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
 
     public void endUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
-    
-    public void usageScenarioFailure(FailureOccurredEvent<UsageScenario> event);
 
     public void beginEntryLevelSystemCallInterpretation(ModelElementPassedEvent<EntryLevelSystemCall> event);
 

@@ -94,14 +94,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-        this.context.getRuntimeState().getEventNotificationHelper()
-                .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
+                new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,
                         EventType.BEGIN, this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
-        this.context.getRuntimeState().getEventNotificationHelper()
-                .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
+                new ModelElementPassedEvent<OperationSignature>(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN,
                         this.context));
 
@@ -111,14 +111,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
         this.context.getStack().removeStackFrame();
 
-        this.context.getRuntimeState().getEventNotificationHelper()
-                .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
+                new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
                         this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
-        this.context.getRuntimeState().getEventNotificationHelper()
-                .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
+               new ModelElementPassedEvent<OperationSignature>(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.END,
                         this.context));
 
@@ -206,22 +206,20 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseUsageScenario(final UsageScenario usageScenario) {
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context));
         final int stacksize = this.context.getStack().size();
         this.doSwitch(usageScenario.getScenarioBehaviour_UsageScenario());
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
-        if(context.hasFailureOccurred()) {
-
-            FailureStackFrame<?> failure = context.popFailure().get();
-            FailureOccurredEvent<UsageScenario> ev = new FailureOccurredEvent<UsageScenario>(usageScenario, failure, context.getThread());
-            context.getRuntimeState().getEventNotificationHelper().fireFailureEvent(ev);
-        }
-        
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        this.context.getRuntimeState().getEventDispatcher().fireEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context));
+        
+        //clean up- make sure that if a failure occurred it is cleared
+        if(context.hasFailureOccurred()) {
+        	context.popFailure();
+        }
         return super.caseUsageScenario(usageScenario);
     }
 }

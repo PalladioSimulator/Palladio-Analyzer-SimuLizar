@@ -25,6 +25,7 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
@@ -70,7 +71,11 @@ public abstract class AbstractSimuLizarRuntimeState {
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
     protected final SimuComModel model;
+    /**
+     * Replaced with {@link #eventDispatcher}
+     */
     protected final EventNotificationHelper eventHelper;
+    protected final EventDispatcher eventDispatcher;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
@@ -93,7 +98,8 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.cancelationDelegate = cancelationDelegate;
         this.model = SimuComModelFactory.createSimuComModel(configuration);
 
-        this.eventHelper = new EventNotificationHelper();
+        this.eventDispatcher = new EventDispatcher();
+        this.eventHelper = new EventNotificationHelper(eventDispatcher);
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         
         ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess = 
@@ -131,7 +137,11 @@ public abstract class AbstractSimuLizarRuntimeState {
         return this.eventHelper;
     }
 
-    /**
+    public EventDispatcher getEventDispatcher() {
+		return eventDispatcher;
+	}
+
+	/**
      * @return the componentInstanceRegistry
      */
     public final ComponentInstanceRegistry getComponentInstanceRegistry() {
