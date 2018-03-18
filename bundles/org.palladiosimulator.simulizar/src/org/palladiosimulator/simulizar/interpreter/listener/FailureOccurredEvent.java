@@ -20,3 +20,4 @@ public class FailureOccurredEvent<T extends EObject, F extends FailureType> exte
 	}
     
 }
+

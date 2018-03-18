@@ -1,41 +1,20 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Stack;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.cdo.CDOLock;
-import org.eclipse.emf.cdo.CDOObjectHistory;
-import org.eclipse.emf.cdo.CDOState;
-import org.eclipse.emf.cdo.common.id.CDOID;
-import org.eclipse.emf.cdo.common.lock.CDOLockState;
-import org.eclipse.emf.cdo.common.revision.CDORevision;
-import org.eclipse.emf.cdo.common.security.CDOPermission;
-import org.eclipse.emf.cdo.eresource.CDOResource;
-import org.eclipse.emf.cdo.view.CDOView;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.notify.Notification;
-import org.eclipse.emf.common.util.DiagnosticChain;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.EOperation;
-import org.eclipse.emf.ecore.EReference;
-import org.eclipse.emf.ecore.EStructuralFeature;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
-import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
@@ -45,10 +24,8 @@ import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.pcm.reliability.HardwareInducedFailureType;
 import org.palladiosimulator.pcm.reliability.InternalFailureOccurrenceDescription;
 import org.palladiosimulator.pcm.reliability.NetworkInducedFailureType;
-import org.palladiosimulator.pcm.reliability.ReliabilityPackage;
 import org.palladiosimulator.pcm.reliability.SoftwareInducedFailureType;
 import org.palladiosimulator.pcm.repository.Parameter;
-import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourcetype.CommunicationLinkResourceType;
@@ -75,7 +52,6 @@ import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
-import org.palladiosimulator.pcm.seff.seff_reliability.SeffReliabilityPackage;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.reliability.MarkovFailureType;
 import org.palladiosimulator.reliability.MarkovHardwareInducedFailureType;
@@ -87,6 +63,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.reliability.HardwareFailureStackFrame;
+import org.palladiosimulator.simulizar.reliability.NetworkFailureStackFrame;
 import org.palladiosimulator.simulizar.reliability.SoftwareInducedFailureStackFrame;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
@@ -96,6 +73,7 @@ import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.exceptions.FailureException;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
+import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -159,6 +137,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     @Override
     public Object caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
+    	
+    	
         final int stacksize = this.context.getStack().size();
 
         AbstractAction currentAction = null;
@@ -174,21 +154,54 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         if (currentAction == null) {
             throw new PCMModelInterpreterException("RDSEFF is invalid, it misses a start action");
         }
+        
 
-        while (currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
+    	if (context.getModel().getConfiguration().getSimulateFailures()) {
+			// Simulate a failure if one or multiple of the processing resources
+			// required by the executing resource container are currently unavailable:
+			//AbstractSimulatedResourceContainer container = context.findResource(this.completeAssemblyContextID);
+
+            final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
+            
+            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
+
+            AbstractSimulatedResourceContainer container =
+            resourceRegistry.getResourceContainer(allocationContext.getResourceContainer_AllocationContext().getId());
+            
+           
+			java.util.List<de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource> failedResources = container.getFailedResources();
+			if(failedResources.size() > 0){
+				double randValue = context.getModel().getConfiguration().getRandomGenerator().random();
+				int index = (int)Math.floor(randValue * failedResources.size());
+				
+				//TODO: cleanup here
+				try {
+					de.uka.ipd.sdq.simucomframework.exceptions.FailureException.raise(
+							context.getModel(),context.getModel().getFailureStatistics().getInternalHardwareFailureType(
+									container.getResourceContainerID(),
+									failedResources.get(index).getResourceTypeId()));					
+				} catch(FailureException e) {
+	        		translateAndRaiseFailure(currentAction, e);					
+				}
+			}
+		}
+    	
+    	if(!context.hasFailureOccurred()) {
+            while (currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
+                if (LOGGER.isDebugEnabled()) {
+                    LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
+                }
+                this.firePassedEvent(currentAction, EventType.BEGIN);
+                this.getParentSwitch().doSwitch(currentAction);
+                this.firePassedEvent(currentAction, EventType.END);
+                if(context.hasFailureOccurred()) {     	
+                    LOGGER.debug("Failure Occurred! Leaving behaviour "+ object.getId());  
+                    break;
+                } else {
+                    currentAction = currentAction.getSuccessor_AbstractAction();            	
+                }
             }
-            this.firePassedEvent(currentAction, EventType.BEGIN);
-            this.getParentSwitch().doSwitch(currentAction);
-            this.firePassedEvent(currentAction, EventType.END);
-            if(context.hasFailureOccurred()) {     	
-                LOGGER.debug("Failure Occurred! Leaving behaviour "+ object.getId());  
-                break;
-            } else {
-                currentAction = currentAction.getSuccessor_AbstractAction();            	
-            }
-        }
+    	}
 
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
@@ -293,7 +306,14 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                     externalCall.getInputVariableUsages__CallAction());
         }
         final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        //TODO: evaluate network failures here
+        
+        //TODO: As soon as ResourceDemands are implemented, the following failure handling logic has to be performed:
+        // Use translatreAndRaisMarkovFailure to translate occuring FailureExceptions
+       
+        // if the exception type is in  externalCall.getFailureTypes_FailureHandlingEntity() and retries are possible, perform a retry
+        // decrement the retry counter in this case
+        
+        
         final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
         this.context.getAssemblyContextStack().push(myContext);
         this.context.getStack().removeStackFrame();
@@ -483,7 +503,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     /**
      * Translates the given FailureException into a FailureStackFrame and puts it onto the failure stack
      */
-	private void translateAndRaiseFailure(final InternalAction currentAction, FailureException ex) {
+	private void translateAndRaiseFailure(final AbstractAction currentAction, FailureException ex) {
 		
 		//TODO: Add a cache as these lookups are expensive
 		
@@ -495,7 +515,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 			final String containerId = mhft.getResourceContainerId();
 			
 			HardwareInducedFailureType failureType = 
-			context.getLocalPCMModelAtContextCreation().getElement(ResourcetypePackage.eINSTANCE.getResourceRepository())
+			context.getPCMPartitionManager().getLocalPCMModel().getElement(ResourcetypePackage.eINSTANCE.getResourceRepository())
 			.stream()
 			.filter(ResourceRepository.class::isInstance )
 			.map(ResourceRepository.class::cast)
@@ -507,7 +527,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 			.findFirst().get().getHardwareInducedFailureType__ProcessingResourceType();
 
 			ResourceContainer container = null; 
-			TreeIterator<Object> contents = EcoreUtil.getAllContents(context.getLocalPCMModelAtContextCreation().getResourceEnvironment()
+			TreeIterator<Object> contents = EcoreUtil.getAllContents(context.getPCMPartitionManager().getLocalPCMModel().getResourceEnvironment()
 					.getResourceContainer_ResourceEnvironment(), true);
 			while(contents.hasNext()) {
 				Object elem = contents.next();
@@ -531,7 +551,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 			final String resourceId = mnft.getLinkingResourceId();
 			
 			NetworkInducedFailureType failureType = 
-			context.getLocalPCMModelAtContextCreation().getElement(ResourcetypePackage.eINSTANCE.getResourceRepository())
+			context.getPCMPartitionManager().getLocalPCMModel().getElement(ResourcetypePackage.eINSTANCE.getResourceRepository())
 			.stream()
 			.filter(ResourceRepository.class::isInstance )
 			.map(ResourceRepository.class::cast)
@@ -543,7 +563,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 			.findFirst().get().getNetworkInducedFailureType__CommunicationLinkResourceType();
 			
 			LinkingResource link = null; 
-			TreeIterator<Object> contents = EcoreUtil.getAllContents(context.getLocalPCMModelAtContextCreation().getResourceEnvironment().getLinkingResources__ResourceEnvironment(), true);
+			TreeIterator<Object> contents = EcoreUtil.getAllContents(context.getPCMPartitionManager().getLocalPCMModel().getResourceEnvironment().getLinkingResources__ResourceEnvironment(), true);
 			while(contents.hasNext()) {
 				Object elem = contents.next();
 				if(elem instanceof LinkingResource) {
@@ -553,8 +573,11 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 					}
 				}
 			}
-			
-			
+			NetworkFailureStackFrame nwfailure = new NetworkFailureStackFrame(failureType, link, currentAction);
+			context.raiseFailure(nwfailure); 
+			context.getRuntimeState().getEventDispatcher().fireEvent(
+					new FailureOccurredEvent<EObject, FailureType>(currentAction, nwfailure, context.getThread())
+			);
 		} else {
 			throw new RuntimeException("Encountered unhandled Failure Type", ex);
 		}

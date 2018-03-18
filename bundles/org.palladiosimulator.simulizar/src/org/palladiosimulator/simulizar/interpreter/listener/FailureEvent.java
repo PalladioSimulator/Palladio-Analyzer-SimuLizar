@@ -19,3 +19,4 @@ public abstract class FailureEvent<F extends FailureType> extends SimulationEven
 	}
 
 }
+

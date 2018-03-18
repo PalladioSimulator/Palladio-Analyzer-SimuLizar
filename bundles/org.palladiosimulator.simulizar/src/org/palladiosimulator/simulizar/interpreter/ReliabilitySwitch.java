@@ -3,17 +3,13 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.seff_reliability.RecoveryAction;
 import org.palladiosimulator.pcm.seff.seff_reliability.RecoveryActionBehaviour;
 import org.palladiosimulator.pcm.seff.seff_reliability.util.SeffReliabilitySwitch;
-import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureHandledEvent;
-import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.reliability.FailureStackFrame;
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;

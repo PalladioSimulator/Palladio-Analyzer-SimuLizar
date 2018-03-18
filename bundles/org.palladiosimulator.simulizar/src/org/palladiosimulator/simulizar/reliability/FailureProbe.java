@@ -15,12 +15,13 @@ import org.palladiosimulator.metricspec.DataType;
 import org.palladiosimulator.metricspec.Identifier;
 import org.palladiosimulator.metricspec.Scale;
 import org.palladiosimulator.metricspec.util.builder.TextualBaseMetricDescriptionBuilder;
+import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.probeframework.probes.BasicEventProbe;
 import org.palladiosimulator.reliability.FailureStatistics;
 import org.palladiosimulator.reliability.MarkovFailureType;
+import org.palladiosimulator.simulizar.reliability.listener.DelegatingEventListener;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.FailureEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureHandledEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.IEventListener;
@@ -63,73 +64,55 @@ public class FailureProbe extends BasicEventProbe<AbstractObservable<IEventListe
         return metric;
     }
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     protected void registerListener() {
     	final Map<SimuComSimProcess, FailureStackFrame<?>> failureState = new ConcurrentHashMap<>();
     	
-    	//Failure Occurence and Handling listener
-    	this.eventSource.addObserver(new IEventListener<FailureEvent<?>>() {
+    	this.eventSource.addObserver(new DelegatingEventListener<FailureOccurredEvent<?,?>>(
+			(Class<? extends FailureOccurredEvent<?, ?>>) FailureOccurredEvent.class,
+			(event) -> {
+				failureState.put(event.getThread(), event.getFailure());						
+			}) 
+		);
+    	this.eventSource.addObserver(new DelegatingEventListener<FailureHandledEvent<FailureType>>(
+			(Class<? extends FailureHandledEvent<FailureType>>) FailureHandledEvent.class,
+			(event) -> {
+				failureState.remove(event.getThread());						
+			}) 
+		);
 
-			@Override
-			public void eventOccurred(FailureEvent<?> event) {
-				FailureStackFrame<?> failure = event.getFailure();
-				SimuComSimProcess thread = event.getThread();
-				if(event instanceof FailureOccurredEvent<?, ?>) {
-					failureState.put(thread, failure);
-				} else if(event instanceof FailureHandledEvent<?>) {
-					failureState.remove(thread);					
-				} else {
-					throw new RuntimeException("unexpected event type!");
-				}
-			}
-			
-			@SuppressWarnings("unchecked")
-			public Class<FailureEvent<?>> getEventType() {
-				// TODO Auto-generated method stub
-				return (Class<FailureEvent<?>>)(Class<?>)FailureEvent.class;
-			}
-		});
-    	
-    	//ModelElementPassed listener
-    	this.eventSource.addObserver(new IEventListener<ModelElementPassedEvent<?>>() {
-
-			@Override
-			public void eventOccurred(ModelElementPassedEvent<? extends EObject> event) {
-				if(event.getEventType() == EventType.END) {
-					EObject modelElement = event.getModelElement();
-					
-					if(modelElement instanceof de.uka.ipd.sdq.identifier.Identifier) {
-						String id = ((de.uka.ipd.sdq.identifier.Identifier)modelElement).getId();
-						if(id.equals(targetElementId)) {
-							
-							FailureStackFrame<?> failure = failureState.get(event.getThread());
-			             	final Identifier resultFailureIdentifier;
-			         		if(failure != null) {
-			         			//Failure
-			         			MarkovFailureType mt = failure.translateToMarkovFailureType(failureStats);
-			 					resultFailureIdentifier = failureStats.getExecutionResultId(mt);
-			         		} else {
-			         			resultFailureIdentifier = failureStats.getExecutionResultId(null);
-			         		}
-			                 final Measure<Identifier, Dimensionless> result = IdentifierMeasure.valueOf(resultFailureIdentifier, Unit.ONE);
-			                 FailureProbe.this.notify(result);
-						}
-					}
-					
-					if(modelElement instanceof UsageScenario) {
-						//cleanup
-						failureState.remove(event.getThread());									
-					}
-				}
-				
-			}
-			
-			@SuppressWarnings("unchecked")
-			public Class<ModelElementPassedEvent<? extends EObject>> getEventType() {
-				// TODO Auto-generated method stub
-				return (Class<ModelElementPassedEvent<? extends EObject>>)(Class<?>)ModelElementPassedEvent.class;
-			}
-		});
+    	this.eventSource.addObserver(new DelegatingEventListener<ModelElementPassedEvent<?>>(
+    			(Class<? extends ModelElementPassedEvent<?>>) ModelElementPassedEvent.class,
+    			(event) -> {
+    				if(event.getEventType() == EventType.END) {
+    					EObject modelElement = event.getModelElement();
+    					
+    					if(modelElement instanceof de.uka.ipd.sdq.identifier.Identifier) {
+    						String id = ((de.uka.ipd.sdq.identifier.Identifier)modelElement).getId();
+    						if(id.equals(targetElementId)) {
+    							
+    							FailureStackFrame<?> failure = failureState.get(event.getThread());
+    			             	final Identifier resultFailureIdentifier;
+    			         		if(failure != null) {
+    			         			//Failure
+    			         			MarkovFailureType mt = failure.translateToMarkovFailureType(failureStats);
+    			 					resultFailureIdentifier = failureStats.getExecutionResultId(mt);
+    			         		} else {
+    			         			resultFailureIdentifier = failureStats.getExecutionResultId(null);
+    			         		}
+    			                 final Measure<Identifier, Dimensionless> result = IdentifierMeasure.valueOf(resultFailureIdentifier, Unit.ONE);
+    			                 FailureProbe.this.notify(result);
+    						}
+    					}
+    					
+    					if(modelElement instanceof UsageScenario) {
+    						//cleanup
+    						failureState.remove(event.getThread());									
+    					}
+    				}
+    			})
+		);
     }
 
 

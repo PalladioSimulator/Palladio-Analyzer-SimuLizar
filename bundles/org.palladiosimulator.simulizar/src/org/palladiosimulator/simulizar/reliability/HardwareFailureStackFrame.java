@@ -1,10 +1,8 @@
 package org.palladiosimulator.simulizar.reliability;
 
 import org.palladiosimulator.pcm.reliability.HardwareInducedFailureType;
-import org.palladiosimulator.pcm.reliability.SoftwareInducedFailureType;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.seff.AbstractAction;
-import org.palladiosimulator.pcm.seff.InternalAction;
 import org.palladiosimulator.reliability.FailureStatistics;
 import org.palladiosimulator.reliability.MarkovFailureType;
 

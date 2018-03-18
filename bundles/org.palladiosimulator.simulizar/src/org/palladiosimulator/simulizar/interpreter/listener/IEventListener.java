@@ -4,6 +4,6 @@ public interface IEventListener<T extends SimulationEvent> {
 
 	void eventOccurred(T event);
 	
-	Class<T> getEventType();
+	Class<? extends T> getEventType();
 	
 }
