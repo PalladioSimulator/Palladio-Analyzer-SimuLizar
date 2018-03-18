@@ -60,8 +60,10 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.FailureHandledEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.reliability.FailureStackFrame;
 import org.palladiosimulator.simulizar.reliability.HardwareFailureStackFrame;
 import org.palladiosimulator.simulizar.reliability.NetworkFailureStackFrame;
 import org.palladiosimulator.simulizar.reliability.SoftwareInducedFailureStackFrame;
@@ -306,20 +308,42 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                     externalCall.getInputVariableUsages__CallAction());
         }
         final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        
-        //TODO: As soon as ResourceDemands are implemented, the following failure handling logic has to be performed:
-        // Use translatreAndRaisMarkovFailure to translate occuring FailureExceptions
        
-        // if the exception type is in  externalCall.getFailureTypes_FailureHandlingEntity() and retries are possible, perform a retry
-        // decrement the retry counter in this case
         
+        SimulatedStackframe<Object> outputFrame = null;
+        int trialsLeft = externalCall.getRetryCount() + 1;
+        boolean success = false;
+        while(!success && trialsLeft > 0) {
+        	trialsLeft--;
+            try {
+            	//TODO: schedule resource demand here
+                outputFrame = composedStructureSwitch.doSwitch(myContext);        	
+            } catch (FailureException fe) {
+            	translateAndRaiseFailure(externalCall, fe);
+            }      
+            success = !context.hasFailureOccurred(); 
+            
+            if(!success && trialsLeft > 0) {
+            	FailureStackFrame<?> fstack = context.peekFailure().get();
+            	if(externalCall.getFailureTypes_FailureHandlingEntity().contains(fstack.getType())) {
+            		//Failure is handled by the call
+            		context.popFailure();
+            		context.getRuntimeState().getEventDispatcher().fireEvent(
+							new FailureHandledEvent<FailureType>(externalCall, fstack, context.getThread())
+					);
+            	} else {
+            		break; //no retrial if this type is not handled
+            	}
+            }
+        }     
         
-        final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
         this.context.getAssemblyContextStack().push(myContext);
         this.context.getStack().removeStackFrame();
 
-        SimulatedStackHelper.addParameterToStackFrame(outputFrame,
-                externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
+        if(success) {
+            SimulatedStackHelper.addParameterToStackFrame(outputFrame,
+                    externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());        	
+        }
 
         return SUCCESS;
     }
