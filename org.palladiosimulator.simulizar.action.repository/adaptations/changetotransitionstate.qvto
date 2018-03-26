@@ -14,7 +14,7 @@ transformation changeToTransitionState(
 	
 main() {
 	var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
-	var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
+	var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResourceSet);
 	var affectedStatefulPowerConsumingResource = roleSet.getAffectedStatefulPowerConsumingResourceFromRoles();
 	var desiredPowerStateBinding := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerStateBinding);
 	
@@ -28,10 +28,10 @@ main() {
 	};
 }
 
-mapping inout StatefulPowerConsumingResource::changeToTransitionState(chosenState : TransitionStateBinding) {
+mapping inout StatefulPowerConsumingResourceSet::changeToTransitionState(chosenState : TransitionStateBinding) {
 	self.powerState := chosenState;
 }
 
-query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResource {
-	return self.roles[value.oclIsTypeOf(StatefulPowerConsumingResource)]->any(true).value.oclAsType(StatefulPowerConsumingResource);
+query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResourceSet {
+	return self.roles[value.oclIsTypeOf(StatefulPowerConsumingResourceSet)]->any(true).value.oclAsType(StatefulPowerConsumingResourceSet);
 }

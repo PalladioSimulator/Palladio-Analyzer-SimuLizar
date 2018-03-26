@@ -27,6 +27,9 @@ transformation changePowerState(
 		assert fatal (statefulPowerConsumingResources[id = affectedStatefulPowerConsumingResource.id]->notEmpty())
 			with log ("Inconsistency occurred!");
 			
+		assert fatal (affectedStatefulPowerConsumingResource.powerState.oclIsKindOf(TransitionStateBinding))
+			with log("No longer in a transition state.");
+			
 		affectedStatefulPowerConsumingResource.map setToTargetState();
 		affectedStatefulPowerConsumingResource.removeStereotypeApplications(statefulPowerConsumingResourceName);
 	}

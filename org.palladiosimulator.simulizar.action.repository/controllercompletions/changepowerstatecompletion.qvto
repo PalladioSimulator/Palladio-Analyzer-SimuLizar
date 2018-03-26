@@ -34,7 +34,7 @@ main() {
 	var roles := roleSet.roles;
 	var affectedStatefulResourceRole : instance::Role := roles[roleType.id = affectedStatefulResourceRoleId]->any(true);
 	var selectedPowerStateRole : instance::Role := roles[roleType.id = selectedPowerStateRoleId]->any(true);
-	var affectedStatefulResource : StatefulPowerConsumingResource := affectedStatefulResourceRole.value.oclAsType(StatefulPowerConsumingResource);
+	var affectedStatefulResource : StatefulPowerConsumingResourceSet := affectedStatefulResourceRole.value.oclAsType(StatefulPowerConsumingResourceSet);
 	var selectedPowerState : AbstractPowerStateBinding := selectedPowerStateRole.value.oclAsType(AbstractPowerStateBinding);
 	var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(true);
 	
@@ -42,12 +42,12 @@ main() {
 }
 
 mapping ResourceDemandingAction::getOrCreateChangePowerStateMapping(inout allocation : Allocation, 
-	affectedStatefulResource : StatefulPowerConsumingResource, selectedPowerState : AbstractPowerStateBinding) : Mapping@actionMapping { 
+	affectedStatefulResource : StatefulPowerConsumingResourceSet, selectedPowerState : AbstractPowerStateBinding) : Mapping@actionMapping { 
 	var delayControllerComponent : BasicComponent := self.controllerCalls->any(c | c.id = '_kn6SMIoLEeWm8ose-zjfHg').component;
 	var parameter : VariableUsage := delayControllerComponent.componentParameterUsage_ImplementationComponentType->any(true);
 	parameter.variableCharacterisation_VariableUsage->any(true).specification_VariableCharacterisation.specification
 		:= selectedPowerState.oclAsType(TransitionStateBinding).transitionConsumption.powerCurve.finalDuration.toString();
-	var container : ResourceContainer := affectedStatefulResource.processingResourceSpecification.resourceContainer_ProcessingResourceSpecification;
+	var container : ResourceContainer := affectedStatefulResource.processingResourceSpecifications->any(true).resourceContainer_ProcessingResourceSpecification;
 	var allocations := allocation.allocationContexts_Allocation->select(a | a.resourceContainer_AllocationContext.id = container.id 
 		and a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.id = delayControllerComponent.id);
 	var allocationCtx : AllocationContext;

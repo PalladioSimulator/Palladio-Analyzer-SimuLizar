@@ -40,16 +40,16 @@ transformation checkPreconditions(
 			+ ' the StatefulPowerConsumingResource wich is affected by this action.');
 		var associatedResourceContainer : ResourceContainer := affectedStatefulResource.processingResourceSpecifications
 			.resourceContainer_ProcessingResourceSpecification->any(true);
-		assert fatal (affectedStatefulResource.processingResourceSpecifications->isEmpty())
-			with log('No Processing Resource found for: ' + affectedStatefulResource.name);
-		assert fatal (associatedResourceContainer = null)
-			with log('Associated Resource Container was null.');
+		assert fatal (not affectedStatefulResource.processingResourceSpecifications->isEmpty())
+			with log('No Processing Resource found for: ' + affectedStatefulResource.name, affectedStatefulResource);
+		assert fatal (associatedResourceContainer <> null)
+			with log('Associated Resource Container was null.', affectedStatefulResource);
 		var resourceContainersWithAllocationContext := currentAllocation.allocationContexts_Allocation->collectNested(resourceContainer_AllocationContext)->flatten();
 		assert fatal (affectedStatefulResource.noConflictingInstantiationInProgress())
 			with log('Precondition for the action not met: Condition already executing');
-		assert fatal (not resourceContainersWithAllocationContext->includes(associatedResourceContainer))
+		assert fatal (resourceContainersWithAllocationContext->includes(associatedResourceContainer))
 			with log('Precondition for the action not met: '  
-			+ ' Resource container of affected stateful power consuming resource is not allocated!'); 
+			+ ' Resource container of affected stateful power consuming resource is not allocated!', currentAllocation); 
 			
 		affectedStatefulResource.applyStereotype(statefulPowerConsumingResourceName);
 	}
