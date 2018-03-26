@@ -16,7 +16,7 @@
       </guardedTransitions>
     </adaptationActions>
     <involvedRoles id="_AfvooYn0EeWm8ose-zjfHg" entityName="AffectedStatefulPowerConsumingResource">
-      <type href="../../../plugin/de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResource"/>
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResourceSet"/>
     </involvedRoles>
     <involvedRoles id="_7ldKUZTzEeWUYbZGIbhTfA" entityName="CurrentAllocation">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//allocation/Allocation"/>

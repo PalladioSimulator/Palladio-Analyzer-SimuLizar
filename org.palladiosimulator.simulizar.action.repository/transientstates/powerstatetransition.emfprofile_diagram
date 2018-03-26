@@ -10,7 +10,7 @@
     <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_koye4NHUEeaCUu6IRk1Alg" name="TransitioningStatefulPowerConsumingResource">
       <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
       <extensions xmi:type="emfprofile:Extension" xmi:id="_pY1GcNHUEeaCUu6IRk1Alg">
-        <target xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResource"/>
+        <target xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResourceSet"/>
       </extensions>
     </eClassifiers>
   </emfprofile:Profile>
@@ -30,7 +30,7 @@
       </children>
       <styles xmi:type="notation:DescriptionStyle" xmi:id="_jDTu0dHUEeaCUu6IRk1Alg"/>
       <styles xmi:type="notation:FontStyle" xmi:id="_jDTu0tHUEeaCUu6IRk1Alg" fontName="Segoe UI"/>
-      <element xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResource"/>
+      <element xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResourceSet"/>
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jDTu09HUEeaCUu6IRk1Alg" x="220" y="175"/>
     </children>
     <children xmi:type="notation:Node" xmi:id="_kozF8NHUEeaCUu6IRk1Alg" type="2006" element="_koye4NHUEeaCUu6IRk1Alg">

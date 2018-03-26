@@ -22,7 +22,7 @@ transformation changePowerState(
 		assert fatal(powerInfrastructure.rootObjects()[PowerInfrastructureRepository]->size() > 0)
 			with log ("Infrastructure Repository not present!");
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
-		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResource);
+		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResourceSet);
 		var affectedStatefulPowerConsumingResource = roleSet.getAffectedStatefulPowerConsumingResourceFromRoles();
 		assert fatal (statefulPowerConsumingResources[id = affectedStatefulPowerConsumingResource.id]->notEmpty())
 			with log ("Inconsistency occurred!");
@@ -31,12 +31,12 @@ transformation changePowerState(
 		affectedStatefulPowerConsumingResource.removeStereotypeApplications(statefulPowerConsumingResourceName);
 	}
 	
-	mapping inout StatefulPowerConsumingResource::setToTargetState() {
+	mapping inout StatefulPowerConsumingResourceSet::setToTargetState() {
 		var transitionState := self.powerState.oclAsType(TransitionStateBinding).transitionState;
 		self.powerState := self.powerState.statefulResourcePowerBinding.powerStateBindings[PowerStateBinding]->any(s | s.powerState.id = transitionState.targetState.id);
 	}
 	
-	query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResource {
-		return self.roles[value.oclIsTypeOf(StatefulPowerConsumingResource)]->any(true).value.oclAsType(StatefulPowerConsumingResource);
+	query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResourceSet {
+		return self.roles[value.oclIsTypeOf(StatefulPowerConsumingResourceSet)]->any(true).value.oclAsType(StatefulPowerConsumingResourceSet);
 	}
 }
