@@ -53,8 +53,11 @@
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="UsageEvolution">
-    <rm:provider componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
-      <rm:uri format="http://cloudscale.xlab.si/cse/updatesites/usageevolution/nightly/"/>
+    <rm:provider  resolutionFilter="(resolveFrom=nightly)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/cloudscale/usageevolution/nightly/"/>
+    </rm:provider>
+    <rm:provider  resolutionFilter="(resolveFrom=release)" componentTypes="osgi.bundle,eclipse.feature" readerType="p2" source="false" mutable="false">
+      <rm:uri format="https://sdqweb.ipd.kit.edu/eclipse/cloudscale/usageevolution/releases/latest/"/>
     </rm:provider>
   </rm:searchPath>
   <rm:searchPath name="Henshin">
