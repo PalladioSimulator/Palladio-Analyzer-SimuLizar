@@ -6,6 +6,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.AssemblyInfrastructureConnector;
 import org.palladiosimulator.pcm.core.composition.Connector;
 import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector;
+import org.palladiosimulator.pcm.core.composition.RequiredInfrastructureDelegationConnector;
 import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
@@ -85,6 +86,17 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
     }
 
     @Override
+    public SimulatedStackframe<Object> caseRequiredInfrastructureDelegationConnector(
+            final RequiredInfrastructureDelegationConnector requiredInfrastructureDelegationConnector) {
+        final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
+                this.signature, requiredInfrastructureDelegationConnector.getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
+        final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
+        this.context.getAssemblyContextStack().push(parentContext);
+        return result;
+    }
+
+    @Override
     public SimulatedStackframe<Object> caseAssemblyContext(final AssemblyContext assemblyContext) {
         final Connector connector = getConnectedConnector(assemblyContext, this.requiredRole);
         return this.doSwitch(connector);
@@ -139,6 +151,18 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
                         && assemblyInfrastructureConnector
                                 .getRequiredRole__AssemblyInfrastructureConnector() == requiredRole) {
                     return assemblyInfrastructureConnector;
+                }
+                return null;
+            }
+
+            @Override
+            public Connector caseRequiredInfrastructureDelegationConnector(
+                    final RequiredInfrastructureDelegationConnector requiredInfrastructureDelegationConnector) {
+                if (requiredInfrastructureDelegationConnector
+                        .getAssemblyContext__RequiredInfrastructureDelegationConnector() == myContext
+                        && requiredInfrastructureDelegationConnector
+                                .getInnerRequiredRole__RequiredInfrastructureDelegationConnector() == requiredRole) {
+                    return requiredInfrastructureDelegationConnector;
                 }
                 return null;
             }
