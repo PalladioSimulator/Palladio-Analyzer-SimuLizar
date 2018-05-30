@@ -83,6 +83,12 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
         this.passiveResourcesMap.get(passiveResource.getId()).release(context.getThread(), 1);
     }
 
+    public long getAvailablePassiveResource(final PassiveResource passiveResource, final InterpreterDefaultContext context) {
+        this.checkAcquireReleasePrecondition(passiveResource);
+
+        return this.passiveResourcesMap.get(passiveResource.getId()).getAvailable();
+    }
+
     /**
      * @param passiveResource
      */
@@ -91,7 +97,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
             throw new IllegalArgumentException("Illegal passive resource for this basic component instance passed");
         }
     }
-    
+
     @Override
     public void cleanUp() {
     	this.passiveResourcesMap.values().stream().map(IPassiveResource::getWaitingProcesses)
