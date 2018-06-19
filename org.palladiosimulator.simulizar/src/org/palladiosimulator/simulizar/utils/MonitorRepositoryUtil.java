@@ -275,6 +275,11 @@ public final class MonitorRepositoryUtil {
                 return this.checkExternCallActionMeasuringpoint(element, mp);
             }
 
+            @Override
+            public Boolean caseEntryLevelSystemCallMeasuringPoint(final EntryLevelSystemCallMeasuringPoint mp) {
+                return this.checkEntryLevelSystemCallMeasuringPoint(element, mp);
+            }
+
             private boolean checkActiveResourceMeasuringPoint(final ActiveResourceMeasuringPoint mp) {
                 final ProcessingResourceSpecification activeResource = mp.getActiveResource();
 
@@ -412,6 +417,23 @@ public final class MonitorRepositoryUtil {
                     public Boolean defaultCase(final EObject object) {
                         return false;
                     };
+                }.doSwitch(element);
+            }
+
+            private Boolean checkEntryLevelSystemCallMeasuringPoint(final EObject element,
+                    final EntryLevelSystemCallMeasuringPoint mp) {
+                return new UsagemodelSwitch<Boolean>() {
+
+                    @Override
+                    public Boolean caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
+                        return entryLevelSystemCall.getId().equals(mp.getEntryLevelSystemCall().getId());
+                    };
+
+                    @Override
+                    public Boolean defaultCase(final EObject object) {
+                        return false;
+                    };
+
                 }.doSwitch(element);
             }
 
