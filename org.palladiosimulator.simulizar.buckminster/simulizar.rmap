@@ -13,6 +13,9 @@
   <rm:locator pattern="^org\.palladiosimulator\.experimentanalysis.*" searchPathRef="ExperimentAnalysis" failOnError="true"/>
   <rm:redirect pattern="^org\.palladiosimulator\.servicelevelobjective.*" href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Incubation/ServiceLevelObjectives/trunk/org.palladiosimulator.servicelevelobjective.buckminster/servicelevelobjective.rmap"/>
   <rm:redirect pattern="^org\.palladiosimulator\.monitorrepository.*" href="https://raw.githubusercontent.com/PalladioSimulator/Palladio-QuAL-MonitorRepository/master/org.palladiosimulator.monitorrepository.buckminster/monitorrepository.rmap"/>
+  <rm:locator pattern="^org\.palladiosimulator\.simucom.*" searchPathRef="SimuCom" failOnError="true"/>
+  <rm:locator pattern="^de\.uka\.ipd\.sdq\.codegen\.simucontroller.*" searchPathRef="SimuCom" failOnError="true"/>
+  <rm:locator pattern="^de\.uka\.ipd\.sdq\.pcm\.codegen.*" searchPathRef="SimuCom" failOnError="true"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.scheduler.*" searchPathRef="Scheduler" failOnError="true"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.simucom.*" searchPathRef="SimuCom" failOnError="true"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.simulation$" searchPathRef="SimuCom" failOnError="true"/>
