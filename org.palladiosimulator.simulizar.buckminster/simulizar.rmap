@@ -17,6 +17,9 @@
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.simucom.*" searchPathRef="SimuCom" failOnError="true"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.simulation$" searchPathRef="SimuCom" failOnError="true"/>
   <rm:locator pattern="^de\.uka\.ipd\.sdq\.simulation.*" searchPathRef="AbstractSimEngine" failOnError="true"/>
+  <rm:redirect pattern="^org\.palladiosimulator\.reliability.*"
+	href="https://raw.githubusercontent.com/PalladioSimulator/Palladio-Analyzer-Reliability/master/org.palladiosimulator.reliability.buckminster/reliability.rmap" />
+  
   <rm:redirect pattern=".*"
     href="https://anonymous:anonymous@svnserver.informatik.kit.edu/i43/svn/code/Palladio/Analyzer/Framework/trunk/org.palladiosimulator.analyzer.buckminster/analyzer.rmap" />
   
