@@ -43,7 +43,7 @@ transformation SwitchToStandby(
 	 */
 	main() {
 	
-		log('SimuLizar \'Switch To Standby\' Rule Transformation started');
+		//log('SimuLizar \'Switch To Standby\' Rule Transformation started');
 		
 		var runtimeMeasurements = prm.rootObjects()[RuntimeMeasurement];
 		var currentAllocation = pcmAllocation.rootObjects()[Allocation]->any(true);
@@ -54,7 +54,7 @@ transformation SwitchToStandby(
 		assert fatal (not currentAllocation.oclIsUndefined()) 
 			with log ('No valid allocation model found!');
 			
-		powerInfrastructure.objectsOfType(StatefulPowerConsumingResource)[powerState.name = "ON" and id = "_pElrkoI5EeWCRu5beQNLXQ"]->forEach(runningStatefulResource) {
+		powerInfrastructure.objectsOfType(StatefulPowerConsumingResourceSet)[powerState.name = "ON" and id = "_pElrkoI5EeWCRu5beQNLXQ"]->forEach(runningStatefulResource) {
 			if (runningStatefulResource <> null and getSimulationTime() > 0.0) {
 				var idleMeasurementsOfResource := runtimeMeasurements->filterIdleUtilMeasurementsOfResource(runningStatefulResource);
 				if (idleMeasurementsOfResource->notEmpty()) {
@@ -84,8 +84,8 @@ transformation SwitchToStandby(
 		};
 	}
 	
-	query Set(RuntimeMeasurement) :: filterIdleUtilMeasurementsOfResource(in resource : StatefulPowerConsumingResource) : Set(RuntimeMeasurement) {
-		return self->filterEmptyUtilizationMeasuements()[measuringPoint.oclIsTypeOf(ActiveResourceMeasuringPoint) and measuringPoint.oclAsType(ActiveResourceMeasuringPoint).activeResource.id = resource.processingResourceSpecification.id];
+	query Set(RuntimeMeasurement) :: filterIdleUtilMeasurementsOfResource(in resource : StatefulPowerConsumingResourceSet) : Set(RuntimeMeasurement) {
+		return self->filterEmptyUtilizationMeasuements()[measuringPoint.oclIsTypeOf(ActiveResourceMeasuringPoint) and measuringPoint.oclAsType(ActiveResourceMeasuringPoint).activeResource.id = resource.processingResourceSpecifications->any(true).id];
 	}
 	
 	query Set(RuntimeMeasurement) :: filterEmptyUtilizationMeasuements() : Set(RuntimeMeasurement) {

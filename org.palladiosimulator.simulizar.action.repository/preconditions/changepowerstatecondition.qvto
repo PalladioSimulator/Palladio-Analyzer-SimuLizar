@@ -47,7 +47,7 @@ transformation checkPreconditions(
 		var resourceContainersWithAllocationContext := currentAllocation.allocationContexts_Allocation->collectNested(resourceContainer_AllocationContext)->flatten();
 		assert fatal (affectedStatefulResource.noConflictingInstantiationInProgress())
 			with log('Precondition for the action not met: Condition already executing');
-		assert fatal (resourceContainersWithAllocationContext->includes(associatedResourceContainer))
+		assert fatal (not resourceContainersWithAllocationContext->includes(associatedResourceContainer))
 			with log('Precondition for the action not met: '  
 			+ ' Resource container of affected stateful power consuming resource is not allocated!', currentAllocation); 
 			

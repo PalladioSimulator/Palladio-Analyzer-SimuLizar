@@ -94,7 +94,7 @@
     </measurementSpecifications>
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.9"/>
   </monitors>
-  <monitors id="_8JAEENOXEeS6f_AUbSENiQ" entityName="server1PduMonitor">
+  <monitors id="_8JAEENOXEeS6f_AUbSENiQ" entityName="server2PduMonitor">
     <measurementSpecifications id="__b2U4NOXEeS6f_AUbSENiQ">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_NbIowlt_EeS0LdH-diVVEQ"/>
       <processingType xsi:type="monitorrepository:TimeDriven" id="_QoXukVi0Eea4XqDtmt5UDg" windowIncrement="5.0"/>
@@ -102,7 +102,7 @@
     <measuringPoint xsi:type="org.palladiosimulator.edp2.models:ResourceURIMeasuringPoint" href="loadBalancerMeasuringpointRepo.measuringpoint#//@measuringPoints.10"/>
   </monitors>
   <monitors id="_i5-EsA2_EeWAkadjxq9mmw" entityName="Reconfigurations">
-    <measurementSpecifications id="_jJ3h4A2_EeWAkadjxq9mmw">
+    <measurementSpecifications id="_jJ3h4A2_EeWAkadjxq9mmw" triggersSelfAdaptations="false">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_VYg6MujFEeSB6OBq2SKZxQ"/>
       <processingType xsi:type="monitorrepository:FeedThrough" id="_LPF2ZFisEea91qwI_2Q04w"/>
     </measurementSpecifications>

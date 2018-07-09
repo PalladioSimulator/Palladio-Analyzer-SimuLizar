@@ -114,7 +114,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 							type := VariableCharacterisationType::VALUE;
 							specification_VariableCharacterisation := object PCMRandomVariable {
 
-								specification := '10000'; -- trivially, pass a constant value
+								specification := '1000'; -- trivially, pass a constant value
 	
 							};
 						};
