@@ -29,7 +29,7 @@ property delayResourceTypeId : String = '_nvHX4KkREdyEA_b89s7q9w';
 
 main() {
 	var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
-	var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = powerstateDelayId);
+	var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = powerstateDelayId);
 	var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);	
 	var roles := roleSet.roles;
 	var affectedStatefulResourceRole : instance::Role := roles[roleType.id = affectedStatefulResourceRoleId]->any(true);
@@ -41,7 +41,7 @@ main() {
 	step.xmap getOrCreateChangePowerStateMapping(allocation, affectedStatefulResource, selectedPowerState);
 }
 
-mapping ResourceDemandingAction::getOrCreateChangePowerStateMapping(inout allocation : Allocation, 
+mapping ResourceDemandingStep::getOrCreateChangePowerStateMapping(inout allocation : Allocation, 
 	affectedStatefulResource : StatefulPowerConsumingResourceSet, selectedPowerState : AbstractPowerStateBinding) : Mapping@actionMapping { 
 	var delayControllerComponent : BasicComponent := self.controllerCalls->any(c | c.id = '_kn6SMIoLEeWm8ose-zjfHg').component;
 	var parameter : VariableUsage := delayControllerComponent.componentParameterUsage_ImplementationComponentType->any(true);

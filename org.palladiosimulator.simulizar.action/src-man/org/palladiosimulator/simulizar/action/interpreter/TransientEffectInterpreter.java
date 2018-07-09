@@ -33,19 +33,19 @@ import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.action.context.ContextFactory;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
-import org.palladiosimulator.simulizar.action.core.AdaptationAction;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
+import org.palladiosimulator.simulizar.action.core.AdaptationStep;
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
-import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
-import org.palladiosimulator.simulizar.action.core.GuardedAction;
+import org.palladiosimulator.simulizar.action.core.EnactAdaptationStep;
+import org.palladiosimulator.simulizar.action.core.GuardedStep;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
-import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
-import org.palladiosimulator.simulizar.action.core.StateTransformingAction;
+import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
+import org.palladiosimulator.simulizar.action.core.StateTransformingStep;
 import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
-import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationActionExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
@@ -180,7 +180,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			result = new TransientEffectExecutionResult(EventResult.SUCCESS, asyncProcess.getCorrespondingContext());
 		} else {
 			LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" is taking place.");
-			boolean successful = executeAdaptationActions(adaptationBehavior.getAdaptationActions(),
+			boolean successful = executeAdaptationSteps(adaptationBehavior.getAdaptationSteps(),
 					obtainExecutingProcessForContext());
 			if (successful) {
 				this.forwardReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
@@ -196,12 +196,12 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		return result;
 	}
 
-	private Boolean executeAdaptationActions(Collection<AdaptationAction> adaptationActions,
+	private Boolean executeAdaptationSteps(Collection<AdaptationStep> adaptationSteps,
 			SimuComSimProcess executingProcess) {
-		assert adaptationActions != null && executingProcess != null;
+		assert adaptationSteps != null && executingProcess != null;
 		InternalSwitch executingSwitch = new InternalSwitch(executingProcess);
 		// no short-circuit evaluation: ensure that all actions be executed
-		return adaptationActions.stream().reduce(true, (result, action) -> executingSwitch.doSwitch(action),
+		return adaptationSteps.stream().reduce(true, (result, action) -> executingSwitch.doSwitch(action),
 				Boolean::logicalAnd);
 	}
 
@@ -266,7 +266,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 		@Override
 		public Boolean caseNestedAdaptationBehavior(NestedAdaptationBehavior nestedAdaptationBehavior) {
-			return executeAdaptationActions(nestedAdaptationBehavior.getAdaptationActions(), this.executingProcess);
+			return executeAdaptationSteps(nestedAdaptationBehavior.getAdaptationSteps(), this.executingProcess);
 		}
 
 		@Override
@@ -278,10 +278,10 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		}
 
 		@Override
-		public Boolean caseGuardedAction(GuardedAction guardedAction) {
+		public Boolean caseGuardedStep(GuardedStep guardedStep) {
 			// find the first GuardedTransition whose condition is evaluated to
 			// true
-			Optional<NestedAdaptationBehavior> branchToExecute = guardedAction.getGuardedTransitions().stream()
+			Optional<NestedAdaptationBehavior> branchToExecute = guardedStep.getGuardedTransitions().stream()
 					.filter(this::caseGuardedTransition).findFirst()
 					.map(GuardedTransition::getNestedAdaptationBehavior);
 			// incorporate case that no branch is to be executed (all conditions
@@ -291,10 +291,10 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		}
 
 		@Override
-		public Boolean caseStateTransformingAction(StateTransformingAction stateTransformingAction) {
-			this.qvtoExecutor.enableForTransformationExecution(stateTransformingAction);
+		public Boolean caseStateTransformingStep(StateTransformingStep stateTransformingStep) {
+			this.qvtoExecutor.enableForTransformationExecution(stateTransformingStep);
 
-			String extensionId = stateTransformingAction.getId();
+			String extensionId = stateTransformingStep.getId();
 			AbstractStateTransformation transformation = TransientEffectInterpreter.getStateTransformation(extensionId);
 			transformation.setSimulationState(TransientEffectInterpreter.this.state);
 			return transformation.execute(TransientEffectInterpreter.this.roleSet);
@@ -306,16 +306,16 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		}
 
 		@Override
-		public Boolean caseAdaptationAction(final AdaptationAction step) {
-			throw new AssertionError("AdaptationAction is abstract, this case should not be reached at all!");
+		public Boolean caseAdaptationStep(final AdaptationStep step) {
+			throw new AssertionError("AdaptationStep is abstract, this case should not be reached at all!");
 		}
 
 		@Override
-		public Boolean caseResourceDemandingAction(final ResourceDemandingAction resourceDemandingAction) {
-			this.qvtoExecutor.enableForTransformationExecution(resourceDemandingAction);
+		public Boolean caseResourceDemandingStep(final ResourceDemandingStep resourceDemandingStep) {
+			this.qvtoExecutor.enableForTransformationExecution(resourceDemandingStep);
 
 			// perform controller completion
-			Mapping mapping = executeResourceDemandingAction(resourceDemandingAction)
+			Mapping mapping = executeResourceDemandingStep(resourceDemandingStep)
 					.orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
 
 			List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
@@ -328,7 +328,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 						Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
 								(Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
 				OpenWorkloadUser user = new OpenWorkloadUser(model,
-						resourceDemandingAction.getEntityName() + " " + call.getEntityName(),
+						resourceDemandingStep.getEntityName() + " " + call.getEntityName(),
 						createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes);
 				users.add(user);
 				user.startUserLife();
@@ -345,18 +345,18 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		}
 
 		@Override
-		public Boolean caseEnactAdaptationAction(EnactAdaptationAction enactAdaptationAction) {
-			this.qvtoExecutor.enableForTransformationExecution(enactAdaptationAction);
+		public Boolean caseEnactAdaptationStep(EnactAdaptationStep enactAdaptationStep) {
+			this.qvtoExecutor.enableForTransformationExecution(enactAdaptationStep);
 
 			// execute adaptation
-			TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationAction);
-			URI adaptationStepUri = URI.createURI(enactAdaptationAction.getAdaptationStepURI());
+			TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationStep);
+			URI adaptationStepUri = URI.createURI(enactAdaptationStep.getAdaptationStepURI());
 			QvtoModelTransformation adaptationStep = this.qvtoExecutor.getTransformationByUri(adaptationStepUri).get();
 			final boolean result = this.qvtoExecutor
 					.executeTransformation(adaptationStep);
 			if (result && !TransientEffectInterpreter.this.isAsync) {
 				TransientEffectInterpreter.this.forwardReconfigurationNotification(
-						new AdaptationActionExecutedNotification(enactAdaptationAction));
+						new AdaptationStepExecutedNotification(enactAdaptationStep));
 			}
 			return result;
 		}
@@ -401,8 +401,8 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			return users.stream().anyMatch(u -> !u.isTerminated());
 		}
 
-		private Optional<Mapping> executeResourceDemandingAction(ResourceDemandingAction resourceDemandingAction) {
-			assert resourceDemandingAction != null;
+		private Optional<Mapping> executeResourceDemandingStep(ResourceDemandingStep resourceDemandingStep) {
+			assert resourceDemandingStep != null;
 
 			// TODO FIXME currently it is assumed that all components are in the
 			// same repository
@@ -410,11 +410,11 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			 * TODO FIXME Christian 'Real' reconfigurations should be handled
 			 * differently than stereotype applications.
 			 */
-			Repository repository = resourceDemandingAction.getControllerCalls().get(0).getComponent()
+			Repository repository = resourceDemandingStep.getControllerCalls().get(0).getComponent()
 					.getRepository__RepositoryComponent();
-			TransientEffectQVTOExecutorUtil.validateResourceDemandingAction(this.qvtoExecutor, resourceDemandingAction);
+			TransientEffectQVTOExecutorUtil.validateResourceDemandingStep(this.qvtoExecutor, resourceDemandingStep);
 			return this.qvtoExecutor.executeControllerCompletion(repository,
-					resourceDemandingAction.getControllerCompletionURI());
+					resourceDemandingStep.getControllerCompletionURI());
 		}
 	}
 
@@ -438,7 +438,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			// as usual, that is: with the async process, everything is
 			// processed
 			// synchronously
-			boolean result = TransientEffectInterpreter.this.executeAdaptationActions(this.behaviorToInterpret.getAdaptationActions(),
+			boolean result = TransientEffectInterpreter.this.executeAdaptationSteps(this.behaviorToInterpret.getAdaptationSteps(),
 					this);
 			if (result) {
 				LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" successfully done.");

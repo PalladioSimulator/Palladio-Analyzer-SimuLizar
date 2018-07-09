@@ -91,6 +91,7 @@ transformation wireWithLoadbalancer(inout pcmAllocation : PCM_ALLOC,
 			branch.branchProbability := 1.0 / number;
 		};
 		
+		assert fatal(self.assemblyContext_AllocationContext <> null) with log ("Target assembly context is empty.");
 		allocation.system_Allocation.connectors__ComposedStructure += object AssemblyConnector {
 			entityName := lbAssembly.entityName + "->" + self.assemblyContext_AllocationContext.entityName;
 			providingAssemblyContext_AssemblyConnector := self.assemblyContext_AllocationContext;

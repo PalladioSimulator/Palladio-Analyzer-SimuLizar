@@ -48,7 +48,7 @@ transformation instantiateComponent(
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
-		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = instantiationOverheadActionId);
+		var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = instantiationOverheadActionId);
 		log("Executing step " + step.entityName);
 		
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
@@ -84,7 +84,7 @@ transformation instantiateComponent(
 		};
 	}
 	
-	mapping ResourceDemandingAction::instantiateComponent(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
+	mapping ResourceDemandingStep::instantiateComponent(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
 		componentInstantiationController : BasicComponent, componentInstantiationLocation : BasicComponent,
 		controllerHost : ResourceContainer, targetHost: ResourceContainer) : Mapping@actionMapping {
 		log("Adding controllers for VM migration");

@@ -22,152 +22,139 @@ import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
  * The following features are implemented:
  * </p>
  * <ul>
- * <li>
- * {@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl#getControllerCallInputVariableUsages
- * <em>Controller Call Input Variable Usages</em>}</li>
+ *   <li>{@link org.palladiosimulator.simulizar.action.parameter.impl.ControllerCallInputVariableUsageCollectionImpl#getControllerCallInputVariableUsages <em>Controller Call Input Variable Usages</em>}</li>
  * </ul>
  *
  * @generated
  */
 public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
-        implements ControllerCallInputVariableUsageCollection {
-    /**
-     * The cached value of the '{@link #getControllerCallInputVariableUsages()
-     * <em>Controller Call Input Variable Usages</em>}' containment reference list. <!--
-     * begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @see #getControllerCallInputVariableUsages()
-     * @generated
-     * @ordered
-     */
-    protected EList<ControllerCallInputVariableUsage> controllerCallInputVariableUsages;
+		implements ControllerCallInputVariableUsageCollection {
+	/**
+	 * The cached value of the '{@link #getControllerCallInputVariableUsages()
+	 * <em>Controller Call Input Variable Usages</em>}' containment reference list. <!--
+	 * begin-user-doc --> <!-- end-user-doc -->
+	 *
+	 * @see #getControllerCallInputVariableUsages()
+	 * @generated
+	 * @ordered
+	 */
+	protected EList<ControllerCallInputVariableUsage> controllerCallInputVariableUsages;
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    protected ControllerCallInputVariableUsageCollectionImpl() {
-        super();
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	protected ControllerCallInputVariableUsageCollectionImpl() {
+		super();
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    protected EClass eStaticClass() {
-        return ParameterPackage.Literals.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION;
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	protected EClass eStaticClass() {
+		return ParameterPackage.Literals.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION;
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public EList<ControllerCallInputVariableUsage> getControllerCallInputVariableUsages() {
-        if (this.controllerCallInputVariableUsages == null) {
-            this.controllerCallInputVariableUsages = new EObjectContainmentWithInverseEList<ControllerCallInputVariableUsage>(
-                    ControllerCallInputVariableUsage.class, this,
-                    ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES,
-                    ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE__CONTAINING_COLLECTION);
-        }
-        return this.controllerCallInputVariableUsages;
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public EList<ControllerCallInputVariableUsage> getControllerCallInputVariableUsages() {
+		if (controllerCallInputVariableUsages == null) {
+			controllerCallInputVariableUsages = new EObjectContainmentWithInverseEList<ControllerCallInputVariableUsage>(
+					ControllerCallInputVariableUsage.class, this,
+					ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES,
+					ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE__CONTAINING_COLLECTION);
+		}
+		return controllerCallInputVariableUsages;
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public NotificationChain eInverseAdd(final InternalEObject otherEnd, final int featureID,
-            final NotificationChain msgs) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            return ((InternalEList<InternalEObject>) (InternalEList<?>) this.getControllerCallInputVariableUsages())
-                    .basicAdd(otherEnd, msgs);
-        }
-        return super.eInverseAdd(otherEnd, featureID, msgs);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			return ((InternalEList<InternalEObject>) (InternalEList<?>) getControllerCallInputVariableUsages())
+					.basicAdd(otherEnd, msgs);
+		}
+		return super.eInverseAdd(otherEnd, featureID, msgs);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
-            final NotificationChain msgs) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            return ((InternalEList<?>) this.getControllerCallInputVariableUsages()).basicRemove(otherEnd, msgs);
-        }
-        return super.eInverseRemove(otherEnd, featureID, msgs);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			return ((InternalEList<?>) getControllerCallInputVariableUsages()).basicRemove(otherEnd, msgs);
+		}
+		return super.eInverseRemove(otherEnd, featureID, msgs);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public Object eGet(final int featureID, final boolean resolve, final boolean coreType) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            return this.getControllerCallInputVariableUsages();
-        }
-        return super.eGet(featureID, resolve, coreType);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public Object eGet(int featureID, boolean resolve, boolean coreType) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			return getControllerCallInputVariableUsages();
+		}
+		return super.eGet(featureID, resolve, coreType);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public void eSet(final int featureID, final Object newValue) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            this.getControllerCallInputVariableUsages().clear();
-            this.getControllerCallInputVariableUsages()
-                    .addAll((Collection<? extends ControllerCallInputVariableUsage>) newValue);
-            return;
-        }
-        super.eSet(featureID, newValue);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@SuppressWarnings("unchecked")
+	@Override
+	public void eSet(int featureID, Object newValue) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			getControllerCallInputVariableUsages().clear();
+			getControllerCallInputVariableUsages()
+					.addAll((Collection<? extends ControllerCallInputVariableUsage>) newValue);
+			return;
+		}
+		super.eSet(featureID, newValue);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public void eUnset(final int featureID) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            this.getControllerCallInputVariableUsages().clear();
-            return;
-        }
-        super.eUnset(featureID);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public void eUnset(int featureID) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			getControllerCallInputVariableUsages().clear();
+			return;
+		}
+		super.eUnset(featureID);
+	}
 
-    /**
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @generated
-     */
-    @Override
-    public boolean eIsSet(final int featureID) {
-        switch (featureID) {
-        case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
-            return this.controllerCallInputVariableUsages != null && !this.controllerCallInputVariableUsages.isEmpty();
-        }
-        return super.eIsSet(featureID);
-    }
+	/**
+	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public boolean eIsSet(int featureID) {
+		switch (featureID) {
+		case ParameterPackage.CONTROLLER_CALL_INPUT_VARIABLE_USAGE_COLLECTION__CONTROLLER_CALL_INPUT_VARIABLE_USAGES:
+			return controllerCallInputVariableUsages != null && !controllerCallInputVariableUsages.isEmpty();
+		}
+		return super.eIsSet(featureID);
+	}
 
 } // ControllerCallInputVariableUsageCollectionImpl

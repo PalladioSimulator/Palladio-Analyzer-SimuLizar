@@ -9,9 +9,9 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
-import org.palladiosimulator.simulizar.action.core.EnactAdaptationAction;
+import org.palladiosimulator.simulizar.action.core.EnactAdaptationStep;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
-import org.palladiosimulator.simulizar.action.core.ResourceDemandingAction;
+import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
@@ -44,9 +44,9 @@ public class TransientEffectQVTOExecutorUtil {
 
     }
 
-    static void validateResourceDemandingAction(TransientEffectQVTOExecutor executor,
-            ResourceDemandingAction resourceDemandingAction) {
-        URI controllerCompletionUri = URI.createURI(resourceDemandingAction.getControllerCompletionURI());
+    static void validateResourceDemandingStep(TransientEffectQVTOExecutor executor,
+            ResourceDemandingStep resourceDemandingStep) {
+        URI controllerCompletionUri = URI.createURI(resourceDemandingStep.getControllerCompletionURI());
         Optional<QvtoModelTransformation> controllerCompletionData = executor
                 .getTransformationByUri(controllerCompletionUri);
 
@@ -68,11 +68,11 @@ public class TransientEffectQVTOExecutorUtil {
     }
 
     static void validateEnactAdaptationStep(TransientEffectQVTOExecutor executor,
-            EnactAdaptationAction enactAdaptationAction) {
-        URI adaptationStepUri = URI.createURI(Objects.requireNonNull(enactAdaptationAction.getAdaptationStepURI()));
-        Optional<QvtoModelTransformation> adaptationActionData = executor.getTransformationByUri(adaptationStepUri);
+            EnactAdaptationStep enactAdaptationStep) {
+        URI adaptationStepUri = URI.createURI(Objects.requireNonNull(enactAdaptationStep.getAdaptationStepURI()));
+        Optional<QvtoModelTransformation> adaptationStepData = executor.getTransformationByUri(adaptationStepUri);
 
-        Collection<TransformationParameterInformation> inParams = adaptationActionData
+        Collection<TransformationParameterInformation> inParams = adaptationStepData
                 .orElseThrow(() -> new RuntimeException("Adaptation step transformation not available!"))
                 .getInParameters();
         if (inParams.parallelStream().noneMatch(paramTypePredicate(MAPPING_EPACKAGE))

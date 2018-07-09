@@ -48,7 +48,7 @@ transformation vmMigration(
 	main() {	
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
-		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = migrateControllerCompletionActionId);
+		var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = migrateControllerCompletionActionId);
 		log("Executing step " + step.entityName);
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);		
 		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(id = controllerRepositoryId);
@@ -89,7 +89,7 @@ transformation vmMigration(
 		};
 	}
 	
-	mapping ResourceDemandingAction::vmMigrate(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet) : Mapping@actionMapping {
+	mapping ResourceDemandingStep::vmMigrate(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet) : Mapping@actionMapping {
 		log("Adding controllers for VM migration");
 		result.controllerMappings := self.controllerCalls->map addVMControllers(allocation, controllerRepository, roleSet)
 	}

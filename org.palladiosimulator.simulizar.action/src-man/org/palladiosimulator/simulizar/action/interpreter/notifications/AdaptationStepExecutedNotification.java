@@ -3,49 +3,49 @@ package org.palladiosimulator.simulizar.action.interpreter.notifications;
 import java.util.Objects;
 
 import org.eclipse.emf.common.notify.impl.NotificationImpl;
-import org.palladiosimulator.simulizar.action.core.AdaptationAction;
+import org.palladiosimulator.simulizar.action.core.AdaptationStep;
 
 /**
- * Notification class to indicate that an {@link AdaptationAction} was executed successfully.
+ * Notification class to indicate that an {@link AdaptationStep} was executed successfully.
  */
-public class AdaptationActionExecutedNotification extends NotificationImpl {
-    public static final int ADAPTATION_ACTION_EXECUTED_EVENT_TYPE = 43;
+public class AdaptationStepExecutedNotification extends NotificationImpl {
+    public static final int ADAPTATION_STEP_EXECUTED_EVENT_TYPE = 43;
 
     /**
-     * Initializes a new instance of the {@link AdaptationActionExecutedNotification} class.
+     * Initializes a new instance of the {@link AdaptationStepExecutedNotification} class.
      * 
      * @param executedAdaptationStep
      *            The {@link AdaptationStep} that terminated successfully.
      * @throws NullPointerException
      *             In case {@code executedAdaptationStep} is {@code null}.
      */
-    public AdaptationActionExecutedNotification(AdaptationAction executedAdaptationStep) {
-        super(ADAPTATION_ACTION_EXECUTED_EVENT_TYPE, null,
-                Objects.requireNonNull(executedAdaptationStep, "Given adaptation action must not be null."));
+    public AdaptationStepExecutedNotification(AdaptationStep executedAdaptationStep) {
+        super(ADAPTATION_STEP_EXECUTED_EVENT_TYPE, null,
+                Objects.requireNonNull(executedAdaptationStep, "Given adaptation step must not be null."));
     }
 
     /**
      * Gets adaptation step that was executed.<br>
      * <b>Note:</b> Calling this method is is equivalent to calling {@link #getNotifier()}.
      * 
-     * @return The {@code AdaptationAction} that was executed.
+     * @return The {@code AdaptationStep} that was executed.
      * @see #getNotifier()
      */
     @Override
-    public AdaptationAction getNewValue() {
+    public AdaptationStep getNewValue() {
         // typesafe as passed in sole ctor
-        return (AdaptationAction) super.newValue;
+        return (AdaptationStep) super.newValue;
     }
 
     /**
      * Gets adaptation step that is associated with this notification.<br>
      * <b>Note:</b> Calling this method is is equivalent to calling {@link #getNewValue()}.
      * 
-     * @return The {@code AdaptationAction} that was executed.
+     * @return The {@code AdaptationStep} that was executed.
      * @see #getNewValue()()
      */
     @Override
-    public AdaptationAction getNotifier() {
+    public AdaptationStep getNotifier() {
         return this.getNewValue();
     }
 

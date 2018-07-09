@@ -15,13 +15,13 @@ transformation outsource_completion(inout pcmAllocation : PCM_ALLOC,
 								   out actionMapping : ACTION_MAPPING) {
 	
 	property probabilisticBranchTransition1 : ProbabilisticBranchTransition;	
-	property loadBalancingResourceDemandingActionId : String = '_Becv0rUmEeW-zrkZJ6KTtQ';
+	property loadBalancingResourceDemandingStepId : String = '_Becv0rUmEeW-zrkZJ6KTtQ';
 	
 	
 	main(){
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
 		allocation.printTheSystemsState();
-		var step := actionStep.rootObjects()[ResourceDemandingAction]->any(id = loadBalancingResourceDemandingActionId);
+		var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = loadBalancingResourceDemandingStepId);
 		var calls := step.controllerCalls;
 		var call := calls->any(true);
 		

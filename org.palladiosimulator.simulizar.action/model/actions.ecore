@@ -94,25 +94,25 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="adaptationBehavior" eType="#//core/AbstractAdaptationBehavior"
           eOpposite="#//core/AbstractAdaptationBehavior/adaptationSteps"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="StateTransformingAction" eSuperTypes="#//core/AdaptationStep"/>
+    <eClassifiers xsi:type="ecore:EClass" name="StateTransformingStep" eSuperTypes="#//core/AdaptationStep"/>
     <eClassifiers xsi:type="ecore:EClass" name="EnactAdaptationStep" eSuperTypes="#//core/AdaptationStep">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="adaptationStepURI" lowerBound="1"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="ResourceDemandingAction" eSuperTypes="#//core/AdaptationStep">
+    <eClassifiers xsi:type="ecore:EClass" name="ResourceDemandingStep" eSuperTypes="#//core/AdaptationStep">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="controllerCompletionURI"
           eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="controllerCalls" lowerBound="1"
           upperBound="-1" eType="#//core/ControllerCall" containment="true" eOpposite="#//core/ControllerCall/resourceDemandingStep"/>
     </eClassifiers>
-    <eClassifiers xsi:type="ecore:EClass" name="GuardedAction" eSuperTypes="#//core/AdaptationStep">
+    <eClassifiers xsi:type="ecore:EClass" name="GuardedStep" eSuperTypes="#//core/AdaptationStep">
       <eStructuralFeatures xsi:type="ecore:EReference" name="guardedTransitions" upperBound="-1"
           eType="#//core/GuardedTransition" containment="true" eOpposite="#//core/GuardedTransition/guardedAction"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="GuardedTransition" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditionURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="guardedAction" eType="#//core/GuardedAction"
-          eOpposite="#//core/GuardedAction/guardedTransitions"/>
+      <eStructuralFeatures xsi:type="ecore:EReference" name="guardedAction" eType="#//core/GuardedStep"
+          eOpposite="#//core/GuardedStep/guardedTransitions"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="nestedAdaptationBehavior"
           eType="#//core/NestedAdaptationBehavior" containment="true" eOpposite="#//core/NestedAdaptationBehavior/guardedTransition"/>
     </eClassifiers>
@@ -127,7 +127,7 @@
       <eStructuralFeatures xsi:type="ecore:EReference" name="calledSignature" lowerBound="1"
           eType="ecore:EClass ../../org.palladiosimulator.pcm/model/pcm.ecore#//repository/OperationSignature"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="resourceDemandingStep"
-          eType="#//core/ResourceDemandingAction" eOpposite="#//core/ResourceDemandingAction/controllerCalls"/>
+          eType="#//core/ResourceDemandingStep" eOpposite="#//core/ResourceDemandingStep/controllerCalls"/>
     </eClassifiers>
   </eSubpackages>
   <eSubpackages name="mapping" nsURI="http://simulizar.palladiosimulator.org/Actions/Mapping/1.1"
