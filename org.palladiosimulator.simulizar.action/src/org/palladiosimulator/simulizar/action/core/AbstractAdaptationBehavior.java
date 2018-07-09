@@ -3,12 +3,15 @@
 package org.palladiosimulator.simulizar.action.core;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
 import org.palladiosimulator.pcm.core.entity.Entity;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '
- * <em><b>Abstract Adaptation Behavior</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Abstract Adaptation Behavior</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:

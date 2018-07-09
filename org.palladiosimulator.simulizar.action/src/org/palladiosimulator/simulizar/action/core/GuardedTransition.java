@@ -3,18 +3,20 @@
 package org.palladiosimulator.simulizar.action.core;
 
 import org.eclipse.emf.ecore.EObject;
+
 import org.palladiosimulator.pcm.core.entity.Entity;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Guarded Transition</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Guarded Transition</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
  * </p>
  * <ul>
  *   <li>{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getConditionURI <em>Condition URI</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction <em>Guarded Action</em>}</li>
+ *   <li>{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep <em>Guarded Step</em>}</li>
  *   <li>{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getNestedAdaptationBehavior <em>Nested Adaptation Behavior</em>}</li>
  * </ul>
  *
@@ -27,8 +29,8 @@ public interface GuardedTransition extends EObject, Entity {
 	 * Returns the value of the '<em><b>Condition URI</b></em>' attribute.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Condition URI</em>' attribute isn't clear, there really should be
-	 * more of a description here...
+	 * If the meaning of the '<em>Condition URI</em>' attribute isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Condition URI</em>' attribute.
@@ -41,7 +43,8 @@ public interface GuardedTransition extends EObject, Entity {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getConditionURI <em>Condition URI</em>}' attribute.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Condition URI</em>' attribute.
 	 * @see #getConditionURI()
 	 * @generated
@@ -49,40 +52,40 @@ public interface GuardedTransition extends EObject, Entity {
 	void setConditionURI(String value);
 
 	/**
-	 * Returns the value of the '<em><b>Guarded Action</b></em>' container reference.
+	 * Returns the value of the '<em><b>Guarded Step</b></em>' container reference.
 	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.GuardedStep#getGuardedTransitions <em>Guarded Transitions</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Guarded Action</em>' container reference isn't clear, there really
-	 * should be more of a description here...
+	 * If the meaning of the '<em>Guarded Step</em>' container reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 * @return the value of the '<em>Guarded Action</em>' container reference.
-	 * @see #setGuardedAction(GuardedStep)
-	 * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedTransition_GuardedAction()
+	 * @return the value of the '<em>Guarded Step</em>' container reference.
+	 * @see #setGuardedStep(GuardedStep)
+	 * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedTransition_GuardedStep()
 	 * @see org.palladiosimulator.simulizar.action.core.GuardedStep#getGuardedTransitions
 	 * @model opposite="guardedTransitions" transient="false"
 	 * @generated
 	 */
-	GuardedStep getGuardedAction();
+	GuardedStep getGuardedStep();
 
 	/**
-	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction <em>Guarded Action</em>}' container reference.
+	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep <em>Guarded Step</em>}' container reference.
 	 * <!-- begin-user-doc -->
 	 * <!-- end-user-doc -->
-	 * @param value the new value of the '<em>Guarded Action</em>' container reference.
-	 * @see #getGuardedAction()
+	 * @param value the new value of the '<em>Guarded Step</em>' container reference.
+	 * @see #getGuardedStep()
 	 * @generated
 	 */
-	void setGuardedAction(GuardedStep value);
+	void setGuardedStep(GuardedStep value);
 
 	/**
 	 * Returns the value of the '<em><b>Nested Adaptation Behavior</b></em>' containment reference.
 	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior#getGuardedTransition <em>Guarded Transition</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Nested Adaptation Behavior</em>' containment reference isn't
-	 * clear, there really should be more of a description here...
+	 * If the meaning of the '<em>Nested Adaptation Behavior</em>' containment reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Nested Adaptation Behavior</em>' containment reference.
@@ -96,8 +99,8 @@ public interface GuardedTransition extends EObject, Entity {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getNestedAdaptationBehavior <em>Nested Adaptation Behavior</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Nested Adaptation Behavior</em>' containment reference.
 	 * @see #getNestedAdaptationBehavior()
 	 * @generated

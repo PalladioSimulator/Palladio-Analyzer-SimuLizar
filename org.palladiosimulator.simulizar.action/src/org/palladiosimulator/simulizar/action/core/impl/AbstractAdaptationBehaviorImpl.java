@@ -5,19 +5,25 @@ package org.palladiosimulator.simulizar.action.core.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationStep;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Abstract Adaptation Behavior</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Abstract Adaptation Behavior</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -39,7 +45,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	protected EList<AdaptationStep> adaptationSteps;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected AbstractAdaptationBehaviorImpl() {
@@ -47,7 +54,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -71,7 +79,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -85,7 +94,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -98,7 +108,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -111,7 +122,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -127,7 +139,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -141,7 +154,8 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -153,4 +167,4 @@ public abstract class AbstractAdaptationBehaviorImpl extends EntityImpl implemen
 		return super.eIsSet(featureID);
 	}
 
-} // AbstractAdaptationBehaviorImpl
+} //AbstractAdaptationBehaviorImpl

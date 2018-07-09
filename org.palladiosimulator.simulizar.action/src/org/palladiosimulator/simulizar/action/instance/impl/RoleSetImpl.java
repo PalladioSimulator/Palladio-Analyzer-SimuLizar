@@ -2,23 +2,28 @@
  */
 package org.palladiosimulator.simulizar.action.instance.impl;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.instance.Role;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
-
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Role Set</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Role Set</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -30,9 +35,9 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  */
 public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	/**
-	 * The cached value of the '{@link #getRoles() <em>Roles</em>}' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getRoles() <em>Roles</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getRoles()
 	 * @generated
 	 * @ordered
@@ -40,7 +45,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	protected EList<Role> roles;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected RoleSetImpl() {
@@ -48,7 +54,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -57,7 +64,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -70,7 +78,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -84,7 +93,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -97,7 +107,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -110,7 +121,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -126,7 +138,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -140,7 +153,8 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -152,4 +166,4 @@ public class RoleSetImpl extends IdentifierImpl implements RoleSet {
 		return super.eIsSet(featureID);
 	}
 
-} // RoleSetImpl
+} //RoleSetImpl

@@ -2,23 +2,29 @@
  */
 package org.palladiosimulator.simulizar.action.instance.impl;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.simulizar.action.core.RoleType;
+
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
 import org.palladiosimulator.simulizar.action.instance.Role;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
 
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
-
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Role</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Role</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -32,9 +38,9 @@ import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
  */
 public class RoleImpl extends IdentifierImpl implements Role {
 	/**
-	 * The cached value of the '{@link #getRoleType() <em>Role Type</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getRoleType() <em>Role Type</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getRoleType()
 	 * @generated
 	 * @ordered
@@ -43,8 +49,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 
 	/**
 	 * The cached value of the '{@link #getValue() <em>Value</em>}' reference.
-	 * <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getValue()
 	 * @generated
 	 * @ordered
@@ -52,7 +58,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	protected EObject value;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected RoleImpl() {
@@ -60,7 +67,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -69,7 +77,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -80,7 +89,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetRoleSet(RoleSet newRoleSet, NotificationChain msgs) {
@@ -89,7 +99,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -113,7 +124,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -131,7 +143,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public RoleType basicGetRoleType() {
@@ -139,7 +152,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -152,7 +166,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -170,7 +185,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public EObject basicGetValue() {
@@ -178,7 +194,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -190,7 +207,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -205,7 +223,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -218,7 +237,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -231,7 +251,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -252,7 +273,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -272,7 +294,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -292,7 +315,8 @@ public class RoleImpl extends IdentifierImpl implements Role {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -308,4 +332,4 @@ public class RoleImpl extends IdentifierImpl implements Role {
 		return super.eIsSet(featureID);
 	}
 
-} // RoleImpl
+} //RoleImpl

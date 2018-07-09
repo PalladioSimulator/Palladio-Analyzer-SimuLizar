@@ -5,19 +5,25 @@ package org.palladiosimulator.simulizar.action.mapping.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Mapping</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Mapping</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -30,7 +36,8 @@ import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 public class MappingImpl extends EntityImpl implements Mapping {
 	/**
 	 * The cached value of the '{@link #getControllerMappings() <em>Controller Mappings</em>}' containment reference list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getControllerMappings()
 	 * @generated
 	 * @ordered
@@ -38,7 +45,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	protected EList<ControllerMapping> controllerMappings;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected MappingImpl() {
@@ -46,7 +54,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -55,7 +64,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,7 +78,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -83,7 +94,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -96,7 +108,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -109,7 +122,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -125,7 +139,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -139,7 +154,8 @@ public class MappingImpl extends EntityImpl implements Mapping {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -151,4 +167,4 @@ public class MappingImpl extends EntityImpl implements Mapping {
 		return super.eIsSet(featureID);
 	}
 
-} // MappingImpl
+} //MappingImpl

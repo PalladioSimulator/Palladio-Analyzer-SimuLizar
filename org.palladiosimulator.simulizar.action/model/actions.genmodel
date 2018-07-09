@@ -71,12 +71,12 @@
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/ResourceDemandingAction/controllerCompletionURI"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/ResourceDemandingAction/controllerCalls"/>
       </genClasses>
-      <genClasses ecoreClass="actions.ecore#//core/GuardedAction" labelFeature="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm/core/entity/NamedElement/entityName">
-        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedAction/guardedTransitions"/>
+      <genClasses ecoreClass="actions.ecore#//core/GuardedStep" labelFeature="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm/core/entity/NamedElement/entityName">
+        <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedStep/guardedTransitions"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/GuardedTransition" labelFeature="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm/core/entity/NamedElement/entityName">
         <genFeatures createChild="false" ecoreFeature="ecore:EAttribute actions.ecore#//core/GuardedTransition/conditionURI"/>
-        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/guardedAction"/>
+        <genFeatures property="None" notify="false" createChild="false" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/guardedStep"/>
         <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference actions.ecore#//core/GuardedTransition/nestedAdaptationBehavior"/>
       </genClasses>
       <genClasses ecoreClass="actions.ecore#//core/RoleType" labelFeature="../../org.palladiosimulator.pcm/model/pcm.genmodel#//pcm/core/entity/NamedElement/entityName">

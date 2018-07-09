@@ -70,8 +70,7 @@ public class GuardedStepImpl extends AdaptationStepImpl implements GuardedStep {
 	public EList<GuardedTransition> getGuardedTransitions() {
 		if (guardedTransitions == null) {
 			guardedTransitions = new EObjectContainmentWithInverseEList<GuardedTransition>(GuardedTransition.class,
-					this, CorePackage.GUARDED_STEP__GUARDED_TRANSITIONS,
-					CorePackage.GUARDED_TRANSITION__GUARDED_ACTION);
+					this, CorePackage.GUARDED_STEP__GUARDED_TRANSITIONS, CorePackage.GUARDED_TRANSITION__GUARDED_STEP);
 		}
 		return guardedTransitions;
 	}

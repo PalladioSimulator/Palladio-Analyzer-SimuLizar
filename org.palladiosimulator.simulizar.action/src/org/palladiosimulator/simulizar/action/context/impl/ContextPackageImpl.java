@@ -2,36 +2,54 @@
  */
 package org.palladiosimulator.simulizar.action.context.impl;
 
+import de.uka.ipd.sdq.identifier.IdentifierPackage;
+
+import de.uka.ipd.sdq.probfunction.ProbfunctionPackage;
+
+import de.uka.ipd.sdq.stoex.StoexPackage;
+
+import de.uka.ipd.sdq.units.UnitsPackage;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EcorePackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import org.modelversioning.emfprofile.EMFProfilePackage;
+
 import org.palladiosimulator.pcm.PcmPackage;
+
 import org.palladiosimulator.simulizar.action.context.ContextFactory;
 import org.palladiosimulator.simulizar.action.context.ContextPackage;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
+
 import org.palladiosimulator.simulizar.action.core.CorePackage;
+
 import org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl;
+
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
+
 import org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl;
+
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
+
 import org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl;
+
 import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
+
 import org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl;
 
-import de.uka.ipd.sdq.identifier.IdentifierPackage;
-import de.uka.ipd.sdq.probfunction.ProbfunctionPackage;
-import de.uka.ipd.sdq.stoex.StoexPackage;
-import de.uka.ipd.sdq.units.UnitsPackage;
-
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass executionContextEClass = null;
@@ -44,7 +62,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	 * factory method {@link #init init()}, which also performs
 	 * initialization of the package, or returns the registered package,
 	 * if one already exists.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.palladiosimulator.simulizar.action.context.ContextPackage#eNS_URI
 	 * @see #init()
@@ -55,7 +74,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static boolean isInited = false;
@@ -65,7 +85,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	 * 
 	 * <p>This method is used to initialize {@link ContextPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -132,7 +153,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -141,7 +163,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -150,7 +173,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isCreated = false;
@@ -158,7 +182,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	/**
 	 * Creates the meta-model objects for the package.  This method is
 	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -171,7 +196,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isInitialized = false;
@@ -179,7 +205,8 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 	/**
 	 * Complete the initialization of the package and its meta-model.  This
 	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -211,4 +238,4 @@ public class ContextPackageImpl extends EPackageImpl implements ContextPackage {
 		createResource(eNS_URI);
 	}
 
-} // ContextPackageImpl
+} //ContextPackageImpl

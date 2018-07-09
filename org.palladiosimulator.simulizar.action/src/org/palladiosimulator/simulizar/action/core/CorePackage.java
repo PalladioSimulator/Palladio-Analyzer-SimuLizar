@@ -6,16 +6,18 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
+
 import org.palladiosimulator.pcm.core.entity.EntityPackage;
 
 /**
- * <!-- begin-user-doc --> The <b>Package</b> for the model. It contains accessors for the meta
- * objects to represent
+ * <!-- begin-user-doc -->
+ * The <b>Package</b> for the model.
+ * It contains accessors for the meta objects to represent
  * <ul>
- * <li>each class,</li>
- * <li>each feature of each class,</li>
- * <li>each enum,</li>
- * <li>and each data type</li>
+ *   <li>each class,</li>
+ *   <li>each feature of each class,</li>
+ *   <li>each enum,</li>
+ *   <li>and each data type</li>
  * </ul>
  * <!-- end-user-doc -->
  * @see org.palladiosimulator.simulizar.action.core.CoreFactory
@@ -25,38 +27,40 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 public interface CorePackage extends EPackage {
 	/**
 	 * The package name.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNAME = "core";
 
 	/**
 	 * The package namespace URI.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_URI = "http://simulizar.palladiosimulator.org/Actions/Core/1.1";
 
 	/**
 	 * The package namespace name.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	String eNS_PREFIX = "org.palladiosimulator.action";
 
 	/**
 	 * The singleton instance of the package.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	CorePackage eINSTANCE = org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl.init();
 
 	/**
-	 * The meta object id for the '
-	 * {@link org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorRepositoryImpl
-	 * <em>Adaptation Behavior Repository</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 *
+	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorRepositoryImpl <em>Adaptation Behavior Repository</em>}' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorRepositoryImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAdaptationBehaviorRepository()
 	 * @generated
@@ -65,8 +69,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -74,26 +78,26 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ADAPTATION_BEHAVIOR_REPOSITORY__ENTITY_NAME = EntityPackage.ENTITY__ENTITY_NAME;
 
 	/**
-	 * The feature id for the '<em><b>Actions</b></em>' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Actions</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ADAPTATION_BEHAVIOR_REPOSITORY__ACTIONS = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Included Repositories</b></em>' reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Included Repositories</b></em>' reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -101,7 +105,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The number of structural features of the '<em>Adaptation Behavior Repository</em>' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -109,7 +114,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl <em>Abstract Adaptation Behavior</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAbstractAdaptationBehavior()
 	 * @generated
@@ -118,8 +124,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -127,8 +133,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -144,9 +150,9 @@ public interface CorePackage extends EPackage {
 	int ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_STEPS = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Abstract Adaptation Behavior</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The number of structural features of the '<em>Abstract Adaptation Behavior</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -154,7 +160,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorImpl <em>Adaptation Behavior</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAdaptationBehavior()
 	 * @generated
@@ -163,8 +170,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -172,8 +179,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -189,18 +196,18 @@ public interface CorePackage extends EPackage {
 	int ADAPTATION_BEHAVIOR__ADAPTATION_STEPS = ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_STEPS;
 
 	/**
-	 * The feature id for the '<em><b>Involved Roles</b></em>' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Involved Roles</b></em>' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ADAPTATION_BEHAVIOR__INVOLVED_ROLES = ABSTRACT_ADAPTATION_BEHAVIOR_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Transient State Profile</b></em>' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Transient State Profile</b></em>' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -208,17 +215,17 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Repository</b></em>' container reference.
-	 * <!-- begin-user-doc
-	 * --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int ADAPTATION_BEHAVIOR__REPOSITORY = ABSTRACT_ADAPTATION_BEHAVIOR_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Adaptation Behavior</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The number of structural features of the '<em>Adaptation Behavior</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -226,7 +233,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl <em>Nested Adaptation Behavior</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getNestedAdaptationBehavior()
 	 * @generated
@@ -235,8 +243,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -244,8 +252,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -261,18 +269,18 @@ public interface CorePackage extends EPackage {
 	int NESTED_ADAPTATION_BEHAVIOR__ADAPTATION_STEPS = ABSTRACT_ADAPTATION_BEHAVIOR__ADAPTATION_STEPS;
 
 	/**
-	 * The feature id for the '<em><b>Guarded Transition</b></em>' container reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Guarded Transition</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION = ABSTRACT_ADAPTATION_BEHAVIOR_FEATURE_COUNT + 0;
 
 	/**
-	 * The number of structural features of the '<em>Nested Adaptation Behavior</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The number of structural features of the '<em>Nested Adaptation Behavior</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -546,7 +554,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl <em>Guarded Transition</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getGuardedTransition()
 	 * @generated
@@ -555,8 +564,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -564,8 +573,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -581,26 +590,27 @@ public interface CorePackage extends EPackage {
 	int GUARDED_TRANSITION__CONDITION_URI = EntityPackage.ENTITY_FEATURE_COUNT + 0;
 
 	/**
-	 * The feature id for the '<em><b>Guarded Action</b></em>' container reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Guarded Step</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
-	int GUARDED_TRANSITION__GUARDED_ACTION = EntityPackage.ENTITY_FEATURE_COUNT + 1;
+	int GUARDED_TRANSITION__GUARDED_STEP = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
 	 * The feature id for the '<em><b>Nested Adaptation Behavior</b></em>' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR = EntityPackage.ENTITY_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Guarded Transition</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The number of structural features of the '<em>Guarded Transition</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -608,7 +618,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.RoleTypeImpl <em>Role Type</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.RoleTypeImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getRoleType()
 	 * @generated
@@ -617,8 +628,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -626,8 +637,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -635,8 +646,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Type</b></em>' reference.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -662,7 +673,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The meta object id for the '{@link org.palladiosimulator.simulizar.action.core.impl.ControllerCallImpl <em>Controller Call</em>}' class.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.palladiosimulator.simulizar.action.core.impl.ControllerCallImpl
 	 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getControllerCall()
 	 * @generated
@@ -671,8 +683,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Id</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -680,8 +692,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Entity Name</b></em>' attribute.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -689,8 +701,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * The feature id for the '<em><b>Component</b></em>' reference.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -706,18 +718,18 @@ public interface CorePackage extends EPackage {
 	int CONTROLLER_CALL__CALLED_SIGNATURE = EntityPackage.ENTITY_FEATURE_COUNT + 1;
 
 	/**
-	 * The feature id for the '<em><b>Resource Demanding Step</b></em>' container reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The feature id for the '<em><b>Resource Demanding Step</b></em>' container reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
 	int CONTROLLER_CALL__RESOURCE_DEMANDING_STEP = EntityPackage.ENTITY_FEATURE_COUNT + 2;
 
 	/**
-	 * The number of structural features of the '<em>Controller Call</em>' class. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The number of structural features of the '<em>Controller Call</em>' class.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 * @ordered
 	 */
@@ -725,7 +737,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository <em>Adaptation Behavior Repository</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Adaptation Behavior Repository</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository
 	 * @generated
@@ -734,7 +747,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository#getActions <em>Actions</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Actions</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository#getActions()
 	 * @see #getAdaptationBehaviorRepository()
@@ -744,7 +758,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference list '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository#getIncludedRepositories <em>Included Repositories</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference list '<em>Included Repositories</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository#getIncludedRepositories()
 	 * @see #getAdaptationBehaviorRepository()
@@ -754,7 +769,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior <em>Abstract Adaptation Behavior</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Abstract Adaptation Behavior</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AbstractAdaptationBehavior
 	 * @generated
@@ -774,7 +790,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior <em>Adaptation Behavior</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Adaptation Behavior</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehavior
 	 * @generated
@@ -783,7 +800,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the containment reference list '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getInvolvedRoles <em>Involved Roles</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference list '<em>Involved Roles</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getInvolvedRoles()
 	 * @see #getAdaptationBehavior()
@@ -793,7 +811,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getTransientStateProfile <em>Transient State Profile</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Transient State Profile</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getTransientStateProfile()
 	 * @see #getAdaptationBehavior()
@@ -803,7 +822,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getRepository <em>Repository</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Repository</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getRepository()
 	 * @see #getAdaptationBehavior()
@@ -813,7 +833,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior <em>Nested Adaptation Behavior</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Nested Adaptation Behavior</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior
 	 * @generated
@@ -822,7 +843,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior#getGuardedTransition <em>Guarded Transition</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Guarded Transition</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior#getGuardedTransition()
 	 * @see #getNestedAdaptationBehavior()
@@ -937,7 +959,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition <em>Guarded Transition</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Guarded Transition</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition
 	 * @generated
@@ -946,7 +969,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the attribute '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getConditionURI <em>Condition URI</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the attribute '<em>Condition URI</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getConditionURI()
 	 * @see #getGuardedTransition()
@@ -955,18 +979,20 @@ public interface CorePackage extends EPackage {
 	EAttribute getGuardedTransition_ConditionURI();
 
 	/**
-	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction <em>Guarded Action</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @return the meta object for the container reference '<em>Guarded Action</em>'.
-	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction()
+	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep <em>Guarded Step</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @return the meta object for the container reference '<em>Guarded Step</em>'.
+	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep()
 	 * @see #getGuardedTransition()
 	 * @generated
 	 */
-	EReference getGuardedTransition_GuardedAction();
+	EReference getGuardedTransition_GuardedStep();
 
 	/**
 	 * Returns the meta object for the containment reference '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getNestedAdaptationBehavior <em>Nested Adaptation Behavior</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the containment reference '<em>Nested Adaptation Behavior</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getNestedAdaptationBehavior()
 	 * @see #getGuardedTransition()
@@ -975,10 +1001,9 @@ public interface CorePackage extends EPackage {
 	EReference getGuardedTransition_NestedAdaptationBehavior();
 
 	/**
-	 * Returns the meta object for class '
-	 * {@link org.palladiosimulator.simulizar.action.core.RoleType <em>Role Type</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.RoleType <em>Role Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Role Type</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.RoleType
 	 * @generated
@@ -986,10 +1011,9 @@ public interface CorePackage extends EPackage {
 	EClass getRoleType();
 
 	/**
-	 * Returns the meta object for the reference '
-	 * {@link org.palladiosimulator.simulizar.action.core.RoleType#getType <em>Type</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the meta object for the reference '{@link org.palladiosimulator.simulizar.action.core.RoleType#getType <em>Type</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Type</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.RoleType#getType()
 	 * @see #getRoleType()
@@ -998,10 +1022,9 @@ public interface CorePackage extends EPackage {
 	EReference getRoleType_Type();
 
 	/**
-	 * Returns the meta object for the container reference '
-	 * {@link org.palladiosimulator.simulizar.action.core.RoleType#getAction <em>Action</em>}'. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.RoleType#getAction <em>Action</em>}'.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Action</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.RoleType#getAction()
 	 * @see #getRoleType()
@@ -1011,7 +1034,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for class '{@link org.palladiosimulator.simulizar.action.core.ControllerCall <em>Controller Call</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for class '<em>Controller Call</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.ControllerCall
 	 * @generated
@@ -1020,7 +1044,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference '{@link org.palladiosimulator.simulizar.action.core.ControllerCall#getComponent <em>Component</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Component</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.ControllerCall#getComponent()
 	 * @see #getControllerCall()
@@ -1030,7 +1055,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the reference '{@link org.palladiosimulator.simulizar.action.core.ControllerCall#getCalledSignature <em>Called Signature</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the reference '<em>Called Signature</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.ControllerCall#getCalledSignature()
 	 * @see #getControllerCall()
@@ -1040,7 +1066,8 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the meta object for the container reference '{@link org.palladiosimulator.simulizar.action.core.ControllerCall#getResourceDemandingStep <em>Resource Demanding Step</em>}'.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the meta object for the container reference '<em>Resource Demanding Step</em>'.
 	 * @see org.palladiosimulator.simulizar.action.core.ControllerCall#getResourceDemandingStep()
 	 * @see #getControllerCall()
@@ -1050,20 +1077,21 @@ public interface CorePackage extends EPackage {
 
 	/**
 	 * Returns the factory that creates the instances of the model.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the factory that creates the instances of the model.
 	 * @generated
 	 */
 	CoreFactory getCoreFactory();
 
 	/**
-	 * <!-- begin-user-doc --> Defines literals for the meta objects that represent
+	 * <!-- begin-user-doc -->
+	 * Defines literals for the meta objects that represent
 	 * <ul>
-	 * <li>each class,</li>
-	 * <li>each feature of each class,</li>
-	 * <li>each enum,</li>
-	 * <li>and each data type</li>
+	 *   <li>each class,</li>
+	 *   <li>each feature of each class,</li>
+	 *   <li>each enum,</li>
+	 *   <li>and each data type</li>
 	 * </ul>
 	 * <!-- end-user-doc -->
 	 * @generated
@@ -1071,8 +1099,8 @@ public interface CorePackage extends EPackage {
 	interface Literals {
 		/**
 		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorRepositoryImpl <em>Adaptation Behavior Repository</em>}' class.
-		 * <!-- begin-user-doc --> <!--
-		 * end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorRepositoryImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAdaptationBehaviorRepository()
 		 * @generated
@@ -1081,25 +1109,25 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '<em><b>Actions</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ADAPTATION_BEHAVIOR_REPOSITORY__ACTIONS = eINSTANCE.getAdaptationBehaviorRepository_Actions();
 
 		/**
 		 * The meta object literal for the '<em><b>Included Repositories</b></em>' reference list feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ADAPTATION_BEHAVIOR_REPOSITORY__INCLUDED_REPOSITORIES = eINSTANCE
 				.getAdaptationBehaviorRepository_IncludedRepositories();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl
-		 * <em>Abstract Adaptation Behavior</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
-		 * -->
-		 *
+		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl <em>Abstract Adaptation Behavior</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.AbstractAdaptationBehaviorImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAbstractAdaptationBehavior()
 		 * @generated
@@ -1117,7 +1145,8 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorImpl <em>Adaptation Behavior</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.AdaptationBehaviorImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getAdaptationBehavior()
 		 * @generated
@@ -1126,14 +1155,16 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '<em><b>Involved Roles</b></em>' containment reference list feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ADAPTATION_BEHAVIOR__INVOLVED_ROLES = eINSTANCE.getAdaptationBehavior_InvolvedRoles();
 
 		/**
 		 * The meta object literal for the '<em><b>Transient State Profile</b></em>' reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ADAPTATION_BEHAVIOR__TRANSIENT_STATE_PROFILE = eINSTANCE
@@ -1141,17 +1172,16 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '<em><b>Repository</b></em>' container reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ADAPTATION_BEHAVIOR__REPOSITORY = eINSTANCE.getAdaptationBehavior_Repository();
 
 		/**
-		 * The meta object literal for the '
-		 * {@link org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl
-		 * <em>Nested Adaptation Behavior</em>}' class. <!-- begin-user-doc --> <!-- end-user-doc
-		 * -->
-		 *
+		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl <em>Nested Adaptation Behavior</em>}' class.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.NestedAdaptationBehaviorImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getNestedAdaptationBehavior()
 		 * @generated
@@ -1160,7 +1190,8 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '<em><b>Guarded Transition</b></em>' container reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference NESTED_ADAPTATION_BEHAVIOR__GUARDED_TRANSITION = eINSTANCE
@@ -1259,7 +1290,8 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl <em>Guarded Transition</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getGuardedTransition()
 		 * @generated
@@ -1267,23 +1299,25 @@ public interface CorePackage extends EPackage {
 		EClass GUARDED_TRANSITION = eINSTANCE.getGuardedTransition();
 
 		/**
-		 * The meta object literal for the '<em><b>Condition URI</b></em>' attribute feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 *
+		 * The meta object literal for the '<em><b>Condition URI</b></em>' attribute feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EAttribute GUARDED_TRANSITION__CONDITION_URI = eINSTANCE.getGuardedTransition_ConditionURI();
 
 		/**
-		 * The meta object literal for the '<em><b>Guarded Action</b></em>' container reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * The meta object literal for the '<em><b>Guarded Step</b></em>' container reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
-		EReference GUARDED_TRANSITION__GUARDED_ACTION = eINSTANCE.getGuardedTransition_GuardedAction();
+		EReference GUARDED_TRANSITION__GUARDED_STEP = eINSTANCE.getGuardedTransition_GuardedStep();
 
 		/**
 		 * The meta object literal for the '<em><b>Nested Adaptation Behavior</b></em>' containment reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR = eINSTANCE
@@ -1291,7 +1325,8 @@ public interface CorePackage extends EPackage {
 
 		/**
 		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.RoleTypeImpl <em>Role Type</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.RoleTypeImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getRoleType()
 		 * @generated
@@ -1299,23 +1334,25 @@ public interface CorePackage extends EPackage {
 		EClass ROLE_TYPE = eINSTANCE.getRoleType();
 
 		/**
-		 * The meta object literal for the '<em><b>Type</b></em>' reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 *
+		 * The meta object literal for the '<em><b>Type</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ROLE_TYPE__TYPE = eINSTANCE.getRoleType_Type();
 
 		/**
 		 * The meta object literal for the '<em><b>Action</b></em>' container reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference ROLE_TYPE__ACTION = eINSTANCE.getRoleType_Action();
 
 		/**
 		 * The meta object literal for the '{@link org.palladiosimulator.simulizar.action.core.impl.ControllerCallImpl <em>Controller Call</em>}' class.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @see org.palladiosimulator.simulizar.action.core.impl.ControllerCallImpl
 		 * @see org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl#getControllerCall()
 		 * @generated
@@ -1323,27 +1360,29 @@ public interface CorePackage extends EPackage {
 		EClass CONTROLLER_CALL = eINSTANCE.getControllerCall();
 
 		/**
-		 * The meta object literal for the '<em><b>Component</b></em>' reference feature. <!--
-		 * begin-user-doc --> <!-- end-user-doc -->
-		 *
+		 * The meta object literal for the '<em><b>Component</b></em>' reference feature.
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference CONTROLLER_CALL__COMPONENT = eINSTANCE.getControllerCall_Component();
 
 		/**
 		 * The meta object literal for the '<em><b>Called Signature</b></em>' reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference CONTROLLER_CALL__CALLED_SIGNATURE = eINSTANCE.getControllerCall_CalledSignature();
 
 		/**
 		 * The meta object literal for the '<em><b>Resource Demanding Step</b></em>' container reference feature.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		EReference CONTROLLER_CALL__RESOURCE_DEMANDING_STEP = eINSTANCE.getControllerCall_ResourceDemandingStep();
 
 	}
 
-} // CorePackage
+} //CorePackage

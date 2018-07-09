@@ -3,12 +3,15 @@
 package org.palladiosimulator.simulizar.action.core;
 
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EObject;
+
 import org.palladiosimulator.pcm.core.entity.Entity;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '
- * <em><b>Adaptation Behavior Repository</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Adaptation Behavior Repository</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
@@ -29,8 +32,8 @@ public interface AdaptationBehaviorRepository extends EObject, Entity {
 	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.AdaptationBehavior#getRepository <em>Repository</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Actions</em>' containment reference list isn't clear, there really
-	 * should be more of a description here...
+	 * If the meaning of the '<em>Actions</em>' containment reference list isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Actions</em>' containment reference list.
@@ -42,16 +45,14 @@ public interface AdaptationBehaviorRepository extends EObject, Entity {
 	EList<AdaptationBehavior> getActions();
 
 	/**
-	 * Returns the value of the '<em><b>Included Repositories</b></em>' reference list. The list
-	 * contents are of type
-	 * {@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository}. <!--
-	 * begin-user-doc -->
+	 * Returns the value of the '<em><b>Included Repositories</b></em>' reference list.
+	 * The list contents are of type {@link org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository}.
+	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Included Repositories</em>' reference list isn't clear, there
-	 * really should be more of a description here...
+	 * If the meaning of the '<em>Included Repositories</em>' reference list isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
-	 *
 	 * @return the value of the '<em>Included Repositories</em>' reference list.
 	 * @see org.palladiosimulator.simulizar.action.core.CorePackage#getAdaptationBehaviorRepository_IncludedRepositories()
 	 * @model

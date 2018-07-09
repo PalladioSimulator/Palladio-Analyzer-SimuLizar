@@ -2,14 +2,16 @@
  */
 package org.palladiosimulator.simulizar.action.instance;
 
-import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.action.core.RoleType;
-
 import de.uka.ipd.sdq.identifier.Identifier;
 
+import org.eclipse.emf.ecore.EObject;
+
+import org.palladiosimulator.simulizar.action.core.RoleType;
+
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Role</b></em>'. <!--
- * end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Role</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
@@ -30,8 +32,8 @@ public interface Role extends EObject, Identifier {
 	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.instance.RoleSet#getRoles <em>Roles</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Role Set</em>' container reference isn't clear, there really
-	 * should be more of a description here...
+	 * If the meaning of the '<em>Role Set</em>' container reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Role Set</em>' container reference.
@@ -45,7 +47,8 @@ public interface Role extends EObject, Identifier {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.instance.Role#getRoleSet <em>Role Set</em>}' container reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Role Set</em>' container reference.
 	 * @see #getRoleSet()
 	 * @generated
@@ -56,8 +59,8 @@ public interface Role extends EObject, Identifier {
 	 * Returns the value of the '<em><b>Role Type</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Role Type</em>' reference isn't clear, there really should be more
-	 * of a description here...
+	 * If the meaning of the '<em>Role Type</em>' reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Role Type</em>' reference.
@@ -70,7 +73,8 @@ public interface Role extends EObject, Identifier {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.instance.Role#getRoleType <em>Role Type</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Role Type</em>' reference.
 	 * @see #getRoleType()
 	 * @generated
@@ -81,8 +85,8 @@ public interface Role extends EObject, Identifier {
 	 * Returns the value of the '<em><b>Value</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Value</em>' reference isn't clear, there really should be more of
-	 * a description here...
+	 * If the meaning of the '<em>Value</em>' reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Value</em>' reference.
@@ -95,7 +99,8 @@ public interface Role extends EObject, Identifier {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.instance.Role#getValue <em>Value</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Value</em>' reference.
 	 * @see #getValue()
 	 * @generated

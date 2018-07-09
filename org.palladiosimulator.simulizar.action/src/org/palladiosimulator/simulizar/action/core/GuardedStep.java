@@ -24,7 +24,7 @@ public interface GuardedStep extends AdaptationStep {
 	/**
 	 * Returns the value of the '<em><b>Guarded Transitions</b></em>' containment reference list.
 	 * The list contents are of type {@link org.palladiosimulator.simulizar.action.core.GuardedTransition}.
-	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction <em>Guarded Action</em>}'.
+	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep <em>Guarded Step</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
 	 * If the meaning of the '<em>Guarded Transitions</em>' containment reference list isn't clear,
@@ -33,8 +33,8 @@ public interface GuardedStep extends AdaptationStep {
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Guarded Transitions</em>' containment reference list.
 	 * @see org.palladiosimulator.simulizar.action.core.CorePackage#getGuardedStep_GuardedTransitions()
-	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedAction
-	 * @model opposite="guardedAction" containment="true"
+	 * @see org.palladiosimulator.simulizar.action.core.GuardedTransition#getGuardedStep
+	 * @model opposite="guardedStep" containment="true"
 	 * @generated
 	 */
 	EList<GuardedTransition> getGuardedTransitions();

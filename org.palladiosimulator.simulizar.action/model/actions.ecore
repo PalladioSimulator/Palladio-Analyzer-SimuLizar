@@ -107,11 +107,11 @@
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="GuardedStep" eSuperTypes="#//core/AdaptationStep">
       <eStructuralFeatures xsi:type="ecore:EReference" name="guardedTransitions" upperBound="-1"
-          eType="#//core/GuardedTransition" containment="true" eOpposite="#//core/GuardedTransition/guardedAction"/>
+          eType="#//core/GuardedTransition" containment="true" eOpposite="#//core/GuardedTransition/guardedStep"/>
     </eClassifiers>
     <eClassifiers xsi:type="ecore:EClass" name="GuardedTransition" eSuperTypes="../../org.palladiosimulator.pcm/model/pcm.ecore#//core/entity/Entity">
       <eStructuralFeatures xsi:type="ecore:EAttribute" name="conditionURI" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-      <eStructuralFeatures xsi:type="ecore:EReference" name="guardedAction" eType="#//core/GuardedStep"
+      <eStructuralFeatures xsi:type="ecore:EReference" name="guardedStep" eType="#//core/GuardedStep"
           eOpposite="#//core/GuardedStep/guardedTransitions"/>
       <eStructuralFeatures xsi:type="ecore:EReference" name="nestedAdaptationBehavior"
           eType="#//core/NestedAdaptationBehavior" containment="true" eOpposite="#//core/NestedAdaptationBehavior/guardedTransition"/>

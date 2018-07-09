@@ -3,43 +3,64 @@
 package org.palladiosimulator.simulizar.action.parameter.impl;
 
 import de.uka.ipd.sdq.identifier.IdentifierPackage;
+
 import de.uka.ipd.sdq.probfunction.ProbfunctionPackage;
+
 import de.uka.ipd.sdq.stoex.StoexPackage;
+
 import de.uka.ipd.sdq.units.UnitsPackage;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import org.modelversioning.emfprofile.EMFProfilePackage;
+
 import org.palladiosimulator.pcm.PcmPackage;
+
 import org.palladiosimulator.pcm.core.entity.EntityPackage;
+
 import org.palladiosimulator.simulizar.action.context.ContextPackage;
+
 import org.palladiosimulator.simulizar.action.context.impl.ContextPackageImpl;
+
 import org.palladiosimulator.simulizar.action.core.CorePackage;
+
 import org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl;
+
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
+
 import org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl;
+
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
+
 import org.palladiosimulator.simulizar.action.mapping.impl.MappingPackageImpl;
+
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.action.parameter.ParameterFactory;
 import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class ParameterPackageImpl extends EPackageImpl implements ParameterPackage {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass controllerCallInputVariableUsageEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass controllerCallInputVariableUsageCollectionEClass = null;
@@ -52,7 +73,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	 * factory method {@link #init init()}, which also performs
 	 * initialization of the package, or returns the registered package,
 	 * if one already exists.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.palladiosimulator.simulizar.action.parameter.ParameterPackage#eNS_URI
 	 * @see #init()
@@ -63,7 +85,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static boolean isInited = false;
@@ -73,7 +96,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	 * 
 	 * <p>This method is used to initialize {@link ParameterPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -140,7 +164,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -149,7 +174,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -158,7 +184,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -167,7 +194,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -176,7 +204,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -185,7 +214,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -194,7 +224,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -203,7 +234,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isCreated = false;
@@ -211,7 +243,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	/**
 	 * Creates the meta-model objects for the package.  This method is
 	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -234,7 +267,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isInitialized = false;
@@ -242,7 +276,8 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 	/**
 	 * Complete the initialization of the package and its meta-model.  This
 	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -297,4 +332,4 @@ public class ParameterPackageImpl extends EPackageImpl implements ParameterPacka
 		createResource(eNS_URI);
 	}
 
-} // ParameterPackageImpl
+} //ParameterPackageImpl

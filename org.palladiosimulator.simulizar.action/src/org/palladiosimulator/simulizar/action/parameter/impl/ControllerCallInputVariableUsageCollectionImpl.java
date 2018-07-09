@@ -5,19 +5,25 @@ package org.palladiosimulator.simulizar.action.parameter.impl;
 import java.util.Collection;
 
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Controller Call Input Variable Usage Collection</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Controller Call Input Variable Usage Collection</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -30,10 +36,9 @@ import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
 public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 		implements ControllerCallInputVariableUsageCollection {
 	/**
-	 * The cached value of the '{@link #getControllerCallInputVariableUsages()
-	 * <em>Controller Call Input Variable Usages</em>}' containment reference list. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getControllerCallInputVariableUsages() <em>Controller Call Input Variable Usages</em>}' containment reference list.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getControllerCallInputVariableUsages()
 	 * @generated
 	 * @ordered
@@ -41,7 +46,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	protected EList<ControllerCallInputVariableUsage> controllerCallInputVariableUsages;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ControllerCallInputVariableUsageCollectionImpl() {
@@ -49,7 +55,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,7 +65,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -73,7 +81,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -88,7 +97,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -101,7 +111,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -114,7 +125,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -131,7 +143,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -145,7 +158,8 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,4 +171,4 @@ public class ControllerCallInputVariableUsageCollectionImpl extends EntityImpl
 		return super.eIsSet(featureID);
 	}
 
-} // ControllerCallInputVariableUsageCollectionImpl
+} //ControllerCallInputVariableUsageCollectionImpl

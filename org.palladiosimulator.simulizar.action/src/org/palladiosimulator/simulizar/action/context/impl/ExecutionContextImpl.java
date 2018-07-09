@@ -2,21 +2,24 @@
  */
 package org.palladiosimulator.simulizar.action.context.impl;
 
+import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
+
 import org.eclipse.emf.ecore.EClass;
+
 import org.palladiosimulator.simulizar.action.context.ContextPackage;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 
-import de.uka.ipd.sdq.identifier.impl.IdentifierImpl;
-
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Execution Context</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Execution Context</b></em>'.
+ * <!-- end-user-doc -->
  *
  * @generated
  */
 public class ExecutionContextImpl extends IdentifierImpl implements ExecutionContext {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ExecutionContextImpl() {
@@ -24,7 +27,8 @@ public class ExecutionContextImpl extends IdentifierImpl implements ExecutionCon
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -32,4 +36,4 @@ public class ExecutionContextImpl extends IdentifierImpl implements ExecutionCon
 		return ContextPackage.Literals.EXECUTION_CONTEXT;
 	}
 
-} // ExecutionContextImpl
+} //ExecutionContextImpl

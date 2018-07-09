@@ -2,41 +2,51 @@
  */
 package org.palladiosimulator.simulizar.action.core.provider;
 
-import org.eclipse.emf.common.EMFPlugin;
-import org.eclipse.emf.common.util.ResourceLocator;
-import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
-import org.modelversioning.emfprofile.provider.EMFProfileEditPlugin;
-import org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin;
-
 import de.uka.ipd.sdq.identifier.provider.IdentifierEditPlugin;
+
 import de.uka.ipd.sdq.probfunction.provider.ProbabilityFunctionEditPlugin;
+
 import de.uka.ipd.sdq.stoex.provider.StoexEditPlugin;
+
 import de.uka.ipd.sdq.units.provider.UnitsEditPlugin;
+
+import org.eclipse.emf.common.EMFPlugin;
+
+import org.eclipse.emf.common.util.ResourceLocator;
+
+import org.eclipse.emf.ecore.provider.EcoreEditPlugin;
+
+import org.modelversioning.emfprofile.provider.EMFProfileEditPlugin;
+
+import org.palladiosimulator.pcm.core.provider.PalladioComponentModelEditPlugin;
 
 /**
  * This is the central singleton for the Actions edit plugin.
- * <!-- begin-user-doc --> <!--
- * end-user-doc -->
+ * <!-- begin-user-doc -->
+ * <!-- end-user-doc -->
  * @generated
  */
 public final class ActionsEditPlugin extends EMFPlugin {
 	/**
 	 * Keep track of the singleton.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static final ActionsEditPlugin INSTANCE = new ActionsEditPlugin();
 
 	/**
 	 * Keep track of the singleton.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static Implementation plugin;
 
 	/**
 	 * Create the instance.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ActionsEditPlugin() {
@@ -47,8 +57,8 @@ public final class ActionsEditPlugin extends EMFPlugin {
 
 	/**
 	 * Returns the singleton instance of the Eclipse plugin.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the singleton instance.
 	 * @generated
 	 */
@@ -59,8 +69,8 @@ public final class ActionsEditPlugin extends EMFPlugin {
 
 	/**
 	 * Returns the singleton instance of the Eclipse plugin.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @return the singleton instance.
 	 * @generated
 	 */
@@ -70,14 +80,15 @@ public final class ActionsEditPlugin extends EMFPlugin {
 
 	/**
 	 * The actual implementation of the Eclipse <b>Plugin</b>.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static class Implementation extends EclipsePlugin {
 		/**
 		 * Creates an instance.
-		 * <!-- begin-user-doc --> <!-- end-user-doc -->
+		 * <!-- begin-user-doc -->
+		 * <!-- end-user-doc -->
 		 * @generated
 		 */
 		public Implementation() {

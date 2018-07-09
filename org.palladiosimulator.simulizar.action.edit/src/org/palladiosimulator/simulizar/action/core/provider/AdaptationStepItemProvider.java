@@ -13,6 +13,7 @@ import org.eclipse.emf.common.util.ResourceLocator;
 import org.eclipse.emf.edit.provider.IItemPropertyDescriptor;
 
 import org.palladiosimulator.pcm.core.entity.provider.EntityItemProvider;
+
 import org.palladiosimulator.simulizar.action.core.AdaptationStep;
 
 /**

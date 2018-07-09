@@ -4,20 +4,27 @@ package org.palladiosimulator.simulizar.action.core.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.OperationSignature;
+
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Controller Call</b></em>'.
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Controller Call</b></em>'.
  * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
@@ -32,9 +39,9 @@ import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
  */
 public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	/**
-	 * The cached value of the '{@link #getComponent() <em>Component</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getComponent() <em>Component</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getComponent()
 	 * @generated
 	 * @ordered
@@ -43,7 +50,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 
 	/**
 	 * The cached value of the '{@link #getCalledSignature() <em>Called Signature</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getCalledSignature()
 	 * @generated
 	 * @ordered
@@ -51,7 +59,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	protected OperationSignature calledSignature;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ControllerCallImpl() {
@@ -59,7 +68,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,7 +78,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -86,7 +97,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public BasicComponent basicGetComponent() {
@@ -94,7 +106,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -107,7 +120,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -125,7 +139,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public OperationSignature basicGetCalledSignature() {
@@ -133,7 +148,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -146,7 +162,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -195,7 +212,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -210,7 +228,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -223,7 +242,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -237,7 +257,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -258,7 +279,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -278,7 +300,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -298,7 +321,8 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -314,4 +338,4 @@ public class ControllerCallImpl extends EntityImpl implements ControllerCall {
 		return super.eIsSet(featureID);
 	}
 
-} // ControllerCallImpl
+} //ControllerCallImpl

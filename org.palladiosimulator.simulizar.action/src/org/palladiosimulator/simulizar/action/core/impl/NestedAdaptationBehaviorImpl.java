@@ -4,17 +4,22 @@ package org.palladiosimulator.simulizar.action.core.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Nested Adaptation Behavior</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Nested Adaptation Behavior</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -26,7 +31,8 @@ import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
  */
 public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl implements NestedAdaptationBehavior {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected NestedAdaptationBehaviorImpl() {
@@ -34,7 +40,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -43,7 +50,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -54,7 +62,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetGuardedTransition(GuardedTransition newGuardedTransition, NotificationChain msgs) {
@@ -64,7 +73,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -90,7 +100,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -105,7 +116,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -118,7 +130,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -132,7 +145,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -145,7 +159,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -159,7 +174,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -173,7 +189,8 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -185,4 +202,4 @@ public class NestedAdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl
 		return super.eIsSet(featureID);
 	}
 
-} // NestedAdaptationBehaviorImpl
+} //NestedAdaptationBehaviorImpl

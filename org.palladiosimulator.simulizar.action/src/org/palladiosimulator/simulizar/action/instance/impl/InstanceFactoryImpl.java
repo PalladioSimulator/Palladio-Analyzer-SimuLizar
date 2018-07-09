@@ -5,21 +5,24 @@ package org.palladiosimulator.simulizar.action.instance.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.palladiosimulator.simulizar.action.instance.InstanceFactory;
-import org.palladiosimulator.simulizar.action.instance.InstancePackage;
-import org.palladiosimulator.simulizar.action.instance.Role;
-import org.palladiosimulator.simulizar.action.instance.RoleSet;
+
+import org.palladiosimulator.simulizar.action.instance.*;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Factory</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory {
 	/**
 	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static InstanceFactory init() {
@@ -37,7 +40,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 
 	/**
 	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public InstanceFactoryImpl() {
@@ -45,7 +49,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -61,7 +66,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -71,7 +77,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -81,7 +88,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -90,7 +98,8 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
 	 */
@@ -99,4 +108,4 @@ public class InstanceFactoryImpl extends EFactoryImpl implements InstanceFactory
 		return InstancePackage.eINSTANCE;
 	}
 
-} // InstanceFactoryImpl
+} //InstanceFactoryImpl

@@ -4,20 +4,28 @@ package org.palladiosimulator.simulizar.action.parameter.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.pcm.parameter.VariableUsage;
+
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
+
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Controller Call Input Variable Usage</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Controller Call Input Variable Usage</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -32,7 +40,8 @@ import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
 public class ControllerCallInputVariableUsageImpl extends EntityImpl implements ControllerCallInputVariableUsage {
 	/**
 	 * The cached value of the '{@link #getVariableUsage() <em>Variable Usage</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getVariableUsage()
 	 * @generated
 	 * @ordered
@@ -40,10 +49,9 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	protected VariableUsage variableUsage;
 
 	/**
-	 * The cached value of the '{@link #getCorrespondingControllerCall()
-	 * <em>Corresponding Controller Call</em>}' reference. <!-- begin-user-doc --> <!-- end-user-doc
-	 * -->
-	 *
+	 * The cached value of the '{@link #getCorrespondingControllerCall() <em>Corresponding Controller Call</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getCorrespondingControllerCall()
 	 * @generated
 	 * @ordered
@@ -51,7 +59,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	protected ControllerCall correspondingControllerCall;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ControllerCallInputVariableUsageImpl() {
@@ -59,7 +68,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,7 +78,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -77,7 +88,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetVariableUsage(VariableUsage newVariableUsage, NotificationChain msgs) {
@@ -96,7 +108,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -121,7 +134,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -140,7 +154,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ControllerCall basicGetCorrespondingControllerCall() {
@@ -148,7 +163,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -162,7 +178,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -173,7 +190,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetContainingCollection(
@@ -184,7 +202,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -211,7 +230,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -226,7 +246,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -241,7 +262,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -256,7 +278,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -275,7 +298,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -295,7 +319,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -315,7 +340,8 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -331,4 +357,4 @@ public class ControllerCallInputVariableUsageImpl extends EntityImpl implements 
 		return super.eIsSet(featureID);
 	}
 
-} // ControllerCallInputVariableUsageImpl
+} //ControllerCallInputVariableUsageImpl

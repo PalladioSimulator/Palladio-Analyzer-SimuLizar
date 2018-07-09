@@ -3,44 +3,66 @@
 package org.palladiosimulator.simulizar.action.mapping.impl;
 
 import de.uka.ipd.sdq.identifier.IdentifierPackage;
+
 import de.uka.ipd.sdq.probfunction.ProbfunctionPackage;
+
 import de.uka.ipd.sdq.stoex.StoexPackage;
+
 import de.uka.ipd.sdq.units.UnitsPackage;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EcorePackage;
+
 import org.eclipse.emf.ecore.impl.EPackageImpl;
+
 import org.modelversioning.emfprofile.EMFProfilePackage;
+
 import org.palladiosimulator.pcm.PcmPackage;
+
 import org.palladiosimulator.pcm.core.entity.EntityPackage;
+
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
+
 import org.palladiosimulator.simulizar.action.context.ContextPackage;
+
 import org.palladiosimulator.simulizar.action.context.impl.ContextPackageImpl;
+
 import org.palladiosimulator.simulizar.action.core.CorePackage;
+
 import org.palladiosimulator.simulizar.action.core.impl.CorePackageImpl;
+
 import org.palladiosimulator.simulizar.action.instance.InstancePackage;
+
 import org.palladiosimulator.simulizar.action.instance.impl.InstancePackageImpl;
+
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingFactory;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
+
 import org.palladiosimulator.simulizar.action.parameter.ParameterPackage;
+
 import org.palladiosimulator.simulizar.action.parameter.impl.ParameterPackageImpl;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Package</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Package</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass mappingEClass = null;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private EClass controllerMappingEClass = null;
@@ -53,7 +75,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	 * factory method {@link #init init()}, which also performs
 	 * initialization of the package, or returns the registered package,
 	 * if one already exists.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see org.eclipse.emf.ecore.EPackage.Registry
 	 * @see org.palladiosimulator.simulizar.action.mapping.MappingPackage#eNS_URI
 	 * @see #init()
@@ -64,7 +87,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private static boolean isInited = false;
@@ -74,7 +98,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	 * 
 	 * <p>This method is used to initialize {@link MappingPackage#eINSTANCE} when that field is accessed.
 	 * Clients should not invoke it directly. Instead, they should simply access that field to obtain the package.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #eNS_URI
 	 * @see #createPackageContents()
 	 * @see #initializePackageContents()
@@ -141,7 +166,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -150,7 +176,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -159,7 +186,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -168,7 +196,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -177,7 +206,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -186,7 +216,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -195,7 +226,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -204,7 +236,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isCreated = false;
@@ -212,7 +245,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	/**
 	 * Creates the meta-model objects for the package.  This method is
 	 * guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void createPackageContents() {
@@ -231,7 +265,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	private boolean isInitialized = false;
@@ -239,7 +274,8 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 	/**
 	 * Complete the initialization of the package and its meta-model.  This
 	 * method is guarded to have no affect on any invocation but its first.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public void initializePackageContents() {
@@ -289,4 +325,4 @@ public class MappingPackageImpl extends EPackageImpl implements MappingPackage {
 		createResource(eNS_URI);
 	}
 
-} // MappingPackageImpl
+} //MappingPackageImpl

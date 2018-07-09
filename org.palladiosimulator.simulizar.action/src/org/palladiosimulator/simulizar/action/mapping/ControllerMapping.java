@@ -3,13 +3,17 @@
 package org.palladiosimulator.simulizar.action.mapping;
 
 import org.eclipse.emf.ecore.EObject;
+
 import org.palladiosimulator.pcm.core.entity.Entity;
+
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
 
 /**
- * <!-- begin-user-doc --> A representation of the model object '<em><b>Controller Mapping</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * A representation of the model object '<em><b>Controller Mapping</b></em>'.
+ * <!-- end-user-doc -->
  *
  * <p>
  * The following features are supported:
@@ -29,8 +33,8 @@ public interface ControllerMapping extends EObject, Entity {
 	 * Returns the value of the '<em><b>Mapped Call</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Mapped Call</em>' reference isn't clear, there really should be
-	 * more of a description here...
+	 * If the meaning of the '<em>Mapped Call</em>' reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapped Call</em>' reference.
@@ -43,7 +47,8 @@ public interface ControllerMapping extends EObject, Entity {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMappedCall <em>Mapped Call</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapped Call</em>' reference.
 	 * @see #getMappedCall()
 	 * @generated
@@ -54,8 +59,8 @@ public interface ControllerMapping extends EObject, Entity {
 	 * Returns the value of the '<em><b>Controller Role</b></em>' reference.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Controller Role</em>' reference isn't clear, there really should
-	 * be more of a description here...
+	 * If the meaning of the '<em>Controller Role</em>' reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Controller Role</em>' reference.
@@ -68,7 +73,8 @@ public interface ControllerMapping extends EObject, Entity {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getControllerRole <em>Controller Role</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Controller Role</em>' reference.
 	 * @see #getControllerRole()
 	 * @generated
@@ -80,8 +86,8 @@ public interface ControllerMapping extends EObject, Entity {
 	 * It is bidirectional and its opposite is '{@link org.palladiosimulator.simulizar.action.mapping.Mapping#getControllerMappings <em>Controller Mappings</em>}'.
 	 * <!-- begin-user-doc -->
 	 * <p>
-	 * If the meaning of the '<em>Mapping</em>' container reference isn't clear, there really should
-	 * be more of a description here...
+	 * If the meaning of the '<em>Mapping</em>' container reference isn't clear,
+	 * there really should be more of a description here...
 	 * </p>
 	 * <!-- end-user-doc -->
 	 * @return the value of the '<em>Mapping</em>' container reference.
@@ -95,7 +101,8 @@ public interface ControllerMapping extends EObject, Entity {
 
 	/**
 	 * Sets the value of the '{@link org.palladiosimulator.simulizar.action.mapping.ControllerMapping#getMapping <em>Mapping</em>}' container reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @param value the new value of the '<em>Mapping</em>' container reference.
 	 * @see #getMapping()
 	 * @generated

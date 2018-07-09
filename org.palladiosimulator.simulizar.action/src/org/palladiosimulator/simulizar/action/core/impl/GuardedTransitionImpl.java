@@ -4,25 +4,31 @@ package org.palladiosimulator.simulizar.action.core.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.GuardedStep;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Guarded Transition</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Guarded Transition</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
  * <ul>
  *   <li>{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl#getConditionURI <em>Condition URI</em>}</li>
- *   <li>{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl#getGuardedAction <em>Guarded Action</em>}</li>
+ *   <li>{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl#getGuardedStep <em>Guarded Step</em>}</li>
  *   <li>{@link org.palladiosimulator.simulizar.action.core.impl.GuardedTransitionImpl#getNestedAdaptationBehavior <em>Nested Adaptation Behavior</em>}</li>
  * </ul>
  *
@@ -30,9 +36,9 @@ import org.palladiosimulator.simulizar.action.core.NestedAdaptationBehavior;
  */
 public class GuardedTransitionImpl extends EntityImpl implements GuardedTransition {
 	/**
-	 * The default value of the '{@link #getConditionURI() <em>Condition URI</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The default value of the '{@link #getConditionURI() <em>Condition URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getConditionURI()
 	 * @generated
 	 * @ordered
@@ -40,9 +46,9 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	protected static final String CONDITION_URI_EDEFAULT = null;
 
 	/**
-	 * The cached value of the '{@link #getConditionURI() <em>Condition URI</em>}' attribute. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getConditionURI() <em>Condition URI</em>}' attribute.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getConditionURI()
 	 * @generated
 	 * @ordered
@@ -51,8 +57,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 
 	/**
 	 * The cached value of the '{@link #getNestedAdaptationBehavior() <em>Nested Adaptation Behavior</em>}' containment reference.
-	 * <!-- begin-user-doc --> <!--
-	 * end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getNestedAdaptationBehavior()
 	 * @generated
 	 * @ordered
@@ -60,7 +66,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	protected NestedAdaptationBehavior nestedAdaptationBehavior;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected GuardedTransitionImpl() {
@@ -68,7 +75,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -77,7 +85,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -86,7 +95,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -99,12 +109,13 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
-	public GuardedStep getGuardedAction() {
-		if (eContainerFeatureID() != CorePackage.GUARDED_TRANSITION__GUARDED_ACTION)
+	public GuardedStep getGuardedStep() {
+		if (eContainerFeatureID() != CorePackage.GUARDED_TRANSITION__GUARDED_STEP)
 			return null;
 		return (GuardedStep) eInternalContainer();
 	}
@@ -114,9 +125,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	 * <!-- end-user-doc -->
 	 * @generated
 	 */
-	public NotificationChain basicSetGuardedAction(GuardedStep newGuardedAction, NotificationChain msgs) {
-		msgs = eBasicSetContainer((InternalEObject) newGuardedAction, CorePackage.GUARDED_TRANSITION__GUARDED_ACTION,
-				msgs);
+	public NotificationChain basicSetGuardedStep(GuardedStep newGuardedStep, NotificationChain msgs) {
+		msgs = eBasicSetContainer((InternalEObject) newGuardedStep, CorePackage.GUARDED_TRANSITION__GUARDED_STEP, msgs);
 		return msgs;
 	}
 
@@ -126,28 +136,28 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	 * @generated
 	 */
 	@Override
-	public void setGuardedAction(GuardedStep newGuardedAction) {
-		if (newGuardedAction != eInternalContainer()
-				|| (eContainerFeatureID() != CorePackage.GUARDED_TRANSITION__GUARDED_ACTION
-						&& newGuardedAction != null)) {
-			if (EcoreUtil.isAncestor(this, newGuardedAction))
+	public void setGuardedStep(GuardedStep newGuardedStep) {
+		if (newGuardedStep != eInternalContainer()
+				|| (eContainerFeatureID() != CorePackage.GUARDED_TRANSITION__GUARDED_STEP && newGuardedStep != null)) {
+			if (EcoreUtil.isAncestor(this, newGuardedStep))
 				throw new IllegalArgumentException("Recursive containment not allowed for " + toString());
 			NotificationChain msgs = null;
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			if (newGuardedAction != null)
-				msgs = ((InternalEObject) newGuardedAction).eInverseAdd(this,
+			if (newGuardedStep != null)
+				msgs = ((InternalEObject) newGuardedStep).eInverseAdd(this,
 						CorePackage.GUARDED_STEP__GUARDED_TRANSITIONS, GuardedStep.class, msgs);
-			msgs = basicSetGuardedAction(newGuardedAction, msgs);
+			msgs = basicSetGuardedStep(newGuardedStep, msgs);
 			if (msgs != null)
 				msgs.dispatch();
 		} else if (eNotificationRequired())
-			eNotify(new ENotificationImpl(this, Notification.SET, CorePackage.GUARDED_TRANSITION__GUARDED_ACTION,
-					newGuardedAction, newGuardedAction));
+			eNotify(new ENotificationImpl(this, Notification.SET, CorePackage.GUARDED_TRANSITION__GUARDED_STEP,
+					newGuardedStep, newGuardedStep));
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -156,7 +166,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetNestedAdaptationBehavior(NestedAdaptationBehavior newNestedAdaptationBehavior,
@@ -176,7 +187,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -201,16 +213,17 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseAdd(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
 			if (eInternalContainer() != null)
 				msgs = eBasicRemoveFromContainer(msgs);
-			return basicSetGuardedAction((GuardedStep) otherEnd, msgs);
+			return basicSetGuardedStep((GuardedStep) otherEnd, msgs);
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			if (nestedAdaptationBehavior != null)
 				msgs = ((InternalEObject) nestedAdaptationBehavior).eInverseRemove(this,
@@ -222,14 +235,15 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eInverseRemove(InternalEObject otherEnd, int featureID, NotificationChain msgs) {
 		switch (featureID) {
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
-			return basicSetGuardedAction(null, msgs);
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
+			return basicSetGuardedStep(null, msgs);
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			return basicSetNestedAdaptationBehavior(null, msgs);
 		}
@@ -237,13 +251,14 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
 	public NotificationChain eBasicRemoveFromContainerFeature(NotificationChain msgs) {
 		switch (eContainerFeatureID()) {
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
 			return eInternalContainer().eInverseRemove(this, CorePackage.GUARDED_STEP__GUARDED_TRANSITIONS,
 					GuardedStep.class, msgs);
 		}
@@ -251,7 +266,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -259,8 +275,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 		switch (featureID) {
 		case CorePackage.GUARDED_TRANSITION__CONDITION_URI:
 			return getConditionURI();
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
-			return getGuardedAction();
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
+			return getGuardedStep();
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			return getNestedAdaptationBehavior();
 		}
@@ -268,7 +284,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -277,8 +294,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 		case CorePackage.GUARDED_TRANSITION__CONDITION_URI:
 			setConditionURI((String) newValue);
 			return;
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
-			setGuardedAction((GuardedStep) newValue);
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
+			setGuardedStep((GuardedStep) newValue);
 			return;
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			setNestedAdaptationBehavior((NestedAdaptationBehavior) newValue);
@@ -288,7 +305,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -297,8 +315,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 		case CorePackage.GUARDED_TRANSITION__CONDITION_URI:
 			setConditionURI(CONDITION_URI_EDEFAULT);
 			return;
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
-			setGuardedAction((GuardedStep) null);
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
+			setGuardedStep((GuardedStep) null);
 			return;
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			setNestedAdaptationBehavior((NestedAdaptationBehavior) null);
@@ -308,7 +326,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -316,8 +335,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 		switch (featureID) {
 		case CorePackage.GUARDED_TRANSITION__CONDITION_URI:
 			return CONDITION_URI_EDEFAULT == null ? conditionURI != null : !CONDITION_URI_EDEFAULT.equals(conditionURI);
-		case CorePackage.GUARDED_TRANSITION__GUARDED_ACTION:
-			return getGuardedAction() != null;
+		case CorePackage.GUARDED_TRANSITION__GUARDED_STEP:
+			return getGuardedStep() != null;
 		case CorePackage.GUARDED_TRANSITION__NESTED_ADAPTATION_BEHAVIOR:
 			return nestedAdaptationBehavior != null;
 		}
@@ -325,7 +344,8 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -340,4 +360,4 @@ public class GuardedTransitionImpl extends EntityImpl implements GuardedTransiti
 		return result.toString();
 	}
 
-} // GuardedTransitionImpl
+} //GuardedTransitionImpl

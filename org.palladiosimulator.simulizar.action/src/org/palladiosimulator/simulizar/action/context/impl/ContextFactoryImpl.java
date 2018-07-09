@@ -5,20 +5,24 @@ package org.palladiosimulator.simulizar.action.context.impl;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
+
 import org.eclipse.emf.ecore.impl.EFactoryImpl;
+
 import org.eclipse.emf.ecore.plugin.EcorePlugin;
-import org.palladiosimulator.simulizar.action.context.ContextFactory;
-import org.palladiosimulator.simulizar.action.context.ContextPackage;
-import org.palladiosimulator.simulizar.action.context.ExecutionContext;
+
+import org.palladiosimulator.simulizar.action.context.*;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model <b>Factory</b>. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model <b>Factory</b>.
+ * <!-- end-user-doc -->
  * @generated
  */
 public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 	/**
 	 * Creates the default factory implementation.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public static ContextFactory init() {
@@ -36,7 +40,8 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 
 	/**
 	 * Creates an instance of the factory.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ContextFactoryImpl() {
@@ -44,7 +49,8 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -58,7 +64,8 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,7 +75,8 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -77,7 +85,8 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @deprecated
 	 * @generated
 	 */
@@ -86,4 +95,4 @@ public class ContextFactoryImpl extends EFactoryImpl implements ContextFactory {
 		return ContextPackage.eINSTANCE;
 	}
 
-} // ContextFactoryImpl
+} //ContextFactoryImpl

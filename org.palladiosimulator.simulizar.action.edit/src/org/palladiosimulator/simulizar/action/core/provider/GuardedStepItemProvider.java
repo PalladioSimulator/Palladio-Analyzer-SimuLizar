@@ -98,7 +98,7 @@ public class GuardedStepItemProvider extends AdaptationStepItemProvider {
 	 */
 	@Override
 	public String getText(Object object) {
-		String label = ((GuardedStep) object).getId();
+		String label = ((GuardedStep) object).getEntityName();
 		return label == null || label.length() == 0 ? getString("_UI_GuardedStep_type")
 				: getString("_UI_GuardedStep_type") + " " + label;
 	}

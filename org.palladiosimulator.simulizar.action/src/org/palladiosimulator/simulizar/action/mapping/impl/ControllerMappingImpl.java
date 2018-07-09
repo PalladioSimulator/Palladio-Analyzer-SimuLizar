@@ -4,21 +4,29 @@ package org.palladiosimulator.simulizar.action.mapping.impl;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EcoreUtil;
+
 import org.palladiosimulator.pcm.core.entity.impl.EntityImpl;
+
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
+
 import org.palladiosimulator.simulizar.action.core.ControllerCall;
+
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '<em><b>Controller Mapping</b></em>
- * '. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Controller Mapping</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -32,9 +40,9 @@ import org.palladiosimulator.simulizar.action.mapping.MappingPackage;
  */
 public class ControllerMappingImpl extends EntityImpl implements ControllerMapping {
 	/**
-	 * The cached value of the '{@link #getMappedCall() <em>Mapped Call</em>}' reference. <!--
-	 * begin-user-doc --> <!-- end-user-doc -->
-	 *
+	 * The cached value of the '{@link #getMappedCall() <em>Mapped Call</em>}' reference.
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getMappedCall()
 	 * @generated
 	 * @ordered
@@ -43,7 +51,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 
 	/**
 	 * The cached value of the '{@link #getControllerRole() <em>Controller Role</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getControllerRole()
 	 * @generated
 	 * @ordered
@@ -51,7 +60,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	protected OperationProvidedRole controllerRole;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected ControllerMappingImpl() {
@@ -59,7 +69,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -68,7 +79,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -86,7 +98,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public ControllerCall basicGetMappedCall() {
@@ -94,7 +107,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -107,7 +121,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -125,7 +140,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public OperationProvidedRole basicGetControllerRole() {
@@ -133,7 +149,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -146,7 +163,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -157,7 +175,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetMapping(Mapping newMapping, NotificationChain msgs) {
@@ -166,7 +185,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -190,7 +210,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -205,7 +226,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -218,7 +240,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -232,7 +255,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -253,7 +277,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -273,7 +298,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -293,7 +319,8 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -309,4 +336,4 @@ public class ControllerMappingImpl extends EntityImpl implements ControllerMappi
 		return super.eIsSet(featureID);
 	}
 
-} // ControllerMappingImpl
+} //ControllerMappingImpl

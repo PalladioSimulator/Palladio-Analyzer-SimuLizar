@@ -6,25 +6,35 @@ import java.util.Collection;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.common.notify.NotificationChain;
+
 import org.eclipse.emf.common.util.EList;
+
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.InternalEObject;
+
 import org.eclipse.emf.ecore.impl.ENotificationImpl;
+
 import org.eclipse.emf.ecore.util.EObjectContainmentWithInverseEList;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.emf.ecore.util.InternalEList;
+
 import org.modelversioning.emfprofile.Profile;
+
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
+
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
 import org.palladiosimulator.simulizar.action.core.RoleType;
+
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
+
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 
 /**
- * <!-- begin-user-doc --> An implementation of the model object '
- * <em><b>Adaptation Behavior</b></em>'. <!-- end-user-doc -->
+ * <!-- begin-user-doc -->
+ * An implementation of the model object '<em><b>Adaptation Behavior</b></em>'.
+ * <!-- end-user-doc -->
  * <p>
  * The following features are implemented:
  * </p>
@@ -39,7 +49,8 @@ import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVaria
 public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl implements AdaptationBehavior {
 	/**
 	 * The cached value of the '{@link #getInvolvedRoles() <em>Involved Roles</em>}' containment reference list.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getInvolvedRoles()
 	 * @generated
 	 * @ordered
@@ -48,7 +59,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 
 	/**
 	 * The cached value of the '{@link #getTransientStateProfile() <em>Transient State Profile</em>}' reference.
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @see #getTransientStateProfile()
 	 * @generated
 	 * @ordered
@@ -56,7 +68,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	protected Profile transientStateProfile;
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	protected AdaptationBehaviorImpl() {
@@ -64,7 +77,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -73,7 +87,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -86,7 +101,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -105,7 +121,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public Profile basicGetTransientStateProfile() {
@@ -113,7 +130,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -127,7 +145,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -138,7 +157,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	public NotificationChain basicSetRepository(AdaptationBehaviorRepository newRepository, NotificationChain msgs) {
@@ -147,7 +167,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -171,7 +192,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -185,7 +207,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -200,7 +223,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -211,7 +235,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -223,7 +248,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -237,31 +263,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ExecutionContext executeAsync(final RoleSet affectedRoleSet) {
-		return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
-				.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this).getContext()
-				.get();
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * @generated
-	 */
-	@Override
-	public ExecutionContext executeAsync(final RoleSet affectedRoleSet, final ExecutionContext asyncExecutionContext) {
-		org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
-				.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).build()
-				.doSwitch(this);
-		return asyncExecutionContext;
-
-	}
-
-	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -276,7 +279,34 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ExecutionContext executeAsync(final RoleSet affectedRoleSet) {
+		return org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+				.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync().build().doSwitch(this).getContext()
+				.get();
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
+	 * @generated
+	 */
+	@Override
+	public ExecutionContext executeAsync(final RoleSet affectedRoleSet, final ExecutionContext asyncExecutionContext) {
+		org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState
+				.getInterpreterBuilder(affectedRoleSet, getRepository()).isAsync(asyncExecutionContext).build()
+				.doSwitch(this);
+		return asyncExecutionContext;
+
+	}
+
+	/**
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -294,7 +324,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -309,7 +340,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -323,7 +355,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -342,7 +375,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@SuppressWarnings("unchecked")
@@ -364,7 +398,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -384,7 +419,8 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 	}
 
 	/**
-	 * <!-- begin-user-doc --> <!-- end-user-doc -->
+	 * <!-- begin-user-doc -->
+	 * <!-- end-user-doc -->
 	 * @generated
 	 */
 	@Override
@@ -400,4 +436,4 @@ public class AdaptationBehaviorImpl extends AbstractAdaptationBehaviorImpl imple
 		return super.eIsSet(featureID);
 	}
 
-} // AdaptationBehaviorImpl
+} //AdaptationBehaviorImpl
