@@ -28,7 +28,7 @@
     <measuringPoint xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" href="ms.measuringpoint#//@measuringPoints.1"/>
   </monitors>
   <monitors id="_Ry7_sKPHEeW-HtW2mCFHaw" entityName="Reconfigurations">
-    <measurementSpecifications id="_TnyogKPHEeW-HtW2mCFHaw">
+    <measurementSpecifications id="_TnyogKPHEeW-HtW2mCFHaw" triggersSelfAdaptations="false">
       <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_VYg6MujFEeSB6OBq2SKZxQ"/>
       <processingType xsi:type="monitorrepository:FeedThrough" id="_jKN59O0YEeWdrOr0QROn8g"/>
     </measurementSpecifications>
