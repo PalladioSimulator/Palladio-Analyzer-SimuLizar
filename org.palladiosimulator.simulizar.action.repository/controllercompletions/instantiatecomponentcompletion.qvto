@@ -21,6 +21,7 @@ modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/I
 
 transformation instantiateComponent(
 							inout pcmAllocation : PCM_ALLOC,
+							inout pcmSystem : PCM_SYS,
 							in pcmControllerRepository : PCM_REP,
 							in actionRoleSet : ACTION_INSTANCE,
 							in actionStep : ACTION_CORE,
@@ -48,6 +49,7 @@ transformation instantiateComponent(
 		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
 			with log ("Allocation Model is empty!");
 		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var system : System := pcmSystem.rootObjects()[System]->any(true);
 		var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = instantiationOverheadActionId);
 		log("Executing step " + step.entityName);
 		
@@ -67,7 +69,7 @@ transformation instantiateComponent(
 			componentInstantiationController, componentInstantiationLocation,instantiatedComponent);
 		if(assembly = null) {
 			log("No assembly found");
-			step.map instantiateComponent(allocation, controllerRepository, roleSet, componentInstantiationController, componentInstantiationLocation,
+			step.map instantiateComponent(system, allocation, controllerRepository, roleSet, componentInstantiationController, componentInstantiationLocation,
 				instantiationControllerLocation, targetResourceContainer);
 		} else {
 			log(assembly.entityName);
@@ -84,11 +86,11 @@ transformation instantiateComponent(
 		};
 	}
 	
-	mapping ResourceDemandingStep::instantiateComponent(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
+	mapping ResourceDemandingStep::instantiateComponent(inout system : System, inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
 		componentInstantiationController : BasicComponent, componentInstantiationLocation : BasicComponent,
 		controllerHost : ResourceContainer, targetHost: ResourceContainer) : Mapping@actionMapping {
-		log("Adding controllers for VM migration");
-		result.controllerMappings := self.controllerCalls->map addVMControllers(allocation, controllerRepository, roleSet, 
+		log("Adding controllers for VM instantiation");
+		result.controllerMappings := self.controllerCalls->map addVMControllers(system, allocation, controllerRepository, roleSet, 
 			componentInstantiationController, componentInstantiationLocation, controllerHost, targetHost);
 	}
 	
@@ -118,30 +120,27 @@ transformation instantiateComponent(
 		return null;
 	}
 	
-	mapping ControllerCall::addVMControllers(inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
+	mapping ControllerCall::addVMControllers(inout system : System, inout allocation : Allocation, controllerRepository : Repository, roleSet : RoleSet,
 		componentInstantiationController : BasicComponent, componentInstantiationLocation : BasicComponent,
 		controllerHost : ResourceContainer, targetHost: ResourceContainer) : ControllerMapping {
 		
-		log("Adding VM controllers");
-				
-		var assemblyComponentInstantiationController : AssemblyContext := componentInstantiationController.createAssembly(controllerHost);
-		var assemblyComponentInstantiationLocation : AssemblyContext := componentInstantiationLocation.createAssembly(targetHost);
-		var system : System := allocation.system_Allocation;
-		
+		log("Adding VM controllers");		
+		var assemblyComponentInstantiationController : AssemblyContext := componentInstantiationController.map createAssembly(controllerHost);
 		system.assemblyContexts__ComposedStructure += assemblyComponentInstantiationController;
+		var assemblyComponentInstantiationLocation : AssemblyContext := componentInstantiationLocation.map createAssembly(targetHost);
 		system.assemblyContexts__ComposedStructure += assemblyComponentInstantiationLocation;
 		
 		system.connectors__ComposedStructure += linkAssemblies(assemblyComponentInstantiationController, 
 						componentInstantiationController.selectRequiredRoleById(componentInstantiationControllerRequiredRoleId),
 						assemblyComponentInstantiationLocation, 
 						componentInstantiationLocation.selectProvidedRoleById(componentInstantiationLocationProvidedRoleId));
-		assemblyComponentInstantiationController.allocateAt(allocation, controllerHost);
+		allocation.allocationContexts_Allocation += assemblyComponentInstantiationController->allocate(controllerHost);
 		log("Allocating instantiation controller at " + controllerHost.id);
-		assemblyComponentInstantiationLocation.allocateAt(allocation, targetHost);
+		allocation.allocationContexts_Allocation += assemblyComponentInstantiationLocation->allocate(targetHost);
 		log("Allocating component instantiation controller at " + targetHost.id);
 		
 		// add system interface to controller component
-		var controllerProvidedRole := object OperationProvidedRole {
+		var controllerProvidedRole := object OperationProvidedRole @pcmSystem {
 			entityName := 'SystemProvided' + assemblyComponentInstantiationController.entityName;
 			providingEntity_ProvidedRole := componentInstantiationController;
 			providedInterface__OperationProvidedRole := self.calledSignature.interface__OperationSignature;			
@@ -158,12 +157,10 @@ transformation instantiateComponent(
 		result.controllerRole := controllerProvidedRole;
 	}
 	
-	helper AssemblyContext::allocateAt(inout allocation : Allocation, container : ResourceContainer) {
-		allocation.allocationContexts_Allocation += object AllocationContext {
-			entityName := self.entityName + 'At' + container.entityName;
-			resourceContainer_AllocationContext := container;
-			assemblyContext_AllocationContext := self;
-		}
+	mapping AssemblyContext::allocate(container : ResourceContainer) : AllocationContext {
+		entityName := self.entityName + 'At' + container.entityName;
+		resourceContainer_AllocationContext := container;
+		assemblyContext_AllocationContext := self;
 	}
 	
 	query BasicComponent::selectRequiredRoleById(requiredRoleId : String) : OperationRequiredRole {
@@ -185,12 +182,10 @@ transformation instantiateComponent(
 		}
 	}
 	
-	helper BasicComponent::createAssembly(inout container : ResourceContainer) : AssemblyContext {
+	mapping BasicComponent::createAssembly(inout container : ResourceContainer) : AssemblyContext @ pcmSystem {
 		var nameInput := self.entityName;
-		return object AssemblyContext {
-			entityName :=  nameInput + "AssemblyCtxOn" + container.entityName;
-			encapsulatedComponent__AssemblyContext := self;
-		}
+		entityName :=  nameInput + "AssemblyCtxOn" + container.entityName;
+		encapsulatedComponent__AssemblyContext := self;
 	}
 	
 	query Repository::getComponentById(id : String) : BasicComponent {

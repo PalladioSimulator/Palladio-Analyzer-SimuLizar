@@ -6,19 +6,19 @@ import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLi
  * in conjunction with mappings defined in the project properties.
  */
 modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
-modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.1';
-modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.1';
-modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.1';
-modeltype PCM_ASSEMBLY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.1';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_ASSEMBLY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
 modeltype ACTIONS uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
 modeltype INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
 modeltype ACTION_PARAM uses 'http://simulizar.palladiosimulator.org/Actions/Parameter/1.1';
 modeltype ECORE uses 'http://www.eclipse.org/emf/2002/Ecore';
-modeltype SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.1';
-modeltype SEFF_PERFORMANCE uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.1';
-modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.1';
-modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.1';
-modeltype PCM_SYSTEM uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.1';
+modeltype SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype SEFF_PERFORMANCE uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.2';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_SYSTEM uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
 modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
 /*
@@ -97,13 +97,13 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 	 */
 	helper scaleUp(allocation : Allocation) : Boolean {
 		var instantiatedComponent : BasicComponent := allocation.system_Allocation.assemblyContexts__ComposedStructure.encapsulatedComponent__AssemblyContext[BasicComponent]
-					->any(id = "_o10-YHDrEeSqnN80MQ2uGw" or id = '_j5vZQLhEEeSNPorBlo7x9g');
+					->any(id = "_o10-YHDrEeSqnN80MQ2uGw");
 	
 		log('Found ' +  allocation.allocationContexts_Allocation->size().toString() + ' AllocationContexts');
 		var instantiateVm : AdaptationBehavior := adaptationBehaviorRepository.actions->any(id = instantiateVmAdaptationBehaviorId).oclAsType(AdaptationBehavior);
 		var targetContainers := allocation.targetResourceEnvironment_Allocation.resourceContainer_ResourceEnvironment
 			->reject(r | allocation.allocationContexts_Allocation.resourceContainer_AllocationContext->includes(r));
-		log('Potential migration targets: ' + targetContainers->size().toString());
+		log('Potential instantiation targets: ' + targetContainers->size().toString());
 		var targetResourceContainer : ResourceContainer := targetContainers->any(true);
 		var controllerContainer : ResourceContainer := allocation.allocationContexts_Allocation
 			[assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.id = encapsulatedComponentAssemblyCtxId].resourceContainer_AllocationContext->any(true);
@@ -123,7 +123,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		};
 						
 		// now execute the adaptation behavior which also includes wiring to load balancer component
-		instantiateVm.executeAsync(roleSet, prepareInputForControllerCall());
+		instantiateVm.execute(roleSet, prepareInputForControllerCall());
 		
 		log('Async migration execution started');
 		

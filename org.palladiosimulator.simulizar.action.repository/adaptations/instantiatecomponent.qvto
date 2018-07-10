@@ -40,7 +40,9 @@ property instantiatedComponentResourceContainerName = 'InstantiatedComponentReso
 		var instantiatedComponentContext = object AssemblyContext {
 			entityName := 'Assembly_' + instantiatedComponent.entityName;
 			encapsulatedComponent__AssemblyContext := instantiatedComponent;			 
-		}; 
+		};
+		
+		system_Allocation.assemblyContexts__ComposedStructure += instantiatedComponentContext;
 		
 		allocationContexts_Allocation += object AllocationContext {
 			resourceContainer_AllocationContext := targetResourceContainer;
