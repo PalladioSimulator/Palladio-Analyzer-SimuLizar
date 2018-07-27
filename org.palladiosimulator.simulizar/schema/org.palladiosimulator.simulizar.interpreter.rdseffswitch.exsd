@@ -6,7 +6,8 @@
          <meta.schema plugin="org.palladiosimulator.simulizar" id="org.palladiosimulator.simulizar.interpreter.rdseffswitch" name="RDSeff Switch Factory"/>
       </appinfo>
       <documentation>
-         [Enter description of this extension point.]
+         Extension Point to add the interpretation of new PCM model elements to the RDSeffSwitch.
+         Use-Case: Plugin extends PCM and these new objects should be interpreted by SimuLizar.
       </documentation>
    </annotation>
 
@@ -23,21 +24,21 @@
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Point of extension point.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-                  
+                   ID of extension point.
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                  
+                    Name of extension point.
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -52,7 +53,8 @@
          <attribute name="rdseffswitch" type="string" use="required">
             <annotation>
                <documentation>
-                  
+                  Factory class that creates a switch for the new PCM object.
+                  This switch is used by SimuLizar to interpret the object.
                </documentation>
                <appinfo>
                   <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory:"/>
