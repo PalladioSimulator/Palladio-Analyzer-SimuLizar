@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+		
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.palladiosimulator.simulizar</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.1.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>bundles</artifactId>
+	<packaging>pom</packaging>
+	
+	<modules>
+	<!--
+		<module>ExampleImpl</module>
+		<module>ExampleModels</module>
+	-->
+		<module>org.palladiosimulator.simulizar</module>
+		<module>org.palladiosimulator.simulizar.action</module>
+		<module>org.palladiosimulator.simulizar.action.edit</module>
+		<module>org.palladiosimulator.simulizar.action.editor</module>
+		<module>org.palladiosimulator.simulizar.action.repository</module>
+		<module>org.palladiosimulator.simulizar.aggregation</module>
+		<module>org.palladiosimulator.simulizar.edp2.measuringpoint</module>
+		<module>org.palladiosimulator.simulizar.edp2.measuringpoint.edit</module>
+		<module>org.palladiosimulator.simulizar.elasticity</module>
+		<module>org.palladiosimulator.simulizar.measuringpoint</module>
+		<module>org.palladiosimulator.simulizar.measuringpoint.create</module>
+		<module>org.palladiosimulator.simulizar.monitorrepository.feedthrough</module>
+		<module>org.palladiosimulator.simulizar.monitorrepository.map</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.henshin</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model.edit</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.qvto</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.qvto.model</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.qvto.model.edit</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.storydiagram</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.storydiagram.model</module>
+		<module>org.palladiosimulator.simulizar.reconfiguration.storydiagram.model.edit</module>
+		<!--<module>org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration</module>-->
+		<module>org.palladiosimulator.simulizar.reconfigurationrule</module>
+		<module>org.palladiosimulator.simulizar.reconfigurationrule.edit</module>
+		<module>org.palladiosimulator.simulizar.reconfigurationrule.editor</module>
+		<module>org.palladiosimulator.simulizar.runtimemeasurement</module>
+		<module>org.palladiosimulator.simulizar.runtimemeasurement.edit</module>
+		<module>org.palladiosimulator.simulizar.slidingwindow</module>
+		<module>org.palladiosimulator.simulizar.ui</module>
+		<module>org.palladiosimulator.simulizar.ui.perspective</module>
+		<module>org.palladiosimulator.simulizar.ui.wizards</module>
+		<module>org.palladiosimulator.simulizar.utilization</module>
+	</modules>
+	
+</project>
