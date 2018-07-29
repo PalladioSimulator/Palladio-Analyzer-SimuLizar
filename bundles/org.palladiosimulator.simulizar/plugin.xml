@@ -8,6 +8,7 @@
    <extension-point id="org.palladiosimulator.simulizar.configurator" name="SimuLizar Workflow Configuration Customization" schema="schema/org.palladiosimulator.simulizar.configurator.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.modelobserver" name="Simulizar Model Observer" schema="schema/org.palladiosimulator.simulizar.modelobserver.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.reconfigurationloader" name="Reconfiguration loader" schema="schema/org.palladiosimulator.simulizar.reconfigurationloader.exsd"/>
+   <extension-point id="org.palladiosimulator.simulizar.interpreter.rdseffswitch" name="RDSeff Switch" schema="schema/org.palladiosimulator.simulizar.interpreter.rdseffswitch.exsd"/>
 	   <extension
          point="org.palladiosimulator.simulizar.modelobserver">
       <modelObserver
