@@ -13,7 +13,7 @@ public abstract class AbstractResourceEnvironmentObserver extends AbstractModelO
 
     @Override
     public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getAllocation()
+        super.initialize(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation(), Objects.requireNonNull(runtimeState));
     }
 }

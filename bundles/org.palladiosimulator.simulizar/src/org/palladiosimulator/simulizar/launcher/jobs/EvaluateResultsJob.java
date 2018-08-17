@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EClass;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.edp2.datastream.IDataSource;
@@ -24,10 +25,10 @@ import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.recorderframework.edp2.config.AbstractEDP2RecorderConfigurationFactory;
 import org.palladiosimulator.servicelevelobjective.ServiceLevelObjective;
+import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveRepository;
+import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilter;
 import org.palladiosimulator.servicelevelobjective.edp2.filters.SLOViolationEDP2DatasourceFilterConfiguration;
-import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -56,22 +57,14 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
     @Override
     public void execute(final IProgressMonitor progressMonitor) throws JobFailedException, UserCanceledException {
 
-        final PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard()
-                .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
-
-        if (partition == null) {
+    	this.serviceLevelObjectives = filterSloRepo().getServicelevelobjectives();
+        if (this.serviceLevelObjectives == null) {
             this.LOGGER.info("No Service level objectives provided. Skipping evaluation of experiment data");
         } else {
             final String repositoryId = (String) this.configuration.getAttributes()
                     .get(AbstractEDP2RecorderConfigurationFactory.REPOSITORY_ID);
             final String basename = this.configuration.getSimulationConfiguration().getNameBase();
             final String variation = this.configuration.getSimulationConfiguration().getVariationId();
-
-//          FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences. 
-//          After we find a way to copy models so that their links do not point to intermediary, but to the models directly.
-            final ModelAccess modelAccess = new ModelAccessUseOriginalReferences(this.getBlackboard());
-            this.serviceLevelObjectives = modelAccess.getServiceLevelObjectiveRepositoryModel()
-                    .getServicelevelobjectives();
 
             final Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
             final ExperimentGroup experimentGroup = this.getExperimentGroup(repository, basename);
@@ -93,7 +86,19 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
         }
     }
 
-    @Override
+    private ServiceLevelObjectiveRepository filterSloRepo() {
+    	final PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard()
+                .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+    	if (partition == null) {
+    		return null;
+    	}
+    	
+    	EClass targetType = ServicelevelObjectivePackage.eINSTANCE.getServiceLevelObjectiveRepository();
+    	List<ServiceLevelObjectiveRepository> sloRepos = partition.getElement(targetType);
+    	return sloRepos.isEmpty() ? null : sloRepos.get(0);
+	}
+
+	@Override
     public String getName() {
         return "Evaluating Analysis Results";
     }

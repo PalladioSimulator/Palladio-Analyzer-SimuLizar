@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
@@ -32,35 +31,17 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	 * QVTO Interpreter used internally to interpret the SDs.
 	 */
 	private QVTOExecutor qvtoExecutor;
-
-    /**
-     * QVTO Reconfigurator default constructor.
-     * 
-     * @param modelAccessFactory
-     *            ModelAccessFactory giving access to PCM and PRM models
-     * @param configuration
-     *            Simulation configuration
-     */
-    public QVTOReconfigurator() {
+	
+	/**
+	 * QVTO Reconfigurator default constructor.
+	 */
+	public QVTOReconfigurator() {
         super();
     }
 	
-	/**
-	 * QVTO Reconfigurator constructor.
-	 * 
-	 * @param modelAccessFactory
-	 *            ModelAccessFactory giving access to PCM and PRM models
-	 * @param configuration
-	 *            Simulation configuration
-	 */
-	public QVTOReconfigurator(final IModelAccess modelAccessFactory) {
-		super();
-		this.modelAccessFactory = modelAccessFactory;
-	}
-
 	private QVTOExecutor getQVTOExecutor() {
 		if (this.qvtoExecutor == null) {
-			this.qvtoExecutor = new QVTOExecutor(new ModelTransformationCache(), new QVToModelCache(this.modelAccessFactory));
+			this.qvtoExecutor = new QVTOExecutor(new ModelTransformationCache(), new QVToModelCache(this.pcmPartitionManager));
 		}
 		return this.qvtoExecutor;
 	}

@@ -1,12 +1,11 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagram;
 
 import java.util.ArrayList;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 /**
@@ -30,24 +29,10 @@ public class SDReconfigurator extends AbstractReconfigurator {
 	private SDExecutor sdExecutor;
 
 	/**
-	 * Story Diagram Reconfigurator default constructor.
-	 * 
-	 * @param modelAccessFactory
-	 *            Model access factory used to access the SDs.
+	 * Story diagram reconfigurator default constructor.
 	 */
 	public SDReconfigurator() {
 		super();
-	}
-
-	/**
-	 * Story Diagram Reconfigurator default constructor.
-	 * 
-	 * @param modelAccessFactory
-	 *            Model access factory used to access the SDs.
-	 */
-	public SDReconfigurator(IModelAccess modelAccess) {
-		super();
-		this.modelAccessFactory = modelAccess;
 	}
 
 	@Override
@@ -88,11 +73,6 @@ public class SDReconfigurator extends AbstractReconfigurator {
 		return executeTransformations(monitoredElement, activities);
 	}
 	
-	@Override
-	public void setModelAccess(IModelAccess modelAccess) {
-		this.modelAccessFactory = new StoryDiagramModelAccess(modelAccess, this.configuration);
-	}
-	
 	private boolean executeTransformations(final EObject monitoredElement, ArrayList<SDModelTransformation> transformations) {
 		if (!transformations.isEmpty()) {
 			LOGGER.info("Checking reconfiguration rules due to RuntimeMeasurement change");
@@ -107,7 +87,7 @@ public class SDReconfigurator extends AbstractReconfigurator {
 
 	private SDExecutor getSDExecutor() {
 		if (this.sdExecutor == null) {
-			this.sdExecutor = new SDExecutor(this.modelAccessFactory);
+			this.sdExecutor = new SDExecutor(this.pcmPartitionManager);
 		}
 		return this.sdExecutor;
 	}

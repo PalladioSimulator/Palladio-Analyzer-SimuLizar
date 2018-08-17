@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs;
+package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.jobs;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.SDMResourceSetPartition;
+import org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.partition.SDMResourceSetPartition;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;

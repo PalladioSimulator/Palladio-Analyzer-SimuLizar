@@ -18,8 +18,7 @@ import org.palladiosimulator.pcm.system.SystemPackage;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.storydriven.core.expressions.Expression;
 import org.storydriven.storydiagrams.activities.Activity;
 import org.storydriven.storydiagrams.activities.ActivityEdge;
@@ -77,45 +76,13 @@ public class SDExecutor {
     /**
      * Constructor of the SD Executor.
      * 
-     * @param modelAccessFactory
-     *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
-     *            models.
+     * @param partitionManager
+     *            used to access the SD, PCM@runtime and RuntimeMeasurement models.
      */
-    public SDExecutor(final StoryDiagramModelAccess modelAccessFactory) {
+    public SDExecutor(final PCMPartitionManager partitionManager) {
         super();
-        this.globalPcmResourceSetPartition = modelAccessFactory.getGlobalPCMModel();
-        this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
-        try {
-            this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
-        } catch (final SDMException e) {
-            throw new RuntimeException("Unable to inialise SD interpreter engine", e);
-        }
-        this.sdNotificationReceiver = new SDReconfigurationNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
-                this.sdmInterpreter.getFacadeFactory());
-        this.sdmInterpreter.getNotificationEmitter().addNotificationReceiver(this.sdNotificationReceiver);
-
-        if (LOGGER.isDebugEnabled()) {
-            this.sdmInterpreter
-                    .getNotificationEmitter()
-                    .addNotificationReceiver(
-                            new OutputStreamNotificationReceiver<Activity, ActivityNode, ActivityEdge, StoryPattern, AbstractVariable, AbstractLinkVariable, EClassifier, EStructuralFeature, Expression>(
-                                    this.sdmInterpreter.getFacadeFactory()));
-        }
-
-        this.staticParameters = this.createParameter();
-    }
-    
-    /**
-     * Constructor of the SD Executor.
-     * 
-     * @param modelAccess
-     *            the model access factory used to access the SD, PCM@runtime and RuntimeMeasurement
-     *            models.
-     */
-    public SDExecutor(final IModelAccess modelAccess) {
-        super();
-        this.globalPcmResourceSetPartition = modelAccess.getGlobalPCMModel();
-        this.runtimeMeasurementModel = modelAccess.getRuntimeMeasurementModel();
+        this.globalPcmResourceSetPartition = partitionManager.getGlobalPCMModel();
+        this.runtimeMeasurementModel = partitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         try {
             this.sdmInterpreter = new StoryDrivenEclipseInterpreter(this.getClass().getClassLoader());
         } catch (final SDMException e) {

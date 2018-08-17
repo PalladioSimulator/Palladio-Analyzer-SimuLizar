@@ -12,21 +12,19 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccessUseOriginalReferences;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
-import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
+import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -99,8 +97,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
-			final AbstractSimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration,
-					new ModelAccessUseOriginalReferences(this.blackboard),
+			final AbstractSimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration, this.blackboard,
 					new SimulationCancelationDelegate(monitor::isCanceled));
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -144,24 +141,24 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	
 	private class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
 		
-		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, ModelAccess modelAccess, final SimulationCancelationDelegate cancelationDelegate) {
-			super(configuration, modelAccess, cancelationDelegate);
+		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
+			super(configuration, blackboard, cancelationDelegate);
 		}
 
 		@Override
 		protected void initializeInterpreterListeners(Reconfigurator reconfigurator) {
 			LOGGER.debug("Adding Debug and monitoring interpreter listeners");
 	        this.eventHelper.addObserver(new LogDebugListener());
-	        this.eventHelper.addObserver(new ProbeFrameworkListenerForElasticity(this.getModelAccess(),  this.getModel(), reconfigurator));
+	        this.eventHelper.addObserver(new ProbeFrameworkListenerForElasticity(this.getPCMPartitionManager(),  this.getModel(), reconfigurator));
 		}
 
 	}
 	
 	private class ProbeFrameworkListenerForElasticity extends AbstractProbeFrameworkListener {
 
-		public ProbeFrameworkListenerForElasticity(IModelAccess modelAccess, SimuComModel simuComModel,
+		public ProbeFrameworkListenerForElasticity(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 				Reconfigurator reconfigurator) {
-			super(modelAccess, simuComModel, reconfigurator);
+			super(pcmPartitionManager, simuComModel, reconfigurator);
 		}
 
 		@Override

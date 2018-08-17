@@ -62,6 +62,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 		this.currentReconfigNotifications = new ArrayList<>();
 		this.transformations = new BasicEList<ModelTransformation<? extends Object>>();
 		reconfigurator.getReconfigurationLoaders().forEach(l -> {
+			l.load(reconfigurator.getConfiguration());
 			this.transformations.addAll(l.getTransformations());
 		});
 	}

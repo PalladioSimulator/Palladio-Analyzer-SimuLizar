@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
+import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.UsageevolutionPackage;
 
 public class UsageEvolverFacade {
 
@@ -22,7 +25,9 @@ public class UsageEvolverFacade {
         // TODO: add check on duration of evolutions for work parameters.
         // For now, assume that the duration of these are the same as for the load evolution
         
-        this.runtimeState.getModelAccess().getUsageEvolutionModel().getUsages().forEach(this::startUsageEvolution);
+    	PCMPartitionManager manager = this.runtimeState.getPCMPartitionManager();
+    	UsageEvolution ueModel = manager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+        ueModel.getUsages().forEach(this::startUsageEvolution);
     }
     
     public void startUsageEvolution(Usage usage) {

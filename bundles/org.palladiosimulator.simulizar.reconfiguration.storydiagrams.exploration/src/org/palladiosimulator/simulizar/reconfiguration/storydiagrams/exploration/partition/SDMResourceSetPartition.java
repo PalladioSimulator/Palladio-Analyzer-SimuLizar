@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess;
+package org.palladiosimulator.simulizar.reconfiguration.storydiagrams.exploration.partition;
 
 import java.util.List;
 import java.util.Vector;

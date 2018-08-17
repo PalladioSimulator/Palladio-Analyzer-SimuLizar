@@ -18,10 +18,9 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreSwitch;
 import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
-import org.palladiosimulator.metricspec.MetricSpecPackage;
-import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
-import org.palladiosimulator.simulizar.access.IModelAccess;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
@@ -39,7 +38,7 @@ public class QVToModelCache {
     // use a map: EPackage, i.e, meta-model serves as key/tag
     private final Map<EPackage, Set<EObject>> cache;
     
-    private final IModelAccess modelAccess;
+    private final PCMPartitionManager pcmPartitionManager;
 
     // put EClass objects of blackboard models that are not intended to be transformation parameters
     // here
@@ -78,9 +77,9 @@ public class QVToModelCache {
      * @see IModelAccess#getBlackboard()
      * @see IModelAccess#getGlobalPCMModel()
      */
-    public QVToModelCache(IModelAccess modelAccess) {
+    public QVToModelCache(PCMPartitionManager pcmPartitonManager) {
         this.cache = new HashMap<>();
-        this.modelAccess = Objects.requireNonNull(modelAccess, "modelAccess must not be null.");
+        this.pcmPartitionManager = Objects.requireNonNull(pcmPartitonManager, "pcmPartitonManager must not be null.");
         storeBlackboardModels();
     }
 
@@ -93,7 +92,7 @@ public class QVToModelCache {
      */
     private QVToModelCache(QVToModelCache from) {
         this.cache = new HashMap<>();
-        this.modelAccess = from.modelAccess;
+        this.pcmPartitionManager = from.pcmPartitionManager;
         Objects.requireNonNull(from);
         from.cache.values().stream().flatMap(Collection::stream).forEach(this::storeModel);
     }
@@ -144,7 +143,7 @@ public class QVToModelCache {
      * @see #storeModel(EObject)
      */
     public final void storeModelFromBlackboardPartition(String partitionId) {
-        MDSDBlackboard blackboard = this.modelAccess.getBlackboard();
+        MDSDBlackboard blackboard = this.pcmPartitionManager.getBlackboard();
         if (blackboard.hasPartition(Objects.requireNonNull(partitionId, "partitionId must not be null."))) {
             ResourceSetPartition partition = blackboard.getPartition(partitionId);
             if (partition != null) {
@@ -242,11 +241,11 @@ public class QVToModelCache {
     }
 
     private void storeBlackboardModels() {
-        assert this.modelAccess != null;
+        assert this.pcmPartitionManager != null;
 
-        storeModel(this.modelAccess.getRuntimeMeasurementModel());
+        storeModel(this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel()));
         // now store the all pcm models (we want the root of each model, the root EObject)
-        this.modelAccess.getGlobalPCMModel().getResourceSet().getResources().stream().map(Resource::getContents)
+        this.pcmPartitionManager.getGlobalPCMModel().getResourceSet().getResources().stream().map(Resource::getContents)
                 .filter(contents -> !contents.isEmpty() && !isBlacklisted(contents.get(0)))
                 .forEach(contents -> storeModel(contents.get(0)));
         // now collect all models that were added to blackboard via extension point

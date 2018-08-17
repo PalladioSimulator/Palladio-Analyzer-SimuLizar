@@ -44,12 +44,13 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -355,14 +356,6 @@ public class QVToReconfigurationTest {
         }
 
         /*
-         * Put the PCM model into the MDSD blackboard.
-         */
-        final MDSDBlackboard blackboard = new MDSDBlackboard();
-        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
-        final IModelAccess modelAccess = new ModelAccess(blackboard);
-        modelAccess.getRuntimeMeasurementModel().getMeasurements().add(responeTimeRuntimeMeasurement);
-
-        /*
          * Create the configuration for the QVTo reconfigurator.
          */
         Map<String, Object> configuration = new HashMap<String, Object>();
@@ -373,11 +366,20 @@ public class QVToReconfigurationTest {
         swfc.setMonitorRepositoryFile(Paths.get(pmsURI.path()).toAbsolutePath().toString());
         swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
 
-        QVTOReconfigurator reconfigurator = new QVTOReconfigurator(modelAccess);
-        reconfigurator.setModelAccess(modelAccess);
+        /*
+         * Put the PCM model into the MDSD blackboard.
+         */
+        final MDSDBlackboard blackboard = new MDSDBlackboard();
+        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
+        final PCMPartitionManager pcmPartitionManager = new PCMPartitionManager(blackboard, swfc);
+        RuntimeMeasurementModel rmModel = pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+        rmModel.getMeasurements().add(responeTimeRuntimeMeasurement);
+        
+        QVTOReconfigurator reconfigurator = new QVTOReconfigurator();
+        reconfigurator.setConfiguration(swfc);
+        reconfigurator.setPCMPartitionManager(pcmPartitionManager);
         QvtoReconfigurationLoader reconfigurationLoader = new QvtoReconfigurationLoader();
-        reconfigurationLoader.setConfiguration(swfc);
-        reconfigurationLoader.setModelAccess(modelAccess);
+        reconfigurationLoader.load(swfc);
         EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(
                 reconfigurationLoader.getTransformations());
         boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement);
