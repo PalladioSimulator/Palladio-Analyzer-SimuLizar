@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import org.palladiosimulator.analyzer.workflow.jobs.EventsTransformationJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
@@ -14,7 +15,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  *
  */
 public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
-        implements IBlackboardInteractingJob<MDSDBlackboard> {
+implements IBlackboardInteractingJob<MDSDBlackboard> {
 
     /**
      * Constructor
@@ -29,6 +30,9 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
         this.setBlackboard(new MDSDBlackboard());
 
         this.addJob(new LoadSimuLizarModelsIntoBlackboardJob(configuration));
+
+        // 5. Transform Event Model Elements
+        this.add(new EventsTransformationJob(configuration));
 
         this.addJob(new PCMStartInterpretationJob(configuration));
 
