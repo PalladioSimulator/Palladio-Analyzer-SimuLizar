@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.palladiosimulator.simulizar.events
+Bundle-SymbolicName: org.palladiosimulator.simulizar.events;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.simulizar.events
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Require-Bundle: de.uka.ipd.sdq.workflow,
+ de.uka.ipd.sdq.workflow.mdsd,
+ org.palladiosimulator.simulizar,
+ org.palladiosimulator.analyzer.workflow
