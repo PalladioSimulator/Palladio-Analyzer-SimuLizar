@@ -25,7 +25,7 @@ public class EventsTransformationWorkflowExtensionJob extends AbstractWorkflowEx
 		EventsTransformationConfiguration configuration = (EventsTransformationConfiguration) getJobConfiguration();
 		
 		if (configuration.simulateFailures) {
-			EventsTransformationJob.WithoutConfiguration delegate = new EventsTransformationJob.WithoutConfiguration(configuration.storeTransformedModelsProject,
+			EventsTransformationJob delegate = new EventsTransformationJob(configuration.storeTransformedModelsProject,
 					configuration.eventMiddlewareFile, configuration.storeTransformedModels);
 	
 			delegate.setBlackboard(myBlackboard);

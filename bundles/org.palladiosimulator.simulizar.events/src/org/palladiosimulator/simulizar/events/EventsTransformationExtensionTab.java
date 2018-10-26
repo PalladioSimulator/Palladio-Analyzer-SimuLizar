@@ -3,12 +3,15 @@ package org.palladiosimulator.simulizar.events;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -22,6 +25,8 @@ import de.uka.ipd.sdq.workflow.launchconfig.tabs.TabHelper;
 public class EventsTransformationExtensionTab extends AbstractLaunchConfigurationTab {
 	private static final Boolean DEFAULT_SIMULATE_EVENTS = false;
 
+	private Image infoImage;
+	
 	private Button simulateFailuresButton;
 	private Text eventMiddlewareRepository;
 	
@@ -30,6 +35,8 @@ public class EventsTransformationExtensionTab extends AbstractLaunchConfiguratio
 	
 	@Override
 	public final void createControl(final Composite parent) {
+		infoImage = getImage("information.png");
+		
 		final SelectionListener selectionListener = new SelectionListener() {
 
 			public void widgetDefaultSelected(final SelectionEvent e) {
@@ -54,6 +61,11 @@ public class EventsTransformationExtensionTab extends AbstractLaunchConfiguratio
 
 		setControl(container);
 		container.setLayout(new GridLayout());
+		
+		// Warning label because these settings are only effective when using SimuLizar
+		CLabel lblChooseEventSimInfo = new CLabel(container, SWT.NONE);
+        lblChooseEventSimInfo.setText("These settings are only effective when using SimuLizar.");
+        lblChooseEventSimInfo.setImage(infoImage);
 
 		// Create reliability section:
 		final Group eventGroup = new Group(container, SWT.NONE);
@@ -84,6 +96,10 @@ public class EventsTransformationExtensionTab extends AbstractLaunchConfiguratio
 		storeTransformedModelsProject = new Text(temporaryGroup, SWT.SINGLE | SWT.BORDER);
 		storeTransformedModelsProject.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
 		storeTransformedModelsProject.addModifyListener(modifyListener);
+	}
+	
+	private static Image getImage(String file) {
+        return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/" + file).createImage();
 	}
 
 	@Override
