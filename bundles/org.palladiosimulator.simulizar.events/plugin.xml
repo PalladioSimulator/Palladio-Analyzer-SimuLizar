@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         id="org.palladiosimulator.simulizar.events"
+         name="Events Transformation Extension Job"
+         point="org.palladiosimulator.simulizar.launcher.modelload">
+      <loadJob
+            blackboardPartitionId="org.palladiosimulator.simulizar.events.loadJob1"
+            loadJob="org.palladiosimulator.simulizar.events.EventsTransformationWorkflowExtensionJob"
+            loadJobConfigBuilder="org.palladiosimulator.simulizar.events.EventsTransformationConfigurationBuilder">
+      </loadJob>
+   </extension>
+   <extension
+         name="name"
+         point="de.uka.ipd.sdq.workflow.tab.extension">
+      <workflow_extension
+            name="org.palladiosimulator.simulizar.events.workflow_extension1"
+            runconfig_tab="org.palladiosimulator.simulizar.events.EventsTransformationExtensionTab"
+            workflow_id="workflow.extension.simucom.before.codegeneration">
+      </workflow_extension>
+   </extension>
+</plugin>
