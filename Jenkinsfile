@@ -8,7 +8,8 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-	        sh 'printenv'
+                sh 'printenv'
+                sh 'mvn help:evaluate -Dexpression=settings.localRepository'
                 sh 'mkdir $PWD/?/'
                 sh 'mkdir $PWD/?/.m2/'
                 sh 'cp -r /var/maven/* $PWD/?/.m2/'
