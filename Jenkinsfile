@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'custom_maven:latest'
-            args '-v /home/jenkinsbuild/.m2:/home/jenkinsbuild/.m2 --storage-opt size=200M'
+            args '-v /home/jenkinsbuild/.m2:/home/jenkinsbuild/.m2'
         }
     }
     stages {
