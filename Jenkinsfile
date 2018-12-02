@@ -1,7 +1,7 @@
 pipeline {
     agent {
         docker {
-            image 'maven:3-alpine'
+            image 'custom_maven:latest'
             args '-v /home/jenkinsbuild/.m2:/home/jenkinsbuild/.m2'
         }
     }
