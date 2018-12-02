@@ -12,10 +12,11 @@ pipeline {
             }
         }
         stage('Test') {
-                /*steps {
-                    sh 'mvn test'
+                steps {
+                    sh 'echo "Tests are disabled"'
+                    //sh 'mvn test'
                 }
-                post {
+                /*post {
                     always {
                         junit 'target/surefire-reports/*.xml'
                     }
