@@ -13,8 +13,8 @@ pipeline {
         }
         stage('Test') {
                 steps {
-                    sh 'echo "Tests are disabled"'
-                    //sh 'mvn test'
+                    //sh 'echo "Tests are disabled"'
+                    sh 'mvn test'
                 }
                 /*post {
                     always {
