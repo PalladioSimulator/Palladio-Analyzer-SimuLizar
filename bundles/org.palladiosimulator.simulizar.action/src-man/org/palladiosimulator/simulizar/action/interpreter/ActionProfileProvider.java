@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.action.interpreter;
 
-import org.eclipse.emf.ecore.resource.Resource;
 import org.modelversioning.emfprofile.Profile;
 import org.modelversioning.emfprofile.registry.IProfileProvider;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;

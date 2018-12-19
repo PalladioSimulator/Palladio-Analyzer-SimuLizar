@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.action.interpreter;
 
 import java.util.Optional;
 
-import org.omg.PortableInterceptor.SUCCESSFUL;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
