@@ -5,6 +5,9 @@ pipeline {
             args '-v m2-volume:/home/jenkinsbuild/.m2 -m 4G'
         }
     }
+    options {
+        timeout(time: 30, unit: 'MINUTES')
+    }
     stages {
         stage('Build') {
             steps {
@@ -22,10 +25,10 @@ pipeline {
                     }
                 }
         }*/
-        stage('CleanUp') {
+        /*stage('CleanUp') {
             steps {
                 sh 'yes | docker prune'
 	    }
-        }
+        }*/
     }
 }
