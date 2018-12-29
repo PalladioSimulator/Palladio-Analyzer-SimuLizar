@@ -11,16 +11,21 @@ pipeline {
                 sh 'mvn -B -DskipTests clean package'
             }
         }
-        stage('Test') {
+        /*stage('Test') {
                 steps {
                     //sh 'echo "Tests are disabled"'
                     sh 'mvn test'
                 }
-                /*post {
+                post {
                     always {
                         junit 'target/surefire-reports/*.xml'
                     }
-                }*/
+                }
+        }*/
+        stage('CleanUp') {
+            steps {
+                sh 'yes | docker prune'
+	    }
         }
     }
 }
