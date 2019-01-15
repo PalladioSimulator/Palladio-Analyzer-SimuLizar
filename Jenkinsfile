@@ -2,7 +2,7 @@ pipeline {
     agent {
         docker {
             image 'custom_maven:latest'
-            args '-v m2-volume:/home/jenkinsbuild/.m2 -m 4G --storage-opt size=20M'
+            args '-v /media/data/m2-cache/:/home/jenkinsbuild/.m2 -m 4G --storage-opt size=20M'
         }
     }
     options {
