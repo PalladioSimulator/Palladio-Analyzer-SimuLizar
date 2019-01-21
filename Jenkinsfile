@@ -6,6 +6,12 @@ pipeline {
     }
     stages {
         stage('TEST') {
+            agent {
+                docker {
+                    image 'custom_maven:latest'
+                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache -m 4G --storage-opt size=20M'
+                }
+            }
             steps {
                 sh 'printenv'
             }
