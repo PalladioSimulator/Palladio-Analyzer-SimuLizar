@@ -5,6 +5,11 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
     stages {
+        stage('TEST') {
+            steps {
+                sh 'printenv'
+            }
+        }
         stage('Build_Master') {
             agent {
                 docker {
