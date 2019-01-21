@@ -21,7 +21,7 @@ pipeline {
                 stage('load_cache') {
                     steps {
                         sh 'mkdir /home/jenkinsbuild/.m2/'
-                        sh 'cp -r /home/jenkinsbuild/tmp_cache/* /home/jenkinsbuild/.m2/'
+                        sh 'cp -r /home/jenkinsbuild/tmp_cache/ /home/jenkinsbuild/.m2/'
                     }
                 }
                 stage('build') {
@@ -31,7 +31,7 @@ pipeline {
                 }
                 stage('save_cache') {
                     steps {
-                        sh 'cp -r /home/jenkinsbuild/.m2/* /home/jenkinsbuild/tmp_cache/'
+                        sh 'cp -r /home/jenkinsbuild/.m2/ /home/jenkinsbuild/tmp_cache/'
                     }
                 }
             }
@@ -52,7 +52,7 @@ pipeline {
                 stage('load_cache') {
                     steps {
                         sh 'mkdir /home/jenkinsbuild/.m2/'
-                        sh 'cp -r /home/jenkinsbuild/tmp_cache/* /home/jenkinsbuild/.m2/'
+                        sh 'cp -r /home/jenkinsbuild/tmp_cache/ /home/jenkinsbuild/.m2/'
                     }
                 }
                 stage('build') {
@@ -62,7 +62,7 @@ pipeline {
                 }
                 stage('save_cache') {
                     steps {
-                        sh 'cp -r /home/jenkinsbuild/.m2/* /home/jenkinsbuild/tmp_cache/'
+                        sh 'cp -r /home/jenkinsbuild/.m2/ /home/jenkinsbuild/tmp_cache/'
                     }
                 }
             }
