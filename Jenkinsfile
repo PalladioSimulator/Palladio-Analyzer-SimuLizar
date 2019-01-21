@@ -5,17 +5,6 @@ pipeline {
         timeout(time: 30, unit: 'MINUTES')
     }
     stages {
-        stage('TEST') {
-            agent {
-                docker {
-                    image 'custom_maven:latest'
-                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache -m 4G --storage-opt size=20M'
-                }
-            }
-            steps {
-                sh 'printenv'
-            }
-        }
         stage('Build_Master') {
             agent {
                 docker {
@@ -25,8 +14,8 @@ pipeline {
             }
             when {
                 expression {
-                    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    return GIT_BRANCH == 'master'
+                    //GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    return env.GIT_BRANCH == 'master'
                 }
             }
             stages {
@@ -56,8 +45,8 @@ pipeline {
             }
             when {
                 expression {
-                    GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
-                    return !(GIT_BRANCH == 'master')
+                    //GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
+                    return !(env.GIT_BRANCH == 'master')
                 }
             }
             stages {
