@@ -9,12 +9,11 @@ pipeline {
             agent {
                 docker {
                     image 'custom_maven:latest'
-                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache -m 4G --storage-opt size=20M'
+                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache -m 4G --storage-opt size=20G'
                 }
             }
             when {
                 expression {
-                    //GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
                     return env.GIT_BRANCH == 'master'
                 }
             }
@@ -40,12 +39,11 @@ pipeline {
             agent {
                 docker {
                     image 'custom_maven:latest'
-                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache:ro -m 4G --storage-opt size=20M'
+                    args '-v /media/data/m2-cache/:/home/jenkinsbuild/tmp_cache:ro -m 4G --storage-opt size=20G'
                 }
             }
             when {
                 expression {
-                    //GIT_BRANCH = sh(returnStdout: true, script: 'git rev-parse --abbrev-ref HEAD').trim()
                     return !(env.GIT_BRANCH == 'master')
                 }
             }
