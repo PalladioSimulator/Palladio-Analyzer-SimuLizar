@@ -20,6 +20,7 @@ pipeline {
             stages {
                 stage('load_cache') {
                     steps {
+                        sh 'mkdir /home/jenkinsbuild/.m2/'
                         sh 'cp -r /home/jenkinsbuild/tmp_cache/* /home/jenkinsbuild/.m2/'
                     }
                 }
@@ -50,6 +51,7 @@ pipeline {
             stages {
                 stage('load_cache') {
                     steps {
+                        sh 'mkdir /home/jenkinsbuild/.m2/'
                         sh 'cp -r /home/jenkinsbuild/tmp_cache/* /home/jenkinsbuild/.m2/'
                     }
                 }
