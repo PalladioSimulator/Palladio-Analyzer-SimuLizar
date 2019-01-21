@@ -60,6 +60,11 @@ pipeline {
                         sh 'mvn -B -DskipTests clean package'
                     }
                 }
+                stage('save_cache') {
+                    steps {
+                        sh 'cp -r /home/jenkinsbuild/.m2/* /home/jenkinsbuild/tmp_cache/'
+                    }
+                }
             }
         }
         /*stage('Test') {
