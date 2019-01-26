@@ -14,6 +14,9 @@ pipeline {
             }
             when {
                 expression {
+                    if (env.CHANGE_TARGET) {    // check pull request
+                        return false
+                    }
                     return env.GIT_BRANCH == 'master'
                 }
             }
@@ -46,6 +49,9 @@ pipeline {
             }
             when {
                 expression {
+                    if (env.CHANGE_TARGET) {    // check pull request
+                        return true
+                    }
                     return !(env.GIT_BRANCH == 'master')
                 }
             }
