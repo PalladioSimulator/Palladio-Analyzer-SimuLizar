@@ -70,16 +70,5 @@ pipeline {
                 }
             }
         }
-        /*stage('Test') {
-                steps {
-                    //sh 'echo "Tests are disabled"'
-                    sh 'mvn test'
-                }
-                post {
-                    always {
-                        junit 'target/surefire-reports/*.xml'
-                    }
-                }
-        }*/
     }
 }
