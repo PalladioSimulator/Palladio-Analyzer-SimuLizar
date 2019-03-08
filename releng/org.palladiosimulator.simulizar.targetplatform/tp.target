@@ -110,11 +110,11 @@
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
-			<unit id="de.uka.ipd.sdq.simulation.abstractsimengine.feature.feature.group" version="tbd"/>
+			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
 			<repository location="https://sdqweb.ipd.kit.edu/eclipse/abstractsimengine/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
-			<unit id="de.uka.ipd.sdq.simulation.abstractsimengine.feature.feature.group" version="tbd"/>
+			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
 			<repository location="https://sdqweb.ipd.kit.edu/eclipse/abstractsimengine/nightly/"/>
 		</location>
 		
