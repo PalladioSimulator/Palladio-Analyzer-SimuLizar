@@ -49,12 +49,17 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
 
     @Override
     protected void set(final Notification notification) {
-        if (UsagemodelPackage.eINSTANCE.getClosedWorkload().isInstance(notification.getNotifier())) {
-            this.syncClosedWorkload(notification);
+        if (UsagemodelPackage.eINSTANCE.getClosedWorkload().isInstance(notification.getNotifier())
+                && notification.getFeature() == UsagemodelPackage.eINSTANCE.getClosedWorkload_Population()) {
+            this.syncClosedWorkloadPopulationChange(notification);
+        } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
+                && ((EObject) notification.getNotifier()).eContainer() instanceof ClosedWorkload
+                && notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
+            this.syncClosedWorkloadThinkTimeChange(notification);
         } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
                 && ((EObject) notification.getNotifier()).eContainer() instanceof OpenWorkload
                 && notification.getFeature() == StoexPackage.eINSTANCE.getRandomVariable_Specification()) {
-            this.syncOpenWorkload(notification);
+            this.syncOpenWorkloadInterarrivalTimeChange(notification);
         } else if (CorePackage.eINSTANCE.getPCMRandomVariable().isInstance(notification.getNotifier())
                 && ParameterPackage.eINSTANCE.getVariableCharacterisation()
                         .isInstance(((EObject) notification.getNotifier()).eContainer())) {
@@ -74,38 +79,43 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
         }
     }
 
-    /**
-     * @param notification
-     */
-    private void syncClosedWorkload(final Notification notification) {
+    private void syncClosedWorkloadPopulationChange(final Notification notification) {
         final ClosedWorkload workload = (ClosedWorkload) notification.getNotifier();
-        this.closedWorkloadPopulationChanged(workload, notification.getNewIntValue());
+        this.closedWorkloadPopulationChange(workload, notification.getNewIntValue());
     }
 
-    /**
-     * @param notification
-     */
-    private void syncOpenWorkload(final Notification notification) {
+    private void syncClosedWorkloadThinkTimeChange(final Notification notification) {
+        final ClosedWorkload workload = (ClosedWorkload) ((EObject) notification.getNotifier()).eContainer();
+        this.closedWorkloadThinkTimeChange(workload, notification.getNewStringValue());
+    }
+
+    private void syncOpenWorkloadInterarrivalTimeChange(final Notification notification) {
         final OpenWorkload workload = (OpenWorkload) ((EObject) notification.getNotifier()).eContainer();
-        this.openWorkloadInterarrivalChange(workload, notification.getNewStringValue());
+        this.openWorkloadInterarrivalTimeChange(workload, notification.getNewStringValue());
     }
 
-    private void openWorkloadInterarrivalChange(final Workload workload, final String newInterarrivalTime) {
+    private void openWorkloadInterarrivalTimeChange(final Workload workload, final String newInterarrivalTime) {
         LOGGER.debug("Setting open workload interarrival time to " + newInterarrivalTime);
         this.runtimeModel.getUsageModels().getOpenWorkloadDriver((OpenWorkload) workload)
                 .setInterarrivalTime(newInterarrivalTime);
     }
 
-    private void closedWorkloadPopulationChanged(final Workload workload, final int newPopulation) {
+    private void closedWorkloadPopulationChange(final Workload workload, final int newPopulation) {
         LOGGER.debug("Setting closed workload population to " + newPopulation);
         this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setPopulation(newPopulation);
     }
-    
+
+    private void closedWorkloadThinkTimeChange(final Workload workload, final String newThinkTime) {
+        LOGGER.debug("Setting closed workload think time to " + newThinkTime);
+        this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
+                .setThinkTime(newThinkTime);
+    }
+
     private void syncUsageScenarioAddition(Notification notification) {
         LOGGER.debug("Initializing execution of new usage scenario");
-        IWorkloadDriver newDriver =
-                this.runtimeModel.getUsageModels().createAndAddWorkloadDriver((UsageScenario) notification.getNewValue());
+        IWorkloadDriver newDriver = this.runtimeModel.getUsageModels()
+                .createAndAddWorkloadDriver((UsageScenario) notification.getNewValue());
         newDriver.run();
         this.runtimeModel.getModel().getUsageScenarios().add(newDriver);
         LOGGER.debug("Execution of new usage scenario started");
