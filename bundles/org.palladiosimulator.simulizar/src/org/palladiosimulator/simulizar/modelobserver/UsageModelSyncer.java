@@ -22,30 +22,30 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
     public UsageModelSyncer() {
         super();
     }
-    
+
     @Override
     protected void add(Notification notification) {
         if (UsagemodelPackage.eINSTANCE.getUsageModel().isInstance(notification.getNotifier())
-                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel().equals(notification.getFeature())) {
+                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel()
+                        .equals(notification.getFeature())) {
             this.syncUsageScenarioAddition(notification);
         } else {
             LOGGER.error(
                     "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
         }
     }
-    
+
     @Override
     protected void remove(Notification notification) {
         if (UsagemodelPackage.eINSTANCE.getUsageModel().isInstance(notification.getNotifier())
-                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel().equals(notification.getFeature())) {
+                && UsagemodelPackage.eINSTANCE.getUsageModel_UsageScenario_UsageModel()
+                        .equals(notification.getFeature())) {
             this.syncUsageScenarioRemoval(notification);
         } else {
             LOGGER.error(
                     "Usage model changed...But no resync strategy is known. Simulation results most likely are wrong.");
         }
     }
-
-
 
     @Override
     protected void set(final Notification notification) {
@@ -64,7 +64,7 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
              */
         } else if (UsagemodelPackage.eINSTANCE.getUsageScenario().isInstance(notification.getNotifier())
                 && notification.getFeature() == UsagemodelPackage.eINSTANCE.getUsageScenario_UsageModel_UsageScenario()
-                && notification.getOldValue() != null && notification.getNewValue() == null){
+                && notification.getOldValue() != null && notification.getNewValue() == null) {
             /*
              * Do nothing as the change is handled as a remove on the container
              */
@@ -110,7 +110,7 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
         this.runtimeModel.getModel().getUsageScenarios().add(newDriver);
         LOGGER.debug("Execution of new usage scenario started");
     }
-    
+
     private void syncUsageScenarioRemoval(Notification notification) {
         LOGGER.debug("Stopping execution of specific usage scenario");
         ICancellableWorkloadDriver driver = this.runtimeModel.getUsageModels()
