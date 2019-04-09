@@ -13,7 +13,8 @@
 
    <requires>
       <import feature="org.palladiosimulator.simulizar.feature" version="2.1.0.qualifier"/>
-	  <import plugin="org.palladiosimulator.monitorrepository.map" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.monitorrepository.map" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.branding"/>
    </requires>
 
    <plugin
