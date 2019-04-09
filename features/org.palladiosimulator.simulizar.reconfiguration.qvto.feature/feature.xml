@@ -22,17 +22,11 @@
       <import plugin="org.scaledl.usageevolution"/>
       <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.simucomframework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.branding"/>
    </requires>
 
    <plugin
          id="org.palladiosimulator.simulizar.reconfiguration.qvto"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.palladiosimulator.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
