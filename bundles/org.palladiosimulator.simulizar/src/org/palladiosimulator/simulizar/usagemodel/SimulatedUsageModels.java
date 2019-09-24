@@ -18,6 +18,7 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
+import de.uka.ipd.sdq.simucomframework.usage.IClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
@@ -77,7 +78,7 @@ public class SimulatedUsageModels {
         }
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
-        final IUserFactory userFactory = new ClosedWorkloadUserFactory(this.rootContext.getModel(),
+        final IClosedWorkloadUserFactory userFactory = new ClosedWorkloadUserFactory(this.rootContext.getModel(),
                 closedWorkload.getThinkTime_ClosedWorkload().getSpecification(), usageScenario) {
 
             @Override

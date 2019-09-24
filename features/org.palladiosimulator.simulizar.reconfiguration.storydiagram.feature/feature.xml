@@ -11,15 +11,12 @@
       [Enter Feature Description here.]
    </description>
 
-   <plugin
-         id="org.palladiosimulator.simulizar.reconfiguration.storydiagram"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+   <requires>
+      <import plugin="org.palladiosimulator.branding"/>
+   </requires>
 
    <plugin
-         id="org.palladiosimulator.branding"
+         id="org.palladiosimulator.simulizar.reconfiguration.storydiagram"
          download-size="0"
          install-size="0"
          version="0.0.0"

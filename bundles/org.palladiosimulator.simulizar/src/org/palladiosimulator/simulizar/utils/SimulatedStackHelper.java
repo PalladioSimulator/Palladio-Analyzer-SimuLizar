@@ -1,5 +1,8 @@
 package org.palladiosimulator.simulizar.utils;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
@@ -131,5 +134,21 @@ public final class SimulatedStackHelper {
         addParameterToStackFrame(stack.size() == 0 ? null : stack.currentStackFrame(), parameter, stackFrame);
         stack.pushStackFrame(stackFrame);
         return stackFrame;
+    }
+
+    /**
+     * Convenience method for creating a new stack frame that contains the elements in the given map.
+     * 
+     * Does not validate the input.
+     * 
+     * @param map the map of entries the new stack frame is to contain
+     * @return the created stack frame
+     */
+    public static final SimulatedStackframe<Object> createFromMap(final Map<String, Object> map) {
+    	SimulatedStackframe<Object> resultFrame = new SimulatedStackframe<Object>();
+    	for (Entry<String, Object> entry : map.entrySet()) {
+    		resultFrame.addValue(entry.getKey(), entry.getValue());
+    	}
+    	return resultFrame;
     }
 }

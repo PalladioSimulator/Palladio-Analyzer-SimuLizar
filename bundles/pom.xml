@@ -25,6 +25,7 @@
 		<module>org.palladiosimulator.simulizar.edp2.measuringpoint</module>
 		<module>org.palladiosimulator.simulizar.edp2.measuringpoint.edit</module>
 		<module>org.palladiosimulator.simulizar.elasticity</module>
+		<module>org.palladiosimulator.simulizar.events</module>
 		<module>org.palladiosimulator.simulizar.measuringpoint</module>
 		<module>org.palladiosimulator.simulizar.measuringpoint.create</module>
 		<module>org.palladiosimulator.simulizar.monitorrepository.feedthrough</module>
