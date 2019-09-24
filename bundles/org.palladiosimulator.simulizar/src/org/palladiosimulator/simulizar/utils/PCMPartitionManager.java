@@ -33,6 +33,12 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
+/**
+ * The class is responsible to manage the PCMResourceSetPartition.
+ * 
+ * @author scheerer
+ *
+ */
 public class PCMPartitionManager {
 
 	private static final Logger LOGGER = Logger.getLogger(PCMPartitionManager.class.getName());
@@ -81,8 +87,9 @@ public class PCMPartitionManager {
 
 	/**
 	 * Constructor
-	 *
+	 * 
 	 * @param blackboard the workflow engine's blackboard holding all models.
+	 * @param config     SimuLizar workflow configuration object
 	 */
 	public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
 		this.blackboard = blackboard;
@@ -116,10 +123,16 @@ public class PCMPartitionManager {
 		return Optional.of(rmModelResource);
 	}
 
+	/**
+	 * @return the global PCM modeling partition.
+	 */
 	public PCMResourceSetPartition getGlobalPCMModel() {
 		return this.globalPartition;
 	}
 
+	/**
+	 * @return a copy of the global PCM modeling partition.
+	 */
 	public PCMResourceSetPartition getLocalPCMModel() {
 		checkAndHandleDeferredChanges();
 		return this.currentPartition;
@@ -199,6 +212,13 @@ public class PCMPartitionManager {
 		resource.eAdapters().remove(this.globalPCMChangeListener);
 	}
 
+	/**
+	 * Enables to search the global PCM partition for a specific model.
+	 * 
+	 * @param targetType Corresponds to the EClass of the target model to be
+	 *                   searched for.
+	 * @return the model to be searched for or null if the model has not been found.
+	 */
 	public <T extends EObject> T findModel(EClass targetType) {
 		List<T> result = this.globalPartition.getElement(targetType);
 		if (result.isEmpty()) {
@@ -208,14 +228,23 @@ public class PCMPartitionManager {
 		return result.get(0);
 	}
 
+	/**
+	 * @return a snapshot of the current PCMPartitionManager object.
+	 */
 	public PCMPartitionManager makeSnapshot() {
 		return new PCMPartitionManager(this);
 	}
 
+	/**
+	 * @return the blackboard that contains the global PCM partition.
+	 */
 	public MDSDBlackboard getBlackboard() {
 		return this.blackboard;
 	}
 
+	/**
+	 * Removes all temporary resources that has been used during analysis.
+	 */
 	public void cleanUp() {
 		EClass targetType = RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel();
 		Optional.ofNullable(findModel(targetType)).ifPresent(eObj -> delete((RuntimeMeasurementModel) eObj));
