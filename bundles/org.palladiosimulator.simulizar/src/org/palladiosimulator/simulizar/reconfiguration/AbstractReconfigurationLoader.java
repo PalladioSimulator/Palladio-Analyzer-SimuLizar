@@ -17,7 +17,7 @@ public abstract class AbstractReconfigurationLoader {
 
 	public void load(SimuLizarWorkflowConfiguration configuration) {
 		String reconfFolder = configuration.getReconfigurationRulesFolder();
-		if (reconfFolder.isEmpty()) {
+		if (reconfFolder == null || reconfFolder.isEmpty()) {
 			LOGGER.info("No reconfiguration rules folder specified, reconfigurations disabled.");
 			return;
 		} 
