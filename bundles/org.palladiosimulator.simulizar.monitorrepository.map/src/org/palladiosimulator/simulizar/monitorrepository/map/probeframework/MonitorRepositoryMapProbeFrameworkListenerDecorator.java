@@ -1,23 +1,19 @@
 package org.palladiosimulator.simulizar.monitorrepository.map.probeframework;
 
 import java.util.Objects;
-import java.util.Optional;
 
 import org.eclipse.emf.ecore.EClass;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
-import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
-import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.map.Map;
 import org.palladiosimulator.monitorrepository.map.MapPackage;
-import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
+import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
 import org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement.MonitorRepositoryMapRuntimeMeasurementsRecorder;
 
 /**
@@ -59,32 +55,13 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
                 .filter(MeasurementSpecification::isTriggersSelfAdaptations).forEach(this::initMapping);
     }
 
-    private void initMapping(final MeasurementSpecification measurementSpecification) {
+	private void initMapping(final MeasurementSpecification measurementSpecification) {
         MetricDescription metric = measurementSpecification.getMetricDescription();
         MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
 
-        Calculator baseCalculator = getBaseCalculator(metric, measuringPoint).orElseThrow(
-                () -> new IllegalStateException("Mapping/Transformation of measurements cannot be initialized.\n"
-                        + "No '" + metric.getName() + "' calculator available for: " + "MeasuringPoint '"
-                        + measuringPoint.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
-                        + measurementSpecification.getMonitor().getEntityName() + "'\n"
-                        + "Ensure that measurement calculator has been created and registered within the ProbeFrameworkListener class!"));
-
-        baseCalculator.addObserver(new MonitorRepositoryMapRuntimeMeasurementsRecorder(this.rmModel,
-                (Map) measurementSpecification.getProcessingType()));
-    }
-
-    private Optional<Calculator> getBaseCalculator(final MetricDescription metric,
-            final MeasuringPoint measuringPoint) {
-        Calculator baseCalculator = this.calculatorFactory
-                .getCalculatorByMeasuringPointAndMetricDescription(measuringPoint, metric);
-        if (baseCalculator == null && MetricSpecPackage.Literals.BASE_METRIC_DESCRIPTION.isInstance(metric)) {
-            return this.calculatorFactory.getCalculatorsForMeasuringPoint(measuringPoint).stream()
-                    .filter(calc -> MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
-                            (BaseMetricDescription) metric, calc.getMetricDesciption()))
-                    .findAny();
-
-        }
-        return Optional.ofNullable(baseCalculator);
-    }
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+                .onMetricDescriptionAndMeasuringPoint(metric, measuringPoint,
+                        () -> new MonitorRepositoryMapRuntimeMeasurementsRecorder(this.rmModel,
+                                (Map) measurementSpecification.getProcessingType()));
+	}
 }
