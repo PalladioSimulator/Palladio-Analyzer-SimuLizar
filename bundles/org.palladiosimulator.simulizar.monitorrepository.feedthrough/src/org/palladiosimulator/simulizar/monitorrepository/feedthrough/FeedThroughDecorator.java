@@ -5,17 +5,16 @@ import java.util.Optional;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
-import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.metricspec.MetricSpecPackage;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
-import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
+import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
 
 /**
  * Registers PRM recorders that directly update measurements in the RuntimeMeasurement model with
@@ -54,17 +53,10 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
         
         checkValidity(expectedMetric, measurementSpecification);
         
-		Calculator correspondingBaseCalculator = getBaseCalculator(expectedMetric.get(),
-                measuringPoint).<IllegalStateException> orElseThrow(() -> new IllegalStateException(
-                		"Feed-through measurements cannot be initialized.\n" + "No '"
-                                + expectedMetric.get().getName() + "' calculator available for: " + "MeasuringPoint '"
-                                + measuringPoint.getStringRepresentation() + "'.\n" + "Affected Monitor: '"
-                                + measurementSpecification.getMonitor().getEntityName() + "'\n"
-                                + "Ensure that measurement calculator has been created and registered within "
-                                + "the ProbeFrameworkListener class!"));
-        
-		correspondingBaseCalculator.addObserver(new FeedThroughRecorder(expectedMetric.get(), runtimeMeasurementModel, 
-				measurementSpecification, measuringPoint));
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+                .onMetricDescriptionAndMeasuringPoint(expectedMetric.get(), measuringPoint,
+                        () -> new FeedThroughRecorder(expectedMetric.get(), runtimeMeasurementModel,
+                                measurementSpecification, measuringPoint));
 	}
 	
     private static final MetricSpecSwitch<Optional<NumericalBaseMetricDescription>> GET_NUMERICAL_BASE_METRIC_SWITCH = new MetricSpecSwitch<Optional<NumericalBaseMetricDescription>>() {
@@ -89,19 +81,5 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
                     + MetricSpecPackage.Literals.NUMERICAL_BASE_METRIC_DESCRIPTION.getName()
                     + "s are supported for fixed and variable size aggregation!");
         }
-    }
-    
-    private Optional<Calculator> getBaseCalculator(final NumericalBaseMetricDescription metric,
-            final MeasuringPoint measuringPoint) {
-        Calculator baseCalculator = this.calculatorFactory
-                .getCalculatorByMeasuringPointAndMetricDescription(measuringPoint, metric);
-        if (baseCalculator == null) {
-            return this.calculatorFactory.getCalculatorsForMeasuringPoint(measuringPoint)
-                    .stream().filter(calc -> MetricDescriptionUtility
-                            .isBaseMetricDescriptionSubsumedByMetricDescription(metric, calc.getMetricDesciption()))
-                    .findAny();
-
-        }
-        return Optional.of(baseCalculator);
     }
 }
