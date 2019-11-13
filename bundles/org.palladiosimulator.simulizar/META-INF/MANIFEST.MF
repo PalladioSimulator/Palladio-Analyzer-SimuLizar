@@ -36,7 +36,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="0.1.0",
  org.eclipse.emf.common
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.access;
   uses:="org.scaledl.usageevolution,

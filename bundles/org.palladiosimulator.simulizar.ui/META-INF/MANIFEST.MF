@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.106.0",
  org.palladiosimulator.commons;bundle-version="1.0.0",
  org.eclipse.emf.common
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar.ui,
  org.palladiosimulator.simulizar.ui.configuration,
  org.palladiosimulator.simulizar.ui.configuration.extensions

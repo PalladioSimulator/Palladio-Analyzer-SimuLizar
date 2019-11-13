@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: org.palladiosimulator.runtimemeasurement.provider.RuntimeMeasurementEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.runtimemeasurement.provider
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="2.0.0";visibility:=reexport,
