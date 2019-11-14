@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-	<feature url="features/org.palladiosimulator.simulizar.feature_2.1.1.qualifier.jar" id="org.palladiosimulator.simulizar.feature" version="2.1.1.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.feature.source_2.1.1.qualifier.jar" id="org.palladiosimulator.simulizar.feature.source" version="2.1.1.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.henshin.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.henshin.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.henshin.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature.source" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.henshin.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.qvto.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.qvto.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.qvto.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature.source" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.qvto.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature.source" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.monitorrepository.map.feature_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.monitorrepository.map.feature" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.monitorrepository.map.feature_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.monitorrepository.map.feature" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.category"/>
 	</feature>
-	<feature url="features/org.palladiosimulator.simulizar.monitorrepository.map.feature.source_1.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.monitorrepository.map.feature.source" version="1.0.0.qualifier">
+	<feature url="features/org.palladiosimulator.simulizar.monitorrepository.map.feature.source_4.2.0.qualifier.jar" id="org.palladiosimulator.simulizar.monitorrepository.map.feature.source" version="4.2.0.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
 	<category-def name="org.palladiosimulator.addons.category" label="Palladio Bench Addons">
