@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.apache.log4j.Logger;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.listener.IMeasurementSourceListener;
@@ -31,6 +32,8 @@ import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactory
  *
  */
 public abstract class DeferredMeasurementInitialization {
+	
+	private static final Logger LOGGER = Logger.getLogger(DeferredMeasurementInitialization.class);
     /**
      * This internal class contains the registry listener logic and is not build to
      * be extensible.
@@ -90,13 +93,17 @@ public abstract class DeferredMeasurementInitialization {
             Objects.requireNonNull(supplier);
 
             synchronized (deferredInitializations) {
-                if (deferredInitializations.isEmpty()) {
-                    factory.addObserver(this);
-                }
                 Optional<Calculator> baseCalculator = getBaseCalculator(desc, mp);
                 if (baseCalculator.isPresent()) {
                     baseCalculator.get().addObserver(supplier.get());
                 } else {
+                    if (deferredInitializations.isEmpty()) {
+                    	if (factory.getObservers().contains(this)) {
+                    		LOGGER.warn(String.format("Deferred initialization is already registered as a listener. "
+                    				+ "Metric: %s MeasuringPoint: %s", desc.getName(), mp.getStringRepresentation()));
+                    	} else factory.addObserver(this);
+                    }
+                    
                     deferredInitializations
                             .computeIfAbsent(mp.getStringRepresentation(),
                                     (s) -> new HashMap<MetricDescription, Set<Supplier<IMeasurementSourceListener>>>())
