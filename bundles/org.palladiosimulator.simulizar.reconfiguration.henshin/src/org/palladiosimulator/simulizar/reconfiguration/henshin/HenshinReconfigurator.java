@@ -13,6 +13,7 @@ import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
 import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
 import org.eclipse.emf.henshin.interpreter.impl.UnitApplicationImpl;
 import org.eclipse.emf.henshin.model.Module;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
@@ -72,7 +73,8 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
 	private boolean analyzeReconfiguration(UnitApplication app, Module module) {
 		
 		// Load the example model into an EGraph:
-		EGraph graph = new EGraphImpl(this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel()));
+		RuntimeMeasurementModel rmModel = this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+		EGraph graph = new EGraphImpl(rmModel);
 		app.setEGraph(graph);
 
 		// Execute analyze step of rule

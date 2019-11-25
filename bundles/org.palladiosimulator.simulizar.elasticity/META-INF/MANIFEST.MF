@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: ReconfigurationWithConfidence
 Bundle-SymbolicName: org.palladiosimulator.simulizar.elasticity;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 4.2.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.elasticity.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.ui,
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
  org.palladiosimulator.commons;bundle-version="1.0.0",
  org.palladiosimulator.simulizar.reconfigurationrule
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Import-Package: de.uka.ipd.sdq.statistics,
  de.uka.ipd.sdq.statistics.estimation,

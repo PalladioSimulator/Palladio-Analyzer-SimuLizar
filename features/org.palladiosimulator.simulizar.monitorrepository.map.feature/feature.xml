@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.monitorrepository.map.feature"
       label="Palladio Component Model - Analyzer: SimuLizar - Monitor Repository Map Implementation"
-      version="1.0.0.qualifier"
+      version="4.2.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -12,7 +12,7 @@
    </description>
 
    <requires>
-      <import feature="org.palladiosimulator.simulizar.feature" version="2.1.0.qualifier"/>
+      <import feature="org.palladiosimulator.simulizar.feature" version="4.2.0" match="compatible"/>
       <import plugin="org.palladiosimulator.monitorrepository.map" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.branding"/>
    </requires>
