@@ -34,7 +34,9 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * The class is responsible to manage the PCMResourceSetPartition.
+ * The class manages all the models that are required during simulation. This
+ * includes querying for specific models as well as observing and handling model
+ * changes.
  * 
  * @author scheerer
  *
@@ -86,10 +88,14 @@ public class PCMPartitionManager {
 	};
 
 	/**
-	 * Constructor
+	 * The constructor initializes the blackboard, which is the primary source to
+	 * manage, makes copies of the current PCM related mode, which may be changed by
+	 * reconfigurations. Moreover, a runtime measurement model is created and
+	 * temporarily persisted (this is necessary for keeping it in the blackboard)
+	 * until simulation is done.
 	 * 
-	 * @param blackboard the workflow engine's blackboard holding all models.
-	 * @param config     SimuLizar workflow configuration object
+	 * @param blackboard The workflow engine's blackboard holding all models.
+	 * @param config     SimuLizar workflow configuration object.
 	 */
 	public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
 		this.blackboard = blackboard;
@@ -100,6 +106,11 @@ public class PCMPartitionManager {
 		initRuntimeMeasurementModel(config.getMonitorRepositoryFile());
 	}
 
+	/**
+	 * The constructor is only used to make a copy of the PCMPartitionManager.
+	 * 
+	 * @param managerToCopy The manager instance that is to be copied.
+	 */
 	private PCMPartitionManager(PCMPartitionManager managerToCopy) {
 		managerToCopy.checkAndHandleDeferredChanges();
 		this.currentPartition = managerToCopy.currentPartition;
@@ -124,14 +135,18 @@ public class PCMPartitionManager {
 	}
 
 	/**
-	 * @return the global PCM modeling partition.
+	 * @return the global PCM modeling partition. The global PCM model is the
+	 *         primary model under change, e.g., whenever a reconfiguration is
+	 *         triggered, and is observed during simulation.
 	 */
 	public PCMResourceSetPartition getGlobalPCMModel() {
 		return this.globalPartition;
 	}
 
 	/**
-	 * @return a copy of the global PCM modeling partition.
+	 * @return a copy of the global PCM modeling partition. The local PCM model
+	 *         represents an up-to-date snapshot of the global PCM model that
+	 *         captures the latest changes made in the global PCM model.
 	 */
 	public PCMResourceSetPartition getLocalPCMModel() {
 		checkAndHandleDeferredChanges();
@@ -213,11 +228,11 @@ public class PCMPartitionManager {
 	}
 
 	/**
-	 * Enables to search the global PCM partition for a specific model.
+	 * Enables to query the blackboard for a specific model that has been stored.
 	 * 
 	 * @param targetType Corresponds to the EClass of the target model to be
 	 *                   searched for.
-	 * @return the model to be searched for or null if the model has not been found.
+	 * @return the model to search for or null if the model was not found.
 	 */
 	public <T extends EObject> T findModel(EClass targetType) {
 		List<T> result = this.globalPartition.getElement(targetType);
@@ -230,6 +245,8 @@ public class PCMPartitionManager {
 
 	/**
 	 * @return a snapshot of the current PCMPartitionManager object.
+	 * 
+	 * @see #PCMPartitionManager(PCMPartitionManager)
 	 */
 	public PCMPartitionManager makeSnapshot() {
 		return new PCMPartitionManager(this);
@@ -243,7 +260,9 @@ public class PCMPartitionManager {
 	}
 
 	/**
-	 * Removes all temporary resources that has been used during analysis.
+	 * Removes all temporary resources that has been used during simulation.
+	 * 
+	 * @see #PCMPartitionManager(MDSDBlackboard, SimuLizarWorkflowConfiguration)
 	 */
 	public void cleanUp() {
 		EClass targetType = RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel();
