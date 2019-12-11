@@ -249,7 +249,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		private InternalSwitch(SimuComSimProcess executingProcess) {
 			this.executingProcess = executingProcess;
 			QVToModelCache availableModels = new QVToModelCache(
-					Objects.requireNonNull(TransientEffectInterpreter.this.state.getModelAccess()));
+					Objects.requireNonNull(TransientEffectInterpreter.this.state.getPCMPartitionManager()));
 
 			this.qvtoExecutor = new TransientEffectQVTOExecutor(
 					TransientEffectTransformationCacheKeeper.getTransformationCacheForRuntimeState(

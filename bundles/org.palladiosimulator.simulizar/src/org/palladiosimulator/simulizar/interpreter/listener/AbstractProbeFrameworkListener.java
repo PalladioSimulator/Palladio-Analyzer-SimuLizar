@@ -30,10 +30,9 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
-import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
@@ -52,7 +51,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     protected final SimuComModel simuComModel;
     protected final ICalculatorFactory calculatorFactory;
     protected final Reconfigurator reconfigurator;
-    private final IModelAccess modelAccess;
+    private final PCMPartitionManager pcmPartitionManager;
 
     private final Map<String, List<TriggeredProbe>> currentTimeProbes = new HashMap<String, List<TriggeredProbe>>();
 
@@ -62,10 +61,10 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public AbstractProbeFrameworkListener(final IModelAccess modelAccess, final SimuComModel simuComModel,
+    public AbstractProbeFrameworkListener(final PCMPartitionManager pcmPartitionManager, final SimuComModel simuComModel,
             final Reconfigurator reconfigurator) {
         super();
-        this.modelAccess = Objects.requireNonNull(modelAccess);
+        this.pcmPartitionManager = Objects.requireNonNull(pcmPartitionManager);
         this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = Objects.requireNonNull(reconfigurator);
@@ -172,23 +171,14 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     public SimuComModel getSimuComModel() {
         return this.simuComModel;
     }
-
+    
     /**
-     * Gets the {@link IModelAccess} attached to this instance.
-     * 
-     * @return A reference to the {@code IModelAccess}.
-     */
-    public IModelAccess getModelAccess() {
-        return this.modelAccess;
-    }
-
-    /**
-     * Gets the {@link RuntimeMeasurementModel} attached to this instance.
+     * Gets the {@link PCMPartitionManager} attached to this instance.
      *
-     * @return A reference to the {@code RuntimeMeasurementModel}.
+     * @return A reference to the {@code PCMPartitionManager}.
      */
-    public RuntimeMeasurementModel getRuntimeMeasurementModel() {
-        return this.modelAccess.getRuntimeMeasurementModel();
+    public PCMPartitionManager getPCMPartitionManager() {
+        return this.pcmPartitionManager;
     }
 
     /**
@@ -256,7 +246,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
             final Predicate<? super MeasurementSpecification> predicate) {
         assert predicate != null;
 
-        MonitorRepository monitorRepositoryModel = this.modelAccess.getMonitorRepositoryModel();
+        MonitorRepository monitorRepositoryModel = this.pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
         if (monitorRepositoryModel != null) {
             return monitorRepositoryModel.getMonitors().stream().filter(Monitor::isActivated)
                     .flatMap(monitor -> monitor.getMeasurementSpecifications().stream()).filter(predicate)

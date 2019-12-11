@@ -12,11 +12,12 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.access.ModelAccess;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
@@ -32,12 +33,16 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
@@ -60,7 +65,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
-    private final ModelAccess modelAccess;
+    private final PCMPartitionManager pcmPartitionManager;
     private final Reconfigurator reconfigurator;
     private final List<IModelObserver> modelObservers;
     protected final SimulationCancelationDelegate cancelationDelegate;
@@ -73,9 +78,9 @@ public abstract class AbstractSimuLizarRuntimeState {
      * @param modelAccess
      */
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
-            final ModelAccess modelAccess, final SimulationCancelationDelegate cancelationDelegate) {
+            final MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
         super();
-        this.modelAccess = modelAccess;
+        this.pcmPartitionManager = new PCMPartitionManager(blackboard, configuration);
         this.cancelationDelegate = cancelationDelegate;
         this.model = SimuComModelFactory.createSimuComModel(configuration);
 
@@ -97,7 +102,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.initializeInterpreterListeners(this.reconfigurator);
         this.usageEvolverFacade = new UsageEvolverFacade(this);
         this.initializeUsageEvolver();
-        this.modelAccess.startObservingPcmChanges();
+        this.pcmPartitionManager.startObservingPcmChanges();
     }
 
     /**
@@ -126,8 +131,8 @@ public abstract class AbstractSimuLizarRuntimeState {
         return this.usageModels;
     }
 
-    public IModelAccess getModelAccess() {
-        return this.modelAccess;
+    public PCMPartitionManager getPCMPartitionManager() {
+        return this.pcmPartitionManager;
     }
 
     public boolean isCanceled() {
@@ -156,10 +161,11 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.eventHelper.removeAllListener();
         this.reconfigurator.removeAllObserver();
         this.reconfigurator.cleanUp();
-        this.modelAccess.stopObservingPcmChanges();
+        this.pcmPartitionManager.stopObservingPcmChanges();
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
         this.modelObservers.forEach(IModelObserver::unregister);
+        this.pcmPartitionManager.cleanUp();
     }
 
     private void initializeWorkloadDrivers() {
@@ -178,13 +184,13 @@ public abstract class AbstractSimuLizarRuntimeState {
         final List<IReconfigurationEngine> reconfigEngines = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
+        reconfigEngines.forEach(engine -> {
+        	engine.setConfiguration(configuration);
+        	engine.setPCMPartitionManager(pcmPartitionManager);
+        });
 
-        for (final IReconfigurationEngine reconfigEngine : reconfigEngines) {
-            reconfigEngine.setConfiguration(configuration);
-            reconfigEngine.setModelAccess(this.modelAccess);
-        }
-
-        final Reconfigurator reconfigurator = new Reconfigurator(this.model, this.modelAccess, simulationControl,
+        RuntimeMeasurementModel rmModel = this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+        final Reconfigurator reconfigurator = new Reconfigurator(this.model, rmModel, simulationControl,
                 reconfigEngines, configuration);
         reconfigurator.addObserver(new IReconfigurationListener() {
 
@@ -224,8 +230,8 @@ public abstract class AbstractSimuLizarRuntimeState {
      * elements from the monitor repository, then creates corresponding calculators.
      */
     private TriggeredProbe initNumberOfResourceContainersCalculator() {
-        final MonitorRepository monitorRepository = this.getModelAccess().getMonitorRepositoryModel();
-        final ResourceEnvironment resourceEnvironment = this.getModelAccess().getGlobalPCMModel().getAllocation()
+        final MonitorRepository monitorRepository = this.pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+        final ResourceEnvironment resourceEnvironment = this.pcmPartitionManager.getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation();
 
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
@@ -257,7 +263,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     }
 
     private int getNumberOfResourceContainers() {
-        return this.getModelAccess().getGlobalPCMModel().getAllocation().getTargetResourceEnvironment_Allocation()
+        return this.pcmPartitionManager.getGlobalPCMModel().getAllocation().getTargetResourceEnvironment_Allocation()
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
@@ -273,7 +279,8 @@ public abstract class AbstractSimuLizarRuntimeState {
     }
 
     private void initializeUsageEvolver() {
-        if (this.modelAccess.getUsageEvolutionModel() != null) {
+    	UsageEvolution ueModel = this.pcmPartitionManager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+        if (ueModel != null) {
             LOGGER.debug("Start the code to evolve the usage model over time");
 
             this.usageEvolverFacade.start();

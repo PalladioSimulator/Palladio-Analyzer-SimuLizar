@@ -18,11 +18,13 @@ import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.slidingwindow.aggregators.SlidingWindowStatisticalCharacterizationAggregator;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -58,7 +60,8 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
         this.model = getProbeFrameworkListener().getSimuComModel();
-        this.runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
+        PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
+        this.runtimeMeasurementModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
     }
 
     private void initSlidingWindowBasedMeasurements() {

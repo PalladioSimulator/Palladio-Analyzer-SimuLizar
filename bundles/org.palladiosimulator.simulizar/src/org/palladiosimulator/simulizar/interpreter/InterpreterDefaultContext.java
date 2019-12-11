@@ -4,8 +4,8 @@ import java.util.Stack;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -29,7 +29,7 @@ public class InterpreterDefaultContext extends Context {
 
     private final AbstractSimuLizarRuntimeState runtimeState;
 
-    private final IModelAccess modelAccess;
+    private final PCMPartitionManager pcmPartitionManager;
 
 	private PCMResourceSetPartition localPCMModelCopy;
 
@@ -37,14 +37,14 @@ public class InterpreterDefaultContext extends Context {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
-        this.modelAccess = this.runtimeState.getModelAccess();
-        this.localPCMModelCopy = this.modelAccess.getLocalPCMModel();
+        this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
+        this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
     }
 
     InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
             final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
         super(context.getModel());
-        this.modelAccess = runtimeState.getModelAccess().clone();
+        this.pcmPartitionManager = runtimeState.getPCMPartitionManager().makeSnapshot();
         this.localPCMModelCopy = pcmLocalCopy;
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
@@ -67,7 +67,7 @@ public class InterpreterDefaultContext extends Context {
      * @param thread
      */
     public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getRuntimeState(), true, context.getModelAccess().getLocalPCMModel());
+        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager().getLocalPCMModel());
         this.setSimProcess(thread);
     }
 
@@ -87,8 +87,8 @@ public class InterpreterDefaultContext extends Context {
         return this.assemblyContextStack;
     }
 
-    public IModelAccess getModelAccess() {
-        return this.modelAccess;
+    public PCMPartitionManager getPCMPartitionManager() {
+        return this.pcmPartitionManager;
     }
     
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {

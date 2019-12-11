@@ -13,7 +13,7 @@ public abstract class AbstractUsageModelObserver extends AbstractModelObserver<U
 
     @Override
     public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getModelAccess().getGlobalPCMModel().getUsageModel(),
+        super.initialize(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getUsageModel(),
                 Objects.requireNonNull(runtimeState));
     }
 }

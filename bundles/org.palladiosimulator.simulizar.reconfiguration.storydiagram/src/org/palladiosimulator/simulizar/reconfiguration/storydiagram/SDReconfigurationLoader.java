@@ -1,39 +1,37 @@
 package org.palladiosimulator.simulizar.reconfiguration.storydiagram;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationLoader;
-import org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess.StoryDiagramModelAccess;
-import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.eclipse.emf.common.util.URI;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.ecore.resource.ResourceSet;
+import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl;
+import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
+import org.storydriven.storydiagrams.activities.Activity;
 
-public class SDReconfigurationLoader implements IReconfigurationLoader {
+public class SDReconfigurationLoader extends AbstractReconfigurationLoader {
 
-	private SimuLizarWorkflowConfiguration configuration;
-	private StoryDiagramModelAccess modelAccess;
-	private List<ModelTransformation<? extends Object>> transformations;
-	
-	public SDReconfigurationLoader() {}
+	public static final String STORYDIAGRAMS_FILE_EXTENSION = ".sdm";
 
 	@Override
-	public void setConfiguration(SimuLizarWorkflowConfiguration configuration) {
-		this.configuration = configuration;
+	protected String getTransformationFileExtension() {
+		return STORYDIAGRAMS_FILE_EXTENSION;
 	}
 
 	@Override
-	public void setModelAccess(IModelAccess modelAccess) {
-		this.modelAccess = new StoryDiagramModelAccess(modelAccess, this.configuration);
-	}
-
-	@Override
-	public List<ModelTransformation<? extends Object>> getTransformations() {
-		if(this.transformations == null){
-			this.transformations = new ArrayList<ModelTransformation<? extends Object>>();
-			this.modelAccess.getStoryDiagrams().forEach(a -> this.transformations.add(new SDModelTransformation(a)));
+	protected void setTransformations(URI[] transURIs) {
+		for (URI each : transURIs) {
+			toSDModelTransformation(each).ifPresent(trans -> this.transformations.add(trans));
 		}
-		return this.transformations;
 	}
 
+	private Optional<SDModelTransformation> toSDModelTransformation(URI sdURI) {
+		ResourceSet rsHelper = new ResourceSetImpl();
+		Resource sdResource = rsHelper.getResource(sdURI, true);
+		if (sdResource.getContents().isEmpty()) {
+			return Optional.empty();
+		}
+		Activity activity = (Activity) sdResource.getContents().get(0);
+		return Optional.of(new SDModelTransformation(activity));
+	}
 }

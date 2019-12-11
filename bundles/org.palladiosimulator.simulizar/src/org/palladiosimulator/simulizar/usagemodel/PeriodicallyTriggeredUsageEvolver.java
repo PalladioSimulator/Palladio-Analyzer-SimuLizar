@@ -14,8 +14,10 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.UsageevolutionPackage;
 import org.scaledl.usageevolution.WorkParameterEvolution;
 
 import tools.descartes.dlim.Sequence;
@@ -90,7 +92,8 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      * @return the Usage updated by <code>this</code>.
      */
     protected Usage getCorrespondingUsage() {
-        final UsageEvolution usageEvolution = this.rtState.getModelAccess().getUsageEvolutionModel();
+    	PCMPartitionManager manager = this.rtState.getPCMPartitionManager();
+        final UsageEvolution usageEvolution = manager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
         for (final Usage usage : usageEvolution.getUsages()) {
             if (usage.getScenario().getId().equals(this.evolvedScenarioId)) {
                 return usage;
@@ -158,7 +161,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     }
 
     private VariableCharacterisation getGlobalWorkParameter(final VariableCharacterisation workParam) {
-        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getModelAccess()
+        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getPCMPartitionManager()
                 .getGlobalPCMModel().getResourceSet().getEObject(EcoreUtil.getURI(workParam), false);
         return globalWorkParam;
     }

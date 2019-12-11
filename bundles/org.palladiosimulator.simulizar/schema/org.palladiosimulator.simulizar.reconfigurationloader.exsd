@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.simulizar.reconfiguration.IReconfigurationLoader"/>
+                  <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader:"/>
                </appinfo>
             </annotation>
          </attribute>

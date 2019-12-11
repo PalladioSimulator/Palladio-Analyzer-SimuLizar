@@ -162,8 +162,9 @@ public class SimulizarRunConfigTest {
     @Test
     public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder() throws IOException {
         final File emptyRulesFolder = this.tempFolder.newFolder();
+        URI emptyRulesURI = URI.createFileURI(emptyRulesFolder.toPath().normalize().toAbsolutePath().toString());
         this.simulizarConfiguration
-                .setReconfigurationRulesFolder(emptyRulesFolder.toPath().normalize().toAbsolutePath().toString());
+                .setReconfigurationRulesFolder(emptyRulesURI.toString());
         runSuccessfulSimulation();
     }
 

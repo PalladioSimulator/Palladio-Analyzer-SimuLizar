@@ -13,7 +13,6 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
@@ -65,7 +64,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 */
 	private final List<IReconfigurationEngine> reconfiguratorEngines;
 
-	private final List<IReconfigurationLoader> reconfigurationLoaders;
+	private final List<AbstractReconfigurationLoader> reconfigurationLoaders;
 
 	private final SimuComModel model;
 
@@ -88,22 +87,19 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 *            Set of reconfigurators which will be triggered as soon as new,
 	 *            interesting monitoring data arrives.
 	 */
-	public Reconfigurator(final SimuComModel model, final IModelAccess modelAccessFactory,
+	public Reconfigurator(final SimuComModel model, final RuntimeMeasurementModel rmModel,
 			final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators,
 			SimuLizarWorkflowConfiguration configuration) {
 		super();
 		this.model = model;
-		this.runtimeMeasurementModel = modelAccessFactory.getRuntimeMeasurementModel();
+		this.runtimeMeasurementModel = rmModel;
 		this.reconfiguratorEngines = reconfigurators;
 		this.configuration = configuration;
 
 		this.reconfigurationLoaders = ExtensionHelper.getExecutableExtensions(
 				SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_ID,
 				SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_LOADER_ATTRIBUTE);
-		reconfigurationLoaders.forEach(r -> {
-			r.setConfiguration(configuration);
-			r.setModelAccess(modelAccessFactory);
-		});
+		reconfigurationLoaders.forEach(loader -> loader.load(configuration));
 	}
 
 	/**
@@ -230,7 +226,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		return configuration;
 	}
 
-	public List<IReconfigurationLoader> getReconfigurationLoaders() {
+	public List<AbstractReconfigurationLoader> getReconfigurationLoaders() {
 		return reconfigurationLoaders;
 	}
 	

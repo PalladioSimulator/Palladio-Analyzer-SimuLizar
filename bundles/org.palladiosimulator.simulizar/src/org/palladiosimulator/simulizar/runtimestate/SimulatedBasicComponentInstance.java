@@ -7,10 +7,13 @@ import java.util.Queue;
 
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.monitorrepository.MonitorRepository;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.PassiveResource;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.scheduler.IPassiveResource;
 import de.uka.ipd.sdq.scheduler.ISchedulableProcess;
@@ -37,24 +40,24 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
                     this.getRuntimeState().getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
 
+            PCMPartitionManager partitionManager = context.getRuntimeState().getPCMPartitionManager();
+            MonitorRepository monitorRepo = partitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()); 
+            
             MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    context.getRuntimeState().getModelAccess().getMonitorRepositoryModel(), passiveResource,
-                    MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
+                    monitorRepo, passiveResource, MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
             if (this.isMonitored(measurementSpecification)) {
                 CalculatorHelper.setupPassiveResourceStateCalculator(simulatedResource,
                         this.getRuntimeState().getModel());
             }
 
             measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    context.getRuntimeState().getModelAccess().getMonitorRepositoryModel(), passiveResource,
-                    MetricDescriptionConstants.WAITING_TIME_METRIC);
+                    monitorRepo, passiveResource, MetricDescriptionConstants.WAITING_TIME_METRIC);
             if (this.isMonitored(measurementSpecification)) {
                 CalculatorHelper.setupWaitingTimeCalculator(simulatedResource, this.getRuntimeState().getModel());
             }
 
             measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    context.getRuntimeState().getModelAccess().getMonitorRepositoryModel(), passiveResource,
-                    MetricDescriptionConstants.HOLDING_TIME_METRIC);
+                    monitorRepo, passiveResource, MetricDescriptionConstants.HOLDING_TIME_METRIC);
             if (this.isMonitored(measurementSpecification)) {
                 CalculatorHelper.setupHoldTimeCalculator(simulatedResource, this.getRuntimeState().getModel());
             }

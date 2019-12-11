@@ -12,9 +12,11 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 /**
  * Registers PRM recorders that directly update measurements in the RuntimeMeasurement model with
@@ -43,7 +45,8 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
         super.setProbeFrameworkListener(listener);
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
-        this.runtimeMeasurementModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
+        PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
+        this.runtimeMeasurementModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
     }
 	
 	private void initFeedThroughMeasurements(final MeasurementSpecification measurementSpecification) {

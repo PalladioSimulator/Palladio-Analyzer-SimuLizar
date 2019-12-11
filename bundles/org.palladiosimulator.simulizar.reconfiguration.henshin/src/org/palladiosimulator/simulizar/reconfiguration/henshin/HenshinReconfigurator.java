@@ -13,27 +13,25 @@ import org.eclipse.emf.henshin.interpreter.impl.EGraphImpl;
 import org.eclipse.emf.henshin.interpreter.impl.EngineImpl;
 import org.eclipse.emf.henshin.interpreter.impl.UnitApplicationImpl;
 import org.eclipse.emf.henshin.model.Module;
-import org.palladiosimulator.simulizar.access.IModelAccess;
-import org.palladiosimulator.simulizar.reconfiguration.henshin.modelaccess.HenshinModelAccess;
-import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
+import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 public class HenshinReconfigurator extends AbstractReconfigurator {
 
-	private HenshinModelAccess modelAccess;
-	private SimuLizarWorkflowConfiguration configuration;
+	/**
+	 * Henshin reconfigurator default constructor.
+	 */
+	public HenshinReconfigurator() {
+		super();
+	}
 
 	/**
 	 * This class' internal LOGGER.
 	 */
 	private static final Logger LOGGER = Logger.getLogger(HenshinReconfigurator.class);
-
-	@Override
-	public void setModelAccess(final IModelAccess modelAccess) {
-		this.modelAccess = new HenshinModelAccess(modelAccess, this.configuration);
-		this.modelAccess.getHenshinRules();
-	}
 
 	@Override
 	public void setConfiguration(final SimuLizarWorkflowConfiguration configuration) {
@@ -49,7 +47,7 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
 	private boolean executeReconfiguration(UnitApplication app, Module module) {
 		// Load the measurement model into an EGraph
 		LOGGER.info("Called Henshin reconfiguration engine.");
-		EGraph graph = new EGraphImpl(this.modelAccess.getGlobalPCMModel().getAllocation());
+		EGraph graph = new EGraphImpl(this.pcmPartitionManager.getGlobalPCMModel().getAllocation());
 
 		app.setEGraph(graph);
 
@@ -73,8 +71,10 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
 	 * @param module
 	 */
 	private boolean analyzeReconfiguration(UnitApplication app, Module module) {
+		
 		// Load the example model into an EGraph:
-		EGraph graph = new EGraphImpl(this.modelAccess.getRuntimeMeasurementModel());
+		RuntimeMeasurementModel rmModel = this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+		EGraph graph = new EGraphImpl(rmModel);
 		app.setEGraph(graph);
 
 		// Execute analyze step of rule

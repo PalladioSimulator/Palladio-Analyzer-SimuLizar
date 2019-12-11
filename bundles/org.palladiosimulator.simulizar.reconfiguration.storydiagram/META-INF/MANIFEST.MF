@@ -20,6 +20,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram,
- org.palladiosimulator.simulizar.reconfiguration.storydiagram.jobs,
- org.palladiosimulator.simulizar.reconfiguration.storydiagram.modelaccess
+Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram

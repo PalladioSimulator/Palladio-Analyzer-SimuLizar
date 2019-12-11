@@ -11,10 +11,12 @@ import org.palladiosimulator.monitorrepository.map.Map;
 import org.palladiosimulator.monitorrepository.map.MapPackage;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
 import org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement.MonitorRepositoryMapRuntimeMeasurementsRecorder;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 /**
  * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to
@@ -42,7 +44,8 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
     public void setProbeFrameworkListener(final AbstractProbeFrameworkListener probeFrameworkListener) {
         super.setProbeFrameworkListener(Objects.requireNonNull(probeFrameworkListener));
 
-        this.rmModel = getProbeFrameworkListener().getRuntimeMeasurementModel();
+        PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
+        this.rmModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
                 .cast(getProbeFrameworkListener().getCalculatorFactory());
     }

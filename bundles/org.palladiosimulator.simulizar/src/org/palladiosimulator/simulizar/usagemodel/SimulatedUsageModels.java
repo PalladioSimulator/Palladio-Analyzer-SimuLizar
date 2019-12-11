@@ -42,7 +42,7 @@ public class SimulatedUsageModels {
      * @return a list of workload drivers
      */
     public IWorkloadDriver[] createWorkloadDrivers() {
-        final EList<UsageScenario> usageScenarios = this.rootContext.getModelAccess().getGlobalPCMModel()
+        final EList<UsageScenario> usageScenarios = this.rootContext.getPCMPartitionManager().getGlobalPCMModel()
                 .getUsageModel().getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
@@ -118,7 +118,7 @@ public class SimulatedUsageModels {
             public void scenarioRunner(final SimuComSimProcess thread) {
                 final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
                         SimulatedUsageModels.this.rootContext, thread);
-                final UsageModel usageModel = newContext.getModelAccess().getLocalPCMModel().getUsageModel();
+                final UsageModel usageModel = newContext.getPCMPartitionManager().getLocalPCMModel().getUsageModel();
                 
                 // If the UsageScenario is not contained in the UsageModel (e.g. it has
                 // been removed after the workload scheduled the new user, and before the 

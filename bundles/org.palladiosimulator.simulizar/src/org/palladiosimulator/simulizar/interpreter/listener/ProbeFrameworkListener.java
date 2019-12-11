@@ -7,9 +7,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.probeframework.probes.Probe;
-import org.palladiosimulator.simulizar.access.IModelAccess;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -18,9 +18,9 @@ public class ProbeFrameworkListener extends AbstractProbeFrameworkListener {
 
 	private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
 	
-	public ProbeFrameworkListener(IModelAccess modelAccess, SimuComModel simuComModel,
+	public ProbeFrameworkListener(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 			Reconfigurator reconfigurator) {
-		super(modelAccess, simuComModel, reconfigurator);
+		super(pcmPartitionManager, simuComModel, reconfigurator);
 		// TODO Auto-generated constructor stub
 	}
 

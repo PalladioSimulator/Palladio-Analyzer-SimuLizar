@@ -21,6 +21,7 @@ import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -49,7 +50,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
         super.initialize(runtimeState);
 
-        this.monitorRepository = runtimeState.getModelAccess().getMonitorRepositoryModel();
+        PCMPartitionManager manager = runtimeState.getPCMPartitionManager();
+        this.monitorRepository = manager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initializing Simulated ResourcesContainer");
