@@ -213,9 +213,9 @@
 			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-emfprofiles/nightly/"/>
 		</location>
 		
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" refresh="true">
-			<unit id="org.eclipse.emf.henshin.sdk.feature.group" version="tbd"/>
-			<repository location="http://download.eclipse.org/modeling/emft/henshin/updates/release"/>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
+			<unit id="org.eclipse.emf.henshin.sdk.feature.group" version="1.6.0.202001052147"/>
+			<repository location="http://download.eclipse.org/modeling/emft/henshin/updates/1.6.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" refresh="true">
