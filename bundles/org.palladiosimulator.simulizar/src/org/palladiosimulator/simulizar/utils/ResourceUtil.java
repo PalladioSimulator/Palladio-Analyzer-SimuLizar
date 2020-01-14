@@ -50,7 +50,7 @@ public class ResourceUtil {
 		ResourceSet rsHelper = new ResourceSetImpl();
 		rsHelper.getResourceFactoryRegistry().getExtensionToFactoryMap().put(fileExt, resourceFactory);
 
-		if (storingLocation.isEmpty()) {
+		if (isNotValid(storingLocation)) {
 			return rsHelper.createResource(defaultFileURI());
 		}
 
@@ -59,6 +59,10 @@ public class ResourceUtil {
 			rmModelUri = defaultFileURI();
 		}
 		return rsHelper.createResource(rmModelUri);
+	}
+
+	private static boolean isNotValid(String storingLocation) {
+		return storingLocation == null || storingLocation.isEmpty();
 	}
 
 	private static String construct(String fileExt, String storingLocation) {
