@@ -95,14 +95,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,
-                        EventType.BEGIN, this.context.getThread()));
+                        EventType.BEGIN, this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN,
-                        this.context.getThread()));
+                        this.context));
 
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
@@ -112,14 +112,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
-                        this.context.getThread()));
+                        this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.END,
-                        this.context.getThread()));
+                        this.context));
 
         return super.caseEntryLevelSystemCall(entryLevelSystemCall);
     }
@@ -202,14 +202,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     @Override
     public T caseUsageScenario(final UsageScenario usageScenario) {
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
-                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context.getThread()));
+                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context));
         final int stacksize = this.context.getStack().size();
         this.doSwitch(usageScenario.getScenarioBehaviour_UsageScenario());
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
-                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context.getThread()));
+                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context));
         return super.caseUsageScenario(usageScenario);
     }
 }

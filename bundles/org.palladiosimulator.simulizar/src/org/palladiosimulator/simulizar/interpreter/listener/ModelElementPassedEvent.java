@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import org.eclipse.emf.ecore.EObject;
 
+import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
 public class ModelElementPassedEvent<T extends EObject> {
@@ -9,14 +10,14 @@ public class ModelElementPassedEvent<T extends EObject> {
     private final T modelElement;
     private final double passageTime;
     private final EventType eventType;
-    private final SimuComSimProcess thread;
-
-    public ModelElementPassedEvent(final T modelElement, final EventType eventType, final SimuComSimProcess thread) {
+    private final Context context;
+    
+    public ModelElementPassedEvent(final T modelElement, final EventType eventType, final Context context) {
         super();
         this.modelElement = modelElement;
-        this.thread = thread;
+        this.context = context;
         this.eventType = eventType;
-        this.passageTime = thread.getModel().getSimulationControl().getCurrentSimulationTime();
+        this.passageTime = context.getThread().getModel().getSimulationControl().getCurrentSimulationTime();
     }
 
     /**
@@ -34,10 +35,17 @@ public class ModelElementPassedEvent<T extends EObject> {
     }
 
     /**
+     *  @return the context
+     */
+    public Context getContext() {
+    	return this.context;
+    }
+    
+    /**
      * @return the thread
      */
     public SimuComSimProcess getThread() {
-        return this.thread;
+        return this.context.getThread();
     }
 
     public EventType getEventType() {

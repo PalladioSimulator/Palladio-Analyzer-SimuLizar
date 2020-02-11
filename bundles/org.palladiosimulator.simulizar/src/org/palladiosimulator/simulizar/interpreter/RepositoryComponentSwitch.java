@@ -150,7 +150,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
         	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
-        			EventType.BEGIN, this.context.getThread(), this.signature, this.instanceAssemblyContext));
+        			EventType.BEGIN, this.context, this.signature, this.instanceAssemblyContext));
 
         final SimulatedStackframe<Object> result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
 
@@ -158,7 +158,7 @@ class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Obj
         
         this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
             	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
-            			EventType.END, this.context.getThread(), this.signature, this.instanceAssemblyContext));
+            			EventType.END, this.context, this.signature, this.instanceAssemblyContext));
         
         return result;
     }
