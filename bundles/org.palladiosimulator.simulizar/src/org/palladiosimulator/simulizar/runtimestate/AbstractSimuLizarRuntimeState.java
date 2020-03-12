@@ -99,7 +99,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess = 
                 this.model.getResourceRegistry()::getResourceContainer;
 
-		var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
+        var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
         this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
         
         this.usageModels = new SimulatedUsageModels(this.mainContext);

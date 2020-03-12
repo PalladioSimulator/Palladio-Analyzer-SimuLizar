@@ -33,12 +33,12 @@ public class InterpreterDefaultContext extends Context {
 
     private final PCMPartitionManager pcmPartitionManager;
 
-	private PCMResourceSetPartition localPCMModelCopy;
+    private PCMResourceSetPartition localPCMModelCopy;
 
-	private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
+    private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
     public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel, 
-    		IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
+            IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
@@ -91,11 +91,11 @@ public class InterpreterDefaultContext extends Context {
     }
     
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
-    	return this.localPCMModelCopy;
+        return this.localPCMModelCopy;
     }
 
-	@Override
-	public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
-		return this.assemblyAllocationLookup;
-	};
+    @Override
+    public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
+        return this.assemblyAllocationLookup;
+    };
 }
