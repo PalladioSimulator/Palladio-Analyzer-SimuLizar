@@ -203,43 +203,51 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
         removeAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList());
     }
 
-    @Override
-    protected void add(Notification notification) {
+    /**
+     * Convenience method to add the allocation context if present in the notification
+     */
+    private void checkAndAddAllocationContextFromNotification(Notification notification) {
         if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
             processNotification(notification, Notification::getNewValue, this::doAddAllocationContext);
         }
+    }
+    
+    /**
+     * Convenience method to remove the allocation context if present in the notification
+     */
+    private void checkAndRemoveAllocationContextFromNotification(Notification notification) {
+        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
+            processNotification(notification, Notification::getOldValue, this::doRemoveAllocationContext);
+        }
+    }
+    
+    @Override
+    protected void add(Notification notification) {
+        checkAndAddAllocationContextFromNotification(notification);
         super.add(notification);
     }
 
     @Override
     protected void addMany(Notification notification) {
-        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
-            processNotification(notification, Notification::getNewValue, this::doAddAllocationContext);
-        }
+        checkAndAddAllocationContextFromNotification(notification);
         super.addMany(notification);
     }    
     
     @Override
     protected void remove(Notification notification) {
-        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
-            processNotification(notification, Notification::getOldValue, this::doRemoveAllocationContext);
-        }
+        checkAndRemoveAllocationContextFromNotification(notification);
         super.remove(notification);
     }
 
     @Override
     protected void removeMany(Notification notification) {
-        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
-            processNotification(notification, Notification::getOldValue, this::doRemoveAllocationContext);
-        }
+        checkAndRemoveAllocationContextFromNotification(notification);
         super.removeMany(notification);
     }
     
     @Override
     protected void set(Notification notification) {
-        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
-            processNotification(notification, Notification::getNewValue, this::doAddAllocationContext);
-        }
+        checkAndAddAllocationContextFromNotification(notification);
         super.set(notification);
     }
 }
