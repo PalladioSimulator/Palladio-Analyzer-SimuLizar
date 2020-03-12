@@ -9,6 +9,8 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -33,17 +35,22 @@ public class InterpreterDefaultContext extends Context {
 
 	private PCMResourceSetPartition localPCMModelCopy;
 
-    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel) {
+	private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
+
+    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel, 
+    		IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
         this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
         this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
+        this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
     InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
             final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
         super(context.getModel());
+        this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
         this.pcmPartitionManager = runtimeState.getPCMPartitionManager().makeSnapshot();
         this.localPCMModelCopy = pcmLocalCopy;
         this.setEvaluationMode(context.getEvaluationMode());
@@ -74,15 +81,7 @@ public class InterpreterDefaultContext extends Context {
     public AbstractSimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
-
-    /**
-     * @see org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext#initialiseAssemblyContextLookup()
-     */
-    @Override
-    protected void initialiseAssemblyContextLookup() {
-        // Template method which is only needed in generative SimuCom
-    }
-
+    
     public Stack<AssemblyContext> getAssemblyContextStack() {
         return this.assemblyContextStack;
     }
@@ -93,5 +92,10 @@ public class InterpreterDefaultContext extends Context {
     
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
     	return this.localPCMModelCopy;
-    };
+    }
+
+	@Override
+	public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
+		return this.assemblyAllocationLookup;
+	};
 }

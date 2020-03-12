@@ -3,7 +3,9 @@ package org.palladiosimulator.simulizar.runtimestate;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS;
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -20,11 +22,13 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
@@ -37,23 +41,28 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
+import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
+import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * This class provides access to all simulation and SimuLizar related objects. This includes access
- * to the original SimuComModel (containing the simulated resources, simulated processes, etc.), to
- * SimuLizars central simulator event distribution object, and to simulated component instances
- * (e.g. to access their current state of passive resources, etc.).
+ * This class provides access to all simulation and SimuLizar related objects.
+ * This includes access to the original SimuComModel (containing the simulated
+ * resources, simulated processes, etc.), to SimuLizars central simulator event
+ * distribution object, and to simulated component instances (e.g. to access
+ * their current state of passive resources, etc.).
  *
- * Per simulation run, there should be exactly one instance of this class and all of its managed
- * information objects.
+ * Per simulation run, there should be exactly one instance of this class and
+ * all of its managed information objects.
  *
- * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian Rosenthal
+ * @author Steffen Becker, Sebastian Lehrig, slightly adapted by Florian
+ *         Rosenthal
  *
  */
 public abstract class AbstractSimuLizarRuntimeState {
@@ -86,18 +95,24 @@ public abstract class AbstractSimuLizarRuntimeState {
 
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
-        this.mainContext = new InterpreterDefaultContext(this);
+        
+        ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess = 
+                this.model.getResourceRegistry()::getResourceContainer;
+
+		var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
+        this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
+        
         this.usageModels = new SimulatedUsageModels(this.mainContext);
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelObservers = this.initializeModelObservers();
-        // ensure to initialize model syncers (in particular
-        // ResourceEnvironmentSyncer) prior to
-        // interpreter listeners
-        // (in particular ProbeFrameworkListener) as ProbeFrameworkListener uses
-        // calculators of
-        // resources created in ResourceEnvironmentSyncer!
+        this.modelObservers = this.initializeModelObservers(Arrays.asList(allocationLookup));
+        /*
+         * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
+         * prior to interpreter listeners (in particular ProbeFrameworkListener) as
+         * ProbeFrameworkListener uses calculators of resources created in
+         * ResourceEnvironmentSyncer!
+         */
         this.initializeCancelation();
         this.initializeInterpreterListeners(this.reconfigurator);
         this.usageEvolverFacade = new UsageEvolverFacade(this);
@@ -140,8 +155,8 @@ public abstract class AbstractSimuLizarRuntimeState {
     }
 
     /**
-     * Returns the reconfigurator responsible for executing reconfigurations and notifying listeners
-     * of changes.
+     * Returns the reconfigurator responsible for executing reconfigurations and
+     * notifying listeners of changes.
      *
      * @return The reconfigurator.
      */
@@ -185,11 +200,12 @@ public abstract class AbstractSimuLizarRuntimeState {
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
         reconfigEngines.forEach(engine -> {
-        	engine.setConfiguration(configuration);
-        	engine.setPCMPartitionManager(pcmPartitionManager);
+            engine.setConfiguration(configuration);
+            engine.setPCMPartitionManager(pcmPartitionManager);
         });
 
-        RuntimeMeasurementModel rmModel = this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+        RuntimeMeasurementModel rmModel = this.pcmPartitionManager
+                .findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         final Reconfigurator reconfigurator = new Reconfigurator(this.model, rmModel, simulationControl,
                 reconfigEngines, configuration);
         reconfigurator.addObserver(new IReconfigurationListener() {
@@ -226,11 +242,13 @@ public abstract class AbstractSimuLizarRuntimeState {
     }
 
     /**
-     * Initializes the <i>number of resource containers</i> measurements. First gets the monitored
-     * elements from the monitor repository, then creates corresponding calculators.
+     * Initializes the <i>number of resource containers</i> measurements. First gets
+     * the monitored elements from the monitor repository, then creates
+     * corresponding calculators.
      */
     private TriggeredProbe initNumberOfResourceContainersCalculator() {
-        final MonitorRepository monitorRepository = this.pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+        final MonitorRepository monitorRepository = this.pcmPartitionManager
+                .findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
         final ResourceEnvironment resourceEnvironment = this.pcmPartitionManager.getGlobalPCMModel().getAllocation()
                 .getTargetResourceEnvironment_Allocation();
 
@@ -267,19 +285,22 @@ public abstract class AbstractSimuLizarRuntimeState {
                 .getResourceContainer_ResourceEnvironment().size();
     }
 
-    private List<IModelObserver> initializeModelObservers() {
+    private List<IModelObserver> initializeModelObservers(List<IModelObserver> internalObservers) {
         LOGGER.debug(
                 "Initialize model observers, e.g., to keep simucom framework objects in sync with global PCM model");
 
-        final List<IModelObserver> modelObservers = ExtensionHelper
-                .getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver", "modelObserver");
+        final List<IModelObserver> modelObservers = new ArrayList<>();
+        modelObservers.addAll(internalObservers);
+        modelObservers.addAll(ExtensionHelper.getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver",
+                "modelObserver"));
         modelObservers.forEach(m -> m.initialize(this));
 
-        return modelObservers;
+        return Collections.unmodifiableList(modelObservers);
     }
 
     private void initializeUsageEvolver() {
-    	UsageEvolution ueModel = this.pcmPartitionManager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+        UsageEvolution ueModel = this.pcmPartitionManager
+                .findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
         if (ueModel != null) {
             LOGGER.debug("Start the code to evolve the usage model over time");
 
