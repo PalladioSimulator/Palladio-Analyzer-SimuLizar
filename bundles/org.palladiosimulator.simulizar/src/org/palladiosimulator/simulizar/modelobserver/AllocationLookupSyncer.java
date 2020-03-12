@@ -160,12 +160,6 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
         }
     }
 
-    @Override
-    protected void set(Notification notification) {
-        add(notification);
-        super.set(notification);
-    }
-
     /**
      * This method delegates the processing of the AllocationContexts contained in
      * the notification to the supplied processor. If the notification is of _MANY
@@ -223,8 +217,8 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
             processNotification(notification, Notification::getNewValue, this::doAddAllocationContext);
         }
         super.addMany(notification);
-    }
-
+    }    
+    
     @Override
     protected void remove(Notification notification) {
         if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
@@ -239,5 +233,13 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
             processNotification(notification, Notification::getOldValue, this::doRemoveAllocationContext);
         }
         super.removeMany(notification);
+    }
+    
+    @Override
+    protected void set(Notification notification) {
+        if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
+            processNotification(notification, Notification::getNewValue, this::doAddAllocationContext);
+        }
+        super.set(notification);
     }
 }
