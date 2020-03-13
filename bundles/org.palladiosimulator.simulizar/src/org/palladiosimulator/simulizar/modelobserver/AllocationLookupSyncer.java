@@ -87,10 +87,7 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
      * @param allocation the Allocation model
      */
     protected void addInitialAllocations(Allocation allocation) {
-        for (var ctx : allocation.getAllocationContexts_Allocation()) {
-            simulatedContainerStorage.put(ctx.getAssemblyContext_AllocationContext().getId(),
-                    resourceContainerAccess.getSimulatedEntity(ctx.getResourceContainer_AllocationContext()));
-        }
+        allocation.getAllocationContexts_Allocation().forEach(this::doAddAllocationContext);
     }
 
     /**
@@ -192,15 +189,20 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
      * Convenience method to add the provided allocation context.
      */
     private void doAddAllocationContext(AllocationContext ctx) {
-        addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList(),
-                resourceContainerAccess.getSimulatedEntity(ctx.getResourceContainer_AllocationContext()));
+        if (ctx.getAssemblyContext_AllocationContext() != null) {
+            addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList(),
+                    resourceContainerAccess.getSimulatedEntity(ctx.getResourceContainer_AllocationContext()));    
+        }
+        
     }
 
     /**
      * Convenience method to remove the provided allocation context.
      */
     private void doRemoveAllocationContext(AllocationContext ctx) {
-        removeAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList());
+        if (ctx.getAssemblyContext_AllocationContext() != null) {
+            removeAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList());
+        }
     }
 
     /**
