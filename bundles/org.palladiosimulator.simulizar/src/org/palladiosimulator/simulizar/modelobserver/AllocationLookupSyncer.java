@@ -192,8 +192,7 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
         if (ctx.getAssemblyContext_AllocationContext() != null) {
             addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList(),
                     resourceContainerAccess.getSimulatedEntity(ctx.getResourceContainer_AllocationContext()));    
-        }
-        
+        } 
     }
 
     /**
