@@ -44,7 +44,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author snowball
  *
  */
-class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
+public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
