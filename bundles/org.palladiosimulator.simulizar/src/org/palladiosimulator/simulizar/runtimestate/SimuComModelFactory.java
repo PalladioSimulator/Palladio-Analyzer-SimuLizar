@@ -1,7 +1,10 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.CalculatorFactoryRegistry;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
+import org.palladiosimulator.probeframework.calculator.ProbeConfigurationBasedCalculatorFactory;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
@@ -33,7 +36,10 @@ final class SimuComModelFactory {
 
         // ProbeFramework context used to take the measurements of the simulation
         final ProbeFrameworkContext probeFrameworkContext = new ProbeFrameworkContext(
-                new RecorderAttachingCalculatorFactoryDecorator(new DefaultCalculatorFactory(),
+                new RecorderAttachingCalculatorFactoryDecorator(
+                		new ExtensibleCalculatorFactoryDelegatingFactory(
+                				CalculatorFactoryRegistry.INSTANCE.getCalculatorFactories(), 
+                				new ProbeConfigurationBasedCalculatorFactory()),
                         (SimuComConfig) simulationConfiguration));
 
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
