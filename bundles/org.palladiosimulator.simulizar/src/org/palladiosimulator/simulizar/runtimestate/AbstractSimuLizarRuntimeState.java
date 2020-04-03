@@ -22,18 +22,17 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runconfig.WorkflowConfigBasedModule;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
@@ -41,13 +40,16 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
-import de.uka.ipd.sdq.identifier.Identifier;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.Key;
+
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -79,6 +81,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     private final List<IModelObserver> modelObservers;
     protected final SimulationCancelationDelegate cancelationDelegate;
     protected final UsageEvolverFacade usageEvolverFacade;
+    protected final Injector injector;
 
     private long numberOfContainers = 0;
 
@@ -95,18 +98,18 @@ public abstract class AbstractSimuLizarRuntimeState {
 
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
+        this.modelObservers = this.initializeModelObservers(Arrays.asList());
         
-        ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess = 
-                this.model.getResourceRegistry()::getResourceContainer;
-
-        var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
-        this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
+        injector = Guice.createInjector(new WorkflowConfigBasedModule(this, configuration));
         
-        this.usageModels = new SimulatedUsageModels(this.mainContext);
+		this.mainContext = new InterpreterDefaultContext(this,
+				injector.getInstance(new Key<IAssemblyAllocationLookup<AbstractSimulatedResourceContainer>>() {}));
+		this.usageModels = new SimulatedUsageModels(this.mainContext);
         this.initializeWorkloadDrivers();
+        
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelObservers = this.initializeModelObservers(Arrays.asList(allocationLookup));
+        
         /*
          * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
          * prior to interpreter listeners (in particular ProbeFrameworkListener) as
@@ -123,7 +126,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     /**
      * @return the model
      */
-    public final SimuComModel getModel() {
+    public SimuComModel getModel() {
         return this.model;
     }
 
@@ -314,5 +317,10 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     public UsageEvolverFacade getUsageEvolverFacade() {
         return this.usageEvolverFacade;
+    }
+    
+    @Deprecated
+    public Injector getInjector() {
+    	return injector;
     }
 }

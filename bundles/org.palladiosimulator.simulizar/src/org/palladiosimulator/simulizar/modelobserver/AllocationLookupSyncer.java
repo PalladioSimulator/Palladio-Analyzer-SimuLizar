@@ -6,18 +6,20 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
 import org.eclipse.emf.common.notify.Notification;
+import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
@@ -40,7 +42,7 @@ import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
  * @author Sebastian Krach
  *
  */
-public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
+public class AllocationLookupSyncer
         implements IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> {
     private final Map<String, AbstractSimulatedResourceContainer> simulatedContainerStorage = new HashMap<>();
     private final ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess;
@@ -52,20 +54,43 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
      *                                container instances based on the id of their
      *                                model counterpart.
      */
+    @Inject
     public AllocationLookupSyncer(
-            ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess) {
+            ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess,
+            PCMPartitionManager modelManager) {
         this.resourceContainerAccess = resourceContainerAccess;
+        var allocation = modelManager.getGlobalPCMModel().getAllocation();
+        allocation.eAdapters().add(new EContentAdapter() {
+        	@Override
+        	public void notifyChanged(Notification notification) {
+        		
+        		super.notifyChanged(notification);
+        	}
+        });
+        addInitialAllocations(allocation);
+    }
+    
+    protected void handleNotification(Notification msg) {
+    	switch (msg.getEventType()) {
+		case Notification.ADD:
+		case Notification.ADD_MANY:
+		case Notification.SET:
+			checkAndAddAllocationContextFromNotification(msg);
+			break;
+			
+		case Notification.REMOVE:
+		case Notification.REMOVE_MANY:
+			checkAndRemoveAllocationContextFromNotification(msg);
+			break;
+
+        default:
+            throw new UnsupportedOperationException(
+                    String.format("The event type %d is not supported for changes of feature %s by %s",
+                            msg.getEventType(), msg.getFeature().toString(), this.getClass().getName()));
+		}
+    	
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void initialize(AbstractSimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getAllocation(),
-                Objects.requireNonNull(runtimeState));
-        addInitialAllocations(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getAllocation());
-    }
 
     /**
      * Returns the simulated resource container to which the provided assembly is
@@ -220,35 +245,5 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
         if (notification.getFeature() == AllocationPackage.Literals.ALLOCATION__ALLOCATION_CONTEXTS_ALLOCATION) {
             processNotification(notification, Notification::getOldValue, this::doRemoveAllocationContext);
         }
-    }
-    
-    @Override
-    protected void add(Notification notification) {
-        checkAndAddAllocationContextFromNotification(notification);
-        super.add(notification);
-    }
-
-    @Override
-    protected void addMany(Notification notification) {
-        checkAndAddAllocationContextFromNotification(notification);
-        super.addMany(notification);
-    }    
-    
-    @Override
-    protected void remove(Notification notification) {
-        checkAndRemoveAllocationContextFromNotification(notification);
-        super.remove(notification);
-    }
-
-    @Override
-    protected void removeMany(Notification notification) {
-        checkAndRemoveAllocationContextFromNotification(notification);
-        super.removeMany(notification);
-    }
-    
-    @Override
-    protected void set(Notification notification) {
-        checkAndAddAllocationContextFromNotification(notification);
-        super.set(notification);
     }
 }

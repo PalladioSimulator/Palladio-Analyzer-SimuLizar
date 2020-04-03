@@ -30,7 +30,7 @@ public class InterpreterDefaultContext extends Context {
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
     private final AbstractSimuLizarRuntimeState runtimeState;
-
+    
     private final PCMPartitionManager pcmPartitionManager;
 
     private PCMResourceSetPartition localPCMModelCopy;
