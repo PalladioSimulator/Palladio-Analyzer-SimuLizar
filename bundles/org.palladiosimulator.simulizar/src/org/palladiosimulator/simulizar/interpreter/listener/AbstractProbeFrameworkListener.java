@@ -27,7 +27,8 @@ import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.probeframework.calculator.ICalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
+import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
@@ -49,7 +50,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     private static final int STOP_PROBE_INDEX = 1;
 
     protected final SimuComModel simuComModel;
-    protected final ICalculatorFactory calculatorFactory;
+    protected final IGenericCalculatorFactory calculatorFactory;
     protected final Reconfigurator reconfigurator;
     private final PCMPartitionManager pcmPartitionManager;
 
@@ -65,7 +66,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
             final Reconfigurator reconfigurator) {
         super();
         this.pcmPartitionManager = Objects.requireNonNull(pcmPartitionManager);
-        this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getCalculatorFactory();
+        this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getGenericCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = Objects.requireNonNull(reconfigurator);
 
@@ -182,16 +183,6 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     }
 
     /**
-     * Gets the {@link ICalculatorFactory} that is by this instance during the current simulation
-     * run.
-     *
-     * @return A reference to the {@code ICalculatorFactory}.
-     */
-    public ICalculatorFactory getCalculatorFactory() {
-        return this.calculatorFactory;
-    }
-
-    /**
      * Gets all associated {@link MeasurementSpecification}s of <b>active</b> {@link Monitor}s that
      * adhere to the given metric.
      *
@@ -264,8 +255,11 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
         for (MeasurementSpecification responseTimeMeasurementSpec : this
                 .getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
             MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
-            List<Probe> probeList = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
-            this.calculatorFactory.buildResponseTimeCalculator(measuringPoint, probeList);
+            var probes = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
+            this.calculatorFactory.buildCalculator(MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE,
+                    measuringPoint, DefaultCalculatorProbeSets.createStartStopProbeConfiguration(
+                            probes.get(START_PROBE_INDEX), probes.get(STOP_PROBE_INDEX)));
+
         }
     }
 

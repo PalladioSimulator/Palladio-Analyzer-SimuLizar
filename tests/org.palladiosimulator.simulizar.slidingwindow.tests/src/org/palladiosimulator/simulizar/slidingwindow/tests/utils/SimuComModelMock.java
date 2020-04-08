@@ -13,6 +13,7 @@ import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelpe
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 
@@ -84,7 +85,7 @@ public class SimuComModelMock extends SimuComModel {
     private SimuComModelMock() {
 
         super(new SimuComConfig(createMockedConfiguration(), false), createSimuComStatus(), new SimEngineFactoryMock(),
-                false, new ProbeFrameworkContext(new DefaultCalculatorFactory()));
+                false, new ProbeFrameworkContext(new ExtensibleCalculatorFactoryDelegatingFactory()));
     }
 
     private static class MockWindowMoveOnTriggeredEvent extends PeriodicallyTriggeredSimulationEntity {

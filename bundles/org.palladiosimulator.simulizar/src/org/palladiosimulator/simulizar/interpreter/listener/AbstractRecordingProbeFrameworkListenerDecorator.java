@@ -6,6 +6,7 @@ import java.util.Map;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.recorderframework.IRecorder;
 import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
@@ -55,6 +56,15 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      */
     protected AbstractProbeFrameworkListener getProbeFrameworkListener() {
         return this.probeFrameworkListener;
+    }
+    
+    /**
+     * Gets the current {@link ProbeFrameworkContext}.
+     * 
+     * @return the {@link ProbeFrameworkContext} of the running simulation.
+     */
+    protected ProbeFrameworkContext getProbeFrameworkContext() {
+        return this.probeFrameworkListener.simuComModel.getProbeFrameworkContext();
     }
 
     /**
