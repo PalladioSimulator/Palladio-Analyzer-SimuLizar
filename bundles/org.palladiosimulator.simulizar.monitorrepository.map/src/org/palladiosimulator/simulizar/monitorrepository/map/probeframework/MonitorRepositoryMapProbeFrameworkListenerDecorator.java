@@ -9,7 +9,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.ProcessingType;
 import org.palladiosimulator.monitorrepository.map.Map;
 import org.palladiosimulator.monitorrepository.map.MapPackage;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -32,7 +32,7 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
     private static final EClass MAP_PROCESSING_TYPE = MapPackage.Literals.MAP;
 
     private RuntimeMeasurementModel rmModel = null;
-    private RegisterCalculatorFactoryDecorator calculatorFactory = null;
+    private IObservableCalculatorRegistry calculatorRegistry;
 
     /**
      * {@inheritDoc}
@@ -46,8 +46,7 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
 
         PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
         this.rmModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
-        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.calculatorRegistry = getProbeFrameworkContext().getCalculatorRegistry();
     }
 
     @Override
@@ -62,7 +61,7 @@ public class MonitorRepositoryMapProbeFrameworkListenerDecorator
         MetricDescription metric = measurementSpecification.getMetricDescription();
         MeasuringPoint measuringPoint = measurementSpecification.getMonitor().getMeasuringPoint();
 
-        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorRegistry)
                 .onMetricDescriptionAndMeasuringPoint(metric, measuringPoint,
                         () -> new MonitorRepositoryMapRuntimeMeasurementsRecorder(this.rmModel,
                                 (Map) measurementSpecification.getProcessingType()));

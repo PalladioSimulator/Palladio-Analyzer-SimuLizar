@@ -17,7 +17,7 @@ import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.CalculatorRegistryListener;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 
 /**
  * This facade allows to defer registrations for measurements which are
@@ -41,14 +41,14 @@ public abstract class DeferredMeasurementInitialization {
     private static final class DeferredMeasurementInitializationImpl extends DeferredMeasurementInitialization
             implements CalculatorRegistryListener {
 
-        private final RegisterCalculatorFactoryDecorator factory;
+        private final IObservableCalculatorRegistry registryAccess;
         private final Map<String, Map<MetricDescription, Set<Supplier<IMeasurementSourceListener>>>> deferredInitializations = new HashMap<>();
 
         /**
          * This constructor is private as it is not supposed to be used directly.
          */
-        private DeferredMeasurementInitializationImpl(final RegisterCalculatorFactoryDecorator factory) {
-            this.factory = factory;
+        private DeferredMeasurementInitializationImpl(final IObservableCalculatorRegistry registryAccess) {
+            this.registryAccess = registryAccess;
         }
 
         /**
@@ -76,7 +76,7 @@ public abstract class DeferredMeasurementInitialization {
                         deferredInitializations.remove(calculator.getMeasuringPoint().getStringRepresentation());
                     }
                     if (deferredInitializations.isEmpty()) {
-                        factory.removeObserver(this);
+                    	registryAccess.removeObserver(this);
                     }
                 }
             }
@@ -98,10 +98,10 @@ public abstract class DeferredMeasurementInitialization {
                     baseCalculator.get().addObserver(supplier.get());
                 } else {
                     if (deferredInitializations.isEmpty()) {
-                    	if (factory.getObservers().contains(this)) {
+                    	if (registryAccess.getObservers().contains(this)) {
                     		LOGGER.warn(String.format("Deferred initialization is already registered as a listener. "
                     				+ "Metric: %s MeasuringPoint: %s", desc.getName(), mp.getStringRepresentation()));
-                    	} else factory.addObserver(this);
+                    	} else registryAccess.addObserver(this);
                     }
                     
                     deferredInitializations
@@ -115,10 +115,10 @@ public abstract class DeferredMeasurementInitialization {
 
         private Optional<Calculator> getBaseCalculator(final MetricDescription metric,
                 final MeasuringPoint measuringPoint) {
-            Calculator baseCalculator = factory.getCalculatorByMeasuringPointAndMetricDescription(measuringPoint,
+            Calculator baseCalculator = registryAccess.getCalculatorByMeasuringPointAndMetricDescription(measuringPoint,
                     metric);
             if (baseCalculator == null && metric instanceof BaseMetricDescription) {
-                return factory.getCalculatorsForMeasuringPoint(measuringPoint).stream()
+                return registryAccess.getCalculatorsForMeasuringPoint(measuringPoint).stream()
                         .filter(calc -> MetricDescriptionUtility.isBaseMetricDescriptionSubsumedByMetricDescription(
                                 (BaseMetricDescription) metric, calc.getMetricDesciption()))
                         .findAny();
@@ -137,10 +137,10 @@ public abstract class DeferredMeasurementInitialization {
      * @return the appropriate registration facade.
      */
     public static DeferredMeasurementInitialization forCalculatorFactoryDecorator(
-            RegisterCalculatorFactoryDecorator factory) {
-        return factory.getObservers().stream().filter(DeferredMeasurementInitializationImpl.class::isInstance)
-                .map(DeferredMeasurementInitializationImpl.class::cast).filter(dmi -> dmi.factory.equals(factory))
-                .findAny().orElseGet(() -> new DeferredMeasurementInitializationImpl(factory));
+    		IObservableCalculatorRegistry registryAccess) {
+        return registryAccess.getObservers().stream().filter(DeferredMeasurementInitializationImpl.class::isInstance)
+                .map(DeferredMeasurementInitializationImpl.class::cast).filter(dmi -> dmi.registryAccess.equals(registryAccess))
+                .findAny().orElseGet(() -> new DeferredMeasurementInitializationImpl(registryAccess));
     }
 
     /**

@@ -11,6 +11,7 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.probeframework.calculator.Calculator;
+import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -171,8 +172,9 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 						this.getSimuComModel().getSimulationControl(),
 						new TakeReconfigurationDurationProbe(reconfigurator));
 				try {
-					final Calculator calculator = this.getCalculatorFactory()
-							.buildReconfigurationTimeCalculator(measuringPoint, probe);
+					final Calculator calculator = this.calculatorFactory
+					        .buildCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint, 
+					                DefaultCalculatorProbeSets.createSingularProbeConfiguration(probe));
 					calculator.addObserver(RunElasticityAnalysisJob.aggregatorWithConfidence == null ? RunElasticityAnalysisJob.aggregatorWithConfidence = new ReconfigurationTimeAggregatorWithConfidence(
 																								new StaticBatchAlgorithm(5, 5),
 																								new SampleMeanEstimator(), 

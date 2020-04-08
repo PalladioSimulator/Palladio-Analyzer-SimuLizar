@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
+import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
@@ -21,7 +22,6 @@ public class ProbeFrameworkListener extends AbstractProbeFrameworkListener {
 	public ProbeFrameworkListener(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 			Reconfigurator reconfigurator) {
 		super(pcmPartitionManager, simuComModel, reconfigurator);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -36,7 +36,8 @@ public class ProbeFrameworkListener extends AbstractProbeFrameworkListener {
             final Probe probe = CalculatorHelper.getEventProbeSetWithCurrentTime(RECONFIGURATION_TIME_METRIC_TUPLE,
                     this.simuComModel.getSimulationControl(),
                     new TakeReconfigurationDurationProbe(this.reconfigurator));
-            this.calculatorFactory.buildReconfigurationTimeCalculator(measuringPoint, probe);
+            this.calculatorFactory.buildCalculator(RECONFIGURATION_TIME_METRIC_TUPLE, measuringPoint,
+                    DefaultCalculatorProbeSets.createSingularProbeConfiguration(probe));
         }
 	}
 

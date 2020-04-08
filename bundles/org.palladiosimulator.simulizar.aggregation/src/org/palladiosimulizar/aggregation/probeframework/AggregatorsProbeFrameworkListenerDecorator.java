@@ -13,7 +13,7 @@ import org.palladiosimulator.monitorrepository.MeasurementDrivenAggregation;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.VariableSizeAggregation;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -38,14 +38,13 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
     private static final EClass FIXED_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.FIXED_SIZE_AGGREGATION;
     private static final EClass VARIABLE_SIZE_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.VARIABLE_SIZE_AGGREGATION;
 
-    private RegisterCalculatorFactoryDecorator calculatorFactory;
+    private IObservableCalculatorRegistry calculatorRegistry;
     private RuntimeMeasurementModel runtimeMeasurementModel;
 
     @Override
     public void setProbeFrameworkListener(final AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
-        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.calculatorRegistry = getProbeFrameworkContext().getCalculatorRegistry();
         PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
         this.runtimeMeasurementModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
     }
@@ -70,7 +69,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         // fails in case optional is empty
         checkValidity(expectedMetric, measurementSpecification);
 
-        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorRegistry)
                 .onMetricDescriptionAndMeasuringPoint(expectedMetric.get(), measuringPoint,
                         () -> new VariableSizeMeasurementAggregator(expectedMetric.get(), this.runtimeMeasurementModel,
                                 (VariableSizeAggregation) measurementSpecification.getProcessingType()));
@@ -84,7 +83,7 @@ public class AggregatorsProbeFrameworkListenerDecorator extends AbstractRecordin
         // fails in case optional is empty
         checkValidity(expectedMetric, measurementSpecification);
 
-        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorRegistry)
                 .onMetricDescriptionAndMeasuringPoint(expectedMetric.get(), measuringPoint,
                         () -> new FixedSizeMeasurementsAggregator(expectedMetric.get(), this.runtimeMeasurementModel,
                                 (FixedSizeAggregation) measurementSpecification.getProcessingType()));

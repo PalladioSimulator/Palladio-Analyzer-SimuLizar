@@ -29,7 +29,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 import org.palladiosimulator.recorderframework.edp2.config.EDP2RecorderConfiguration;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -87,7 +87,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     private ISlidingWindowMoveOnStrategy moveOnStrategy = null;
     private SimuComModel model = null;
     private RuntimeMeasurementModel rmModel;
-    private RegisterCalculatorFactoryDecorator calculatorFactory = null;
+    private IObservableCalculatorRegistry calculatorRegistry;
 
     @Override
     public void registerMeasurements() {
@@ -109,8 +109,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
         PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
         this.rmModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         this.model = getProbeFrameworkListener().getSimuComModel();
-        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.calculatorRegistry = getProbeFrameworkContext().getCalculatorRegistry();
     }
 
     private void initUtilizationMeasurements(final Collection<MeasurementSpecification> utilMeasurementSpecs) {
@@ -134,7 +133,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
                 Optional<TimeDriven> timeDrivenProcessingType = PROCESSING_TYPE_SWITCH
                         .doSwitch(spec.getProcessingType());
 
-                Calculator stateOfActiveResourceCalculator = this.calculatorFactory
+                Calculator stateOfActiveResourceCalculator = this.calculatorRegistry
                         .getCalculatorByMeasuringPointAndMetricDescription(mp, STATE_TUPLE_METRIC_DESC);
 
                 // this call crashes in case measurement specification is invalid
@@ -149,7 +148,7 @@ public class UtilizationProbeFrameworkListenerDecorator extends AbstractRecordin
     }
 
     private Collection<Calculator> getAvailableOverallUtilizationCalculators() {
-        Collection<Calculator> overallUtilizationCalculators = this.calculatorFactory.getRegisteredCalculators()
+        Collection<Calculator> overallUtilizationCalculators = this.calculatorRegistry.getRegisteredCalculators()
                 .stream().filter(calc -> calc.isCompatibleWith(UTILIZATION_TUPLE_METRIC_DESC)
                         && ACTIVE_RESOURCE_MP_ECLASS.isInstance(calc.getMeasuringPoint()))
                 .collect(toList());

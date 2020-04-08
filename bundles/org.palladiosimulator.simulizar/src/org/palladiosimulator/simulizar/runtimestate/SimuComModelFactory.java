@@ -1,14 +1,8 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.probeframework.calculator.CalculatorFactoryRegistry;
-import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
-import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
-import org.palladiosimulator.probeframework.calculator.ProbeConfigurationBasedCalculatorFactory;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
-import de.uka.ipd.sdq.simucomframework.calculator.RecorderAttachingCalculatorFactoryDecorator;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
@@ -34,16 +28,8 @@ final class SimuComModelFactory {
         // e.g., SSJ engine or Desmo-J engine
         final ISimEngineFactory simEngineFactory = getSimEngineFactory();
 
-        // ProbeFramework context used to take the measurements of the simulation
-        final ProbeFrameworkContext probeFrameworkContext = new ProbeFrameworkContext(
-                new RecorderAttachingCalculatorFactoryDecorator(
-                		new ExtensibleCalculatorFactoryDelegatingFactory(
-                				CalculatorFactoryRegistry.INSTANCE.getCalculatorFactories(), 
-                				new ProbeConfigurationBasedCalculatorFactory()),
-                        (SimuComConfig) simulationConfiguration));
-
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
-                simEngineFactory, false, probeFrameworkContext);
+                simEngineFactory, false);
 
         simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 

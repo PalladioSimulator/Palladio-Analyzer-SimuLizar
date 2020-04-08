@@ -16,7 +16,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.TimeDrivenAggregation;
 import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -41,7 +41,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
 
     private static final EClass TIME_DRIVEN_AGGREGATION_ECLASS = MonitorRepositoryPackage.Literals.TIME_DRIVEN_AGGREGATION;
 
-    private RegisterCalculatorFactoryDecorator calculatorFactory = null;
+    private IObservableCalculatorRegistry calculatorRegistry;
     private SimuComModel model;
     private RuntimeMeasurementModel runtimeMeasurementModel;
 
@@ -57,8 +57,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
     @Override
     public void setProbeFrameworkListener(final AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
-        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.calculatorRegistry = getProbeFrameworkContext().getCalculatorRegistry();
         this.model = getProbeFrameworkListener().getSimuComModel();
         PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
         this.runtimeMeasurementModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
@@ -97,7 +96,7 @@ public class SlidingWindowProbeFrameWorkListenerDecorator extends AbstractRecord
         NumericalBaseMetricDescription expectedMetric = (NumericalBaseMetricDescription) measurementSpec
                 .getMetricDescription();
 
-        Calculator calculator = this.calculatorFactory.getCalculatorsForMeasuringPoint(measuringPoint).stream()
+        Calculator calculator = this.calculatorRegistry.getCalculatorsForMeasuringPoint(measuringPoint).stream()
                 .filter(calc -> MetricDescriptionUtility
                         .isBaseMetricDescriptionSubsumedByMetricDescription(expectedMetric, calc.getMetricDesciption()))
                 .findAny()

@@ -10,7 +10,7 @@ import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
-import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -28,7 +28,7 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
 
 	private static final EClass FEED_THROUGH_ECLASS = MonitorRepositoryPackage.Literals.FEED_THROUGH;
 	
-    private RegisterCalculatorFactoryDecorator calculatorFactory;
+    private IObservableCalculatorRegistry calculatorRegistry;
     private RuntimeMeasurementModel runtimeMeasurementModel;
 	 
 	@Override
@@ -43,8 +43,7 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
     @Override
     public void setProbeFrameworkListener(final AbstractProbeFrameworkListener listener) {
         super.setProbeFrameworkListener(listener);
-        this.calculatorFactory = RegisterCalculatorFactoryDecorator.class
-                .cast(getProbeFrameworkListener().getCalculatorFactory());
+        this.calculatorRegistry = getProbeFrameworkContext().getCalculatorRegistry();
         PCMPartitionManager manager = getProbeFrameworkListener().getPCMPartitionManager();
         this.runtimeMeasurementModel = manager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
     }
@@ -56,7 +55,7 @@ public class FeedThroughDecorator extends AbstractRecordingProbeFrameworkListene
         
         checkValidity(expectedMetric, measurementSpecification);
         
-        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorFactory)
+        DeferredMeasurementInitialization.forCalculatorFactoryDecorator(calculatorRegistry)
                 .onMetricDescriptionAndMeasuringPoint(expectedMetric.get(), measuringPoint,
                         () -> new FeedThroughRecorder(expectedMetric.get(), runtimeMeasurementModel,
                                 measurementSpecification, measuringPoint));
