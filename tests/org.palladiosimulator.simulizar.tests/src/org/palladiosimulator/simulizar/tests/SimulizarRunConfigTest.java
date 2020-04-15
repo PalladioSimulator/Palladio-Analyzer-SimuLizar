@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.tests;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,12 +14,11 @@ import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EPackage.Registry;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
@@ -76,10 +75,7 @@ public class SimulizarRunConfigTest {
     private static URI emptyUsageEvolutionModelUri;
     private static URI sloRepoUri;
 
-    @Rule
-    public TemporaryFolder tempFolder = new TemporaryFolder();
-
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         Registry.INSTANCE.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
         Registry.INSTANCE.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
@@ -109,10 +105,10 @@ public class SimulizarRunConfigTest {
         sloRepoUri = URI.createPlatformPluginURI(SLO_REPO_PATH, true);
     }
 
-    @Before
-    public void setUp() throws IOException {
+    @BeforeEach
+    public void setUp(@TempDir File localRepositoryDirectory) throws IOException {
         this.repo = LocalDirectoryRepositoryHelper
-                .initializeLocalDirectoryRepository(this.tempFolder.newFolder("testRepo"));
+                .initializeLocalDirectoryRepository(localRepositoryDirectory);
         RepositoryManager.addRepository(RepositoryManager.getCentralRepository(), this.repo);
 
         final Map<String, Object> properties = createSimulationProperties();
@@ -130,7 +126,7 @@ public class SimulizarRunConfigTest {
         this.simulizarJob = new MinimalPCMInterpreterRootCompositeJob(this.simulizarConfiguration, blackboard);
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         RepositoryManager.removeRepository(RepositoryManager.getCentralRepository(), this.repo);
     }
@@ -160,8 +156,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder() throws IOException {
-        final File emptyRulesFolder = this.tempFolder.newFolder();
+    public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder(@TempDir File emptyRulesFolder) {
         URI emptyRulesURI = URI.createFileURI(emptyRulesFolder.toPath().normalize().toAbsolutePath().toString());
         this.simulizarConfiguration
                 .setReconfigurationRulesFolder(emptyRulesURI.toString());

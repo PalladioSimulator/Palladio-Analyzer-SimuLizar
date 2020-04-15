@@ -43,11 +43,7 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
                     LOGGER.debug(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
                             + notification);
 
-                    try {
-                        AbstractModelObserver.this.notifyModelObservers(notification);
-                    } catch (final Exception e) {
-                        LOGGER.error("Sync Exception: " + e);
-                    }
+                    AbstractModelObserver.this.notifyModelObservers(notification);
                 }
             }
 
