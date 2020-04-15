@@ -123,7 +123,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     /**
      * @return the model
      */
-    public final SimuComModel getModel() {
+    public SimuComModel getModel() {
         return this.model;
     }
 
