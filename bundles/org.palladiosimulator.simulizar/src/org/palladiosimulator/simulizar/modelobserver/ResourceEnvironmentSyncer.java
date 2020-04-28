@@ -278,7 +278,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification());
         var activeResources = linkContainer.getAllActiveResources();
         if (activeResources.isEmpty()) {
-            linkContainer.addActiveResource(resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification(),
+            linkContainer.addActiveResourceWithoutCalculators(
+                    resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification(),
                     linkContainer.getResourceContainerID());
         } else {
             var resource = Optional
