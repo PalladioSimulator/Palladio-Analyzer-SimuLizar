@@ -117,7 +117,7 @@ class ResourceEnvironmentSyncerTest {
                 Mockito.anyString());
 
         var slink = (SimulatedLinkingResourceContainer) resourceRegistry.getResourceContainer(link.getId());
-        verify(slink).addActiveResource(link, link.getId());
+        verify(slink).addActiveResourceWithoutCalculators(link, link.getId());
     }
 
     /**

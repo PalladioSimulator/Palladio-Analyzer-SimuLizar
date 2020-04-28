@@ -80,7 +80,7 @@ public class SimuLizarMockUtils {
                 .forEach(lr -> {
                     var slrc = (SimulatedLinkingResourceContainer) resourceRegistry
                         .createLinkingResourceContainer(lr.getId());
-                    slrc.addActiveResource(lr, lr.getId());
+                    slrc.addActiveResourceWithoutCalculators(lr, lr.getId());
                 });
             Mockito.clearInvocations(resourceRegistry);
         }
@@ -195,7 +195,7 @@ public class SimuLizarMockUtils {
                 }
             })
             .when(src)
-            .addActiveResource(Mockito.any(), Mockito.anyString());
+            .addActiveResourceWithoutCalculators(Mockito.any(), Mockito.anyString());
         Mockito.lenient()
             .when(src.getAllActiveResources())
             .thenReturn(mockResources);
