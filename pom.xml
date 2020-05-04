@@ -12,9 +12,17 @@
 	<artifactId>parent</artifactId>	
 	<version>4.2.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>tycho-staged</id>
+			<url>https://oss.sonatype.org/content/repositories/orgeclipsetycho-1062/</url>
+		</pluginRepository>
+	</pluginRepositories>
 	
 	<properties>
 		<org.palladiosimulator.maven.tychotprefresh.tplocation.2>${project.basedir}/releng/org.palladiosimulator.simulizar.targetplatform/tp.target</org.palladiosimulator.maven.tychotprefresh.tplocation.2>
+		<tycho.version>1.7.0</tycho.version>
 	</properties>
 	
 	<modules>
