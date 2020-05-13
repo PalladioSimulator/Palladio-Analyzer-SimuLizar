@@ -117,8 +117,9 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
             hierarchy = newHierarchy;
         }
 
-        if (ctx.getEncapsulatedComponent__AssemblyContext() instanceof CompositeComponent) {
-            var composite = (CompositeComponent) ctx;
+        var component = ctx.getEncapsulatedComponent__AssemblyContext(); 
+        if (component instanceof CompositeComponent) {
+            var composite = (CompositeComponent) component;
             for (var compCtx : composite.getAssemblyContexts__ComposedStructure()) {
                 addAssemblyAllocation(compCtx, hierarchy, container);
             }
