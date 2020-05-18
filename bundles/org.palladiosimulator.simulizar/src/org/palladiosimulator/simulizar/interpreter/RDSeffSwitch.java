@@ -50,7 +50,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.ResourceContainerRegistery;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -74,6 +74,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     private final Allocation allocation;
 
     private final SimulatedStackframe<Object> resultStackFrame;
+    
+    private final ResourceContainerRegistery resourceRegistery;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
 
@@ -86,13 +88,16 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *            Simulated component
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance) {
-        super();
+            final SimulatedBasicComponentInstance basicComponentInstance,
+            final ResourceContainerRegistery resourceContainerRegistery) {
+
+		super();
         this.context = context;
         this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
+        this.resourceRegistery = resourceContainerRegistery;
     }
 
 
@@ -107,8 +112,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *				The composed switch which is containing this switch
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch) {
-    	this(context, basicComponentInstance);
+            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
+            final ResourceContainerRegistery resourceContainerRegistery) {
+		this(context, basicComponentInstance, resourceContainerRegistery);
     	this.parentSwitch = parentSwitch;
     }
 
@@ -499,7 +505,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance);
+                            RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistery);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
@@ -614,7 +620,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
         for (final ParametricResourceDemand parametricResourceDemand : internalAction.getResourceDemand_Action()) {
 
-            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
+            //final ResourceContainerRegistery resourceRegistry = this.context.getModel().getResourceRegistry();
             final String idRequiredResourceType = parametricResourceDemand
                     .getRequiredResource_ParametricResourceDemand().getId();
             final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
@@ -622,7 +628,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
             final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
-            resourceRegistry.getResourceContainer(resourceContainer.getId())
+            resourceRegistery.getResourceContainer(resourceContainer.getId())
             .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
 
         }
@@ -664,7 +670,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             Double.class, currentStackFrame));
             final String idRequiredResourceType = currentResourceType.getId();
 
-            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
+            final ResourceContainerRegistery resourceRegistry = this.context.getModel().getResourceRegistry();
 
             resourceRegistry.getResourceContainer(resourceContainer.getId())
             .loadActiveResource(this.context.getThread(), resourceServiceId, idRequiredResourceType,
