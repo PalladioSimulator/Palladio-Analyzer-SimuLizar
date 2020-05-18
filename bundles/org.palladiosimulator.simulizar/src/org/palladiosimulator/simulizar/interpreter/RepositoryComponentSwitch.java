@@ -219,7 +219,9 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
             // add default RDSeffSwitch
-            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter));
+            // TODO
+            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
+            		this.context.getModel().getResourceRegistry()));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
