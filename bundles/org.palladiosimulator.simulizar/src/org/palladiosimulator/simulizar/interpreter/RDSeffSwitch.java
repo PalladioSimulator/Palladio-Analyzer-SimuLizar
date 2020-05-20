@@ -50,7 +50,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import de.uka.ipd.sdq.simucomframework.ResourceContainerRegistery;
+import de.uka.ipd.sdq.simucomframework.IResourceContainerRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -75,7 +75,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
     private final SimulatedStackframe<Object> resultStackFrame;
     
-    private final ResourceContainerRegistery resourceRegistery;
+    private final IResourceContainerRegistry resourceRegistry;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
 
@@ -89,7 +89,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance,
-            final ResourceContainerRegistery resourceContainerRegistery) {
+            final IResourceContainerRegistry resourceContainerRegistery) {
 
 		super();
         this.context = context;
@@ -97,7 +97,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
-        this.resourceRegistery = resourceContainerRegistery;
+        this.resourceRegistry = resourceContainerRegistery;
     }
 
 
@@ -113,7 +113,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
-            final ResourceContainerRegistery resourceContainerRegistery) {
+            final IResourceContainerRegistry resourceContainerRegistery) {
 		this(context, basicComponentInstance, resourceContainerRegistery);
     	this.parentSwitch = parentSwitch;
     }
@@ -505,7 +505,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistery);
+                            RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistry);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
@@ -628,7 +628,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
             final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
-            resourceRegistery.getResourceContainer(resourceContainer.getId())
+            resourceRegistry.getResourceContainer(resourceContainer.getId())
             .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
 
         }
@@ -670,7 +670,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             Double.class, currentStackFrame));
             final String idRequiredResourceType = currentResourceType.getId();
 
-            final ResourceContainerRegistery resourceRegistry = this.context.getModel().getResourceRegistry();
+            //final IResourceContainerRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
 
             resourceRegistry.getResourceContainer(resourceContainer.getId())
             .loadActiveResource(this.context.getThread(), resourceServiceId, idRequiredResourceType,
