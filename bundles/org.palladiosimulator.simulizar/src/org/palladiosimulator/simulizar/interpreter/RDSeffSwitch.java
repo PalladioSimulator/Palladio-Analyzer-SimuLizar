@@ -48,9 +48,9 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
-import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
+import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminer;
 
-import de.uka.ipd.sdq.simucomframework.IResourceContainerRegistry;
+import de.uka.ipd.sdq.simucomframework.ResourceContainerRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -69,13 +69,13 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
 
     private ComposedSwitch<Object> parentSwitch;
-    private final TransitionDeterminer transitionDeterminer;
+    private final DefaultTransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
     private final Allocation allocation;
 
     private final SimulatedStackframe<Object> resultStackFrame;
     
-    private final IResourceContainerRegistry resourceRegistry;
+    private final ResourceContainerRegistry resourceRegistry;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
 
@@ -89,12 +89,12 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance,
-            final IResourceContainerRegistry resourceContainerRegistery) {
+            final ResourceContainerRegistry resourceContainerRegistery) {
 
 		super();
         this.context = context;
         this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
-        this.transitionDeterminer = new TransitionDeterminer(context);
+        this.transitionDeterminer = new DefaultTransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
         this.resourceRegistry = resourceContainerRegistery;
@@ -113,7 +113,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
-            final IResourceContainerRegistry resourceContainerRegistery) {
+            final ResourceContainerRegistry resourceContainerRegistery) {
 		this(context, basicComponentInstance, resourceContainerRegistery);
     	this.parentSwitch = parentSwitch;
     }

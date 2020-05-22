@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
+import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminer;
 
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
@@ -44,7 +45,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     public UsageScenarioSwitch(final InterpreterDefaultContext context) {
         this.context = context;
-        this.transitionDeterminer = new TransitionDeterminer(context);
+        this.transitionDeterminer = new DefaultTransitionDeterminer(context);
     }
 
     /**

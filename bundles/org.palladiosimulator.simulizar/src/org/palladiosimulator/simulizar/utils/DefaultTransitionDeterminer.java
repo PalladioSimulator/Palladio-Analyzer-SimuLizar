@@ -22,9 +22,9 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
  * @author Joachim Meyer
  *
  */
-public class TransitionDeterminer {
+public class DefaultTransitionDeterminer implements TransitionDeterminer {
 
-    protected static final Logger LOGGER = Logger.getLogger(TransitionDeterminer.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(DefaultTransitionDeterminer.class.getName());
 
     private final SimuComConfig config;
     private final InterpreterDefaultContext context;
@@ -37,7 +37,7 @@ public class TransitionDeterminer {
      * @param modelInterpreter
      *            the calling model interpreter.
      */
-    public TransitionDeterminer(final InterpreterDefaultContext context) {
+    public DefaultTransitionDeterminer(final InterpreterDefaultContext context) {
         super();
         this.config = context.getModel().getConfiguration();
         this.context = context;
@@ -84,7 +84,8 @@ public class TransitionDeterminer {
      *            the list of branch transition.
      * @return a branch transition.
      */
-    public BranchTransition determineBranchTransition(final EList<BranchTransition> branchTransitions) {
+    @Override
+	public BranchTransition determineBranchTransition(final EList<BranchTransition> branchTransitions) {
         final List<Double> summedProbabilityList = this
                 .createSummedProbabilityList(this.extractProbabiltiesUsageModel(branchTransitions));
 
