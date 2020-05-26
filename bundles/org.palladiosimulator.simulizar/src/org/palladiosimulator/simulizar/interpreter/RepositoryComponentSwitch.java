@@ -36,6 +36,7 @@ import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
+import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -218,11 +219,13 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-            				this.context.getModel().getResourceRegistry())));
+            				this.context.getModel().getResourceRegistry(),
+            				TransitionDeterminerFactory.createTransitionDeterminer(this.context))));
             // add default RDSeffSwitch
             // TODO
             interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-            		this.context.getModel().getResourceRegistry()));
+            		this.context.getModel().getResourceRegistry(), 
+            		TransitionDeterminerFactory.createTransitionDeterminer(this.context)));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }

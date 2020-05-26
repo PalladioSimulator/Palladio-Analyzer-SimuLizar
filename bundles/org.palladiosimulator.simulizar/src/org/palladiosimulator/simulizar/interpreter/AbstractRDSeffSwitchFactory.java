@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
+import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
 /**
  * Abstract Factory used by the extensible behaviour switches extension point.
@@ -21,9 +22,14 @@ public abstract class AbstractRDSeffSwitchFactory {
      *				Simulated component
      * @param parentSwitch
      *				The composed switch which is containing the created switch
+     * @param resourceContainerRegistry
+     *            a SimulatedResourceContainerRegistry
+     * @param transitionDeterminer
+     *            transitionDeterminer for the switch
 	 * @return a composable switch
 	 */
 	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch,
-            final SimulatedResourceContainerRegistry resourceContainerRegistery);
+            final SimulatedResourceContainerRegistry resourceContainerRegistery,
+            final TransitionDeterminer transitionDeterminer);
 }

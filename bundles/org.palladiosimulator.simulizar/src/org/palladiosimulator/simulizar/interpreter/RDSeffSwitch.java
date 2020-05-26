@@ -87,15 +87,20 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *            Default context for the pcm interpreter.
      * @param basicComponentInstance
      *            Simulated component
+     * @param resourceContainerRegistry
+     *            a SimulatedResourceContainerRegistry
+     * @param transitionDeterminer
+     *            transitionDeterminer for the switch
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance,
-            final SimulatedResourceContainerRegistry resourceContainerRegistery) {
+            final SimulatedResourceContainerRegistry resourceContainerRegistery,
+            final TransitionDeterminer transitionDeterminer) {
 
 		super();
         this.context = context;
         this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
-        this.transitionDeterminer = new DefaultTransitionDeterminer(context);
+        this.transitionDeterminer = transitionDeterminer;
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
         this.resourceRegistry = resourceContainerRegistery;
@@ -111,11 +116,16 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *				Simulated component
      * @param parentSwitch
      *				The composed switch which is containing this switch
+     * @param resourceContainerRegistry
+     *            a SimulatedResourceContainerRegistry
+     * @param transitionDeterminer
+     *            transitionDeterminer for the switch
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
-            final SimulatedResourceContainerRegistry resourceContainerRegistery) {
-		this(context, basicComponentInstance, resourceContainerRegistery);
+            final SimulatedResourceContainerRegistry resourceContainerRegistery, 
+            final TransitionDeterminer transitionDeterminer) {
+		this(context, basicComponentInstance, resourceContainerRegistery, transitionDeterminer);
     	this.parentSwitch = parentSwitch;
     }
 
@@ -506,7 +516,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistry);
+                            RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistry,
+                            RDSeffSwitch.this.transitionDeterminer);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
