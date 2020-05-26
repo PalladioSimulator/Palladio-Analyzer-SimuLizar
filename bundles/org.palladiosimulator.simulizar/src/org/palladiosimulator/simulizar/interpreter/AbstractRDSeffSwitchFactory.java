@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
+import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 
 /**
@@ -23,5 +24,6 @@ public abstract class AbstractRDSeffSwitchFactory {
 	 * @return a composable switch
 	 */
 	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch);
+            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch,
+            final SimulatedResourceContainerRegistry resourceContainerRegistery);
 }

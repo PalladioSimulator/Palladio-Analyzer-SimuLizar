@@ -41,6 +41,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
+import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
 import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
@@ -51,7 +52,6 @@ import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminer;
 
-import de.uka.ipd.sdq.simucomframework.ResourceContainerRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -76,7 +76,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
     private final SimulatedStackframe<Object> resultStackFrame;
     
-    private final ResourceContainerRegistry resourceRegistry;
+    private final SimulatedResourceContainerRegistry resourceRegistry;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
 
@@ -90,7 +90,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance,
-            final ResourceContainerRegistry resourceContainerRegistery) {
+            final SimulatedResourceContainerRegistry resourceContainerRegistery) {
 
 		super();
         this.context = context;
@@ -114,7 +114,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
-            final ResourceContainerRegistry resourceContainerRegistery) {
+            final SimulatedResourceContainerRegistry resourceContainerRegistery) {
 		this(context, basicComponentInstance, resourceContainerRegistery);
     	this.parentSwitch = parentSwitch;
     }
