@@ -29,6 +29,7 @@ import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
+import org.palladiosimulator.simframework.SimulatedResourceContainerRegistryfactory;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
@@ -219,12 +220,14 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-            				this.context.getModel().getResourceRegistry(),
+            				SimulatedResourceContainerRegistryfactory.createSimulatedResourceContainerRegistry
+            				(this.context.getModel()),
             				TransitionDeterminerFactory.createTransitionDeterminer(this.context))));
             // add default RDSeffSwitch
             // TODO
             interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-            		this.context.getModel().getResourceRegistry(), 
+                    SimulatedResourceContainerRegistryfactory.createSimulatedResourceContainerRegistry
+                    (this.context.getModel()),
             		TransitionDeterminerFactory.createTransitionDeterminer(this.context)));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
