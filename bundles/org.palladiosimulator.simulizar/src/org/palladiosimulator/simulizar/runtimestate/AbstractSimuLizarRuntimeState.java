@@ -185,7 +185,7 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     private void initializeWorkloadDrivers() {
         LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers());
+        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers(this.getPCMPartitionManager()));
     }
 
     protected abstract void initializeInterpreterListeners(final Reconfigurator reconfigurator);

@@ -37,11 +37,11 @@ public class InterpreterDefaultContext extends Context {
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel, 
+    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState runtimeState, 
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
-        super(simulizarModel.getModel());
+        super(runtimeState.getModel());
         this.stack = new SimulatedStack<Object>();
-        this.runtimeState = simulizarModel;
+        this.runtimeState = runtimeState;
         this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
         this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
         this.assemblyAllocationLookup = assemblyAllocationLookup;

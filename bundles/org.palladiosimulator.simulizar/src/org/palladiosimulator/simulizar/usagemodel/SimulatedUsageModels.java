@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
@@ -41,8 +42,8 @@ public class SimulatedUsageModels {
      *
      * @return a list of workload drivers
      */
-    public IWorkloadDriver[] createWorkloadDrivers() {
-        final EList<UsageScenario> usageScenarios = this.rootContext.getPCMPartitionManager().getGlobalPCMModel()
+    public IWorkloadDriver[] createWorkloadDrivers(PCMPartitionManager pcm) {
+        final EList<UsageScenario> usageScenarios = pcm.getGlobalPCMModel()
                 .getUsageModel().getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
