@@ -47,6 +47,7 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
@@ -79,6 +80,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     private final SimulatedResourceContainerRegistry resourceRegistry;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
+    
+    private final EventNotificationHelper eventHelper;
+    private final AbstractSimuLizarRuntimeState runtimeState;
 
     /**
      * Constructor.
@@ -95,15 +99,18 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance,
             final SimulatedResourceContainerRegistry resourceContainerRegistery,
-            final TransitionDeterminer transitionDeterminer) {
+            final TransitionDeterminer transitionDeterminer,
+            final AbstractSimuLizarRuntimeState runtimeState) {
 
 		super();
         this.context = context;
+        this.runtimeState = runtimeState;
         this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
         this.transitionDeterminer = transitionDeterminer;
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
         this.resourceRegistry = resourceContainerRegistery;
+        this.eventHelper = runtimeState.getEventNotificationHelper();
     }
 
 
@@ -124,8 +131,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     public RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
             final SimulatedResourceContainerRegistry resourceContainerRegistery, 
-            final TransitionDeterminer transitionDeterminer) {
-		this(context, basicComponentInstance, resourceContainerRegistery, transitionDeterminer);
+            final TransitionDeterminer transitionDetermine, 
+            final AbstractSimuLizarRuntimeState runtimeState) {
+		this(context, basicComponentInstance, resourceContainerRegistery, transitionDetermine, runtimeState);
     	this.parentSwitch = parentSwitch;
     }
 
@@ -215,7 +223,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             for (int i = 0; i < repetitions; i++) {
                 final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
                         this.context, infrastructureCall.getSignature__InfrastructureCall(),
-                        infrastructureCall.getRequiredRole__InfrastructureCall());
+                        infrastructureCall.getRequiredRole__InfrastructureCall(), runtimeState);
 
                 // create new stack frame for input parameter
                 SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
@@ -248,7 +256,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     @Override
     public Object caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
-                externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
+                externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService(), runtimeState);
 
         if (externalCall instanceof DelegatingExternalCallAction) {
             final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
@@ -443,7 +451,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @param eventType
      */
     private <T extends AbstractAction> void firePassedEvent(final T abstractAction, final EventType eventType) {
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(new RDSEFFElementPassedEvent<T>(
+        this.eventHelper.firePassedEvent(new RDSEFFElementPassedEvent<T>(
                 abstractAction, eventType, this.context, this.context.getAssemblyContextStack().peek()));
     }
 
@@ -511,13 +519,14 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                      * reasons we need an InterpreterDefaultContext. Thus we have to copy the
                      * context including its stack.
                      */
-                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
-                            RDSeffSwitch.this.context.getRuntimeState(), true,
-                            RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
+                    final InterpreterDefaultContext seffContext = 
+                            InterpreterDefaultContextFactory.createInterpreterDefaultContext(this.myContext, true,
+                                    RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation(),
+                                    RDSeffSwitch.this.context.getPCMPartitionManager());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
                             RDSeffSwitch.this.basicComponentInstance, RDSeffSwitch.this.resourceRegistry,
-                            RDSeffSwitch.this.transitionDeterminer);
+                            RDSeffSwitch.this.transitionDeterminer, RDSeffSwitch.this.runtimeState);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")

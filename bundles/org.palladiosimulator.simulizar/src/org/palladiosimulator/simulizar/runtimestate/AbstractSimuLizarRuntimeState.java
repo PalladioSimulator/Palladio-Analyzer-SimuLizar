@@ -22,7 +22,7 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
@@ -100,9 +100,9 @@ public abstract class AbstractSimuLizarRuntimeState {
                 this.model.getResourceRegistry()::getResourceContainer;
 
         var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
-        this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
+        this.mainContext = InterpreterDefaultContextFactory.createInterpreterDefaultContext(this.getPCMPartitionManager(), this.getModel(), allocationLookup);
         
-        this.usageModels = new SimulatedUsageModels(this.mainContext);
+        this.usageModels = new SimulatedUsageModels(this.mainContext, this);
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
@@ -185,7 +185,7 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     private void initializeWorkloadDrivers() {
         LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers(this.getPCMPartitionManager()));
+        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers());
     }
 
     protected abstract void initializeInterpreterListeners(final Reconfigurator reconfigurator);

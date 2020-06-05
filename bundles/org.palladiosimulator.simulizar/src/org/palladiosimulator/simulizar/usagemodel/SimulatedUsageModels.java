@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -31,10 +32,12 @@ public class SimulatedUsageModels {
     private final InterpreterDefaultContext rootContext;
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
+    private final AbstractSimuLizarRuntimeState runtimeState;
 
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext) {
+    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, AbstractSimuLizarRuntimeState runtimeState) {
         super();
         this.rootContext = rootContext;
+        this.runtimeState = runtimeState;
     }
 
     /**
@@ -42,8 +45,8 @@ public class SimulatedUsageModels {
      *
      * @return a list of workload drivers
      */
-    public IWorkloadDriver[] createWorkloadDrivers(PCMPartitionManager pcm) {
-        final EList<UsageScenario> usageScenarios = pcm.getGlobalPCMModel()
+    public IWorkloadDriver[] createWorkloadDrivers() {
+        final EList<UsageScenario> usageScenarios = rootContext.getPCMPartitionManager().getGlobalPCMModel()
                 .getUsageModel().getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
@@ -127,7 +130,7 @@ public class SimulatedUsageModels {
                 usageModel.getUsageScenario_UsageModel().stream()
                 	.filter(sc -> sc.getId().equals(scenario.getId()))
                 	.findAny().ifPresent(sc -> {
-                	    new UsageScenarioSwitch<Object>(newContext).doSwitch(sc);
+                	    new UsageScenarioSwitch<Object>(newContext, runtimeState).doSwitch(sc);
                 	});
             }
         };

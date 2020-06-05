@@ -18,9 +18,9 @@ public abstract class SimulatedComponentInstance {
     /**
      * @return the runtimeState
      */
-    protected final AbstractSimuLizarRuntimeState getRuntimeState() {
+    /*protected final AbstractSimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
-    }
+    }*/
     
     /**
      * Called upon shut down of the simulation in order to notify component instances of

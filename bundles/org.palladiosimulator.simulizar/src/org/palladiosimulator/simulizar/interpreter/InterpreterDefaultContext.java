@@ -9,6 +9,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
@@ -29,34 +30,30 @@ public class InterpreterDefaultContext extends Context {
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
-    private final AbstractSimuLizarRuntimeState runtimeState;
-
     private final PCMPartitionManager pcmPartitionManager;
 
     private PCMResourceSetPartition localPCMModelCopy;
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState runtimeState, 
+    InterpreterDefaultContext(final PCMPartitionManager pcm, SimuComModel myModel,
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
-        super(runtimeState.getModel());
+        super(myModel);
         this.stack = new SimulatedStack<Object>();
-        this.runtimeState = runtimeState;
-        this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
+        this.pcmPartitionManager = pcm;
         this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
-    InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
-            final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
+    InterpreterDefaultContext(final Context context, final boolean copyStack, 
+            final PCMResourceSetPartition pcmLocalCopy, final PCMPartitionManager pcm) {
         super(context.getModel());
         this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
-        this.pcmPartitionManager = runtimeState.getPCMPartitionManager().makeSnapshot();
+        this.pcmPartitionManager = pcm.makeSnapshot();
         this.localPCMModelCopy = pcmLocalCopy;
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
         this.stack = new SimulatedStack<Object>();
-        this.runtimeState = runtimeState;
         if (copyStack && context.getStack().size() > 0) {
             this.stack.pushStackFrame(context.getStack().currentStackFrame().copyFrame());
         } else {
@@ -74,13 +71,10 @@ public class InterpreterDefaultContext extends Context {
      * @param thread
      */
     public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager().getLocalPCMModel());
+        this(context, true, context.getPCMPartitionManager().getLocalPCMModel(), context.getPCMPartitionManager());
         this.setSimProcess(thread);
     }
 
-    public AbstractSimuLizarRuntimeState getRuntimeState() {
-        return this.runtimeState;
-    }
     
     public Stack<AssemblyContext> getAssemblyContextStack() {
         return this.assemblyContextStack;
