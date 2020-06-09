@@ -19,7 +19,6 @@ import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeStat
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
-import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminer;
 
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 

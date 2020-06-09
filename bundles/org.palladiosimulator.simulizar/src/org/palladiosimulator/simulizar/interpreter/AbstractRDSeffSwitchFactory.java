@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;

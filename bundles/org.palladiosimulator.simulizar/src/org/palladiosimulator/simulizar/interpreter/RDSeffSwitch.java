@@ -51,7 +51,6 @@ import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeStat
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
-import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminer;
 
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;

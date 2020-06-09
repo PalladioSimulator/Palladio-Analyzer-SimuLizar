@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ComposedStructure;
@@ -23,13 +21,10 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
-import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
-import org.palladiosimulator.simframework.SimulatedResourceContainerRegistryfactory;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
@@ -257,15 +252,6 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         return result;
     }
     
-    private Optional<AssemblyContext> getNestedComponentInstanceFromAssembly(AssemblyContext contextToFind, AssemblyContext compositeAssembly) {
-    	RepositoryComponent comp = compositeAssembly.getEncapsulatedComponent__AssemblyContext();
-    	if (!RepositoryPackage.eINSTANCE.getCompositeComponent().isInstance(comp)) {
-    		throw new IllegalArgumentException("Nested component instance only available for instances of composite components.");
-    	}
-    	return ((ComposedStructure)comp).getAssemblyContexts__ComposedStructure().stream()
-    			.filter(ctx -> ctx.getId().equals(contextToFind.getId())).findAny();
-    }
-
     /**
      * Determines the provided delegation connector which is connected with the provided role.
      *
