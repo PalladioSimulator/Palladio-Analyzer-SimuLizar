@@ -9,6 +9,11 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 
+/**
+ * Factory for InterpreterDefaultContext
+ * @author Jens
+ *
+ */
 public class InterpreterDefaultContextFactory {
     public static InterpreterDefaultContext createInterpreterDefaultContext(final PCMPartitionManager pcm, 
             SimuComModel myModel, IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {

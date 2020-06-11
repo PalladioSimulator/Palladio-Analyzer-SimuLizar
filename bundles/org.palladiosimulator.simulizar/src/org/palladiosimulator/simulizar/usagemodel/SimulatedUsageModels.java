@@ -12,9 +12,10 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
+import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
@@ -31,12 +32,16 @@ public class SimulatedUsageModels {
     private final InterpreterDefaultContext rootContext;
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
-    private final AbstractSimuLizarRuntimeState runtimeState;
+    private final ComponentInstanceRegistry componentInstanceRegistry;
+    private final EventNotificationHelper eventHelper;
 
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, AbstractSimuLizarRuntimeState runtimeState) {
+    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, final ComponentInstanceRegistry componentInstanceRegistry,
+            EventNotificationHelper eventHelper) {
         super();
         this.rootContext = rootContext;
-        this.runtimeState = runtimeState;
+        this.componentInstanceRegistry = componentInstanceRegistry;
+        this.eventHelper = eventHelper;
+        
     }
 
     /**
@@ -129,7 +134,8 @@ public class SimulatedUsageModels {
                 usageModel.getUsageScenario_UsageModel().stream()
                 	.filter(sc -> sc.getId().equals(scenario.getId()))
                 	.findAny().ifPresent(sc -> {
-                	    new UsageScenarioSwitch<Object>(newContext, runtimeState).doSwitch(sc);
+                	    new UsageScenarioSwitch<Object>(newContext, componentInstanceRegistry, 
+                	            eventHelper).doSwitch(sc);
                 	});
             }
         };

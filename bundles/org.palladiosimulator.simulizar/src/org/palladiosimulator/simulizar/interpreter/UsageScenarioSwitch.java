@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
@@ -37,8 +37,8 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
+    private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
-    private final AbstractSimuLizarRuntimeState runtimeState;
 
     /**
      * Constructor
@@ -46,11 +46,12 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, final AbstractSimuLizarRuntimeState runtimeState) {
+    public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
+            final EventNotificationHelper eventHelper) {
         this.context = context;
-        this.runtimeState = runtimeState;
         this.transitionDeterminer = TransitionDeterminerFactory.createTransitionDeterminer(context);
-        this.eventHelper = this.runtimeState.getEventNotificationHelper();
+        this.componentInstanceRegistry = componentInstanceRegistry;
+        this.eventHelper = eventHelper;
         
     }
 
@@ -98,7 +99,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
                 RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
-                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), this.runtimeState);
+                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), this.componentInstanceRegistry, this.eventHelper);
 
         this.eventHelper
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,

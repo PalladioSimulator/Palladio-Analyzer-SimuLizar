@@ -102,7 +102,8 @@ public abstract class AbstractSimuLizarRuntimeState {
         var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
         this.mainContext = InterpreterDefaultContextFactory.createInterpreterDefaultContext(this.getPCMPartitionManager(), this.getModel(), allocationLookup);
         
-        this.usageModels = new SimulatedUsageModels(this.mainContext, this);
+        this.usageModels = new SimulatedUsageModels(this.mainContext, this.getComponentInstanceRegistry(),
+                this.getEventNotificationHelper());
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());

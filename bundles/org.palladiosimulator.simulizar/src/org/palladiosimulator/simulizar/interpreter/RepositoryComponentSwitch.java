@@ -28,7 +28,6 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
@@ -56,22 +55,20 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final AssemblyContext instanceAssemblyContext;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
-    private final AbstractSimuLizarRuntimeState runtimeState;
 
     /**
      *
      */
     public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
             final Signature signature, final ProvidedRole providedRole, 
-            final AbstractSimuLizarRuntimeState runtimeState) {
+            final ComponentInstanceRegistry componentInstanceRegistry, final EventNotificationHelper eventHelper) {
         super();
         this.context = context;
-        this.runtimeState = runtimeState;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
-        this.componentInstanceRegistry = this.runtimeState.getComponentInstanceRegistry();
-        this.eventHelper = this.runtimeState.getEventNotificationHelper();
+        this.componentInstanceRegistry = componentInstanceRegistry;
+        this.eventHelper = eventHelper;
         
     }
     
@@ -100,7 +97,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             }
             this.componentInstanceRegistry
                     .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
-                            basicComponent.getPassiveResource_BasicComponent(), this.runtimeState));
+                            basicComponent.getPassiveResource_BasicComponent()));
         }
 
         // get seffs for call
@@ -132,7 +129,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
                 LOGGER.debug("FQComponentID is " + fqID);
             }
             this.componentInstanceRegistry.addComponentInstance(
-                    new SimulatedCompositeComponentInstance(this.runtimeState, fqID.getFQIDString()));
+                    new SimulatedCompositeComponentInstance(fqID.getFQIDString()));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
@@ -142,7 +139,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
                 this.providedRole);
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
-                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), this.runtimeState);
+                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), 
+                this.componentInstanceRegistry, this.eventHelper);
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -227,13 +225,13 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
             				this.context.getModel().getResourceRegistry(),
             				TransitionDeterminerFactory.createTransitionDeterminer(this.context),
-            				runtimeState)));
+            				this.componentInstanceRegistry, this.eventHelper)));
             // add default RDSeffSwitch
             // TODO
             interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
                     this.context.getModel().getResourceRegistry(),
             		TransitionDeterminerFactory.createTransitionDeterminer(this.context),
-            		runtimeState));
+            		this.componentInstanceRegistry, this.eventHelper));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }

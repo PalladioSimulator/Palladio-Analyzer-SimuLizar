@@ -387,7 +387,8 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
-				new UsageScenarioSwitch<Object>(newContext, state).doSwitch(usageScenario);
+				new UsageScenarioSwitch<Object>(newContext, state.getComponentInstanceRegistry(), 
+				        state.getEventNotificationHelper()).doSwitch(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running
