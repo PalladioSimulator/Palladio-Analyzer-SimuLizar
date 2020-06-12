@@ -3,30 +3,33 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
+
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class UsageEvolverFacade {
 
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;
     
     /** Runtime state of the simulation. Required to start evolution(s). */
-    private final AbstractSimuLizarRuntimeState runtimeState;
+    //private final AbstractSimuLizarRuntimeState runtimeState;
+    private final PCMPartitionManager pcmManager;
+    private final SimuComModel model;
 
-    public UsageEvolverFacade(final AbstractSimuLizarRuntimeState runtimeState) {
-        this.runtimeState = runtimeState;
-        this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
+    public UsageEvolverFacade(final PCMPartitionManager pcmManager, final SimuComModel model) {
+       this.model = model;
+       this.pcmManager = pcmManager;
+       this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
     }
 
     public void start() {
         // TODO: add check on duration of evolutions for work parameters.
         // For now, assume that the duration of these are the same as for the load evolution
         
-    	PCMPartitionManager manager = this.runtimeState.getPCMPartitionManager();
-    	UsageEvolution ueModel = manager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+    	UsageEvolution ueModel = this.pcmManager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
         ueModel.getUsages().forEach(this::startUsageEvolution);
     }
     
@@ -45,17 +48,17 @@ public class UsageEvolverFacade {
         }
         
         double simulationTimeOffset = 0d; 
-        if (this.runtimeState.getModel().getSimulationControl().isRunning()) {
-            simulationTimeOffset = this.runtimeState.getModel().getSimulationControl().getCurrentSimulationTime();
+        if (this.model.getSimulationControl().isRunning()) {
+            simulationTimeOffset = this.model.getSimulationControl().getCurrentSimulationTime();
         }
         
         if (usage.isRepeatingPattern()) {
-            return new LoopingUsageEvolver(this.runtimeState, 0d, timePerStep, usage.getScenario(), simulationTimeOffset);
+            return new LoopingUsageEvolver(this.pcmManager, this.model, 0d, timePerStep, usage.getScenario(), simulationTimeOffset);
         } else {
             // TODO remove this line once 'legacy' support is no longer needed.
-            timePerStep = this.runtimeState.getModel().getConfiguration().getSimuTime()
+            timePerStep = this.model.getConfiguration().getSimuTime()
                     / (usage.getLoadEvolution().getFinalDuration() + 1);
-            return new StretchedUsageEvolver(this.runtimeState, 0d, timePerStep, usage.getScenario());
+            return new StretchedUsageEvolver(this.pcmManager, this.model, 0d, timePerStep, usage.getScenario());
         }
     }
 }

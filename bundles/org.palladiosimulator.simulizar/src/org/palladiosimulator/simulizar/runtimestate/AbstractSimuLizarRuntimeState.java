@@ -116,7 +116,7 @@ public abstract class AbstractSimuLizarRuntimeState {
          */
         this.initializeCancelation();
         this.initializeInterpreterListeners(this.reconfigurator);
-        this.usageEvolverFacade = new UsageEvolverFacade(this);
+        this.usageEvolverFacade = new UsageEvolverFacade(this.pcmPartitionManager, this.model);
         this.initializeUsageEvolver();
         this.pcmPartitionManager.startObservingPcmChanges();
     }

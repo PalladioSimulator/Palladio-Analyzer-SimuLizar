@@ -2,8 +2,9 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import tools.descartes.dlim.generator.ModelEvaluator;
 
 /**
@@ -32,9 +33,9 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      *            The evolved scenario.
      * @param simulationTimeOffset 
      */
-    public LoopingUsageEvolver(final AbstractSimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
+    public LoopingUsageEvolver(final PCMPartitionManager pcmManager, final SimuComModel model, final double firstOccurrence, final double delay,
             final UsageScenario evolvedScenario, double simulationTimeOffset) {
-        super(rtState, firstOccurrence, delay, evolvedScenario);
+        super(pcmManager, model, firstOccurrence, delay, evolvedScenario);
         if (!this.getCorrespondingUsage().isRepeatingPattern()) {
             throw new IllegalArgumentException("The corresponding usage model must contain a repeating pattern.");
         }
