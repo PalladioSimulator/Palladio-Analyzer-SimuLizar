@@ -11,21 +11,23 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 
 /**
  * Factory for InterpreterDefaultContext
- * @author Jens
+ * @author Jens Manig
  *
  */
-public class InterpreterDefaultContextFactory {
-    public static InterpreterDefaultContext createInterpreterDefaultContext(final PCMPartitionManager pcm, 
+public enum InterpreterDefaultContextFactory implements InterpreterContextFactory{
+    Factory;
+    @Override
+    public InterpreterDefaultContext create(final PCMPartitionManager pcm, 
             SimuComModel myModel, IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
         return new InterpreterDefaultContext(pcm, myModel,  assemblyAllocationLookup);
     }
-    
-    public static InterpreterDefaultContext createInterpreterDefaultContext(final Context context, 
+    @Override
+    public InterpreterDefaultContext create(final Context context, 
             final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy, final PCMPartitionManager pcm) {
         return new InterpreterDefaultContext(context, copyStack, pcmLocalCopy, pcm);
     }
-    
-    public static InterpreterDefaultContext createInterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
+    @Override
+    public InterpreterDefaultContext create(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
         return new InterpreterDefaultContext(context, thread);
     }
 }
