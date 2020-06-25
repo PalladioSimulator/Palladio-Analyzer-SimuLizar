@@ -228,13 +228,13 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
             				this.context.getModel().getResourceRegistry(),
-            				TransitionDeterminerFactory.createTransitionDeterminer(this.context),
+            				TransitionDeterminerFactory.Factory.createTransitionDeterminer(this.context),
             				this.componentInstanceRegistry, this.eventHelper)));
             // add default RDSeffSwitch
             // TODO
             interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
                     this.context.getModel().getResourceRegistry(),
-            		TransitionDeterminerFactory.createTransitionDeterminer(this.context),
+            		TransitionDeterminerFactory.Factory.createTransitionDeterminer(this.context),
             		this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));

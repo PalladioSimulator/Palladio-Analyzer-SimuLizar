@@ -50,7 +50,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
             final EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
         this.context = context;
-        this.transitionDeterminer = TransitionDeterminerFactory.createTransitionDeterminer(context);
+        this.transitionDeterminer = TransitionDeterminerFactory.Factory.createTransitionDeterminer(context);
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
         this.pcmPartitionManager = pcmPartitionManager;

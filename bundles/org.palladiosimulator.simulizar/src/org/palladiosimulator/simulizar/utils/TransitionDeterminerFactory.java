@@ -6,9 +6,9 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
  * @author Jens Manig
  *
  */
-public class TransitionDeterminerFactory {
-	
-	public static TransitionDeterminer createTransitionDeterminer(final InterpreterDefaultContext context) {
+public enum TransitionDeterminerFactory {
+	Factory;
+	public  TransitionDeterminer createTransitionDeterminer(final InterpreterDefaultContext context) {
 		
 		return new DefaultTransitionDeterminer(context);
 		
