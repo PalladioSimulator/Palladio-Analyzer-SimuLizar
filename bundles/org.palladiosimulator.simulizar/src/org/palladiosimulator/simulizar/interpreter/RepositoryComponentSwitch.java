@@ -32,6 +32,7 @@ import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
 
@@ -55,13 +56,15 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final AssemblyContext instanceAssemblyContext;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
+    private final PCMPartitionManager pcmPartitionManager;
 
     /**
      *
      */
     public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
             final Signature signature, final ProvidedRole providedRole, 
-            final ComponentInstanceRegistry componentInstanceRegistry, final EventNotificationHelper eventHelper) {
+            final ComponentInstanceRegistry componentInstanceRegistry, final EventNotificationHelper eventHelper,
+            final PCMPartitionManager pcmPartitionManager) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
@@ -69,6 +72,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         this.providedRole = providedRole;
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
+        this.pcmPartitionManager = pcmPartitionManager;
         
     }
     
@@ -97,7 +101,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             }
             this.componentInstanceRegistry
                     .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
-                            basicComponent.getPassiveResource_BasicComponent()));
+                            basicComponent.getPassiveResource_BasicComponent(), this.pcmPartitionManager));
         }
 
         // get seffs for call
@@ -140,7 +144,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
                 connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), 
-                this.componentInstanceRegistry, this.eventHelper);
+                this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager);
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -231,7 +235,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
                     this.context.getModel().getResourceRegistry(),
             		TransitionDeterminerFactory.createTransitionDeterminer(this.context),
-            		this.componentInstanceRegistry, this.eventHelper));
+            		this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }

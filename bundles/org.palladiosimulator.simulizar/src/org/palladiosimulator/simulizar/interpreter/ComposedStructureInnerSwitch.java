@@ -12,6 +12,7 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -37,7 +38,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
     private final RequiredRole requiredRole;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
-
+    private final PCMPartitionManager pcmPartitionManager;
 
     /**
      * Constructor
@@ -47,20 +48,24 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      */
     public ComposedStructureInnerSwitch(final InterpreterDefaultContext context, final Signature operationSignature,
             final RequiredRole requiredRole,  final ComponentInstanceRegistry componentInstanceRegistry, 
-            final EventNotificationHelper eventHelper) {
+            final EventNotificationHelper eventHelper,
+            final PCMPartitionManager pcmPartitionManager) {
         super();
         this.context = context;
         this.signature = operationSignature;
         this.requiredRole = requiredRole;
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
+        this.pcmPartitionManager = pcmPartitionManager;
+        
     }
 
     @Override
     public SimulatedStackframe<Object> caseAssemblyConnector(final AssemblyConnector assemblyConnector) {
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(), this.signature,
-                assemblyConnector.getProvidedRole_AssemblyConnector(), this.componentInstanceRegistry, this.eventHelper);
+                assemblyConnector.getProvidedRole_AssemblyConnector(), this.componentInstanceRegistry, this.eventHelper,
+                this.pcmPartitionManager);
         return repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
     }
 
@@ -77,7 +82,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
                 this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector(), 
-                this.componentInstanceRegistry, this.eventHelper);
+                this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager);
         return repositoryComponentSwitch
                 .doSwitch(assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
     }
@@ -88,7 +93,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
         final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
                 this.signature, requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector(),
-                this.componentInstanceRegistry, this.eventHelper);
+                this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager);
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
         return result;
@@ -100,7 +105,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
         final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
                 this.signature, requiredInfrastructureDelegationConnector.getOuterRequiredRole__RequiredInfrastructureDelegationConnector(),
-                this.componentInstanceRegistry, this.eventHelper);
+                this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager);
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
         return result;

@@ -45,21 +45,22 @@ import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
 import org.palladiosimulator.simulizar.action.core.StateTransformingStep;
 import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
-import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -370,7 +371,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			return process -> {
 				LOGGER.info("Start executing the controller scenario ('" + mappedCall.getEntityName() + "')!");
 
-				InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
+				InterpreterDefaultContext newContext = InterpreterDefaultContextFactory.Factory.create(state.getMainContext(), process);
 				UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
 				ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
 				usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
@@ -388,7 +389,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
 				new UsageScenarioSwitch<Object>(newContext, state.getComponentInstanceRegistry(), 
-				        state.getEventNotificationHelper()).doSwitch(usageScenario);
+				        state.getEventNotificationHelper(), state.getPCMPartitionManager()).doSwitch(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running

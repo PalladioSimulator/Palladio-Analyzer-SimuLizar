@@ -107,3 +107,4 @@ Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.parameter.util,
  org.palladiosimulator.simulizar.action.ui.configuration
 Bundle-ActivationPolicy: lazy
+Import-Package: org.palladiosimulator.analyzer.workflow.blackboard

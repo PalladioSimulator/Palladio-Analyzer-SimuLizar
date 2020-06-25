@@ -100,10 +100,11 @@ public abstract class AbstractSimuLizarRuntimeState {
                 this.model.getResourceRegistry()::getResourceContainer;
 
         var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
-        this.mainContext = InterpreterDefaultContextFactory.Factory.create(this.getPCMPartitionManager(), this.getModel(), allocationLookup);
+
+        this.mainContext = InterpreterDefaultContextFactory.Factory.create(this.getModel(), allocationLookup);
         
         this.usageModels = new SimulatedUsageModels(this.mainContext, this.getComponentInstanceRegistry(),
-                this.getEventNotificationHelper());
+                this.getEventNotificationHelper(), this.pcmPartitionManager);
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());

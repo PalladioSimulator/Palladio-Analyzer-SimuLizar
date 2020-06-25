@@ -14,8 +14,10 @@ import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
@@ -34,14 +36,15 @@ public class SimulatedUsageModels {
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
+    private final PCMPartitionManager pcmPartitionManager;
 
     public SimulatedUsageModels(final InterpreterDefaultContext rootContext, final ComponentInstanceRegistry componentInstanceRegistry,
-            EventNotificationHelper eventHelper) {
+            EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
         super();
         this.rootContext = rootContext;
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
-        
+        this.pcmPartitionManager = pcmPartitionManager;
     }
 
     /**
@@ -50,7 +53,7 @@ public class SimulatedUsageModels {
      * @return a list of workload drivers
      */
     public IWorkloadDriver[] createWorkloadDrivers() {
-        final EList<UsageScenario> usageScenarios = rootContext.getPCMPartitionManager().getGlobalPCMModel()
+        final EList<UsageScenario> usageScenarios = this.pcmPartitionManager.getGlobalPCMModel()
                 .getUsageModel().getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
@@ -124,9 +127,9 @@ public class SimulatedUsageModels {
 
             @Override
             public void scenarioRunner(final SimuComSimProcess thread) {
-                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
+                final InterpreterDefaultContext newContext = InterpreterDefaultContextFactory.Factory.create(
                         SimulatedUsageModels.this.rootContext, thread);
-                final UsageModel usageModel = newContext.getPCMPartitionManager().getLocalPCMModel().getUsageModel();
+                final UsageModel usageModel = pcmPartitionManager.getLocalPCMModel().getUsageModel();
                 
                 // If the UsageScenario is not contained in the UsageModel (e.g. it has
                 // been removed after the workload scheduled the new user, and before the 
@@ -135,7 +138,7 @@ public class SimulatedUsageModels {
                 	.filter(sc -> sc.getId().equals(scenario.getId()))
                 	.findAny().ifPresent(sc -> {
                 	    new UsageScenarioSwitch<Object>(newContext, componentInstanceRegistry, 
-                	            eventHelper).doSwitch(sc);
+                	            eventHelper, pcmPartitionManager).doSwitch(sc);
                 	});
             }
         };

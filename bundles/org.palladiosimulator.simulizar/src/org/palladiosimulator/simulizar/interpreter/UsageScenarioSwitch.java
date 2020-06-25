@@ -16,6 +16,7 @@ import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
@@ -39,7 +40,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     private final TransitionDeterminer transitionDeterminer;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
-
+    private final PCMPartitionManager pcmPartitionManager;
     /**
      * Constructor
      *
@@ -47,11 +48,12 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      *            the corresponding pcm model interpreter holding this switch..
      */
     public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper) {
+            final EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
         this.context = context;
         this.transitionDeterminer = TransitionDeterminerFactory.createTransitionDeterminer(context);
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
+        this.pcmPartitionManager = pcmPartitionManager;
         
     }
 
@@ -99,7 +101,8 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
                 RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
-                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), this.componentInstanceRegistry, this.eventHelper);
+                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), this.componentInstanceRegistry, this.eventHelper,
+                this.pcmPartitionManager);
 
         this.eventHelper
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,

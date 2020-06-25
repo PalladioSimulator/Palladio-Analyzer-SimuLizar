@@ -27,7 +27,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
     private final Map<String, IPassiveResource> passiveResourcesMap;
 
     public SimulatedBasicComponentInstance(final InterpreterDefaultContext context, final FQComponentID fqID,
-            final List<PassiveResource> passiveResources) {
+            final List<PassiveResource> passiveResources, final PCMPartitionManager pcmPartitionManager) {
         super(fqID.getFQIDString());
 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
@@ -40,8 +40,8 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
                     context.getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
 
-            PCMPartitionManager partitionManager = context.getPCMPartitionManager();
-            MonitorRepository monitorRepo = partitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()); 
+            //PCMPartitionManager partitionManager = context.getPCMPartitionManager();
+            MonitorRepository monitorRepo = pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()); 
             
             MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
                     monitorRepo, passiveResource, MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
