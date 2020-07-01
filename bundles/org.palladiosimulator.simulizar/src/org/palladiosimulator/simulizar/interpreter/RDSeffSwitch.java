@@ -12,6 +12,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
+import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
@@ -67,6 +68,8 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
     private static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
+    private static final String RDSEFFSWITCH_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.interpreter.rdseffswitch";
+    private static final String RDSEFFSWITCH_EXTENSION_ATTRIBUTE = "rdseffswitch";
 
     private ComposedSwitch<Object> parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
@@ -498,15 +501,25 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             RDSeffSwitch.this.context.getRuntimeState(), true,
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
-                    final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance);
+                    
+                    //get and add switches from extensions
+                    final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
+                        .getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
+                    final ExplicitDispatchComposedSwitch<Object> dispatchSeffInterpreter = 
+                            new ExplicitDispatchComposedSwitch<Object>();
+                    switchFactories.stream()
+                        .forEach(s -> dispatchSeffInterpreter.addSwitch(s.createRDSeffSwitch(seffContext,
+                                RDSeffSwitch.this.basicComponentInstance, dispatchSeffInterpreter)));
+                    // add default RDSeffSwitch
+                    dispatchSeffInterpreter.addSwitch(
+                            new RDSeffSwitch(seffContext, RDSeffSwitch.this.basicComponentInstance, dispatchSeffInterpreter));
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
                                 + " forked baviour: " + this);
                     }
                     // no use of parentSwitch.doSwitch() because we want the inner switches
-                    seffInterpreter.doSwitch(forkedBehaviour);
+                    dispatchSeffInterpreter.doSwitch(forkedBehaviour);
                 }
 
             });
