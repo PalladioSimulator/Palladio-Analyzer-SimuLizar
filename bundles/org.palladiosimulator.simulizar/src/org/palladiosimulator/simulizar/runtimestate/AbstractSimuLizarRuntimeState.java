@@ -41,6 +41,8 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
+import com.google.inject.Inject;
+
 import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -82,6 +84,8 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     private long numberOfContainers = 0;
 
+    
+    
     /**
      * @param configuration
      * @param modelAccess
@@ -89,10 +93,11 @@ public abstract class AbstractSimuLizarRuntimeState {
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
             final MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
         super();
+
         this.pcmPartitionManager = new PCMPartitionManager(blackboard, configuration);
         this.cancelationDelegate = cancelationDelegate;
         this.model = SimuComModelFactory.createSimuComModel(configuration);
-
+        
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
         
@@ -121,6 +126,41 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.initializeUsageEvolver();
         this.pcmPartitionManager.startObservingPcmChanges();
     }
+    
+    @Inject
+    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
+    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
+            final EventNotificationHelper eventHelper, final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+        super();
+
+        this.pcmPartitionManager = pcmPartitionManager;
+        this.cancelationDelegate = cancelationDelegate;
+        this.model = model;
+        
+        this.eventHelper = eventHelper;
+        this.componentInstanceRegistry = componentInstanceRegistry;
+
+        this.mainContext = context;
+        
+        this.usageModels = usageModels;
+        this.initializeWorkloadDrivers();
+
+        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        this.modelObservers = this.initializeModelObservers(Arrays.asList(allocationLookup));
+        /*
+         * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
+         * prior to interpreter listeners (in particular ProbeFrameworkListener) as
+         * ProbeFrameworkListener uses calculators of resources created in
+         * ResourceEnvironmentSyncer!
+         */
+        this.initializeCancelation();
+        this.initializeInterpreterListeners(this.reconfigurator);
+        this.usageEvolverFacade = usageEvolverFacade;
+        this.initializeUsageEvolver();
+        this.pcmPartitionManager.startObservingPcmChanges();
+    }
+    
 
     /**
      * @return the model

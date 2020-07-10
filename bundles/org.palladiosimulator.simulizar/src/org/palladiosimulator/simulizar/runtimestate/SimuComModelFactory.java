@@ -10,9 +10,9 @@ import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
-final class SimuComModelFactory {
+public final class SimuComModelFactory {
 
-    static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration) {
+    public static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration) {
         final SimuComModel simuComModel = initialiseSimuComModel(configuration);
         return simuComModel;
     }

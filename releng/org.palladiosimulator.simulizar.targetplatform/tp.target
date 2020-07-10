@@ -246,12 +246,14 @@
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
+			<unit id="com.google.inject.guice.feature.feature.group" version="tbd"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
+			<unit id="com.google.inject.guice.feature.feature.group" version="tbd"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">

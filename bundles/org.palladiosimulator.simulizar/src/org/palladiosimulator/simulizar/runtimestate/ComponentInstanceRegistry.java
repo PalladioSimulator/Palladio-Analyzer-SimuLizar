@@ -10,7 +10,7 @@ public class ComponentInstanceRegistry {
     /**
      *
      */
-    protected ComponentInstanceRegistry() {
+    public ComponentInstanceRegistry() {
         super();
         this.componentInstances = new HashMap<String, SimulatedComponentInstance>();
     }

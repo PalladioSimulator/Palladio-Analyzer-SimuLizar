@@ -1,12 +1,20 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
 import org.apache.log4j.Logger;
+import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
+import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import com.google.inject.Inject;
+
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
@@ -32,6 +40,14 @@ public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
     public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final MDSDBlackboard blackboard,
             final SimulationCancelationDelegate cancelationDelegate) {
         super(configuration, blackboard, cancelationDelegate);
+    }
+    @Inject
+    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
+    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
+            final EventNotificationHelper eventHelper, InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup,
+            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+        super(configuration, cancelationDelegate, pcmPartitionManager, model, componentInstanceRegistry, eventHelper, context, allocationLookup,
+        		usageEvolverFacade, usageModels);
     }
 
     protected void initializeInterpreterListeners(final Reconfigurator reconfigurator) {

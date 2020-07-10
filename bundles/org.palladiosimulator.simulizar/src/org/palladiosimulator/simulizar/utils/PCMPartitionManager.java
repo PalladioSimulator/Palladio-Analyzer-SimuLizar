@@ -30,6 +30,8 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import com.google.inject.Inject;
+
 import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -97,6 +99,7 @@ public class PCMPartitionManager {
 	 * @param blackboard The workflow engine's blackboard holding all models.
 	 * @param config     SimuLizar workflow configuration object.
 	 */
+	@Inject
 	public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
 		this.blackboard = blackboard;
 		this.globalPartition = (PCMResourceSetPartition) blackboard

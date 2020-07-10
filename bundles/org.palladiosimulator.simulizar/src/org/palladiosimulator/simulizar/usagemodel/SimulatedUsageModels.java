@@ -19,6 +19,10 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+import com.google.inject.assistedinject.AssistedInject;
+
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
@@ -38,7 +42,8 @@ public class SimulatedUsageModels {
     private final EventNotificationHelper eventHelper;
     private final PCMPartitionManager pcmPartitionManager;
 
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, final ComponentInstanceRegistry componentInstanceRegistry,
+    @Inject
+    public SimulatedUsageModels(@Assisted final InterpreterDefaultContext rootContext, final ComponentInstanceRegistry componentInstanceRegistry,
             EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
         super();
         this.rootContext = rootContext;
