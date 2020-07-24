@@ -3,6 +3,8 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -15,14 +17,20 @@ public class UsageEvolverFacade {
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;
     
     /** Runtime state of the simulation. Required to start evolution(s). */
-    //private final AbstractSimuLizarRuntimeState runtimeState;
     private final PCMPartitionManager pcmManager;
     private final SimuComModel model;
+    
+    private final LoopingUsageEvolverFactory loopingUsageEvolerFactory;
+    private final StretchedUsageEvolverFactory stretchedUsageEvolverFactory;
 
-    public UsageEvolverFacade(final PCMPartitionManager pcmManager, final SimuComModel model) {
+    @Inject
+    public UsageEvolverFacade(final PCMPartitionManager pcmManager, final SimuComModel model, 
+    		final LoopingUsageEvolverFactory loopingUsageEvolerFactory, final StretchedUsageEvolverFactory stretchedUsageEvolverFactory) {
        this.model = model;
        this.pcmManager = pcmManager;
        this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
+       this.loopingUsageEvolerFactory = loopingUsageEvolerFactory;
+       this.stretchedUsageEvolverFactory = stretchedUsageEvolverFactory;
     }
 
     public void start() {
@@ -53,12 +61,12 @@ public class UsageEvolverFacade {
         }
         
         if (usage.isRepeatingPattern()) {
-            return new LoopingUsageEvolver(this.pcmManager, this.model, 0d, timePerStep, usage.getScenario(), simulationTimeOffset);
+            return this.loopingUsageEvolerFactory.create(0d, timePerStep, usage.getScenario(), simulationTimeOffset);
         } else {
             // TODO remove this line once 'legacy' support is no longer needed.
             timePerStep = this.model.getConfiguration().getSimuTime()
                     / (usage.getLoadEvolution().getFinalDuration() + 1);
-            return new StretchedUsageEvolver(this.pcmManager, this.model, 0d, timePerStep, usage.getScenario());
+            return this.stretchedUsageEvolverFactory.create(0d, timePerStep, usage.getScenario());
         }
     }
 }

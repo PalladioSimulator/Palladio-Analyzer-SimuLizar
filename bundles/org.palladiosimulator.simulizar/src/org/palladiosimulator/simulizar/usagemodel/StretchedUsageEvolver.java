@@ -1,7 +1,11 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
+import javax.inject.Inject;
+
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import tools.descartes.dlim.generator.ModelEvaluator;
@@ -32,8 +36,10 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The scenario evolved by <code>this</code>.
      */
-    public StretchedUsageEvolver(final PCMPartitionManager pcmManager, final SimuComModel model, final double firstOccurrence, final double delay,
-            final UsageScenario evolvedScenario) {
+    @Inject
+    public StretchedUsageEvolver(@Assisted("firstOccurrence") final double firstOccurrence,
+    		@Assisted("delay") final double delay, @Assisted final UsageScenario evolvedScenario,
+    		final PCMPartitionManager pcmManager, final SimuComModel model) {
         super(pcmManager, model, firstOccurrence, delay, evolvedScenario);
         this.timeFactor = this.getModel().getConfiguration().getSimuTime() / this.getDLIMFinalDuration();
     }

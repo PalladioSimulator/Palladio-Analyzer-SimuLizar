@@ -108,9 +108,9 @@ public class SimuLizarModule extends AbstractModule{
 				.build(SimulatedCompositeComponentInstanceFactory.class));
 		install(new FactoryModuleBuilder()
 				.build(FQComponentIDFactory.class));
-		//install(new FactoryModuleBuilder()
-			//	.build(LoopingUsageEvolverFactory.class));
-		//install(new FactoryModuleBuilder()
-			//	.build(StretchedUsageEvolverFactory.class));
+		install(new FactoryModuleBuilder()
+				.build(LoopingUsageEvolverFactory.class));
+		install(new FactoryModuleBuilder()
+				.build(StretchedUsageEvolverFactory.class));
 	}
 }
