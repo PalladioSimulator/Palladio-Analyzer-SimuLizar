@@ -62,16 +62,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         this.respositorySwtichFactory = respositorySwtichFactory;
     }
 
-    
- /*   public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
-        this.context = context;
-        this.transitionDeterminer = new DefaultTransitionDeterminer(context);
-        this.componentInstanceRegistry = componentInstanceRegistry;
-        this.eventHelper = eventHelper;
-        this.pcmPartitionManager = pcmPartitionManager;        
-    }
-
     /**
      * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseBranch(org.palladiosimulator.pcm.usagemodel.Branch)
      */
@@ -181,28 +171,6 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
         return super.caseScenarioBehaviour(object);
     }
-
-    // /**
-    // * @see
-    // org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseStart(org.palladiosimulator.pcm.usagemodel.Start)
-    // */
-    // @Override
-    // public T caseStart(final Start object)
-    // {
-    // InterpreterLogger.debug(LOGGER, "Interpret Start: " + object);
-    //
-    // AbstractUserAction currentAction = object;
-    //
-    // InterpreterLogger.debug(LOGGER, "Follow action chain");
-    // // follow action chain, beginning with start action
-    // while ((currentAction = currentAction.getSuccessor()) != null)
-    // {
-    // this.doSwitch(currentAction);
-    // }
-    //
-    // InterpreterLogger.debug(LOGGER, "Finished start: " + object);
-    // return super.caseStart(object);
-    // }
 
     /**
      * @see org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch#caseAbstractUserAction(org.palladiosimulator.pcm.usagemodel.AbstractUserAction)
