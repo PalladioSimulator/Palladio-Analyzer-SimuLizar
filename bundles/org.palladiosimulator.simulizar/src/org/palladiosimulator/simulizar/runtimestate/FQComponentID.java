@@ -4,16 +4,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.NamedElement;
+
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 
 public class FQComponentID {
 
     private final List<AssemblyContext> assembyContextPath;
-
-    public FQComponentID(final List<AssemblyContext> assemblyContextPath) {
+    @Inject
+    public FQComponentID(@Assisted final List<AssemblyContext> assemblyContextPath) {
         super();
         this.assembyContextPath = Collections.unmodifiableList(assemblyContextPath);
     }

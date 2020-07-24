@@ -10,6 +10,8 @@ import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
@@ -52,6 +54,7 @@ public class AllocationLookupSyncer extends AbstractModelObserver<Allocation>
      *                                container instances based on the id of their
      *                                model counterpart.
      */
+   @Inject
     public AllocationLookupSyncer(
             ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess) {
         this.resourceContainerAccess = resourceContainerAccess;

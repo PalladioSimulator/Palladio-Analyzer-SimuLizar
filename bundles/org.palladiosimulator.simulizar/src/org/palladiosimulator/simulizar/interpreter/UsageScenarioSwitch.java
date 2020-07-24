@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -15,11 +17,11 @@ import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
-import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
+
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
@@ -38,23 +40,36 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
-    private final ComponentInstanceRegistry componentInstanceRegistry;
+
     private final EventNotificationHelper eventHelper;
-    private final PCMPartitionManager pcmPartitionManager;
+
+    private final RepositoryComponentSwitchFactory respositorySwtichFactory;
     /**
      * Constructor
      *
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
+    @Inject
+    public UsageScenarioSwitch(@Assisted final InterpreterDefaultContext context,
+            final EventNotificationHelper eventHelper, final TransitionDeterminerFactory transitionDeterminerFactory,
+            final RepositoryComponentSwitchFactory respositorySwtichFactory) {
+        this.context = context;
+        this.transitionDeterminer = transitionDeterminerFactory.create(context);
+
+        this.eventHelper = eventHelper;
+
+        this.respositorySwtichFactory = respositorySwtichFactory;
+    }
+
+    
+ /*   public UsageScenarioSwitch(final InterpreterDefaultContext context, final ComponentInstanceRegistry componentInstanceRegistry,
             final EventNotificationHelper eventHelper, final PCMPartitionManager pcmPartitionManager) {
         this.context = context;
-        this.transitionDeterminer = TransitionDeterminerFactory.Factory.createTransitionDeterminer(context);
+        this.transitionDeterminer = new DefaultTransitionDeterminer(context);
         this.componentInstanceRegistry = componentInstanceRegistry;
         this.eventHelper = eventHelper;
-        this.pcmPartitionManager = pcmPartitionManager;
-        
+        this.pcmPartitionManager = pcmPartitionManager;        
     }
 
     /**
@@ -98,11 +113,10 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
-        final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
+        final RepositoryComponentSwitch providedDelegationSwitch = this.respositorySwtichFactory.create(this.context,
                 RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
-                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), this.componentInstanceRegistry, this.eventHelper,
-                this.pcmPartitionManager);
+                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
         this.eventHelper
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,

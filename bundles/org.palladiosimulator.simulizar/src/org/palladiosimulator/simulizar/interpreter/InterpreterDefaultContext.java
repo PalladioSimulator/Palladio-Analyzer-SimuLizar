@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.Stack;
 
+import javax.inject.Inject;
+
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 
 import de.uka.ipd.sdq.simucomframework.Context;
@@ -30,13 +32,14 @@ public class InterpreterDefaultContext extends Context {
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    InterpreterDefaultContext(SimuComModel myModel,
+    @Inject
+    public InterpreterDefaultContext(SimuComModel myModel,
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
         super(myModel);
         this.stack = new SimulatedStack<Object>();
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
-
+    
     InterpreterDefaultContext(final Context context, final boolean copyStack) {
         super(context.getModel());
         this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();

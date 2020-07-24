@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import javax.inject.Inject;
+
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -14,6 +16,8 @@ import org.palladiosimulator.pcm.repository.PassiveResource;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.scheduler.IPassiveResource;
 import de.uka.ipd.sdq.scheduler.ISchedulableProcess;
@@ -25,9 +29,9 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 public class SimulatedBasicComponentInstance extends SimulatedComponentInstance {
 
     private final Map<String, IPassiveResource> passiveResourcesMap;
-
-    public SimulatedBasicComponentInstance(final InterpreterDefaultContext context, final FQComponentID fqID,
-            final List<PassiveResource> passiveResources, final PCMPartitionManager pcmPartitionManager) {
+    @Inject
+    public SimulatedBasicComponentInstance(@Assisted final InterpreterDefaultContext context,@Assisted final FQComponentID fqID,
+            @Assisted final List<PassiveResource> passiveResources, final PCMPartitionManager pcmPartitionManager) {
         super(fqID.getFQIDString());
 
         this.passiveResourcesMap = new HashMap<String, IPassiveResource>();
@@ -40,7 +44,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
                     context.getModel(), initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
 
-            //PCMPartitionManager partitionManager = context.getPCMPartitionManager();
+           
             MonitorRepository monitorRepo = pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()); 
             
             MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(

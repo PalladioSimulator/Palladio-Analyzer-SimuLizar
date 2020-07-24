@@ -15,7 +15,6 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import com.google.inject.Inject;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
@@ -33,14 +32,6 @@ public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
 
 	private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
 
-    /**
-     * @param configuration
-     * @param modelAccess
-     */
-    public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final MDSDBlackboard blackboard,
-            final SimulationCancelationDelegate cancelationDelegate) {
-        super(configuration, blackboard, cancelationDelegate);
-    }
     @Inject
     public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
     		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,

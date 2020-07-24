@@ -30,11 +30,15 @@ import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOper
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentIDFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstanceFactory;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -56,24 +60,36 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final AssemblyContext instanceAssemblyContext;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final EventNotificationHelper eventHelper;
-    private final PCMPartitionManager pcmPartitionManager;
 
+    private final RDSeffSwitchFactory RDSwitchFactory;
+    private final TransitionDeterminerFactory determinerFactory;
+    private final RepositoryComponentSwitchFactory repsitorySwitchFactory;
+    private final SimulatedBasicComponentInstanceFactory basicComponentFactory;
+    private final SimulatedCompositeComponentInstanceFactory compositeComponentFactory;
+    private final FQComponentIDFactory fqComponentIDFactory;
     /**
      *
      */
-    public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole, 
+    @Inject
+    public RepositoryComponentSwitch(@Assisted final InterpreterDefaultContext context, @Assisted final AssemblyContext assemblyContext,
+    		@Assisted final Signature signature, @Assisted final ProvidedRole providedRole, 
             final ComponentInstanceRegistry componentInstanceRegistry, final EventNotificationHelper eventHelper,
-            final PCMPartitionManager pcmPartitionManager) {
+            final TransitionDeterminerFactory determinerFactory, final RDSeffSwitchFactory switchFactory,
+            final RepositoryComponentSwitchFactory repsitorySwitchFactory, final SimulatedBasicComponentInstanceFactory basicComponentFactory, 
+            final SimulatedCompositeComponentInstanceFactory compositeComponentFactory, FQComponentIDFactory fqComponentIDFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
         this.componentInstanceRegistry = componentInstanceRegistry;
-        this.eventHelper = eventHelper;
-        this.pcmPartitionManager = pcmPartitionManager;
-        
+        this.eventHelper = eventHelper; 
+        this.determinerFactory = determinerFactory;
+        this.RDSwitchFactory = switchFactory;
+        this.repsitorySwitchFactory = repsitorySwitchFactory;
+		this.basicComponentFactory = basicComponentFactory;
+		this.compositeComponentFactory = compositeComponentFactory;
+		this.fqComponentIDFactory = fqComponentIDFactory;
     }
     
     @Override
@@ -93,15 +109,15 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         SimulatedStackHelper.createAndPushNewStackFrame(stack,
                 this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
 
-        final FQComponentID fqID = this.computeFQComponentID();
+        final FQComponentID fqID = this.fqComponentIDFactory.create(this.computeAssemblyContextPath());
         if (!this.componentInstanceRegistry.hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
             this.componentInstanceRegistry
-                    .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
-                            basicComponent.getPassiveResource_BasicComponent(), this.pcmPartitionManager));
+                    .addComponentInstance(basicComponentFactory.create(this.context, fqID,
+                            basicComponent.getPassiveResource_BasicComponent()));
         }
 
         // get seffs for call
@@ -126,14 +142,14 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
         }
-        final FQComponentID fqID = this.computeFQComponentID();
+        final FQComponentID fqID = this.fqComponentIDFactory.create(this.computeAssemblyContextPath());
         if (!this.componentInstanceRegistry.hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new composed component instance, registering it: " + entity);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
             this.componentInstanceRegistry.addComponentInstance(
-                    new SimulatedCompositeComponentInstance(fqID.getFQIDString()));
+                    compositeComponentFactory.create(fqID.getFQIDString()));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
@@ -141,10 +157,9 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         }
         final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(
                 this.providedRole);
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
+        final RepositoryComponentSwitch repositoryComponentSwitch = this.repsitorySwitchFactory.create(this.context,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
-                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), 
-                this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager);
+                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -218,7 +233,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            final FQComponentID componentID = this.computeFQComponentID();
+            final FQComponentID componentID = this.fqComponentIDFactory.create(this.computeAssemblyContextPath());
             final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.
                     componentInstanceRegistry.getComponentInstance(componentID);
             
@@ -226,23 +241,19 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
             final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
-            		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
+            		/*s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
             				this.context.getModel().getResourceRegistry(),
-            				TransitionDeterminerFactory.Factory.createTransitionDeterminer(this.context),
-            				this.componentInstanceRegistry, this.eventHelper)));
+            				this.determinerFactory.create(this.context),
+            				this.componentInstanceRegistry, this.eventHelper)));*/
+            		this.RDSwitchFactory.create(this.context, basicComponentInstance, interpreter, 
+                    		this.determinerFactory.create(this.context))));
             // add default RDSeffSwitch
             // TODO
-            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-                    this.context.getModel().getResourceRegistry(),
-            		TransitionDeterminerFactory.Factory.createTransitionDeterminer(this.context),
-            		this.componentInstanceRegistry, this.eventHelper, this.pcmPartitionManager));
+            interpreter.addSwitch(this.RDSwitchFactory.create(this.context, basicComponentInstance, interpreter, 
+            		this.determinerFactory.create(this.context)));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
-    }
-
-    private FQComponentID computeFQComponentID() {
-        return new FQComponentID(this.computeAssemblyContextPath());
     }
 
     private List<AssemblyContext> computeAssemblyContextPath() {

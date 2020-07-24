@@ -1,8 +1,12 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-public class SimulatedCompositeComponentInstance extends SimulatedComponentInstance {
+import javax.inject.Inject;
 
-    public SimulatedCompositeComponentInstance(final String fqId) {
+import com.google.inject.assistedinject.Assisted;
+
+public class SimulatedCompositeComponentInstance extends SimulatedComponentInstance {
+	@Inject
+    public SimulatedCompositeComponentInstance(@Assisted final String fqId) {
         super(fqId);
     }
 

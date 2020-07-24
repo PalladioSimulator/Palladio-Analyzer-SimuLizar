@@ -22,7 +22,6 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
@@ -43,15 +42,11 @@ import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import com.google.inject.Inject;
 
-import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects.
@@ -84,48 +79,6 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     private long numberOfContainers = 0;
 
-    
-    
-    /**
-     * @param configuration
-     * @param modelAccess
-     */
-    public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
-            final MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
-        super();
-
-        this.pcmPartitionManager = new PCMPartitionManager(blackboard, configuration);
-        this.cancelationDelegate = cancelationDelegate;
-        this.model = SimuComModelFactory.createSimuComModel(configuration);
-        
-        this.eventHelper = new EventNotificationHelper();
-        this.componentInstanceRegistry = new ComponentInstanceRegistry();
-        
-        ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess = 
-                this.model.getResourceRegistry()::getResourceContainer;
-
-        var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
-
-        this.mainContext = InterpreterDefaultContextFactory.Factory.create(this.getModel(), allocationLookup);
-        
-        this.usageModels = new SimulatedUsageModels(this.mainContext, this.getComponentInstanceRegistry(),
-                this.getEventNotificationHelper(), this.pcmPartitionManager);
-        this.initializeWorkloadDrivers();
-
-        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
-        this.modelObservers = this.initializeModelObservers(Arrays.asList(allocationLookup));
-        /*
-         * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
-         * prior to interpreter listeners (in particular ProbeFrameworkListener) as
-         * ProbeFrameworkListener uses calculators of resources created in
-         * ResourceEnvironmentSyncer!
-         */
-        this.initializeCancelation();
-        this.initializeInterpreterListeners(this.reconfigurator);
-        this.usageEvolverFacade = new UsageEvolverFacade(this.pcmPartitionManager, this.model);
-        this.initializeUsageEvolver();
-        this.pcmPartitionManager.startObservingPcmChanges();
-    }
     
     @Inject
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
