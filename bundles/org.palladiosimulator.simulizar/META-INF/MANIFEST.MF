@@ -104,4 +104,5 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.monitorrepository"
 Bundle-Vendor: palladiosimulator.org
 Import-Package: com.google.inject,
- com.google.inject.assistedinject;version="1.4.0"
+ com.google.inject.assistedinject;version="1.4.0",
+ javax.inject;version="1.0.0"

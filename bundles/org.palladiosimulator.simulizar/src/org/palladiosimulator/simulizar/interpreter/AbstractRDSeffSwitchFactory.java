@@ -33,9 +33,5 @@ public abstract class AbstractRDSeffSwitchFactory {
 	 * @return a composable switch
 	 */
 	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch,
-            final SimulatedResourceContainerRegistry resourceContainerRegistery,
-            final TransitionDeterminer transitionDeterminer,
-            final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper);
+            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch);
 }

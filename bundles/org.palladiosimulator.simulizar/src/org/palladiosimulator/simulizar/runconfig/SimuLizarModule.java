@@ -5,6 +5,8 @@ import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
 import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactory;
+import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactoryImpl;
 import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactoryImpl;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitch;
@@ -90,6 +92,7 @@ public class SimuLizarModule extends AbstractModule{
 		bind(IAssemblyAllocationLookup.class).to(AllocationLookupSyncer.class).in(Singleton.class);
 		bind(TransitionDeterminerFactory.class).to(DefaultTransitionDeterminerFactory.class);
 		bind(SimulatedStackframe.class);
+		bind(ExplicitDispatchComposedSwitchFactory.class).to(ExplicitDispatchComposedSwitchFactoryImpl.class);
 		
 		install(new FactoryModuleBuilder()
 			     .build(RepositoryComponentSwitchFactory.class));

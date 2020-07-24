@@ -67,6 +67,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final SimulatedBasicComponentInstanceFactory basicComponentFactory;
     private final SimulatedCompositeComponentInstanceFactory compositeComponentFactory;
     private final FQComponentIDFactory fqComponentIDFactory;
+    private final ExplicitDispatchComposedSwitchFactory explicitDispatchComposedSwitchFactory;
     /**
      *
      */
@@ -76,7 +77,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             final ComponentInstanceRegistry componentInstanceRegistry, final EventNotificationHelper eventHelper,
             final TransitionDeterminerFactory determinerFactory, final RDSeffSwitchFactory switchFactory,
             final RepositoryComponentSwitchFactory repsitorySwitchFactory, final SimulatedBasicComponentInstanceFactory basicComponentFactory, 
-            final SimulatedCompositeComponentInstanceFactory compositeComponentFactory, FQComponentIDFactory fqComponentIDFactory) {
+            final SimulatedCompositeComponentInstanceFactory compositeComponentFactory, FQComponentIDFactory fqComponentIDFactory,
+            final ExplicitDispatchComposedSwitchFactory explicitDispatchComposedSwitchFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
@@ -90,6 +92,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
 		this.basicComponentFactory = basicComponentFactory;
 		this.compositeComponentFactory = compositeComponentFactory;
 		this.fqComponentIDFactory = fqComponentIDFactory;
+		this.explicitDispatchComposedSwitchFactory = explicitDispatchComposedSwitchFactory;
     }
     
     @Override
@@ -239,18 +242,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             
             final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
             		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
-            final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
-            switchFactories.stream().forEach(s -> interpreter.addSwitch(
-            		/*s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter, 
-            				this.context.getModel().getResourceRegistry(),
-            				this.determinerFactory.create(this.context),
-            				this.componentInstanceRegistry, this.eventHelper)));*/
-            		this.RDSwitchFactory.create(this.context, basicComponentInstance, interpreter, 
-                    		this.determinerFactory.create(this.context))));
-            // add default RDSeffSwitch
-            // TODO
-            interpreter.addSwitch(this.RDSwitchFactory.create(this.context, basicComponentInstance, interpreter, 
-            		this.determinerFactory.create(this.context)));
+            final  ExplicitDispatchComposedSwitch<Object> interpreter = this.explicitDispatchComposedSwitchFactory.create(
+            		basicComponentInstance, context, RDSwitchFactory, determinerFactory, switchFactories);
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
