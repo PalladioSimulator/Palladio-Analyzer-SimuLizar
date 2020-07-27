@@ -1,10 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
-import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
-import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
 /**
  * Abstract Factory used by the extensible behaviour switches extension point.

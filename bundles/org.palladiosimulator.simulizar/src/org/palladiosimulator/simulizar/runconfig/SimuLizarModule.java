@@ -10,6 +10,8 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFact
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RepositoryComponentSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
+import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEventFactory;
+import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEventFactoryImpl;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentIDFactory;
@@ -90,6 +92,7 @@ public class SimuLizarModule extends AbstractModule{
 		bind(TransitionDeterminerFactory.class).to(DefaultTransitionDeterminerFactory.class);
 		bind(SimulatedStackframe.class);
 		bind(ExplicitDispatchComposedSwitchFactory.class).to(ExplicitDispatchComposedSwitchFactoryImpl.class);
+		bind(ModelElementPassedEventFactory.class).to(ModelElementPassedEventFactoryImpl.class);
 		
 		install(new FactoryModuleBuilder()
 			     .build(RepositoryComponentSwitchFactory.class));

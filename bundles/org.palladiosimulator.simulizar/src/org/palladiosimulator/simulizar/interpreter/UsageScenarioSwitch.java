@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.interpreter;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.Branch;
 import org.palladiosimulator.pcm.usagemodel.BranchTransition;
@@ -16,7 +15,7 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
-import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEventFactory;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
@@ -44,6 +43,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     private final EventNotificationHelper eventHelper;
 
     private final RepositoryComponentSwitchFactory respositorySwtichFactory;
+    private final ModelElementPassedEventFactory modelElementPassedEventFactory;
     /**
      * Constructor
      *
@@ -53,13 +53,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     @Inject
     public UsageScenarioSwitch(@Assisted final InterpreterDefaultContext context,
             final EventNotificationHelper eventHelper, final TransitionDeterminerFactory transitionDeterminerFactory,
-            final RepositoryComponentSwitchFactory respositorySwtichFactory) {
+            final RepositoryComponentSwitchFactory respositorySwtichFactory,
+            final ModelElementPassedEventFactory modelElementPassedEventFactory) {
         this.context = context;
         this.transitionDeterminer = transitionDeterminerFactory.create(context);
 
         this.eventHelper = eventHelper;
-
         this.respositorySwtichFactory = respositorySwtichFactory;
+        this.modelElementPassedEventFactory = modelElementPassedEventFactory;
     }
 
     /**
@@ -109,13 +110,13 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
         this.eventHelper
-                .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,
+                .firePassedEvent(modelElementPassedEventFactory.create(entryLevelSystemCall,
                         EventType.BEGIN, this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.eventHelper
-                .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
+                .firePassedEvent(modelElementPassedEventFactory.create(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN,
                         this.context));
 
@@ -126,13 +127,13 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         this.context.getStack().removeStackFrame();
 
         this.eventHelper
-                .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall, EventType.END,
+                .firePassedEvent(modelElementPassedEventFactory.create(entryLevelSystemCall, EventType.END,
                         this.context));
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
         this.eventHelper
-                .firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
+                .firePassedEvent(modelElementPassedEventFactory.create(
                         entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.END,
                         this.context));
 
@@ -195,14 +196,14 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     @Override
     public T caseUsageScenario(final UsageScenario usageScenario) {
         this.eventHelper.firePassedEvent(
-                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.BEGIN, this.context));
+        		modelElementPassedEventFactory.create(usageScenario, EventType.BEGIN, this.context));
         final int stacksize = this.context.getStack().size();
         this.doSwitch(usageScenario.getScenarioBehaviour_UsageScenario());
         if (this.context.getStack().size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
         this.eventHelper.firePassedEvent(
-                new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context));
+        		modelElementPassedEventFactory.create(usageScenario, EventType.END, this.context));
         return super.caseUsageScenario(usageScenario);
     }
 }
