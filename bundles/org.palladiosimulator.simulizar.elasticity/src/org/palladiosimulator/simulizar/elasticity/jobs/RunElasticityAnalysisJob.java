@@ -14,18 +14,29 @@ import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
+import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
+import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
+import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -98,8 +109,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
-			final AbstractSimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration, this.blackboard,
-					new SimulationCancelationDelegate(monitor::isCanceled));
+			Injector injector = Guice.createInjector(new SimuLizarModule(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled)));
+			final AbstractSimuLizarRuntimeState runtimeState = injector.getInstance(SimuLizarRuntimeStateElasticity.class);
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
 			runtimeState.cleanUp();
@@ -141,9 +152,15 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	}
 	
 	private class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
-		
-		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
-			super(configuration, blackboard, cancelationDelegate);
+		@Inject
+		public SimuLizarRuntimeStateElasticity(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
+	    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
+	            final EventNotificationHelper eventHelper, final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+	            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+			super(configuration, cancelationDelegate,
+		    		pcmPartitionManager, model, componentInstanceRegistry,
+		            eventHelper,  context, allocationLookup, 
+		           usageEvolverFacade, usageModels);
 		}
 
 		@Override
