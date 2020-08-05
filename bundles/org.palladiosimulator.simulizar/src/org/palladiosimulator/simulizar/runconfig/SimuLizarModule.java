@@ -6,6 +6,7 @@ import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactoryImpl;
 import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactoryImpl;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RepositoryComponentSwitchFactory;
@@ -19,10 +20,14 @@ import org.palladiosimulator.simulizar.runtimestate.SimuComModelFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+import org.palladiosimulator.simulizar.usagemodel.ClosedWorkloadDriverFactory;
 import org.palladiosimulator.simulizar.usagemodel.LoopingUsageEvolverFactory;
+import org.palladiosimulator.simulizar.usagemodel.OpenWorkloadDriverFactory;
+import org.palladiosimulator.simulizar.usagemodel.ScenarioRunnerFactory;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.StretchedUsageEvolverFactory;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
+import org.palladiosimulator.simulizar.usagemodel.WorkloadDriverFactory;
 import org.palladiosimulator.simulizar.utils.DefaultTransitionDeterminerFactory;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
@@ -83,6 +88,7 @@ public class SimuLizarModule extends AbstractModule{
 		bind(SimulationCancelationDelegate.class).toInstance(this.cancelationDelegate);
 		bind(MDSDBlackboard.class).toInstance(this.blackboard);
 		bind(PCMPartitionManager.class).in(Singleton.class);
+		bind(InterpreterDefaultContext.class).in(Singleton.class);
 		bind(EventNotificationHelper.class).in(Singleton.class);
 		bind(ComponentInstanceRegistry.class).in(Singleton.class);
 		bind(InterpreterContextFactory.class).to(InterpreterDefaultContextFactoryImpl.class);
@@ -93,6 +99,8 @@ public class SimuLizarModule extends AbstractModule{
 		bind(SimulatedStackframe.class);
 		bind(ExplicitDispatchComposedSwitchFactory.class).to(ExplicitDispatchComposedSwitchFactoryImpl.class);
 		bind(ModelElementPassedEventFactory.class).to(ModelElementPassedEventFactoryImpl.class);
+		bind(WorkloadDriverFactory.class).annotatedWith(org.palladiosimulator.simulizar.usagemodel.OpenWorkloadFactory.class).to(OpenWorkloadDriverFactory.class);
+		bind(WorkloadDriverFactory.class).annotatedWith(org.palladiosimulator.simulizar.usagemodel.ClosedWorkloadFactory.class).to(ClosedWorkloadDriverFactory.class);
 		
 		install(new FactoryModuleBuilder()
 			     .build(RepositoryComponentSwitchFactory.class));
@@ -112,5 +120,7 @@ public class SimuLizarModule extends AbstractModule{
 				.build(LoopingUsageEvolverFactory.class));
 		install(new FactoryModuleBuilder()
 				.build(StretchedUsageEvolverFactory.class));
+		install(new FactoryModuleBuilder()
+				.build(ScenarioRunnerFactory.class));
 	}
 }
