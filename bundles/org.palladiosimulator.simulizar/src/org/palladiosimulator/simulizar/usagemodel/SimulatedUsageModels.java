@@ -25,14 +25,14 @@ public class SimulatedUsageModels {
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
     private final PCMPartitionManager pcmPartitionManager;
     private final ScenarioRunnerFactory scenarioRunnerFactory;
-    private final WorkloadDriverFactory openWorkloadDriverFactory;
-    private final WorkloadDriverFactory closedWorkloadDriverFactory;
+    private final WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloadDriverFactory;
+    private final WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloadDriverFactory;
 
 
     @Inject
     public SimulatedUsageModels(final InterpreterDefaultContext rootContext, final PCMPartitionManager pcmPartitionManager,
-    		ScenarioRunnerFactory scenarioRunnerFactory,@OpenWorkloadFactory WorkloadDriverFactory openWorkloadDriverFactory,
-    		@ClosedWorkloadFactory WorkloadDriverFactory closedWorkloadDriverFactory) {
+    		ScenarioRunnerFactory scenarioRunnerFactory, WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloadDriverFactory,
+    		 WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloadDriverFactory) {
         super();
         this.rootContext = rootContext;
         this.pcmPartitionManager = pcmPartitionManager;
@@ -62,12 +62,12 @@ public class SimulatedUsageModels {
 
         // determine if workload is open or closed
         if (workload.eClass() == UsagemodelPackage.eINSTANCE.getClosedWorkload()) {
-            final de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload driver = (de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload) this.closedWorkloadDriverFactory.createWorkloadDriver(rootContext,
+            final de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload driver = this.closedWorkloadDriverFactory.createWorkloadDriver(rootContext,
             		workload, usageScenario, scenarioRunnerFactory);
             this.closedWorkloads.put((ClosedWorkload) workload, driver);
             return driver;
         } else if (workload.eClass() == UsagemodelPackage.eINSTANCE.getOpenWorkload()) {
-            final de.uka.ipd.sdq.simucomframework.usage.OpenWorkload driver = (de.uka.ipd.sdq.simucomframework.usage.OpenWorkload) this.openWorkloadDriverFactory.createWorkloadDriver(rootContext,
+            final de.uka.ipd.sdq.simucomframework.usage.OpenWorkload driver = this.openWorkloadDriverFactory.createWorkloadDriver(rootContext,
             		workload, usageScenario, scenarioRunnerFactory);
             this.openWorkloads.put((OpenWorkload) workload, driver);
             return driver;

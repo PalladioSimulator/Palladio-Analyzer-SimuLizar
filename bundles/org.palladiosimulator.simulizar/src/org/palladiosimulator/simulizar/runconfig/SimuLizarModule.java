@@ -1,6 +1,9 @@
 package org.palladiosimulator.simulizar.runconfig;
 
 import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
+//import org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState;
+//import org.palladiosimulator.simulizar.action.interpreter.TransientEffectInterpreterBuilderFactory;
+//import org.palladiosimulator.simulizar.action.interpreter.TransientEffectInterpreterFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactory;
@@ -35,6 +38,7 @@ import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import de.uka.ipd.sdq.identifier.Identifier;
@@ -42,6 +46,8 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload;
+import de.uka.ipd.sdq.simucomframework.usage.OpenWorkload;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 /**
@@ -99,8 +105,9 @@ public class SimuLizarModule extends AbstractModule{
 		bind(SimulatedStackframe.class);
 		bind(ExplicitDispatchComposedSwitchFactory.class).to(ExplicitDispatchComposedSwitchFactoryImpl.class);
 		bind(ModelElementPassedEventFactory.class).to(ModelElementPassedEventFactoryImpl.class);
-		bind(WorkloadDriverFactory.class).annotatedWith(org.palladiosimulator.simulizar.usagemodel.OpenWorkloadFactory.class).to(OpenWorkloadDriverFactory.class);
-		bind(WorkloadDriverFactory.class).annotatedWith(org.palladiosimulator.simulizar.usagemodel.ClosedWorkloadFactory.class).to(ClosedWorkloadDriverFactory.class);
+		bind(new TypeLiteral<WorkloadDriverFactory<OpenWorkload>>() {}).to(OpenWorkloadDriverFactory.class);
+		bind(new TypeLiteral<WorkloadDriverFactory<ClosedWorkload>>() {}).to(ClosedWorkloadDriverFactory.class);
+
 		
 		install(new FactoryModuleBuilder()
 			     .build(RepositoryComponentSwitchFactory.class));
@@ -122,5 +129,6 @@ public class SimuLizarModule extends AbstractModule{
 				.build(StretchedUsageEvolverFactory.class));
 		install(new FactoryModuleBuilder()
 				.build(ScenarioRunnerFactory.class));
+		
 	}
 }
