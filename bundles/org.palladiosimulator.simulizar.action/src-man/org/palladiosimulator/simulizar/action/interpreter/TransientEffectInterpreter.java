@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -52,15 +55,17 @@ import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
+import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
+import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+
+import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -85,7 +90,6 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 	private static final ExecutionContext DEFAULT_EXECUTION_CONTEXT = ContextFactory.eINSTANCE.createExecutionContext();
 
-	private final AbstractSimuLizarRuntimeState state;
 	private final ReconfigurationProcess associatedReconfigurationProcess;
 	private final RoleSet roleSet;
 	private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
@@ -93,6 +97,13 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 	private Optional<ExecutionContext> executionContext;
 
+	
+	private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
+	private final InterpreterContextFactory interpreterContextFactory;
+	private final PCMPartitionManager pcmPartitionManager;
+	private final InterpreterDefaultContext rootContext;
+	private final SimuComModel model;
+	private final SimuLizarRuntimeState state;
 	/**
 	 * Initializes a new instance of the {@link TransientEffectInterpreter}
 	 * class with the given arguments.
@@ -114,16 +125,27 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	 *            interpreted asynchronously in a dedicated
 	 *            {@link SimuComSimProcess}.
 	 */
-	TransientEffectInterpreter(AbstractSimuLizarRuntimeState state, RoleSet set,
-			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
-			AdaptationBehaviorRepository repository, boolean executeAsync,
-			Optional<ExecutionContext> executionContext) {
-		this.state = state;
-		this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
+	@Inject
+	TransientEffectInterpreter(@Assisted RoleSet set,
+			@Assisted ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
+			@Assisted AdaptationBehaviorRepository repository,@Assisted boolean executeAsync,
+			@Assisted Optional<ExecutionContext> executionContext,
+			UsageScenarioSwitchFactory usageScenarioSwitchFactory,
+			InterpreterContextFactory interpreterContextFactory,
+			ReconfigurationProcess associatedReconfigurationProcess, PCMPartitionManager pcmPartitionManager, 
+			@Named("RootContext") final InterpreterDefaultContext rootContext,
+			final SimuComModel model, final SimuLizarRuntimeState state) {
+		this.associatedReconfigurationProcess = associatedReconfigurationProcess;
 		this.roleSet = set;
 		this.isAsync = executeAsync;
 		this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
 		this.executionContext = executionContext;
+		this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
+		this.interpreterContextFactory = interpreterContextFactory;
+		this.pcmPartitionManager = pcmPartitionManager;
+		this.rootContext = rootContext;
+		this.model = model;
+		this.state = state;
 	}
 
 	private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
@@ -250,7 +272,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		private InternalSwitch(SimuComSimProcess executingProcess) {
 			this.executingProcess = executingProcess;
 			QVToModelCache availableModels = new QVToModelCache(
-					Objects.requireNonNull(TransientEffectInterpreter.this.state.getPCMPartitionManager()));
+					Objects.requireNonNull(TransientEffectInterpreter.this.pcmPartitionManager));
 
 			this.qvtoExecutor = new TransientEffectQVTOExecutor(
 					TransientEffectTransformationCacheKeeper.getTransformationCacheForRuntimeState(
@@ -320,7 +342,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 					.orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
 
 			List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
-			SimuComModel model = TransientEffectInterpreter.this.state.getMainContext().getModel();
+			SimuComModel model = TransientEffectInterpreter.this.rootContext.getModel();
 
 			// consume resources
 			for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
@@ -367,11 +389,11 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			ControllerCall mappedCall = controllerMapping.getMappedCall();
 			Collection<VariableUsage> variableUsages = this.inputVariableUsagesPerControllerCall
 					.getOrDefault(mappedCall, Collections.emptyList());
-
+			
 			return process -> {
 				LOGGER.info("Start executing the controller scenario ('" + mappedCall.getEntityName() + "')!");
 
-				InterpreterDefaultContext newContext = InterpreterDefaultContextFactory.Factory.create(state.getMainContext(), process);
+				InterpreterDefaultContext newContext = interpreterContextFactory.create(rootContext, process);
 				UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
 				ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
 				usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
@@ -388,8 +410,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
-				new UsageScenarioSwitch<Object>(newContext, state.getComponentInstanceRegistry(), 
-				        state.getEventNotificationHelper(), state.getPCMPartitionManager()).doSwitch(usageScenario);
+				usageScenarioSwitchFactory.create(newContext).doSwitch(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running
@@ -426,7 +447,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		private final ExecutionContext correspondingContext;
 
 		private AsyncInterpretationProcess(Optional<ExecutionContext> context, AdaptationBehavior behaviorToInterpret) {
-			super(TransientEffectInterpreter.this.state.getModel(),
+			super(TransientEffectInterpreter.this.model,
 					"SimuComSimProcess For Async Action Interpretation");
 			this.correspondingContext = context.orElseGet(ContextFactory.eINSTANCE::createExecutionContext);
 			this.behaviorToInterpret = behaviorToInterpret;

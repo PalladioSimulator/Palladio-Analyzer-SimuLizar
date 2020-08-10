@@ -28,7 +28,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.modelversioning.emfprofile.registry,
  de.uka.ipd.sdq.workflow;bundle-version="2.1.0",
  de.uka.ipd.sdq.simucomframework.simucomstatus,
- org.palladiosimulator.simulizar.reconfigurationrule
+ org.palladiosimulator.simulizar.reconfigurationrule,
+ com.google.inject
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.context.impl,
@@ -107,4 +108,8 @@ Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.parameter.util,
  org.palladiosimulator.simulizar.action.ui.configuration
 Bundle-ActivationPolicy: lazy
-Import-Package: org.palladiosimulator.analyzer.workflow.blackboard
+Import-Package: com.google.inject,
+ com.google.inject.assistedinject;version="1.4.0",
+ de.uka.ipd.sdq.simucomframework.variables.stackframe,
+ javax.inject;version="1.0.0",
+ org.palladiosimulator.analyzer.workflow.blackboard
