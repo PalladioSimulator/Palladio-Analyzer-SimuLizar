@@ -8,6 +8,7 @@ import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarModule;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarRuntimeStateModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
@@ -66,13 +67,13 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-        Injector injector = Guice.createInjector(new SimuLizarModule(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled)));
+        Injector injector = Guice.createInjector(new SimuLizarModule(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled)), 
+        		new SimuLizarRuntimeStateModule());
         
         // FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences.
         // After we find a way to copy models so that their links do not point to intermediary, but
         // to the models directly.
-        final SimuLizarRuntimeState runtimeState = //new SimuLizarRuntimeState(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled));
-        injector.getInstance(SimuLizarRuntimeState.class);
+        final SimuLizarRuntimeState runtimeState = injector.getInstance(SimuLizarRuntimeState.class);
         
 
         this.initializeRuntimeStateAccessors(runtimeState);

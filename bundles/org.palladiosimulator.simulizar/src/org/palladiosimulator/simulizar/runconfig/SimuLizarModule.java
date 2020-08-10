@@ -1,9 +1,6 @@
 package org.palladiosimulator.simulizar.runconfig;
 
 import org.palladiosimulator.simframework.SimulatedResourceContainerRegistry;
-//import org.palladiosimulator.simulizar.action.interpreter.ActionRuntimeState;
-//import org.palladiosimulator.simulizar.action.interpreter.TransientEffectInterpreterBuilderFactory;
-//import org.palladiosimulator.simulizar.action.interpreter.TransientEffectInterpreterFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactory;
@@ -17,10 +14,12 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEventFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEventFactoryImpl;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
+import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentIDFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimuComModelFactory;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
@@ -89,6 +88,14 @@ public class SimuLizarModule extends AbstractModule{
 	protected  IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> provideAllocationLookupSyner(SimulatedResourceContainerRegistry registry) {
 		return new AllocationLookupSyncer(registry::getResourceContainer);
 	}
+	@Provides
+	protected Reconfigurator provideReconfigurator(AbstractSimuLizarRuntimeState state) {
+		return state.getReconfigurator();
+	}
+	
+	@Provides ReconfigurationProcess provideReconfigurationProcess(Reconfigurator config) {
+		return config.getReconfigurationProcess();	
+	}
 	
 	@Override
 	protected void configure() {
@@ -103,7 +110,6 @@ public class SimuLizarModule extends AbstractModule{
 		bind(UsageEvolverFacade.class).in(Singleton.class);
 		bind(SimulatedUsageModels.class).in(Singleton.class);
 		bind(IAssemblyAllocationLookup.class).to(AllocationLookupSyncer.class).in(Singleton.class);
-		bind(SimuLizarRuntimeState.class).in(Singleton.class);
 		bind(TransitionDeterminerFactory.class).to(DefaultTransitionDeterminerFactory.class);
 		bind(SimulatedStackframe.class);
 		bind(ExplicitDispatchComposedSwitchFactory.class).to(ExplicitDispatchComposedSwitchFactoryImpl.class);

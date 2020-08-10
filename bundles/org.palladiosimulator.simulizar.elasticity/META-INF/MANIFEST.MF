@@ -23,8 +23,10 @@ Require-Bundle: org.eclipse.ui,
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Import-Package: com.google.inject,
+ com.google.inject.binder,
  de.uka.ipd.sdq.statistics,
  de.uka.ipd.sdq.statistics.estimation,
+ javax.inject;version="1.0.0",
  org.palladiosimulator.commons.eclipseutils,
  org.palladiosimulator.monitorrepository,
  org.palladiosimulator.probeframework.calculator,

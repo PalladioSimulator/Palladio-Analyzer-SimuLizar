@@ -4,6 +4,8 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
@@ -109,7 +111,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
-			Injector injector = Guice.createInjector(new SimuLizarModule(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled)));
+			Injector injector = Guice.createInjector(new SimuLizarModule(this.configuration, this.blackboard,new SimulationCancelationDelegate(monitor::isCanceled)),
+					new SimuLizarRuntimeStateElasticityModule());
 			final AbstractSimuLizarRuntimeState runtimeState = injector.getInstance(SimuLizarRuntimeStateElasticity.class);
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -151,16 +154,16 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		this.blackboard = blackboard;
 	}
 	
-	private class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
+	protected class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
 		@Inject
 		public SimuLizarRuntimeStateElasticity(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
 	    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-	            final EventNotificationHelper eventHelper, final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
-	            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+	            final EventNotificationHelper eventHelper,@Named("RootContext") final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+	            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, Injector injector) {
 			super(configuration, cancelationDelegate,
 		    		pcmPartitionManager, model, componentInstanceRegistry,
 		            eventHelper,  context, allocationLookup, 
-		           usageEvolverFacade, usageModels);
+		           usageEvolverFacade, usageModels, injector);
 		}
 
 		@Override
