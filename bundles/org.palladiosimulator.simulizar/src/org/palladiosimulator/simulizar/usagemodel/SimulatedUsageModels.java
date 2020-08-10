@@ -3,6 +3,8 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Named;
+
 import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
@@ -30,7 +32,7 @@ public class SimulatedUsageModels {
 
 
     @Inject
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, final PCMPartitionManager pcmPartitionManager,
+    public SimulatedUsageModels(@Named("RootContext") final InterpreterDefaultContext rootContext, final PCMPartitionManager pcmPartitionManager,
     		ScenarioRunnerFactory scenarioRunnerFactory, WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloadDriverFactory,
     		 WorkloadDriverFactory<de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloadDriverFactory) {
         super();

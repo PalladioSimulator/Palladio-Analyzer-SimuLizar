@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import javax.inject.Named;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -41,6 +43,7 @@ import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
@@ -79,12 +82,14 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     private long numberOfContainers = 0;
 
+	private final Injector injector;
+
     
     @Inject
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
     		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper, final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
-            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+            final EventNotificationHelper eventHelper,@Named("RootContext") final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, final Injector injector) {
         super();
 
         this.pcmPartitionManager = pcmPartitionManager;
@@ -97,6 +102,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.mainContext = context;
         
         this.usageModels = usageModels;
+		this.injector = injector;
         this.initializeWorkloadDrivers();
 
         this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
@@ -113,8 +119,10 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.initializeUsageEvolver();
         this.pcmPartitionManager.startObservingPcmChanges();
     }
-    
 
+	public Injector getInjector() {
+		return this.injector;
+	}
     /**
      * @return the model
      */

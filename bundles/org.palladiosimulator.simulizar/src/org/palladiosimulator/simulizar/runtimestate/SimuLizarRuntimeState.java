@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
+import javax.inject.Named;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -13,6 +15,7 @@ import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -35,10 +38,10 @@ public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
     @Inject
     public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
     		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper, InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup,
-            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels) {
+            final EventNotificationHelper eventHelper,@Named("RootContext") InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup,
+            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, Injector injector) {
         super(configuration, cancelationDelegate, pcmPartitionManager, model, componentInstanceRegistry, eventHelper, context, allocationLookup,
-        		usageEvolverFacade, usageModels);
+        		usageEvolverFacade, usageModels, injector);
     }
 
     protected void initializeInterpreterListeners(final Reconfigurator reconfigurator) {
