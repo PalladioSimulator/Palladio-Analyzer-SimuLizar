@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 /**
- * Factory for creation of workloaddrivers
+ * Generic factory for creation of workloaddrivers
  * @author Jens Manig
  *
  */

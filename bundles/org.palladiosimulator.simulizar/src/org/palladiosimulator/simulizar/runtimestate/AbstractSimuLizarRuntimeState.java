@@ -8,8 +8,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.log4j.Logger;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
@@ -23,7 +21,6 @@ import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
@@ -71,8 +68,6 @@ public abstract class AbstractSimuLizarRuntimeState {
 
     protected final SimuComModel model;
     protected final EventNotificationHelper eventHelper;
-    private final ComponentInstanceRegistry componentInstanceRegistry;
-    private final InterpreterDefaultContext mainContext;
     private final SimulatedUsageModels usageModels;
     private final PCMPartitionManager pcmPartitionManager;
     private final Reconfigurator reconfigurator;
@@ -87,8 +82,8 @@ public abstract class AbstractSimuLizarRuntimeState {
     
     @Inject
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
-    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper,@Named("RootContext") final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model,
+            final EventNotificationHelper eventHelper, AllocationLookupSyncer allocationLookup, 
             final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, final Injector injector) {
         super();
 
@@ -97,9 +92,6 @@ public abstract class AbstractSimuLizarRuntimeState {
         this.model = model;
         
         this.eventHelper = eventHelper;
-        this.componentInstanceRegistry = componentInstanceRegistry;
-
-        this.mainContext = context;
         
         this.usageModels = usageModels;
 		this.injector = injector;
@@ -128,21 +120,6 @@ public abstract class AbstractSimuLizarRuntimeState {
      */
     public SimuComModel getModel() {
         return this.model;
-    }
-
-    public EventNotificationHelper getEventNotificationHelper() {
-        return this.eventHelper;
-    }
-
-    /**
-     * @return the componentInstanceRegistry
-     */
-    public final ComponentInstanceRegistry getComponentInstanceRegistry() {
-        return this.componentInstanceRegistry;
-    }
-
-    public InterpreterDefaultContext getMainContext() {
-        return this.mainContext;
     }
 
     public SimulatedUsageModels getUsageModels() {

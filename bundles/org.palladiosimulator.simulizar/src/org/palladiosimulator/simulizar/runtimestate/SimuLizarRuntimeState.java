@@ -1,10 +1,7 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import javax.inject.Named;
-
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
@@ -37,10 +34,10 @@ public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
 
     @Inject
     public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
-    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-            final EventNotificationHelper eventHelper,@Named("RootContext") InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup,
+    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model,
+            final EventNotificationHelper eventHelper, AllocationLookupSyncer allocationLookup,
             final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, Injector injector) {
-        super(configuration, cancelationDelegate, pcmPartitionManager, model, componentInstanceRegistry, eventHelper, context, allocationLookup,
+        super(configuration, cancelationDelegate, pcmPartitionManager, model, eventHelper, allocationLookup,
         		usageEvolverFacade, usageModels, injector);
     }
 

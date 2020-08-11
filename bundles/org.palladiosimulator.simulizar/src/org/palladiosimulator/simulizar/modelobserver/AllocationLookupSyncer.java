@@ -20,6 +20,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentIDFactory;
 
 import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;

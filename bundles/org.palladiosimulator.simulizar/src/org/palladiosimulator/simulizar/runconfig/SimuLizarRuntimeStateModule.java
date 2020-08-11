@@ -6,7 +6,11 @@ import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeStat
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import com.google.inject.AbstractModule;
-
+/**
+ * Module for binding AbstractRuntimeState
+ * @author Jens Manig
+ *
+ */
 public class SimuLizarRuntimeStateModule extends AbstractModule{
 	@Override
 	protected void configure() {

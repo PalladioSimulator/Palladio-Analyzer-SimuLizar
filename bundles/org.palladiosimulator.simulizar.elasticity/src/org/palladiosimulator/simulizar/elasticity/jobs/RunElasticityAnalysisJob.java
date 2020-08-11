@@ -4,8 +4,6 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 
 import java.util.List;
 
-import javax.inject.Named;
-
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
@@ -17,7 +15,6 @@ import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSet
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
@@ -29,7 +26,6 @@ import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfiguratio
 import org.palladiosimulator.simulizar.runconfig.SimuLizarModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
@@ -157,12 +153,12 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	protected class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
 		@Inject
 		public SimuLizarRuntimeStateElasticity(final SimuLizarWorkflowConfiguration configuration, final SimulationCancelationDelegate cancelationDelegate,
-	    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model, final ComponentInstanceRegistry componentInstanceRegistry,
-	            final EventNotificationHelper eventHelper,@Named("RootContext") final InterpreterDefaultContext context, AllocationLookupSyncer allocationLookup, 
+	    		final PCMPartitionManager pcmPartitionManager, final SimuComModel model,
+	            final EventNotificationHelper eventHelper, AllocationLookupSyncer allocationLookup, 
 	            final UsageEvolverFacade usageEvolverFacade, final SimulatedUsageModels usageModels, Injector injector) {
 			super(configuration, cancelationDelegate,
-		    		pcmPartitionManager, model, componentInstanceRegistry,
-		            eventHelper,  context, allocationLookup, 
+		    		pcmPartitionManager, model,
+		            eventHelper, allocationLookup, 
 		           usageEvolverFacade, usageModels, injector);
 		}
 

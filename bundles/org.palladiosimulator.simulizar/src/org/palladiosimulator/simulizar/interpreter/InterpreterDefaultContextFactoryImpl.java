@@ -8,7 +8,7 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
  * @author Jens Manig
  *
  */
-public class InterpreterDefaultContextFactoryImpl implements InterpreterContextFactory{
+public class InterpreterDefaultContextFactoryImpl implements InterpreterDefaultContextFactory{
     @Override
     public InterpreterDefaultContext create(final Context context, 
             final boolean copyStack) {

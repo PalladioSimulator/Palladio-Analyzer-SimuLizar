@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
@@ -13,18 +13,22 @@ import com.google.inject.assistedinject.Assisted;
 
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
-
+/**
+ * Implementation of IScenarionRunner
+ * @author Jens Manig
+ *
+ */
 public class ScenarioRunnerImpl implements IScenarioRunner{
 	
 	private final UsageScenario scenario;
 	private final InterpreterDefaultContext rootContext;
 	private final PCMPartitionManager pcmPartitionManager;
-    private final InterpreterContextFactory contextFactory;
+    private final InterpreterDefaultContextFactory contextFactory;
     private final UsageScenarioSwitchFactory usageSwitch;
 
 	@Inject
 	public ScenarioRunnerImpl(@Assisted UsageScenario scenario, InterpreterDefaultContext rootContext, final PCMPartitionManager pcmPartitionManager,
-		InterpreterContextFactory contextFactory, UsageScenarioSwitchFactory usageSwitch) {
+		InterpreterDefaultContextFactory contextFactory, UsageScenarioSwitchFactory usageSwitch) {
 		this.scenario = scenario;
 		this.rootContext = rootContext;
 		this.pcmPartitionManager = pcmPartitionManager;

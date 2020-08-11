@@ -55,7 +55,7 @@ import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
-import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
@@ -99,7 +99,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 	
 	private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
-	private final InterpreterContextFactory interpreterContextFactory;
+	private final InterpreterDefaultContextFactory interpreterContextFactory;
 	private final PCMPartitionManager pcmPartitionManager;
 	private final InterpreterDefaultContext rootContext;
 	private final SimuComModel model;
@@ -131,7 +131,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			@Assisted AdaptationBehaviorRepository repository,@Assisted boolean executeAsync,
 			@Assisted Optional<ExecutionContext> executionContext,
 			UsageScenarioSwitchFactory usageScenarioSwitchFactory,
-			InterpreterContextFactory interpreterContextFactory,
+			InterpreterDefaultContextFactory interpreterContextFactory,
 			ReconfigurationProcess associatedReconfigurationProcess, PCMPartitionManager pcmPartitionManager, 
 			@Named("RootContext") final InterpreterDefaultContext rootContext,
 			final SimuComModel model, final SimuLizarRuntimeState state) {

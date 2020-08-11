@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.TransitionDeterminerFactory;
 
 /**
- * Factory for ExplicitDispatchComposedSwitch
+ * Factory interface for ExplicitDispatchComposedSwitch
  * @author Jens Manig
  *
  */

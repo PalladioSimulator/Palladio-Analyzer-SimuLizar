@@ -6,8 +6,12 @@ import de.uka.ipd.sdq.simucomframework.Context;
  * @author Jens Manig
  */
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-
-public interface InterpreterContextFactory {
+/**
+ * Factory interface for InterpreterDefaultContext
+ * @author Jens Manig
+ *
+ */
+public interface InterpreterDefaultContextFactory {
 
     public  InterpreterDefaultContext create(final Context context, final boolean copyStack);
     

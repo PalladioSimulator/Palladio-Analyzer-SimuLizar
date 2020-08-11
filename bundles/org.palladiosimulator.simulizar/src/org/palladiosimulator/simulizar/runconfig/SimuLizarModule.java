@@ -5,7 +5,7 @@ import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitchF
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitchFactoryImpl;
-import org.palladiosimulator.simulizar.interpreter.InterpreterContextFactory;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContextFactoryImpl;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
@@ -106,7 +106,7 @@ public class SimuLizarModule extends AbstractModule{
 		bind(InterpreterDefaultContext.class).annotatedWith(Names.named("RootContext")).to(InterpreterDefaultContext.class).in(Singleton.class);
 		bind(EventNotificationHelper.class).in(Singleton.class);
 		bind(ComponentInstanceRegistry.class).in(Singleton.class);
-		bind(InterpreterContextFactory.class).to(InterpreterDefaultContextFactoryImpl.class);
+		bind(InterpreterDefaultContextFactory.class).to(InterpreterDefaultContextFactoryImpl.class);
 		bind(UsageEvolverFacade.class).in(Singleton.class);
 		bind(SimulatedUsageModels.class).in(Singleton.class);
 		bind(IAssemblyAllocationLookup.class).to(AllocationLookupSyncer.class).in(Singleton.class);
