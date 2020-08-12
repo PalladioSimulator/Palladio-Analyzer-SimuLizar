@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failureprobe;
+package org.palladiosimulator.simulizar.reliability;
 
 import java.util.Arrays;
 import java.util.Collection;

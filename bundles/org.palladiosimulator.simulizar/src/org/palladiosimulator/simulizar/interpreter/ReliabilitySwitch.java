@@ -14,6 +14,7 @@ import org.palladiosimulator.pcm.seff.seff_reliability.util.SeffReliabilitySwitc
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureHandledEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
+import org.palladiosimulator.simulizar.reliability.FailureStackFrame;
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.interpreter;
+package org.palladiosimulator.simulizar.reliability;
 
 import org.palladiosimulator.pcm.reliability.FailureType;
 import org.palladiosimulator.pcm.seff.AbstractAction;

@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.simulizar.reliability.FailureStackFrame;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 

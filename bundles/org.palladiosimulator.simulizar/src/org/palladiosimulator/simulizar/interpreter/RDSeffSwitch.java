@@ -86,6 +86,8 @@ import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureOccurredEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.reliability.HardwareFailureStackFrame;
+import org.palladiosimulator.simulizar.reliability.SoftwareInducedFailureStackFrame;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;

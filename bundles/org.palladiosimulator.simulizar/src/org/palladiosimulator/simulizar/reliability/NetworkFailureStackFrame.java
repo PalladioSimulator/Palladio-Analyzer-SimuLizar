@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.interpreter;
+package org.palladiosimulator.simulizar.reliability;
 
 import org.palladiosimulator.pcm.reliability.HardwareInducedFailureType;
 import org.palladiosimulator.pcm.reliability.NetworkInducedFailureType;

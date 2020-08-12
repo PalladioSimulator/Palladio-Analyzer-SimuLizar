@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failureprobe;
+package org.palladiosimulator.simulizar.reliability;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -19,7 +19,6 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.probeframework.probes.BasicEventProbe;
 import org.palladiosimulator.reliability.FailureStatistics;
 import org.palladiosimulator.reliability.MarkovFailureType;
-import org.palladiosimulator.simulizar.interpreter.FailureStackFrame;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.FailureHandledEvent;
