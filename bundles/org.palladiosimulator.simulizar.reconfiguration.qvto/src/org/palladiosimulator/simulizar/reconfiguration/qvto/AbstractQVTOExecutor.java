@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -197,13 +198,23 @@ public abstract class AbstractQVTOExecutor {
      * @see #doExecution(TransformationData, ExecutionContext, ModelExtent[])
      */
     protected boolean handleExecutionResult(ExecutionDiagnostic executionResult) {
-        if (executionResult.getSeverity() == Diagnostic.OK) {
-            LOGGER.log(Level.DEBUG, "Rule successfully executed with message: " + executionResult.getMessage());
+        int severity = executionResult.getSeverity();
+        if ((severity == Diagnostic.OK) || (severity == Diagnostic.INFO)) {
+            LOGGER.debug("Successful rule application: " + executionResult.getMessage());
             return true;
-        } else {
-            LOGGER.log(Level.WARN, "Rule application failed with message: " + executionResult.getMessage());
-            return false;
         }
+
+        List<Diagnostic> details = executionResult.getChildren();
+        String chainedDetails = details.stream()
+            .map(Object::toString)
+            .collect(Collectors.joining(","));
+        
+        Level level = Level.WARN;
+        if (severity >= Diagnostic.ERROR) {
+            level = Level.ERROR;
+        }
+        LOGGER.log(level, String.format("%s; %s", executionResult.getMessage(), chainedDetails), executionResult.getException());
+        return false;
     }
 
     /**
