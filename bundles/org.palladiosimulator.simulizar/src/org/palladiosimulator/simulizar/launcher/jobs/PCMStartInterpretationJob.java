@@ -12,6 +12,8 @@ import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -31,7 +33,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     private MDSDBlackboard blackboard;
 
     private final SimuLizarWorkflowConfiguration configuration;
-
+    
     /**
      * Constructor
      *
@@ -65,8 +67,9 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         // FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences.
         // After we find a way to copy models so that their links do not point to intermediary, but
         // to the models directly.
+        IResourceTableManager resourceTableManager = new ResourceTableManager();
         final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration, this.blackboard,
-                new SimulationCancelationDelegate(monitor::isCanceled));
+                new SimulationCancelationDelegate(monitor::isCanceled), resourceTableManager);
 
         this.initializeRuntimeStateAccessors(runtimeState);
 

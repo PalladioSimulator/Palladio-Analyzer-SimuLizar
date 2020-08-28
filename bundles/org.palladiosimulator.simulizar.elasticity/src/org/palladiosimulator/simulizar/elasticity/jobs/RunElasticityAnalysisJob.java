@@ -27,6 +27,8 @@ import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.statistics.StaticBatchAlgorithm;
@@ -98,8 +100,9 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 			// After we find a way to copy models so that their links do not
 			// point to intermediary, but
 			// to the models directly.
+			IResourceTableManager resourceTableManager = new ResourceTableManager();
 			final AbstractSimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration, this.blackboard,
-					new SimulationCancelationDelegate(monitor::isCanceled));
+					new SimulationCancelationDelegate(monitor::isCanceled), resourceTableManager);
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
 			runtimeState.cleanUp();
@@ -142,8 +145,9 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	
 	private class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
 		
-		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
-			super(configuration, blackboard, cancelationDelegate);
+		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, MDSDBlackboard blackboard
+		        , final SimulationCancelationDelegate cancelationDelegate, IResourceTableManager resourceTableManager) {
+			super(configuration, blackboard, cancelationDelegate, resourceTableManager);
 		}
 
 		@Override
