@@ -11,6 +11,9 @@ import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVaria
 import org.palladiosimulator.simulizar.action.parameter.ParameterFactory;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
 public class ActionRuntimeState implements IRuntimeStateAccessor {
@@ -18,6 +21,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE
             .createControllerCallInputVariableUsageCollection();
+
 
     /**
      * Gets a {@link TransientEffectInterpreterBuilder} which is suitable to construct an
@@ -69,7 +73,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
         private ControllerCallInputVariableUsageCollection controllerCallVariableUsages = EMPTY_VARIABLE_USAGE_COLLECTION;
         private boolean isAsync = false;
 
-        private TransientEffectInterpreterBuilder(RoleSet roleSet, AdaptationBehaviorRepository repository) {
+        private TransientEffectInterpreterBuilder(RoleSet roleSet, AdaptationBehaviorRepository repository                ) {
             this.roleSet = Objects.requireNonNull(roleSet);
             this.repository = Objects.requireNonNull(repository);
         }
@@ -118,9 +122,9 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
          * 
          * @return A newly created {@link TransientEffectInterpreter} instance.
          */
-        public TransientEffectInterpreter build() {
+        public TransientEffectInterpreter build(IResourceTableManager resourceTableManager) {
             return new TransientEffectInterpreter(this.state, this.roleSet, this.controllerCallVariableUsages,
-                    this.repository, this.isAsync, Optional.ofNullable(this.context));
+                    this.repository, this.isAsync, Optional.ofNullable(this.context), resourceTableManager);
         }
     }
 }
