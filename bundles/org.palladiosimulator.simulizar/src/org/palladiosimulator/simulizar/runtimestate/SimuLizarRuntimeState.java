@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
@@ -30,8 +31,8 @@ public class SimuLizarRuntimeState extends AbstractSimuLizarRuntimeState {
      * @param modelAccess
      */
     public SimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration, final MDSDBlackboard blackboard,
-            final SimulationCancelationDelegate cancelationDelegate) {
-        super(configuration, blackboard, cancelationDelegate);
+            final SimulationCancelationDelegate cancelationDelegate, IResourceTableManager resourceTableManager) {
+        super(configuration, blackboard, cancelationDelegate, resourceTableManager);
     }
 
     protected void initializeInterpreterListeners(final Reconfigurator reconfigurator) {

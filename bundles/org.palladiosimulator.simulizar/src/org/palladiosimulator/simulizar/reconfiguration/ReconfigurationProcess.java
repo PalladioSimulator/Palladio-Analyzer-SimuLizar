@@ -15,6 +15,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -54,8 +55,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	 *             In case any of the given parameters is {@code null}.
 	 */
 	protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurationEngine> reconfigurators,
-			final Reconfigurator reconfigurator) {
-		super(model, "Reconfiguration Process");
+			final Reconfigurator reconfigurator, IResourceTableManager resourceTableManager) {
+		super(model, "Reconfiguration Process", resourceTableManager);
 		this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
 		this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
 		this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
