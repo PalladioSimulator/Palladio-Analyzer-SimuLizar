@@ -12,6 +12,7 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -34,6 +35,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
     private final InterpreterDefaultContext context;
     private final Signature signature;
     private final RequiredRole requiredRole;
+    private final IResourceTableManager resourceTableManager;
 
     /**
      * Constructor
@@ -42,18 +44,20 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
      *            the corresponding pcm model interpreter holding this switch..
      */
     public ComposedStructureInnerSwitch(final InterpreterDefaultContext context, final Signature operationSignature,
-            final RequiredRole requiredRole) {
+            final RequiredRole requiredRole, IResourceTableManager resourceTableManager) {
         super();
         this.context = context;
         this.signature = operationSignature;
         this.requiredRole = requiredRole;
+        this.resourceTableManager = resourceTableManager;
     }
 
     @Override
     public SimulatedStackframe<Object> caseAssemblyConnector(final AssemblyConnector assemblyConnector) {
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(), this.signature,
-                assemblyConnector.getProvidedRole_AssemblyConnector());
+                assemblyConnector.getProvidedRole_AssemblyConnector()
+                , resourceTableManager);
         return repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
     }
 
@@ -69,7 +73,8 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
             final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
-                this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
+                this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector()
+                , resourceTableManager);
         return repositoryComponentSwitch
                 .doSwitch(assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
     }
@@ -79,7 +84,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
             final RequiredDelegationConnector requiredDelegationConnector) {
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
         final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
-                this.signature, requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
+                this.signature, requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector(), resourceTableManager);
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
         return result;
@@ -90,7 +95,7 @@ class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe
             final RequiredInfrastructureDelegationConnector requiredInfrastructureDelegationConnector) {
         final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
         final ComposedStructureInnerSwitch composedStructureInnerSwitch = new ComposedStructureInnerSwitch(this.context,
-                this.signature, requiredInfrastructureDelegationConnector.getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
+                this.signature, requiredInfrastructureDelegationConnector.getOuterRequiredRole__RequiredInfrastructureDelegationConnector(), resourceTableManager);
         final SimulatedStackframe<Object> result = composedStructureInnerSwitch.doSwitch(parentContext);
         this.context.getAssemblyContextStack().push(parentContext);
         return result;
