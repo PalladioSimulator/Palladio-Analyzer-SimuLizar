@@ -50,6 +50,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
@@ -76,6 +77,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     private final SimulatedStackframe<Object> resultStackFrame;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
+    private final IResourceTableManager resourceTableManager;
 
     /**
      * Constructor.
@@ -86,13 +88,15 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *            Simulated component
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance) {
+            final SimulatedBasicComponentInstance basicComponentInstance
+            , IResourceTableManager resourceTableManager) {
         super();
         this.context = context;
         this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = basicComponentInstance;
+        this.resourceTableManager = resourceTableManager;
     }
 
 
@@ -107,8 +111,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *				The composed switch which is containing this switch
      */
     public RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch) {
-    	this(context, basicComponentInstance);
+            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch
+            , IResourceTableManager resourceTableManager) {
+    	this(context, basicComponentInstance, resourceTableManager);
     	this.parentSwitch = parentSwitch;
     }
 
@@ -198,7 +203,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             for (int i = 0; i < repetitions; i++) {
                 final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(
                         this.context, infrastructureCall.getSignature__InfrastructureCall(),
-                        infrastructureCall.getRequiredRole__InfrastructureCall());
+                        infrastructureCall.getRequiredRole__InfrastructureCall(), resourceTableManager);
 
                 // create new stack frame for input parameter
                 SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
@@ -231,7 +236,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     @Override
     public Object caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = new ComposedStructureInnerSwitch(this.context,
-                externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
+                externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService(), resourceTableManager);
 
         if (externalCall instanceof DelegatingExternalCallAction) {
             final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
@@ -324,10 +329,10 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
         // get asynced processes
         final List<ForkedBehaviourProcess> asyncProcesses = this
-                .getProcesses(object.getAsynchronousForkedBehaviours_ForkAction(), true);
+                .getProcesses(object.getAsynchronousForkedBehaviours_ForkAction(), true, resourceTableManager);
 
         // get synced processes
-        final List<ForkedBehaviourProcess> syncProcesses = this.determineSyncedProcesses(object);
+        final List<ForkedBehaviourProcess> syncProcesses = this.determineSyncedProcesses(object, resourceTableManager);
 
         // combine both
         final List<ForkedBehaviourProcess> combinedProcesses = this.combineProcesses(asyncProcesses, syncProcesses);
@@ -454,12 +459,12 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *            the fork action.
      * @return a list with synced processes.
      */
-    private List<ForkedBehaviourProcess> determineSyncedProcesses(final ForkAction object) {
+    private List<ForkedBehaviourProcess> determineSyncedProcesses(final ForkAction object, IResourceTableManager resourceTableManager) {
         List<ForkedBehaviourProcess> syncProcesses = new ArrayList<ForkedBehaviourProcess>();
 
         if (object.getSynchronisingBehaviours_ForkAction() != null) {
             syncProcesses = this.getProcesses(object.getSynchronisingBehaviours_ForkAction()
-                    .getSynchronousForkedBehaviours_SynchronisationPoint(), false);
+                    .getSynchronousForkedBehaviours_SynchronisationPoint(), false, resourceTableManager);
         }
         return syncProcesses;
     }
@@ -474,7 +479,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @return a list of configured forked behavior processes.
      */
     private List<ForkedBehaviourProcess> getProcesses(final List<ForkedBehaviour> forkedBehaviours,
-            final boolean isAsync) {
+            final boolean isAsync, IResourceTableManager resourceTableManager) {
         final List<ForkedBehaviourProcess> processes = new LinkedList<ForkedBehaviourProcess>();
 
         // for each create process, and add to array of processes
@@ -484,7 +489,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             final Stack<AssemblyContext> parentAssemblyContextStack = (Stack<AssemblyContext>) this.context
             .getAssemblyContextStack().clone();
             processes.add(new ForkedBehaviourProcess(this.context,
-                    this.context.getAssemblyContextStack().peek().getId(), isAsync) {
+                    this.context.getAssemblyContextStack().peek().getId(), isAsync, resourceTableManager) {
 
                 @Override
                 protected void executeBehaviour() {
@@ -499,7 +504,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
                     final RDSeffSwitch seffInterpreter = new RDSeffSwitch(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance);
+                            RDSeffSwitch.this.basicComponentInstance, resourceTableManager);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
