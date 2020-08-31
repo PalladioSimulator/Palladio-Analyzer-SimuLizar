@@ -42,6 +42,7 @@ import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.identifier.Identifier;
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
@@ -87,11 +88,12 @@ public abstract class AbstractSimuLizarRuntimeState {
      * @param modelAccess
      */
     public AbstractSimuLizarRuntimeState(final SimuLizarWorkflowConfiguration configuration,
-            final MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate) {
+            final MDSDBlackboard blackboard, final SimulationCancelationDelegate cancelationDelegate
+            , IResourceTableManager resourceTableManager) {
         super();
         this.pcmPartitionManager = new PCMPartitionManager(blackboard, configuration);
         this.cancelationDelegate = cancelationDelegate;
-        this.model = SimuComModelFactory.createSimuComModel(configuration);
+        this.model = SimuComModelFactory.createSimuComModel(configuration, resourceTableManager);
 
         this.eventHelper = new EventNotificationHelper();
         this.componentInstanceRegistry = new ComponentInstanceRegistry();
@@ -102,10 +104,10 @@ public abstract class AbstractSimuLizarRuntimeState {
         var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
         this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
         
-        this.usageModels = new SimulatedUsageModels(this.mainContext);
+        this.usageModels = new SimulatedUsageModels(this.mainContext, resourceTableManager);
         this.initializeWorkloadDrivers();
 
-        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl());
+        this.reconfigurator = this.initializeReconfiguratorEngines(configuration, this.model.getSimulationControl(), resourceTableManager);
         this.modelObservers = this.initializeModelObservers(Arrays.asList(allocationLookup));
         /*
          * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
@@ -191,7 +193,7 @@ public abstract class AbstractSimuLizarRuntimeState {
     protected abstract void initializeInterpreterListeners(final Reconfigurator reconfigurator);
 
     private Reconfigurator initializeReconfiguratorEngines(final SimuLizarWorkflowConfiguration configuration,
-            final ISimulationControl simulationControl) {
+            final ISimulationControl simulationControl, IResourceTableManager resourceTableManager) {
         LOGGER.debug("Initializing reconfigurator engines and their rule sets");
 
         final TriggeredProbe numberOfResourceCalculatorsProbes = initNumberOfResourceContainersCalculator();
@@ -207,7 +209,7 @@ public abstract class AbstractSimuLizarRuntimeState {
         RuntimeMeasurementModel rmModel = this.pcmPartitionManager
                 .findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         final Reconfigurator reconfigurator = new Reconfigurator(this.model, rmModel, simulationControl,
-                reconfigEngines, configuration);
+                reconfigEngines, configuration, resourceTableManager);
         reconfigurator.addObserver(new IReconfigurationListener() {
 
             @Override

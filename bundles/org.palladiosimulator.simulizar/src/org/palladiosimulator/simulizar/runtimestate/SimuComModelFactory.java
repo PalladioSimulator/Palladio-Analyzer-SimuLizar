@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
@@ -12,12 +13,12 @@ import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
 final class SimuComModelFactory {
 
-    static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration) {
-        final SimuComModel simuComModel = initialiseSimuComModel(configuration);
+    static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
+        final SimuComModel simuComModel = initialiseSimuComModel(configuration, resourceTableManager);
         return simuComModel;
     }
 
-    private static SimuComModel initialiseSimuComModel(final SimuLizarWorkflowConfiguration configuration) {
+    private static SimuComModel initialiseSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
         // Configuration options for the simulation engine
         final AbstractSimulationConfig simulationConfiguration = configuration.getSimulationConfiguration();
 
@@ -29,7 +30,7 @@ final class SimuComModelFactory {
         final ISimEngineFactory simEngineFactory = getSimEngineFactory();
 
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
-                simEngineFactory, false);
+                simEngineFactory, false, resourceTableManager);
 
         simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 

@@ -19,6 +19,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecu
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
@@ -75,6 +76,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	private double lastReconfigurationTime = 0;
 
 	private SimuLizarWorkflowConfiguration configuration;
+	
+	private final IResourceTableManager resourceTableManager;
 
 	/**
 	 * Constructor.
@@ -89,12 +92,14 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 */
 	public Reconfigurator(final SimuComModel model, final RuntimeMeasurementModel rmModel,
 			final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators,
-			SimuLizarWorkflowConfiguration configuration) {
+			SimuLizarWorkflowConfiguration configuration
+			, IResourceTableManager resourceTableManager) {
 		super();
 		this.model = model;
 		this.runtimeMeasurementModel = rmModel;
 		this.reconfiguratorEngines = reconfigurators;
 		this.configuration = configuration;
+		this.resourceTableManager = resourceTableManager;
 
 		this.reconfigurationLoaders = ExtensionHelper.getExecutableExtensions(
 				SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_ID,
@@ -143,7 +148,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 				&& this.model.getSimulationControl().getCurrentSimulationTime() > this.lastReconfigurationTime
 				&& (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
 			if (this.reconfigurationProcess == null) {
-				this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfiguratorEngines, this);
+				this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfiguratorEngines, this, resourceTableManager);
 			}
 			this.reconfigurationProcess.executeReconfigurations(this.runtimeMeasurementModel);
 			this.lastReconfigurationTime = this.model.getSimulationControl().getCurrentSimulationTime();
