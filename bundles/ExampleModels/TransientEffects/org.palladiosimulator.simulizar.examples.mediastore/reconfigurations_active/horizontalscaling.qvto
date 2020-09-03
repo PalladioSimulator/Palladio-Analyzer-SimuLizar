@@ -47,6 +47,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 	property loadbalancerDownloadRequiredRole : String = '_LEN58OXSEeSa__lJ2-JCxw2';
 	property branchId : String = '_nqCD0OXSEeSa__lJ2-JCxw2';
 	property instantiateVmAdaptationBehaviorId : String = '_s5GsIRwJEeWmcO0Zlkc2yA';
+	configuration property resourceTableManager : IResourceTableManager;
 	
 	// id of the controller call 'instantiateController' in the 'omponentInstantiation' adaptation behavior
 	property controllerCallId : String = '_l9HvsKHHEeWc24RAWmuF8Q';
@@ -123,7 +124,7 @@ transformation outsource(	in runtimeMeasurement : RUNTIMEMEASUREMENT,
 		};
 						
 		// now execute the adaptation behavior which also includes wiring to load balancer component
-		instantiateVm.execute(roleSet, prepareInputForControllerCall());
+		instantiateVm.execute(roleSet, prepareInputForControllerCall(), resourceTableManager);
 		
 		log('Async migration execution started');
 		

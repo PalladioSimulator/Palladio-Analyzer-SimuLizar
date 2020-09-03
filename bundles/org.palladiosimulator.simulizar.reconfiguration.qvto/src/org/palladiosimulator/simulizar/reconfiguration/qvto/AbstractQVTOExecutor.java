@@ -27,6 +27,9 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
+
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 /**
  * This class is intended to be the base of all classes that wish to execute QVTo transformations.
  * The set of transformations that can be executed are passed to each instance upon construction in
@@ -124,10 +127,10 @@ public abstract class AbstractQVTOExecutor {
      * @see #executeTransformation(TransformationData)
      * @see #AbstractQVTOExecutor(TransformationCache, QVToModelCache)
      */
-    public boolean executeTransformation(URI transformationURI) {
+    public boolean executeTransformation(URI transformationURI, IResourceTableManager resourceTableManager) {
         Optional<QvtoModelTransformation> data = this.transformationCache.get(Objects.requireNonNull(transformationURI));
         return executeTransformation(data.orElseThrow(
-                () -> new IllegalArgumentException("Given transformation not present in transformation cache.")));
+                () -> new IllegalArgumentException("Given transformation not present in transformation cache.")), resourceTableManager);
     }
     
     /**
@@ -153,15 +156,15 @@ public abstract class AbstractQVTOExecutor {
      * @throws NullPointerException
      *             In case {@code transformationData == null}
      */
-    public final boolean executeTransformation(QvtoModelTransformation modelTransformation) {
-    	ExecutionDiagnostic result = executeTransformationInternal(modelTransformation);
+    public final boolean executeTransformation(QvtoModelTransformation modelTransformation, IResourceTableManager resourceTableManager) {
+    	ExecutionDiagnostic result = executeTransformationInternal(modelTransformation, resourceTableManager);
         // check the result for success
         return handleExecutionResult(result);
     }
     
-    protected ExecutionDiagnostic executeTransformationInternal(QvtoModelTransformation modelTransformation) {
+    protected ExecutionDiagnostic executeTransformationInternal(QvtoModelTransformation modelTransformation, IResourceTableManager resourceTableManager) {
     	ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
-        ExecutionContext executionContext = setupExecutionContext();
+        ExecutionContext executionContext = setupExecutionContext(resourceTableManager);
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
         ExecutionDiagnostic result = doExecution(modelTransformation, executionContext, modelExtents);
@@ -227,12 +230,13 @@ public abstract class AbstractQVTOExecutor {
      * @return A fully-fledged {@link ExecutionContext}.
      * @see #doExecution(TransformationData, ExecutionContext, ModelExtent[])
      */
-    protected ExecutionContext setupExecutionContext() {
+    protected ExecutionContext setupExecutionContext(IResourceTableManager resourceTableManager) {
         // setup the execution environment details ->
         // configuration properties, LOGGER, monitor object etc.
         ExecutionContextImpl result = new ExecutionContextImpl();
         // result.setConfigProperty("keepModeling", true);
         result.setLog(createLog());
+        result.setConfigProperty("resourceTableManager", resourceTableManager);
         return result;
     }
 
