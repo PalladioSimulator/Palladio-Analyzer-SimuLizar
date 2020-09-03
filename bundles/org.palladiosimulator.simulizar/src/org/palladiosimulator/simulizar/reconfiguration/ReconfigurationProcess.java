@@ -35,9 +35,11 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	private final ISimulationControl simControl;
 	private final List<Notification> currentReconfigNotifications;
 	private final Reconfigurator reconfigurator;
+	private final IResourceTableManager resourceTableManager;
 	// volatile is sufficient as flag is only set once
 	private volatile boolean terminationRequested = false;
 	private EList<ModelTransformation<? extends Object>> transformations;
+	
 
 	/**
 	 * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -66,6 +68,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 			l.load(reconfigurator.getConfiguration());
 			this.transformations.addAll(l.getTransformations());
 		});
+		this.resourceTableManager = resourceTableManager;
 	}
 
 	/**
@@ -171,7 +174,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 		return r -> {
 			BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(currentSimulationTime);
 			ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-			final boolean reconfigResult = r.runCheck(transformations, monitoredElement);
+			final boolean reconfigResult = r.runCheck(transformations, monitoredElement, resourceTableManager);
 			EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
 					EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
 			ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);
