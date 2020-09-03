@@ -6,6 +6,8 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 /**
  * Interface for a component that is able to reconfigure the PCM model@runtime.
  * 
@@ -32,7 +34,7 @@ public interface IReconfigurationEngine {
 	 * @return <code>true</code> if the check was positive/matched,
 	 *         <code>false</code> if it was negative/did not match
 	 */
-	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement);
+	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement, IResourceTableManager resourceTableManager);
 
 	/**
 	 * Trigger a reconfiguration of the model@runtime. This method should only
@@ -44,7 +46,7 @@ public interface IReconfigurationEngine {
 	 * @return <code>true</code> if the reconfiguration was executed,
 	 *         <code>false</code> if it was not executed or did not succeed.
 	 */
-	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement);
+	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement, IResourceTableManager resourceTableManager);
 	
 	public void setConfiguration(final SimuLizarWorkflowConfiguration configuration);
 	

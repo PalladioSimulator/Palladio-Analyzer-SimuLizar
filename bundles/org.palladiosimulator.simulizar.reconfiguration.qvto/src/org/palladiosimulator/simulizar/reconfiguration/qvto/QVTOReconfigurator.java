@@ -13,6 +13,8 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransforma
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 /**
  * A reconfigurator implementation which relies on QVTo to do the
  * reconfiguration. The QVTo rules both check their reconfiguration precondition
@@ -47,12 +49,13 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	}
 
 	@Override
-	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement) {
-		return this.runExecute(checks, monitoredElement);
+	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement, IResourceTableManager resourceTableManager) {
+		return this.runExecute(checks, monitoredElement, resourceTableManager);
 	}
 
 	@Override
-	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement) {
+	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement
+	        , IResourceTableManager resourceTableManager) {
 		LOGGER.debug("Checking reconfiguration rules due to PRM change");
 		ArrayList<QvtoModelTransformation> transformations = new ArrayList<QvtoModelTransformation>();
 		for (ModelTransformation<? extends Object> action : actions) {
@@ -64,7 +67,7 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 				LOGGER.debug("Not a QVTO model transformation.");
 			}
 		}
-		boolean result = getQVTOExecutor().executeTransformations(transformations);
+		boolean result = getQVTOExecutor().executeTransformations(transformations, resourceTableManager);
 		LOGGER.debug(result ? "Reconfigured system by a matching rule"
 				: "No reconfiguration rule was executed, all conditions were false");
 		return result;

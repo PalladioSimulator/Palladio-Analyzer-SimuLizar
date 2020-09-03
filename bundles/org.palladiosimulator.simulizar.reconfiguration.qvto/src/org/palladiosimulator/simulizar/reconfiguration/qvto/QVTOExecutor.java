@@ -5,6 +5,8 @@ import java.util.List;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 /**
  * QVTo executor helper class that supports executing QVTo reconfiguration rules.
  * 
@@ -28,10 +30,10 @@ public class QVTOExecutor extends AbstractQVTOExecutor {
         super(knownTransformations, knownModels);
     }
     
-    public boolean executeTransformations(List<QvtoModelTransformation> transformations){
+    public boolean executeTransformations(List<QvtoModelTransformation> transformations, IResourceTableManager resourceTableManager){
 		boolean result = true;
     	for(QvtoModelTransformation transformation : transformations){
-			result &= executeTransformation(transformation);
+			result &= executeTransformation(transformation, resourceTableManager);
 		}
     	return result;
 	}
