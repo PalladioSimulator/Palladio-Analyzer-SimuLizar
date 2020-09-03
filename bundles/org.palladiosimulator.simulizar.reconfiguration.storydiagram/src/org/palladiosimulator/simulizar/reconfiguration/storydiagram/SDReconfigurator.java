@@ -8,6 +8,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 /**
  * A reconfigurator implementation which relies on story diagrams to do the
  * reconfiguration. The story diagrams both check their reconfiguration
@@ -37,7 +39,7 @@ public class SDReconfigurator extends AbstractReconfigurator {
 
 	@Override
 	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks,
-			final EObject monitoredElement) {
+			final EObject monitoredElement, IResourceTableManager resourceTableManager) {
 
 		ArrayList<SDModelTransformation> transformations = new ArrayList<SDModelTransformation>();
 		for (ModelTransformation<? extends Object> check : checks) {
@@ -56,7 +58,7 @@ public class SDReconfigurator extends AbstractReconfigurator {
 
 	@Override
 	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions,
-			EObject monitoredElement) {
+			EObject monitoredElement, IResourceTableManager resourceTableManager) {
 		ArrayList<SDModelTransformation> activities = new ArrayList<SDModelTransformation>();
 		LOGGER.info("Executing Story Diagram Model Transformation.");
 		for (ModelTransformation<? extends Object> action : actions) {

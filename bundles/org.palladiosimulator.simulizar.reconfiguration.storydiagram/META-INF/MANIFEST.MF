@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.core.runtime,
  org.scaledl.usageevolution,
  org.palladiosimulator.servicelevelobjective,
  org.palladiosimulator.simulizar.reconfigurationrule,
- org.palladiosimulator.simulizar
+ org.palladiosimulator.simulizar,
+ de.uka.ipd.sdq.scheduler
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram
