@@ -19,6 +19,8 @@ import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 public class HenshinReconfigurator extends AbstractReconfigurator {
 
 	/**
@@ -90,14 +92,14 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
 	}
 
 	@Override
-	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement) {
+	public boolean runCheck(EList<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement, IResourceTableManager resourceTableManager) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions,
-			EObject monitoredElement) {
+			EObject monitoredElement, IResourceTableManager resourceTableManager) {
 		List<HenshinModelTransformation> transformations = new ArrayList<HenshinModelTransformation>();
 		LOGGER.info("Executing Story Diagram Model Transformation.");
 		for (ModelTransformation<? extends Object> action : actions) {
