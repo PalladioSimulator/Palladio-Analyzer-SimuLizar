@@ -53,6 +53,8 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class QVToReconfigurationTest {
@@ -87,6 +89,8 @@ public class QVToReconfigurationTest {
     private static URI repositoryURI;
     private static URI allocationURI;
     private static URI pmsURI;
+    
+    private static IResourceTableManager resourceTableManager;
 
     @BeforeAll
     public static void setUpBeforeClass() {
@@ -112,6 +116,8 @@ public class QVToReconfigurationTest {
         allocationURI = CommonPlugin.resolve(allocationURI);
         pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
         pmsURI = CommonPlugin.resolve(pmsURI);
+        
+        resourceTableManager = new ResourceTableManager();
 
     }
 
@@ -143,8 +149,7 @@ public class QVToReconfigurationTest {
     }
 
     private int addNewServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_ADD_SERVER_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_SERVER_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfServer1Client = 0, numOfServer2Client = 0;
@@ -176,8 +181,7 @@ public class QVToReconfigurationTest {
     }
 
     private int addClonedServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfIServerProviders = 0;
@@ -210,8 +214,7 @@ public class QVToReconfigurationTest {
      * @return processing resource of the server that is to be scaled up.
      */
     private double scaleUp(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_SCALE_UP_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_SCALE_UP_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         final ResourceEnvironment resourceEnvironment = allocation.getTargetResourceEnvironment_Allocation();
@@ -243,8 +246,7 @@ public class QVToReconfigurationTest {
      * @return branch probability that is to be increased.
      */
     private double outsource(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_OUTSOURCE_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_OUTSOURCE_PATH, resourceTableManager);
         final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
         /*
          * Iterate over all the elements of the allocation diagram.
@@ -313,7 +315,7 @@ public class QVToReconfigurationTest {
      * @return The PCM model after the rules from "testmodel/rules" have been applied.
      */
     private PCMResourceSetPartition readPcmModelAndApplyTransformationRules(final double m,
-            final String reconfigurationRulesFolderPath) {
+            final String reconfigurationRulesFolderPath, IResourceTableManager resourceTableManager) {
         /*
          * Create a measurement.
          */
@@ -383,7 +385,7 @@ public class QVToReconfigurationTest {
         reconfigurationLoader.load(swfc);
         EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(
                 reconfigurationLoader.getTransformations());
-        boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement);
+        boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement, resourceTableManager);
         assertTrue(checkedAndExceuted, "Reconfiguration was not executed!");
 
         return pcmResourceSet;
