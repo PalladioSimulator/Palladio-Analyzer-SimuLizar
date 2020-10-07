@@ -20,8 +20,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
     private static AbstractSimuLizarRuntimeState state;
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE
-            .createControllerCallInputVariableUsageCollection();
-
+        .createControllerCallInputVariableUsageCollection();
 
     /**
      * Gets a {@link TransientEffectInterpreterBuilder} which is suitable to construct an
@@ -73,7 +72,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
         private ControllerCallInputVariableUsageCollection controllerCallVariableUsages = EMPTY_VARIABLE_USAGE_COLLECTION;
         private boolean isAsync = false;
 
-        private TransientEffectInterpreterBuilder(RoleSet roleSet, AdaptationBehaviorRepository repository                ) {
+        private TransientEffectInterpreterBuilder(RoleSet roleSet, AdaptationBehaviorRepository repository) {
             this.roleSet = Objects.requireNonNull(roleSet);
             this.repository = Objects.requireNonNull(repository);
         }
