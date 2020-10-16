@@ -183,7 +183,7 @@
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" refresh="true">
 			<unit id="LIMBO_DLIM.feature.group" version="tbd"/>
-			<repository location="http://se2.informatik.uni-wuerzburg.de/eclipse/limbo/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-p2mirror-dlim/nightly/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
