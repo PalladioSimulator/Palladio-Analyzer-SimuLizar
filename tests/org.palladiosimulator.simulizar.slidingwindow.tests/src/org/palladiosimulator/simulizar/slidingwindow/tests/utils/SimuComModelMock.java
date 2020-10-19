@@ -17,6 +17,8 @@ import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFacto
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
@@ -67,10 +69,10 @@ public class SimuComModelMock extends SimuComModel {
         new MockWindowMoveOnTriggeredEvent(this, window).triggerInternal();
     }
 
-    public static SimuComModel obtainMockModel(TemporaryFolder repoFolder) throws IOException {
+    public static SimuComModel obtainMockModel(TemporaryFolder repoFolder, IResourceTableManager resourceTableManager) throws IOException {
         if (instance == null) {
             createRepository(repoFolder);
-            instance = new SimuComModelMock();
+            instance = new SimuComModelMock(resourceTableManager);
         }
         return instance;
     }
@@ -82,10 +84,10 @@ public class SimuComModelMock extends SimuComModel {
         }
     }
 
-    private SimuComModelMock() {
-
+    private SimuComModelMock(IResourceTableManager resourceTableManager) {
         super(new SimuComConfig(createMockedConfiguration(), false), createSimuComStatus(), new SimEngineFactoryMock(),
-                false, new ProbeFrameworkContext(new ExtensibleCalculatorFactoryDelegatingFactory()));
+                false, new ProbeFrameworkContext(new ExtensibleCalculatorFactoryDelegatingFactory())
+                , resourceTableManager);
     }
 
     private static class MockWindowMoveOnTriggeredEvent extends PeriodicallyTriggeredSimulationEntity {

@@ -27,6 +27,8 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.TransformationParame
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+
 /**
  * Implementation of the {@link AbstractQVTOExecutor} suitable for executing {@link AdaptationStep
  * AdaptationSteps}, i.e., transient effects.
@@ -50,13 +52,13 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     Optional<Mapping> executeControllerCompletion(Repository controllerCompletionRepository,
-            String controllerCompletionPath) {
+            String controllerCompletionPath, IResourceTableManager resourceTableManager) {
         // cache repo, if present
         Collection<EObject> cachedRepo = this.getModelsByType(REPOSITORY_EPACKAGE);
         this.storeModel(controllerCompletionRepository);
         URI controllerCompletionUri = URI.createURI(controllerCompletionPath);
         QvtoModelTransformation controllerCompletion = this.getTransformationByUri(controllerCompletionUri).get();
-        boolean result = this.executeTransformation(controllerCompletion);
+        boolean result = this.executeTransformation(controllerCompletion, resourceTableManager);
         // restore if necessary
         cachedRepo.forEach(repoInCache -> this.storeModel(repoInCache));
         if (result) {
@@ -65,10 +67,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         return Optional.empty();
     }
 
-    boolean executeGuardedTransition(GuardedTransition guardedTransition) {
+    boolean executeGuardedTransition(GuardedTransition guardedTransition, IResourceTableManager resourceTableManager) {
     	URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
 		QvtoModelTransformation condition = this.getTransformationByUri(conditionUri).get();
-		ExecutionDiagnostic result = this.executeTransformationInternal(Objects.requireNonNull(condition));
+		ExecutionDiagnostic result = this.executeTransformationInternal(Objects.requireNonNull(condition), resourceTableManager);
 		return handleExecutionResultForGuardedTransition(guardedTransition, result);
     }
 

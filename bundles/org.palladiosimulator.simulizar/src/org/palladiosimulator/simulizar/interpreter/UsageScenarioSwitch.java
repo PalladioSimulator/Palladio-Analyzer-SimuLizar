@@ -18,6 +18,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 /**
@@ -35,16 +36,18 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
-
+    private final IResourceTableManager resourceTableManager;
+    
     /**
      * Constructor
      *
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context) {
+    public UsageScenarioSwitch(final InterpreterDefaultContext context, IResourceTableManager resourceTableManager) {
         this.context = context;
         this.transitionDeterminer = new TransitionDeterminer(context);
+        this.resourceTableManager = resourceTableManager;
     }
 
     /**
@@ -91,7 +94,7 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
         final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
                 RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
-                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
+                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), resourceTableManager);
 
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,

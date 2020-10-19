@@ -61,6 +61,7 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
@@ -91,6 +92,8 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	private final boolean isAsync;
 
 	private Optional<ExecutionContext> executionContext;
+	
+	private final IResourceTableManager resourceTableManager;
 
 	/**
 	 * Initializes a new instance of the {@link TransientEffectInterpreter}
@@ -116,13 +119,15 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	TransientEffectInterpreter(AbstractSimuLizarRuntimeState state, RoleSet set,
 			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
 			AdaptationBehaviorRepository repository, boolean executeAsync,
-			Optional<ExecutionContext> executionContext) {
+			Optional<ExecutionContext> executionContext
+			, IResourceTableManager resourceTableManager) {
 		this.state = state;
 		this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
 		this.roleSet = set;
 		this.isAsync = executeAsync;
 		this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
 		this.executionContext = executionContext;
+		this.resourceTableManager = resourceTableManager;
 	}
 
 	private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
@@ -274,7 +279,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			this.qvtoExecutor.enableForTransformationExecution(guardedTransition);
 			TransientEffectQVTOExecutorUtil.validateGuardedTransition(this.qvtoExecutor, guardedTransition);
 
-			return this.qvtoExecutor.executeGuardedTransition(guardedTransition);
+			return this.qvtoExecutor.executeGuardedTransition(guardedTransition, resourceTableManager);
 		}
 
 		@Override
@@ -329,7 +334,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 								(Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
 				OpenWorkloadUser user = new OpenWorkloadUser(model,
 						resourceDemandingStep.getEntityName() + " " + call.getEntityName(),
-						createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes);
+						createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes, resourceTableManager);
 				users.add(user);
 				user.startUserLife();
 			}
@@ -352,8 +357,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationStep);
 			URI adaptationStepUri = URI.createURI(enactAdaptationStep.getAdaptationStepURI());
 			QvtoModelTransformation adaptationStep = this.qvtoExecutor.getTransformationByUri(adaptationStepUri).get();
-			final boolean result = this.qvtoExecutor
-					.executeTransformation(adaptationStep);
+			final boolean result = this.qvtoExecutor.executeTransformation(adaptationStep, resourceTableManager);
 			if (result && !TransientEffectInterpreter.this.isAsync) {
 				TransientEffectInterpreter.this.forwardReconfigurationNotification(
 						new AdaptationStepExecutedNotification(enactAdaptationStep));
@@ -387,7 +391,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
-				new UsageScenarioSwitch<Object>(newContext).doSwitch(usageScenario);
+				new UsageScenarioSwitch<Object>(newContext, resourceTableManager).doSwitch(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running
@@ -413,8 +417,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			Repository repository = resourceDemandingStep.getControllerCalls().get(0).getComponent()
 					.getRepository__RepositoryComponent();
 			TransientEffectQVTOExecutorUtil.validateResourceDemandingStep(this.qvtoExecutor, resourceDemandingStep);
-			return this.qvtoExecutor.executeControllerCompletion(repository,
-					resourceDemandingStep.getControllerCompletionURI());
+			return this.qvtoExecutor.executeControllerCompletion(repository, resourceDemandingStep.getControllerCompletionURI(), resourceTableManager);
 		}
 	}
 
@@ -425,7 +428,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 		private AsyncInterpretationProcess(Optional<ExecutionContext> context, AdaptationBehavior behaviorToInterpret) {
 			super(TransientEffectInterpreter.this.state.getModel(),
-					"SimuComSimProcess For Async Action Interpretation");
+					"SimuComSimProcess For Async Action Interpretation", resourceTableManager);
 			this.correspondingContext = context.orElseGet(ContextFactory.eINSTANCE::createExecutionContext);
 			this.behaviorToInterpret = behaviorToInterpret;
 		}

@@ -37,6 +37,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -55,17 +56,20 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
+    private final IResourceTableManager resourceTableManager;
 
     /**
      *
      */
     public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole) {
+            final Signature signature, final ProvidedRole providedRole
+            , IResourceTableManager resourceTableManager) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
+        this.resourceTableManager = resourceTableManager;
     }
 
     @Override
@@ -100,7 +104,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         final List<ServiceEffectSpecification> calledSeffs = this
                 .getSeffsForCall(basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
 
-        final SimulatedStackframe<Object> result = this.interpretSeffs(calledSeffs);
+        final SimulatedStackframe<Object> result = this.interpretSeffs(calledSeffs, resourceTableManager);
 
         /*
          * Remove created stack frame (including stack frame created for the results of an external
@@ -135,7 +139,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
                 this.providedRole);
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
-                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
+                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), resourceTableManager);
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -198,7 +202,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
      *            a list of seffs.
      */
     @SuppressWarnings("unchecked")
-    private SimulatedStackframe<Object> interpretSeffs(final List<ServiceEffectSpecification> calledSeffs) {
+    private SimulatedStackframe<Object> interpretSeffs(final List<ServiceEffectSpecification> calledSeffs
+            , IResourceTableManager resourceTableManager) {
         /*
          * we assume exactly one seff per call, the meta model also allows no seffs, but we omit
          * that in this interpreter
@@ -219,7 +224,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
             // add default RDSeffSwitch
-            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter));
+            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, resourceTableManager));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }

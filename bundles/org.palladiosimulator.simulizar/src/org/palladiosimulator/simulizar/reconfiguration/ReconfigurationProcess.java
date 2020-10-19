@@ -15,6 +15,7 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
@@ -34,9 +35,11 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	private final ISimulationControl simControl;
 	private final List<Notification> currentReconfigNotifications;
 	private final Reconfigurator reconfigurator;
+	private final IResourceTableManager resourceTableManager;
 	// volatile is sufficient as flag is only set once
 	private volatile boolean terminationRequested = false;
 	private EList<ModelTransformation<? extends Object>> transformations;
+	
 
 	/**
 	 * Initializes a new instance of the {@link ReconfigurationProcess} class.
@@ -54,8 +57,8 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	 *             In case any of the given parameters is {@code null}.
 	 */
 	protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurationEngine> reconfigurators,
-			final Reconfigurator reconfigurator) {
-		super(model, "Reconfiguration Process");
+			final Reconfigurator reconfigurator, IResourceTableManager resourceTableManager) {
+		super(model, "Reconfiguration Process", resourceTableManager);
 		this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
 		this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
 		this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
@@ -65,6 +68,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 			l.load(reconfigurator.getConfiguration());
 			this.transformations.addAll(l.getTransformations());
 		});
+		this.resourceTableManager = resourceTableManager;
 	}
 
 	/**
@@ -170,7 +174,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 		return r -> {
 			BeginReconfigurationEvent beginReconfigurationEvent = new BeginReconfigurationEvent(currentSimulationTime);
 			ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
-			final boolean reconfigResult = r.runCheck(transformations, monitoredElement);
+			final boolean reconfigResult = r.runCheck(transformations, monitoredElement, resourceTableManager);
 			EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
 					EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
 			ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);

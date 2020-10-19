@@ -100,7 +100,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
             this.createSimulatedResourceContainer((ResourceContainer) notification.getNewValue());
         } else if (changedFeature == resourceenvironmentPackage
-                .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
+            .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
             this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
         } else if (changedFeature == resourceenvironmentPackage
                 .getResourceEnvironment_LinkingResources__ResourceEnvironment()) {
@@ -116,14 +116,12 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      */
     @Override
     protected void set(final Notification notification) {
-        var handled = syncIfFeatureOrCharacterizingStoExChanged(notification,
-                ProcessingResourceSpecification.class, SUPPORTED_PROCESSING_RESOURCE_STOEX_PROPERTIES,
-                this::syncProcessingResource);
-        
-        handled |= syncIfFeatureOrCharacterizingStoExChanged(notification,
-                CommunicationLinkResourceSpecification.class, SUPPORTED_LINKING_RESOURCE_STOEX_PROPERTIES,
-                this::syncLinkingResource);
-                
+        var handled = syncIfFeatureOrCharacterizingStoExChanged(notification, ProcessingResourceSpecification.class,
+                SUPPORTED_PROCESSING_RESOURCE_STOEX_PROPERTIES, this::syncProcessingResource);
+
+        handled |= syncIfFeatureOrCharacterizingStoExChanged(notification, CommunicationLinkResourceSpecification.class,
+                SUPPORTED_LINKING_RESOURCE_STOEX_PROPERTIES, this::syncLinkingResource);
+
         if (!handled) {
             this.logDebugInfo(notification);
         }
@@ -151,10 +149,9 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         if (features.contains(notification.getFeature())) {
             candidate = Optional.of(notification.getNotifier());
         } else if (CorePackage.Literals.PCM_RANDOM_VARIABLE.isInstance(notification.getNotifier())) {
-            if ((StoexPackage.Literals.RANDOM_VARIABLE__SPECIFICATION == notification.getFeature()
-                    && featureIsOppositeReference(((EObject) notification.getNotifier()).eContainmentFeature(),
-                            features))
-                    || featureIsOppositeReference(notification.getFeature(), features)) {
+            if (StoexPackage.Literals.RANDOM_VARIABLE__SPECIFICATION == notification.getFeature()
+                    && (features.contains(((EObject) notification.getNotifier()).eContainmentFeature())
+                            || featureIsOppositeReference(notification.getFeature(), features))) {
                 candidate = Optional.of(((EObject) notification.getNotifier()).eContainer());
             }
         }
@@ -183,22 +180,28 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     }
 
     /**
-     * Processes the addition of a new resource container. It creates the simulation
-     * entities for the container and its contained resources.
+     * Processes the addition of a new resource container. It creates the simulation entities for
+     * the container and its contained resources.
      * 
      * @param resourceContainer
      *            the new resource container.
      */
     private void createSimulatedResourceContainer(final ResourceContainer resourceContainer) {
-        final var simulatedResourceContainer = this.runtimeModel.getModel()
+        if (!this.runtimeModel.getModel()
             .getResourceRegistry()
-            .createResourceContainer(resourceContainer.getId());
+            .containsResourceContainer(resourceContainer.getId())) {
+            final var simulatedResourceContainer = this.runtimeModel.getModel()
+                .getResourceRegistry()
+                .createResourceContainer(resourceContainer.getId());
 
-        resourceContainer.getActiveResourceSpecifications_ResourceContainer()
-            .forEach(this::createSimulatedActiveResource);
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
-                    + simulatedResourceContainer);
+            resourceContainer.getActiveResourceSpecifications_ResourceContainer()
+                .forEach(this::createSimulatedActiveResource);
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
+                        + simulatedResourceContainer);
+            }
+        } else {
+            LOGGER.warn("SimulatedResourceContainer was already present for ID: " + resourceContainer.getId());
         }
     }
 
@@ -210,18 +213,24 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      *            the new linking resource.
      */
     private void createSimulatedLinkingResource(final LinkingResource linkingResource) {
-        final var simulatedResourceContainer = this.runtimeModel.getModel()
+        if (!this.runtimeModel.getModel()
             .getResourceRegistry()
-            .createLinkingResourceContainer(linkingResource.getId());
-        if (linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource() != null) {
-            syncLinkingResource(linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource());
+            .containsResourceContainer(linkingResource.getId())) {
+            final var simulatedResourceContainer = this.runtimeModel.getModel()
+                .getResourceRegistry()
+                .createLinkingResourceContainer(linkingResource.getId());
+            if (linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource() != null) {
+                syncLinkingResource(linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource());
+            }
+            if (LOGGER.isDebugEnabled()) {
+                LOGGER.debug("Added SimulatedLinkingResource: ID: " + linkingResource.getId() + " "
+                        + simulatedResourceContainer);
+            }
+        } else {
+            LOGGER.warn("SimulatedLinkingResource was already present for ID: " + linkingResource.getId());
         }
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Added SimulatedLinkingResource: ID: " + linkingResource.getId() + " "
-                    + simulatedResourceContainer);
-        }
-    }
 
+    }
 
     /**
      * Processes the addition of a new Processing Resource. If the resource already exists, it will
@@ -311,11 +320,14 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     }
 
     private String getActiveResourceTypeID(final ProcessingResourceSpecification processingResource) {
-        return processingResource.getActiveResourceType_ActiveResourceSpecification().getId();
+        return processingResource.getActiveResourceType_ActiveResourceSpecification()
+            .getId();
     }
 
     private AbstractSimulatedResourceContainer getSimulatedResourceContainer(final Identifier container) {
-        return this.runtimeModel.getModel().getResourceRegistry().getResourceContainer(container.getId());
+        return this.runtimeModel.getModel()
+            .getResourceRegistry()
+            .getResourceContainer(container.getId());
     }
 
     /**
@@ -343,7 +355,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             final ResourceContainer resourceContainer, final String schedulingStrategy,
             final ScheduledResource scheduledResource) {
         for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
+            .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
 
             new PcmmeasuringpointSwitch<Calculator>() {
 
@@ -354,7 +366,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                             measurementSpecification, resourceContainer, scheduledResource, schedulingStrategy);
                 };
 
-            }.doSwitch(measurementSpecification.getMonitor().getMeasuringPoint());
+            }.doSwitch(measurementSpecification.getMonitor()
+                .getMeasuringPoint());
         }
     }
 
@@ -368,13 +381,13 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
 
         if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC)) {
             if (!MonitorRepositoryPackage.Literals.FEED_THROUGH
-                    .isInstance(measurementSpecification.getProcessingType())) {
-                throw new IllegalArgumentException(
-                        "MetricDescription (" + MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getName()
-                                + ") '" + measurementSpecification.getName() + "' of Monitor '"
-                                + measurementSpecification.getMonitor().getEntityName() + "' must provide a "
-                                + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName() + " of Type '"
-                                + MonitorRepositoryPackage.Literals.FEED_THROUGH.getName() + "'!");
+                .isInstance(measurementSpecification.getProcessingType())) {
+                throw new IllegalArgumentException("MetricDescription ("
+                        + MetricDescriptionConstants.STATE_OF_ACTIVE_RESOURCE_METRIC.getName() + ") '"
+                        + measurementSpecification.getName() + "' of Monitor '" + measurementSpecification.getMonitor()
+                            .getEntityName()
+                        + "' must provide a " + MonitorRepositoryPackage.Literals.PROCESSING_TYPE.getName()
+                        + " of Type '" + MonitorRepositoryPackage.Literals.FEED_THROUGH.getName() + "'!");
             }
 
             // setup utilization calculators depending on their scheduling strategy

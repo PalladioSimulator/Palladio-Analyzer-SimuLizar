@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
-Bundle-Version: 4.2.0.qualifier
+Bundle-Version: 4.3.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
 Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="1.0.0",
@@ -11,7 +11,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.palladiosimulator.probeframework;bundle-version="2.0.1",
  org.jscience;bundle-version="4.1.3",
  de.uka.ipd.sdq.stoex.analyser;bundle-version="2.0.0",
- org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="4.2.0",
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="4.3.0",
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="1.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
  org.eclipse.emf.transaction;bundle-version="1.4.0",
@@ -27,13 +27,13 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.palladiosimulator.recorderframework.edp2;bundle-version="2.0.1",
  org.palladiosimulator.servicelevelobjective;bundle-version="0.1.0",
  org.palladiosimulator.servicelevelobjective.edp2;bundle-version="1.0.1",
- org.palladiosimulator.simulizar.edp2.measuringpoint;bundle-version="4.2.0",
+ org.palladiosimulator.simulizar.edp2.measuringpoint;bundle-version="4.3.0",
  de.uka.ipd.sdq.statistics,
  org.palladiosimulator.edp2.dao;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction.math,
  org.palladiosimulator.mdsdprofiles.api,
  org.modelversioning.emfprofile;bundle-version="1.1.0",
- org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="4.2.0",
+ org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="4.3.0",
  org.eclipse.emf.common
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11

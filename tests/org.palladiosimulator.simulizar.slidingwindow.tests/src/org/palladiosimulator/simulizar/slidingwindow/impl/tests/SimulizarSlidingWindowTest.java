@@ -16,11 +16,14 @@ import org.palladiosimulator.experimentanalysis.tests.SlidingWindowTest;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.tests.utils.SimuComModelMock;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 public class SimulizarSlidingWindowTest extends SlidingWindowTest {
 
     private SimuComModel model = null;
+    private IResourceTableManager resourceTableManager;
 
     @Rule
     public TemporaryFolder tempFolder = new TemporaryFolder();
@@ -30,7 +33,8 @@ public class SimulizarSlidingWindowTest extends SlidingWindowTest {
     public void setUp() throws Exception {
         super.setUp();
 
-        this.model = SimuComModelMock.obtainMockModel(this.tempFolder);
+        this.resourceTableManager = new ResourceTableManager();
+        this.model = SimuComModelMock.obtainMockModel(this.tempFolder, resourceTableManager);
         this.slidingWindowUnderTest = new SimulizarSlidingWindow(windowLength, increment, windowMetricDescription,
                 dummyStrategy, this.model);
     }

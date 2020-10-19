@@ -22,6 +22,7 @@ import com.google.inject.assistedinject.AssistedInject;
 
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -45,6 +46,7 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     private final InterpreterDefaultContext context;
     private final Signature signature;
     private final RequiredRole requiredRole;
+    private final IResourceTableManager resourceTableManager;
 
     private final ITransmissionInterpreter<AbstractSimulatedResourceContainer, InterpreterDefaultContext> transmissionInterpreter;
     private final IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> resourceContainerLookup;
@@ -71,6 +73,7 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
         this.transmissionInterpreter = transmissionInterpreter;
         this.resourceContainerLookup = resourceContainerLookup;
 		this.composedStructureSwitchFactory = composedStructureSwitchFactory;
+        this.resourceTableManager = resourceTableManager;
     }
     
     @Deprecated
@@ -110,7 +113,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
             final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
         final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
-                this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
+                this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector()
+                , resourceTableManager);
         return repositoryComponentSwitch
                 .doSwitch(assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
     }

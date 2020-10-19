@@ -15,6 +15,7 @@ import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
@@ -31,9 +32,12 @@ public class SimulatedUsageModels {
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
 
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext) {
+    private final IResourceTableManager resourceTableManager;
+    
+    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, IResourceTableManager resourceTableManager) {
         super();
         this.rootContext = rootContext;
+        this.resourceTableManager = resourceTableManager;
     }
 
     /**
@@ -79,11 +83,11 @@ public class SimulatedUsageModels {
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
         final IClosedWorkloadUserFactory userFactory = new ClosedWorkloadUserFactory(this.rootContext.getModel(),
-                closedWorkload.getThinkTime_ClosedWorkload().getSpecification(), usageScenario) {
+                closedWorkload.getThinkTime_ClosedWorkload().getSpecification(), usageScenario, resourceTableManager) {
 
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return SimulatedUsageModels.this.getScenarioRunner(usageScenario);
+                return SimulatedUsageModels.this.getScenarioRunner(usageScenario, resourceTableManager);
             }
         };
 
@@ -98,20 +102,20 @@ public class SimulatedUsageModels {
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.rootContext.getModel(), usageScenario) {
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.rootContext.getModel(), usageScenario, resourceTableManager) {
 
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return SimulatedUsageModels.this.getScenarioRunner(usageScenario);
+                return SimulatedUsageModels.this.getScenarioRunner(usageScenario, resourceTableManager);
             }
         };
 
         // create workload driver by using given factory
         return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.rootContext.getModel(), userFactory,
-                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification());
+                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
     }
 
-    private IScenarioRunner getScenarioRunner(final UsageScenario scenario) {
+    private IScenarioRunner getScenarioRunner(final UsageScenario scenario, IResourceTableManager resourceTableManager) {
         return new IScenarioRunner() {
 
             @Override
@@ -126,7 +130,7 @@ public class SimulatedUsageModels {
                 usageModel.getUsageScenario_UsageModel().stream()
                 	.filter(sc -> sc.getId().equals(scenario.getId()))
                 	.findAny().ifPresent(sc -> {
-                	    new UsageScenarioSwitch<Object>(newContext).doSwitch(sc);
+                	    new UsageScenarioSwitch<Object>(newContext, resourceTableManager).doSwitch(sc);
                 	});
             }
         };

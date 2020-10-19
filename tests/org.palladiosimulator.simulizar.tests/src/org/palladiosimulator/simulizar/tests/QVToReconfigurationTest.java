@@ -1,7 +1,8 @@
 package org.palladiosimulator.simulizar.tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -17,8 +18,8 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -52,6 +53,8 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class QVToReconfigurationTest {
@@ -86,8 +89,10 @@ public class QVToReconfigurationTest {
     private static URI repositoryURI;
     private static URI allocationURI;
     private static URI pmsURI;
+    
+    private static IResourceTableManager resourceTableManager;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpBeforeClass() {
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
                 new RepositoryResourceFactoryImpl());
@@ -111,6 +116,8 @@ public class QVToReconfigurationTest {
         allocationURI = CommonPlugin.resolve(allocationURI);
         pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
         pmsURI = CommonPlugin.resolve(pmsURI);
+        
+        resourceTableManager = new ResourceTableManager();
 
     }
 
@@ -120,30 +127,29 @@ public class QVToReconfigurationTest {
     }
 
     private void reconfigurationTests() {
-        assertEquals("The branch probability was not changed as expected!", BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING,
-                outsource(MEASUREMENT_OVER_THRESHOLD), 0.0);
-        assertEquals("The branch probability has not remained as it was expected!",
-                BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING, outsource(MEASUREMENT_BELOW_THRESHOLD), 0.0);
+        assertEquals(BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING,
+                outsource(MEASUREMENT_OVER_THRESHOLD), 0.0, "The branch probability was not changed as expected!");
+        assertEquals(
+                BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING, outsource(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The branch probability has not remained as it was expected!");
 
-        assertEquals("Processing resources have not scaled as expected!", SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING,
-                scaleUp(MEASUREMENT_OVER_THRESHOLD), 0.0);
-        assertEquals("Processing resources have not remained as it was expected!",
-                SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING, scaleUp(MEASUREMENT_BELOW_THRESHOLD), 0.0);
+        assertEquals(SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING,
+                scaleUp(MEASUREMENT_OVER_THRESHOLD), 0.0, "Processing resources have not scaled as expected!");
+        assertEquals(
+                SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING, scaleUp(MEASUREMENT_BELOW_THRESHOLD), 0.0, "Processing resources have not remained as it was expected!");
 
-        assertEquals("The server was not added!", EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
-                addNewServer(MEASUREMENT_OVER_THRESHOLD), 0.0);
-        assertEquals("The number of servers is not as expected!", EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
-                addNewServer(MEASUREMENT_BELOW_THRESHOLD), 0.0);
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
+                addNewServer(MEASUREMENT_OVER_THRESHOLD), 0.0, "The server was not added!");
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
+                addNewServer(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The number of servers is not as expected!");
 
-        assertEquals("The server was not added!", EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
-                addClonedServer(MEASUREMENT_OVER_THRESHOLD), 0.0);
-        assertEquals("The number of servers is not as expected!", EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
-                addClonedServer(MEASUREMENT_BELOW_THRESHOLD), 0.0);
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
+                addClonedServer(MEASUREMENT_OVER_THRESHOLD), 0.0, "The server was not added!");
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
+                addClonedServer(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The number of servers is not as expected!");
     }
 
     private int addNewServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_ADD_SERVER_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_SERVER_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfServer1Client = 0, numOfServer2Client = 0;
@@ -175,8 +181,7 @@ public class QVToReconfigurationTest {
     }
 
     private int addClonedServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfIServerProviders = 0;
@@ -209,8 +214,7 @@ public class QVToReconfigurationTest {
      * @return processing resource of the server that is to be scaled up.
      */
     private double scaleUp(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_SCALE_UP_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_SCALE_UP_PATH, resourceTableManager);
 
         final Allocation allocation = pcmResourceSet.getAllocation();
         final ResourceEnvironment resourceEnvironment = allocation.getTargetResourceEnvironment_Allocation();
@@ -229,7 +233,7 @@ public class QVToReconfigurationTest {
                 }
             }
         }
-        assertTrue("The test reached the end!", false);
+        fail("The test reached the end!");
         return Double.NaN;
     }
 
@@ -242,8 +246,7 @@ public class QVToReconfigurationTest {
      * @return branch probability that is to be increased.
      */
     private double outsource(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m,
-                TRANSFORMATION_RULES_OUTSOURCE_PATH);
+        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_OUTSOURCE_PATH, resourceTableManager);
         final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
         /*
          * Iterate over all the elements of the allocation diagram.
@@ -297,7 +300,7 @@ public class QVToReconfigurationTest {
                 }
             }
         }
-        assertTrue("The test reached the end!", false);
+        fail("The test reached the end!");
         return Double.NaN;
     }
 
@@ -312,7 +315,7 @@ public class QVToReconfigurationTest {
      * @return The PCM model after the rules from "testmodel/rules" have been applied.
      */
     private PCMResourceSetPartition readPcmModelAndApplyTransformationRules(final double m,
-            final String reconfigurationRulesFolderPath) {
+            final String reconfigurationRulesFolderPath, IResourceTableManager resourceTableManager) {
         /*
          * Create a measurement.
          */
@@ -382,8 +385,8 @@ public class QVToReconfigurationTest {
         reconfigurationLoader.load(swfc);
         EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(
                 reconfigurationLoader.getTransformations());
-        boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement);
-        assertTrue("Reconfiguration was not executed!", checkedAndExceuted);
+        boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement, resourceTableManager);
+        assertTrue(checkedAndExceuted, "Reconfiguration was not executed!");
 
         return pcmResourceSet;
     }
