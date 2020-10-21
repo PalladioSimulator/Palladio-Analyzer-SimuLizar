@@ -12,6 +12,8 @@ import org.palladiosimulator.pcm.core.composition.RequiredInfrastructureDelegati
 import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 
@@ -45,8 +47,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     private final RequiredRole requiredRole;
     private final IResourceTableManager resourceTableManager;
 
-    private final ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter;
-    private final IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> resourceContainerLookup;
+    private final ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter;
+    private final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup;
     private final ComposedStructureInnerSwitchFactory composedStructureSwitchFactory;
 
     /**
@@ -60,8 +62,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
             @Assisted final InterpreterDefaultContext context,
             @Assisted final Signature operationSignature,
             @Assisted final RequiredRole requiredRole,
-            ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
-            IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> resourceContainerLookup,
+            ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
+            IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
             ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
             IResourceTableManager resourceTableManager) {
         super();
@@ -78,8 +80,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     public ComposedStructureInnerSwitch(final InterpreterDefaultContext context, final Signature operationSignature,
 			final RequiredRole requiredRole, IResourceTableManager resourceTableManager) {
     	this(context, operationSignature, requiredRole, 
-    			context.getRuntimeState().getInjector().getInstance(new Key<ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext>>() {}),
-    			context.getRuntimeState().getInjector().getInstance(new Key<IAssemblyAllocationLookup<AbstractSimulatedResourceContainer>>() {}),
+    			context.getRuntimeState().getInjector().getInstance(new Key<ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext>>() {}),
+    			context.getRuntimeState().getInjector().getInstance(new Key<IAssemblyAllocationLookup<EntityReference<ResourceContainer>>>() {}),
     			context.getRuntimeState().getInjector().getInstance(ComposedStructureInnerSwitchFactory.class),
     			resourceTableManager);
     }

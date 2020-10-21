@@ -13,18 +13,14 @@ import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.pcm.resourceenvironment.CommunicationLinkResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-
-import de.uka.ipd.sdq.identifier.Identifier;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 
 /**
  * This class implements the routing behavior of SimuCom for SimuLizar. It
@@ -38,12 +34,11 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
  *
  */
 public class ResourceEnvironmentObservingLegacyRouter
-        implements ILinkingResourceRouter<AbstractSimulatedResourceContainer, SimulatedLinkingResource> {
+        implements ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> {
 
-    private final ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess;
     private final Collection<String> linkingResources = new LinkedList<>();
     private final Map<String, Set<String>> linkContainerAllocation = new HashMap<>();
-    private final Map<String, String> linkContainerResourceType = new HashMap<>();
+    private final EntityReferenceFactory<LinkingResource> linkReferenceFactory;
 
     /**
      * Creates a new ResourceEnvironmentObservingLegacyRouter.
@@ -55,9 +50,9 @@ public class ResourceEnvironmentObservingLegacyRouter
      */
     @Inject
     ResourceEnvironmentObservingLegacyRouter(PCMPartitionManager modelManager,
-            ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess) {
-        this.resourceContainerAccess = resourceContainerAccess;
-
+            EntityReferenceFactory<LinkingResource> linkReferenceFactory) {
+        this.linkReferenceFactory = linkReferenceFactory;
+        
         var resEnv = modelManager.<ResourceEnvironment>findModel(ResourceenvironmentPackage.Literals.RESOURCE_ENVIRONMENT);
         resEnv.eAdapters()
                 .add(new EContentAdapter() {
@@ -77,20 +72,16 @@ public class ResourceEnvironmentObservingLegacyRouter
      * directly to the same linking resource.
      */
     @Override
-    public Optional<Iterable<SimulatedLinkingResource>> findRoute(AbstractSimulatedResourceContainer transmissionSource,
-            AbstractSimulatedResourceContainer transmissionTarget) {
-        if (transmissionSource.getResourceContainerID()
-            .equals(transmissionTarget.getResourceContainerID())) {
+    public Optional<Iterable<EntityReference<LinkingResource>>> findRoute(EntityReference<ResourceContainer> transmissionSource,
+            EntityReference<ResourceContainer> transmissionTarget) {
+        if (transmissionSource.equals(transmissionTarget)) {
             return Optional.of(Collections.emptyList());
         }
         for (var link : linkingResources) {
             var containers = linkContainerAllocation.getOrDefault(link, Collections.emptySet());
-            if (containers.contains(transmissionSource.getResourceContainerID())
-                    && containers.contains(transmissionTarget.getResourceContainerID())) {
-                var resource = resourceContainerAccess.getSimulatedEntity(link)
-                    .getAllActiveResources()
-                    .get(linkContainerResourceType.get(link));
-                return Optional.of(Collections.singleton((SimulatedLinkingResource) resource));
+            if (containers.contains(transmissionSource.getId())
+                    && containers.contains(transmissionTarget.getId())) {
+                return Optional.of(Collections.singleton(linkReferenceFactory.create(link)));
             }
         }
         return Optional.empty();
@@ -102,12 +93,6 @@ public class ResourceEnvironmentObservingLegacyRouter
         } else if (msg
                 .getFeature() == ResourceenvironmentPackage.Literals.LINKING_RESOURCE__CONNECTED_RESOURCE_CONTAINERS_LINKING_RESOURCE) {
             handleConnectedResourceContainersChange(msg);
-        } else if (msg
-                .getFeature() == ResourceenvironmentPackage.Literals.COMMUNICATION_LINK_RESOURCE_SPECIFICATION__COMMUNICATION_LINK_RESOURCE_TYPE_COMMUNICATION_LINK_RESOURCE_SPECIFICATION) {
-            handleCommunicationResourceChange(msg);
-        } else if (msg
-                .getFeature() == ResourceenvironmentPackage.Literals.LINKING_RESOURCE__COMMUNICATION_LINK_RESOURCE_SPECIFICATIONS_LINKING_RESOURCE) {
-            handleCommunicationLinkSpecificationChange(msg);
         }
     }
 
@@ -166,40 +151,14 @@ public class ResourceEnvironmentObservingLegacyRouter
         }
     }
 
-    protected void handleCommunicationLinkSpecificationChange(Notification msg) {
-        switch (msg.getEventType()) {
-        case Notification.SET:
-            doSetCommunicationLinkResourceType((CommunicationLinkResourceSpecification) msg.getNewValue());
-            break;
-        default:
-            throw new UnsupportedOperationException(
-                    String.format("The event type %d is not supported for changes of feature %s by %s",
-                            msg.getEventType(), msg.getFeature().toString(), this.getClass().getName()));
-        }
-    }
-
-    protected void handleCommunicationResourceChange(Notification msg) {
-        switch (msg.getEventType()) {
-        case Notification.SET:
-            doSetCommunicationLinkResourceType((CommunicationLinkResourceSpecification) msg.getNotifier());
-            break;
-        default:
-            throw new UnsupportedOperationException(
-                    String.format("The event type %d is not supported for changes of feature %s by %s",
-                            msg.getEventType(), msg.getFeature().toString(), this.getClass().getName()));
-        }
-    }
-
     protected void doAddLinkingResource(LinkingResource link) {
         linkingResources.add(link.getId());
         link.getConnectedResourceContainers_LinkingResource().forEach(c -> doAddConnectedResourceContainer(link, c));
-        doSetCommunicationLinkResourceType(link.getCommunicationLinkResourceSpecifications_LinkingResource());
     }
 
     protected void doRemoveLinkingResource(LinkingResource link) {
         linkingResources.remove(link.getId());
         linkContainerAllocation.remove(link.getId());
-        linkContainerResourceType.remove(link.getId());
     }
 
     protected void doAddConnectedResourceContainer(LinkingResource link, ResourceContainer container) {
@@ -208,11 +167,6 @@ public class ResourceEnvironmentObservingLegacyRouter
 
     protected void doRemoveConnectedResourceContainer(LinkingResource link, ResourceContainer container) {
         linkContainerAllocation.getOrDefault(container.getId(), Collections.emptySet()).remove(container.getId());
-    }
-
-    protected void doSetCommunicationLinkResourceType(CommunicationLinkResourceSpecification spec) {
-        linkContainerResourceType.put(spec.getLinkingResource_CommunicationLinkResourceSpecification().getId(),
-                spec.getCommunicationLinkResourceType_CommunicationLinkResourceSpecification().getId());
     }
 
 }

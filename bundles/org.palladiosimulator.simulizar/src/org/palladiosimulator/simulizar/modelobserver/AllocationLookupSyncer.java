@@ -18,13 +18,13 @@ import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
-import de.uka.ipd.sdq.identifier.Identifier;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 
 /**
  * The Allocation Lookup Syncer provides an accessible cache for the mapping of
@@ -43,10 +43,9 @@ import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
  *
  */
 public class AllocationLookupSyncer
-        implements IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> {
-    private final Map<String, AbstractSimulatedResourceContainer> simulatedContainerStorage = new HashMap<>();
-    private final ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess;
-
+        implements IAssemblyAllocationLookup<EntityReference<ResourceContainer>> {
+    private final Map<String, EntityReference<ResourceContainer>> containerIdStorage = new HashMap<>();
+    private final EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory;
     /**
      * Creates a new Allocation Lookup Syncer.
      * 
@@ -56,9 +55,9 @@ public class AllocationLookupSyncer
      */
     @Inject
     public AllocationLookupSyncer(
-            ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> resourceContainerAccess,
+            EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory,
             PCMPartitionManager modelManager) {
-        this.resourceContainerAccess = resourceContainerAccess;
+        this.resourceContainerReferenceFactory = resourceContainerReferenceFactory;
         var allocation = modelManager.getGlobalPCMModel().getAllocation();
         allocation.eAdapters().add(new EContentAdapter() {
         	@Override
@@ -101,8 +100,8 @@ public class AllocationLookupSyncer
      * @return the simulated resource container
      */
     @Override
-    public AbstractSimulatedResourceContainer getAllocatedEntity(String assemblyContextId) {
-        return simulatedContainerStorage.get(assemblyContextId);
+    public EntityReference<ResourceContainer> getAllocatedEntity(String assemblyContextId) {
+        return containerIdStorage.get(assemblyContextId);
     }
 
     /**
@@ -131,14 +130,14 @@ public class AllocationLookupSyncer
      *                     context is allocated.
      */
     protected void addAssemblyAllocation(AssemblyContext ctx, List<AssemblyContext> ctxHierarchy,
-            AbstractSimulatedResourceContainer container) {
+            EntityReference<ResourceContainer> container) {
         var hierarchy = ctxHierarchy;
         if (ctxHierarchy.isEmpty()) {
-            simulatedContainerStorage.put(ctx.getId(), container);
+            containerIdStorage.put(ctx.getId(), container);
         } else {
             var newHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
             newHierarchy.push(ctx);
-            simulatedContainerStorage.put(new FQComponentID(newHierarchy).getFQIDString(), container);
+            containerIdStorage.put(new FQComponentID(newHierarchy).getFQIDString(), container);
             hierarchy = newHierarchy;
         }
 
@@ -167,11 +166,11 @@ public class AllocationLookupSyncer
     protected void removeAssemblyAllocation(AssemblyContext ctx, List<AssemblyContext> ctxHierarchy) {
         var hierarchy = ctxHierarchy;
         if (ctxHierarchy.isEmpty()) {
-            simulatedContainerStorage.remove(ctx.getId());
+            containerIdStorage.remove(ctx.getId());
         } else {
             var newHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
             newHierarchy.push(ctx);
-            simulatedContainerStorage.remove(new FQComponentID(newHierarchy).getFQIDString());
+            containerIdStorage.remove(new FQComponentID(newHierarchy).getFQIDString());
             hierarchy = newHierarchy;
         }
 
@@ -217,7 +216,7 @@ public class AllocationLookupSyncer
     private void doAddAllocationContext(AllocationContext ctx) {
         if (ctx.getAssemblyContext_AllocationContext() != null) {
             addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList(),
-                    resourceContainerAccess.getSimulatedEntity(ctx.getResourceContainer_AllocationContext()));    
+                    resourceContainerReferenceFactory.createCached(ctx.getResourceContainer_AllocationContext()));    
         } 
     }
 

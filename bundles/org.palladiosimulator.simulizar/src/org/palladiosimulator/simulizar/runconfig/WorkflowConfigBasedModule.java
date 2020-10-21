@@ -2,8 +2,14 @@ package org.palladiosimulator.simulizar.runconfig;
 
 import java.util.Arrays;
 
-import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
-import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitch;
+import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
+import org.palladiosimulator.simulizar.entity.access.SimulatedContainerAssemblyAllocationLookupAdapter;
+import org.palladiosimulator.simulizar.entity.access.SimulatedLinkingResourceAccess;
+import org.palladiosimulator.simulizar.entity.access.SimulatedResourceContainerAccess;
 import org.palladiosimulator.simulizar.interpreter.ComposedStructureInnerSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -42,6 +48,7 @@ import com.google.inject.multibindings.Multibinder;
 import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
+import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
@@ -69,6 +76,7 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     protected void configure() {
         configureParameterBindings();
         configureDefaultBindings();
+        configureInterpreterFactories();
         configureNetworkSimulation();
         configureReconfigurationInfrastructure();
         configureInterpreterListeners();
@@ -88,13 +96,21 @@ public class WorkflowConfigBasedModule extends AbstractModule {
 
     protected void configureDefaultBindings() {
         bind(IResourceTableManager.class).to(ResourceTableManager.class).in(Singleton.class);
+        bind(new TypeLiteral<EntityReferenceFactory<ResourceContainer>>() {})
+            .to(SimuLizarEntityReferenceFactories.ResourceContainer.class);
+        bind(new TypeLiteral<EntityReferenceFactory<LinkingResource>>() {})
+            .to(SimuLizarEntityReferenceFactories.LinkingResource.class);
+        bind(new TypeLiteral<ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer>>() {})
+            .to(SimulatedResourceContainerAccess.class);
         bind(PCMPartitionManager.class).in(Singleton.class);
         bind(InterpreterDefaultContext.class)
             .annotatedWith(InterpreterDefaultContext.MainContext.class)
             .to(InterpreterDefaultContext.class)
             .in(Singleton.class);
-        bind(new TypeLiteral<IAssemblyAllocationLookup<AbstractSimulatedResourceContainer>>() {})
+        bind(new TypeLiteral<IAssemblyAllocationLookup<EntityReference<ResourceContainer>>>() {})
             .to(AllocationLookupSyncer.class).asEagerSingleton();
+        bind(new TypeLiteral<IAssemblyAllocationLookup<AbstractSimulatedResourceContainer>>() {})
+            .to(SimulatedContainerAssemblyAllocationLookupAdapter.class);
         bind(UsageEvolverFacade.class).in(Singleton.class);
         bind(EventNotificationHelper.class).in(Singleton.class);
         bind(ComponentInstanceRegistry.class).in(Singleton.class);
@@ -114,29 +130,30 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     
     protected void configureNetworkSimulation() {
         if (configuration.getSimulateLinkingResources()) {
-            bind (new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
+            bind(new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
                 .to(MiddlewareCompletionAwareDemandCalculator.class);
         } else if (configuration.getSimulateThroughputOfLinkingResources()) {
-            bind (new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
+            bind(new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
                 .to(StackFrameBytesizeAccumulatingDemandCalculator.class);
         } else {
-            bind (new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
+            bind(new TypeLiteral<ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double>>() {})
                 .to(NoDemandCalculator.class);
         }
         
-        bind(new TypeLiteral<ILinkingResourceRouter<AbstractSimulatedResourceContainer, SimulatedLinkingResource>>() {})
+        bind(new TypeLiteral<ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource>>() {})
+            .to(SimulatedLinkingResourceAccess.class);
+        bind(new TypeLiteral<ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>>>() {})
             .to(ResourceEnvironmentObservingLegacyRouter.class).in(Singleton.class);
-        bind(new TypeLiteral<ITransmissionSimulationStrategy<SimulatedLinkingResource, Double, InterpreterDefaultContext>>() {})
+        bind(new TypeLiteral<ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext>>() {})
             .to(SimulatedLinkingResourceContainerTransmissionStrategy.class).in(Singleton.class);
-        bind(new TypeLiteral<ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext>>(){})
-            .to(new TypeLiteral<DefaultSimuLizarTransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>>>() {})
+        bind(new TypeLiteral<ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext>>(){})
+            .to(new TypeLiteral<DefaultSimuLizarTransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>>>() {})
             .in(Singleton.class);
     }
     
     protected void configureInterpreterFactories() {
         install(new FactoryModuleBuilder()
-                .implement(new TypeLiteral<CompositionSwitch<SimulatedStackframe<Object>>>() {}, ComposedStructureInnerSwitch.class)
-                .build(ComposedStructureInnerSwitchFactory.class));
+            .build(ComposedStructureInnerSwitchFactory.class));
     }
     
     protected void configureProbeFrameworkListener() {
@@ -150,11 +167,6 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     
     
     @Provides
-    protected ISimulatedModelEntityAccess<Identifier, AbstractSimulatedResourceContainer> provideSimulatedResourceContainerAccess(SimuComModel model) {
-        return model.getResourceRegistry()::getResourceContainer;
-    }
-    
-    @Provides
     @Singleton
     protected SimuComModel provideSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
         return SimuComModelFactory.createSimuComModel(configuration, resourceTableManager);
@@ -163,5 +175,10 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     @Provides
     protected ISimulationControl provideSimulationControl(final SimuComModel model) {
         return model.getSimulationControl();
+    }
+    
+    @Provides
+    protected ResourceRegistry provideResourceRegistry(final SimuComModel model) {
+        return model.getResourceRegistry();
     }
 }
