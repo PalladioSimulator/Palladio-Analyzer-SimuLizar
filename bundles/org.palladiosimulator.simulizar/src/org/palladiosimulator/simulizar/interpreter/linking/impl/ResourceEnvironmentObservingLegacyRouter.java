@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -76,18 +77,23 @@ public class ResourceEnvironmentObservingLegacyRouter
      * directly to the same linking resource.
      */
     @Override
-    public Iterable<SimulatedLinkingResource> findRoute(AbstractSimulatedResourceContainer transmissionSource,
+    public Optional<Iterable<SimulatedLinkingResource>> findRoute(AbstractSimulatedResourceContainer transmissionSource,
             AbstractSimulatedResourceContainer transmissionTarget) {
+        if (transmissionSource.getResourceContainerID()
+            .equals(transmissionTarget.getResourceContainerID())) {
+            return Optional.of(Collections.emptyList());
+        }
         for (var link : linkingResources) {
             var containers = linkContainerAllocation.getOrDefault(link, Collections.emptySet());
             if (containers.contains(transmissionSource.getResourceContainerID())
                     && containers.contains(transmissionTarget.getResourceContainerID())) {
-                var resource = resourceContainerAccess.getSimulatedEntity(link).getAllActiveResources()
-                        .get(linkContainerResourceType.get(link));
-                return Collections.singleton((SimulatedLinkingResource) resource);
+                var resource = resourceContainerAccess.getSimulatedEntity(link)
+                    .getAllActiveResources()
+                    .get(linkContainerResourceType.get(link));
+                return Optional.of(Collections.singleton((SimulatedLinkingResource) resource));
             }
         }
-        return Collections.emptyList();
+        return Optional.empty();
     }
 
     protected void handleNotification(Notification msg) {

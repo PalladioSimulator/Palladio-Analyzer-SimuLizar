@@ -8,8 +8,6 @@ import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpre
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadDemandCalculator;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionSimulationStrategy;
 
-import com.google.common.collect.Iterables;
-
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 
 public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
@@ -28,17 +26,17 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
         this.transmissionSimulation = transmissionSimulation;
     }
 
-
     @Override
     public void interpretTransmission(NodeType source, NodeType target, PayloadType payload,
             InterpreterDefaultContext context) {
         var demand = calculator.calculatePayloadDemand(payload);
         var links = router.findRoute(source, target);
-        if (Iterables.isEmpty(links)) {
+        if (links.isEmpty()) {
             throw new RuntimeException(
                     "Could not determine route between nodes. This should be turned into a simulation feature.");
         } else {
-            links.forEach(link -> transmissionSimulation.simulateTransmission(link, demand, context));
+            links.get()
+                .forEach(link -> transmissionSimulation.simulateTransmission(link, demand, context));
         }
     }
 
