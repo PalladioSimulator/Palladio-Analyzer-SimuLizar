@@ -4,6 +4,6 @@ import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
 
 public interface ComposedStructureInnerSwitchFactory {
-	ComposedStructureInnerSwitch createComposedStructureInnerSwitch(final InterpreterDefaultContext context,
-			final Signature operationSignature, final RequiredRole requiredRole);
+    ComposedStructureInnerSwitch createComposedStructureInnerSwitch(final InterpreterDefaultContext context,
+            final Signature operationSignature, final RequiredRole requiredRole);
 }

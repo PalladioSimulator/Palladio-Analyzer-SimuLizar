@@ -70,11 +70,10 @@ public class WorkflowConfigBasedModule extends AbstractModule {
         configureParameterBindings();
         configureDefaultBindings();
         configureNetworkSimulation();
-    	configureReconfigurationInfrastructure(); 
-    	configureInterpreterListeners();
-    	configureProbeFrameworkListener();
+        configureReconfigurationInfrastructure();
+        configureInterpreterListeners();
+        configureProbeFrameworkListener();
     }
-    
 
     protected void configureReconfigurationInfrastructure() {
         bind(ReconfiguratorFactory.class).to(NumberOfResourceContainerTrackingReconfiguratorFactory.class);

@@ -97,13 +97,13 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 
 			this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-			final var runtimeState = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration,
-					this.blackboard, new SimulationCancelationDelegate(monitor::isCanceled)) {
-				protected void configureProbeFrameworkListener() {
-					bind(AbstractProbeFrameworkListener.class).to(ProbeFrameworkListenerForElasticity.class)
-							.in(Singleton.class);
-				};
-			}).getInstance(SimuLizarRuntimeState.class);
+            final var runtimeState = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration,
+                    this.blackboard, new SimulationCancelationDelegate(monitor::isCanceled)) {
+                protected void configureProbeFrameworkListener() {
+                    bind(AbstractProbeFrameworkListener.class).to(ProbeFrameworkListenerForElasticity.class)
+                        .in(Singleton.class);
+                };
+            }).getInstance(SimuLizarRuntimeState.class);
 			runtimeState.initialize();
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -147,7 +147,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	
 	private class ProbeFrameworkListenerForElasticity extends AbstractProbeFrameworkListener {
 
-		@Inject
+        @Inject
 		public ProbeFrameworkListenerForElasticity(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 				Reconfigurator reconfigurator) {
 			super(pcmPartitionManager, simuComModel, reconfigurator);

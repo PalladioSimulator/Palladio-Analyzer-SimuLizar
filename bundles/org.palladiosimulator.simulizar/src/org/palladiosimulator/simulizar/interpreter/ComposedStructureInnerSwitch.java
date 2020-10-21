@@ -55,22 +55,22 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
      * @param modelInterpreter
      *            the corresponding pcm model interpreter holding this switch..
      */
-	@Inject
-	public ComposedStructureInnerSwitch(
-			@Assisted final InterpreterDefaultContext context, 
-			@Assisted final Signature operationSignature,
-			@Assisted final RequiredRole requiredRole,
-			ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
-			IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> resourceContainerLookup,
-			ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
-			IResourceTableManager resourceTableManager) {
+    @Inject
+    public ComposedStructureInnerSwitch(
+            @Assisted final InterpreterDefaultContext context,
+            @Assisted final Signature operationSignature,
+            @Assisted final RequiredRole requiredRole,
+            ITransmissionInterpreter<AbstractSimulatedResourceContainer, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
+            IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> resourceContainerLookup,
+            ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
+            IResourceTableManager resourceTableManager) {
         super();
         this.context = context;
         this.signature = operationSignature;
         this.requiredRole = requiredRole;
         this.transmissionInterpreter = transmissionInterpreter;
         this.resourceContainerLookup = resourceContainerLookup;
-		this.composedStructureSwitchFactory = composedStructureSwitchFactory;
+        this.composedStructureSwitchFactory = composedStructureSwitchFactory;
         this.resourceTableManager = resourceTableManager;
     }
 
