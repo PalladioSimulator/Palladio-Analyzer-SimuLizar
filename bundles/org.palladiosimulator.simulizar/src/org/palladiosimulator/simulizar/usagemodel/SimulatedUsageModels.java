@@ -3,6 +3,9 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
@@ -13,10 +16,13 @@ import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.IClosedWorkloadUserFactory;
@@ -28,15 +34,21 @@ import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
 public class SimulatedUsageModels {
 
     private static final Logger LOGGER = Logger.getLogger(SimulatedUsageModels.class);
-    private final InterpreterDefaultContext rootContext;
     private final Map<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload> closedWorkloads = new HashMap<ClosedWorkload, de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload>();
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
 
     private final IResourceTableManager resourceTableManager;
+    private final Provider<InterpreterDefaultContext> rootContextProvider;
+    private final PCMPartitionManager partitionManager;
+    private final SimuComModel simucomModel;
     
-    public SimulatedUsageModels(final InterpreterDefaultContext rootContext, IResourceTableManager resourceTableManager) {
+    @Inject
+    public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
+            PCMPartitionManager partitionManager, SimuComModel simucomModel, IResourceTableManager resourceTableManager) {
         super();
-        this.rootContext = rootContext;
+        this.rootContextProvider = rootContextProvider;
+        this.partitionManager = partitionManager;
+        this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
     }
 
@@ -46,7 +58,7 @@ public class SimulatedUsageModels {
      * @return a list of workload drivers
      */
     public IWorkloadDriver[] createWorkloadDrivers() {
-        final EList<UsageScenario> usageScenarios = this.rootContext.getPCMPartitionManager().getGlobalPCMModel()
+        final EList<UsageScenario> usageScenarios = partitionManager.getGlobalPCMModel()
                 .getUsageModel().getUsageScenario_UsageModel();
         final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
         for (int i = 0; i < usageScenarios.size(); i++) {
@@ -82,7 +94,7 @@ public class SimulatedUsageModels {
         }
         final ClosedWorkload closedWorkload = (ClosedWorkload) workload;
 
-        final IClosedWorkloadUserFactory userFactory = new ClosedWorkloadUserFactory(this.rootContext.getModel(),
+        final IClosedWorkloadUserFactory userFactory = new ClosedWorkloadUserFactory(simucomModel,
                 closedWorkload.getThinkTime_ClosedWorkload().getSpecification(), usageScenario, resourceTableManager) {
 
             @Override
@@ -102,7 +114,7 @@ public class SimulatedUsageModels {
         }
         final OpenWorkload openWorkload = (OpenWorkload) workload;
 
-        final IUserFactory userFactory = new OpenWorkloadUserFactory(this.rootContext.getModel(), usageScenario, resourceTableManager) {
+        final IUserFactory userFactory = new OpenWorkloadUserFactory(simucomModel, usageScenario, resourceTableManager) {
 
             @Override
             public IScenarioRunner createScenarioRunner() {
@@ -111,7 +123,7 @@ public class SimulatedUsageModels {
         };
 
         // create workload driver by using given factory
-        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(this.rootContext.getModel(), userFactory,
+        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
     }
 
@@ -121,7 +133,7 @@ public class SimulatedUsageModels {
             @Override
             public void scenarioRunner(final SimuComSimProcess thread) {
                 final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
-                        SimulatedUsageModels.this.rootContext, thread);
+                        rootContextProvider.get(), thread);
                 final UsageModel usageModel = newContext.getPCMPartitionManager().getLocalPCMModel().getUsageModel();
                 
                 // If the UsageScenario is not contained in the UsageModel (e.g. it has

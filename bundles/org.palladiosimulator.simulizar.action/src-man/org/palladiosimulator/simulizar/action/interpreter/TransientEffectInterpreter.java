@@ -59,7 +59,7 @@ import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -85,7 +85,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 	private static final ExecutionContext DEFAULT_EXECUTION_CONTEXT = ContextFactory.eINSTANCE.createExecutionContext();
 
-	private final AbstractSimuLizarRuntimeState state;
+	private final SimuLizarRuntimeState state;
 	private final ReconfigurationProcess associatedReconfigurationProcess;
 	private final RoleSet roleSet;
 	private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
@@ -116,7 +116,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	 *            interpreted asynchronously in a dedicated
 	 *            {@link SimuComSimProcess}.
 	 */
-	TransientEffectInterpreter(AbstractSimuLizarRuntimeState state, RoleSet set,
+	TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
 			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
 			AdaptationBehaviorRepository repository, boolean executeAsync,
 			Optional<ExecutionContext> executionContext

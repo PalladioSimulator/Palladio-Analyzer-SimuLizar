@@ -30,7 +30,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
@@ -68,7 +68,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      * {@inheritDoc}
      */
     @Override
-    public void initialize(final AbstractSimuLizarRuntimeState runtimeState) {
+    public void initialize(final SimuLizarRuntimeState runtimeState) {
         super.initialize(runtimeState);
 
         PCMPartitionManager manager = runtimeState.getPCMPartitionManager();
@@ -279,7 +279,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification());
         var activeResources = linkContainer.getAllActiveResources();
         if (activeResources.isEmpty()) {
-            linkContainer.addActiveResource(resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification(),
+            linkContainer.addActiveResourceWithoutCalculators(
+                    resourceSpec.getLinkingResource_CommunicationLinkResourceSpecification(),
                     linkContainer.getResourceContainerID());
         } else {
             var resource = Optional

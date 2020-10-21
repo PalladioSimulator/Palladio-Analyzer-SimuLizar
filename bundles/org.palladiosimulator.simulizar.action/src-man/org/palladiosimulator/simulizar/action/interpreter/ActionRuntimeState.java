@@ -14,10 +14,10 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public class ActionRuntimeState implements IRuntimeStateAccessor {
-    private static AbstractSimuLizarRuntimeState state;
+    private static SimuLizarRuntimeState state;
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE
         .createControllerCallInputVariableUsageCollection();
@@ -51,7 +51,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      *             In case the given instance is {@code null}.
      */
     @Override
-    public void setRuntimeStateModel(AbstractSimuLizarRuntimeState passedState) {
+    public void setRuntimeStateModel(SimuLizarRuntimeState passedState) {
         ActionRuntimeState.state = Objects.requireNonNull(passedState);
     }
 
@@ -64,7 +64,7 @@ public class ActionRuntimeState implements IRuntimeStateAccessor {
      */
     public static class TransientEffectInterpreterBuilder {
 
-        private final AbstractSimuLizarRuntimeState state = ActionRuntimeState.state;
+        private final SimuLizarRuntimeState state = ActionRuntimeState.state;
         private final RoleSet roleSet;
         private final AdaptationBehaviorRepository repository;
 

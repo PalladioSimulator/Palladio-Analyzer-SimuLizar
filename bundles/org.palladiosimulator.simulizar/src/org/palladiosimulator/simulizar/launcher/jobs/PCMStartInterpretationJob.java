@@ -8,9 +8,13 @@ import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runconfig.WorkflowConfigBasedModule;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+
+import com.google.inject.Guice;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
@@ -64,14 +68,12 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-        // FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences.
-        // After we find a way to copy models so that their links do not point to intermediary, but
-        // to the models directly.
-        IResourceTableManager resourceTableManager = new ResourceTableManager();
-        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration, this.blackboard,
-                new SimulationCancelationDelegate(monitor::isCanceled), resourceTableManager);
-
-        this.initializeRuntimeStateAccessors(runtimeState);
+        var injector = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration, this.blackboard,
+                new SimulationCancelationDelegate(monitor::isCanceled)));
+        var runtimeState = injector.getInstance(SimuLizarRuntimeState.class);
+        
+        runtimeState.initialize();
+        initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();

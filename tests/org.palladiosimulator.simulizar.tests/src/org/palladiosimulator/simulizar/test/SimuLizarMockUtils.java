@@ -16,7 +16,7 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
@@ -44,7 +44,7 @@ public class SimuLizarMockUtils {
     public static Map<Class<?>, Object> setUpMockRuntimeStateForModelObserving(PCMResourceSetPartition pcmInstance,
             boolean initializeRegistry) {
         var partitionManagerMock = Mockito.mock(PCMPartitionManager.class);
-        var runtimeStateMock = Mockito.mock(AbstractSimuLizarRuntimeState.class);
+        var runtimeStateMock = Mockito.mock(SimuLizarRuntimeState.class);
         var simuComModelMock = Mockito.mock(SimuComModel.class);
 
         Mockito.lenient()
@@ -89,7 +89,7 @@ public class SimuLizarMockUtils {
         return Map.of(
                 PCMResourceSetPartition.class, pcmInstance, 
                 PCMPartitionManager.class, partitionManagerMock, 
-                AbstractSimuLizarRuntimeState.class, runtimeStateMock, 
+                SimuLizarRuntimeState.class, runtimeStateMock, 
                 SimuComModel.class, simuComModelMock,
                 ResourceRegistry.class, resourceRegistry);
         //@formatter:on

@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -19,6 +21,7 @@ public class ProbeFrameworkListener extends AbstractProbeFrameworkListener {
 
 	private static final Logger LOGGER = Logger.getLogger(ProbeFrameworkListener.class);
 	
+	@Inject
 	public ProbeFrameworkListener(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 			Reconfigurator reconfigurator) {
 		super(pcmPartitionManager, simuComModel, reconfigurator);

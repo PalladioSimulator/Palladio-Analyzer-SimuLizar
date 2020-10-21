@@ -15,20 +15,22 @@ import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSet
 import org.palladiosimulator.probeframework.probes.Probe;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
-import org.palladiosimulator.simulizar.interpreter.listener.LogDebugListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runconfig.WorkflowConfigBasedModule;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
+import com.google.inject.Guice;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.statistics.StaticBatchAlgorithm;
@@ -95,14 +97,14 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 
 			this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-			// FIXME @Igor: Use ModelAccess instead of
-			// ModelAccessUseOriginalReferences.
-			// After we find a way to copy models so that their links do not
-			// point to intermediary, but
-			// to the models directly.
-			IResourceTableManager resourceTableManager = new ResourceTableManager();
-			final AbstractSimuLizarRuntimeState runtimeState = new SimuLizarRuntimeStateElasticity(this.configuration, this.blackboard,
-					new SimulationCancelationDelegate(monitor::isCanceled), resourceTableManager);
+			final var runtimeState = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration,
+					this.blackboard, new SimulationCancelationDelegate(monitor::isCanceled)) {
+				protected void configureProbeFrameworkListener() {
+					bind(AbstractProbeFrameworkListener.class).to(ProbeFrameworkListenerForElasticity.class)
+							.in(Singleton.class);
+				};
+			}).getInstance(SimuLizarRuntimeState.class);
+			runtimeState.initialize();
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
 			runtimeState.cleanUp();
@@ -110,7 +112,7 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		}
 	}
 
-	private void initializeRuntimeStateAccessors(final AbstractSimuLizarRuntimeState runtimeState) {
+	private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
 		final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
 				SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
 				SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
@@ -143,24 +145,9 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		this.blackboard = blackboard;
 	}
 	
-	private class SimuLizarRuntimeStateElasticity extends AbstractSimuLizarRuntimeState {
-		
-		public SimuLizarRuntimeStateElasticity(SimuLizarWorkflowConfiguration configuration, MDSDBlackboard blackboard
-		        , final SimulationCancelationDelegate cancelationDelegate, IResourceTableManager resourceTableManager) {
-			super(configuration, blackboard, cancelationDelegate, resourceTableManager);
-		}
-
-		@Override
-		protected void initializeInterpreterListeners(Reconfigurator reconfigurator) {
-			LOGGER.debug("Adding Debug and monitoring interpreter listeners");
-	        this.eventHelper.addObserver(new LogDebugListener());
-	        this.eventHelper.addObserver(new ProbeFrameworkListenerForElasticity(this.getPCMPartitionManager(),  this.getModel(), reconfigurator));
-		}
-
-	}
-	
 	private class ProbeFrameworkListenerForElasticity extends AbstractProbeFrameworkListener {
 
+		@Inject
 		public ProbeFrameworkListenerForElasticity(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 				Reconfigurator reconfigurator) {
 			super(pcmPartitionManager, simuComModel, reconfigurator);

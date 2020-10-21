@@ -1,10 +1,17 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 import java.util.Stack;
+
+import javax.inject.Inject;
+import javax.inject.Qualifier;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.Context;
@@ -21,6 +28,10 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  *
  */
 public class InterpreterDefaultContext extends Context {
+    @Qualifier
+    @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface MainContext {}
 
     /**
     *
@@ -29,7 +40,7 @@ public class InterpreterDefaultContext extends Context {
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
-    private final AbstractSimuLizarRuntimeState runtimeState;
+    private final SimuLizarRuntimeState runtimeState;
     
     private final PCMPartitionManager pcmPartitionManager;
 
@@ -37,7 +48,8 @@ public class InterpreterDefaultContext extends Context {
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel, 
+    @Inject
+    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel, 
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
         super(simulizarModel.getModel());
         this.stack = new SimulatedStack<Object>();
@@ -47,7 +59,7 @@ public class InterpreterDefaultContext extends Context {
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
-    InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
+    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState,
             final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
         super(context.getModel());
         this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
@@ -78,7 +90,7 @@ public class InterpreterDefaultContext extends Context {
         this.setSimProcess(thread);
     }
 
-    public AbstractSimuLizarRuntimeState getRuntimeState() {
+    public SimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
     

@@ -5,15 +5,7 @@ import java.util.Map;
 
 public class ComponentInstanceRegistry {
 
-    private final Map<String, SimulatedComponentInstance> componentInstances;
-
-    /**
-     *
-     */
-    protected ComponentInstanceRegistry() {
-        super();
-        this.componentInstances = new HashMap<String, SimulatedComponentInstance>();
-    }
+    private final Map<String, SimulatedComponentInstance> componentInstances = new HashMap<String, SimulatedComponentInstance>();
 
     public void addComponentInstance(final SimulatedComponentInstance instance) {
         if (instance == null) {

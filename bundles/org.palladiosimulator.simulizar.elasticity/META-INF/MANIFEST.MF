@@ -22,7 +22,9 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.simulizar.reconfigurationrule
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Import-Package: de.uka.ipd.sdq.statistics,
+Import-Package: com.google.inject;version="1.4.0",
+ com.google.inject.binder;version="1.4.0",
+ de.uka.ipd.sdq.statistics,
  de.uka.ipd.sdq.statistics.estimation,
  org.palladiosimulator.commons.eclipseutils,
  org.palladiosimulator.monitorrepository,

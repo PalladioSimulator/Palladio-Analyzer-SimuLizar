@@ -10,6 +10,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -97,6 +99,7 @@ public class PCMPartitionManager {
 	 * @param blackboard The workflow engine's blackboard holding all models.
 	 * @param config     SimuLizar workflow configuration object.
 	 */
+	@Inject
 	public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
 		this.blackboard = blackboard;
 		this.globalPartition = (PCMResourceSetPartition) blackboard

@@ -5,18 +5,18 @@ import java.util.Map;
 
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public class TransientEffectTransformationCacheKeeper implements IModelObserver {
-	protected static Map<AbstractSimuLizarRuntimeState, ModelTransformationCache> CACHE_MAP = new HashMap<>();
-	protected AbstractSimuLizarRuntimeState runtimeState = null;
+	protected static Map<SimuLizarRuntimeState, ModelTransformationCache> CACHE_MAP = new HashMap<>();
+	protected SimuLizarRuntimeState runtimeState = null;
 
-	public static ModelTransformationCache getTransformationCacheForRuntimeState(AbstractSimuLizarRuntimeState state) {
+	public static ModelTransformationCache getTransformationCacheForRuntimeState(SimuLizarRuntimeState state) {
 		return TransientEffectTransformationCacheKeeper.CACHE_MAP.get(state);
 	}
 	
 	@Override
-	public void initialize(AbstractSimuLizarRuntimeState runtimeState) {
+	public void initialize(SimuLizarRuntimeState runtimeState) {
 		this.runtimeState = runtimeState;
 		TransientEffectTransformationCacheKeeper.CACHE_MAP.put(runtimeState, new ModelTransformationCache());
 	}

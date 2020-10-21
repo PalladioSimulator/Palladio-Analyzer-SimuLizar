@@ -11,9 +11,9 @@ import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
-final class SimuComModelFactory {
+public final class SimuComModelFactory {
 
-    static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
+    public static SimuComModel createSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
         final SimuComModel simuComModel = initialiseSimuComModel(configuration, resourceTableManager);
         return simuComModel;
     }

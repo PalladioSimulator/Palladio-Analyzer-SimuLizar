@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecifica
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentFactory;
 import org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.test.SimuLizarTestExtension;
 import org.palladiosimulator.simulizar.test.annotation.Identified;
 import org.palladiosimulator.simulizar.test.annotation.MockSimulation;
@@ -34,7 +34,7 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 class ResourceEnvironmentSyncerTest {
     ResourceEnvironmentSyncer syncerUnderTest;
 
-    private void setUpSyncer(AbstractSimuLizarRuntimeState runtimeState) {
+    private void setUpSyncer(SimuLizarRuntimeState runtimeState) {
         syncerUnderTest = new ResourceEnvironmentSyncer();
         syncerUnderTest.initialize(runtimeState);
     }
@@ -45,7 +45,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testRegisterAdapter(AbstractSimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition) {
+    final void testRegisterAdapter(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition) {
         var adapterCount = partition.getResourceEnvironment()
             .eAdapters()
             .size();
@@ -63,7 +63,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testAddResourceContainer(AbstractSimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testAddResourceContainer(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry) {
         setUpSyncer(runtimeState);
         var container = ResourceenvironmentFactory.eINSTANCE.createResourceContainer();
@@ -81,7 +81,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testAddLinkingResource(AbstractSimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testAddLinkingResource(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry) {
         setUpSyncer(runtimeState);
         var link = ResourceenvironmentFactory.eINSTANCE.createLinkingResource();
@@ -97,7 +97,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation
-    final void testInitialize(AbstractSimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testInitialize(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry, @Named("Container A") ResourceContainer rca,
             @Named("Container B") ResourceContainer rcb, @Named("Link 1") LinkingResource link,
             @Identified("A1") ProcessingResourceSpecification specRca,
@@ -126,7 +126,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testNoUnnecessaryInitialize(AbstractSimuLizarRuntimeState runtimeState,
+    final void testNoUnnecessaryInitialize(SimuLizarRuntimeState runtimeState,
             ResourceRegistry resourceRegistry) {
 
         setUpSyncer(runtimeState);
@@ -142,7 +142,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testSyncProcessingRate(AbstractSimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
+    final void testSyncProcessingRate(SimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
             @Named("Container A") ResourceContainer rca, @Identified("A1") ProcessingResourceSpecification specRca) {
 
         setUpSyncer(runtimeState);
@@ -180,7 +180,7 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testSyncLinkingResource(AbstractSimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
+    final void testSyncLinkingResource(SimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
             @Named("Link 1") LinkingResource link, @Identified("L1") CommunicationLinkResourceSpecification specLink) {
 
         setUpSyncer(runtimeState);

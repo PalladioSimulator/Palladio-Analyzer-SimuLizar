@@ -7,13 +7,13 @@ import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public abstract class AbstractModelObserver<T extends EObject> implements IModelObserver {
 
     protected static final Logger LOGGER = Logger.getLogger(AbstractModelObserver.class);
 
-    protected AbstractSimuLizarRuntimeState runtimeModel;
+    protected SimuLizarRuntimeState runtimeModel;
     protected T model;
 
     private EContentAdapter adapter;
@@ -22,7 +22,7 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
         super();
     }
 
-    public void initialize(final T model, final AbstractSimuLizarRuntimeState runtimeState) {
+    public void initialize(final T model, final SimuLizarRuntimeState runtimeState) {
         if (model != null) {
             initialize(model);
         } else {
