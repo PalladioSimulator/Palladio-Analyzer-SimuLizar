@@ -1,7 +1,8 @@
 package org.palladiosimulator.simulizar.interpreter.linking;
 
-public interface ITransmissionInterpreter<NodeType, TransmissionContext> {
+public interface ITransmissionInterpreter<NodeType, PayloadType, TransmissionContext> {
 
-    void interpretTransmission(NodeType source, NodeType target, TransmissionType type, TransmissionContext context);
-
+    void interpretTransmission(NodeType source, NodeType target, PayloadType payloadProvider,
+            TransmissionContext transmissionContext);
+    
 }
