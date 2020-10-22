@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.runconfig;
 
 import java.util.Arrays;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
@@ -37,6 +38,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
@@ -165,6 +167,13 @@ public class WorkflowConfigBasedModule extends AbstractModule {
      * Bindings through @Provides methods allow to resolve dependencies first
      */
     
+    
+    @Provides
+    @Singleton
+    @Global
+    protected PCMResourceSetPartition provideGlobalPartition(PCMPartitionManager manager) {
+        return manager.getGlobalPCMModel();
+    }
     
     @Provides
     @Singleton

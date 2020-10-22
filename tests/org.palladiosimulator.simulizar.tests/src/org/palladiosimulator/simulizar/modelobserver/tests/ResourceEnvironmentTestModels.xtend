@@ -21,6 +21,7 @@ class ResourceEnvironmentTestModels extends TestModelBase {
                 ]
                 resourceEnvironment => [
                     resourceContainer_ResourceEnvironment += ref.createResourceContainer => [
+                    	id = "CA"
                         entityName = "Container A"
                         activeResourceSpecifications_ResourceContainer += ref.createProcessingResourceSpecification => [
                             id = "A1"
@@ -30,6 +31,7 @@ class ResourceEnvironmentTestModels extends TestModelBase {
                         ]
                     ]
                     resourceContainer_ResourceEnvironment += ref.createResourceContainer => [
+                    	id = "CB"
                         entityName = "Container B"
                         activeResourceSpecifications_ResourceContainer += ref.createProcessingResourceSpecification => [
                             id = "B1"
@@ -39,6 +41,7 @@ class ResourceEnvironmentTestModels extends TestModelBase {
                         ]
                     ]
                     linkingResources__ResourceEnvironment += ref.createLinkingResource => [
+                    	id = "LC1"
                         entityName = "Link 1"
                         communicationLinkResourceSpecifications_LinkingResource = ref.
                             createCommunicationLinkResourceSpecification => [
