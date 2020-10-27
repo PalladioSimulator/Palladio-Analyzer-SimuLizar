@@ -34,9 +34,9 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
     private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class.getName());
 
-    private MDSDBlackboard blackboard;
+    protected MDSDBlackboard blackboard;
 
-    private final SimuLizarWorkflowConfiguration configuration;
+    protected final SimuLizarWorkflowConfiguration configuration;
     
     /**
      * Constructor
@@ -68,8 +68,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-        var injector = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration, this.blackboard,
-                new SimulationCancelationDelegate(monitor::isCanceled)));
+        var injector = Guice.createInjector(createSimulationModule(monitor));
         var runtimeState = injector.getInstance(SimuLizarRuntimeState.class);
         
         runtimeState.initialize();
@@ -78,6 +77,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         runtimeState.runSimulation();
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
+    }
+    
+    protected com.google.inject.Module createSimulationModule(final IProgressMonitor monitor) {
+        return new WorkflowConfigBasedModule(this.configuration, this.blackboard,
+                new SimulationCancelationDelegate(monitor::isCanceled));
     }
 
     private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {

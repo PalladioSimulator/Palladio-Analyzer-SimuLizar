@@ -14,8 +14,12 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  org.palladiosimulator.pcm.resources;bundle-version="4.3.0",
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj;bundle-version="4.3.0",
  org.palladiosimulator.reliability;bundle-version="4.3.0",
- de.uka.ipd.sdq.errorhandling;bundle-version="4.3.0"
+ de.uka.ipd.sdq.errorhandling;bundle-version="4.3.0",
+ tools.mdsd.library.standalone.initialization;bundle-version="0.1.0",
+ de.desmoj;bundle-version="2.3.3",
+ tools.mdsd.junit5utils;bundle-version="0.1.0"
 Import-Package: com.google.common.util.concurrent.internal;version="1.0.1",
+ com.google.inject.util;version="1.4.0",
  net.bytebuddy.dynamic.loading;version="1.6.0",
  org.hamcrest;version="2.2.0",
  org.hamcrest.collection;version="2.2.0",

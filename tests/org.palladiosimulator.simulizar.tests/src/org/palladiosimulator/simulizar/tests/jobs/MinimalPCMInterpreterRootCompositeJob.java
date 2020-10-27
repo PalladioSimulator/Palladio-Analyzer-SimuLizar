@@ -2,11 +2,18 @@ package org.palladiosimulator.simulizar.tests.jobs;
 
 import java.util.Objects;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Module;
+import com.google.inject.util.Modules;
+
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.desmoj.DesmoJSimEngineFactory;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -24,6 +31,17 @@ public final class MinimalPCMInterpreterRootCompositeJob extends SequentialBlack
         // do not look for registered extensions; consequently, those won't be loaded
         this.addJob(new LoadSimuLizarModelsIntoBlackboardJob(
                 Objects.requireNonNull(configuration, "Workflow config must not be null!"), false));
-        this.addJob(new PCMStartInterpretationJob(configuration));
+        this.addJob(new PCMStartInterpretationJob(configuration) {
+            @Override
+            protected Module createSimulationModule(IProgressMonitor monitor) {
+                var superModule = super.createSimulationModule(monitor);
+                return Modules.override(superModule).with(new AbstractModule() {
+                    @Override
+                    protected void configure() {
+                        bind(ISimEngineFactory.class).to(DesmoJSimEngineFactory.class);
+                    }
+                });
+            }
+        });
     }
 }

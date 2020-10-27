@@ -50,12 +50,14 @@ public class ResourceEnvironmentObservingRouterTest {
 
     ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> routerUnderTest;
     EntityReferenceFactory<ResourceContainer> rcRefFactory;
+    EntityReferenceFactory<LinkingResource> linkRefFactory;
 
     private void setUpRouter(PCMResourceSetPartition partition) {
         var injector = Guice.createInjector(new RouterTestModule(partition));
         routerUnderTest = injector.getInstance(Key.get(
                 new TypeLiteral<ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>>>() {}));
         rcRefFactory = injector.getInstance(Key.get(new TypeLiteral<EntityReferenceFactory<ResourceContainer>>() {}));
+        linkRefFactory = injector.getInstance(Key.get(new TypeLiteral<EntityReferenceFactory<LinkingResource>>() {}));
     }
 
     /**
@@ -91,9 +93,6 @@ public class ResourceEnvironmentObservingRouterTest {
         assertEquals("LC1", links.get(0).getId());
     }
     
-    /**
-     * Test, if model observer registers its adapter properly.
-     */
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation
@@ -119,9 +118,49 @@ public class ResourceEnvironmentObservingRouterTest {
         assertEquals("LC1", links.get(0).getId());
     }
     
-    /**
-     * Test, if model observer registers its adapter properly.
-     */
+    @Test
+    @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithThreeContainersAndTwoLinks.class)
+    @MockSimulation
+    final void testNoTransitiveConnection(PCMResourceSetPartition partition) {
+        setUpRouter(partition);
+
+        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        assertTrue(res.isPresent());
+        var links = Lists.newArrayList(res.get());
+        assertEquals(1, links.size());
+        assertEquals("LC1", links.get(0).getId());
+        
+        res = routerUnderTest.findRoute(rcRefFactory.create("CB"), rcRefFactory.create("CC"));
+        assertTrue(res.isPresent());
+        links = Lists.newArrayList(res.get());
+        assertEquals(1, links.size());
+        assertEquals("LC2", links.get(0).getId());
+        
+        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        assertFalse(res.isPresent());
+    }
+    
+    @Test
+    @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithThreeContainersAndTwoLinks.class)
+    @MockSimulation
+    final void testAttachContainerToLinkingResource(PCMResourceSetPartition partition) {
+        setUpRouter(partition);
+        
+        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        assertFalse(res.isPresent());
+        
+        linkRefFactory.create("LC1").getModelElement(partition).getConnectedResourceContainers_LinkingResource()
+            .add(rcRefFactory.create("CC").getModelElement(partition));
+        
+        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        assertTrue(res.isPresent());
+        var links = Lists.newArrayList(res.get());
+        assertEquals(1, links.size());
+        assertEquals("LC1", links.get(0).getId());
+    }
+    
+    
+    
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation

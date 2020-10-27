@@ -20,6 +20,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -56,7 +57,11 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import tools.mdsd.junit5utils.annotations.PluginTestOnly;
+import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
+@ExtendWith(PlatformStandaloneExtension.class)
+@PluginTestOnly
 public class QVToReconfigurationTest {
 
     private final static String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.repository";
@@ -103,7 +108,7 @@ public class QVToReconfigurationTest {
         Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
                 new AllocationResourceFactoryImpl());
         Map<URI, URI> uriMap = URIConverter.URI_MAP;
-        uriMap.put(URI.createURI(" pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
+        uriMap.put(URI.createURI("pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
                 URI.createURI("platform:/plugin/org.palladiosimulator.metricspec.resources/commonMetrics.metricspec"));
 
         repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);

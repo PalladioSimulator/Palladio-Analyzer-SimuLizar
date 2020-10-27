@@ -36,6 +36,7 @@ import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimuComModelFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+import org.palladiosimulator.simulizar.runtimestate.SimulationPreferencesSimEngineFactoryProvider;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
@@ -47,7 +48,6 @@ import com.google.inject.TypeLiteral;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 import com.google.inject.multibindings.Multibinder;
 
-import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
@@ -57,6 +57,7 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -78,6 +79,7 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     protected void configure() {
         configureParameterBindings();
         configureDefaultBindings();
+        configureSimuComBindings();
         configureInterpreterFactories();
         configureNetworkSimulation();
         configureReconfigurationInfrastructure();
@@ -116,7 +118,13 @@ public class WorkflowConfigBasedModule extends AbstractModule {
         bind(UsageEvolverFacade.class).in(Singleton.class);
         bind(EventNotificationHelper.class).in(Singleton.class);
         bind(ComponentInstanceRegistry.class).in(Singleton.class);
+        
         bind(SimuLizarRuntimeState.class).in(Singleton.class);
+    }
+    
+    protected void configureSimuComBindings() {
+        bind(ISimEngineFactory.class).toProvider(SimulationPreferencesSimEngineFactoryProvider.class);
+        bind(SimuComModel.class).toProvider(SimuComModelFactory.class).in(Singleton.class);
     }
     
     protected void configureInterpreterListeners() {
@@ -174,13 +182,7 @@ public class WorkflowConfigBasedModule extends AbstractModule {
     protected PCMResourceSetPartition provideGlobalPartition(PCMPartitionManager manager) {
         return manager.getGlobalPCMModel();
     }
-    
-    @Provides
-    @Singleton
-    protected SimuComModel provideSimuComModel(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
-        return SimuComModelFactory.createSimuComModel(configuration, resourceTableManager);
-    }
-    
+        
     @Provides
     protected ISimulationControl provideSimulationControl(final SimuComModel model) {
         return model.getSimulationControl();

@@ -4,24 +4,20 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.function.Supplier;
 
-import org.eclipse.core.internal.registry.ExtensionRegistry;
-import org.eclipse.core.internal.registry.RegistryProviderFactory;
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.spi.IRegistryProvider;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadDemandCalculator;
 
-import de.uka.ipd.sdq.probfunction.math.IProbabilityFunctionFactory;
 import de.uka.ipd.sdq.probfunction.math.IRandomGenerator;
 import de.uka.ipd.sdq.probfunction.math.impl.ProbabilityFunctionFactoryImpl;
 import de.uka.ipd.sdq.simucomframework.variables.EvaluationProxy;
 import de.uka.ipd.sdq.simucomframework.variables.cache.StoExCache;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
+import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
+@ExtendWith(PlatformStandaloneExtension.class)
 abstract class DemandCalculatorTestBase {
     protected enum TestCases {
         EMPTY(() -> new SimulatedStackframe<>()),
@@ -71,20 +67,10 @@ abstract class DemandCalculatorTestBase {
 
     protected abstract ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double> createCalculatorUnderTest();
 
-    @BeforeEach
-    void init() throws CoreException {
+    @BeforeAll
+    static void initStoExCache() {
+                
         var probFunctionFactory = ProbabilityFunctionFactoryImpl.getInstance();
-        if (RegistryProviderFactory.getDefault() == null) {
-            RegistryProviderFactory.setDefault(new IRegistryProvider() {
-
-                @Override
-                public IExtensionRegistry getRegistry() {
-                    return new ExtensionRegistry(null, "", "");
-                }
-            });
-        }
-        Platform.getExtensionRegistry()
-            .getConfigurationElementsFor("de.uka.ipd.sdq.stoex.analyser.StoExTypeInference");
         probFunctionFactory.setRandomGenerator(new IRandomGenerator() {
 
             @Override
