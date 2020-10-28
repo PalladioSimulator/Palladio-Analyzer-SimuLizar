@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.test.annotation;
+package org.palladiosimulator.simulizar.test.commons.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,11 +8,11 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import org.junit.jupiter.api.extension.ParameterContext;
-import org.palladiosimulator.simulizar.test.SimuLizarTestExtension;
+import org.palladiosimulator.simulizar.test.commons.extension.MockSimulationExtension;
 
 /**
  * This meta annotation allows to extend the set of model entity selecting annotations for
- * {@link SimuLizarTestExtension}. For each annotation it provides the Factory class which is used
+ * {@link MockSimulationExtension}. For each annotation it provides the Factory class which is used
  * to create a filtering predicate based on the JUnit parameter context.
  * 
  * @see Identified

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modelobserver.tests
+package org.palladiosimulator.simulizar.test.commons.models
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition
 import java.util.function.Supplier

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.test;
+package org.palladiosimulator.simulizar.test.commons.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -17,6 +17,7 @@ import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.test.commons.extension.MockSimulationExtension;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
@@ -33,7 +34,7 @@ public class SimuLizarMockUtils {
     /**
      * Creates a mocked RuntimeState providing a global pcm model instance and a resource registry.
      * 
-     * It is suggested not to use this method directly, but use the {@link SimuLizarTestExtension}
+     * It is suggested not to use this method directly, but use the {@link MockSimulationExtension}
      * extension for JUnit 5.
      * 
      * @param resourceEnvironmentProvider

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.test.annotation;
+package org.palladiosimulator.simulizar.test.commons.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

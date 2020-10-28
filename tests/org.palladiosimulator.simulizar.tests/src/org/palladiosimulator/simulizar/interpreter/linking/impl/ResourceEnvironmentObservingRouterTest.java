@@ -15,11 +15,10 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
-import org.palladiosimulator.simulizar.modelobserver.tests.ResourceEnvironmentTestModels;
-import org.palladiosimulator.simulizar.test.BaseTestModule;
-import org.palladiosimulator.simulizar.test.SimuLizarTestExtension;
-import org.palladiosimulator.simulizar.test.annotation.MockSimulation;
-import org.palladiosimulator.simulizar.test.annotation.PCMInstanceFromSupplier;
+import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
+import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
+import org.palladiosimulator.simulizar.test.commons.models.ResourceEnvironmentTestModels;
+import org.palladiosimulator.simulizar.test.commons.util.BaseTestModule;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import com.google.common.collect.Lists;
@@ -28,7 +27,6 @@ import com.google.inject.Key;
 import com.google.inject.TypeLiteral;
 
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SimuLizarTestExtension.class)
 public class ResourceEnvironmentObservingRouterTest {
     protected class RouterTestModule extends BaseTestModule {
         private PCMResourceSetPartition partition;

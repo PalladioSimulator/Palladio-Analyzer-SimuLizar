@@ -37,7 +37,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     protected MDSDBlackboard blackboard;
 
     protected final SimuLizarWorkflowConfiguration configuration;
-    
+
     /**
      * Constructor
      *
@@ -58,19 +58,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         LOGGER.info("Initialise Simulizar runtime state");
 
-        final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(
-                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ID,
-                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE);
-
-        for (final IConfigurator configurator : configurators) {
-            configurator.configure(this.configuration, this.blackboard);
-        }
-
-        this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
-
+        enhanceConfiguration();
+        
         var injector = Guice.createInjector(createSimulationModule(monitor));
         var runtimeState = injector.getInstance(SimuLizarRuntimeState.class);
-        
+
         runtimeState.initialize();
         initializeRuntimeStateAccessors(runtimeState);
 
@@ -78,7 +70,17 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
     }
-    
+
+    protected void enhanceConfiguration() {
+        final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(
+                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ID,
+                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE);
+
+        for (final IConfigurator configurator : configurators) {
+            configurator.configure(this.configuration, this.blackboard);
+        }
+    }
+
     protected com.google.inject.Module createSimulationModule(final IProgressMonitor monitor) {
         return new WorkflowConfigBasedModule(this.configuration, this.blackboard,
                 new SimulationCancelationDelegate(monitor::isCanceled));

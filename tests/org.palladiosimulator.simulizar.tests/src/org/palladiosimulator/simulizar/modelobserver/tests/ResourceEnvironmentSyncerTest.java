@@ -16,11 +16,12 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentFactory;
 import org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.test.SimuLizarTestExtension;
-import org.palladiosimulator.simulizar.test.annotation.Identified;
-import org.palladiosimulator.simulizar.test.annotation.MockSimulation;
-import org.palladiosimulator.simulizar.test.annotation.Named;
-import org.palladiosimulator.simulizar.test.annotation.PCMInstanceFromSupplier;
+import org.palladiosimulator.simulizar.test.commons.annotation.Identified;
+import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
+import org.palladiosimulator.simulizar.test.commons.annotation.Named;
+import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
+import org.palladiosimulator.simulizar.test.commons.models.ResourceEnvironmentTestModels;
+import org.palladiosimulator.simulizar.test.commons.models.TestModelBase;
 
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
@@ -30,7 +31,6 @@ import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 @ExtendWith(MockitoExtension.class)
-@ExtendWith(SimuLizarTestExtension.class)
 class ResourceEnvironmentSyncerTest {
     ResourceEnvironmentSyncer syncerUnderTest;
 

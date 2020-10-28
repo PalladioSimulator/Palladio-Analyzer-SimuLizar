@@ -40,6 +40,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
+ org.palladiosimulator.simulizar.entity,
  org.palladiosimulator.simulizar.exceptions;uses:="de.mdelab.sdm.interpreter.core",
  org.palladiosimulator.simulizar.interpreter,
  org.palladiosimulator.simulizar.interpreter.listener,

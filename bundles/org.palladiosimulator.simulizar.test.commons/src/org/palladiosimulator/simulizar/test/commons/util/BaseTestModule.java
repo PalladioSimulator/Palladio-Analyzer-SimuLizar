@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.test;
+package org.palladiosimulator.simulizar.test.commons.util;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;

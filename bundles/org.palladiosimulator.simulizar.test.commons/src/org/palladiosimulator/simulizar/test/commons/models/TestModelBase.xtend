@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modelobserver.tests
+package org.palladiosimulator.simulizar.test.commons.models
 
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
