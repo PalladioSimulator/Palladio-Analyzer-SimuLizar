@@ -7,6 +7,7 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.Context;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
@@ -22,9 +23,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  */
 public class InterpreterDefaultContext extends Context {
 
-    /**
-    *
-    */
     private static final long serialVersionUID = -5027373777424401211L;
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
@@ -37,9 +35,8 @@ public class InterpreterDefaultContext extends Context {
 
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    public InterpreterDefaultContext(final AbstractSimuLizarRuntimeState simulizarModel, 
-            IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
-        super(simulizarModel.getModel());
+    public InterpreterDefaultContext(AbstractSimuLizarRuntimeState simulizarModel, IResourceTableManager resourceTableManager, IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup) {
+        super(simulizarModel.getModel(), resourceTableManager);
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = simulizarModel;
         this.pcmPartitionManager = this.runtimeState.getPCMPartitionManager();
@@ -47,9 +44,22 @@ public class InterpreterDefaultContext extends Context {
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
-    InterpreterDefaultContext(final Context context, final AbstractSimuLizarRuntimeState runtimeState,
-            final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
-        super(context.getModel());
+    /**
+     * Create interpreter default context from the given default context (model, sim process and
+     * stack are set according to the given default context). The contents of the stack will be
+     * copied.
+     *
+     * @param context
+     *            the default context from which the new default context should be created.
+     * @param thread
+     */
+    public InterpreterDefaultContext(InterpreterDefaultContext context, SimuComSimProcess thread) {
+        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager().getLocalPCMModel());
+        this.setSimProcess(thread);
+    }
+    
+    InterpreterDefaultContext(Context context, AbstractSimuLizarRuntimeState runtimeState, boolean copyStack, PCMResourceSetPartition pcmLocalCopy) {
+        super(context.getModel(), context.getResourceTableManager());
         this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
         this.pcmPartitionManager = runtimeState.getPCMPartitionManager().makeSnapshot();
         this.localPCMModelCopy = pcmLocalCopy;
@@ -62,20 +72,6 @@ public class InterpreterDefaultContext extends Context {
         } else {
             this.stack.pushStackFrame(new SimulatedStackframe<Object>());
         }
-    }
-
-    /**
-     * Create interpreter default context from the given default context (model, sim process and
-     * stack are set according to the given default context). The contents of the stack will be
-     * copied.
-     *
-     * @param context
-     *            the default context from which the new default context should be created.
-     * @param thread
-     */
-    public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager().getLocalPCMModel());
-        this.setSimProcess(thread);
     }
 
     public AbstractSimuLizarRuntimeState getRuntimeState() {
