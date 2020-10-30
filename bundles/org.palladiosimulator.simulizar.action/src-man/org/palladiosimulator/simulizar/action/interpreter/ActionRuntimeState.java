@@ -14,9 +14,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-
-public class ActionRuntimeState implements IRuntimeStateAccessor {
+public class ActionRuntimeState implements IRuntimeStateAccessor {  
     private static SimuLizarRuntimeState state;
 
     private static final ControllerCallInputVariableUsageCollection EMPTY_VARIABLE_USAGE_COLLECTION = ParameterFactory.eINSTANCE

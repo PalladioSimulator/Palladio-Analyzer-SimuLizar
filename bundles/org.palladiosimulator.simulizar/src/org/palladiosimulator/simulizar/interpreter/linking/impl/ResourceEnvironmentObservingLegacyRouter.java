@@ -10,6 +10,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -34,6 +35,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
  * @author Sebastian Krach
  *
  */
+@Singleton
 public class ResourceEnvironmentObservingLegacyRouter
         implements ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> {
 

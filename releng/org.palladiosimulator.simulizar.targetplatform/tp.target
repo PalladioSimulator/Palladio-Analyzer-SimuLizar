@@ -243,17 +243,19 @@
 			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-experimentanalysis/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
-			<unit id="com.google.inject.guice.feature.feature.group" version="tbd"/>
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
+			<unit id="com.google.dagger.feature.feature.group" version="2.29.1"/>
+			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
-			<unit id="com.google.inject.guice.feature.feature.group" version="tbd"/>
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
+			<unit id="com.google.dagger.feature.feature.group" version="2.29.1"/>
+			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
@@ -282,7 +284,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/branches/optionalize_ats/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/nightly/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>

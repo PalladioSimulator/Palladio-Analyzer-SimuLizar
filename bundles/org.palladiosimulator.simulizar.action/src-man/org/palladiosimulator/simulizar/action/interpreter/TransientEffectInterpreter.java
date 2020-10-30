@@ -45,20 +45,19 @@ import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
 import org.palladiosimulator.simulizar.action.core.StateTransformingStep;
 import org.palladiosimulator.simulizar.action.core.util.CoreSwitch;
 import org.palladiosimulator.simulizar.action.instance.RoleSet;
-import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationBehaviorExecutedNotification;
+import org.palladiosimulator.simulizar.action.interpreter.notifications.AdaptationStepExecutedNotification;
 import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
 import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
+import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
@@ -94,6 +93,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	private Optional<ExecutionContext> executionContext;
 	
 	private final IResourceTableManager resourceTableManager;
+	private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
 
 	/**
 	 * Initializes a new instance of the {@link TransientEffectInterpreter}
@@ -116,11 +116,10 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	 *            interpreted asynchronously in a dedicated
 	 *            {@link SimuComSimProcess}.
 	 */
-	TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
-			ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
-			AdaptationBehaviorRepository repository, boolean executeAsync,
-			Optional<ExecutionContext> executionContext
-			, IResourceTableManager resourceTableManager) {
+    TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
+            ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
+            AdaptationBehaviorRepository repository, boolean executeAsync, Optional<ExecutionContext> executionContext,
+            IResourceTableManager resourceTableManager) {
 		this.state = state;
 		this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
 		this.roleSet = set;
@@ -128,6 +127,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
 		this.executionContext = executionContext;
 		this.resourceTableManager = resourceTableManager;
+		this.usageScenarioSwitchFactory = state.getUsageScenarioSwitchFactory();
 	}
 
 	private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
@@ -391,7 +391,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
-				new UsageScenarioSwitch<Object>(newContext, resourceTableManager).doSwitch(usageScenario);
+				usageScenarioSwitchFactory.create(newContext).doSwitch(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running

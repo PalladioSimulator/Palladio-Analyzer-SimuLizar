@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.linking.impl;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadDemandCalculator;
 
@@ -11,6 +13,10 @@ public class StackFrameBytesizeAccumulatingDemandCalculator
 
     private static final Logger LOGGER = Logger.getLogger(StackFrameBytesizeAccumulatingDemandCalculator.class);
 
+    @Inject
+    public StackFrameBytesizeAccumulatingDemandCalculator() {
+    }
+    
     @Override
     public Double calculatePayloadDemand(SimulatedStackframe<Object> payload) {
         double demand = 0.0;

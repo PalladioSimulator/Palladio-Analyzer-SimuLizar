@@ -6,11 +6,14 @@ import java.util.List;
 import java.util.Set;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
@@ -20,9 +23,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
-import com.google.inject.Injector;
-import com.google.inject.Key;
-
+import dagger.Lazy;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
@@ -42,6 +43,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal, Sebastian Krach
  *
  */
+@Singleton
 public class SimuLizarRuntimeState {
 
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
@@ -55,8 +57,9 @@ public class SimuLizarRuntimeState {
     private List<IModelObserver> modelObservers;
     private final SimulationCancelationDelegate cancelationDelegate;
     protected final UsageEvolverFacade usageEvolverFacade;
-    private final Injector injector;
     private final Set<IInterpreterListener> interpreterListeners;
+    private final Lazy<InterpreterDefaultContext> mainContext;
+    private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
 
     /**
      * @param configuration
@@ -71,18 +74,20 @@ public class SimuLizarRuntimeState {
             final Reconfigurator reconfigurator,
             final UsageEvolverFacade usageEvolverFacade, 
             final Set<IInterpreterListener> interpreterListeners, 
-            final Injector injector, 
-            final SimulationCancelationDelegate cancelationDelegate) {
+            final SimulationCancelationDelegate cancelationDelegate,
+            final @MainContext Lazy<InterpreterDefaultContext> mainContext,
+            final UsageScenarioSwitchFactory usageScenarioSwitchFactory) {
         this.pcmPartitionManager = pcmPartitionManager;
         this.interpreterListeners = interpreterListeners;
         this.cancelationDelegate = cancelationDelegate;
         this.model = simuComModel;
         this.eventHelper = eventHelper;
         this.componentInstanceRegistry = componentInstanceRegistry;
-        this.injector = injector;
 		this.usageModels = simulatedUsageModels;
         this.reconfigurator = reconfigurator;
         this.usageEvolverFacade = usageEvolverFacade;
+        this.mainContext = mainContext;
+        this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
     }
     
     public void initialize() {
@@ -130,8 +135,7 @@ public class SimuLizarRuntimeState {
      */
     @Deprecated
     public InterpreterDefaultContext getMainContext() {
-        return injector
-            .getInstance(Key.get(InterpreterDefaultContext.class, InterpreterDefaultContext.MainContext.class));
+        return mainContext.get();
     }
 
     /**
@@ -228,13 +232,10 @@ public class SimuLizarRuntimeState {
     public UsageEvolverFacade getUsageEvolverFacade() {
         return this.usageEvolverFacade;
     }
-       
-    /**
-     * @return the simulation-scope injector
-     * @deprecated Use dependency injection to retrieve dependencies directly.
-     */
+
     @Deprecated
-    public Injector getInjector() {
-    	return injector;
+    public UsageScenarioSwitchFactory getUsageScenarioSwitchFactory() {
+        return this.usageScenarioSwitchFactory;
     }
+    
 }

@@ -16,6 +16,7 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.inject.Qualifier;
+import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
@@ -47,6 +48,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author scheerer
  *
  */
+@Singleton
 public class PCMPartitionManager {
     /**
      * The Global annotation should be used to reference to the global PCMResourceSet partition for
