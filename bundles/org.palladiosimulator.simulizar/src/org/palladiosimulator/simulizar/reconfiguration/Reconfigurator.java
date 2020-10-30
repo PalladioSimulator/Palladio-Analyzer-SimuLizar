@@ -92,8 +92,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 */
 	public Reconfigurator(final SimuComModel model, final RuntimeMeasurementModel rmModel,
 			final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators,
-			SimuLizarWorkflowConfiguration configuration
-			, IResourceTableManager resourceTableManager) {
+			SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
 		super();
 		this.model = model;
 		this.runtimeMeasurementModel = rmModel;

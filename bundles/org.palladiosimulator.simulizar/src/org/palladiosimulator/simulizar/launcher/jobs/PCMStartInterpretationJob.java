@@ -5,19 +5,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.DaggerSimuLizarComponent;
+import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runconfig.WorkflowConfigBasedModule;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
-import com.google.inject.Guice;
-
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -60,8 +55,7 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         enhanceConfiguration();
         
-        var injector = Guice.createInjector(createSimulationModule(monitor));
-        var runtimeState = injector.getInstance(SimuLizarRuntimeState.class);
+        var runtimeState = buildRuntimeState(monitor); 
 
         runtimeState.initialize();
         initializeRuntimeStateAccessors(runtimeState);
@@ -69,6 +63,19 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         runtimeState.runSimulation();
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
+    }
+    
+    protected SimuLizarRuntimeState buildRuntimeState(SimuLizarCoreComponent.Builder runtimeStateBuilder, final IProgressMonitor monitor) {
+        return runtimeStateBuilder
+                .cancelationDelegate(monitor::isCanceled)
+                .configuration(configuration)
+                .blackboard(blackboard)
+                .build()
+                .runtimeState();
+    }
+    
+    protected SimuLizarRuntimeState buildRuntimeState(final IProgressMonitor monitor) {
+        return buildRuntimeState(DaggerSimuLizarComponent.builder(), monitor);
     }
 
     protected void enhanceConfiguration() {
@@ -81,10 +88,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         }
     }
 
-    protected com.google.inject.Module createSimulationModule(final IProgressMonitor monitor) {
-        return new WorkflowConfigBasedModule(this.configuration, this.blackboard,
-                new SimulationCancelationDelegate(monitor::isCanceled));
-    }
 
     private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
         final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(

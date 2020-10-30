@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import javax.inject.Singleton;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -15,47 +17,58 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
+import org.palladiosimulator.simulizar.modules.EntityReferenceFactoryFoundationModule;
 import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
 import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
 import org.palladiosimulator.simulizar.test.commons.models.ResourceEnvironmentTestModels;
-import org.palladiosimulator.simulizar.test.commons.util.BaseTestModule;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import com.google.common.collect.Lists;
-import com.google.inject.Guice;
-import com.google.inject.Key;
-import com.google.inject.TypeLiteral;
+
+import dagger.Binds;
+import dagger.BindsInstance;
+import dagger.Component;
+import dagger.Module;
 
 @ExtendWith(MockitoExtension.class)
 public class ResourceEnvironmentObservingRouterTest {
-    protected class RouterTestModule extends BaseTestModule {
-        private PCMResourceSetPartition partition;
+    
+    @Component (modules = { EntityReferenceFactoryFoundationModule.class, RouterUnderTestModule.class })
+    @Singleton
+    protected static interface RouterTestComponent {
 
-        public RouterTestModule(PCMResourceSetPartition partition) {
-            this.partition = partition;
-        }
-
-        @Override
-        protected void configure() {
-            super.configure();
-
-            bind(PCMResourceSetPartition.class).annotatedWith(Global.class)
-                .toInstance(partition);
-            bind(new TypeLiteral<ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>>>() {
-            }).to(ResourceEnvironmentObservingLegacyRouter.class);
-        }
+        ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> routerUnderTest();
+        
+        EntityReferenceFactory<ResourceContainer> rcRefFactory();
+        
+        EntityReferenceFactory<LinkingResource> linkRefFactory();
+        
+        @Component.Builder
+        interface Builder {
+            @BindsInstance
+            Builder pcmResourceSetPartition(@Global PCMResourceSetPartition partition);
+            
+            RouterTestComponent build();
+        }  
     }
-
-    ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> routerUnderTest;
-    EntityReferenceFactory<ResourceContainer> rcRefFactory;
-    EntityReferenceFactory<LinkingResource> linkRefFactory;
-
+    
+    @Module
+    protected static interface RouterUnderTestModule {
+        @Binds
+        @Singleton
+        ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> bindRouterUnderTest(
+                ResourceEnvironmentObservingLegacyRouter impl);
+    }
+  
+    RouterTestComponent tc;
+    
+    
     private void setUpRouter(PCMResourceSetPartition partition) {
-        var injector = Guice.createInjector(new RouterTestModule(partition));
-        routerUnderTest = injector.getInstance(Key.get(
-                new TypeLiteral<ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>>>() {}));
-        rcRefFactory = injector.getInstance(Key.get(new TypeLiteral<EntityReferenceFactory<ResourceContainer>>() {}));
-        linkRefFactory = injector.getInstance(Key.get(new TypeLiteral<EntityReferenceFactory<LinkingResource>>() {}));
+        tc = DaggerResourceEnvironmentObservingRouterTest_RouterTestComponent.builder()
+                .pcmResourceSetPartition(partition)
+                .build();
+        
+        tc.routerUnderTest();
     }
 
     /**
@@ -84,7 +97,7 @@ public class ResourceEnvironmentObservingRouterTest {
     final void testSimpleLink(PCMResourceSetPartition partition) {
         setUpRouter(partition);
 
-        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        var res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CB"));
         assertTrue(res.isPresent());
         var links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
@@ -97,7 +110,7 @@ public class ResourceEnvironmentObservingRouterTest {
     final void testLinkRemovalAndAdd(PCMResourceSetPartition partition) {
         setUpRouter(partition);
 
-        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        var res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CB"));
         assertTrue(res.isPresent());
         var links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
@@ -105,11 +118,11 @@ public class ResourceEnvironmentObservingRouterTest {
         
         var link = partition.getResourceEnvironment().getLinkingResources__ResourceEnvironment().get(0);
         partition.getResourceEnvironment().getLinkingResources__ResourceEnvironment().clear();
-        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CB"));
         assertFalse(res.isPresent());
         
         partition.getResourceEnvironment().getLinkingResources__ResourceEnvironment().add(link);
-        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CB"));
         assertTrue(res.isPresent());
         links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
@@ -122,19 +135,19 @@ public class ResourceEnvironmentObservingRouterTest {
     final void testNoTransitiveConnection(PCMResourceSetPartition partition) {
         setUpRouter(partition);
 
-        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CB"));
+        var res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CB"));
         assertTrue(res.isPresent());
         var links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
         assertEquals("LC1", links.get(0).getId());
         
-        res = routerUnderTest.findRoute(rcRefFactory.create("CB"), rcRefFactory.create("CC"));
+        res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CB"), tc.rcRefFactory().create("CC"));
         assertTrue(res.isPresent());
         links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
         assertEquals("LC2", links.get(0).getId());
         
-        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CC"));
         assertFalse(res.isPresent());
     }
     
@@ -144,13 +157,13 @@ public class ResourceEnvironmentObservingRouterTest {
     final void testAttachContainerToLinkingResource(PCMResourceSetPartition partition) {
         setUpRouter(partition);
         
-        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        var res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CC"));
         assertFalse(res.isPresent());
         
-        linkRefFactory.create("LC1").getModelElement(partition).getConnectedResourceContainers_LinkingResource()
-            .add(rcRefFactory.create("CC").getModelElement(partition));
+        tc.linkRefFactory().create("LC1").getModelElement(partition).getConnectedResourceContainers_LinkingResource()
+            .add(tc.rcRefFactory().create("CC").getModelElement(partition));
         
-        res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CC"));
+        res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CC"));
         assertTrue(res.isPresent());
         var links = Lists.newArrayList(res.get());
         assertEquals(1, links.size());
@@ -165,7 +178,7 @@ public class ResourceEnvironmentObservingRouterTest {
     final void testSameHost(PCMResourceSetPartition partition) {
         setUpRouter(partition);
 
-        var res = routerUnderTest.findRoute(rcRefFactory.create("CA"), rcRefFactory.create("CA"));
+        var res = tc.routerUnderTest().findRoute(tc.rcRefFactory().create("CA"), tc.rcRefFactory().create("CA"));
         assertTrue(res.isPresent());
         var links = Lists.newArrayList(res.get());
         assertEquals(0, links.size());

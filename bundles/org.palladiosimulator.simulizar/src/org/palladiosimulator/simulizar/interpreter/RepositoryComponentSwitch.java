@@ -33,6 +33,9 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
+
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -41,6 +44,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author snowball
  *
  */
+@AutoFactory
 public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
@@ -53,18 +57,23 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
     private final IResourceTableManager resourceTableManager;
+    private final RDSeffSwitchFactory rdseffSwitchFactory;
+    private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
     /**
      *
      */
     public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole, IResourceTableManager resourceTableManager) {
+            final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager, @Provided RDSeffSwitchFactory rdseffSwitchFactory,
+            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
         this.resourceTableManager = resourceTableManager;
+        this.rdseffSwitchFactory = rdseffSwitchFactory;
+        this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
     }
 
     @Override
@@ -132,9 +141,10 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         }
         final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(
                 this.providedRole);
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
-                connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
-                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), resourceTableManager);
+        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(
+                this.context, connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(),
+                this.signature,
+                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -219,7 +229,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
             // add default RDSeffSwitch
-            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, resourceTableManager));
+            interpreter.addSwitch(rdseffSwitchFactory.create(this.context, basicComponentInstance, interpreter));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }

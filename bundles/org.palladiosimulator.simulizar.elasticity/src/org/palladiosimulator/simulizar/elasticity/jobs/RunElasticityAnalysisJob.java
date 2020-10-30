@@ -4,6 +4,8 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
@@ -13,6 +15,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.simulizar.elasticity.DaggerSimuLizarElasticityComponent;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
@@ -21,15 +24,9 @@ import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlac
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.probes.TakeReconfigurationDurationProbe;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runconfig.WorkflowConfigBasedModule;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-
-import com.google.inject.Guice;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
@@ -97,13 +94,13 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 
 			this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
 
-            final var runtimeState = Guice.createInjector(new WorkflowConfigBasedModule(this.configuration,
-                    this.blackboard, new SimulationCancelationDelegate(monitor::isCanceled)) {
-                protected void configureProbeFrameworkListener() {
-                    bind(AbstractProbeFrameworkListener.class).to(ProbeFrameworkListenerForElasticity.class)
-                        .in(Singleton.class);
-                };
-            }).getInstance(SimuLizarRuntimeState.class);
+			final var runtimeState = DaggerSimuLizarElasticityComponent.builder()
+			    .configuration(configuration)
+			    .blackboard(blackboard)
+			    .cancelationDelegate(monitor::isCanceled)
+			    .build()
+			    .runtimeState();
+			    
 			runtimeState.initialize();
 			this.initializeRuntimeStateAccessors(runtimeState);
 			runtimeState.runSimulation();
@@ -145,9 +142,9 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 		this.blackboard = blackboard;
 	}
 	
-	private class ProbeFrameworkListenerForElasticity extends AbstractProbeFrameworkListener {
+	public static class ProbeFrameworkListenerForElasticity extends AbstractProbeFrameworkListener {
 
-        @Inject
+	    @Inject
 		public ProbeFrameworkListenerForElasticity(PCMPartitionManager pcmPartitionManager, SimuComModel simuComModel,
 				Reconfigurator reconfigurator) {
 			super(pcmPartitionManager, simuComModel, reconfigurator);

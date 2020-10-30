@@ -17,8 +17,8 @@ import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
@@ -41,15 +41,17 @@ public class SimulatedUsageModels {
     private final Provider<InterpreterDefaultContext> rootContextProvider;
     private final PCMPartitionManager partitionManager;
     private final SimuComModel simucomModel;
+    private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
     
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
-            PCMPartitionManager partitionManager, SimuComModel simucomModel, IResourceTableManager resourceTableManager) {
+            PCMPartitionManager partitionManager, SimuComModel simucomModel, IResourceTableManager resourceTableManager, UsageScenarioSwitchFactory usageScenarioSwitchFactory) {
         super();
         this.rootContextProvider = rootContextProvider;
         this.partitionManager = partitionManager;
         this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
+        this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
     }
 
     /**
@@ -142,7 +144,7 @@ public class SimulatedUsageModels {
                 usageModel.getUsageScenario_UsageModel().stream()
                 	.filter(sc -> sc.getId().equals(scenario.getId()))
                 	.findAny().ifPresent(sc -> {
-                	    new UsageScenarioSwitch<Object>(newContext, resourceTableManager).doSwitch(sc);
+                	    usageScenarioSwitchFactory.create(newContext).doSwitch(sc);
                 	});
             }
         };
