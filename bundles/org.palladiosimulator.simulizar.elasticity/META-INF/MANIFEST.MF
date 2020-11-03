@@ -23,12 +23,12 @@ Require-Bundle: org.eclipse.ui,
  de.uka.ipd.sdq.simucomframework.variables
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Import-Package: dagger;version="2.29.1",
- dagger.internal;version="2.29.1",
- dagger.multibindings;version="2.29.1",
+Import-Package: dagger;version="2.29.1";resolution:=optional,
+ dagger.internal;version="2.29.1";resolution:=optional,
+ dagger.multibindings;version="2.29.1";resolution:=optional,
  de.uka.ipd.sdq.statistics,
  de.uka.ipd.sdq.statistics.estimation,
- javax.inject;version="1.0.0",
+ javax.inject;version="1.0.0";resolution:=optional,
  org.palladiosimulator.commons.eclipseutils,
  org.palladiosimulator.monitorrepository,
  org.palladiosimulator.probeframework.calculator,
