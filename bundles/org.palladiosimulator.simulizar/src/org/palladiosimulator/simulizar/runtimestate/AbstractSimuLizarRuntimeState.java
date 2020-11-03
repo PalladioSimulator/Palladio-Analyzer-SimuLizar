@@ -102,7 +102,7 @@ public abstract class AbstractSimuLizarRuntimeState {
                 this.model.getResourceRegistry()::getResourceContainer;
 
         var allocationLookup = new AllocationLookupSyncer(resourceContainerAccess);
-        this.mainContext = new InterpreterDefaultContext(this, allocationLookup);
+        this.mainContext = new InterpreterDefaultContext(this, resourceTableManager, allocationLookup);
         
         this.usageModels = new SimulatedUsageModels(this.mainContext, resourceTableManager);
         this.initializeWorkloadDrivers();
