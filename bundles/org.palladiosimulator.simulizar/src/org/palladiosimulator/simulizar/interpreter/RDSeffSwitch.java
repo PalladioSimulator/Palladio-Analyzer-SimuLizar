@@ -86,14 +86,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     private final RDSeffSwitchFactory rdseffSwitchFactory;
 
     /**
-     * Constructor.
-     *
-     * @param context
-     *            Default context for the pcm interpreter.
-     * @param basicComponentInstance
-     *            Simulated component
+     * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance)
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context,
+    RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, @Provided IResourceTableManager resourceTableManager, @Provided ComposedStructureInnerSwitchFactory composedSwitchFactory,
             @Provided RDSeffSwitchFactory rdseffSwitchFactory) {
         super();
@@ -109,16 +104,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
 
     /**
-     * Constructor.
-     *
-     * @param context
-     *				Default context for the pcm interpreter.
-     * @param basicComponentInstance
-     *				Simulated component
-     * @param parentSwitch
-     *				The composed switch which is containing this switch
+     * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
      */
-    public RDSeffSwitch(final InterpreterDefaultContext context,
+    RDSeffSwitch(final InterpreterDefaultContext context,
             final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
             @Provided IResourceTableManager resourceTableManager,
             @Provided ComposedStructureInnerSwitchFactory composedSwitchFactory,

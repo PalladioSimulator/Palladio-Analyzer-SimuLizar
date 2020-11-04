@@ -20,7 +20,6 @@ import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpre
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -45,7 +44,6 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     private final InterpreterDefaultContext context;
     private final Signature signature;
     private final RequiredRole requiredRole;
-    private final IResourceTableManager resourceTableManager;
 
     private final ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter;
     private final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup;
@@ -54,20 +52,16 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
     /**
-     * Constructor
-     *
-     * @param modelInterpreter
-     *            the corresponding pcm model interpreter holding this switch..
+     * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature, RequiredRole)
      */
     @Inject
-    public ComposedStructureInnerSwitch(
+    ComposedStructureInnerSwitch(
             final InterpreterDefaultContext context,
             final Signature operationSignature,
             final RequiredRole requiredRole,
             @Provided ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
             @Provided IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
             @Provided ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
-            @Provided IResourceTableManager resourceTableManager,
             @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         super();
         this.context = context;
@@ -76,7 +70,6 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
         this.transmissionInterpreter = transmissionInterpreter;
         this.resourceContainerLookup = resourceContainerLookup;
         this.composedStructureSwitchFactory = composedStructureSwitchFactory;
-        this.resourceTableManager = resourceTableManager;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
     }
 
@@ -92,7 +85,7 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
 
         transmissionInterpreter.interpretTransmission(source, target, context.getStack().currentStackFrame(), context);
         var result = repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
-        transmissionInterpreter.interpretTransmission(source, target, result, context);
+        transmissionInterpreter.interpretTransmission(target, source, result, context);
         return result;
     }
 

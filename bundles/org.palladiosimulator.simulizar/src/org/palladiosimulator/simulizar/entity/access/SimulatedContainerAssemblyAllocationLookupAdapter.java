@@ -9,6 +9,12 @@ import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContai
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 
+/**
+ * This adapter provides a lookup of the simulated resource container to which a given assembly is allocated to.
+ * 
+ * @see IAssemblyAllocationLookup
+ * 
+ */
 public class SimulatedContainerAssemblyAllocationLookupAdapter
         implements IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> {
 
@@ -23,6 +29,10 @@ public class SimulatedContainerAssemblyAllocationLookupAdapter
         this.simulatedEntityAccess = simulatedEntityAccess;
     }
 
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbstractSimulatedResourceContainer getAllocatedEntity(String assemblyContextId) {
         var rcRef = allocationLookup.getAllocatedEntity(assemblyContextId);

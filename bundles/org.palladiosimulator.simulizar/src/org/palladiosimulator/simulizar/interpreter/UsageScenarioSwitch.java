@@ -43,13 +43,10 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
     
     /**
-     * Constructor
-     *
-     * @param modelInterpreter
-     *            the corresponding pcm model interpreter holding this switch..
+     * @see UsageScenarioSwitchFactory#create(InterpreterDefaultContext)
      */
     @Inject
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
+    UsageScenarioSwitch(final InterpreterDefaultContext context, @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         this.context = context;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
         this.transitionDeterminer = new TransitionDeterminer(context);

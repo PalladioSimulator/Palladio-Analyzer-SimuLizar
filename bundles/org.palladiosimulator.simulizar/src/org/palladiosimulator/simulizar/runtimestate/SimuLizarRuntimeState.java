@@ -165,7 +165,10 @@ public class SimuLizarRuntimeState {
      * notifying listeners of changes.
      *
      * @return The reconfigurator.
+     * 
+     * @deprecated Use dependency injection to retrieve the Reconfigurator instance.
      */
+    @Deprecated
     public Reconfigurator getReconfigurator() {
         return this.reconfigurator;
     }
@@ -233,6 +236,10 @@ public class SimuLizarRuntimeState {
         return this.usageEvolverFacade;
     }
 
+    /**
+     * @return the Usage Scenario Switch Factory
+     * @deprecated Use dependency injection to retrieve the UsageScenarioSwitchFactory instance.
+     */
     @Deprecated
     public UsageScenarioSwitchFactory getUsageScenarioSwitchFactory() {
         return this.usageScenarioSwitchFactory;

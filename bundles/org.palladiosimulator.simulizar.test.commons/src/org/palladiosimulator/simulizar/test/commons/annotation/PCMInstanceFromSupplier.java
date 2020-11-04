@@ -6,7 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.test.commons.extension.LoadModelFromSupplierExtension;
+import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestParameterProvider;
 
 /**
  * Uses the provided Supplier to retrieve the pcm instance for running the test. It needs to provide
@@ -16,7 +19,8 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
  * 
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.METHOD, ElementType.ANNOTATION_TYPE})
+@Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE })
+@ExtendWith({ LoadModelFromSupplierExtension.class, SimuLizarTestParameterProvider.class })
 public @interface PCMInstanceFromSupplier {
     Class<? extends Supplier<PCMResourceSetPartition>> value();
 }

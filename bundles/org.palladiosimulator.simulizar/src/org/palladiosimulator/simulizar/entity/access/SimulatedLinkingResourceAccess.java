@@ -9,6 +9,13 @@ import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResourceContainer;
 
+/**
+ * This class supplies access to SimulatedLinkingResources based on the respective entity reference using a given ResourceRegistry.
+ *
+ * @see ISimulatedModelEntityAccess
+ * @see ResourceRegistry
+ * 
+ */
 public class SimulatedLinkingResourceAccess
         implements ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource> {
     
@@ -18,7 +25,10 @@ public class SimulatedLinkingResourceAccess
     public SimulatedLinkingResourceAccess(ResourceRegistry resourceRegistry) {
         this.resourceRegistry = resourceRegistry;
     }
-
+    
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SimulatedLinkingResource getSimulatedEntity(String modelEntityIdentifier) {
         var container = resourceRegistry.getResourceContainer(modelEntityIdentifier);

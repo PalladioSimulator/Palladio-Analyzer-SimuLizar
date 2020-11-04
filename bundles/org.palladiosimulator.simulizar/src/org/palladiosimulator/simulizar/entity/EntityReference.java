@@ -8,6 +8,28 @@ import org.palladiosimulator.pcm.core.entity.Entity;
 
 import com.google.common.collect.Iterators;
 
+/**
+ * The entity reference class serves as a type safe model element pointer. As the blackboard
+ * partitions reflect the current state of the global model at the point in time when the
+ * interpretation started, there can be several model element instances pointing to the same entity.
+ * 
+ * Storing model elements directly can lead to memory leaks, as older resource sets which are not
+ * referenced by interpreters anymore are not properly cleaned up. The entity model reference allows
+ * to access the model element directly given a {@link PCMResourceSetPartition}. It encapsulates the
+ * required lookup logic. Once a lookup is done, the model element is cached, but may be cleaned up
+ * by the garbage collector.
+ * 
+ * Using an entity reference has the advantage of giving some semantics and type-safety to a
+ * {@link Entity#getId()}. It can be stored, and checked for equality using
+ * {@link Object#equals(Object)} and {@link Object#hashCode()}.
+ * 
+ * NOTE: In order to provide a more efficient model element lookup mechanism a specialized
+ * implementation can be provided. The default behavior is to check the ID of every single Entity in
+ * the provided partition until a suitable match is found.
+ *
+ * @param <EntityType>
+ *            the type of the referenced model entity.
+ */
 public class EntityReference<EntityType extends Entity> {
     public static abstract class AbstractEntityReferenceFactory<EntityType extends Entity>
             implements EntityReferenceFactory<EntityType> {
@@ -15,7 +37,8 @@ public class EntityReference<EntityType extends Entity> {
         @Override
         public EntityReference<EntityType> createCached(EntityType entity) {
             var ref = create(entity.getId());
-            ref.elementCache.put(entity.eResource().getResourceSet(), entity);
+            ref.elementCache.put(entity.eResource()
+                .getResourceSet(), entity);
             return ref;
         }
     }
@@ -30,6 +53,9 @@ public class EntityReference<EntityType extends Entity> {
         elementCache = new WeakHashMap<>();
     }
 
+    /**
+     * Gets the model element of the referenced entity from the given resource set partition.
+     */
     public EntityType getModelElement(PCMResourceSetPartition partition) {
         return elementCache.computeIfAbsent(partition.getResourceSet(), rs -> this.retrieveModelElement(partition));
     }

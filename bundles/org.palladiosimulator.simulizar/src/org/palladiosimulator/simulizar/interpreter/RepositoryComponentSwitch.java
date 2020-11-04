@@ -61,9 +61,9 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
     /**
-     *
+     * @see RepositoryComponentSwitchFactory#create(InterpreterDefaultContext, AssemblyContext, Signature, ProvidedRole)
      */
-    public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+    RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
             final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager, @Provided RDSeffSwitchFactory rdseffSwitchFactory,
             @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         super();

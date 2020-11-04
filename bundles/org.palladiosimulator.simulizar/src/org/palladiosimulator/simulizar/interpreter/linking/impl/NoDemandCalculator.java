@@ -6,6 +6,9 @@ import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadD
 
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
+/**
+ * This calculator realizes the "No throughput simulation" logic.
+ */
 public class NoDemandCalculator
         implements ITransmissionPayloadDemandCalculator<SimulatedStackframe<Object>, Double> {
     

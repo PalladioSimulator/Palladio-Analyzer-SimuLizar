@@ -29,10 +29,19 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  *
  */
 public class InterpreterDefaultContext extends Context {
+    /**
+     * This annotation is used as a {@link Qualifier} to identify an
+     * {@link InterpreterDefaultContext} as the root context of a simulation.
+     * 
+     * The annotation should be used to signal to the employed dependency injection framework that a
+     * parameter of type {@link InterpreterDefaultContext} of an {@link Inject}-annotated
+     * constructor should be supplied with the simulation root context.
+     */
     @Qualifier
     @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
-    public @interface MainContext {}
+    public @interface MainContext {
+    }
 
     /**
     *
@@ -42,7 +51,7 @@ public class InterpreterDefaultContext extends Context {
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
 
     private final SimuLizarRuntimeState runtimeState;
-    
+
     private final PCMPartitionManager pcmPartitionManager;
 
     private PCMResourceSetPartition localPCMModelCopy;
@@ -50,7 +59,7 @@ public class InterpreterDefaultContext extends Context {
     private IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
     @Inject
-    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel, 
+    public InterpreterDefaultContext(final SimuLizarRuntimeState simulizarModel,
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup,
             IResourceTableManager resourceTableManager) {
         super(simulizarModel.getModel(), resourceTableManager);
@@ -61,18 +70,22 @@ public class InterpreterDefaultContext extends Context {
         this.assemblyAllocationLookup = assemblyAllocationLookup;
     }
 
-    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState,
-            final boolean copyStack, final PCMResourceSetPartition pcmLocalCopy) {
+    InterpreterDefaultContext(final Context context, final SimuLizarRuntimeState runtimeState, final boolean copyStack,
+            final PCMResourceSetPartition pcmLocalCopy) {
         super(context.getModel(), context.getResourceTableManager());
         this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
-        this.pcmPartitionManager = runtimeState.getPCMPartitionManager().makeSnapshot();
+        this.pcmPartitionManager = runtimeState.getPCMPartitionManager()
+            .makeSnapshot();
         this.localPCMModelCopy = pcmLocalCopy;
         this.setEvaluationMode(context.getEvaluationMode());
         this.setSimProcess(context.getThread());
         this.stack = new SimulatedStack<Object>();
         this.runtimeState = runtimeState;
-        if (copyStack && context.getStack().size() > 0) {
-            this.stack.pushStackFrame(context.getStack().currentStackFrame().copyFrame());
+        if (copyStack && context.getStack()
+            .size() > 0) {
+            this.stack.pushStackFrame(context.getStack()
+                .currentStackFrame()
+                .copyFrame());
         } else {
             this.stack.pushStackFrame(new SimulatedStackframe<Object>());
         }
@@ -88,14 +101,15 @@ public class InterpreterDefaultContext extends Context {
      * @param thread
      */
     public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager().getLocalPCMModel());
+        this(context, context.getRuntimeState(), true, context.getPCMPartitionManager()
+            .getLocalPCMModel());
         this.setSimProcess(thread);
     }
 
     public SimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
-    
+
     public Stack<AssemblyContext> getAssemblyContextStack() {
         return this.assemblyContextStack;
     }
@@ -103,7 +117,7 @@ public class InterpreterDefaultContext extends Context {
     public PCMPartitionManager getPCMPartitionManager() {
         return this.pcmPartitionManager;
     }
-    
+
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
         return this.localPCMModelCopy;
     }

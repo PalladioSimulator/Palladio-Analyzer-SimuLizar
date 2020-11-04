@@ -8,7 +8,7 @@ import dagger.Module;
 import dagger.multibindings.IntoSet;
 
 @Module
-public interface ElasticityModule {
+public interface ElasticityQUALModule {
     
     @Binds @IntoSet IInterpreterListener bindElasticityListener(ProbeFrameworkListenerForElasticity impl);
 

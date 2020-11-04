@@ -6,7 +6,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.palladiosimulator.simulizar.test.commons.extension.LoadModelFromSupplierExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.MockSimulationExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestParameterProvider;
 
@@ -17,7 +16,7 @@ import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestParam
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-@ExtendWith({ LoadModelFromSupplierExtension.class, MockSimulationExtension.class, SimuLizarTestParameterProvider.class })
+@ExtendWith({ MockSimulationExtension.class, SimuLizarTestParameterProvider.class })
 public @interface MockSimulation {
     boolean initializeRegistry() default false;
 }

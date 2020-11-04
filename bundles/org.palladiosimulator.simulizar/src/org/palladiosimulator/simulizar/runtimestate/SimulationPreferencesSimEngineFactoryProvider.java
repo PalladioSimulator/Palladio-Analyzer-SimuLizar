@@ -6,12 +6,16 @@ import javax.inject.Provider;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
+/**
+ * This implementation provides a simulation engine factory based on a setting in the Preferences
+ * Dialog within Eclipse IDE.
+ */
 public class SimulationPreferencesSimEngineFactoryProvider implements Provider<ISimEngineFactory> {
 
     @Inject
     public SimulationPreferencesSimEngineFactoryProvider() {
     }
-    
+
     @Override
     public ISimEngineFactory get() {
         // load factory for the preferred simulation engine

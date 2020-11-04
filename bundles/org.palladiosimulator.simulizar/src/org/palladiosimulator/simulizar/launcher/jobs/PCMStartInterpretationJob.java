@@ -74,6 +74,11 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
                 .runtimeState();
     }
     
+    /**
+     * This method is supposed to be overridden by tests, to supply a {@link SimuLizarCoreComponent.Builder} which provides the required refinements. 
+     * @param monitor the progress monitor supplied by the jobs execute method.
+     * @return the constructed {@link SimuLizarRuntimeState}
+     */
     protected SimuLizarRuntimeState buildRuntimeState(final IProgressMonitor monitor) {
         return buildRuntimeState(DaggerSimuLizarComponent.builder(), monitor);
     }

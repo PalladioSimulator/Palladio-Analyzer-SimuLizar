@@ -12,6 +12,12 @@ import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionSimulati
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 
+/**
+ * This class implements the simulation strategy using {@link SimulatedLinkingResource}s of the
+ * SimuComFramework. Using a give {@link ISimulatedModelEntityAccess} it determines the relevant
+ * {@link SimulatedLinkingResource} and issues the calculated demand to it.
+ *
+ */
 public class SimulatedLinkingResourceContainerTransmissionStrategy implements
         ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext> {
 

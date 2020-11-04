@@ -5,9 +5,14 @@ import java.util.Set;
 import javax.inject.Singleton;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
 import org.palladiosimulator.simulizar.entity.access.SimulatedResourceContainerAccess;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.reconfiguration.NumberOfResourceContainerTrackingReconfiguratorFactory;
@@ -25,7 +30,7 @@ import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContai
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 
-@Module (includes = { EntityReferenceFactoryFoundationModule.class })
+@Module
 public interface SimuLizarCoreModule {
 
     @Binds
@@ -55,5 +60,21 @@ public interface SimuLizarCoreModule {
     
     @Binds
     ReconfiguratorFactory bindReconfiguratorFactory(NumberOfResourceContainerTrackingReconfiguratorFactory impl);
+    
+
+    @Binds
+    @Reusable
+    EntityReferenceFactory<ResourceContainer> bindResourceContainerReferenceFactory(
+            SimuLizarEntityReferenceFactories.ResourceContainer factoryImpl);
+
+    @Binds
+    @Reusable
+    EntityReferenceFactory<LinkingResource> bindLinkContainerReferenceFactory(
+            SimuLizarEntityReferenceFactories.LinkingResource factoryImpl);
+    
+    
+    @Provides @Singleton @MainContext static InterpreterDefaultContext provideMainContext(InterpreterDefaultContext impl) {
+        return impl;
+    }
     
 }
