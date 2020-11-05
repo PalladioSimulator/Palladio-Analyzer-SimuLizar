@@ -10,6 +10,9 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
@@ -30,8 +33,11 @@ import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedE
  * @author snowball, Sebastian Krach
  *
  */
+@Singleton
 public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> {
-    
+    @Inject
+    public EventNotificationHelper() {
+    }
     
     private static BinaryOperator<Consumer<ModelElementPassedEvent<? extends EObject>>> BEGIN_END_SWITCH = (beginFunc, endFunc) -> 
     	((ModelElementPassedEvent<? extends EObject> event) -> {

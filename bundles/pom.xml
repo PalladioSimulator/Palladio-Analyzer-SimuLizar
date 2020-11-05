@@ -46,6 +46,7 @@
 		<module>org.palladiosimulator.simulizar.runtimemeasurement</module>
 		<module>org.palladiosimulator.simulizar.runtimemeasurement.edit</module>
 		<module>org.palladiosimulator.simulizar.slidingwindow</module>
+		<module>org.palladiosimulator.simulizar.test.commons</module>
 		<module>org.palladiosimulator.simulizar.ui</module>
 		<module>org.palladiosimulator.simulizar.ui.perspective</module>
 		<module>org.palladiosimulator.simulizar.ui.wizards</module>

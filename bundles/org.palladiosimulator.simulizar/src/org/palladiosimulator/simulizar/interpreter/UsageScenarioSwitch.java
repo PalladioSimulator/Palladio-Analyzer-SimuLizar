@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -18,7 +20,9 @@ import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEv
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
+
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 /**
@@ -29,25 +33,23 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
  * @param <T>
  *            return type of switch methods.
  */
-
+@AutoFactory
 public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
 
     protected static final Logger LOGGER = Logger.getLogger(UsageScenarioSwitch.class.getName());
 
     private final InterpreterDefaultContext context;
     private final TransitionDeterminer transitionDeterminer;
-    private final IResourceTableManager resourceTableManager;
+    private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
     
     /**
-     * Constructor
-     *
-     * @param modelInterpreter
-     *            the corresponding pcm model interpreter holding this switch..
+     * @see UsageScenarioSwitchFactory#create(InterpreterDefaultContext)
      */
-    public UsageScenarioSwitch(final InterpreterDefaultContext context, IResourceTableManager resourceTableManager) {
+    @Inject
+    UsageScenarioSwitch(final InterpreterDefaultContext context, @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         this.context = context;
+        this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
         this.transitionDeterminer = new TransitionDeterminer(context);
-        this.resourceTableManager = resourceTableManager;
     }
 
     /**
@@ -91,10 +93,10 @@ public class UsageScenarioSwitch<T> extends UsagemodelSwitch<T> {
      */
     @Override
     public T caseEntryLevelSystemCall(final EntryLevelSystemCall entryLevelSystemCall) {
-        final RepositoryComponentSwitch providedDelegationSwitch = new RepositoryComponentSwitch(this.context,
+        final RepositoryComponentSwitch providedDelegationSwitch = repositoryComponentSwitchFactory.create(this.context,
                 RepositoryComponentSwitch.SYSTEM_ASSEMBLY_CONTEXT,
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
-                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), resourceTableManager);
+                entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
         this.context.getRuntimeState().getEventNotificationHelper()
                 .firePassedEvent(new ModelElementPassedEvent<EntryLevelSystemCall>(entryLevelSystemCall,

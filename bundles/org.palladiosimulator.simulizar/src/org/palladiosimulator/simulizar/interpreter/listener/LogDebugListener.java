@@ -3,6 +3,8 @@
  */
 package org.palladiosimulator.simulizar.interpreter.listener;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.pcm.repository.OperationSignature;
@@ -21,6 +23,7 @@ public class LogDebugListener extends AbstractInterpreterListener {
     /**
      *
      */
+    @Inject
     public LogDebugListener() {
         super();
     }

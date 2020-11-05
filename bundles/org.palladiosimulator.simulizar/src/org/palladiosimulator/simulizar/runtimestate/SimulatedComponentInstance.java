@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.runtimestate;
 public abstract class SimulatedComponentInstance {
 
     private final String myID;
-    private AbstractSimuLizarRuntimeState runtimeState;
+    private SimuLizarRuntimeState runtimeState;
 
-    protected SimulatedComponentInstance(final AbstractSimuLizarRuntimeState runtimeState, final String fqID) {
+    protected SimulatedComponentInstance(final SimuLizarRuntimeState runtimeState, final String fqID) {
         super();
         this.runtimeState = runtimeState;
         this.myID = fqID;
@@ -18,7 +18,7 @@ public abstract class SimulatedComponentInstance {
     /**
      * @return the runtimeState
      */
-    protected final AbstractSimuLizarRuntimeState getRuntimeState() {
+    protected final SimuLizarRuntimeState getRuntimeState() {
         return this.runtimeState;
     }
     

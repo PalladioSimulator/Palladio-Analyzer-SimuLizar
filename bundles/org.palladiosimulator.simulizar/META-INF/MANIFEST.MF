@@ -34,12 +34,18 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.palladiosimulator.mdsdprofiles.api,
  org.modelversioning.emfprofile;bundle-version="1.1.0",
  org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="4.3.0",
- org.eclipse.emf.common
+ org.eclipse.emf.common,
+ de.uka.ipd.sdq.pcm.stochasticexpressions;bundle-version="4.3.0",
+ de.uka.ipd.sdq.featureconfig;bundle-version="4.3.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
+ org.palladiosimulator.simulizar.entity,
+ org.palladiosimulator.simulizar.entity.access,
  org.palladiosimulator.simulizar.exceptions;uses:="de.mdelab.sdm.interpreter.core",
  org.palladiosimulator.simulizar.interpreter,
+ org.palladiosimulator.simulizar.interpreter.linking,
+ org.palladiosimulator.simulizar.interpreter.linking.impl,
  org.palladiosimulator.simulizar.interpreter.listener,
  org.palladiosimulator.simulizar.launcher;
   uses:="org.eclipse.debug.core,
@@ -68,6 +74,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.edp2.models.measuringpoint,
    org.palladiosimulator.monitorrepository",
  org.palladiosimulator.simulizar.modelobserver,
+ org.palladiosimulator.simulizar.modules,
  org.palladiosimulator.simulizar.reconfiguration;
   uses:="org.eclipse.emf.ecore,
    org.palladiosimulator.simulizar.access,
@@ -102,3 +109,9 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.metricspec,
    org.palladiosimulator.monitorrepository"
 Bundle-Vendor: palladiosimulator.org
+Import-Package: com.google.auto.factory;version="1.0.0";resolution:=optional,
+ com.google.common.collect;version="27.1.0",
+ dagger;version="2.29.1";resolution:=optional,
+ dagger.internal;version="2.29.1";resolution:=optional,
+ dagger.multibindings;version="2.29.1";resolution:=optional,
+ javax.inject;version="1.0.0";resolution:=optional

@@ -11,25 +11,16 @@ import java.util.Map;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.emf.common.util.URI;
-import org.eclipse.emf.ecore.EPackage.Registry;
-import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.io.TempDir;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
-import org.palladiosimulator.pcm.allocation.util.AllocationResourceFactoryImpl;
-import org.palladiosimulator.pcm.repository.RepositoryPackage;
-import org.palladiosimulator.pcm.repository.util.RepositoryResourceFactoryImpl;
-import org.palladiosimulator.pcm.resourceenvironment.util.ResourceenvironmentResourceFactoryImpl;
-import org.palladiosimulator.pcm.resourcetype.ResourcetypePackage;
-import org.palladiosimulator.pcm.resourcetype.util.ResourcetypeResourceFactoryImpl;
-import org.palladiosimulator.pcm.system.util.SystemResourceFactoryImpl;
-import org.palladiosimulator.pcm.usagemodel.util.UsagemodelResourceFactoryImpl;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.tests.jobs.MinimalPCMInterpreterRootCompositeJob;
@@ -37,7 +28,12 @@ import org.palladiosimulator.simulizar.tests.jobs.MinimalPCMInterpreterRootCompo
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import tools.mdsd.junit5utils.annotations.InitializationTaskProvider;
+import tools.mdsd.junit5utils.annotations.PluginTestOnly;
+import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
+import tools.mdsd.library.standalone.initialization.InitializationTask;
 
+@ExtendWith(PlatformStandaloneExtension.class)
 public class SimulizarRunConfigTest {
 
     private static final String MODEL_FOLDER = "/org.palladiosimulator.simulizar.tests/testmodel";
@@ -49,13 +45,6 @@ public class SimulizarRunConfigTest {
     private static final String EMPTY_USAGE_EVOLUTION_MODEL_PATH = MODEL_FOLDER
             + "/usageevolution/empty.usageevolution";
     private static final String SLO_REPO_PATH = MODEL_FOLDER + "/slo/server.slo";
-
-    private static final String REPOSITORY_EXTENSION = "repository";
-    private static final String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
-    private static final String SYSTEM_EXTENSION = "system";
-    private static final String ALLOCATION_EXTENSION = "allocation";
-    private static final String RESOURCETYPE_EXTENSION = "resourcetype";
-    private static final String USAGEMODEL_EXTENSION = "usagemodel";
 
     private static final String PALLADIO_RESOURCETYPES_PATHMAP = "pathmap://PCM_MODELS/Palladio.resourcetype";
     private static final String PALLADIO_RESOURCETYPES_PATHMAP_TARGET = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/Palladio.resourcetype";
@@ -74,28 +63,18 @@ public class SimulizarRunConfigTest {
     private static URI usageEvolutionModelUri;
     private static URI emptyUsageEvolutionModelUri;
     private static URI sloRepoUri;
-
+    
+    @InitializationTaskProvider
+    public static InitializationTask initOnStandalone() {
+        return () -> {
+            final Map<URI, URI> uriMap = URIConverter.URI_MAP;
+            uriMap.put(URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP), URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP_TARGET));
+            uriMap.put(URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP), URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP_TARGET));
+        };
+    }
+    
     @BeforeAll
-    public static void setUpBeforeClass() {
-        Registry.INSTANCE.put(RepositoryPackage.eNS_URI, RepositoryPackage.eINSTANCE);
-        Registry.INSTANCE.put(ResourcetypePackage.eNS_URI, ResourcetypePackage.eINSTANCE);
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
-                new RepositoryResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-                new ResourceenvironmentResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
-                new SystemResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
-                new AllocationResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCETYPE_EXTENSION,
-                new ResourcetypeResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(USAGEMODEL_EXTENSION,
-                new UsagemodelResourceFactoryImpl());
-
-        final Map<URI, URI> uriMap = URIConverter.URI_MAP;
-        uriMap.put(URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP), URI.createURI(PALLADIO_RESOURCETYPES_PATHMAP_TARGET));
-        uriMap.put(URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP), URI.createURI(PRIMITIVE_TYPES_REPO_PATHMAP_TARGET));
-
+    public static void setUpBeforeClass() {       
         allocationUri = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
         usageModelUri = URI.createPlatformPluginURI(USAGE_MODEL_PATH, true);
         monitorRepoUri = URI.createPlatformPluginURI(MONITOR_REPO_PATH, true);
@@ -148,6 +127,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
+    @PluginTestOnly
     public void testSuccessfulSimulationRunWithReconfigurationFolder() {
         // run the simulation with just the reconfigurations defined
         // the simulation should finish properly
@@ -188,6 +168,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
+    @PluginTestOnly
     public void testSuccessfulSimulationRunWithMonitorRepositoryAndReconfigurationFolder() {
         this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toString());
         this.simulizarConfiguration.setMonitorRepositoryFile(monitorRepoUri.toString());

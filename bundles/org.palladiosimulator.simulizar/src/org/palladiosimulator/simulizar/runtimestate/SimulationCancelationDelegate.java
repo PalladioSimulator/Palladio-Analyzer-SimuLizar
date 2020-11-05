@@ -1,24 +1,14 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import java.util.Objects;
-import java.util.function.Supplier;
-
 /**
- * This class delegates the decision if the simulation should be cancelled to a 
- * provided function. Its purpose is to decouple the SimulizarRuntimeState from
- * eclipse specific process logic.
+ * This class delegates the decision if the simulation should be cancelled to a provided function.
+ * Its purpose is to decouple the SimulizarRuntimeState from eclipse specific process logic.
  * 
  * @author Sebastian Krach
  */
-public class SimulationCancelationDelegate  {
-    private Supplier<Boolean> canceledProvider;
+@FunctionalInterface
+public interface SimulationCancelationDelegate {
 
-    public SimulationCancelationDelegate(Supplier<Boolean> cancelledProvider) {
-        Objects.requireNonNull(cancelledProvider);
-        this.canceledProvider = cancelledProvider;        
-    }
+    public boolean isCanceled();
     
-    public boolean isCanceled() {
-        return canceledProvider.get();
-    }
 }

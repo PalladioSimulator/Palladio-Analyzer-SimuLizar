@@ -3,17 +3,16 @@ package org.palladiosimulator.simulizar.runtimestate;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class ComponentInstanceRegistry {
-
-    private final Map<String, SimulatedComponentInstance> componentInstances;
-
-    /**
-     *
-     */
-    protected ComponentInstanceRegistry() {
-        super();
-        this.componentInstances = new HashMap<String, SimulatedComponentInstance>();
+    @Inject
+    public ComponentInstanceRegistry() {
     }
+
+    private final Map<String, SimulatedComponentInstance> componentInstances = new HashMap<String, SimulatedComponentInstance>();
 
     public void addComponentInstance(final SimulatedComponentInstance instance) {
         if (instance == null) {

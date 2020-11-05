@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-		
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.palladiosimulator</groupId>
@@ -9,19 +8,102 @@
 		<version>0.5.1</version>
 	</parent>
 	<groupId>org.palladiosimulator.simulizar</groupId>
-	<artifactId>parent</artifactId>	
+	<artifactId>parent</artifactId>
 	<version>4.3.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	
+
 	<properties>
 		<org.palladiosimulator.maven.tychotprefresh.tplocation.2>${project.basedir}/releng/org.palladiosimulator.simulizar.targetplatform/tp.target</org.palladiosimulator.maven.tychotprefresh.tplocation.2>
 	</properties>
-	
+
 	<modules>
 		<module>bundles</module>
 		<module>features</module>
 		<module>tests</module>
 		<module>releng</module>
 	</modules>
-	
+
+	<profiles>
+
+		<profile>
+			<activation>
+				<file>
+					<exists>.enable_dagger_auto_factory_annotation_processing</exists>
+				</file>
+			</activation>
+
+			<dependencies>
+				<dependency>
+					<groupId>com.google.dagger</groupId>
+					<artifactId>dagger-compiler</artifactId>
+					<version>2.29.1</version>
+					<optional>true</optional>
+				</dependency>
+				<dependency>
+					<groupId>com.google.auto.factory</groupId>
+					<artifactId>auto-factory</artifactId>
+					<version>1.0-beta8</version>
+					<optional>true</optional>
+				</dependency>
+			</dependencies>
+
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.bsc.maven</groupId>
+						<artifactId>maven-processor-plugin</artifactId>
+						<version>4.4</version>
+						<executions>
+							<execution>
+								<id>process</id>
+								<goals>
+									<goal>process</goal>
+								</goals>
+								<phase>generate-sources</phase>
+								<configuration>
+									<processors>
+										<processor>dagger.internal.codegen.ComponentProcessor</processor>
+										<processor>com.google.auto.factory.processor.AutoFactoryProcessor</processor>
+									</processors>
+									<sourceDirectory>src/</sourceDirectory>
+									<outputDirectory>src-gen/</outputDirectory>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>3.1.0</version>
+						<executions>
+							<execution>
+								<id>clean-src-gen</id>
+								<phase>clean</phase>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+								<configuration>
+									<excludeDefaultDirectories>true</excludeDefaultDirectories>
+									<filesets>
+										<fileset>
+											<directory>${project.basedir}</directory>
+											<includes>
+												<include>src-gen/**</include>
+											</includes>
+											<excludes>
+												<exclude>*/.gitkeep</exclude>
+											</excludes>
+										</fileset>
+									</filesets>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+
+		</profile>
+
+	</profiles>
+
 </project>

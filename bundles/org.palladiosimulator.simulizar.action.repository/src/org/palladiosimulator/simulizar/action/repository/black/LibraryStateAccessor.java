@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.action.repository.black;
 
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
-import org.palladiosimulator.simulizar.runtimestate.AbstractSimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 
 public final class LibraryStateAccessor implements IRuntimeStateAccessor {
 
@@ -9,7 +9,7 @@ public final class LibraryStateAccessor implements IRuntimeStateAccessor {
     }
 
     @Override
-    public void setRuntimeStateModel(AbstractSimuLizarRuntimeState state) {
+    public void setRuntimeStateModel(SimuLizarRuntimeState state) {
         SimulationStateLibrary.injectRuntimeStateModel(state);
     }
 }

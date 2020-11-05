@@ -19,11 +19,16 @@ Require-Bundle: org.eclipse.ui,
  org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
  de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
  org.palladiosimulator.commons;bundle-version="1.0.0",
- org.palladiosimulator.simulizar.reconfigurationrule
+ org.palladiosimulator.simulizar.reconfigurationrule,
+ de.uka.ipd.sdq.simucomframework.variables
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ActivationPolicy: lazy
-Import-Package: de.uka.ipd.sdq.statistics,
+Import-Package: dagger;version="2.29.1";resolution:=optional,
+ dagger.internal;version="2.29.1";resolution:=optional,
+ dagger.multibindings;version="2.29.1";resolution:=optional,
+ de.uka.ipd.sdq.statistics,
  de.uka.ipd.sdq.statistics.estimation,
+ javax.inject;version="1.0.0";resolution:=optional,
  org.palladiosimulator.commons.eclipseutils,
  org.palladiosimulator.monitorrepository,
  org.palladiosimulator.probeframework.calculator,

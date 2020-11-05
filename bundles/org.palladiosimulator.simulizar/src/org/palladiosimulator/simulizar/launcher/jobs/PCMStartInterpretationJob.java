@@ -5,15 +5,14 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.DaggerSimuLizarComponent;
+import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -30,10 +29,10 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
     private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class.getName());
 
-    private MDSDBlackboard blackboard;
+    protected MDSDBlackboard blackboard;
 
-    private final SimuLizarWorkflowConfiguration configuration;
-    
+    protected final SimuLizarWorkflowConfiguration configuration;
+
     /**
      * Constructor
      *
@@ -54,6 +53,37 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         LOGGER.info("Initialise Simulizar runtime state");
 
+        enhanceConfiguration();
+        
+        var runtimeState = buildRuntimeState(monitor); 
+
+        runtimeState.initialize();
+        initializeRuntimeStateAccessors(runtimeState);
+
+        runtimeState.runSimulation();
+        runtimeState.cleanUp();
+        LOGGER.info("finished job: " + this);
+    }
+    
+    protected SimuLizarRuntimeState buildRuntimeState(SimuLizarCoreComponent.Builder runtimeStateBuilder, final IProgressMonitor monitor) {
+        return runtimeStateBuilder
+                .cancelationDelegate(monitor::isCanceled)
+                .configuration(configuration)
+                .blackboard(blackboard)
+                .build()
+                .runtimeState();
+    }
+    
+    /**
+     * This method is supposed to be overridden by tests, to supply a {@link SimuLizarCoreComponent.Builder} which provides the required refinements. 
+     * @param monitor the progress monitor supplied by the jobs execute method.
+     * @return the constructed {@link SimuLizarRuntimeState}
+     */
+    protected SimuLizarRuntimeState buildRuntimeState(final IProgressMonitor monitor) {
+        return buildRuntimeState(DaggerSimuLizarComponent.builder(), monitor);
+    }
+
+    protected void enhanceConfiguration() {
         final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ID,
                 SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE);
@@ -61,22 +91,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         for (final IConfigurator configurator : configurators) {
             configurator.configure(this.configuration, this.blackboard);
         }
-
-        this.configuration.setReconfigurationRulesFolder(this.configuration.getReconfigurationRulesFolder());
-
-        // FIXME @Igor: Use ModelAccess instead of ModelAccessUseOriginalReferences.
-        // After we find a way to copy models so that their links do not point to intermediary, but
-        // to the models directly.
-        IResourceTableManager resourceTableManager = new ResourceTableManager();
-        final SimuLizarRuntimeState runtimeState = new SimuLizarRuntimeState(this.configuration, this.blackboard,
-                new SimulationCancelationDelegate(monitor::isCanceled), resourceTableManager);
-
-        this.initializeRuntimeStateAccessors(runtimeState);
-
-        runtimeState.runSimulation();
-        runtimeState.cleanUp();
-        LOGGER.info("finished job: " + this);
     }
+
 
     private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
         final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(

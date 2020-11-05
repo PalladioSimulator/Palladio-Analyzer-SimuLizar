@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Stack;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ComposedStructure;
@@ -23,8 +21,6 @@ import org.palladiosimulator.pcm.core.entity.EntityPackage;
 import org.palladiosimulator.pcm.core.entity.InterfaceProvidingEntity;
 import org.palladiosimulator.pcm.repository.BasicComponent;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
-import org.palladiosimulator.pcm.repository.RepositoryComponent;
-import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.repository.util.RepositorySwitch;
 import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
@@ -37,6 +33,9 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
+
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -45,6 +44,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author snowball
  *
  */
+@AutoFactory
 public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
@@ -57,19 +57,23 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
     private final IResourceTableManager resourceTableManager;
+    private final RDSeffSwitchFactory rdseffSwitchFactory;
+    private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
     /**
-     *
+     * @see RepositoryComponentSwitchFactory#create(InterpreterDefaultContext, AssemblyContext, Signature, ProvidedRole)
      */
-    public RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole
-            , IResourceTableManager resourceTableManager) {
+    RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+            final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager, @Provided RDSeffSwitchFactory rdseffSwitchFactory,
+            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
         this.resourceTableManager = resourceTableManager;
+        this.rdseffSwitchFactory = rdseffSwitchFactory;
+        this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
     }
 
     @Override
@@ -137,9 +141,10 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         }
         final ProvidedDelegationConnector connectedProvidedDelegationConnector = getConnectedProvidedDelegationConnector(
                 this.providedRole);
-        final RepositoryComponentSwitch repositoryComponentSwitch = new RepositoryComponentSwitch(this.context,
-                connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(), this.signature,
-                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector(), resourceTableManager);
+        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(
+                this.context, connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(),
+                this.signature,
+                connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
         return repositoryComponentSwitch
                 .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
     }
@@ -224,7 +229,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             switchFactories.stream().forEach(s -> interpreter.addSwitch(
             		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
             // add default RDSeffSwitch
-            interpreter.addSwitch(new RDSeffSwitch(this.context, basicComponentInstance, interpreter, resourceTableManager));
+            interpreter.addSwitch(rdseffSwitchFactory.create(this.context, basicComponentInstance, interpreter));
             // interpret called seff
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
@@ -243,15 +248,6 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         return result;
     }
     
-    private Optional<AssemblyContext> getNestedComponentInstanceFromAssembly(AssemblyContext contextToFind, AssemblyContext compositeAssembly) {
-    	RepositoryComponent comp = compositeAssembly.getEncapsulatedComponent__AssemblyContext();
-    	if (!RepositoryPackage.eINSTANCE.getCompositeComponent().isInstance(comp)) {
-    		throw new IllegalArgumentException("Nested component instance only available for instances of composite components.");
-    	}
-    	return ((ComposedStructure)comp).getAssemblyContexts__ComposedStructure().stream()
-    			.filter(ctx -> ctx.getId().equals(contextToFind.getId())).findAny();
-    }
-
     /**
      * Determines the provided delegation connector which is connected with the provided role.
      *
