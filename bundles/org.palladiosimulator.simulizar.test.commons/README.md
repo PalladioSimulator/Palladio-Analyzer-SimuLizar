@@ -36,7 +36,7 @@ Simulation jobs, i. e. SimuLizar jobs, rely on a shared `MDSDBlackboard` which c
 
 `@PCMInstanceFromSupplier` expects a parameter of type `Class<? extends Supplier<PCMResourceSetPartition>>`. Before running the test case the class is instantiated reflectively. The created instance is then requested for a `PCMResourceSetPartition` which will be stored in the central SimuLizar Extension store. Furthermore a `MDSDBlackboard` is initialized, containing the created partition. The blackboard is stored in the central store as well. In order for the class to be instantiable, it needs to provide a no-argument constructor, or a constructor accepting exactly one Parameter of type `org.junit.jupiter.api.extension.ExtensionContext`. Use the latter, if you need to interact with other JUnit extensions through the Extension store.
 
-PCM models can be comfortably constructed using e. g. the Palladio Fluent API or the Xtend programming language. Examples for the latter can be found in the test cases of `ResourceEnvironmentSyncerTest`. A very basic model to build on is the class `TestModelBase.Empty`. It provides a PCMResourceSet with an default set of model resources, i. e. an empty repository, an empty system, and so on. Have a look at `ResourceEnvironmentTestModels.WithTwoContainersAndOneLink` to see how custom model providers can be built upon the default ones.
+PCM models can be comfortably constructed using e. g. the Palladio Fluent API or the Xtend programming language. Examples for the latter can be found in the test cases of [ResourceEnvironmentSyncerTest](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/tests/org.palladiosimulator.simulizar.tests/src/org/palladiosimulator/simulizar/modelobserver/tests/ResourceEnvironmentSyncerTest.java). A very basic model to build on is the class `TestModelBase.Empty` in [TestModelBase](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/bundles/org.palladiosimulator.simulizar.test.commons/src/org/palladiosimulator/simulizar/test/commons/models/TestModelBase.xtend). It provides a PCMResourceSet with an default set of model resources, i. e. an empty repository, an empty system, and so on. Have a look at [ResourceEnvironmentTestModels.WithTwoContainersAndOneLink](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/bundles/org.palladiosimulator.simulizar.test.commons/src/org/palladiosimulator/simulizar/test/commons/models/ResourceEnvironmentTestModels.xtend) to see how custom model providers can be built upon the default ones.
 
 `@LoadPCMInstanceFromBundle` uses the previously described logic by registering the annotation `@PCMInstanceSupplier(LoadPCMInstanceFromBundleSupplier.class)`. This demostrates well, how JUnit supports meta-present annotations, that is, annotation present on annotations to test cases. LoadPCMInstanceFromBundle expects three parameters and uses the Eclipse Platform API to load the references models. The expected parameters are as follows:
 
@@ -44,7 +44,7 @@ PCM models can be comfortably constructed using e. g. the Palladio Fluent API or
 - `basePath`: the relative path within the bundle
 - `modelFiles`: an array of file names, which should be read into the resource set partition. 
 
-An example of `@LoadPCMInstanceFromBundle`can be found in the `LinkingResourceSimulationTest`, where model files of the LinkingResourceExample are loaded from the respective plugin.
+An example of `@LoadPCMInstanceFromBundle`can be found in the [LinkingResourceSimulationTest](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/tests/org.palladiosimulator.simulizar.tests/src/org/palladiosimulator/simulizar/simulation/tests/LinkingResourceSimulationTest.java), where model files of the LinkingResourceExample are loaded from the respective plugin.
 
 The models can be accessed from inside the test method, by specifying a parameter of type `MDSDBlackboard` or `PCMResourceSetPartition`. Additionally, by specifying a parameter of an EMF model element type (e. g. `UsageScenario`) the first model element from the resource set which matches the type will be provided. There is some further, more fine-grained traverse-and-filter support to select a particular model element from the partition based on its properties. 
 
@@ -62,7 +62,7 @@ Usually, simulation tests run a selected experiment and subsequently verify the 
 
 ### Verifying simulation results
 
-If the simulation was run through the `@RunSimulationJob` annotation, the simulation result is available as a parameter to the test method. By specifying a parameter of type `ExperimentRun` the test method is provided with the one experiment run created during simulation execution. This resolves you of having to access and navigate the cumbersome EDP2 API. To further facilitate writing checks for measurement series, the class `MeasurementTestUtils` provides you with a set of helpers. Have a look at `LinkingResourceSimulationTest` to see it in action.
+If the simulation was run through the `@RunSimulationJob` annotation, the simulation result is available as a parameter to the test method. By specifying a parameter of type `ExperimentRun` the test method is provided with the one experiment run created during simulation execution. This resolves you of having to access and navigate the cumbersome EDP2 API. To further facilitate writing checks for measurement series, the class `MeasurementTestUtils` provides you with a set of helpers. Have a look at [LinkingResourceSimulationTest](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/tests/org.palladiosimulator.simulizar.tests/src/org/palladiosimulator/simulizar/simulation/tests/LinkingResourceSimulationTest.java) to see it in action.
 
 ### Putting it all together / Convenience
 
@@ -81,7 +81,7 @@ void testSimulation(UsageScenario scenario, ExperimentRun expRun) {
 
 
 ## Example
-The following example is taken from the `LinkingResourceSimulationTest` and illustrates some of the presented concepts.
+The following example is taken from the [LinkingResourceSimulationTest](https://github.com/PalladioSimulator/Palladio-Analyzer-SimuLizar/blob/master/tests/org.palladiosimulator.simulizar.tests/src/org/palladiosimulator/simulizar/simulation/tests/LinkingResourceSimulationTest.java) and illustrates some of the presented concepts.
 
 ```java
 // This is a JUnit test
