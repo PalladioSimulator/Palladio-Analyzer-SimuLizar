@@ -8,12 +8,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 
 @Retention(RUNTIME)
 @Target({ METHOD, ANNOTATION_TYPE })
 public @interface SimulationConfigSupplier {
     
-    Class<? extends Supplier<SimuLizarWorkflowConfiguration>> value();
+    Class<? extends Supplier<IJobConfiguration>> value();
 
 }

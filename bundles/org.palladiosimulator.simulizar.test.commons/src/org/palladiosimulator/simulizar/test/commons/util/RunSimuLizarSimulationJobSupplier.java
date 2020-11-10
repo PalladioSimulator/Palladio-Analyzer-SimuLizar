@@ -9,15 +9,19 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
+import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
-public class RunSimuLizarSimulationJobSupplier implements Supplier<IBlackboardInteractingJob<MDSDBlackboard>> {
+public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
     protected final SimuLizarWorkflowConfiguration configuration;
 
     public RunSimuLizarSimulationJobSupplier(ExtensionContext context) {
-        configuration = SimuLizarTestExtensionCommons.getObjectFromStore(context, SimuLizarWorkflowConfiguration.class)
+        configuration = SimuLizarTestExtensionCommons.getObjectFromStore(context, IJobConfiguration.class)
+            .filter(SimuLizarWorkflowConfiguration.class::isInstance)
+            .map(SimuLizarWorkflowConfiguration.class::cast)
             .orElseThrow(() -> new IllegalArgumentException(
                     "No SimuLizar Configuration present repository initialized. Please make sure to annotate your test accordingly."));
     }

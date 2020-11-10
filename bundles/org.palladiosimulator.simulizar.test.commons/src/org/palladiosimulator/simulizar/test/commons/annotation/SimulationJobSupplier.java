@@ -8,11 +8,10 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
-import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 @Retention(RUNTIME)
 @Target({METHOD, ANNOTATION_TYPE})
 public @interface SimulationJobSupplier {
-    Class<? extends Supplier<IBlackboardInteractingJob<MDSDBlackboard>>> value();
+    Class<? extends Supplier<IJob>> value();
 }
