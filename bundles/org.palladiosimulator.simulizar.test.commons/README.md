@@ -25,10 +25,10 @@ JUnit 5 supports providing custom extensions to the test logic by appending test
 
 The testing support comprises the following aspects:
 
-- Loading simulation models
-- Configuring a simulation
-- Running a simulation
-- Accessing simulation internals or simulation results
+- [Loading simulation models](#loading-simulation-models)
+- [Configuring a simulation](#configuring-a-simulation)
+- [Running a simulation](#running-a-simulation)
+- [Verifying simulation results](#verifying-simulation-results)
 
 ### Loading simulation models
 
@@ -69,7 +69,7 @@ If the simulation was run through the `@RunSimulationJob` annotation, the simula
 By combining the previously listed annotations most of the simulation tests can be written quite concise. As most test cases run a simulation and subsequently verify its results, we provide a convenience annotation `@RunSimuLizar` to comprise the default case. `@RunSimuLizar` registers the required extension, provides an appropriate configuration and job, and subsequently executes the simulation. Any setting in particular can be customized by providing an annotation of the specialized type on the test case directly. These annotations are the preferred over meta-present annotations. 
 
 A standard SimuLizar test consequently only needs the following annotations:
-```
+```java
 @Test //This is JUnit
 @LoadPCMInstanceFromBundle(...) //or similar
 @RunSimuLizar
@@ -83,7 +83,7 @@ void testSimulation(UsageScenario scenario, ExperimentRun expRun) {
 ## Example
 The following example is taken from the `LinkingResourceSimulationTest` and illustrates some of the presented concepts.
 
-```
+```java
 // This is a JUnit test
 @Test 
 
