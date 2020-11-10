@@ -4,8 +4,9 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
 
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfigSupplier;
+
+import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 
 public class ProvideSimuLizarConfigurationExtension implements BeforeEachCallback {
 
@@ -15,6 +16,6 @@ public class ProvideSimuLizarConfigurationExtension implements BeforeEachCallbac
             .map(an -> SimuLizarTestExtensionCommons.loadInstance(an.value(), context))
             .orElseThrow(() -> new IllegalArgumentException(
                     "The extension was not propery registered. No (meta-)present SimulationConfigSupplier annotation found."));
-        SimuLizarTestExtensionCommons.putObjectIntoStore(context, SimuLizarWorkflowConfiguration.class, job);
+        SimuLizarTestExtensionCommons.putObjectIntoStore(context, IJobConfiguration.class, job);
     }
 }
