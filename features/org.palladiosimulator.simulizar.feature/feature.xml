@@ -110,6 +110,7 @@
       <import feature="org.palladiosimulator.monitorrepository.feature" version="3.0.0.qualifier"/>
       <import feature="org.palladiosimulator.metricspec.feature" version="1.0.3.201610151428"/>
       <import plugin="org.palladiosimulator.branding"/>
+      <import plugin="com.google.dagger"/>
    </requires>
 
    <plugin
