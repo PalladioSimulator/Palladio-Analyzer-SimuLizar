@@ -10,17 +10,19 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInsta
  *
  */
 public abstract class AbstractRDSeffSwitchFactory {
-	
-	/**
-	 * 
+
+    /**
+     * 
      * @param context
-     *				Default context for the pcm interpreter.
+     *            Default context for the pcm interpreter.
      * @param basicComponentInstance
-     *				Simulated component
+     *            Simulated component
      * @param parentSwitch
-     *				The composed switch which is containing the created switch
-	 * @return a composable switch
-	 */
-	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch);
+     *            The composed switch which is containing the created switch
+     * @return a composable switch
+     */
+    protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
+            final SimulatedBasicComponentInstance basicComponentInstance,
+            ExplicitDispatchComposedSwitch<Object> parentSwitch,
+            RepositoryComponentSwitchFactory repositoryComponentSwitchFactory);
 }
