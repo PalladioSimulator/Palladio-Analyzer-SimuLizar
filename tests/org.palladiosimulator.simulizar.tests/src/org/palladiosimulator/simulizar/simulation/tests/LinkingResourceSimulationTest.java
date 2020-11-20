@@ -59,5 +59,23 @@ class LinkingResourceSimulationTest {
                 is(allOf(greaterThan(1.0), lessThan(2.0))));
 
     }
+    
+    @Test
+    @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/LinkingResource_Test", modelFiles = {
+            "default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
+            "default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
+    @SimulationConfig(simulateLinkingResource = true)
+    @RunSimuLizar
+    void testSimulationWithMiddlewareCompletion(UsageScenario scenario, ExperimentRun expRun)
+            throws JobFailedException, UserCanceledException {
+        var measurement = MeasurementTestUtils.getMeasurementOfAt(expRun.getMeasurement(),
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, scenario);
+        assertTrue(measurement.isPresent());
+
+        MeasurementTestUtils.allDoubleMeasurementValuesMatch(measurement.get(),
+                MetricDescriptionConstants.RESPONSE_TIME_METRIC, SI.SECOND,
+                is(allOf(greaterThan(186.0), lessThan(187.0))));
+
+    }
 
 }

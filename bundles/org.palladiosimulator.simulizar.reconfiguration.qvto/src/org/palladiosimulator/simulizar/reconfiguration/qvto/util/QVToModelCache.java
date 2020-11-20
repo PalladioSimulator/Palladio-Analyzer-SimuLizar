@@ -16,7 +16,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreSwitch;
-import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
+import org.palladiosimulator.analyzer.workflow.jobs.LoadSharedPCMLibrariesIntoBlackboard;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
@@ -260,7 +260,7 @@ public class QVToModelCache {
         assert model != null;
 
         return model.eResource().getURI()
-                .equals(PreparePCMBlackboardPartitionJob.PCM_PALLADIO_PRIMITIVE_TYPE_REPOSITORY_URI)
+                .equals(LoadSharedPCMLibrariesIntoBlackboard.PCM_PALLADIO_PRIMITIVE_TYPE_REPOSITORY_URI)
                 || Arrays.stream(MODEL_ECLASS_BLACKLIST).anyMatch(bannedEClass -> bannedEClass == model.eClass());
     }
 }
