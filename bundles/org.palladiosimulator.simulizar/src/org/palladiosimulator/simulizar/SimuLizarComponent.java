@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar;
 
 import javax.inject.Singleton;
 
+import org.palladiosimulator.simulizar.extension.SimuLizarExtensionExtensionPointModule;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.modules.DefaultQUALModule;
 import org.palladiosimulator.simulizar.modules.EclipseIDEPreferencesModule;
@@ -16,7 +17,8 @@ import dagger.Component;
  * @see PCMStartInterpretationJob
  * 
  */
-@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class })
+@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class,
+        SimuLizarExtensionExtensionPointModule.class })
 @Singleton
 public interface SimuLizarComponent extends SimuLizarCoreComponent {
 
@@ -27,5 +29,4 @@ public interface SimuLizarComponent extends SimuLizarCoreComponent {
     @Component.Builder
     interface Builder extends SimuLizarCoreComponent.Builder {
     }
-
 }

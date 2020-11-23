@@ -4,6 +4,7 @@ import java.util.Objects;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -41,8 +42,8 @@ public class MinimalPCMInterpreterRootCompositeJob extends SequentialBlackboardI
     protected IJob createSimulatorJob() {
         return new PCMStartInterpretationJob(configuration) {
             @Override
-            protected SimuLizarRuntimeState buildRuntimeState(IProgressMonitor monitor) {
-                return buildRuntimeState(DaggerSimuLizarTestComponent.builder(), monitor);
+            protected SimuLizarCoreComponent buildSimuLizarComponent(IProgressMonitor monitor) {
+                return buildSimuLizarComponent(DaggerSimuLizarTestComponent.builder(), monitor);
             }
         };
     }

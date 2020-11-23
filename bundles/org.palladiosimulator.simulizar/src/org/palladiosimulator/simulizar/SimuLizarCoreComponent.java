@@ -1,10 +1,20 @@
 package org.palladiosimulator.simulizar;
 
+import java.util.Set;
+
+import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
 import dagger.BindsInstance;
+import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
+import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
@@ -48,5 +58,13 @@ public interface SimuLizarCoreComponent {
          */
         SimuLizarCoreComponent build();
     }
+    
+    Set<SimuLizarExtension> getSimuLizarExtensions();
+
+    IResourceTableManager getResourceTableManager();
+
+    IAssemblyAllocationLookup<EntityReference<ResourceContainer>> getResourceContainerLookup();
+
+    ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> getTransmissionInterpreter();
 
 }

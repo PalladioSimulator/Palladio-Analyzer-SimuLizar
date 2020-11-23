@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.DaggerSimuLizarComponent;
+import org.palladiosimulator.simulizar.SimuLizarComponent;
 import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
@@ -55,23 +56,28 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         enhanceConfiguration();
         
-        var runtimeState = buildRuntimeState(monitor); 
+        SimuLizarCoreComponent component = buildSimuLizarComponent(monitor);
+        var runtimeState = component.runtimeState();
 
         runtimeState.initialize();
+        
+        initializeSimuLizarExtensions(component);
         initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
         runtimeState.cleanUp();
+        
+        deinitSimuLizarExtensions(component);
+        
         LOGGER.info("finished job: " + this);
     }
     
-    protected SimuLizarRuntimeState buildRuntimeState(SimuLizarCoreComponent.Builder runtimeStateBuilder, final IProgressMonitor monitor) {
+    protected SimuLizarCoreComponent buildSimuLizarComponent(SimuLizarCoreComponent.Builder runtimeStateBuilder, final IProgressMonitor monitor) {
         return runtimeStateBuilder
                 .cancelationDelegate(monitor::isCanceled)
                 .configuration(configuration)
                 .blackboard(blackboard)
-                .build()
-                .runtimeState();
+                .build();
     }
     
     /**
@@ -79,8 +85,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      * @param monitor the progress monitor supplied by the jobs execute method.
      * @return the constructed {@link SimuLizarRuntimeState}
      */
-    protected SimuLizarRuntimeState buildRuntimeState(final IProgressMonitor monitor) {
-        return buildRuntimeState(DaggerSimuLizarComponent.builder(), monitor);
+    protected SimuLizarCoreComponent buildSimuLizarComponent(final IProgressMonitor monitor) {
+        return buildSimuLizarComponent(DaggerSimuLizarComponent.builder(), monitor);
     }
 
     protected void enhanceConfiguration() {
@@ -101,6 +107,20 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         for (final IRuntimeStateAccessor accessor : stateAccessors) {
             accessor.setRuntimeStateModel(runtimeState);
+        }
+    }
+    
+    private void initializeSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
+        var component = (SimuLizarComponent) coreComponent;
+        for (var extension : component.getSimuLizarExtensions()) {
+            extension.initialize(component);
+        }
+    }
+    
+    private void deinitSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
+        var component = (SimuLizarComponent) coreComponent;
+        for (var extension : component.getSimuLizarExtensions()) {
+            extension.destroy();
         }
     }
 
