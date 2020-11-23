@@ -111,15 +111,13 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     }
     
     private void initializeSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
-        var component = (SimuLizarComponent) coreComponent;
-        for (var extension : component.getSimuLizarExtensions()) {
-            extension.initialize(component);
+        for (var extension : coreComponent.getSimuLizarExtensions()) {
+            extension.initialize(coreComponent);
         }
     }
     
     private void deinitSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
-        var component = (SimuLizarComponent) coreComponent;
-        for (var extension : component.getSimuLizarExtensions()) {
+        for (var extension : coreComponent.getSimuLizarExtensions()) {
             extension.destroy();
         }
     }
