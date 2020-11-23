@@ -49,23 +49,22 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
-    public static final String RDSEFFSWITCH_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.interpreter.rdseffswitch";
-    public static final String RDSEFFSWITCH_EXTENSION_ATTRIBUTE = "rdseffswitch";
 
     private final Signature signature;
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
     private final IResourceTableManager resourceTableManager;
-    private final RDSeffSwitchFactory rdseffSwitchFactory;
+    private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
     /**
      * @see RepositoryComponentSwitchFactory#create(InterpreterDefaultContext, AssemblyContext, Signature, ProvidedRole)
      */
     RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager, @Provided RDSeffSwitchFactory rdseffSwitchFactory,
-            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
+            final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager,
+            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory,
+            @Provided ComposedRDSeffSwitchFactory rdseffSwitchFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
@@ -93,7 +92,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         SimulatedStackHelper.createAndPushNewStackFrame(stack,
                 this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
 
-        final FQComponentID fqID = this.computeFQComponentID();
+        final FQComponentID fqID = context.computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
@@ -126,7 +125,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
         }
-        final FQComponentID fqID = this.computeFQComponentID();
+        final FQComponentID fqID = context.computeFQComponentID();
         if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new composed component instance, registering it: " + entity);
@@ -219,35 +218,11 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            final FQComponentID componentID = this.computeFQComponentID();
-            final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
-                    .getRuntimeState().getComponentInstanceRegistry().getComponentInstance(componentID);
-            
-            final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
-            		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
-            final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
-            switchFactories.stream().forEach(s -> interpreter.addSwitch(
-            		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
-            // add default RDSeffSwitch
-            interpreter.addSwitch(rdseffSwitchFactory.create(this.context, basicComponentInstance, interpreter));
-            // interpret called seff
+            var interpreter = rdseffSwitchFactory.createRDSeffSwitch(context);
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
     }
 
-    private FQComponentID computeFQComponentID() {
-        return new FQComponentID(this.computeAssemblyContextPath());
-    }
-
-    private List<AssemblyContext> computeAssemblyContextPath() {
-        final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
-        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
-        for (int i = 0; i < stack.size(); i++) {
-            result.add(stack.get(i));
-        }
-        return result;
-    }
-    
     /**
      * Determines the provided delegation connector which is connected with the provided role.
      *

@@ -4,6 +4,8 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import javax.inject.Inject;
@@ -11,6 +13,7 @@ import javax.inject.Qualifier;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
@@ -126,4 +129,18 @@ public class InterpreterDefaultContext extends Context {
     public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
         return this.assemblyAllocationLookup;
     };
+    
+    public FQComponentID computeFQComponentID() {
+        return new FQComponentID(this.computeAssemblyContextPath());
+    }
+    
+    private List<AssemblyContext> computeAssemblyContextPath() {
+        final Stack<AssemblyContext> stack = getAssemblyContextStack();
+        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
+        for (int i = 0; i < stack.size(); i++) {
+            result.add(stack.get(i));
+        }
+        return result;
+    }
+    
 }

@@ -67,8 +67,8 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker, Sebastian Lehrig
  *
  */
-@AutoFactory
-class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
+@AutoFactory(extending = AbstractRDSeffSwitchFactory.class)
+public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
     private static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);

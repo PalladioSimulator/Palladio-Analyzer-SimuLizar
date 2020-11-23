@@ -1,9 +1,11 @@
 package org.palladiosimulator.simulizar.modules;
 
+import java.util.Collections;
 import java.util.Set;
 
 import javax.inject.Singleton;
 
+import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -11,13 +13,17 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
 import org.palladiosimulator.simulizar.entity.access.SimulatedResourceContainerAccess;
+import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
+import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.reconfiguration.NumberOfResourceContainerTrackingReconfiguratorFactory;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfiguratorFactory;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
@@ -25,6 +31,7 @@ import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import dagger.Reusable;
+import dagger.multibindings.ElementsIntoSet;
 import dagger.multibindings.Multibinds;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
@@ -75,6 +82,19 @@ public interface SimuLizarCoreModule {
     
     @Provides @Singleton @MainContext static InterpreterDefaultContext provideMainContext(InterpreterDefaultContext impl) {
         return impl;
+    }
+    
+    @Provides @ElementsIntoSet @Reusable static Set<AbstractRDSeffSwitchFactory> provideCoreRDSeffSwitchFactory(RDSeffSwitchFactory basicFactory) {
+        return Collections.singleton(new AbstractRDSeffSwitchFactory() {
+
+            @Override
+            public Switch<Object> createRDSeffSwitch(InterpreterDefaultContext context,
+                    SimulatedBasicComponentInstance basicComponentInstance,
+                    ExplicitDispatchComposedSwitch<Object> parentSwitch) {
+                return basicFactory.create(context, basicComponentInstance, parentSwitch);
+            }
+            
+        });
     }
     
 }
