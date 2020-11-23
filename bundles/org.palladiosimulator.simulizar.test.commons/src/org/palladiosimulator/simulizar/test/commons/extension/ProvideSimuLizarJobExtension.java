@@ -13,7 +13,7 @@ public class ProvideSimuLizarJobExtension implements BeforeEachCallback {
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         var job = findAnnotation(context.getElement(), SimulationJobSupplier.class)
-            .map(an -> SimuLizarTestExtensionCommons.loadInstance(an.value(), context))
+            .map(an -> SimuLizarTestExtensionCommons.loadSupplierInstance(an.value(), context))
             .orElseThrow(() -> new IllegalArgumentException(
                     "The extension was not propery registered. No (meta-)present SimulationJobSupplier annotation found."));
         SimuLizarTestExtensionCommons.putObjectIntoStore(context, IJob.class, job);

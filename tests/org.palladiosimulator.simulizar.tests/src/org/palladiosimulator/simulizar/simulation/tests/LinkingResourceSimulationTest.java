@@ -9,9 +9,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import javax.measure.unit.SI;
 
 import org.junit.jupiter.api.Test;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.test.commons.annotation.LoadModelFromURI;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
@@ -64,6 +66,8 @@ class LinkingResourceSimulationTest {
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/LinkingResource_Test", modelFiles = {
             "default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
             "default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
+    @LoadModelFromURI("pathmap://PCM_MODELS/ConnectorConfig.featureconfig")
+    @LoadModelFromURI(value = "pathmap://PCM_MODELS/Glassfish.repository", partitionId = ConstantsContainer.RMI_MIDDLEWARE_REPOSITORY_PARTITION_ID)
     @SimulationConfig(simulateLinkingResource = true)
     @RunSimuLizar
     void testSimulationWithMiddlewareCompletion(UsageScenario scenario, ExperimentRun expRun)
