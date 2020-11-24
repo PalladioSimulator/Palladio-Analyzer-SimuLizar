@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SimuLizar Extension for PCM Completion Model Elements
+Bundle-SymbolicName: org.palladiosimulator.simulizar.middlewarecompletions;singleton:=true
+Bundle-Version: 4.3.0.qualifier
+Automatic-Module-Name: org.palladiosimulator.simulizar.pcm.completions
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Require-Bundle: org.palladiosimulator.simulizar;bundle-version="4.3.0",
+ org.eclipse.emf.ecore,
+ org.palladiosimulator.analyzer.completions;bundle-version="4.3.0"
+Import-Package: com.google.auto.factory;version="1.0.0",
+ dagger;version="2.29.1",
+ dagger.internal;version="2.29.1",
+ javax.inject;version="1.0.0"
