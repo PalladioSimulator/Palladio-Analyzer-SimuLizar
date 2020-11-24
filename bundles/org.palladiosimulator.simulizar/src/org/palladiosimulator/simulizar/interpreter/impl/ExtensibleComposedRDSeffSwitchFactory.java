@@ -15,10 +15,7 @@ import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 
 public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwitchFactory {
-    
-    public static final String RDSEFFSWITCH_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.interpreter.rdseffswitch";
-    public static final String RDSEFFSWITCH_EXTENSION_ATTRIBUTE = "rdseffswitch";
-    
+
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider;
 

@@ -12,7 +12,6 @@ import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 import org.palladiosimulator.simulizar.extension.SimuLizarExtensionFactory;
 import org.palladiosimulator.simulizar.extension.impl.SimuLizarExtensionRegistryImpl;
 import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
-import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.scopes.ExtensionManagementScope;
 
 import dagger.Module;
@@ -53,8 +52,7 @@ public interface BasicSimuLizarExtensionModule {
 
     @Provides
     @ElementsIntoSet
-    static Set<AbstractRDSeffSwitchFactory> provideExtensionRDSeffSwitchFactory(RDSeffSwitchFactory basicFactory,
-            SimuLizarExtensionRegistryImpl<AbstractRDSeffSwitchFactory> registry) {
+    static Set<AbstractRDSeffSwitchFactory> provideExtensionRDSeffSwitchFactory(SimuLizarExtensionRegistryImpl<AbstractRDSeffSwitchFactory> registry) {
         return registry.getExtensions();
     }
 }
