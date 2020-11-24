@@ -8,8 +8,7 @@ import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
 
 import dagger.Component;
 
-@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, TestPreferencesModule.class,
-        TestSimuLizarExtensionModule.class })
+@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, TestPreferencesModule.class })
 @Singleton
 public interface SimuLizarTestComponent extends SimuLizarCoreComponent {
 

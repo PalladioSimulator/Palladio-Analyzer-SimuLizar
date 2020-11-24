@@ -44,7 +44,9 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.entity.access,
  org.palladiosimulator.simulizar.exceptions;uses:="de.mdelab.sdm.interpreter.core",
  org.palladiosimulator.simulizar.extension,
+ org.palladiosimulator.simulizar.extension.impl,
  org.palladiosimulator.simulizar.interpreter,
+ org.palladiosimulator.simulizar.interpreter.impl,
  org.palladiosimulator.simulizar.interpreter.linking,
  org.palladiosimulator.simulizar.interpreter.linking.impl,
  org.palladiosimulator.simulizar.interpreter.listener,
@@ -92,6 +94,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.simulizar.runconfig,
    de.uka.ipd.sdq.simucomframework.model,
    org.palladiosimulator.simulizar.usagemodel",
+ org.palladiosimulator.simulizar.scopes,
  org.palladiosimulator.simulizar.simulationevents;uses:="de.uka.ipd.sdq.simulation.abstractsimengine,de.uka.ipd.sdq.simucomframework.entities,de.uka.ipd.sdq.simucomframework.model",
  org.palladiosimulator.simulizar.usagemodel;
   uses:="org.palladiosimulator.simulizar.interpreter,

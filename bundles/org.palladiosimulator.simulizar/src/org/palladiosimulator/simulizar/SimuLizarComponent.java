@@ -2,11 +2,11 @@ package org.palladiosimulator.simulizar;
 
 import javax.inject.Singleton;
 
-import org.palladiosimulator.simulizar.extension.SimuLizarExtensionExtensionPointModule;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.modules.DefaultQUALModule;
 import org.palladiosimulator.simulizar.modules.EclipseIDEPreferencesModule;
 import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
+import org.palladiosimulator.simulizar.modules.EclipseSimuLizarExtensionModule;
 
 import dagger.Component;
 
@@ -17,8 +17,7 @@ import dagger.Component;
  * @see PCMStartInterpretationJob
  * 
  */
-@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class,
-        SimuLizarExtensionExtensionPointModule.class })
+@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class, EclipseSimuLizarExtensionModule.class })
 @Singleton
 public interface SimuLizarComponent extends SimuLizarCoreComponent {
 

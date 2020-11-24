@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.inject.Singleton;
 
-import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -14,16 +13,16 @@ import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
 import org.palladiosimulator.simulizar.entity.access.SimulatedResourceContainerAccess;
 import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
-import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
+import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
+import org.palladiosimulator.simulizar.interpreter.impl.ExtensibleComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.reconfiguration.NumberOfResourceContainerTrackingReconfiguratorFactory;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfiguratorFactory;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
@@ -84,17 +83,11 @@ public interface SimuLizarCoreModule {
         return impl;
     }
     
-    @Provides @ElementsIntoSet @Reusable static Set<AbstractRDSeffSwitchFactory> provideCoreRDSeffSwitchFactory(RDSeffSwitchFactory basicFactory) {
-        return Collections.singleton(new AbstractRDSeffSwitchFactory() {
-
-            @Override
-            public Switch<Object> createRDSeffSwitch(InterpreterDefaultContext context,
-                    SimulatedBasicComponentInstance basicComponentInstance,
-                    ExplicitDispatchComposedSwitch<Object> parentSwitch) {
-                return basicFactory.create(context, basicComponentInstance, parentSwitch);
-            }
-            
-        });
-    }
+    @Binds
+    @Reusable
+    ComposedRDSeffSwitchFactory bindComposedRDSeffSwitchFactor(ExtensibleComposedRDSeffSwitchFactory impl);
     
+    @Provides @ElementsIntoSet static Set<AbstractRDSeffSwitchFactory> provideCoreRDSeffSwitchFactory(RDSeffSwitchFactory basicFactory) {
+        return Collections.singleton(basicFactory);
+    }
 }

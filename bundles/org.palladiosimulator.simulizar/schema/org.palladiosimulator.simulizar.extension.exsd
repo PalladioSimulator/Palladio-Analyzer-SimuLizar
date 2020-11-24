@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.simulizar.extension.SimuLizarExtension"/>
+                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.simulizar.extension.SimuLizarExtensionFactory"/>
                </appinfo>
             </annotation>
          </attribute>

@@ -1,9 +1,19 @@
 package org.palladiosimulator.simulizar.extension;
 
-import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
-
 public interface SimuLizarExtension {
-    public void initialize(SimuLizarCoreComponent simuLizarComponent);
+    /** Before initialization of SimuLizarRuntimeState **/
+    default void preInitialize() {
+    }
+    
+    /** After SimuLizarRuntimeState has been initialized **/
+    default void initialize() {
+    }
 
-    public void destroy();
+    /** Once simulation terminated **/
+    default void shutdown() {
+    }
+    
+    /** After SimuLizarRuntimeState has been cleaned up. **/
+    default void cleanUp() {
+    }
 }

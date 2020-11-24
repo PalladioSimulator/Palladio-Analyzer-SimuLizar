@@ -1,17 +1,22 @@
 package org.palladiosimulator.simulizar;
 
-import java.util.Set;
+import javax.inject.Singleton;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
+import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
+import org.palladiosimulator.simulizar.modules.BasicSimuLizarExtensionModule;
+import org.palladiosimulator.simulizar.modules.DefaultQUALModule;
+import org.palladiosimulator.simulizar.modules.EclipseIDEPreferencesModule;
+import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
 
 import dagger.BindsInstance;
+import dagger.Component;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -26,6 +31,8 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * The default component for a standard SimuLizar simulation can be found in {@link SimuLizarComponent}.
  *
  */
+@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class, BasicSimuLizarExtensionModule.class })
+@Singleton
 public interface SimuLizarCoreComponent {
 
     /**
@@ -34,6 +41,15 @@ public interface SimuLizarCoreComponent {
      */
     SimuLizarRuntimeState runtimeState();
 
+    IResourceTableManager getResourceTableManager();
+
+    IAssemblyAllocationLookup<EntityReference<ResourceContainer>> getResourceContainerLookup();
+
+    ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> getTransmissionInterpreter();
+    
+    InterpreterSwitchExtensionRegistry extensionRegistry();
+
+    @Component.Builder
     interface Builder {
         /**
          * Sets the cancelation delegate for the core component to construct.
@@ -58,13 +74,5 @@ public interface SimuLizarCoreComponent {
          */
         SimuLizarCoreComponent build();
     }
-    
-    Set<SimuLizarExtension> getSimuLizarExtensions();
-
-    IResourceTableManager getResourceTableManager();
-
-    IAssemblyAllocationLookup<EntityReference<ResourceContainer>> getResourceContainerLookup();
-
-    ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> getTransmissionInterpreter();
 
 }

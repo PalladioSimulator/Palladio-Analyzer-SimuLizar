@@ -5,9 +5,11 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.DaggerEclipseSimuLizarExtensionsComponent;
 import org.palladiosimulator.simulizar.DaggerSimuLizarComponent;
-import org.palladiosimulator.simulizar.SimuLizarComponent;
 import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
+import org.palladiosimulator.simulizar.SimuLizarExtensionsComponent;
+import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -57,17 +59,22 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         enhanceConfiguration();
         
         SimuLizarCoreComponent component = buildSimuLizarComponent(monitor);
-        var runtimeState = component.runtimeState();
+        var extensionsComponent = buildSimuLizarExtensionComponent(component);
 
+        var runtimeState = component.runtimeState();
+        extensionsComponent.extensions().forEach(SimuLizarExtension::preInitialize);
+        
         runtimeState.initialize();
         
-        initializeSimuLizarExtensions(component);
+        extensionsComponent.extensions().forEach(SimuLizarExtension::initialize);
         initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
-        runtimeState.cleanUp();
         
-        deinitSimuLizarExtensions(component);
+        extensionsComponent.extensions().forEach(SimuLizarExtension::shutdown);
+        
+        runtimeState.cleanUp();
+        extensionsComponent.extensions().forEach(SimuLizarExtension::cleanUp);
         
         LOGGER.info("finished job: " + this);
     }
@@ -88,6 +95,12 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     protected SimuLizarCoreComponent buildSimuLizarComponent(final IProgressMonitor monitor) {
         return buildSimuLizarComponent(DaggerSimuLizarComponent.builder(), monitor);
     }
+    
+    protected SimuLizarExtensionsComponent buildSimuLizarExtensionComponent(SimuLizarCoreComponent coreComponent) {
+        return DaggerEclipseSimuLizarExtensionsComponent.builder().simuLizarCoreComponent(coreComponent).build();
+    }
+    
+    
 
     protected void enhanceConfiguration() {
         final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(
@@ -110,17 +123,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         }
     }
     
-    private void initializeSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
-        for (var extension : coreComponent.getSimuLizarExtensions()) {
-            extension.initialize(coreComponent);
-        }
-    }
-    
-    private void deinitSimuLizarExtensions(SimuLizarCoreComponent coreComponent) {
-        for (var extension : coreComponent.getSimuLizarExtensions()) {
-            extension.destroy();
-        }
-    }
 
     /**
      * @see de.uka.ipd.sdq.workflow.IJob#getName()
