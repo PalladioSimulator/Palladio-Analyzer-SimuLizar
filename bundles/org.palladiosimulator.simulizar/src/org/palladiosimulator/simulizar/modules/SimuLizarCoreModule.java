@@ -16,6 +16,7 @@ import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.interpreter.RDSeffPerformanceSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.impl.ExtensibleComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
@@ -89,5 +90,10 @@ public interface SimuLizarCoreModule {
     
     @Provides @ElementsIntoSet static Set<AbstractRDSeffSwitchFactory> provideCoreRDSeffSwitchFactory(RDSeffSwitchFactory basicFactory) {
         return Collections.singleton(basicFactory);
+    }
+    
+    @Provides @ElementsIntoSet static Set<AbstractRDSeffSwitchFactory> provideRDSeffPerformanceSwitchFactory(
+            RDSeffPerformanceSwitchFactory perfSwitchFactory) {
+        return Collections.singleton(perfSwitchFactory);
     }
 }

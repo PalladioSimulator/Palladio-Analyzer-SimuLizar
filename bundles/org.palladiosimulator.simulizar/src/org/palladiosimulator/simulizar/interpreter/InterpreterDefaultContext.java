@@ -136,8 +136,8 @@ public class InterpreterDefaultContext extends Context {
     
     private List<AssemblyContext> computeAssemblyContextPath() {
         final Stack<AssemblyContext> stack = getAssemblyContextStack();
-        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
-        for (int i = 0; i < stack.size(); i++) {
+        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size() - 1);
+        for (int i = 1; i < stack.size(); i++) {
             result.add(stack.get(i));
         }
         return result;

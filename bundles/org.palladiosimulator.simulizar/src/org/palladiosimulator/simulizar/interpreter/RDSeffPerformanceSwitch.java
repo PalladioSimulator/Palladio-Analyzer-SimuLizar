@@ -28,7 +28,7 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
-@AutoFactory
+@AutoFactory(extending = AbstractRDSeffSwitchFactory.class)
 public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> implements IComposableSwitch {
 
     private final InterpreterDefaultContext context;
