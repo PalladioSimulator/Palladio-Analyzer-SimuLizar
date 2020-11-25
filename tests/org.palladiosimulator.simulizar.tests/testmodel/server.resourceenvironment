@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2" entityName="serverResourceEnvironment">
+  <linkingResources__ResourceEnvironment id="_KSO0MC81EeuDKt6xG-6bJg" entityName="link" connectedResourceContainers_LinkingResource="_T7-NsMiaEeSwuLsOH33EQA _hx69kLwoEeSjHMSRTqzAVg"/>
   <resourceContainer_ResourceEnvironment id="_hx69kLwoEeSjHMSRTqzAVg" entityName="server">
     <activeResourceSpecifications_ResourceContainer id="_jdsi4LwoEeSjHMSRTqzAVg">
       <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>

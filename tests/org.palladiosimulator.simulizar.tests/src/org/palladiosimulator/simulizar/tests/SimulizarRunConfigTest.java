@@ -111,7 +111,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithoutOptionalArguments() {
+    public void testSuccessfulSimulationRunWithoutOptionalArguments() throws Exception {
         // run the simulation with no optional arguments such as SLO file, action repo,
         // reconfigurations
         // the simulation should finish properly
@@ -119,7 +119,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithSLO() {
+    public void testSuccessfulSimulationRunWithSLO() throws Exception {
         // run the simulation with just the service level objects defined
         // the simulation should finish properly
         this.simulizarConfiguration.setServiceLevelObjectivesFile(sloRepoUri.toString());
@@ -128,7 +128,7 @@ public class SimulizarRunConfigTest {
 
     @Test
     @PluginTestOnly
-    public void testSuccessfulSimulationRunWithReconfigurationFolder() {
+    public void testSuccessfulSimulationRunWithReconfigurationFolder() throws Exception {
         // run the simulation with just the reconfigurations defined
         // the simulation should finish properly
         this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toString());
@@ -136,7 +136,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder(@TempDir File emptyRulesFolder) {
+    public void testSuccessfulSimulationRunWithEmptyReconfigurationFolder(@TempDir File emptyRulesFolder) throws Exception {
         URI emptyRulesURI = URI.createFileURI(emptyRulesFolder.toPath().normalize().toAbsolutePath().toString());
         this.simulizarConfiguration
                 .setReconfigurationRulesFolder(emptyRulesURI.toString());
@@ -144,7 +144,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithUsageEvolution() {
+    public void testSuccessfulSimulationRunWithUsageEvolution() throws Exception {
         // run the simulation with just the usage evolution defined
         // the simulation should finish properly
         this.simulizarConfiguration.setUsageEvolutionFile(usageEvolutionModelUri.toString());
@@ -152,7 +152,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithUsageEvolutionNoParamEvolution() {
+    public void testSuccessfulSimulationRunWithUsageEvolutionNoParamEvolution() throws Exception {
         // run the simulation with just an empty usage evolution defined
         // the simulation should finish properly
         this.simulizarConfiguration.setUsageEvolutionFile(emptyUsageEvolutionModelUri.toString());
@@ -160,7 +160,7 @@ public class SimulizarRunConfigTest {
     }
 
     @Test
-    public void testSuccessfulSimulationRunWithMonitorRepository() {
+    public void testSuccessfulSimulationRunWithMonitorRepository() throws Exception {
         // run the simulation with just the monitors defined
         // the simulation should finish properly
         this.simulizarConfiguration.setMonitorRepositoryFile(monitorRepoUri.toString());
@@ -169,7 +169,7 @@ public class SimulizarRunConfigTest {
 
     @Test
     @PluginTestOnly
-    public void testSuccessfulSimulationRunWithMonitorRepositoryAndReconfigurationFolder() {
+    public void testSuccessfulSimulationRunWithMonitorRepositoryAndReconfigurationFolder() throws Exception {
         this.simulizarConfiguration.setReconfigurationRulesFolder(reconfigurationRulesUri.toString());
         this.simulizarConfiguration.setMonitorRepositoryFile(monitorRepoUri.toString());
         runSuccessfulSimulation();
@@ -188,7 +188,7 @@ public class SimulizarRunConfigTest {
         properties.put(SimuComConfig.EXPERIMENT_RUN, SimuComConfig.DEFAULT_EXPERIMENT_RUN);
         properties.put(SimuComConfig.SIMULATION_TIME, "2000");
         properties.put(SimuComConfig.MAXIMUM_MEASUREMENT_COUNT, SimuComConfig.DEFAULT_MAXIMUM_MEASUREMENT_COUNT);
-        properties.put(SimuComConfig.VERBOSE_LOGGING, false);
+        properties.put(SimuComConfig.VERBOSE_LOGGING, true);
         properties.put(SimuComConfig.VARIATION_ID, SimuComConfig.DEFAULT_VARIATION_NAME);
         properties.put(SimulizarConstants.RECONFIGURATION_RULES_FOLDER,
                 SimulizarConstants.DEFAULT_RECONFIGURATION_RULES_FOLDER);
@@ -197,18 +197,9 @@ public class SimulizarRunConfigTest {
         return properties;
     }
 
-    private void runSuccessfulSimulation() {
+    private void runSuccessfulSimulation() throws Exception {
         final IProgressMonitor progressMonitor = new NullProgressMonitor();
-        try {
-            this.simulizarJob.execute(progressMonitor);
-        } catch (final Throwable anyException) {
-            failDueToException(anyException);
-        }
-    }
-
-    private static void failDueToException(final Throwable unexpectedException) {
-        fail("Unexpected exception thrown by test case:\n---------------------\nType: " + unexpectedException
-                + "\nStack Trace: " + stacktraceToString(unexpectedException) + "\n---------------------");
+        this.simulizarJob.execute(progressMonitor);
     }
 
     private static String stacktraceToString(final Throwable exception) {

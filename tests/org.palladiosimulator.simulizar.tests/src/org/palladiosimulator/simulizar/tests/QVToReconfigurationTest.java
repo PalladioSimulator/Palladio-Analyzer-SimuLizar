@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.BasicEList;
@@ -60,7 +61,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
-@ExtendWith(PlatformStandaloneExtension.class)
 @PluginTestOnly
 public class QVToReconfigurationTest {
 
@@ -74,10 +74,6 @@ public class QVToReconfigurationTest {
     private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
     private final static String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/scaleUp";
     private final static String ALLOCATION_FILE_CONFIGURATION_KEY = "allocationFile";
-    private final static String REPOSITORY_EXTENSION = "repository";
-    private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
-    private final static String SYSTEM_EXTENSION = "system";
-    private final static String ALLOCATION_EXTENSION = "allocation";
     private final static String BRANCH_2_ENTITY_NAME = "branch2";
     private final static double BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING = 0.1;
     private final static double BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING = 0.0;
@@ -98,19 +94,7 @@ public class QVToReconfigurationTest {
     private static IResourceTableManager resourceTableManager;
 
     @BeforeAll
-    public static void setUpBeforeClass() {
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
-                new RepositoryResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-                new ResourceenvironmentResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
-                new SystemResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
-                new AllocationResourceFactoryImpl());
-        Map<URI, URI> uriMap = URIConverter.URI_MAP;
-        uriMap.put(URI.createURI("pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
-                URI.createURI("platform:/plugin/org.palladiosimulator.metricspec.resources/commonMetrics.metricspec"));
-
+    public static void setUpBeforeClass() {        
         repositoryURI = URI.createPlatformPluginURI(REPOSITORY_PATH, true);
         repositoryURI = CommonPlugin.resolve(repositoryURI);
         resourceEnvironmentURI = URI.createPlatformPluginURI(RESOURCE_ENVIRONMENT_PATH, true);
@@ -353,15 +337,13 @@ public class QVToReconfigurationTest {
         pcmResourceSet.loadModel(systemURI);
         pcmResourceSet.loadModel(allocationURI);
         final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
-        EObject monitoredElement = null;
-        while (pcmModelIterator.hasNext()) {
-            final EObject element = pcmModelIterator.next();
-            final EAttribute id = element.eClass().getEIDAttribute();
-            final Object idAttribute = element.eGet(id);
-            if (idAttribute.toString().equals("_1P7G0LwGEeSxGbiYbg6Waw")) {
-                monitoredElement = element;
-            }
-        }
+        EObject monitoredElement = pcmResourceSet.getRepositories()
+            .stream()
+            .flatMap(repo -> Optional.ofNullable(repo.eResource()
+                .getEObject("_1P7G0LwGEeSxGbiYbg6Waw"))
+                .stream())
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException("Expected model element not present in test models"));
 
         /*
          * Create the configuration for the QVTo reconfigurator.

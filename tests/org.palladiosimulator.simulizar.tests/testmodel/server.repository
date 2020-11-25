@@ -33,6 +33,10 @@
     <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_iB_SsM1nEeSB6dFjhlvUmg" entityName="Required_process_client2" requiredInterface__OperationRequiredRole="_gl1dYLwGEeSxGbiYbg6Waw"/>
   </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_gl1dYLwGEeSxGbiYbg6Waw" entityName="IServer">
-    <signatures__OperationInterface id="_r_cZ8LwGEeSxGbiYbg6Waw" entityName="process"/>
+    <signatures__OperationInterface id="_r_cZ8LwGEeSxGbiYbg6Waw" entityName="process">
+      <parameters__OperationSignature parameterName="param">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
   </interfaces__Repository>
 </repository:Repository>
