@@ -26,6 +26,7 @@ import org.scaledl.usageevolution.UsageevolutionPackage;
 import dagger.Lazy;
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.SimulationResult;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access
@@ -181,6 +182,11 @@ public class SimuLizarRuntimeState {
         final double simRealTimeNano = ExperimentRunner.run(this.model);
         LOGGER.debug(
                 "Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
+        
+        if (!SimulationResult.OK.equals(this.model.getErrorStatus())) {
+            throw new RuntimeException("The simulation was aborted due to an exception during interpretation.", 
+                    this.model.getErrorThrowable());
+        }
     }
 
     public void cleanUp() {
