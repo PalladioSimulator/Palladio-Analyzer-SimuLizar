@@ -8,7 +8,6 @@ import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 
 import com.google.auto.factory.AutoFactory;
 
@@ -22,7 +21,6 @@ public class CompletionsRDSeffSwitch extends CompletionsSwitch<Object> {
 
     @Inject
     public CompletionsRDSeffSwitch(InterpreterDefaultContext context,
-            SimulatedBasicComponentInstance basicInstance,
             ExplicitDispatchComposedSwitch<Object> parentSwitch) {
                 this.parentSwitch = parentSwitch;
     }

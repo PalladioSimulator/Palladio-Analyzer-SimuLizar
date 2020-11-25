@@ -10,31 +10,21 @@ import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
-import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 
 public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwitchFactory {
 
-    private final ComponentInstanceRegistry componentInstanceRegistry;
     private final Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider;
 
     @Inject
-    public ExtensibleComposedRDSeffSwitchFactory(ComponentInstanceRegistry componentInstanceRegistry,
-            Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider) {
-        this.componentInstanceRegistry = componentInstanceRegistry;
+    public ExtensibleComposedRDSeffSwitchFactory(Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider) {
         this.elementFactoriesProvider = elementFactoriesProvider;
     }
 
     @Override
     public Switch<Object> createRDSeffSwitch(InterpreterDefaultContext context) {
-        
-        final FQComponentID componentID = context.computeFQComponentID();
-        final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) componentInstanceRegistry.getComponentInstance(componentID);
-        
         final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
         elementFactoriesProvider.get().stream().forEach(s -> interpreter.addSwitch(
-                s.createRDSeffSwitch(context, basicComponentInstance, interpreter)));
+                s.createRDSeffSwitch(context, interpreter)));
         
         return interpreter;
     }

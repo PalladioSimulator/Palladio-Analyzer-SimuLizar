@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
 import java.util.Stack;
-import java.util.function.Predicate;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -16,12 +14,9 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
-import org.palladiosimulator.pcm.allocation.Allocation;
-import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.Parameter;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AcquireAction;
@@ -36,9 +31,7 @@ import org.palladiosimulator.pcm.seff.ReleaseAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.SetVariableAction;
-import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
-import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
@@ -72,14 +65,13 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
     private ComposedSwitch<Object> parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
-    private final Allocation allocation;
 
     private final SimulatedStackframe<Object> resultStackFrame;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
     private final IResourceTableManager resourceTableManager;
     private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
-    private final RDSeffSwitchFactory rdseffSwitchFactory;
+    private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
@@ -88,12 +80,11 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
             @Provided IResourceTableManager resourceTableManager,
             @Provided ComponentInstanceRegistry componentInstanceRegistry,
             @Provided ComposedStructureInnerSwitchFactory composedSwitchFactory,
-            @Provided RDSeffSwitchFactory rdseffSwitchFactory) {
+            @Provided ComposedRDSeffSwitchFactory rdseffSwitchFactory) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
         this.rdseffSwitchFactory = rdseffSwitchFactory;
-        this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = Optional.ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
@@ -457,8 +448,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
                             RDSeffSwitch.this.context.getRuntimeState(), true,
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
-                    final RDSeffSwitch seffInterpreter = rdseffSwitchFactory.create(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance);
+                    final var seffInterpreter = rdseffSwitchFactory.createRDSeffSwitch(seffContext);
 
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
@@ -562,52 +552,6 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
             }
         }
     }
-
-
-
-
-    /**
-     * @param internalAction
-     */
-    private void interpretResourceCall(final InternalAction internalAction) {
-        final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
-        final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
-
-        for (final ResourceCall resourceCall : internalAction.getResourceCall__Action()) {
-
-
-        }
-    }
-
-
-    /**
-     * Gets the allocation context for the current assembly context stack. The stack is investigated
-     * in a FIFO-manner, i.e., first upper elements are checked. This is needed for the case of sub
-     * systems.
-     *
-     * @param allocation
-     *            The allocation to find a suitable allocation context in.
-     * @return The allocation context.
-     * @throws PCMModelAccessException
-     *             if no allocation context could be found.
-     */
-    private AllocationContext getAllocationContext(final Allocation allocation) {
-        // For iterating top-down through a stack see:
-        // http://stackoverflow.com/questions/16992758/is-there-a-bug-in-java-util-stacks-iterator
-        for (final AllocationContext allocationContext : allocation.getAllocationContexts_Allocation()) {
-            for (final ListIterator<AssemblyContext> iterator = this.context.getAssemblyContextStack()
-                    .listIterator(this.context.getAssemblyContextStack().size()); iterator.hasPrevious();) {
-                if (allocationContext.getAssemblyContext_AllocationContext().getId()
-                        .equals(iterator.previous().getId())) {
-                    return allocationContext;
-                }
-            }
-        }
-
-        throw new PCMModelAccessException("No AllocationContext in Allocation " + allocation + " for AssemblyContext "
-                + this.context.getAssemblyContextStack().peek() + " or its parents.");
-    }
-
 
 	@Override
 	public Switch<Object> getParentSwitch() {
