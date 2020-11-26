@@ -57,6 +57,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
@@ -64,20 +65,26 @@ import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 @PluginTestOnly
 public class QVToReconfigurationTest {
 
+    private static final String PCM_TEST_MODEL_SEFF_BRANCH_ACTION_ID = "_1P7G0LwGEeSxGbiYbg6Waw";
+    private static final String MEASUREMENT_SPECIFICATION_ID = "_sEx-cMLAEeSZr8oGpigbHA";
+ 
     private final static String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.repository";
     private final static String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment";
     private final static String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.system";
     private final static String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.allocation";
-    private final static String PMS_MODEL_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.monitorrepository";
+    private final static String MONITOR_REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/monitors/server.monitorrepository";
+
     private final static String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addClonedServer";
     private final static String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addNewServer";
     private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
     private final static String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/scaleUp";
-    private final static String ALLOCATION_FILE_CONFIGURATION_KEY = "allocationFile";
+
+    private final static String WF_CONFIGURATION_KEY_ALLOCATION_FILE = "allocationFile";
     private final static String REPOSITORY_EXTENSION = "repository";
     private final static String RESOURCE_ENVIRONMENT_EXTENSION = "resourceenvironment";
     private final static String SYSTEM_EXTENSION = "system";
     private final static String ALLOCATION_EXTENSION = "allocation";
+
     private final static String BRANCH_2_ENTITY_NAME = "branch2";
     private final static double BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING = 0.1;
     private final static double BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING = 0.0;
@@ -93,20 +100,20 @@ public class QVToReconfigurationTest {
     private static URI resourceEnvironmentURI;
     private static URI repositoryURI;
     private static URI allocationURI;
-    private static URI pmsURI;
-    
+    private static URI monitorURI;
+
     private static IResourceTableManager resourceTableManager;
 
     @BeforeAll
     public static void setUpBeforeClass() {
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(REPOSITORY_EXTENSION,
-                new RepositoryResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(RESOURCE_ENVIRONMENT_EXTENSION,
-                new ResourceenvironmentResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(SYSTEM_EXTENSION,
-                new SystemResourceFactoryImpl());
-        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap().put(ALLOCATION_EXTENSION,
-                new AllocationResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+            .put(REPOSITORY_EXTENSION, new RepositoryResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+            .put(RESOURCE_ENVIRONMENT_EXTENSION, new ResourceenvironmentResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+            .put(SYSTEM_EXTENSION, new SystemResourceFactoryImpl());
+        Resource.Factory.Registry.INSTANCE.getExtensionToFactoryMap()
+            .put(ALLOCATION_EXTENSION, new AllocationResourceFactoryImpl());
         Map<URI, URI> uriMap = URIConverter.URI_MAP;
         uriMap.put(URI.createURI("pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec"),
                 URI.createURI("platform:/plugin/org.palladiosimulator.metricspec.resources/commonMetrics.metricspec"));
@@ -119,65 +126,104 @@ public class QVToReconfigurationTest {
         systemURI = CommonPlugin.resolve(systemURI);
         allocationURI = URI.createPlatformPluginURI(ALLOCATION_PATH, true);
         allocationURI = CommonPlugin.resolve(allocationURI);
-        pmsURI = URI.createPlatformPluginURI(PMS_MODEL_PATH, true);
-        pmsURI = CommonPlugin.resolve(pmsURI);
-        
+        monitorURI = URI.createPlatformPluginURI(MONITOR_REPOSITORY_PATH, true);
+        monitorURI = CommonPlugin.resolve(monitorURI);
+
         resourceTableManager = new ResourceTableManager();
 
     }
 
+    
     @Test
-    public void test() {
-        reconfigurationTests();
+    void testPerformOutsourceReconfigurationIfMeasuredValueExceedsThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_OVER_THRESHOLD, TRANSFORMATION_RULES_OUTSOURCE_PATH, resourceTableManager);
+        
+        double actualResult = checkOutsourceReconfiguration(pcmResourceSet, BRANCH_2_ENTITY_NAME);
+        assertEquals(BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING, actualResult, 0.0, "The branch probability was not changed as expected!");
+    }
+    
+    
+    @Test
+    void testSkipOutsourceReconfigurationIfMeasuredValueBelowThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_BELOW_THRESHOLD, TRANSFORMATION_RULES_OUTSOURCE_PATH, resourceTableManager);
+        
+        double actualResult = checkOutsourceReconfiguration(pcmResourceSet, BRANCH_2_ENTITY_NAME);
+        assertEquals(BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING, actualResult, 0.0, "The branch probability has not remained as it was expected!");
+    }
+    
+    
+    @Test
+    void testPerformScaleUpReconfigurationIfMeasuredValueExceedsThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_OVER_THRESHOLD, TRANSFORMATION_RULES_SCALE_UP_PATH, resourceTableManager);
+        
+        double actualResult = checkScaleUpReconfiguration(pcmResourceSet, SERVER_RESOURCE_CONTAINER_NAME);
+        assertEquals(SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING, actualResult, 0.0, "Processing resources have not scaled as expected!");
+    }
+    
+    
+    @Test
+    void testSkipScaleUpReconfigurationIfMeasuredValueBelowThreshold() throws Exception {
+        final PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_BELOW_THRESHOLD, TRANSFORMATION_RULES_SCALE_UP_PATH, resourceTableManager);
+        
+        double actualResult = checkScaleUpReconfiguration(pcmResourceSet, SERVER_RESOURCE_CONTAINER_NAME);
+        assertEquals(SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING, actualResult, 0.0, "Processing resources have not remained as it was expected!");
+    }
+    
+    
+    @Test
+    void testPerformAddNewServerReconfigurationIfMeasuredValueExceedsThreshold() throws Exception {
+       PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_OVER_THRESHOLD, TRANSFORMATION_RULES_ADD_SERVER_PATH, resourceTableManager);
+        
+       int actualResult = checkAddNewServerReconfiguration(pcmResourceSet, "server1", "server2", "client");
+       assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING, actualResult, "The server was not added!");
+    }
+    
+    
+    @Test
+    void testSkipAddNewServerUpReconfigurationIfMeasuredValueBelowThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_BELOW_THRESHOLD, TRANSFORMATION_RULES_ADD_SERVER_PATH, resourceTableManager);
+        
+        int actualResult = checkAddNewServerReconfiguration(pcmResourceSet, "server1", "server2", "client");
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING, actualResult, "The number of servers is not as expected!");
+               
+    }
+    
+    
+    @Test
+    void testPerformAddClonedServerReconfigurationIfMeasuredValueExceedsThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_OVER_THRESHOLD, TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH, resourceTableManager);
+        
+        int actualResult = checkAddClonedServerReconfiguration(pcmResourceSet, "server1", "client");
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING, actualResult, "The server was not added!");
     }
 
-    private void reconfigurationTests() {
-        assertEquals(BRANCH_2_EXPECTED_VALUE_AFTER_OUTSOURCING,
-                outsource(MEASUREMENT_OVER_THRESHOLD), 0.0, "The branch probability was not changed as expected!");
-        assertEquals(
-                BRANCH_2_EXPECTED_VALUE_BEFORE_OUTSOURCING, outsource(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The branch probability has not remained as it was expected!");
-
-        assertEquals(SERVER_EXPECTED_PROCESSING_RATE_AFTER_SCALING,
-                scaleUp(MEASUREMENT_OVER_THRESHOLD), 0.0, "Processing resources have not scaled as expected!");
-        assertEquals(
-                SERVER_EXPECTED_PROCESSING_RATE_BEFORE_SCALING, scaleUp(MEASUREMENT_BELOW_THRESHOLD), 0.0, "Processing resources have not remained as it was expected!");
-
-        assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
-                addNewServer(MEASUREMENT_OVER_THRESHOLD), 0.0, "The server was not added!");
-        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
-                addNewServer(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The number of servers is not as expected!");
-
-        assertEquals(EXPECTED_NUMBER_OF_SERVERS_AFTER_ADDING,
-                addClonedServer(MEASUREMENT_OVER_THRESHOLD), 0.0, "The server was not added!");
-        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING,
-                addClonedServer(MEASUREMENT_BELOW_THRESHOLD), 0.0, "The number of servers is not as expected!");
+    
+    @Test
+    void testSkipAddClonedServerUpReconfigurationIfMeasuredValueBelowThreshold() throws Exception {
+        PCMResourceSetPartition pcmResourceSet = runReconfiguration(MEASUREMENT_BELOW_THRESHOLD, TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH, resourceTableManager);
+        
+        int actualResult = checkAddClonedServerReconfiguration(pcmResourceSet, "server1", "client");
+        assertEquals(EXPECTED_NUMBER_OF_SERVERS_BEFORE_ADDING, actualResult, "The number of servers is not as expected!");
     }
-
-    private int addNewServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_SERVER_PATH, resourceTableManager);
-
+    
+    
+    private int checkAddNewServerReconfiguration(PCMResourceSetPartition pcmResourceSet, String expectedProvidedAssemblyContextEntityName1, 
+            String expectedProvidedAssemblyContextEntityName2, String expectedRequiredAssemblyContextEntityName) {
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfServer1Client = 0, numOfServer2Client = 0;
         for (final Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
             if (connector instanceof AssemblyConnector) {
-
                 final AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
-                final AssemblyContext assemblyContextProviding = assemblyConnector
-                        .getProvidingAssemblyContext_AssemblyConnector();
-                final AssemblyContext assemblyContextRequiring = assemblyConnector
-                        .getRequiringAssemblyContext_AssemblyConnector();
+                final AssemblyContext assemblyContextProviding = assemblyConnector.getProvidingAssemblyContext_AssemblyConnector();
+                final AssemblyContext assemblyContextRequiring = assemblyConnector.getRequiringAssemblyContext_AssemblyConnector();
 
-                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("server1")
-                        && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedProvidedAssemblyContextEntityName1)
+                    && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedRequiredAssemblyContextEntityName)) {
                     numOfServer1Client++;
                 }
 
-                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("server2")
-                        && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedProvidedAssemblyContextEntityName2)
+                    && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedRequiredAssemblyContextEntityName)) {
                     numOfServer2Client++;
                 }
             }
@@ -185,24 +231,17 @@ public class QVToReconfigurationTest {
         return numOfServer1Client + numOfServer2Client;
     }
 
-    private int addClonedServer(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH, resourceTableManager);
-
+    private int checkAddClonedServerReconfiguration(PCMResourceSetPartition pcmResourceSet, String expectedProvidedAssemblyContextEntityName, String expectedRequiredAssemblyContextEntityName) {
         final Allocation allocation = pcmResourceSet.getAllocation();
         int numOfIServerProviders = 0;
-        for (final Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
+        for (Connector connector : allocation.getSystem_Allocation().getConnectors__ComposedStructure()) {
             if (connector instanceof AssemblyConnector) {
+                AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
+                AssemblyContext assemblyContextProviding = assemblyConnector.getProvidingAssemblyContext_AssemblyConnector();
+                AssemblyContext assemblyContextRequiring = assemblyConnector.getRequiringAssemblyContext_AssemblyConnector();
 
-                final AssemblyConnector assemblyConnector = (AssemblyConnector) connector;
-                final AssemblyContext assemblyContextProviding = assemblyConnector
-                        .getProvidingAssemblyContext_AssemblyConnector();
-                final AssemblyContext assemblyContextRequiring = assemblyConnector
-                        .getRequiringAssemblyContext_AssemblyConnector();
-
-                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                        .equals("server1")
-                        && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName()
-                                .equals("client")) {
+                if (assemblyContextProviding.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedProvidedAssemblyContextEntityName)
+                    && assemblyContextRequiring.getEncapsulatedComponent__AssemblyContext().getEntityName().equals(expectedRequiredAssemblyContextEntityName)) {
                     numOfIServerProviders++;
                 }
             }
@@ -213,28 +252,22 @@ public class QVToReconfigurationTest {
     /**
      * Performs scaling up with the measurement passed as parameter. If the measurement is over the
      * threshold the scaling up should be performed, otherwise not.
-     *
      * @param m
      *            measurement that defines whether the scaling up is performed or not.
+     *
      * @return processing resource of the server that is to be scaled up.
      */
-    private double scaleUp(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_SCALE_UP_PATH, resourceTableManager);
-
+    private double checkScaleUpReconfiguration(PCMResourceSetPartition pcmResourceSet, String expectedResourcContainerEntityName) {
         final Allocation allocation = pcmResourceSet.getAllocation();
         final ResourceEnvironment resourceEnvironment = allocation.getTargetResourceEnvironment_Allocation();
-        final Iterator<ResourceContainer> iteratorResourceContainer = resourceEnvironment
-                .getResourceContainer_ResourceEnvironment().iterator();
+        final Iterator<ResourceContainer> iteratorResourceContainer = resourceEnvironment.getResourceContainer_ResourceEnvironment().iterator();
         while (iteratorResourceContainer.hasNext()) {
             final ResourceContainer resourceContainer = iteratorResourceContainer.next();
-            if (resourceContainer.getEntityName().equals(SERVER_RESOURCE_CONTAINER_NAME)) {
-                final Iterator<ProcessingResourceSpecification> iteratorProcessingResourceSpecification = resourceContainer
-                        .getActiveResourceSpecifications_ResourceContainer().iterator();
+            if (resourceContainer.getEntityName().equals(expectedResourcContainerEntityName)) {
+                final Iterator<ProcessingResourceSpecification> iteratorProcessingResourceSpecification = resourceContainer.getActiveResourceSpecifications_ResourceContainer().iterator();
                 while (iteratorProcessingResourceSpecification.hasNext()) {
-                    final ProcessingResourceSpecification processingResourceSpecification = iteratorProcessingResourceSpecification
-                            .next();
-                    return Double.parseDouble(processingResourceSpecification
-                            .getProcessingRate_ProcessingResourceSpecification().getSpecification());
+                    final ProcessingResourceSpecification processingResourceSpecification = iteratorProcessingResourceSpecification.next();
+                    return Double.parseDouble(processingResourceSpecification.getProcessingRate_ProcessingResourceSpecification().getSpecification());
                 }
             }
         }
@@ -245,13 +278,9 @@ public class QVToReconfigurationTest {
     /**
      * Performs outsourcing with the measurement passed as parameter. If the measurement is over the
      * threshold the outsourcing should be performed, otherwise not.
-     *
-     * @param m
-     *            measurement that defines whether the outsourcing is performed or not.
      * @return branch probability that is to be increased.
      */
-    private double outsource(final double m) {
-        final PCMResourceSetPartition pcmResourceSet = readPcmModelAndApplyTransformationRules(m, TRANSFORMATION_RULES_OUTSOURCE_PATH, resourceTableManager);
+    private double checkOutsourceReconfiguration(PCMResourceSetPartition pcmResourceSet, String expectedBranchEntityName) {
         final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getAllocation().eAllContents();
         /*
          * Iterate over all the elements of the allocation diagram.
@@ -265,15 +294,15 @@ public class QVToReconfigurationTest {
             if (root instanceof AllocationContext) {
                 final AllocationContext serverAllocationContext = (AllocationContext) root;
                 final AssemblyContext serverAssemblyContext = serverAllocationContext
-                        .getAssemblyContext_AllocationContext();
+                    .getAssemblyContext_AllocationContext();
                 /*
                  * The server that contains our SEFF is of type BasicComponent.
                  */
                 if (serverAssemblyContext.getEncapsulatedComponent__AssemblyContext() instanceof BasicComponent) {
                     final BasicComponent serverBasicComponent = (BasicComponent) serverAssemblyContext
-                            .getEncapsulatedComponent__AssemblyContext();
+                        .getEncapsulatedComponent__AssemblyContext();
                     final EList<ServiceEffectSpecification> serverSeffs = serverBasicComponent
-                            .getServiceEffectSpecifications__BasicComponent();
+                        .getServiceEffectSpecifications__BasicComponent();
                     /*
                      * We iterate all the SEFFs within the BasicComponent.
                      */
@@ -295,7 +324,7 @@ public class QVToReconfigurationTest {
                                  */
                                 if (seffObject instanceof ProbabilisticBranchTransition) {
                                     final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) seffObject;
-                                    if (branchTransition.getEntityName().equals(BRANCH_2_ENTITY_NAME)) {
+                                    if (branchTransition.getEntityName().equals(expectedBranchEntityName)) {
                                         return branchTransition.getBranchProbability();
                                     }
                                 }
@@ -313,86 +342,110 @@ public class QVToReconfigurationTest {
      * Creates a measurement out of parameter "m", reads in the PCM model from the folder
      * "testmodel", performs the QVTo rules that are placed in the folder "testmodel/rules" and
      * returns the resulting PCM model. The PCM model could be changed or not, depending on the
-     * parameter "m".
+     * parameter "measuredValue".
      *
-     * @param m
-     *            measurement.
+     * @param measuredValue     measurement.
      * @return The PCM model after the rules from "testmodel/rules" have been applied.
      */
-    private PCMResourceSetPartition readPcmModelAndApplyTransformationRules(final double m,
-            final String reconfigurationRulesFolderPath, IResourceTableManager resourceTableManager) {
-        /*
-         * Create a measurement.
-         */
-        final MeasurementSpecification measurementSpecification = MonitorRepositoryFactory.eINSTANCE
-                .createMeasurementSpecification();
-        measurementSpecification.setId("_sEx-cMLAEeSZr8oGpigbHA");
+    private PCMResourceSetPartition runReconfiguration(double measuredValue, 
+            String reconfigurationRulesFolderPath, IResourceTableManager resourceTableManager) {
+
+        final PCMResourceSetPartition pcmResourceSet = loadPcmResources();
+        EObject monitoredElement = assignMonitorToModelElement(pcmResourceSet, PCM_TEST_MODEL_SEFF_BRANCH_ACTION_ID);
+
+        SimuLizarWorkflowConfiguration workflowConfig = createWorkflowConfiguration(allocationURI, reconfigurationRulesFolderPath);
+        PCMPartitionManager pcmPartitionManager = loadPcmModelsIntoBlackboard(workflowConfig, pcmResourceSet, reconfigurationRulesFolderPath);
+
+        RuntimeMeasurement responeTimeRuntimeMeasurement = createResponeTimeMeasurement(measuredValue);
+        recordRuntimeMeasurement(pcmPartitionManager, responeTimeRuntimeMeasurement);
+
+        executeTransformation(workflowConfig, pcmPartitionManager, monitoredElement);
+
+        return pcmResourceSet;
+    }
+    
+    
+    private PCMResourceSetPartition loadPcmResources() {
+        final PCMResourceSetPartition pcmResourceSet = new PCMResourceSetPartition();
+        pcmResourceSet.loadModel(repositoryURI);
+        pcmResourceSet.loadModel(resourceEnvironmentURI);
+        pcmResourceSet.loadModel(systemURI);
+        pcmResourceSet.loadModel(allocationURI);
+        pcmResourceSet.loadModel(monitorURI);
+        return pcmResourceSet;
+    }
+    
+    
+    private EObject assignMonitorToModelElement(PCMResourceSetPartition pcmResourceSet, String modelElementId) {
+        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
+        EObject monitoredElement = null;
+        while (pcmModelIterator.hasNext()) {
+            final EObject element = pcmModelIterator.next();
+            final EAttribute id = element.eClass()
+                .getEIDAttribute();
+            final Object idAttribute = element.eGet(id);
+            if (idAttribute.toString().equals(modelElementId)) {
+                monitoredElement = element;
+            }
+        }
+        return monitoredElement;
+    }
+
+    
+    private SimuLizarWorkflowConfiguration createWorkflowConfiguration(URI allocationURI, String reconfigurationRulesFolderPath) {
+        Map<String, Object> configuration = new HashMap<String, Object>();
+        configuration.put(WF_CONFIGURATION_KEY_ALLOCATION_FILE, Paths.get(allocationURI.path()).toAbsolutePath().toString());
+
+        SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
+        URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
+        swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
+        return swfc;
+    }
+    
+
+    private PCMPartitionManager loadPcmModelsIntoBlackboard(SimuLizarWorkflowConfiguration workflowConfig, ResourceSetPartition pcmResourceSet, String reconfigurationRulesFolderPath) {
+        final MDSDBlackboard blackboard = new MDSDBlackboard();
+        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
+        final PCMPartitionManager pcmPartitionManager = new PCMPartitionManager(blackboard, workflowConfig);
+        return pcmPartitionManager;
+    }
+    
+    
+    private RuntimeMeasurement createResponeTimeMeasurement(final double responeTimeMeasurement) {
+        final MeasurementSpecification measurementSpecification = MonitorRepositoryFactory.eINSTANCE.createMeasurementSpecification();
+        measurementSpecification.setId(MEASUREMENT_SPECIFICATION_ID);
         measurementSpecification.setMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        StatisticalCharacterization statisticalCharacterization = MonitorRepositoryFactory.eINSTANCE
-                .createArithmeticMean();
+        StatisticalCharacterization statisticalCharacterization = MonitorRepositoryFactory.eINSTANCE.createArithmeticMean();
         TimeDrivenAggregation timeDrivenAggregation = MonitorRepositoryFactory.eINSTANCE.createTimeDrivenAggregation();
         timeDrivenAggregation.setStatisticalCharacterization(statisticalCharacterization);
         timeDrivenAggregation.setMeasurementSpecification(measurementSpecification);
         timeDrivenAggregation.setWindowIncrement(10d);
         timeDrivenAggregation.setWindowLength(10d);
 
-        final RuntimeMeasurement responeTimeRuntimeMeasurement = RuntimeMeasurementFactory.eINSTANCE
-                .createRuntimeMeasurement();
+        final RuntimeMeasurement responeTimeRuntimeMeasurement = RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurement();
         responeTimeRuntimeMeasurement.setId("");
-        responeTimeRuntimeMeasurement.setMeasuringValue(m);
+        responeTimeRuntimeMeasurement.setMeasuringValue(responeTimeMeasurement);
         responeTimeRuntimeMeasurement.setMeasurementSpecification(measurementSpecification);
-
-        URI reconfRulesURI = URI.createPlatformPluginURI(reconfigurationRulesFolderPath, false);
-
-        /*
-         * Read in the PCM model.
-         */
-        final PCMResourceSetPartition pcmResourceSet = new PCMResourceSetPartition();
-        pcmResourceSet.loadModel(repositoryURI);
-        pcmResourceSet.loadModel(resourceEnvironmentURI);
-        pcmResourceSet.loadModel(systemURI);
-        pcmResourceSet.loadModel(allocationURI);
-        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
-        EObject monitoredElement = null;
-        while (pcmModelIterator.hasNext()) {
-            final EObject element = pcmModelIterator.next();
-            final EAttribute id = element.eClass().getEIDAttribute();
-            final Object idAttribute = element.eGet(id);
-            if (idAttribute.toString().equals("_1P7G0LwGEeSxGbiYbg6Waw")) {
-                monitoredElement = element;
-            }
-        }
-
-        /*
-         * Create the configuration for the QVTo reconfigurator.
-         */
-        Map<String, Object> configuration = new HashMap<String, Object>();
-        configuration.put(ALLOCATION_FILE_CONFIGURATION_KEY,
-                Paths.get(allocationURI.path()).toAbsolutePath().toString());
-
-        SimuLizarWorkflowConfiguration swfc = new SimuLizarWorkflowConfiguration(configuration);
-        swfc.setMonitorRepositoryFile(Paths.get(pmsURI.path()).toAbsolutePath().toString());
-        swfc.setReconfigurationRulesFolder(reconfRulesURI.toString());
-
-        /*
-         * Put the PCM model into the MDSD blackboard.
-         */
-        final MDSDBlackboard blackboard = new MDSDBlackboard();
-        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
-        final PCMPartitionManager pcmPartitionManager = new PCMPartitionManager(blackboard, swfc);
+        
+        return responeTimeRuntimeMeasurement;
+    }
+    
+    
+    private void recordRuntimeMeasurement(PCMPartitionManager pcmPartitionManager, RuntimeMeasurement responeTimeRuntimeMeasurement) {
         RuntimeMeasurementModel rmModel = pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
         rmModel.getMeasurements().add(responeTimeRuntimeMeasurement);
-        
+    }
+    
+
+    
+    private void executeTransformation(SimuLizarWorkflowConfiguration wfConfig, PCMPartitionManager pcmPartitionManager, EObject monitoredElement) {
         QVTOReconfigurator reconfigurator = new QVTOReconfigurator();
-        reconfigurator.setConfiguration(swfc);
+        reconfigurator.setConfiguration(wfConfig);
         reconfigurator.setPCMPartitionManager(pcmPartitionManager);
         QvtoReconfigurationLoader reconfigurationLoader = new QvtoReconfigurationLoader();
-        reconfigurationLoader.load(swfc);
-        EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(
-                reconfigurationLoader.getTransformations());
+        reconfigurationLoader.load(wfConfig);
+        EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(reconfigurationLoader.getTransformations());
         boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement, resourceTableManager);
         assertTrue(checkedAndExceuted, "Reconfiguration was not executed!");
-
-        return pcmResourceSet;
     }
 }
