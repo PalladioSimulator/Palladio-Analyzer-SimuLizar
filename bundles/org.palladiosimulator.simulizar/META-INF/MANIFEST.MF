@@ -44,6 +44,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.entity.access,
  org.palladiosimulator.simulizar.exceptions;uses:="de.mdelab.sdm.interpreter.core",
  org.palladiosimulator.simulizar.extension,
+ org.palladiosimulator.simulizar.extension.facets,
  org.palladiosimulator.simulizar.extension.impl,
  org.palladiosimulator.simulizar.interpreter,
  org.palladiosimulator.simulizar.interpreter.impl,
@@ -78,6 +79,9 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.monitorrepository",
  org.palladiosimulator.simulizar.modelobserver,
  org.palladiosimulator.simulizar.modules,
+ org.palladiosimulator.simulizar.modules.core,
+ org.palladiosimulator.simulizar.modules.custom,
+ org.palladiosimulator.simulizar.modules.eclipse,
  org.palladiosimulator.simulizar.reconfiguration;
   uses:="org.eclipse.emf.ecore,
    org.palladiosimulator.simulizar.access,

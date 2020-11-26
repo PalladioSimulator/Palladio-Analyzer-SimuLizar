@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
+
+@SimulationScope
 public class ComponentInstanceRegistry {
     @Inject
     public ComponentInstanceRegistry() {

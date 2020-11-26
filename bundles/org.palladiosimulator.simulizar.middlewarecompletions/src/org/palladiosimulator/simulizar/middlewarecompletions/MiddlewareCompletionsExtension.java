@@ -1,27 +1,23 @@
 package org.palladiosimulator.simulizar.middlewarecompletions;
 
-import javax.inject.Inject;
+import java.util.Set;
 
-import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
+import org.palladiosimulator.simulizar.extension.AbstractSimuLizarExtension;
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 
-import dagger.Lazy;
-
-public class MiddlewareCompletionsExtension implements SimuLizarExtension {
-
-    private final InterpreterSwitchExtensionRegistry switchRegistry;
-    private final Lazy<CompletionsRDSeffSwitchFactory> rdseffSwitchFactory;
-
-    @Inject
-    public MiddlewareCompletionsExtension(InterpreterSwitchExtensionRegistry switchRegistry,
-            Lazy<CompletionsRDSeffSwitchFactory> rdseffSwitchFactory) {
-        this.switchRegistry = switchRegistry;
-        this.rdseffSwitchFactory = rdseffSwitchFactory;
+public class MiddlewareCompletionsExtension extends AbstractSimuLizarExtension {
+    
+    @Override
+    public Set<org.palladiosimulator.simulizar.extension.facets.InterpreterExtension.Factory> getInterpreterExtensions() {
+        return Set.of(DaggerCompletionsRDSeffSwitchExtension.factory());
     }
 
-    @Override
-    public void preInitialize() {
-        switchRegistry.registerRDSeffSwitchFactory(rdseffSwitchFactory.get());
+
+    public class Factory implements SimuLizarExtension.Factory<MiddlewareCompletionsExtension> {
+        @Override
+        public MiddlewareCompletionsExtension create() {
+            return new MiddlewareCompletionsExtension();
+        }  
     }
 
 }

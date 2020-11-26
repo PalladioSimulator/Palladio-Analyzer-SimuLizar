@@ -29,7 +29,5 @@ public class CompletionsRDSeffSwitch extends CompletionsSwitch<Object> {
     public Object caseDelegatingExternalCallAction(DelegatingExternalCallAction object) {
         return parentSwitch.doSwitch(SeffPackage.Literals.EXTERNAL_CALL_ACTION, object);
     }
-    
-    
 
 }

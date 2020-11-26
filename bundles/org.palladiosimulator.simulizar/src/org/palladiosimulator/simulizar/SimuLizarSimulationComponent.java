@@ -1,26 +1,23 @@
 package org.palladiosimulator.simulizar;
 
-import javax.inject.Singleton;
+import javax.inject.Named;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
-import org.palladiosimulator.simulizar.modules.BasicSimuLizarExtensionModule;
-import org.palladiosimulator.simulizar.modules.DefaultQUALModule;
-import org.palladiosimulator.simulizar.modules.EclipseIDEPreferencesModule;
 import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.modules.core.DefaultQUALModule;
+import org.palladiosimulator.simulizar.modules.core.SimuLizarInterpreterExtensionSupportModule;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.runtimestate.SimulationCancelationDelegate;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 
-import dagger.BindsInstance;
-import dagger.Component;
+import dagger.Subcomponent;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 /**
  * This component interface constitutes the foundation of all SimuLizar based dagger components.
@@ -28,13 +25,15 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * SimuLizar analysis should provide an own component interface which extends this component and
  * binds the relevant modules. 
  * 
- * The default component for a standard SimuLizar simulation can be found in {@link SimuLizarComponent}.
+ * The default component for a standard SimuLizar simulation can be found in {@link SimuLizarRootComponent}.
  *
  */
-@Component(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, EclipseIDEPreferencesModule.class, BasicSimuLizarExtensionModule.class })
-@Singleton
-public interface SimuLizarCoreComponent {
-
+@Subcomponent(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, SimuLizarInterpreterExtensionSupportModule.class })
+@SimulationScope
+public interface SimuLizarSimulationComponent {
+    
+    @Named("interpreterJob") IJob simulationJob();
+    
     /**
      * @return the {@link SimuLizarRuntimeState} instance of this component. The state is created if
      *         called the first time.
@@ -48,31 +47,10 @@ public interface SimuLizarCoreComponent {
     ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> getTransmissionInterpreter();
     
     InterpreterSwitchExtensionRegistry extensionRegistry();
-
-    @Component.Builder
-    interface Builder {
-        /**
-         * Sets the cancelation delegate for the core component to construct.
-         */
-        @BindsInstance
-        Builder cancelationDelegate(SimulationCancelationDelegate delegate);
-
-        /**
-         * Sets the workflow configuration for the core component to construct.
-         */
-        @BindsInstance
-        Builder configuration(SimuLizarWorkflowConfiguration configuration);
-
-        /**
-         * Sets the blackboard for the core component to construct.
-         */
-        @BindsInstance
-        Builder blackboard(MDSDBlackboard delegate);
-
-        /**
-         * Creates a new component instance.
-         */
-        SimuLizarCoreComponent build();
+    
+    @Subcomponent.Builder
+    public interface Builder {
+        SimuLizarSimulationComponent build();
     }
 
 }

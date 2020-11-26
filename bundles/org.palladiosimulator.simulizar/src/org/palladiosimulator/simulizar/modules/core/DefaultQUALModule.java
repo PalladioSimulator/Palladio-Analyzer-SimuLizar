@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules;
+package org.palladiosimulator.simulizar.modules.core;
 
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;

@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
@@ -14,7 +14,7 @@ import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
-@Singleton
+@SimulationScope
 public class UsageEvolverFacade {
 
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;

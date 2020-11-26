@@ -16,7 +16,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
@@ -37,6 +36,7 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 
 import de.uka.ipd.sdq.stoex.StoexPackage;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -48,7 +48,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author scheerer
  *
  */
-@Singleton
+@SimulationScope
 public class PCMPartitionManager {
     /**
      * The Global annotation should be used to reference to the global PCMResourceSet partition for

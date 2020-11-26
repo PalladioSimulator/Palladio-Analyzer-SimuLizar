@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
@@ -44,7 +45,7 @@ import de.uka.ipd.sdq.simulation.SimulationResult;
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal, Sebastian Krach
  *
  */
-@Singleton
+@SimulationScope
 public class SimuLizarRuntimeState {
 
     private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);

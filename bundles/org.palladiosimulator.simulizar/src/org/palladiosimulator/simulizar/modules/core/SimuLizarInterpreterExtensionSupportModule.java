@@ -1,50 +1,28 @@
-package org.palladiosimulator.simulizar.modules;
+package org.palladiosimulator.simulizar.modules.core;
 
-import java.util.Collections;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import javax.inject.Singleton;
-
-import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
 import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
-import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
-import org.palladiosimulator.simulizar.extension.SimuLizarExtensionFactory;
 import org.palladiosimulator.simulizar.extension.impl.SimuLizarExtensionRegistryImpl;
 import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
-import org.palladiosimulator.simulizar.scopes.ExtensionManagementScope;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 
 @Module
-public interface BasicSimuLizarExtensionModule {
+public interface SimuLizarInterpreterExtensionSupportModule {
+
 
     @Provides
-    @ElementsIntoSet
-    public static Set<SimuLizarExtensionFactory<?>> provideExtensionFactories() {
-        return Collections.emptySet();
-    }
-
-    @Provides
-    @ElementsIntoSet
-    @ExtensionManagementScope
-    public static Set<SimuLizarExtension> provideExtensions(Set<SimuLizarExtensionFactory<?>> factories,
-            SimuLizarCoreComponent component) {
-        return factories.stream()
-            .map(fact -> fact.createExtension(component))
-            .collect(Collectors.toSet());
-    }
-
-    @Provides
-    @Singleton
+    @SimulationScope
     static SimuLizarExtensionRegistryImpl<AbstractRDSeffSwitchFactory> provideAbstractRDSeffSwitchFactoryRegistry() {
         return new SimuLizarExtensionRegistryImpl<>();
     }
 
     @Provides
-    @Singleton
+    @SimulationScope
     static InterpreterSwitchExtensionRegistry bindInterpreterSwitchExtensionRegistry(
             SimuLizarExtensionRegistryImpl<AbstractRDSeffSwitchFactory> registry) {
         return registry::register;

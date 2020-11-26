@@ -5,9 +5,10 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
+
+@SimulationScope
 public class SimuLizarExtensionRegistryImpl<ExtensionType> {
     private final Set<ExtensionType> extensions;
     

@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.tests;
 
-import static org.junit.jupiter.api.Assertions.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -22,12 +20,12 @@ import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.modules.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.tests.jobs.MinimalPCMInterpreterRootCompositeJob;
+import org.palladiosimulator.simulizar.test.commons.util.DaggerSimuLizarTestComponent;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
-import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 import tools.mdsd.junit5utils.annotations.InitializationTaskProvider;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
@@ -52,7 +50,7 @@ public class SimulizarRunConfigTest {
     private static final String PRIMITIVE_TYPES_REPO_PATHMAP_TARGET = "platform:/plugin/org.palladiosimulator.pcm.resources/defaultModels/PrimitiveTypes.repository";
 
     private SimuLizarWorkflowConfiguration simulizarConfiguration;
-    private SequentialBlackboardInteractingJob<MDSDBlackboard> simulizarJob;
+    private IJob simulizarJob;
 
     private Repository repo = null;
 
@@ -100,9 +98,11 @@ public class SimulizarRunConfigTest {
                 .setServiceLevelObjectivesFile(SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         this.simulizarConfiguration.setUsageEvolutionFile(SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
         this.simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
-
-        final MDSDBlackboard blackboard = new MDSDBlackboard();
-        this.simulizarJob = new MinimalPCMInterpreterRootCompositeJob(this.simulizarConfiguration, blackboard);
+        
+        this.simulizarJob = DaggerSimuLizarTestComponent.builder()
+            .simuLizarConfigurationModule(new SimuLizarConfigurationModule(simulizarConfiguration))
+            .build()
+            .rootJob();
     }
 
     @AfterEach

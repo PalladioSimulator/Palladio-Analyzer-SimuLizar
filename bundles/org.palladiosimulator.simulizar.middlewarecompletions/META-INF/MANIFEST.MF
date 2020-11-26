@@ -7,8 +7,10 @@ Automatic-Module-Name: org.palladiosimulator.simulizar.pcm.completions
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.palladiosimulator.simulizar;bundle-version="4.3.0",
  org.eclipse.emf.ecore,
- org.palladiosimulator.analyzer.completions;bundle-version="4.3.0"
+ org.palladiosimulator.analyzer.completions;bundle-version="4.3.0",
+ com.google.guava
 Import-Package: com.google.auto.factory;version="1.0.0",
  dagger;version="2.29.1",
  dagger.internal;version="2.29.1",
+ dagger.multibindings;version="2.29.1",
  javax.inject;version="1.0.0"

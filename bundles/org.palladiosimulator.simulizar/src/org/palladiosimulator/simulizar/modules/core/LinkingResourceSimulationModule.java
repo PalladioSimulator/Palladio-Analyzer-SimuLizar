@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules;
+package org.palladiosimulator.simulizar.modules.core;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;

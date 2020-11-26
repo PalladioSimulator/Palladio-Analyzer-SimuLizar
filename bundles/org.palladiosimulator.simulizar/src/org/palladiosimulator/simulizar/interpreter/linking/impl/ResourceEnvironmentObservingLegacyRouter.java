@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
@@ -22,6 +21,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 /**
@@ -34,7 +34,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
  * @author Sebastian Krach
  *
  */
-@Singleton
+@SimulationScope
 public class ResourceEnvironmentObservingLegacyRouter
         implements ILinkingResourceRouter<EntityReference<ResourceContainer>, EntityReference<LinkingResource>> {
 

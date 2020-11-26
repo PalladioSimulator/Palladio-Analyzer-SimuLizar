@@ -2,14 +2,13 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
-import org.palladiosimulator.simulizar.DaggerEclipseSimuLizarExtensionsComponent;
-import org.palladiosimulator.simulizar.DaggerSimuLizarComponent;
-import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
-import org.palladiosimulator.simulizar.SimuLizarExtensionsComponent;
-import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
+import org.palladiosimulator.simulizar.SimuLizarSimulationComponent;
+import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -35,6 +34,8 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     protected MDSDBlackboard blackboard;
 
     protected final SimuLizarWorkflowConfiguration configuration;
+    private final SimuLizarSimulationComponent.Builder componentBuilder;
+    private final InterpreterExtension.Factory extensionsFactory;
 
     /**
      * Constructor
@@ -42,9 +43,14 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public PCMStartInterpretationJob(final SimuLizarWorkflowConfiguration configuration) {
+    @Inject
+    public PCMStartInterpretationJob(final SimuLizarWorkflowConfiguration configuration, 
+            SimuLizarSimulationComponent.Builder componentBuilder,
+            InterpreterExtension.Factory extensionsFactory) {
         super();
         this.configuration = configuration;
+        this.componentBuilder = componentBuilder;
+        this.extensionsFactory = extensionsFactory;
     }
 
     /**
@@ -58,49 +64,36 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         enhanceConfiguration();
         
-        SimuLizarCoreComponent component = buildSimuLizarComponent(monitor);
-        var extensionsComponent = buildSimuLizarExtensionComponent(component);
-
+        SimuLizarSimulationComponent component = buildSimuLizarComponent();
+        var extension = extensionsFactory.create(component);
+        
         var runtimeState = component.runtimeState();
-        extensionsComponent.extensions().forEach(SimuLizarExtension::preInitialize);
         
+        extension.preInitialize();
         runtimeState.initialize();
+        extension.initialized();
         
-        extensionsComponent.extensions().forEach(SimuLizarExtension::initialize);
         initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
-        
-        extensionsComponent.extensions().forEach(SimuLizarExtension::shutdown);
+        extension.completed();
         
         runtimeState.cleanUp();
-        extensionsComponent.extensions().forEach(SimuLizarExtension::cleanUp);
-        
         LOGGER.info("finished job: " + this);
     }
     
-    protected SimuLizarCoreComponent buildSimuLizarComponent(SimuLizarCoreComponent.Builder runtimeStateBuilder, final IProgressMonitor monitor) {
-        return runtimeStateBuilder
-                .cancelationDelegate(monitor::isCanceled)
-                .configuration(configuration)
-                .blackboard(blackboard)
-                .build();
+    protected SimuLizarSimulationComponent buildSimuLizarComponent(SimuLizarSimulationComponent.Builder runtimeStateBuilder) {
+        return runtimeStateBuilder.build();
     }
     
     /**
-     * This method is supposed to be overridden by tests, to supply a {@link SimuLizarCoreComponent.Builder} which provides the required refinements. 
+     * This method is supposed to be overridden by tests, to supply a {@link SimuLizarSimulationComponent.Builder} which provides the required refinements. 
      * @param monitor the progress monitor supplied by the jobs execute method.
      * @return the constructed {@link SimuLizarRuntimeState}
      */
-    protected SimuLizarCoreComponent buildSimuLizarComponent(final IProgressMonitor monitor) {
-        return buildSimuLizarComponent(DaggerSimuLizarComponent.builder(), monitor);
+    protected SimuLizarSimulationComponent buildSimuLizarComponent() {
+        return buildSimuLizarComponent(componentBuilder);
     }
-    
-    protected SimuLizarExtensionsComponent buildSimuLizarExtensionComponent(SimuLizarCoreComponent coreComponent) {
-        return DaggerEclipseSimuLizarExtensionsComponent.builder().simuLizarCoreComponent(coreComponent).build();
-    }
-    
-    
 
     protected void enhanceConfiguration() {
         final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(

@@ -1,6 +1,10 @@
 package org.palladiosimulator.simulizar.launcher;
 
 public class SimulizarConstants {
+    
+    public static final String ROOT_JOB_ID = "rootJob";
+    public static final String MODEL_LOAD_JOB_ID = "modelLoad";
+    public static final String INTERPRETER_JOB_ID = "runInterpreter";
 
     // for the extension points
     public static final String MODEL_LOAD_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.launcher.modelload";

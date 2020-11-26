@@ -1,9 +1,8 @@
-package org.palladiosimulator.simulizar.modules;
-
-import javax.inject.Singleton;
+package org.palladiosimulator.simulizar.modules.core;
 
 import org.palladiosimulator.simulizar.entity.access.SimulatedContainerAssemblyAllocationLookupAdapter;
 import org.palladiosimulator.simulizar.runtimestate.SimuComModelFactory;
+import org.palladiosimulator.simulizar.scopes.SimulationScope;
 
 import dagger.Binds;
 import dagger.Module;
@@ -21,7 +20,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 public interface SimuComFrameworkModule {
 
     @Provides
-    @Singleton
+    @SimulationScope
     static SimuComModel provideSimuComModel(SimuComModelFactory impl) {
         return impl.get();
     }
@@ -44,7 +43,7 @@ public interface SimuComFrameworkModule {
     }
     
     
-    @Provides @Singleton static IResourceTableManager provideResourceTableManager() {
+    @Provides @SimulationScope static IResourceTableManager provideResourceTableManager() {
         return new ResourceTableManager();
     }
 }

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules;
+package org.palladiosimulator.simulizar.modules.eclipse;
 
 import org.palladiosimulator.simulizar.runtimestate.SimulationPreferencesSimEngineFactoryProvider;
 

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 import org.apache.log4j.Level;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.palladiosimulator.analyzer.workflow.configurations.PCMWorkflowConfigurationBuilder;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
+import org.palladiosimulator.simulizar.DaggerSimuLizarRootComponent;
+import org.palladiosimulator.simulizar.modules.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -16,6 +18,8 @@ import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowLauncher;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowConfigurationBuilder;
 import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+import de.uka.ipd.sdq.workflow.ui.UIBasedWorkflow;
 
 /**
  * Factory for the job for launching the pcm interpreter.
@@ -24,6 +28,13 @@ import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
  *
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
+    
+    @Override
+    protected UIBasedWorkflow<MDSDBlackboard> createWorkflow(SimuComWorkflowConfiguration workflowConfiguration,
+            IProgressMonitor monitor, ILaunch launch) throws CoreException {
+        // TODO Auto-generated method stub
+        return super.createWorkflow(workflowConfiguration, monitor, launch);
+    }
 
     @Override
     protected IJob createWorkflowJob(final SimuComWorkflowConfiguration config, final ILaunch launch)
@@ -32,7 +43,9 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
             throw new IllegalArgumentException("SimuLizarWorkflowConfiguration expected for PCMInterpreterLauncher");
         }
 
-        return new PCMInterpreterRootCompositeJob((SimuLizarWorkflowConfiguration) config);
+        return DaggerSimuLizarRootComponent.builder()
+            .simuLizarConfigurationModule(new SimuLizarConfigurationModule((SimuLizarWorkflowConfiguration) config))
+            .build().rootJob();
     }
 
     @Override

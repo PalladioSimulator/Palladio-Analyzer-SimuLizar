@@ -1,13 +1,20 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import javax.inject.Inject;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.SimuLizarModelLoadComponent;
+import org.palladiosimulator.simulizar.extension.facets.ModelLoad;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionConfigurationBuilder;
 import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionJob;
+import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
@@ -24,15 +31,10 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
     /**
      * @param config
      */
-    public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
-        this(configuration, true);
-    }
-
-    /**
-     * @param config
-     */
+    @Inject
     public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
-            final boolean loadExtensions) {
+            SimuLizarModelLoadComponent.Builder modelLoadComponentBuilder,
+            ModelLoad.Factory modelLoaderFactory) {
         super(false);
 
         this.addJob(new PreparePCMBlackboardPartitionJob());
@@ -40,9 +42,13 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
         this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
         this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
         this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
-        if (loadExtensions) {
-            this.addModelLoadExtensionJobs(configuration);
-        }
+
+        modelLoaderFactory.create(modelLoadComponentBuilder.build()).appendModelLoadJobs(this::addJob);
+    }
+    
+    @Override
+    public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
+        super.execute(monitor);
     }
 
     private void addModelLoadExtensionJobs(final SimuLizarWorkflowConfiguration configuration) {

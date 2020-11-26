@@ -1,8 +1,16 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import java.util.Set;
+
+import javax.inject.Inject;
+import javax.inject.Named;
+
+import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -22,15 +30,17 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
      * @param configuration
      *            the SimuCom workflow configuration.
      */
-    public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration) {
+    @Inject
+    public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration,
+            Set<SimuLizarExtension> extensions,
+            MDSDBlackboard blackboard,
+            @Named(SimulizarConstants.MODEL_LOAD_JOB_ID) IJob modelLoadJob,
+            @Named(SimulizarConstants.INTERPRETER_JOB_ID) IJob interpreterJob) {
         super(false);
-
-        // Always begin with an empty Blackboard;
-        this.setBlackboard(new MDSDBlackboard());
-
-        this.addJob(new LoadSimuLizarModelsIntoBlackboardJob(configuration));
-
-        this.addJob(new PCMStartInterpretationJob(configuration));
+        setBlackboard(blackboard);
+        
+        this.addJob(modelLoadJob);
+        this.addJob(interpreterJob);
 
         if (configuration.getServiceLevelObjectivesFile() != null
                 && !(configuration.getServiceLevelObjectivesFile().equals(""))) {

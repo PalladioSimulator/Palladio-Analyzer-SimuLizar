@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules;
+package org.palladiosimulator.simulizar.modules.core;
 
 import java.util.HashSet;
 import java.util.Set;

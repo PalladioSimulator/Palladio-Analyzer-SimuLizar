@@ -4,7 +4,7 @@
    <extension
          point="org.palladiosimulator.simulizar.extension">
       <simulizarExtension
-            simulizarExtension="org.palladiosimulator.simulizar.middlewarecompletions.MiddlewareCompletionsExtensionFactory">
+            simulizarExtension="org.palladiosimulator.simulizar.middlewarecompletions.MiddlewareCompletionsExtension$Factory">
       </simulizarExtension>
    </extension>
 

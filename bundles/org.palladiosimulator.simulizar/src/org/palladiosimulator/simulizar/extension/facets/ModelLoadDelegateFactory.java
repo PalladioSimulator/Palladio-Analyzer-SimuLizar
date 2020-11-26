@@ -1,0 +1,33 @@
+package org.palladiosimulator.simulizar.extension.facets;
+
+import java.util.Set;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+
+import javax.inject.Inject;
+
+import org.palladiosimulator.simulizar.SimuLizarModelLoadComponent;
+
+import de.uka.ipd.sdq.workflow.jobs.IJob;
+
+public class ModelLoadDelegateFactory implements ModelLoad.Factory {
+    private final Set<ModelLoad.Factory> delegateFactories;
+
+    @Inject
+    public ModelLoadDelegateFactory(Set<ModelLoad.Factory> delegateFactories) {
+        this.delegateFactories = delegateFactories;
+    }
+
+    @Override
+    public ModelLoad create(SimuLizarModelLoadComponent component) {
+        final var delegates = delegateFactories.stream()
+            .map(fact -> fact.create(component))
+            .collect(Collectors.toSet());
+        return new ModelLoad() {
+            @Override
+            public void appendModelLoadJobs(Consumer<IJob> modelLoadJob) {
+                delegates.forEach(ml -> ml.appendModelLoadJobs(modelLoadJob));
+            }
+        };
+    }
+}

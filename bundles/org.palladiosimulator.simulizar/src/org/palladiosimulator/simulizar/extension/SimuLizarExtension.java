@@ -1,19 +1,37 @@
 package org.palladiosimulator.simulizar.extension;
 
-public interface SimuLizarExtension {
-    /** Before initialization of SimuLizarRuntimeState **/
-    default void preInitialize() {
-    }
-    
-    /** After SimuLizarRuntimeState has been initialized **/
-    default void initialize() {
-    }
+import java.util.Set;
 
-    /** Once simulation terminated **/
-    default void shutdown() {
+import org.palladiosimulator.simulizar.extension.facets.Cleanup;
+import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
+import org.palladiosimulator.simulizar.extension.facets.ModelCompletion;
+import org.palladiosimulator.simulizar.extension.facets.ModelLoad;
+
+import dagger.multibindings.Multibinds;
+
+public interface SimuLizarExtension {
+
+    Set<ModelLoad.Factory> getModelLoaders();
+    Set<ModelCompletion.Factory> getModelCompletions();
+    Set<InterpreterExtension.Factory> getInterpreterExtensions();
+    Set<Cleanup.Factory> getCleanups();
+    
+    @FunctionalInterface
+    interface Builder<ExtensionType extends SimuLizarExtension> {
+        ExtensionType build();
     }
     
-    /** After SimuLizarRuntimeState has been cleaned up. **/
-    default void cleanUp() {
+    @FunctionalInterface
+    interface Factory<ExtensionType extends SimuLizarExtension> {
+        ExtensionType create();
     }
+    
+    @dagger.Module
+    public interface DefaultExtensionModule {
+        @Multibinds Set<ModelLoad.Factory> getModelLoaders();
+        @Multibinds Set<ModelCompletion.Factory> getModelCompletions();
+        @Multibinds Set<InterpreterExtension.Factory> getInterpreterExtensions();
+        @Multibinds Set<Cleanup.Factory> getCleanups();   
+    }
+    
 }
