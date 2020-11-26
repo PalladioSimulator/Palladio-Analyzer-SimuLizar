@@ -95,9 +95,8 @@ public class SimulizarRunConfigTest {
         this.simulizarConfiguration = new SimuLizarWorkflowConfiguration(properties);
         this.simulizarConfiguration.setAllocationFiles(Arrays.asList(allocationUri.toString()));
         this.simulizarConfiguration.setUsageModelFile(usageModelUri.toString());
-        this.simulizarConfiguration.setMonitorRepositoryFile(SimulizarConstants.DEFAULT_MONITOR_REPOSITORY_FILE);
-        this.simulizarConfiguration
-                .setServiceLevelObjectivesFile(SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
+        this.simulizarConfiguration.setMonitorRepositoryFile(monitorRepoUri.toString());
+        this.simulizarConfiguration.setServiceLevelObjectivesFile(SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
         this.simulizarConfiguration.setUsageEvolutionFile(SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
         this.simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
 
