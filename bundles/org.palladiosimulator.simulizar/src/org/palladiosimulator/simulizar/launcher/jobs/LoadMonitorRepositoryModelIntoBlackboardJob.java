@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
@@ -26,14 +27,7 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
 
     private final SimuLizarWorkflowConfiguration configuration;
 
-    private static final String FILE_PREFIX = "file:///";
 
-    /**
-     * Constructor
-     *
-     * @param configuration
-     *            the SimuCom workflow configuration.
-     */
     public LoadMonitorRepositoryModelIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
         this.configuration = configuration;
     }
@@ -43,23 +37,18 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
      */
     @Override
     public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-        if (this.getPCMResourceSetPartition() == null) {
+        if (StringUtils.isEmpty(configuration.getMonitorRepositoryFile())) {
+            throw new MonitorRepositoryModelLoadException("Monitor repository file path is missing from workflow configuration");
+        }
+        
+        PCMResourceSetPartition pcmResourceSetPartition = (PCMResourceSetPartition) (this.getBlackboard().getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID));
+        if (pcmResourceSetPartition == null) {
             throw new MonitorRepositoryModelLoadException("The PCM models must be loaded first");
         }
-
-        final PCMResourceSetPartition monitorRepositoryPartition = this.getPCMResourceSetPartition();
-        if (!this.getPath().equals("")) {
-
-            // add file protocol if necessary
-            String filePath = this.getPath();
-            if (!filePath.startsWith("platform:") && !filePath.startsWith(FILE_PREFIX)) {
-                filePath = FILE_PREFIX + filePath;
-            }
-            monitorRepositoryPartition.loadModel(URI.createURI(filePath));
-        }
-
-        // now resolve all cross references from current resource to PCM
-        monitorRepositoryPartition.resolveAllProxies();
+        
+        URI monitorRepositoryURI = URI.createURI(configuration.getMonitorRepositoryFile());
+        pcmResourceSetPartition.loadModel(monitorRepositoryURI);
+        pcmResourceSetPartition.resolveAllProxies();
     }
 
     /**
@@ -77,20 +66,6 @@ public class LoadMonitorRepositoryModelIntoBlackboardJob implements IJob, IBlack
         return "Perform Monitor Repository Load";
     }
 
-    /**
-     * @return returns the path.
-     */
-    private String getPath() {
-        return this.configuration.getMonitorRepositoryFile();
-    }
-
-    /**
-     * @return the pcm resource set partition
-     */
-    private PCMResourceSetPartition getPCMResourceSetPartition() {
-        return (PCMResourceSetPartition) (this.getBlackboard()
-                .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID));
-    }
 
     /**
      * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
