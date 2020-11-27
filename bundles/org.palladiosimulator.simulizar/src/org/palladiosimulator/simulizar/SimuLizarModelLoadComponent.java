@@ -1,16 +1,16 @@
 package org.palladiosimulator.simulizar;
 
-import javax.inject.Named;
-
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.Subcomponent;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 @Subcomponent
 public interface SimuLizarModelLoadComponent {
-
-    @Named(SimulizarConstants.MODEL_LOAD_JOB_ID) IJob modelLoadJob();
+    
+    MDSDBlackboard blackboard();
+    
+    SimuLizarWorkflowConfiguration configuration();
     
     @Subcomponent.Builder
     public interface Builder {

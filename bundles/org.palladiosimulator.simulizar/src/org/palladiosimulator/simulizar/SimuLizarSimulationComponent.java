@@ -1,14 +1,11 @@
 package org.palladiosimulator.simulizar;
 
-import javax.inject.Named;
-
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
 import org.palladiosimulator.simulizar.modules.core.DefaultQUALModule;
 import org.palladiosimulator.simulizar.modules.core.SimuLizarInterpreterExtensionSupportModule;
@@ -19,7 +16,6 @@ import dagger.Subcomponent;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 /**
  * This component interface constitutes the foundation of all SimuLizar based dagger components.
@@ -33,9 +29,6 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
 @Subcomponent(modules = { SimuLizarCoreAggregateModule.class, DefaultQUALModule.class, SimuLizarInterpreterExtensionSupportModule.class })
 @SimulationScope
 public interface SimuLizarSimulationComponent {
-    
-    @Named(SimulizarConstants.INTERPRETER_JOB_ID) IJob simulationJob();
-    
     /**
      * @return the {@link SimuLizarRuntimeState} instance of this component. The state is created if
      *         called the first time.

@@ -4,9 +4,11 @@ import java.util.Set;
 
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
+import org.palladiosimulator.simulizar.extension.adapter.EclipseExtensionPointExtensionAdapter;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.multibindings.ElementsIntoSet;
 import dagger.multibindings.IntoSet;
 
 @Module
@@ -16,9 +18,15 @@ public interface EclipseSimuLizarExtensionModule {
 
     
     @Provides
-    @IntoSet
+    @ElementsIntoSet
     public static Set<SimuLizarExtension.Factory<?>> provideFactories() {
         return Set.copyOf(ExtensionHelper.getExecutableExtensions(SIMULIZAREXTENSION_EXTENSION_POINT_ID,
                 SIMULIZAREXTENSION_EXTENSION_ATTRIBUTE));
+    }
+    
+    @Provides
+    @IntoSet
+    static SimuLizarExtension.Factory<?> provideLegacyAdapter(EclipseExtensionPointExtensionAdapter impl) {
+        return () -> impl;
     }
 }

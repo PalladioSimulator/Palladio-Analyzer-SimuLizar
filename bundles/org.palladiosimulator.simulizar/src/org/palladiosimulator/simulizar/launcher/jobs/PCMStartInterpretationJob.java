@@ -61,8 +61,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         LOGGER.info("Start job: " + this);
 
         LOGGER.info("Initialise Simulizar runtime state");
-
-        enhanceConfiguration();
         
         SimuLizarSimulationComponent component = buildSimuLizarComponent();
         var extension = extensionsFactory.create(component);
@@ -72,8 +70,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         extension.preInitialize();
         runtimeState.initialize();
         extension.initialized();
-        
-        initializeRuntimeStateAccessors(runtimeState);
 
         runtimeState.runSimulation();
         extension.completed();
@@ -94,28 +90,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
     protected SimuLizarSimulationComponent buildSimuLizarComponent() {
         return buildSimuLizarComponent(componentBuilder);
     }
-
-    protected void enhanceConfiguration() {
-        final List<IConfigurator> configurators = ExtensionHelper.getExecutableExtensions(
-                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ID,
-                SimulizarConstants.CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE);
-
-        for (final IConfigurator configurator : configurators) {
-            configurator.configure(this.configuration, this.blackboard);
-        }
-    }
-
-
-    private void initializeRuntimeStateAccessors(final SimuLizarRuntimeState runtimeState) {
-        final Iterable<IRuntimeStateAccessor> stateAccessors = ExtensionHelper.getExecutableExtensions(
-                SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ID,
-                SimulizarConstants.RUNTIME_STATE_ACCESS_EXTENSION_POINT_ACCESSOR_ATTRIBUTE);
-
-        for (final IRuntimeStateAccessor accessor : stateAccessors) {
-            accessor.setRuntimeStateModel(runtimeState);
-        }
-    }
-    
 
     /**
      * @see de.uka.ipd.sdq.workflow.IJob#getName()

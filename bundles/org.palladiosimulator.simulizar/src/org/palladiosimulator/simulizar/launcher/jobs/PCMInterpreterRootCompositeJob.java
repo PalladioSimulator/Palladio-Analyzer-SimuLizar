@@ -3,14 +3,11 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 import java.util.Set;
 
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -34,8 +31,8 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
     public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration,
             Set<SimuLizarExtension> extensions,
             MDSDBlackboard blackboard,
-            @Named(SimulizarConstants.MODEL_LOAD_JOB_ID) IJob modelLoadJob,
-            @Named(SimulizarConstants.INTERPRETER_JOB_ID) IJob interpreterJob) {
+            LoadSimuLizarModelsIntoBlackboardJob modelLoadJob,
+            PCMStartInterpretationJob interpreterJob) {
         super(false);
         setBlackboard(blackboard);
         
