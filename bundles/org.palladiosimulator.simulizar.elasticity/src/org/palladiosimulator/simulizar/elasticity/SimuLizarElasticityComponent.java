@@ -1,22 +1,22 @@
 package org.palladiosimulator.simulizar.elasticity;
 
-import javax.inject.Singleton;
+import org.palladiosimulator.simulizar.elasticity.jobs.SimuLizarElasticityAnalysisCompositeJob;
+import org.palladiosimulator.simulizar.elasticity.modules.ElasticityRootModule;
+import org.palladiosimulator.simulizar.elasticity.scope.ElasticityAnalysisScope;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import org.palladiosimulator.simulizar.SimuLizarCoreComponent;
-import org.palladiosimulator.simulizar.elasticity.modules.ElasticityQUALModule;
-import org.palladiosimulator.simulizar.modules.EclipseIDEPreferencesModule;
-import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
-import org.palladiosimulator.simulizar.modules.EclipseSimuLizarExtensionModule;
-
+import dagger.BindsInstance;
 import dagger.Component;
 
-@Component(modules = { SimuLizarCoreAggregateModule.class, ElasticityQUALModule.class,
-        EclipseIDEPreferencesModule.class, EclipseSimuLizarExtensionModule.class })
-@Singleton
-public interface SimuLizarElasticityComponent extends SimuLizarCoreComponent {
-
-    @Component.Builder
-    interface Builder extends SimuLizarCoreComponent.Builder {
+@Component(modules = { ElasticityRootModule.class })
+@ElasticityAnalysisScope
+public interface SimuLizarElasticityComponent {
+    
+    SimuLizarElasticityAnalysisCompositeJob rootJob();
+    
+    @Component.Factory
+    public interface Factory {
+        SimuLizarElasticityComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration);
     }
 
 }

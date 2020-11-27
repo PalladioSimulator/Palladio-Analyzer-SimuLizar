@@ -2,9 +2,11 @@ package org.palladiosimulator.simulizar.launcher;
 
 public class SimulizarConstants {
     
-    public static final String ROOT_JOB_ID = "rootJob";
-    public static final String MODEL_LOAD_JOB_ID = "modelLoad";
-    public static final String INTERPRETER_JOB_ID = "runInterpreter";
+    public static final String ROOT_JOB_ID = "org.palladiosimulator.simulizar.jobs.rootJob";
+    public static final String MODEL_LOAD_JOB_ID = "org.palladiosimulator.simulizar.jobs.modelLoad";
+    public static final String MODEL_COMPLETION_JOB_ID = "org.palladiosimulator.simulizar.jobs.modelCompletion";
+    public static final String INTERPRETER_JOB_ID = "org.palladiosimulator.simulizar.jobs.runInterpreter";
+    public static final String POSTPROCESS_JOB_ID = "org.palladiosimulator.simulizar.jobs.postProcess";
 
     // for the extension points
     public static final String MODEL_LOAD_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.launcher.modelload";

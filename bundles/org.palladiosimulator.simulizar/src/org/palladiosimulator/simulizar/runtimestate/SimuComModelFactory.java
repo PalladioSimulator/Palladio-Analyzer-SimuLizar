@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
@@ -18,12 +19,15 @@ public class SimuComModelFactory implements Provider<SimuComModel> {
     private SimuLizarWorkflowConfiguration configuration;
     private IResourceTableManager resourceTableManager;
     private ISimEngineFactory simEngineFactory;
+    private ProbeFrameworkContext probeFrameworkContext;
     
     @Inject
-    SimuComModelFactory(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager, ISimEngineFactory simEngineFactory) {
+    SimuComModelFactory(final SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager, ISimEngineFactory simEngineFactory,
+            ProbeFrameworkContext probeFrameworkContext) {
         this.configuration = configuration;
         this.resourceTableManager = resourceTableManager;
-        this.simEngineFactory = simEngineFactory;       
+        this.simEngineFactory = simEngineFactory;
+        this.probeFrameworkContext = probeFrameworkContext;       
     }
 
     @Override
@@ -35,7 +39,7 @@ public class SimuComModelFactory implements Provider<SimuComModel> {
         final SimuComStatus simuComStatus = createSimuComStatus();
 
         final SimuComModel simuComModel = new SimuComModel((SimuComConfig) simulationConfiguration, simuComStatus,
-                simEngineFactory, false, resourceTableManager);
+                simEngineFactory, false, probeFrameworkContext, resourceTableManager);
 
         simuComModel.getSimulationStatus().setCurrentSimulationTime(0);
 

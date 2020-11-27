@@ -3,10 +3,12 @@ package org.palladiosimulator.simulizar;
 import javax.inject.Named;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegistry;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
 import org.palladiosimulator.simulizar.modules.core.DefaultQUALModule;
 import org.palladiosimulator.simulizar.modules.core.SimuLizarInterpreterExtensionSupportModule;
@@ -32,7 +34,7 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
 @SimulationScope
 public interface SimuLizarSimulationComponent {
     
-    @Named("interpreterJob") IJob simulationJob();
+    @Named(SimulizarConstants.INTERPRETER_JOB_ID) IJob simulationJob();
     
     /**
      * @return the {@link SimuLizarRuntimeState} instance of this component. The state is created if
@@ -47,6 +49,8 @@ public interface SimuLizarSimulationComponent {
     ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> getTransmissionInterpreter();
     
     InterpreterSwitchExtensionRegistry extensionRegistry();
+    
+    IObservableCalculatorRegistry calculatorRegistry();
     
     @Subcomponent.Builder
     public interface Builder {

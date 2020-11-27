@@ -17,11 +17,6 @@ public interface SimuLizarExtension {
     Set<Cleanup.Factory> getCleanups();
     
     @FunctionalInterface
-    interface Builder<ExtensionType extends SimuLizarExtension> {
-        ExtensionType build();
-    }
-    
-    @FunctionalInterface
     interface Factory<ExtensionType extends SimuLizarExtension> {
         ExtensionType create();
     }

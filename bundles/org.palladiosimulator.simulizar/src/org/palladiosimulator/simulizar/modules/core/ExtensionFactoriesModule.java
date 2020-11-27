@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.modules.core;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -24,6 +25,24 @@ import dagger.Provides;
 
 @Module
 public interface ExtensionFactoriesModule {
+    
+    @Provides
+    @Singleton
+    public static Set<SimuLizarExtension> provideExtensions(Set<SimuLizarExtension.Factory<?>> builders) {
+        return Collections.unmodifiableSet(builders.stream()
+            .map(SimuLizarExtension.Factory::create)
+            .collect(Collectors.toSet()));
+    }
+
+    @SuppressWarnings("unchecked")
+    @Provides
+    @Singleton
+    public static Map<Class<SimuLizarExtension>, SimuLizarExtension> provideExtensionMap(
+            Set<SimuLizarExtension> extensions) {
+        return Collections.unmodifiableMap(extensions.stream()
+            .collect(Collectors.toMap(ext -> (Class<SimuLizarExtension>) ext.getClass(),
+                    ext -> (SimuLizarExtension) ext)));
+    }
     
     static <T> Set<T> builderFromExtensions(Set<SimuLizarExtension> extensions, Function<SimuLizarExtension, Collection<T>> mapper) {
         return Collections.unmodifiableSet(extensions.stream()

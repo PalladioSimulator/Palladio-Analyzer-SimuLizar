@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.elasticity.launcher;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
-import org.palladiosimulator.simulizar.elasticity.jobs.SimuLizarElasticityAnalysisCompositeJob;
+import org.palladiosimulator.simulizar.elasticity.DaggerSimuLizarElasticityComponent;
 import org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -17,6 +17,6 @@ public class SimuLizarElasticityAnalysisLauncher extends PCMInterpreterLauncher 
             throw new IllegalArgumentException("SimuLizarWorkflowConfiguration expected for PCMInterpreterLauncher");
         }
 
-        return new SimuLizarElasticityAnalysisCompositeJob((SimuLizarWorkflowConfiguration) config);
+        return DaggerSimuLizarElasticityComponent.factory().create((SimuLizarWorkflowConfiguration) config).rootJob();
     }
 }

@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.palladiosimulator.simulizar.elasticity.configuration.InterpreterConfigurationTab"
+            class="org.palladiosimulator.simulizar.ui.configuration.InterpreterConfigurationTab"
             id="org.palladiosimulator.simulizar.elasticity.TabGroup"
             type="org.palladiosimulator.simulizar.elasticity.Launcher">
       </launchConfigurationTabGroup>
