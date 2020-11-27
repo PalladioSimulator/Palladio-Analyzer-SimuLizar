@@ -28,13 +28,6 @@ import de.uka.ipd.sdq.workflow.ui.UIBasedWorkflow;
  *
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
-    
-    @Override
-    protected UIBasedWorkflow<MDSDBlackboard> createWorkflow(SimuComWorkflowConfiguration workflowConfiguration,
-            IProgressMonitor monitor, ILaunch launch) throws CoreException {
-        // TODO Auto-generated method stub
-        return super.createWorkflow(workflowConfiguration, monitor, launch);
-    }
 
     @Override
     protected IJob createWorkflowJob(final SimuComWorkflowConfiguration config, final ILaunch launch)

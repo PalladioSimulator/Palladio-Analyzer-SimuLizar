@@ -11,13 +11,13 @@ import javax.inject.Singleton;
 
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 import org.palladiosimulator.simulizar.extension.facets.Cleanup;
-import org.palladiosimulator.simulizar.extension.facets.CleanupDelegateFactory;
 import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
-import org.palladiosimulator.simulizar.extension.facets.InterpreterExtensionDelegateFactory;
 import org.palladiosimulator.simulizar.extension.facets.ModelCompletion;
-import org.palladiosimulator.simulizar.extension.facets.ModelCompletionDelegateFactory;
 import org.palladiosimulator.simulizar.extension.facets.ModelLoad;
-import org.palladiosimulator.simulizar.extension.facets.ModelLoadDelegateFactory;
+import org.palladiosimulator.simulizar.extension.facets.internal.CleanupDelegateFactory;
+import org.palladiosimulator.simulizar.extension.facets.internal.InterpreterExtensionDelegateFactory;
+import org.palladiosimulator.simulizar.extension.facets.internal.ModelCompletionDelegateFactory;
+import org.palladiosimulator.simulizar.extension.facets.internal.ModelLoadDelegateFactory;
 
 import dagger.Binds;
 import dagger.Module;

@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.extension.facets;
+package org.palladiosimulator.simulizar.extension.facets.internal;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.palladiosimulator.simulizar.SimuLizarSimulationComponent;
+import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
+import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension.Factory;
 
 public class InterpreterExtensionDelegateFactory implements InterpreterExtension.Factory {
     private final Set<InterpreterExtension.Factory> delegateFactories;

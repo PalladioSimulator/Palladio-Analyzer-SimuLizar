@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.extension.facets;
+package org.palladiosimulator.simulizar.extension.facets.internal;
 
 import java.util.Set;
 import java.util.function.Consumer;
@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.palladiosimulator.simulizar.SimuLizarModelLoadComponent;
+import org.palladiosimulator.simulizar.extension.facets.ModelLoad;
+import org.palladiosimulator.simulizar.extension.facets.ModelLoad.Factory;
 
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 

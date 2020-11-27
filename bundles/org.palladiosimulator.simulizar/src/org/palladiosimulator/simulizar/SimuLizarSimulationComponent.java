@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.extension.InterpreterSwitchExtensionRegis
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.modules.SimuLizarCoreAggregateModule;
+import org.palladiosimulator.simulizar.modules.SimulationCancelationModule;
 import org.palladiosimulator.simulizar.modules.core.DefaultQUALModule;
 import org.palladiosimulator.simulizar.modules.core.SimuLizarInterpreterExtensionSupportModule;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
@@ -47,6 +48,8 @@ public interface SimuLizarSimulationComponent {
     
     @Subcomponent.Builder
     public interface Builder {
+        Builder simulationCancelationModule(SimulationCancelationModule cancelation);
+        
         SimuLizarSimulationComponent build();
     }
 

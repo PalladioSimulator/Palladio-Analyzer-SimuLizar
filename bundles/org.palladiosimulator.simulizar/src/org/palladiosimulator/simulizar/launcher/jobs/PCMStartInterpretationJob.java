@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.SimuLizarSimulationComponent;
 import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
 import org.palladiosimulator.simulizar.launcher.IConfigurator;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
+import org.palladiosimulator.simulizar.modules.SimulationCancelationModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.IRuntimeStateAccessor;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
@@ -62,7 +63,10 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
 
         LOGGER.info("Initialise Simulizar runtime state");
         
-        SimuLizarSimulationComponent component = buildSimuLizarComponent();
+        SimuLizarSimulationComponent component = componentBuilder
+            .simulationCancelationModule(new SimulationCancelationModule(monitor::isCanceled))
+            .build();
+        
         var extension = extensionsFactory.create(component);
         
         var runtimeState = component.runtimeState();
@@ -76,19 +80,6 @@ public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSD
         
         runtimeState.cleanUp();
         LOGGER.info("finished job: " + this);
-    }
-    
-    protected SimuLizarSimulationComponent buildSimuLizarComponent(SimuLizarSimulationComponent.Builder runtimeStateBuilder) {
-        return runtimeStateBuilder.build();
-    }
-    
-    /**
-     * This method is supposed to be overridden by tests, to supply a {@link SimuLizarSimulationComponent.Builder} which provides the required refinements. 
-     * @param monitor the progress monitor supplied by the jobs execute method.
-     * @return the constructed {@link SimuLizarRuntimeState}
-     */
-    protected SimuLizarSimulationComponent buildSimuLizarComponent() {
-        return buildSimuLizarComponent(componentBuilder);
     }
 
     /**

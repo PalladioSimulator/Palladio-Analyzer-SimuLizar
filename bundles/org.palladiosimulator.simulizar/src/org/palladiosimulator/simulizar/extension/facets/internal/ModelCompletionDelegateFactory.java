@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.extension.facets;
+package org.palladiosimulator.simulizar.extension.facets.internal;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import org.palladiosimulator.simulizar.SimuLizarModelCompletionComponent;
+import org.palladiosimulator.simulizar.extension.facets.ModelCompletion;
+import org.palladiosimulator.simulizar.extension.facets.ModelCompletion.Factory;
 
 public class ModelCompletionDelegateFactory implements ModelCompletion.Factory {
     private final Set<ModelCompletion.Factory> delegateFactories;
