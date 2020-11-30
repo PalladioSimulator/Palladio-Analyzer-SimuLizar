@@ -220,7 +220,7 @@ public final class MonitorRepositoryUtil {
             result = checkPCMMeasuringPoints(element, measuringPoint);
 
             if (result == null) {
-                throw new IllegalArgumentException("Unknown measuring point type");
+            	return true;
             }
         }
 
