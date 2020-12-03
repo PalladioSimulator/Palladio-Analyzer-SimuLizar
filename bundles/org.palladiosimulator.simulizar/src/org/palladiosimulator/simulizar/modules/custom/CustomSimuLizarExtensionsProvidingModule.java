@@ -27,7 +27,7 @@ public class CustomSimuLizarExtensionsProvidingModule {
     }
 
     public static CustomSimuLizarExtensionsProvidingModule of(SimuLizarExtension reusableExtension) {
-        return new CustomSimuLizarExtensionsProvidingModule(ImmutableSet.of(() -> reusableExtension));
+        return new CustomSimuLizarExtensionsProvidingModule(ImmutableSet.of((comp) -> reusableExtension));
     }
 
     @Provides

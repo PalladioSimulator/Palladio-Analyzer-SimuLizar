@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Singleton;
 
+import org.palladiosimulator.simulizar.SimuLizarRootExtensionComponent;
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 import org.palladiosimulator.simulizar.extension.facets.Cleanup;
 import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
@@ -28,9 +29,11 @@ public interface ExtensionFactoriesModule {
     
     @Provides
     @Singleton
-    public static Set<SimuLizarExtension> provideExtensions(Set<SimuLizarExtension.Factory<?>> builders) {
+    public static Set<SimuLizarExtension> provideExtensions(Set<SimuLizarExtension.Factory<?>> builders,
+            SimuLizarRootExtensionComponent.Builder rootExtensionComponentBuilder) {
+        var extComponent = rootExtensionComponentBuilder.build();
         return Collections.unmodifiableSet(builders.stream()
-            .map(SimuLizarExtension.Factory::create)
+            .map(fact -> fact.create(extComponent))
             .collect(Collectors.toSet()));
     }
 

@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.middlewarecompletions;
 
 import java.util.Set;
 
+import org.palladiosimulator.simulizar.SimuLizarRootExtensionComponent;
 import org.palladiosimulator.simulizar.extension.AbstractSimuLizarExtension;
 import org.palladiosimulator.simulizar.extension.SimuLizarExtension;
 
@@ -14,8 +15,9 @@ public class MiddlewareCompletionsExtension extends AbstractSimuLizarExtension {
 
 
     public class Factory implements SimuLizarExtension.Factory<MiddlewareCompletionsExtension> {
+
         @Override
-        public MiddlewareCompletionsExtension create() {
+        public MiddlewareCompletionsExtension create(SimuLizarRootExtensionComponent rootComponent) {
             return new MiddlewareCompletionsExtension();
         }  
     }

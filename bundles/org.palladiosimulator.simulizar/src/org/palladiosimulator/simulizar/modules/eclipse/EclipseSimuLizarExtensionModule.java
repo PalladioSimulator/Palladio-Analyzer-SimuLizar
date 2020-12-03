@@ -27,6 +27,6 @@ public interface EclipseSimuLizarExtensionModule {
     @Provides
     @IntoSet
     static SimuLizarExtension.Factory<?> provideLegacyAdapter(EclipseExtensionPointExtensionAdapter impl) {
-        return () -> impl;
+        return (comp) -> impl;
     }
 }

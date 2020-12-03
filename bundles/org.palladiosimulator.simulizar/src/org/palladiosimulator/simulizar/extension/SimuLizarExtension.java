@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.extension;
 
 import java.util.Set;
 
+import org.palladiosimulator.simulizar.SimuLizarRootExtensionComponent;
 import org.palladiosimulator.simulizar.extension.facets.Cleanup;
 import org.palladiosimulator.simulizar.extension.facets.InterpreterExtension;
 import org.palladiosimulator.simulizar.extension.facets.ModelCompletion;
@@ -18,7 +19,7 @@ public interface SimuLizarExtension {
     
     @FunctionalInterface
     interface Factory<ExtensionType extends SimuLizarExtension> {
-        ExtensionType create();
+        ExtensionType create(SimuLizarRootExtensionComponent rootComponent);
     }
     
     @dagger.Module
