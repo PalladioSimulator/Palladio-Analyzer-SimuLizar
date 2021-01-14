@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.palladiosimulator</groupId>
 		<artifactId>eclipse-parent-updatesite</artifactId>
-		<version>0.5.1</version>
+		<version>0.7.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.palladiosimulator.simulizar</groupId>
 	<artifactId>parent</artifactId>
@@ -14,6 +14,7 @@
 
 	<properties>
 		<org.palladiosimulator.maven.tychotprefresh.tplocation.2>${project.basedir}/releng/org.palladiosimulator.simulizar.targetplatform/tp.target</org.palladiosimulator.maven.tychotprefresh.tplocation.2>
+		<tycho.version>2.2.0</tycho.version>
 	</properties>
 
 	<modules>
@@ -24,6 +25,20 @@
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>nightly-snapshot-dependencies</id>
+			<activation>
+				<property>
+					<name>!release</name>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>sonatype-snapshots</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</repository>
+			</repositories> 
+		</profile>
 
 		<profile>
 			<activation>
