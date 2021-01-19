@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.modules.stateless.core;
 
+import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
@@ -14,5 +15,7 @@ public interface CoreBindingsModule {
     @Binds EntityReferenceFactory<UsageScenario> bindUsageScenarioReferenceFactory(SimuLizarEntityReferenceFactories.UsageScenario impl);
     
     @Binds EntityReferenceFactory<ResourceContainer> bindResourceContainerReferenceFactory(SimuLizarEntityReferenceFactories.ResourceContainer impl);
+
+    @Binds EntityReferenceFactory<LinkingResource> bindLinkingResourceReferenceFactory(SimuLizarEntityReferenceFactories.LinkingResource impl);
 
 }

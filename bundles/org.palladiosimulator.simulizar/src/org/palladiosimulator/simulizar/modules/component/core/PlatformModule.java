@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.modules.component.core;
 
+import org.palladiosimulator.simulizar.component.core.DaggerSimuLizarRootComponent;
 import org.palladiosimulator.simulizar.component.core.SimuLizarRootComponent;
 
 import dagger.Module;
@@ -9,6 +10,6 @@ import dagger.Provides;
 public interface PlatformModule {
     @Provides
     static SimuLizarRootComponent.Factory bindRootComponentFactory() {
-        return null;
+        return DaggerSimuLizarRootComponent.factory();
     }
 }

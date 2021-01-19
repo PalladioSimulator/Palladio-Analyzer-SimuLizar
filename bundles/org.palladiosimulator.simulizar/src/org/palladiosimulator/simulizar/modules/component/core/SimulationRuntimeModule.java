@@ -21,6 +21,7 @@ import org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer;
 import org.palladiosimulator.simulizar.modelobserver.UsageEvolutionSyncer;
 import org.palladiosimulator.simulizar.modelobserver.UsageModelSyncer;
 import org.palladiosimulator.simulizar.modules.component.extensions.SimulationRuntimeExtensions;
+import org.palladiosimulator.simulizar.modules.scoped.runtime.LinkingResourceSimulationModule;
 import org.palladiosimulator.simulizar.modules.scoped.runtime.ReconfiguratorBindingsModule;
 import org.palladiosimulator.simulizar.modules.stateless.configuration.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.modules.stateless.core.CoreBindingsModule;
@@ -44,7 +45,8 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
         SimuLizarConfigurationModule.class,
         PCMPartitionManagerAdapterModule.class,
         SimulationRuntimeExtensions.class,
-        ReconfiguratorBindingsModule.class
+        ReconfiguratorBindingsModule.class,
+        LinkingResourceSimulationModule.class
 },
 subcomponents = {
         SimulatedThreadComponent.class

@@ -10,8 +10,6 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
@@ -34,7 +32,6 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
@@ -54,7 +51,6 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
  *
  * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
-@SimulationRuntimeScope
 public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserver {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
@@ -73,7 +69,6 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     private Optional<MonitorRepository> monitorRepository;
     private final CalculatorFactoryFacade calcFactory;
 
-    @Inject
     public ResourceEnvironmentSyncer(@Global PCMResourceSetPartition globalPCMInstance, ResourceRegistry resourceRegistry, CalculatorFactoryFacade calcFactory) {
         super(globalPCMInstance);
         this.resourceRegistry = resourceRegistry;
