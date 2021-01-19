@@ -1,13 +1,9 @@
 package org.palladiosimulator.simulizar.utils;
 
-import static org.palladiosimulator.simulizar.utils.ResourceUtil.createRuntimeMeasurementModelResource;
-
-import java.io.IOException;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -32,10 +28,10 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
+import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.PcmPackage;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
-import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.stoex.StoexPackage;
@@ -66,6 +62,8 @@ public class PCMPartitionManager {
     }
 
     private static final Logger LOGGER = Logger.getLogger(PCMPartitionManager.class.getName());
+    
+    private final static String RM_MODEL_FILE_EXTENSION = ".runtimemeasurement";
 
     private final PCMResourceSetPartition globalPartition;
     private final MDSDBlackboard blackboard;
@@ -125,11 +123,9 @@ public class PCMPartitionManager {
     @Inject
     public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
         this.blackboard = blackboard;
-        this.globalPartition = (PCMResourceSetPartition) blackboard
-            .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
         this.currentPartition = this.copyPCMPartition();
-
-        initRuntimeMeasurementModel(config.getMonitorRepositoryFile());
+        initRuntimeMeasurementModel();
     }
 
     /**
@@ -145,22 +141,17 @@ public class PCMPartitionManager {
         this.globalPartition = managerToCopy.globalPartition;
     }
 
-    private void initRuntimeMeasurementModel(String folder) {
-        createAndSaveRuntimeMeasurementModel(folder).ifPresent(r -> this.globalPartition.loadModel(r.getURI()));
+    private void initRuntimeMeasurementModel() {
+        Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findAny();
+        if (result.isPresent()) {
+            var uri = result.get().eResource().getURI().appendFileExtension(RM_MODEL_FILE_EXTENSION);
+            Resource resource = this.globalPartition.getResourceSet().createResource(uri);
+            resource.getContents().add(RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel());
+        } else {
+            LOGGER.error("No monitor repository set in global partition.");
+        }
     }
 
-    private Optional<Resource> createAndSaveRuntimeMeasurementModel(String storingLocation) {
-        Resource rmModelResource = createRuntimeMeasurementModelResource(storingLocation);
-        rmModelResource.getContents()
-            .add(RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel());
-        try {
-            rmModelResource.save(Collections.EMPTY_MAP);
-        } catch (IOException ex) {
-            LOGGER.info(String.format("The runtime measurement resource could not be saved: %s", ex.getMessage()));
-            return Optional.empty();
-        }
-        return Optional.of(rmModelResource);
-    }
 
     /**
      * @return the global PCM modeling partition. The global PCM model is the primary model under
@@ -295,23 +286,4 @@ public class PCMPartitionManager {
         return this.blackboard;
     }
 
-    /**
-     * Removes all temporary resources that has been used during simulation.
-     * 
-     * @see #PCMPartitionManager(MDSDBlackboard, SimuLizarWorkflowConfiguration)
-     */
-    public void cleanUp() {
-        EClass targetType = RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel();
-        Optional.ofNullable(findModel(targetType))
-            .ifPresent(eObj -> delete((RuntimeMeasurementModel) eObj));
-    }
-
-    private void delete(RuntimeMeasurementModel rmModel) {
-        try {
-            rmModel.eResource()
-                .delete(Collections.EMPTY_MAP);
-        } catch (IOException e) {
-            LOGGER.info(String.format("The runtime measurement resource could not be deleted: %s", e.getMessage()));
-        }
-    }
 }

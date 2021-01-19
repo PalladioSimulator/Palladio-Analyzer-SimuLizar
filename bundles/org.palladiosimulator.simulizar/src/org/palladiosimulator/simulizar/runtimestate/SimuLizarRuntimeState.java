@@ -192,7 +192,7 @@ public class SimuLizarRuntimeState {
         this.model.getProbeFrameworkContext().finish();
         this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
         this.modelObservers.forEach(IModelObserver::unregister);
-        this.pcmPartitionManager.cleanUp();
+//        this.pcmPartitionManager.cleanUp();
     }
 
     private void initializeWorkloadDrivers() {
