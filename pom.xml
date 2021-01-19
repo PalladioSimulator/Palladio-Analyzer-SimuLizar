@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.palladiosimulator</groupId>
 		<artifactId>eclipse-parent-updatesite</artifactId>
-		<version>0.5.1</version>
+		<version>0.7.2-SNAPSHOT</version>
 	</parent>
 	<groupId>org.palladiosimulator.simulizar</groupId>
 	<artifactId>parent</artifactId>
@@ -24,6 +24,20 @@
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>nightly-snapshot-dependencies</id>
+			<activation>
+				<property>
+					<name>!release</name>
+				</property>
+			</activation>
+			<repositories>
+				<repository>
+					<id>sonatype-snapshots</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</repository>
+			</repositories> 
+		</profile>
 
 		<profile>
 			<activation>
@@ -36,14 +50,7 @@
 				<dependency>
 					<groupId>com.google.dagger</groupId>
 					<artifactId>dagger-compiler</artifactId>
-					<version>2.29.1</version>
-					<optional>true</optional>
-				</dependency>
-				<dependency>
-					<groupId>com.google.auto.factory</groupId>
-					<artifactId>auto-factory</artifactId>
-					<version>1.0-beta8</version>
-					<optional>true</optional>
+					<version>2.31</version>
 				</dependency>
 			</dependencies>
 
@@ -52,7 +59,7 @@
 					<plugin>
 						<groupId>org.bsc.maven</groupId>
 						<artifactId>maven-processor-plugin</artifactId>
-						<version>4.4</version>
+						<version>4.5</version>
 						<executions>
 							<execution>
 								<id>process</id>
@@ -63,8 +70,10 @@
 								<configuration>
 									<processors>
 										<processor>dagger.internal.codegen.ComponentProcessor</processor>
-										<processor>com.google.auto.factory.processor.AutoFactoryProcessor</processor>
 									</processors>
+									<configuration>
+										 <compilerArguments>-Adagger.experimentalDaggerErrorMessages=enabled</compilerArguments>
+									</configuration>
 									<sourceDirectory>src/</sourceDirectory>
 									<outputDirectory>src-gen/</outputDirectory>
 								</configuration>

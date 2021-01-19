@@ -12,7 +12,6 @@ import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
@@ -44,7 +43,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author scheerer
  *
  */
-@Singleton
 public class PCMPartitionManager {
     /**
      * The Global annotation should be used to reference to the global PCMResourceSet partition for
@@ -59,6 +57,19 @@ public class PCMPartitionManager {
     @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Global {
+    }
+    
+    /**
+     * The Local annotation should be used to reference to the PCMResourceSet partition of the
+     * current interpretation scope for constructor injection.
+     * 
+     * The local partition should always be used for model interpretation (i. e. visitor-based
+     * interpreters).
+     */
+    @Qualifier
+    @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Local {
     }
 
     private static final Logger LOGGER = Logger.getLogger(PCMPartitionManager.class.getName());

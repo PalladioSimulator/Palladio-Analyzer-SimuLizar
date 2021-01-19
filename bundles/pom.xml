@@ -17,10 +17,12 @@
 		<module>ExampleModels</module>
 	-->
 		<module>org.palladiosimulator.simulizar</module>
+		
 		<module>org.palladiosimulator.simulizar.action</module>
 		<module>org.palladiosimulator.simulizar.action.edit</module>
 		<module>org.palladiosimulator.simulizar.action.editor</module>
 		<module>org.palladiosimulator.simulizar.action.repository</module>
+		
 		<module>org.palladiosimulator.simulizar.aggregation</module>
 		<module>org.palladiosimulator.simulizar.edp2.measuringpoint</module>
 		<module>org.palladiosimulator.simulizar.edp2.measuringpoint.edit</module>
@@ -30,6 +32,7 @@
 		<module>org.palladiosimulator.simulizar.measuringpoint.create</module>
 		<module>org.palladiosimulator.simulizar.monitorrepository.feedthrough</module>
 		<module>org.palladiosimulator.simulizar.monitorrepository.map</module>
+		<module>org.palladiosimulator.simulizar.middlewarecompletions</module>
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin</module>
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model</module>
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model.edit</module>

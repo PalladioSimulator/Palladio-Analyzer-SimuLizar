@@ -1,9 +1,13 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
+
 public class SimulatedCompositeComponentInstance extends SimulatedComponentInstance {
 
-    public SimulatedCompositeComponentInstance(final SimuLizarRuntimeState runtimeState, final String fqId) {
-        super(runtimeState, fqId);
+    @AssistedInject
+    public SimulatedCompositeComponentInstance(@Assisted final String fqId) {
+        super(fqId);
     }
 
 }

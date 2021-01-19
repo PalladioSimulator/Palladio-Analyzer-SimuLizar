@@ -1,19 +1,19 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import java.util.Objects;
+import java.util.stream.Stream;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractResourceEnvironmentObserver extends AbstractModelObserver<ResourceEnvironment> {
 
-    public AbstractResourceEnvironmentObserver() {
-        super();
+    public AbstractResourceEnvironmentObserver(@Global PCMResourceSetPartition globalPCMInstance) {
+        super(globalPCMInstance);
     }
-
+    
     @Override
-    public void initialize(final SimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getAllocation()
-                .getTargetResourceEnvironment_Allocation(), Objects.requireNonNull(runtimeState));
+    protected Stream<ResourceEnvironment> selectObservees(PCMResourceSetPartition partition) {
+        return Stream.of(partition.getAllocation().getTargetResourceEnvironment_Allocation());
     }
 }

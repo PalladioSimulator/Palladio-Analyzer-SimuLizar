@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Optional;
 
 import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.BasicEList;
@@ -61,7 +62,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
-@ExtendWith(PlatformStandaloneExtension.class)
 @PluginTestOnly
 public class QVToReconfigurationTest {
 
@@ -378,18 +378,13 @@ public class QVToReconfigurationTest {
     
     private EObject assignMonitorToModelElement(PCMResourceSetPartition pcmResourceSet, String modelElementId) {
         final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
-        EObject monitoredElement = null;
-        while (pcmModelIterator.hasNext()) {
-            final EObject element = pcmModelIterator.next();
-            final EAttribute id = element.eClass()
-                .getEIDAttribute();
-            final Object idAttribute = element.eGet(id);
-            if (idAttribute.toString().equals(modelElementId)) {
-                monitoredElement = element;
-            }
-        }
-        return monitoredElement;
-    }
+        EObject monitoredElement = pcmResourceSet.getRepositories()
+            .stream()
+            .flatMap(repo -> Optional.ofNullable(repo.eResource()
+                .getEObject(modelElementId))
+                .stream())
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException("Expected model element not present in test models"));
 
     
     private SimuLizarWorkflowConfiguration createWorkflowConfiguration(URI allocationURI, String reconfigurationRulesFolderPath) {

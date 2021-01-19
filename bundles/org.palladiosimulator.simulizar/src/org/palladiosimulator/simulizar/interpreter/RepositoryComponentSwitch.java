@@ -1,15 +1,12 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.composition.ComposedStructure;
 import org.palladiosimulator.pcm.core.composition.CompositionFactory;
@@ -28,14 +25,14 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
+import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
-import com.google.auto.factory.AutoFactory;
-import com.google.auto.factory.Provided;
-
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
@@ -44,36 +41,44 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author snowball
  *
  */
-@AutoFactory
 public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
-    public static final String RDSEFFSWITCH_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.interpreter.rdseffswitch";
-    public static final String RDSEFFSWITCH_EXTENSION_ATTRIBUTE = "rdseffswitch";
 
     private final Signature signature;
     private final ProvidedRole providedRole;
     private final InterpreterDefaultContext context;
     private final AssemblyContext instanceAssemblyContext;
     private final IResourceTableManager resourceTableManager;
-    private final RDSeffSwitchFactory rdseffSwitchFactory;
+    private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
+    private final ComponentInstanceRegistry componentRegistry;
+    private final EventNotificationHelper eventHelper;
+    private final SimulatedBasicComponentInstanceFactory simComponentFactory;
 
     /**
      * @see RepositoryComponentSwitchFactory#create(InterpreterDefaultContext, AssemblyContext, Signature, ProvidedRole)
      */
-    RepositoryComponentSwitch(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
-            final Signature signature, final ProvidedRole providedRole, @Provided IResourceTableManager resourceTableManager, @Provided RDSeffSwitchFactory rdseffSwitchFactory,
-            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
+    @AssistedInject
+    RepositoryComponentSwitch(@Assisted final InterpreterDefaultContext context, @Assisted final AssemblyContext assemblyContext,
+            @Assisted final Signature signature, @Assisted final ProvidedRole providedRole, IResourceTableManager resourceTableManager,
+            RepositoryComponentSwitchFactory repositoryComponentSwitchFactory,
+            ComponentInstanceRegistry componentRegistry,
+            ComposedRDSeffSwitchFactory rdseffSwitchFactory,
+            EventNotificationHelper eventHelper,
+            SimulatedBasicComponentInstanceFactory simComponentFactory) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
         this.signature = signature;
         this.providedRole = providedRole;
         this.resourceTableManager = resourceTableManager;
+        this.componentRegistry = componentRegistry;
         this.rdseffSwitchFactory = rdseffSwitchFactory;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
+        this.eventHelper = eventHelper;
+        this.simComponentFactory = simComponentFactory;
     }
 
     @Override
@@ -93,14 +98,13 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         SimulatedStackHelper.createAndPushNewStackFrame(stack,
                 this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
 
-        final FQComponentID fqID = this.computeFQComponentID();
-        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
+        final FQComponentID fqID = context.computeFQComponentID();
+        if (!componentRegistry.hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
-            this.context.getRuntimeState().getComponentInstanceRegistry()
-                    .addComponentInstance(new SimulatedBasicComponentInstance(this.context, fqID,
+            componentRegistry.addComponentInstance(simComponentFactory.create(this.context, fqID,
                             basicComponent.getPassiveResource_BasicComponent()));
         }
 
@@ -126,14 +130,13 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
         }
-        final FQComponentID fqID = this.computeFQComponentID();
-        if (!this.context.getRuntimeState().getComponentInstanceRegistry().hasComponentInstance(fqID)) {
+        final FQComponentID fqID = context.computeFQComponentID();
+        if (!componentRegistry.hasComponentInstance(fqID)) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Found new composed component instance, registering it: " + entity);
                 LOGGER.debug("FQComponentID is " + fqID);
             }
-            this.context.getRuntimeState().getComponentInstanceRegistry().addComponentInstance(
-                    new SimulatedCompositeComponentInstance(this.context.getRuntimeState(), fqID.getFQIDString()));
+            componentRegistry.addComponentInstance(new SimulatedCompositeComponentInstance(fqID.getFQIDString()));
         }
 
         if (entity != this.providedRole.getProvidingEntity_ProvidedRole()) {
@@ -157,7 +160,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         this.context.getAssemblyContextStack().push(this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT
                 ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
         
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        eventHelper.firePassedEvent(
         	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
         			EventType.BEGIN, this.context, this.signature, this.instanceAssemblyContext));
 
@@ -165,7 +168,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
 
         this.context.getAssemblyContextStack().pop();
         
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(
+        eventHelper.firePassedEvent(
             	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
             			EventType.END, this.context, this.signature, this.instanceAssemblyContext));
         
@@ -219,35 +222,11 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         if (!(calledSeffs.get(0) instanceof ResourceDemandingSEFF)) {
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
-            final FQComponentID componentID = this.computeFQComponentID();
-            final SimulatedBasicComponentInstance basicComponentInstance = (SimulatedBasicComponentInstance) this.context
-                    .getRuntimeState().getComponentInstanceRegistry().getComponentInstance(componentID);
-            
-            final List<AbstractRDSeffSwitchFactory> switchFactories = ExtensionHelper
-            		.getExecutableExtensions(RDSEFFSWITCH_EXTENSION_POINT_ID, RDSEFFSWITCH_EXTENSION_ATTRIBUTE);
-            final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
-            switchFactories.stream().forEach(s -> interpreter.addSwitch(
-            		s.createRDSeffSwitch(this.context, basicComponentInstance, interpreter)));
-            // add default RDSeffSwitch
-            interpreter.addSwitch(rdseffSwitchFactory.create(this.context, basicComponentInstance, interpreter));
-            // interpret called seff
+            var interpreter = rdseffSwitchFactory.createRDSeffSwitch(context);
             return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
         }
     }
 
-    private FQComponentID computeFQComponentID() {
-        return new FQComponentID(this.computeAssemblyContextPath());
-    }
-
-    private List<AssemblyContext> computeAssemblyContextPath() {
-        final Stack<AssemblyContext> stack = this.context.getAssemblyContextStack();
-        final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size());
-        for (int i = 0; i < stack.size(); i++) {
-            result.add(stack.get(i));
-        }
-        return result;
-    }
-    
     /**
      * Determines the provided delegation connector which is connected with the provided role.
      *

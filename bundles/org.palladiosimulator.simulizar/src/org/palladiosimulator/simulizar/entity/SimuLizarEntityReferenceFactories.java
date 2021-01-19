@@ -38,4 +38,16 @@ public final class SimuLizarEntityReferenceFactories {
         }
     }
 
+    public static final class UsageScenario
+            extends AbstractEntityReferenceFactory<org.palladiosimulator.pcm.usagemodel.UsageScenario> {
+        @Inject
+        public UsageScenario() {
+        }
+
+        @Override
+        public EntityReference<org.palladiosimulator.pcm.usagemodel.UsageScenario> create(String id) {
+            return new UsageScenarioReference(id);
+        }
+    }
+
 }

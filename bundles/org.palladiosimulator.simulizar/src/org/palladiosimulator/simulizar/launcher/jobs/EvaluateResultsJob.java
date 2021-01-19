@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
 import javax.measure.Measure;
 
 import org.apache.log4j.Logger;
@@ -44,6 +45,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 	private ExperimentSetting experimentSetting;
 	private EList<ServiceLevelObjective> serviceLevelObjectives;
 
+	@Inject
 	public EvaluateResultsJob(final SimuLizarWorkflowConfiguration configuration) {
 		super();
 		this.configuration = configuration;

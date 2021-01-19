@@ -136,7 +136,7 @@ public class SimulizarSlidingWindow extends SlidingWindow {
     private void initializeTriggeredSimulationEntity(SimuComModel model) {
         // ensure that point in times are given in seconds, as the simulation is
         // in sec
-    	simulationEntity = new PeriodicallyTriggeredSimulationEntity(model,
+    	simulationEntity = new PeriodicallyTriggeredSimulationEntity(model.getSimEngineFactory(),
                 SimulizarSlidingWindow.this.getSpecifiedWindowLength().doubleValue(SI.SECOND),
                 SimulizarSlidingWindow.this.getIncrement().doubleValue(SI.SECOND)) {
 

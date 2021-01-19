@@ -113,9 +113,6 @@ public class NumberOfResourceContainerTrackingReconfiguratorFactory implements R
                 }
             }
         });
-
-        reconfigurator.startListening();
-
         return reconfigurator;
     }
     

@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -17,9 +15,8 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 
-import com.google.auto.factory.AutoFactory;
-import com.google.auto.factory.Provided;
-
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -30,7 +27,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Steffen Becker
  *
  */
-@AutoFactory
 public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedStackframe<Object>> {
 
     /**
@@ -54,15 +50,15 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<SimulatedSta
     /**
      * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature, RequiredRole)
      */
-    @Inject
+    @AssistedInject
     ComposedStructureInnerSwitch(
-            final InterpreterDefaultContext context,
-            final Signature operationSignature,
-            final RequiredRole requiredRole,
-            @Provided ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
-            @Provided IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
-            @Provided ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
-            @Provided RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
+            @Assisted final InterpreterDefaultContext context,
+            @Assisted final Signature operationSignature,
+            @Assisted final RequiredRole requiredRole,
+            ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
+            IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
+            ComposedStructureInnerSwitchFactory composedStructureSwitchFactory,
+            RepositoryComponentSwitchFactory repositoryComponentSwitchFactory) {
         super();
         this.context = context;
         this.signature = operationSignature;

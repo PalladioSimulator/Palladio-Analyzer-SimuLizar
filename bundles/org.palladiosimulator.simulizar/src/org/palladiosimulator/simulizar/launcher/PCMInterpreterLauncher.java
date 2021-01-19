@@ -7,7 +7,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.palladiosimulator.analyzer.workflow.configurations.PCMWorkflowConfigurationBuilder;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
+import org.palladiosimulator.simulizar.SimuLizarPlatform;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -32,7 +32,10 @@ public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
             throw new IllegalArgumentException("SimuLizarWorkflowConfiguration expected for PCMInterpreterLauncher");
         }
 
-        return new PCMInterpreterRootCompositeJob((SimuLizarWorkflowConfiguration) config);
+        return SimuLizarPlatform.getPlatformComponent()
+            .analysisFactory()
+            .create((SimuLizarWorkflowConfiguration) config)
+            .rootJob();
     }
 
     @Override

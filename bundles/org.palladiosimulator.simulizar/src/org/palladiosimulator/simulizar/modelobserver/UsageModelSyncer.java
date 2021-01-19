@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.modelobserver;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
@@ -10,17 +11,20 @@ import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
+import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
-import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 public class UsageModelSyncer extends AbstractUsageModelObserver {
 
     private static final Logger LOGGER = Logger.getLogger(UsageModelSyncer.class);
+    private final SimulatedUsageModels usageModels;
 
-    public UsageModelSyncer() {
-        super();
+    public UsageModelSyncer(@Global PCMResourceSetPartition globalPCMInstance, SimulatedUsageModels usageModels) {
+        super(globalPCMInstance);
+        this.usageModels = usageModels;
     }
 
     @Override
@@ -96,37 +100,33 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
 
     private void openWorkloadInterarrivalTimeChange(final Workload workload, final String newInterarrivalTime) {
         LOGGER.debug("Setting open workload interarrival time to " + newInterarrivalTime);
-        this.runtimeModel.getUsageModels().getOpenWorkloadDriver((OpenWorkload) workload)
+        usageModels.getOpenWorkloadDriver((OpenWorkload) workload)
                 .setInterarrivalTime(newInterarrivalTime);
     }
 
     private void closedWorkloadPopulationChange(final Workload workload, final int newPopulation) {
         LOGGER.debug("Setting closed workload population to " + newPopulation);
-        this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
+        usageModels.getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setPopulation(newPopulation);
     }
 
     private void closedWorkloadThinkTimeChange(final Workload workload, final String newThinkTime) {
         LOGGER.debug("Setting closed workload think time to " + newThinkTime);
-        this.runtimeModel.getUsageModels().getClosedWorkloadDriver((ClosedWorkload) workload)
+        usageModels.getClosedWorkloadDriver((ClosedWorkload) workload)
                 .setThinkTime(newThinkTime);
     }
 
     private void syncUsageScenarioAddition(Notification notification) {
         LOGGER.debug("Initializing execution of new usage scenario");
-        IWorkloadDriver newDriver = this.runtimeModel.getUsageModels()
+        IWorkloadDriver newDriver = usageModels
                 .createAndAddWorkloadDriver((UsageScenario) notification.getNewValue());
         newDriver.run();
-        this.runtimeModel.getModel().getUsageScenarios().add(newDriver);
         LOGGER.debug("Execution of new usage scenario started");
     }
 
     private void syncUsageScenarioRemoval(Notification notification) {
         LOGGER.debug("Stopping execution of specific usage scenario");
-        ICancellableWorkloadDriver driver = this.runtimeModel.getUsageModels()
-                .getWorkloadDriver(((UsageScenario) notification.getOldValue()).getWorkload_UsageScenario());
-        driver.cancel();
-        this.runtimeModel.getModel().getUsageScenarios().remove(driver);
+        usageModels.cancelAndUnregisterWorkloadDriver(((UsageScenario) notification.getOldValue()).getWorkload_UsageScenario());
         LOGGER.debug("Execution of new usage scenario started");
     }
 }

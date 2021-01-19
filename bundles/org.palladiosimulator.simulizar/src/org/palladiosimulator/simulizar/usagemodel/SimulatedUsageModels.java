@@ -78,14 +78,33 @@ public class SimulatedUsageModels {
             final de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload driver = this.createClosedWorkloadDriver(workload,
                     usageScenario);
             this.closedWorkloads.put((ClosedWorkload) workload, driver);
+            this.simucomModel.getUsageScenarios().add(driver);
             return driver;
         } else if (workload.eClass() == UsagemodelPackage.eINSTANCE.getOpenWorkload()) {
             final de.uka.ipd.sdq.simucomframework.usage.OpenWorkload driver = this.createOpenWorkloadDriver(workload,
                     usageScenario);
             this.openWorkloads.put((OpenWorkload) workload, driver);
+            this.simucomModel.getUsageScenarios().add(driver);
             return driver;
         } else {
             throw new UnsupportedOperationException("Unsupported Workload Found");
+        }
+    }
+    
+    public void cancelAndUnregisterWorkloadDriver(Workload workload) {
+        var workloadDriver = (new UsagemodelSwitch<ICancellableWorkloadDriver>() {
+            public ICancellableWorkloadDriver caseOpenWorkload(OpenWorkload object) {
+                return SimulatedUsageModels.this.openWorkloads.remove(object);
+            };
+
+            public ICancellableWorkloadDriver caseClosedWorkload(ClosedWorkload object) {
+                return SimulatedUsageModels.this.closedWorkloads.remove(object);
+            };
+        }).doSwitch(workload);
+        if (workloadDriver != null) {
+            workloadDriver.cancel();
+            SimulatedUsageModels.this.simucomModel.getUsageScenarios()
+                .remove(workloadDriver);
         }
     }
 

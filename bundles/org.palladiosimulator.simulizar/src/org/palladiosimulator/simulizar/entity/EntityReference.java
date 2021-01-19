@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.entity;
 
+import java.util.Iterator;
+import java.util.Optional;
 import java.util.WeakHashMap;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
@@ -57,19 +59,36 @@ public class EntityReference<EntityType extends Entity> {
      * Gets the model element of the referenced entity from the given resource set partition.
      */
     public EntityType getModelElement(PCMResourceSetPartition partition) {
-        return elementCache.computeIfAbsent(partition.getResourceSet(), rs -> this.retrieveModelElement(partition));
+        return getModelElementIfPresent(partition)
+            .orElseThrow(() -> new IllegalStateException("Referenced element not present in resource set partition."));
+    }
+    
+    /**
+     * Gets the model element of the referenced entity from the given resource set partition.
+     */
+    public Optional<EntityType> getModelElementIfPresent(PCMResourceSetPartition partition) {
+        var result = Optional.ofNullable(elementCache.get(partition.getResourceSet()));
+        
+        if (result.isEmpty()) {
+            var iter = retrieveModelElements(partition);
+            if (iter.hasNext()) {
+                result = Optional.of(iter.next());
+                elementCache.put(partition.getResourceSet(), result.get());
+            }
+        }
+            
+        return result;
     }
 
     public String getId() {
         return id;
     }
-
-    protected EntityType retrieveModelElement(PCMResourceSetPartition partition) {
+    
+    protected Iterator<EntityType> retrieveModelElements(PCMResourceSetPartition partition) {
         return Iterators.filter(Iterators.filter(partition.getResourceSet()
-            .getAllContents(), entityClass),
-                it -> it.getId()
-                    .equals(id))
-            .next();
+                .getAllContents(), entityClass),
+                    it -> it.getId()
+                        .equals(id));
     }
 
     @Override

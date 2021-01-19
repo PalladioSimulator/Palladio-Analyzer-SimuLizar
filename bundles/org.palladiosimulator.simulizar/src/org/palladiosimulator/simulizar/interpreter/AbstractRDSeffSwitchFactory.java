@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 
 /**
  * Abstract Factory used by the extensible behaviour switches extension point.
@@ -21,6 +20,6 @@ public abstract class AbstractRDSeffSwitchFactory {
      *				The composed switch which is containing the created switch
 	 * @return a composable switch
 	 */
-	protected abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ExplicitDispatchComposedSwitch<Object> parentSwitch);
+	public abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
+            ExplicitDispatchComposedSwitch<Object> parentSwitch);
 }

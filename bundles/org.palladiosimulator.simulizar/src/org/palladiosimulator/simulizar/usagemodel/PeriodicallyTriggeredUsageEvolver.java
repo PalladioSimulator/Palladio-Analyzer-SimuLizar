@@ -2,24 +2,28 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.Workload;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 import org.scaledl.usageevolution.WorkParameterEvolution;
 
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 import tools.descartes.dlim.Sequence;
 import tools.descartes.dlim.generator.ModelEvaluator;
 
@@ -33,13 +37,14 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
     static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredUsageEvolver.class);
 
-    protected SimuLizarRuntimeState rtState;
-    protected final String evolvedScenarioId;
-    protected final double deltaTime;
+    protected final EntityReference<UsageScenario> evolvedScenario;
 
     private final Map<Usage, ModelEvaluator> cachedLoadEvaluators = new HashMap<Usage, ModelEvaluator>();
 
     private final Map<Usage, Map<VariableCharacterisation, ModelEvaluator>> cachedWorkEvaluators = new HashMap<Usage, Map<VariableCharacterisation, ModelEvaluator>>();
+
+    private final PCMResourceSetPartition pcmPartition;
+    private final ISimulationTimeProvider timeProvider;
 
     /**
      * Constructs the looping usage evolver.
@@ -53,19 +58,22 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      * @param evolvedScenario
      *            The evolved scenario.
      */
-    public PeriodicallyTriggeredUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence,
-            final double delay, final UsageScenario evolvedScenario) {
-        super(rtState.getModel(), firstOccurrence, delay);
-        this.deltaTime = delay;
-        this.evolvedScenarioId = evolvedScenario.getId();
-        this.rtState = rtState;
+    public PeriodicallyTriggeredUsageEvolver(final double firstOccurrence,
+            final double delay, final EntityReference<UsageScenario> evolvedScenario, 
+            @Global PCMResourceSetPartition pcmPartition, 
+            ISimEventFactory simEventFactory,
+            ISimulationTimeProvider timeProvider) {
+        super(simEventFactory, firstOccurrence, delay);
+        this.pcmPartition = pcmPartition;
+        this.timeProvider = timeProvider;
+        this.evolvedScenario = evolvedScenario;
     }
     
     /**
      * Stops the usage evolver from being scheduled in the simulation.
      */
     public void stop() {
-        this.removeEvent();
+        this.stopScheduling();
     }
 
     /**
@@ -92,11 +100,12 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      * @return the Usage updated by <code>this</code>.
      */
     protected Usage getCorrespondingUsage() {
-    	PCMPartitionManager manager = this.rtState.getPCMPartitionManager();
-        final UsageEvolution usageEvolution = manager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
-        for (final Usage usage : usageEvolution.getUsages()) {
-            if (usage.getScenario().getId().equals(this.evolvedScenarioId)) {
-                return usage;
+        final List<UsageEvolution> usageEvolutions = pcmPartition.<UsageEvolution>getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
+        for (var evolution : usageEvolutions) {
+            for (final Usage usage : evolution.getUsages()) {
+                if (usage.getScenario().getId().equals(this.evolvedScenario.getId())) {
+                    return usage;
+                }
             }
         }
         return null;
@@ -142,7 +151,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
 
         return workEvaluators;
     }
-
+    
     @Override
     protected void triggerInternal() {
         // First, evolve load if load evaluator exists
@@ -161,8 +170,8 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
     }
 
     private VariableCharacterisation getGlobalWorkParameter(final VariableCharacterisation workParam) {
-        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) this.rtState.getPCMPartitionManager()
-                .getGlobalPCMModel().getResourceSet().getEObject(EcoreUtil.getURI(workParam), false);
+        final VariableCharacterisation globalWorkParam = (VariableCharacterisation) pcmPartition.getResourceSet()
+            .getEObject(EcoreUtil.getURI(workParam), false);
         return globalWorkParam;
     }
 
@@ -181,7 +190,7 @@ public abstract class PeriodicallyTriggeredUsageEvolver extends PeriodicallyTrig
      * @return The current time.
      */
     protected double getCurrentTime() {
-        return this.getModel().getSimulationControl().getCurrentSimulationTime();
+        return timeProvider.getCurrentSimulationTime();
     }
 
     /**

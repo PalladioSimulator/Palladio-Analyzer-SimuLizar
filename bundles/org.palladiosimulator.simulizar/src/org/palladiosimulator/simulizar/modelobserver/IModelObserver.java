@@ -1,13 +1,17 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.component.core.SimuLizarRuntimeComponent;
 
 public interface IModelObserver {
+    
+    public interface Factory {
+        IModelObserver create(SimuLizarRuntimeComponent runtimeComponent);
+    }
 
     /**
      * Syncs PCM models with SimuCom.
      */
-    public void initialize(final SimuLizarRuntimeState runtimeState);
+    public void initialize();
 
     public void unregister();
 
