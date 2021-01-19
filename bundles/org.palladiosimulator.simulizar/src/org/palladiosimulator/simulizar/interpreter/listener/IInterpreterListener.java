@@ -9,6 +9,14 @@ import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 
 public interface IInterpreterListener {
+    
+    default public void initialize() {
+        
+    }
+    
+    default void cleanup() {
+        
+    }
 
     public void beginUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
 

@@ -1,13 +1,13 @@
 package org.palladiosimulator.simulizar.component.core;
 
-import org.palladiosimulator.simulizar.modules.component.eclipse.SimEngineModule;
+import org.palladiosimulator.simulizar.modules.component.eclipse.EclipseSimEngineModule;
 import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
 
 import dagger.Component;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
 
-@Component(modules = { SimEngineModule.class })
+@Component(modules = { EclipseSimEngineModule.class })
 @AnalysisDependencyScope
 public interface SimEngineComponent {
 

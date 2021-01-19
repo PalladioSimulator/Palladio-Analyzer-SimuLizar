@@ -13,8 +13,8 @@ import org.palladiosimulator.simulizar.component.core.SimuComFrameworkComponent;
 import org.palladiosimulator.simulizar.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
-import org.palladiosimulator.simulizar.modules.shared.configuration.SimuLizarConfigurationModule;
-import org.palladiosimulator.simulizar.modules.shared.mdsd.MDSDBlackboardProvidingModule;
+import org.palladiosimulator.simulizar.modules.stateless.configuration.SimuLizarConfigurationModule;
+import org.palladiosimulator.simulizar.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Binds;

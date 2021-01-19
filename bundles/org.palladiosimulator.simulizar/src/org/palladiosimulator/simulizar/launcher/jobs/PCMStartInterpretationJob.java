@@ -1,105 +1,109 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import java.util.Set;
+
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.palladiosimulator.simulizar.component.core.AnalysisRuntimeComponent;
-import org.palladiosimulator.simulizar.component.core.QUALComponent;
-import org.palladiosimulator.simulizar.component.core.SimEngineComponent;
-import org.palladiosimulator.simulizar.component.core.SimEngineComponent.Factory;
-import org.palladiosimulator.simulizar.component.core.SimuComFrameworkComponent;
-import org.palladiosimulator.simulizar.component.core.SimuLizarRootComponent;
-import org.palladiosimulator.simulizar.component.core.SimuLizarRuntimeComponent;
+import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
+import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
+import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
+import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
+import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
+import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
+import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
+import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.scaledl.usageevolution.UsageEvolution;
+import org.scaledl.usageevolution.UsageevolutionPackage;
 
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
-import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
+import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
-/**
- * Job starting the pcm interpretation.
- *
- * @author Joachim Meyer
- *
- */
-public class PCMStartInterpretationJob implements IBlackboardInteractingJob<MDSDBlackboard> {
-
-    private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class.getName());
-
-    protected MDSDBlackboard blackboard;
-
-    private final AnalysisRuntimeComponent.Factory runtimeComponentFactory;
-
-    /**
-     * Constructor
-     *
-     * @param configuration
-     *            the SimuCom workflow configuration.
-     */
-    @Inject
-    public PCMStartInterpretationJob(AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
-        this.runtimeComponentFactory = runtimeComponentFactory;
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.workflow.IJob#execute(org.eclipse.core.runtime.IProgressMonitor)
-     */
-    @Override
-    public void execute(final IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-        LOGGER.info("Start job: " + this);
-
-        LOGGER.info("Initialise Simulizar runtime state");
-                
-        var runtimeComponent = runtimeComponentFactory.create();
-        
-        try {
-            var initJob = runtimeComponent.initializeJob();
-            setBlackboardIfRequired(initJob);
-            initJob.execute(monitor);
-            initJob.cleanup(monitor);
-
-            var analysisJob = runtimeComponent.runInterpreterJob();
-            setBlackboardIfRequired(analysisJob);
-            analysisJob.execute(monitor);
-            analysisJob.cleanup(monitor);
-        } catch (CleanupFailedException ex) {
-            throw new JobFailedException("Cleanup Failed", ex);
-        }
-
-        LOGGER.info("finished job: " + this);
-    }
+public class PCMStartInterpretationJob extends SequentialJob {
     
-    @SuppressWarnings("unchecked")
-    private void setBlackboardIfRequired(IJob job) {
-        if (job instanceof IBlackboardInteractingJob) {
-            ((IBlackboardInteractingJob<MDSDBlackboard>) job).setBlackboard(blackboard);
-        }
+    private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class);
+    
+    private final PCMPartitionManager pcmPartitionManager;
+    private final EventDispatcher eventHelper;
+    private final Set<IModelObserver> modelObservers;
+    private final Set<IInterpreterListener> interpreterListeners;
+    private final IRecorderConfigurationFactory recorderConfigurationFactory;
+    private final ProbeFrameworkContext probeFrameworkContext;
+    private final Set<AbstractReconfigurationLoader> reconfigurationLoaders;
+    private final SimuLizarWorkflowConfiguration configuration;
+
+    private final Set<RuntimeStateEntityManager> entityManagers;
+    
+    
+    @Inject
+    public PCMStartInterpretationJob(
+            final SimuLizarWorkflowConfiguration configuration,
+            final PCMPartitionManager pcmPartitionManager,
+            final EventDispatcher eventHelper,  
+            final Set<IModelObserver> modelObservers,
+            final Set<IInterpreterListener> interpreterListeners,
+            final RunInterpreterJob interpreterJob,
+            final ProbeFrameworkContext probeFrameworkContext,
+            final IRecorderConfigurationFactory recorderConfigurationFactory,
+            final Set<AbstractReconfigurationLoader> reconfigurationLoaders,
+            final Set<RuntimeStateEntityManager> entityManagers) {
+        this.configuration = configuration;
+        this.pcmPartitionManager = pcmPartitionManager;
+        this.eventHelper = eventHelper;
+        this.interpreterListeners = interpreterListeners;
+        this.modelObservers = modelObservers;
+        this.probeFrameworkContext = probeFrameworkContext;
+        this.recorderConfigurationFactory = recorderConfigurationFactory;
+        this.reconfigurationLoaders = reconfigurationLoaders;
+        this.entityManagers = entityManagers;
+        
+        this.addJob(interpreterJob);
     }
 
-    /**
-     * @see de.uka.ipd.sdq.workflow.IJob#getName()
-     */
+    @Override
+    public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
+        LOGGER.debug("Load reconfigurations");
+        reconfigurationLoaders.forEach(loader -> loader.load(configuration));
+
+        LOGGER.debug("Initialize managers of internal simulation state");
+        entityManagers.forEach(RuntimeStateEntityManager::initialize);
+
+        LOGGER.debug("Initialize model observers, e.g., to runtime state objects in sync with global PCM model");
+        modelObservers.forEach(m -> m.initialize());
+
+        LOGGER.debug("Initialize interpreter listeners.");
+        interpreterListeners.forEach(this.eventHelper::addObserver);
+        interpreterListeners.forEach(IInterpreterListener::initialize);
+
+        pcmPartitionManager.startObservingPcmChanges();
+
+        super.execute(monitor);
+    }
+
+    @Override
+    public void cleanup(IProgressMonitor monitor) throws CleanupFailedException {
+        LOGGER.debug("Deregister all listeners and execute cleanup code");
+        eventHelper.removeAllListener();
+        pcmPartitionManager.stopObservingPcmChanges();
+        probeFrameworkContext.finish();
+        recorderConfigurationFactory.finalizeRecorderConfigurationFactory();
+        interpreterListeners.forEach(IInterpreterListener::cleanup);
+        modelObservers.forEach(IModelObserver::unregister);
+        entityManagers.forEach(RuntimeStateEntityManager::cleanup);
+        pcmPartitionManager.cleanUp();
+    }
+
     @Override
     public String getName() {
-        return "Run SimuLizar";
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.workflow.IJob#rollback(org.eclipse.core.runtime.IProgressMonitor)
-     */
-    @Override
-    public void cleanup(final IProgressMonitor monitor) throws CleanupFailedException {
-    }
-
-    /**
-     * @see de.uka.ipd.sdq.workflow.IBlackboardInteractingJob#setBlackboard(de.uka.ipd.sdq.workflow.Blackboard)
-     */
-    @Override
-    public void setBlackboard(final MDSDBlackboard blackboard) {
-        this.blackboard = blackboard;
+       return PCMStartInterpretationJob.class.getName();
     }
 
 }

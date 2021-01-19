@@ -58,8 +58,10 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  */
 public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
     @AssistedFactory
-    public interface Factory {
-        RDSeffSwitch create(final InterpreterDefaultContext context, ComposedSwitch<Object> parentSwitch);
+    public interface Factory extends AbstractRDSeffSwitchFactory {
+        @Override
+        RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
+                ExplicitDispatchComposedSwitch<Object> parentSwitch);
     }
 
     public static final Boolean SUCCESS = true;
@@ -75,18 +77,18 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
     private final IResourceTableManager resourceTableManager;
     private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
     private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
-    private final EventNotificationHelper eventHelper;
+    private final EventDispatcher eventHelper;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
      */
     @AssistedInject
-    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted ComposedSwitch<Object> parentSwitch,
+    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted ExplicitDispatchComposedSwitch<Object> parentSwitch,
             IResourceTableManager resourceTableManager,
             ComponentInstanceRegistry componentInstanceRegistry,
             ComposedStructureInnerSwitchFactory composedSwitchFactory,
             ComposedRDSeffSwitchFactory rdseffSwitchFactory, 
-            EventNotificationHelper eventHelper) {
+            EventDispatcher eventHelper) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;

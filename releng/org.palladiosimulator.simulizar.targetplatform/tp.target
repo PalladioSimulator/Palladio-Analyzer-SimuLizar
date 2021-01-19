@@ -252,16 +252,13 @@
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
 			<unit id="com.google.dagger.feature.feature.group" version="2.31.0"/>
-			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
-			<!--<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>-->
-			<repository location="file:///c:/users_local/krach/projects/mdsd_tools/git/ThirdParty-Library/build/updatesite"/>
+			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
 			<unit id="com.google.dagger.feature.feature.group" version="2.31"/>
-			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">

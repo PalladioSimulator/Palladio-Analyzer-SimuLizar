@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules.shared.mdsd;
+package org.palladiosimulator.simulizar.modules.stateless.mdsd;
 
 import dagger.Module;
 import dagger.Provides;

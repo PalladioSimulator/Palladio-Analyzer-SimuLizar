@@ -1,10 +1,11 @@
 package org.palladiosimulator.simulizar;
 
+import org.palladiosimulator.simulizar.component.core.DaggerSimuLizarPlatformComponent;
 import org.palladiosimulator.simulizar.component.core.SimuLizarPlatformComponent;
 
 public enum SimuLizarPlatform {
     
-    INSTANCE(/*DaggerSimuLizarPlatformComponent.factory().create()*/null);
+    INSTANCE(DaggerSimuLizarPlatformComponent.factory().create());
     
     private SimuLizarPlatform(SimuLizarPlatformComponent component) {
         this.component = component;

@@ -11,6 +11,7 @@ import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
@@ -21,7 +22,8 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 /**
  * The Allocation Lookup Syncer updates the cache for the mapping of
@@ -38,9 +40,11 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
  * @author Sebastian Krach
  *
  */
-public class AllocationLookupSyncer {
+@SimulationRuntimeScope
+public class AllocationLookupSyncer implements IModelObserver {
     private final EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory;
     private final AssemblyAllocationManager allocationManager;
+    private PCMResourceSetPartition globalPartition;
     
     /**
      * Creates a new Allocation Lookup Syncer.
@@ -52,17 +56,23 @@ public class AllocationLookupSyncer {
     @Inject
     public AllocationLookupSyncer(
             EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory,
-            PCMPartitionManager modelManager,
+            @Global PCMResourceSetPartition globalPartition,
             AssemblyAllocationManager allocationManager) {
         this.resourceContainerReferenceFactory = resourceContainerReferenceFactory;
+        this.globalPartition = globalPartition;
         this.allocationManager = allocationManager;
-        var allocation = modelManager.getGlobalPCMModel().getAllocation();
+        
+    }
+    
+    @Override
+    public void initialize() {
+        var allocation = globalPartition.getAllocation();
         allocation.eAdapters().add(new EContentAdapter() {
-        	@Override
-        	public void notifyChanged(Notification notification) {
-        		
-        		super.notifyChanged(notification);
-        	}
+            @Override
+            public void notifyChanged(Notification notification) {
+                
+                super.notifyChanged(notification);
+            }
         });
         addInitialAllocations(allocation);
     }

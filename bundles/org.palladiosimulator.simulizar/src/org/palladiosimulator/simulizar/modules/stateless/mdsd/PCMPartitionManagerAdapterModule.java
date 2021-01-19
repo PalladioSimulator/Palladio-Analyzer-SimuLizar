@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules.shared.mdsd;
+package org.palladiosimulator.simulizar.modules.stateless.mdsd;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;

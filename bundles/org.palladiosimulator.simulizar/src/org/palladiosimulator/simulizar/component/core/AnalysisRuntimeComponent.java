@@ -4,13 +4,10 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 public interface AnalysisRuntimeComponent {
     
-    IJob initializeJob();
-    
-    IJob runInterpreterJob();
+    IJob runtimeJob();
     
     public interface Factory {
         AnalysisRuntimeComponent create();
     }
-
-
+    
 }

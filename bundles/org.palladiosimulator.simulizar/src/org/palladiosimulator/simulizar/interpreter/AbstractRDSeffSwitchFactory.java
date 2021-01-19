@@ -8,7 +8,7 @@ import org.eclipse.emf.ecore.util.Switch;
  * @author mrombach
  *
  */
-public abstract class AbstractRDSeffSwitchFactory {
+public interface AbstractRDSeffSwitchFactory {
 	
 	/**
 	 * 
@@ -20,6 +20,6 @@ public abstract class AbstractRDSeffSwitchFactory {
      *				The composed switch which is containing the created switch
 	 * @return a composable switch
 	 */
-	public abstract Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
+	public Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
             ExplicitDispatchComposedSwitch<Object> parentSwitch);
 }

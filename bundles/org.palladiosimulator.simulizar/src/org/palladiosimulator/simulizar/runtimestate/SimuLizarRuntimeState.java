@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
@@ -34,7 +34,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 public class SimuLizarRuntimeState {
 
     protected final SimuComModel model;
-    protected final EventNotificationHelper eventHelper;
+    protected final EventDispatcher eventHelper;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final SimulatedUsageModels usageModels;
     private final PCMPartitionManager pcmPartitionManager;
@@ -50,7 +50,7 @@ public class SimuLizarRuntimeState {
     @Inject
     public SimuLizarRuntimeState(final PCMPartitionManager pcmPartitionManager, 
             final SimuComModel simuComModel,
-            final EventNotificationHelper eventHelper,
+            final EventDispatcher eventHelper,
             final ComponentInstanceRegistry componentInstanceRegistry, 
             final SimulatedUsageModels simulatedUsageModels, 
             final Reconfigurator reconfigurator,
@@ -80,7 +80,7 @@ public class SimuLizarRuntimeState {
      * @return the event notification helper
      * @deprecated Use dependency injection to retrieve the EventNotificationHelper instance.
      */
-    public EventNotificationHelper getEventNotificationHelper() {
+    public EventDispatcher getEventNotificationHelper() {
         return this.eventHelper;
     }
 

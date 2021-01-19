@@ -2,25 +2,23 @@ package org.palladiosimulator.simulizar.component.core;
 
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.ParentContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;
+import org.palladiosimulator.simulizar.modules.component.core.SimulatedThreadModule;
 import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
 
 import dagger.BindsInstance;
-import dagger.Component;
+import dagger.Subcomponent;
+import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
-@Component(dependencies = { SimuLizarRuntimeComponent.class, SimuComFrameworkComponent.class })
+@Subcomponent(modules = { SimulatedThreadModule.class })
 @SimulatedThreadScope
 public interface SimulatedThreadComponent {
-    @SimulatedThreadScope
-    InterpreterDefaultContext localContext();
+    InterpreterFacade interpreterFacade();
 
-    @SimulatedThreadScope
-    @ParentContext
-    InterpreterDefaultContext parentContext();
-    
-    @Component.Factory
-    public interface Factory {
-        SimulatedThreadComponent create(@BindsInstance @ParentContext InterpreterDefaultContext parentContext, SimuLizarRuntimeComponent runtimeComponent,
-                SimuComFrameworkComponent simucomComponent);
+    @Subcomponent.Factory
+    interface Factory {
+        SimulatedThreadComponent create(@BindsInstance @ParentContext InterpreterDefaultContext parentContext,
+                @BindsInstance SimuComSimProcess simProcess);
     }
 
 }

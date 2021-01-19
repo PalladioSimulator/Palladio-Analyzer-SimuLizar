@@ -38,14 +38,14 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<Object> {
     private final TransitionDeterminer transitionDeterminer;
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
 
-    private final EventNotificationHelper eventHelper;
+    private final EventDispatcher eventHelper;
     
     /**
      * @see UsageScenarioSwitchFactory#create(InterpreterDefaultContext)
      */
     @AssistedInject
     UsageScenarioSwitch(@Assisted final InterpreterDefaultContext context, RepositoryComponentSwitchFactory repositoryComponentSwitchFactory,
-            EventNotificationHelper eventHelper) {
+            EventDispatcher eventHelper) {
         this.context = context;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
         this.eventHelper = eventHelper;

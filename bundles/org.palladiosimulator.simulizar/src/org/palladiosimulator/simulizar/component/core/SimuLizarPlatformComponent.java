@@ -5,12 +5,13 @@ import org.palladiosimulator.simulizar.scopes.PlatformScope;
 
 import dagger.Component;
 
-@PlatformScope
 @Component(modules = PlatformModule.class)
+@PlatformScope
 public interface SimuLizarPlatformComponent {
    
     SimuLizarRootComponent.Factory analysisFactory();
     
+    @Component.Factory
     public interface Factory {
         SimuLizarPlatformComponent create();
     }

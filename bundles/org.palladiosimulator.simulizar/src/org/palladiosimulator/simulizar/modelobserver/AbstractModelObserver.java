@@ -20,7 +20,7 @@ public abstract class AbstractModelObserver<T extends EObject> implements IModel
 
     private EContentAdapter adapter;
 
-    private final PCMResourceSetPartition globalPCMInstance;
+    protected final PCMResourceSetPartition globalPCMInstance;
 
     protected AbstractModelObserver(@Global PCMResourceSetPartition globalPCMInstance) {
         this.globalPCMInstance = globalPCMInstance;

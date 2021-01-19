@@ -3,10 +3,10 @@ package org.palladiosimulator.simulizar.component.core;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.launcher.jobs.InitializeInterpretationJob;
-import org.palladiosimulator.simulizar.launcher.jobs.RunInterpreterJob;
+import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.modules.component.core.SimulationRuntimeModule;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
@@ -22,20 +22,20 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 @SimulationRuntimeScope
 public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
     
-    InitializeInterpretationJob initializeJob();
+    @Override
+    PCMStartInterpretationJob runtimeJob();
     
-    RunInterpreterJob runInterpreterJob();
-
     PCMPartitionManager globalPartitionManager();
 
-    @Global
-    PCMResourceSetPartition globalPCMModel();
+    @Global PCMResourceSetPartition globalPCMModel();
 
     IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup();
     
     ComponentInstanceRegistry componentInstanceRegistry();
     
     AssemblyAllocationManager allocationManager();
+    
+    EventDispatcher eventDispatcher();
     
     @MainContext InterpreterDefaultContext mainContext();
 

@@ -54,7 +54,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
     private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
     private final ComponentInstanceRegistry componentRegistry;
-    private final EventNotificationHelper eventHelper;
+    private final EventDispatcher eventHelper;
     private final SimulatedBasicComponentInstanceFactory simComponentFactory;
 
     /**
@@ -66,7 +66,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             RepositoryComponentSwitchFactory repositoryComponentSwitchFactory,
             ComponentInstanceRegistry componentRegistry,
             ComposedRDSeffSwitchFactory rdseffSwitchFactory,
-            EventNotificationHelper eventHelper,
+            EventDispatcher eventHelper,
             SimulatedBasicComponentInstanceFactory simComponentFactory) {
         super();
         this.context = context;

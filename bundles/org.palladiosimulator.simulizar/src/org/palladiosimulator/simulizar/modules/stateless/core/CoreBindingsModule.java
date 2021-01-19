@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules.shared.core;
+package org.palladiosimulator.simulizar.modules.stateless.core;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;

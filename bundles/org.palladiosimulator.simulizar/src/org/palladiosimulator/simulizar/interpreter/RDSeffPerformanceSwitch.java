@@ -28,8 +28,10 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> implements IComposableSwitch {
     @AssistedFactory
-    public interface Factory {
-        RDSeffPerformanceSwitch create(InterpreterDefaultContext context, ComposedSwitch<Object> parentSwitch);
+    public interface Factory extends AbstractRDSeffSwitchFactory {
+        @Override
+        public RDSeffPerformanceSwitch createRDSeffSwitch(InterpreterDefaultContext context,
+                ExplicitDispatchComposedSwitch<Object> parentSwitch);
     }
 
     private final InterpreterDefaultContext context;
@@ -41,7 +43,7 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> imple
 
     @AssistedInject
     public RDSeffPerformanceSwitch(@Assisted InterpreterDefaultContext context,
-            @Assisted ComposedSwitch<Object> parentSwitch,
+            @Assisted ExplicitDispatchComposedSwitch<Object> parentSwitch,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess,
             ComposedStructureInnerSwitchFactory composedSwitchFactory) {

@@ -7,22 +7,17 @@ import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.scaledl.usageevolution.Usage;
-import org.scaledl.usageevolution.UsageEvolution;
-import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 @SimulationRuntimeScope
-public class UsageEvolverFacade {
+public class UsageEvolverFacade implements RuntimeStateEntityManager {
 
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;
     
-    /** Runtime state of the simulation. Required to start evolution(s). */
-    private final PCMPartitionManager partitionManager;
     private final ISimulationControl simulationControl;
 
     private final LoopingUsageEvolverFactory loopingFactory;
@@ -30,24 +25,16 @@ public class UsageEvolverFacade {
     private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
 
     @Inject
-    public UsageEvolverFacade(final PCMPartitionManager partitionManager, 
+    public UsageEvolverFacade(
             final ISimulationControl simulationControl,
             final LoopingUsageEvolverFactory loopingFactory,
             final StretchedUsageEvolverFactory stretchedFactory,
             final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory) {
-        this.partitionManager = partitionManager;
         this.simulationControl = simulationControl;
         this.loopingFactory = loopingFactory;
         this.stretchedFactory = stretchedFactory;
         this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
         this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
-    }
-
-    public void start() {
-        // TODO: add check on duration of evolutions for work parameters.
-        // For now, assume that the duration of these are the same as for the load evolution
-    	UsageEvolution ueModel = partitionManager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
-        ueModel.getUsages().forEach(usage -> startUsageEvolution(usage));
     }
     
     public void startUsageEvolution(Usage usage) {

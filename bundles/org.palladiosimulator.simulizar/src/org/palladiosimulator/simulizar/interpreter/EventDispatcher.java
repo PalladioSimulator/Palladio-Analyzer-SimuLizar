@@ -10,8 +10,6 @@ import java.util.function.BinaryOperator;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import javax.inject.Inject;
-
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.pcm.repository.OperationProvidedRole;
@@ -27,17 +25,12 @@ import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 /**
  * @author snowball, Sebastian Krach
  *
  */
-@SimulationRuntimeScope
-public class EventNotificationHelper extends AbstractObservable<IInterpreterListener> {
-    @Inject
-    public EventNotificationHelper() {
-    }
+public class EventDispatcher extends AbstractObservable<IInterpreterListener> {
     
     private static BinaryOperator<Consumer<ModelElementPassedEvent<? extends EObject>>> BEGIN_END_SWITCH = (beginFunc, endFunc) -> 
     	((ModelElementPassedEvent<? extends EObject> event) -> {

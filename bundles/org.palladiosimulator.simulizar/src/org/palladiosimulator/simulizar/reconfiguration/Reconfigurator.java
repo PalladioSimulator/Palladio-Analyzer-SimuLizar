@@ -1,14 +1,11 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import java.util.List;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
@@ -16,12 +13,9 @@ import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 
 /**
  * Class whose objects will listen on changes in the PCM@Runtime (i.e., they
@@ -34,7 +28,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * @author Florian Rosenthal
  *
  */
-public class Reconfigurator extends AbstractObservable<IReconfigurationListener> {
+public class Reconfigurator extends AbstractObservable<IReconfigurationListener> implements IModelObserver {
 
 	/**
 	 * This class' internal LOGGER.
@@ -59,25 +53,15 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 */
 	private final RuntimeMeasurementModel runtimeMeasurementModel;
 
-	/**
-	 * Set of all registered reconfigurators, i.e., objects that can change the
-	 * PCM@Runtime.
-	 */
-	private final List<IReconfigurationEngine> reconfiguratorEngines;
-
-	private final List<AbstractReconfigurationLoader> reconfigurationLoaders;
-
-	private final SimuComModel model;
-
 	// will be initialized lazily, once the first reconfiguration is to be
 	// executed
 	private ReconfigurationProcess reconfigurationProcess;
 
 	private double lastReconfigurationTime = 0;
 
-	private SimuLizarWorkflowConfiguration configuration;
-	
-	private final IResourceTableManager resourceTableManager;
+    private final ISimulationTimeProvider simTimeProvider;
+
+    private final ReconfigurationProcessFactory processFactory;
 
 	/**
 	 * Constructor.
@@ -90,41 +74,29 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 *            Set of reconfigurators which will be triggered as soon as new,
 	 *            interesting monitoring data arrives.
 	 */
-	public Reconfigurator(final SimuComModel model, final RuntimeMeasurementModel rmModel,
-			final ISimulationControl simulationcontrol, final List<IReconfigurationEngine> reconfigurators,
-			SimuLizarWorkflowConfiguration configuration, IResourceTableManager resourceTableManager) {
-		super();
-		this.model = model;
+	public Reconfigurator(final RuntimeMeasurementModel rmModel,
+	        ReconfigurationProcessFactory processFactory,
+			ISimulationTimeProvider simTimeProvider) {
 		this.runtimeMeasurementModel = rmModel;
-		this.reconfiguratorEngines = reconfigurators;
-		this.configuration = configuration;
-		this.resourceTableManager = resourceTableManager;
-
-		this.reconfigurationLoaders = ExtensionHelper.getExecutableExtensions(
-				SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_ID,
-				SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_LOADER_ATTRIBUTE);
-		reconfigurationLoaders.forEach(loader -> loader.load(configuration));
+        this.processFactory = processFactory;
+        this.simTimeProvider = simTimeProvider;
 	}
 
-	/**
-	 * Setup all listeners to listen for their respective model changes.
-	 */
-	public void startListening() {
-		this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
-	}
+    @Override
+    public void initialize() {
+        this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
+    }
 
-	/**
-	 * Detach all model listeners and request termination of reconfiguration
-	 * process.
-	 */
-	public void cleanUp() {
-		this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
-		// this also requires that the reconfiguration process be terminated
-		if (this.reconfigurationProcess != null) {
-			this.reconfigurationProcess.requestTermination();
-
-		}
-	}
+    @Override
+    public void unregister() {
+        this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
+        // this also requires that the reconfiguration process be terminated
+        if (this.reconfigurationProcess != null) {
+            this.reconfigurationProcess.requestTermination();
+        }
+        
+        removeAllObserver();
+    }
 
 	/**
 	 * Method which is called on a change in the RuntimeMeasurement. All
@@ -144,13 +116,13 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 		// more fine-granular
 		// level (one thread per executor).
 		if (this.isNotificationNewMeasurement(monitoredElement)
-				&& this.model.getSimulationControl().getCurrentSimulationTime() > this.lastReconfigurationTime
+				&& simTimeProvider.getCurrentSimulationTime() > this.lastReconfigurationTime
 				&& (this.reconfigurationProcess == null || !this.reconfigurationProcess.isScheduled())) {
 			if (this.reconfigurationProcess == null) {
-				this.reconfigurationProcess = new ReconfigurationProcess(this.model, this.reconfiguratorEngines, this, resourceTableManager);
+				this.reconfigurationProcess = processFactory.create();
 			}
 			this.reconfigurationProcess.executeReconfigurations(this.runtimeMeasurementModel);
-			this.lastReconfigurationTime = this.model.getSimulationControl().getCurrentSimulationTime();
+			this.lastReconfigurationTime = simTimeProvider.getCurrentSimulationTime();
 		}
 	}
 
@@ -225,15 +197,5 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	public ReconfigurationProcess getReconfigurationProcess() {
 		return this.reconfigurationProcess;
 	}
-
-	public SimuLizarWorkflowConfiguration getConfiguration() {
-		return configuration;
-	}
-
-	public List<AbstractReconfigurationLoader> getReconfigurationLoaders() {
-		return reconfigurationLoaders;
-	}
-	
-	
 
 }

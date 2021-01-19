@@ -4,12 +4,10 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.NUMBER_OF_RESOURCE_CONTAINERS_OVER_TIME;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
@@ -24,13 +22,10 @@ import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfiguration
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
-import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
@@ -40,8 +35,6 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
  * This factory creates a new Reconfigurator which keeps track of the number of resource containers in a resource
  * environment.
  * 
- * The code factored out of {@link SimuLizarRuntimeState}.
- * 
  * @author Sebastian Krach
  *
  */
@@ -49,21 +42,21 @@ public class NumberOfResourceContainerTrackingReconfiguratorFactory implements R
     
     private static final Logger LOGGER = Logger.getLogger(NumberOfResourceContainerTrackingReconfiguratorFactory.class);
     
-    private SimuLizarWorkflowConfiguration configuration;
     private ISimulationControl simulationControl;
-    private IResourceTableManager resourceTableManager;
     private PCMPartitionManager pcmPartitionManager;
     private SimuComModel model;
 
+    private ReconfigurationProcessFactory reconfigurationProcessFactory;
+
     @Inject
     public NumberOfResourceContainerTrackingReconfiguratorFactory(final SimuLizarWorkflowConfiguration configuration,
-            final ISimulationControl simulationControl, IResourceTableManager resourceTableManager,
-            final PCMPartitionManager pcmPartitionManager, SimuComModel model) {
-        this.configuration = configuration;
+            final ISimulationControl simulationControl,
+            final PCMPartitionManager pcmPartitionManager, SimuComModel model,
+            ReconfigurationProcessFactory reconfigurationProcessFactory) {
         this.simulationControl = simulationControl;
-        this.resourceTableManager = resourceTableManager;
         this.pcmPartitionManager = pcmPartitionManager;
         this.model = model;
+        this.reconfigurationProcessFactory = reconfigurationProcessFactory;
     }
 
     @Override
@@ -72,18 +65,10 @@ public class NumberOfResourceContainerTrackingReconfiguratorFactory implements R
 
         final TriggeredProbe numberOfResourceCalculatorsProbes = initNumberOfResourceContainersCalculator();
 
-        final List<IReconfigurationEngine> reconfigEngines = ExtensionHelper.getExecutableExtensions(
-                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
-                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
-        reconfigEngines.forEach(engine -> {
-            engine.setConfiguration(configuration);
-            engine.setPCMPartitionManager(pcmPartitionManager);
-        });
-
         RuntimeMeasurementModel rmModel = this.pcmPartitionManager
                 .findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
-        final Reconfigurator reconfigurator = new Reconfigurator(this.model, rmModel, simulationControl,
-                reconfigEngines, configuration, resourceTableManager);
+        final Reconfigurator reconfigurator = new Reconfigurator(rmModel, reconfigurationProcessFactory, simulationControl);
+
         reconfigurator.addObserver(new IReconfigurationListener() {
             
             int previousNumberOfContainers = getNumberOfResourceContainers();

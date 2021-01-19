@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.reconfiguration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import org.eclipse.emf.common.notify.Notification;
@@ -14,11 +15,13 @@ import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEv
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 
 /**
  * {@link SimuComSimProcess} implementation which is responsible for executing
@@ -32,13 +35,13 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 
 	private EObject monitoredElement;
 	private final Iterable<IReconfigurationEngine> reconfigurators;
-	private final ISimulationControl simControl;
 	private final List<Notification> currentReconfigNotifications;
-	private final Reconfigurator reconfigurator;
 	private final IResourceTableManager resourceTableManager;
 	// volatile is sufficient as flag is only set once
 	private volatile boolean terminationRequested = false;
 	private EList<ModelTransformation<? extends Object>> transformations;
+    private final IReconfigurationListener reconfigurationEventDispatcher;
+    private final ISimulationTimeProvider simTimeProvider;
 	
 
 	/**
@@ -56,19 +59,25 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	 * @throws NullPointerException
 	 *             In case any of the given parameters is {@code null}.
 	 */
-	protected ReconfigurationProcess(final SimuComModel model, final Iterable<IReconfigurationEngine> reconfigurators,
-			final Reconfigurator reconfigurator, IResourceTableManager resourceTableManager) {
+	@AssistedInject
+	protected ReconfigurationProcess(final SimuComModel model, 
+	        Set<IReconfigurationEngine> reconfigurators,
+	        Set<AbstractReconfigurationLoader> reconfigurationLoaders,
+	        SimuLizarWorkflowConfiguration configuration,
+	        IReconfigurationListener reconfigurationEventDispatcher, 
+	        IResourceTableManager resourceTableManager, 
+	        ISimulationTimeProvider simTimeProvider) {
 		super(model, "Reconfiguration Process", resourceTableManager);
+        this.simTimeProvider = simTimeProvider;
+        this.reconfigurationEventDispatcher = Objects.requireNonNull(reconfigurationEventDispatcher, "EventDispatcher must not be null");
 		this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");
-		this.reconfigurator = Objects.requireNonNull(reconfigurator, "reconfigurator must not be null");
-		this.simControl = Objects.requireNonNull(model, "Passed SimuComModel must not be null").getSimulationControl();
 		this.currentReconfigNotifications = new ArrayList<>();
 		this.transformations = new BasicEList<ModelTransformation<? extends Object>>();
-		reconfigurator.getReconfigurationLoaders().forEach(l -> {
-			l.load(reconfigurator.getConfiguration());
-			this.transformations.addAll(l.getTransformations());
-		});
 		this.resourceTableManager = resourceTableManager;
+		
+		reconfigurationLoaders.forEach(l -> {
+            this.transformations.addAll(l.getTransformations());
+        });
 	}
 
 	/**
@@ -86,16 +95,16 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	}
 
 	private void fireBeginReconfigurationEvent(final BeginReconfigurationEvent event) {
-		this.reconfigurator.fireReconfigurationEvent(event);
+	    reconfigurationEventDispatcher.beginReconfigurationEvent(event);
 	}
 
 	private void fireEndReconfigurationEvent(final EndReconfigurationEvent event) {
-		this.reconfigurator.fireReconfigurationEvent(event);
+		reconfigurationEventDispatcher.endReconfigurationEvent(event);
 	}
 
 	private void fireReconfigurationExecutedEvent(final BeginReconfigurationEvent beginEvent,
 			final EndReconfigurationEvent endEvent) {
-		this.reconfigurator.fireReconfigurationEvent(
+	    reconfigurationEventDispatcher.reconfigurationExecuted(
 				new ReconfigurationExecutedEvent(beginEvent, endEvent, this.currentReconfigNotifications));
 	}
 
@@ -176,7 +185,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 			ReconfigurationProcess.this.fireBeginReconfigurationEvent(beginReconfigurationEvent);
 			final boolean reconfigResult = r.runCheck(transformations, monitoredElement, resourceTableManager);
 			EndReconfigurationEvent endReconfigurationEvent = new EndReconfigurationEvent(
-					EventResult.fromBoolean(reconfigResult), this.simControl.getCurrentSimulationTime());
+					EventResult.fromBoolean(reconfigResult), simTimeProvider.getCurrentSimulationTime());
 			ReconfigurationProcess.this.fireEndReconfigurationEvent(endReconfigurationEvent);
 			if (reconfigResult) {
 				LOGGER.debug("Successfully executed reconfiguration.");
@@ -194,10 +203,11 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 			final EObject monitoredElement = this.getMonitoredElement();
 			if (monitoredElement != null) {
 				this.reconfigurators
-						.forEach(this.doReconfiguration(this.simControl.getCurrentSimulationTime(), monitoredElement));
+						.forEach(this.doReconfiguration(simTimeProvider.getCurrentSimulationTime(), monitoredElement));
 				// all reconfigurators did their job, so we can go to sleep
 				this.passivate();
 			}
 		}
 	}
 }
+

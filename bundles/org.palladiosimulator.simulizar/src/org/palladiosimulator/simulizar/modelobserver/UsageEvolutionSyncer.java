@@ -1,21 +1,41 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
+import java.util.Collection;
+
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 import org.scaledl.usageevolution.Usage;
+import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
+@SimulationRuntimeScope
 public class UsageEvolutionSyncer extends AbstractUsageEvolutionObserver {
 
     private static final Logger LOGGER = Logger.getLogger(UsageEvolutionSyncer.class);
     private UsageEvolverFacade usageEvolverFacade;
 
+    @Inject
     public UsageEvolutionSyncer(@Global PCMResourceSetPartition globalPCMInstance, UsageEvolverFacade usageEvolverFacade) {
         super(globalPCMInstance);
         this.usageEvolverFacade = usageEvolverFacade;
+    }
+    
+    @Override
+    public void initialize() {
+        super.initialize();
+
+        globalPCMInstance.getElement(UsageevolutionPackage.eINSTANCE.getUsageEvolution())
+            .stream()
+            .map(UsageEvolution.class::cast)
+            .map(UsageEvolution::getUsages)
+            .flatMap(Collection::stream)
+            .forEach(usage -> usageEvolverFacade.startUsageEvolution(usage));
     }
     
     @Override

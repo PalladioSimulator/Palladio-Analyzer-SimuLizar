@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.modules.shared.configuration;
+package org.palladiosimulator.simulizar.modules.stateless.configuration;
 
 import java.util.Optional;
 

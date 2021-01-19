@@ -32,7 +32,7 @@
 		<module>org.palladiosimulator.simulizar.measuringpoint.create</module>
 		<module>org.palladiosimulator.simulizar.monitorrepository.feedthrough</module>
 		<module>org.palladiosimulator.simulizar.monitorrepository.map</module>
-		<module>org.palladiosimulator.simulizar.middlewarecompletions</module>
+		<!--<module>org.palladiosimulator.simulizar.middlewarecompletions</module>-->
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin</module>
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model</module>
 		<module>org.palladiosimulator.simulizar.reconfiguration.henshin.model.edit</module>

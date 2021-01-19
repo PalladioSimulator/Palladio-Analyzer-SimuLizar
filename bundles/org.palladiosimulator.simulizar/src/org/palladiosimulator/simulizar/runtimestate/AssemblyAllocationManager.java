@@ -12,7 +12,9 @@ import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 
 @SimulationRuntimeScope
-public class AssemblyAllocationManager implements IAssemblyAllocationLookup<EntityReference<ResourceContainer>> {
+public class AssemblyAllocationManager
+        implements IAssemblyAllocationLookup<EntityReference<ResourceContainer>>, RuntimeStateEntityManager {
+    
     private final Map<String, EntityReference<ResourceContainer>> containerIdStorage = new HashMap<>();
     
     @Inject
@@ -38,5 +40,10 @@ public class AssemblyAllocationManager implements IAssemblyAllocationLookup<Enti
     
     public void deallocateAssembly(String fqid) {
         containerIdStorage.remove(fqid);
+    }
+    
+    @Override
+    public void cleanup() {
+        containerIdStorage.clear();
     }
 }
