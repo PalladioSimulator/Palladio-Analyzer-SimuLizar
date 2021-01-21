@@ -15,6 +15,7 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSets;
 import org.palladiosimulator.probeframework.probes.Probe;
+import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.elasticity.DaggerSimuLizarElasticityComponent;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
@@ -62,7 +63,8 @@ public class RunElasticityAnalysisJob implements IBlackboardInteractingJob<MDSDB
 	 *            the SimuCom workflow configuration.
 	 */
 	public RunElasticityAnalysisJob(final SimuLizarWorkflowConfiguration configuration,
-			LoadSimuLizarModelsIntoBlackboardJob loadSimuLizarModelsIntoBlackboardJob) {
+			LoadSimuLizarModelsIntoBlackboardJob loadSimuLizarModelsIntoBlackboardJob,
+			AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
 		super();
 		this.configuration = configuration;
 		this.loadSimuLizarModelsIntoBlackboardJob = loadSimuLizarModelsIntoBlackboardJob;

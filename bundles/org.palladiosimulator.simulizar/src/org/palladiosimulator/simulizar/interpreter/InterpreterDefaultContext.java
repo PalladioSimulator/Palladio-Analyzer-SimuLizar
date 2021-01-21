@@ -16,7 +16,6 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
@@ -64,6 +63,7 @@ public class InterpreterDefaultContext extends Context {
     public @interface ParentContext {
     }
     
+    
     /**
     *
     */
@@ -77,7 +77,6 @@ public class InterpreterDefaultContext extends Context {
 
     private final IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    @Inject
     public InterpreterDefaultContext(final SimuComModel simuComModel, PCMPartitionManager partitionManager,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> assemblyAllocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> simRCAccess,

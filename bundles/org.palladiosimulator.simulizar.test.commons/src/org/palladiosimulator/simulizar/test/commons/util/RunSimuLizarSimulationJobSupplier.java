@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.test.commons.util;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.palladiosimulator.simulizar.modules.SimuLizarConfigurationModule;
-import org.palladiosimulator.simulizar.modules.legacy.custom.CustomMDSDBlackboardProvidingModule;
+import org.palladiosimulator.simulizar.di.modules.SimuLizarConfigurationModule;
+import org.palladiosimulator.simulizar.di.modules.legacy.custom.CustomMDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 

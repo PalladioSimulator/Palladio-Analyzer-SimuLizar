@@ -1,19 +1,25 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.commons.designpatterns.AbstractObservable;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurement;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
+import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.runtimemeasurement.util.RuntimeMeasurementSwitch;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 
@@ -28,6 +34,7 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
  * @author Florian Rosenthal
  *
  */
+@SimulationRuntimeScope
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> implements IModelObserver {
 
 	/**
@@ -51,7 +58,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	/**
 	 * Access interface to the RuntimeMeasurement model.
 	 */
-	private final RuntimeMeasurementModel runtimeMeasurementModel;
+	private RuntimeMeasurementModel runtimeMeasurementModel;
 
 	// will be initialized lazily, once the first reconfiguration is to be
 	// executed
@@ -62,6 +69,8 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
     private final ISimulationTimeProvider simTimeProvider;
 
     private final ReconfigurationProcessFactory processFactory;
+
+    private final PCMResourceSetPartition partition;
 
 	/**
 	 * Constructor.
@@ -74,17 +83,28 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 *            Set of reconfigurators which will be triggered as soon as new,
 	 *            interesting monitoring data arrives.
 	 */
-	public Reconfigurator(final RuntimeMeasurementModel rmModel,
+    @Inject
+	public Reconfigurator(@Global PCMResourceSetPartition partition,
 	        ReconfigurationProcessFactory processFactory,
 			ISimulationTimeProvider simTimeProvider) {
-		this.runtimeMeasurementModel = rmModel;
+		this.partition = partition;
         this.processFactory = processFactory;
         this.simTimeProvider = simTimeProvider;
 	}
 
     @Override
     public void initialize() {
-        this.runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
+        var models = partition.getElement(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel());
+        if (models.size() != 1) {
+            if (models.size() > 1) {
+                throw new IllegalStateException("There is more than one Runtime Measurements Model in the global PCM Partition. This is not supported.");
+            } else {
+                LOGGER.warn("No runtime measurements model found. Deactivating the reconfigurator");
+            }
+        } else {
+            runtimeMeasurementModel = (RuntimeMeasurementModel) models.get(0);
+            runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
+        }
     }
 
     @Override

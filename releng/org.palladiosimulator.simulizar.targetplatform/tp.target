@@ -44,7 +44,8 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="de.uka.ipd.sdq.workflow.feature.core.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>
+			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>-->
+			<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Supporting-WorkflowEngine/releng/de.uka.ipd.sdq.workflow.updatesite/target/repository/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -252,7 +253,9 @@
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
 			<unit id="com.google.dagger.feature.feature.group" version="2.31.0"/>
-			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
+			<unit id="org.jgrapht.feature.feature.group" version="1.5.0"/>
+			<!--<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>-->
+			<repository location="file:///c:/users_local/krach/projects/mdsd_tools/git/ThirdParty-Library/build/updatesite"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>

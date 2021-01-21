@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -34,6 +33,7 @@ import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
+import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
@@ -56,18 +56,18 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker, Sebastian Lehrig
  *
  */
-public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
+public class RDSeffSwitch extends SeffSwitch<Object> {
     @AssistedFactory
-    public interface Factory extends AbstractRDSeffSwitchFactory {
+    public interface Factory extends RDSeffSwitchContributionFactory<Object> {
         @Override
         RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
-                ExplicitDispatchComposedSwitch<Object> parentSwitch);
+                RDSeffElementDispatcher<Object> parentSwitch);
     }
 
     public static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
 
-    private ComposedSwitch<Object> parentSwitch;
+    private RDSeffElementDispatcher<Object> parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
 
@@ -83,7 +83,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
      */
     @AssistedInject
-    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted ExplicitDispatchComposedSwitch<Object> parentSwitch,
+    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher<Object> parentSwitch,
             IResourceTableManager resourceTableManager,
             ComponentInstanceRegistry componentInstanceRegistry,
             ComposedStructureInnerSwitchFactory composedSwitchFactory,
@@ -130,7 +130,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
                 LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
-            this.getParentSwitch().doSwitch(currentAction);
+            parentSwitch.doSwitch(currentAction);
             this.firePassedEvent(currentAction, EventType.END);
             currentAction = currentAction.getSuccessor_AbstractAction();
         }
@@ -248,7 +248,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
             LOGGER.error("No branch's condition evaluated to true, no branch selected: " + object);
             throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
-            this.getParentSwitch().doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
+            parentSwitch.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
 
         return SUCCESS;
@@ -485,7 +485,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
-            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
+            parentSwitch.doSwitch(object.getBodyBehaviour_Loop());
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
@@ -543,7 +543,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
              * within an iteration.
              */
 
-            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
+            parentSwitch.doSwitch(object.getBodyBehaviour_Loop());
 
             // remove stack frame for value characterisations of inner
             // collection variable
@@ -561,13 +561,4 @@ public class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitc
             }
         }
     }
-
-	@Override
-	public Switch<Object> getParentSwitch() {
-		if (this.parentSwitch != null) {
-			return this.parentSwitch;
-		}
-
-		return this;
-	}
 }

@@ -19,8 +19,8 @@ import org.junit.jupiter.api.io.TempDir;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
+import org.palladiosimulator.simulizar.di.modules.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.modules.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.util.DaggerSimuLizarTestComponent;
 

@@ -77,6 +77,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
         this.initReconfigurationTimeMeasurement();
         this.initExtensionMeasurements();
     }
+    
 
     private void initExtensionMeasurements() {
         Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper.getExecutableExtensions(

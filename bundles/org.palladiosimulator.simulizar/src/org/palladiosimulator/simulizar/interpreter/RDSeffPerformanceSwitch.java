@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -14,6 +12,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_performance.util.SeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import dagger.assisted.Assisted;
@@ -26,30 +25,28 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
-public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> implements IComposableSwitch {
+public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
     @AssistedFactory
-    public interface Factory extends AbstractRDSeffSwitchFactory {
+    public interface Factory extends RDSeffSwitchContributionFactory<Object> {
         @Override
         public RDSeffPerformanceSwitch createRDSeffSwitch(InterpreterDefaultContext context,
-                ExplicitDispatchComposedSwitch<Object> parentSwitch);
+                RDSeffElementDispatcher<Object> parentSwitch);
     }
 
     private final InterpreterDefaultContext context;
     private final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup;
-    private final ComposedSwitch<Object> parentSwitch;
     private final ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess;
     private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
     
 
     @AssistedInject
     public RDSeffPerformanceSwitch(@Assisted InterpreterDefaultContext context,
-            @Assisted ExplicitDispatchComposedSwitch<Object> parentSwitch,
+            @Assisted RDSeffElementDispatcher<Object> parentSwitch,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess,
             ComposedStructureInnerSwitchFactory composedSwitchFactory) {
         this.context = context;
         this.allocationLookup = allocationLookup;
-        this.parentSwitch = parentSwitch;
         this.rcAccess = rcAccess;
         this.composedSwitchFactory = composedSwitchFactory;
     }
@@ -125,10 +122,4 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> imple
         return RDSeffSwitch.SUCCESS;
         
     }
-    
-    @Override
-    public Switch<Object> getParentSwitch() {
-        return parentSwitch;
-    }
-    
 }

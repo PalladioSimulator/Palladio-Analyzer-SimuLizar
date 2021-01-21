@@ -6,17 +6,17 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 
 public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwitchFactory {
 
-    private final Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider;
+    private final Provider<Set<RDSeffSwitchContributionFactory<Object>>> elementFactoriesProvider;
 
     @Inject
-    public ExtensibleComposedRDSeffSwitchFactory(Provider<Set<AbstractRDSeffSwitchFactory>> elementFactoriesProvider) {
+    public ExtensibleComposedRDSeffSwitchFactory(Provider<Set<RDSeffSwitchContributionFactory<Object>>> elementFactoriesProvider) {
         this.elementFactoriesProvider = elementFactoriesProvider;
     }
 

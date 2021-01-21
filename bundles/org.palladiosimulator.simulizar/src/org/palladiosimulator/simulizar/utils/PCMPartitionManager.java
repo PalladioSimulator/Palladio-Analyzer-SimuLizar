@@ -24,8 +24,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.PcmPackage;
@@ -134,9 +134,11 @@ public class PCMPartitionManager {
     @Inject
     public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
         this.blackboard = blackboard;
-        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
+        if (globalPartition == null) {
+            throw new IllegalStateException("The provided blackboard does not contain the required PCM partition");
+        }
         this.currentPartition = this.copyPCMPartition();
-        initRuntimeMeasurementModel();
     }
 
     /**
@@ -152,7 +154,7 @@ public class PCMPartitionManager {
         this.globalPartition = managerToCopy.globalPartition;
     }
 
-    private void initRuntimeMeasurementModel() {
+    public void initialize() {
         Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findAny();
         if (result.isPresent()) {
             var uri = result.get().eResource().getURI().appendFileExtension(RM_MODEL_FILE_EXTENSION);
@@ -162,7 +164,6 @@ public class PCMPartitionManager {
             LOGGER.error("No monitor repository set in global partition.");
         }
     }
-
 
     /**
      * @return the global PCM modeling partition. The global PCM model is the primary model under

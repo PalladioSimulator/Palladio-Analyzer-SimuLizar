@@ -12,16 +12,10 @@ import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
-import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
-import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
-import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-import org.scaledl.usageevolution.UsageEvolution;
-import org.scaledl.usageevolution.UsageevolutionPackage;
 
-import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
@@ -35,8 +29,6 @@ public class PCMStartInterpretationJob extends SequentialJob {
     private final EventDispatcher eventHelper;
     private final Set<IModelObserver> modelObservers;
     private final Set<IInterpreterListener> interpreterListeners;
-    private final IRecorderConfigurationFactory recorderConfigurationFactory;
-    private final ProbeFrameworkContext probeFrameworkContext;
     private final Set<AbstractReconfigurationLoader> reconfigurationLoaders;
     private final SimuLizarWorkflowConfiguration configuration;
 
@@ -60,8 +52,6 @@ public class PCMStartInterpretationJob extends SequentialJob {
         this.eventHelper = eventHelper;
         this.interpreterListeners = interpreterListeners;
         this.modelObservers = modelObservers;
-        this.probeFrameworkContext = probeFrameworkContext;
-        this.recorderConfigurationFactory = recorderConfigurationFactory;
         this.reconfigurationLoaders = reconfigurationLoaders;
         this.entityManagers = entityManagers;
         
@@ -70,6 +60,8 @@ public class PCMStartInterpretationJob extends SequentialJob {
 
     @Override
     public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
+        pcmPartitionManager.initialize();
+        
         LOGGER.debug("Load reconfigurations");
         reconfigurationLoaders.forEach(loader -> loader.load(configuration));
 
@@ -93,12 +85,9 @@ public class PCMStartInterpretationJob extends SequentialJob {
         LOGGER.debug("Deregister all listeners and execute cleanup code");
         eventHelper.removeAllListener();
         pcmPartitionManager.stopObservingPcmChanges();
-        probeFrameworkContext.finish();
-        recorderConfigurationFactory.finalizeRecorderConfigurationFactory();
         interpreterListeners.forEach(IInterpreterListener::cleanup);
         modelObservers.forEach(IModelObserver::unregister);
         entityManagers.forEach(RuntimeStateEntityManager::cleanup);
-        pcmPartitionManager.cleanUp();
     }
 
     @Override

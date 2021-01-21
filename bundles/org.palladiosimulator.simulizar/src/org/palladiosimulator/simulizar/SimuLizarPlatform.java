@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar;
 
-import org.palladiosimulator.simulizar.component.core.DaggerSimuLizarPlatformComponent;
-import org.palladiosimulator.simulizar.component.core.SimuLizarPlatformComponent;
+import org.palladiosimulator.simulizar.di.component.core.DaggerSimuLizarPlatformComponent;
+import org.palladiosimulator.simulizar.di.component.core.SimuLizarPlatformComponent;
 
 public enum SimuLizarPlatform {
     

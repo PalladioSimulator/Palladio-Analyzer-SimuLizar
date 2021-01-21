@@ -1,6 +1,8 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-public interface RuntimeStateEntityManager {
+import org.palladiosimulator.simulizar.di.extension.Extension;
+
+public interface RuntimeStateEntityManager extends Extension {
     
     default void initialize() {
         
@@ -8,6 +10,11 @@ public interface RuntimeStateEntityManager {
     
     default void cleanup() {
         
+    }
+    
+    @Override
+    default Class<? extends Extension> getExtensionType() {
+        return RuntimeStateEntityManager.class;
     }
 
 }
