@@ -11,8 +11,8 @@ import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EClass;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.edp2.datastream.IDataSource;
 import org.palladiosimulator.edp2.datastream.edp2source.Edp2DataTupleDataSource;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
@@ -68,6 +68,7 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 			final String basename = this.configuration.getSimulationConfiguration().getNameBase();
 			final String variation = this.configuration.getSimulationConfiguration().getVariationId();
 
+			progressMonitor.beginTask("SLO Validation", 0);
 			final Repository repository = RepositoryManager.getRepositoryFromUUID(repositoryId);
 			final ExperimentGroup experimentGroup = this.getExperimentGroup(repository, basename);
 			this.experimentSetting = this.getExperimentSetting(experimentGroup, variation);
@@ -80,18 +81,17 @@ public class EvaluateResultsJob extends SequentialBlackboardInteractingJob<MDSDB
 			final double[] sloViolations = this.computeSloViolations();
 			if (sloViolations[1] == 0) {
 				this.LOGGER.info("THE STATE WITH NO SLO VIOLATIONS WAS REACHED.");
-				progressMonitor.setCanceled(true);
-				progressMonitor.done();
 			}
 			this.LOGGER.info(
 					sloViolations[0] + " Measurements evaluated for " + sloViolations[1] + " Service Level Objectives. "
 							+ sloViolations[2] + " Failed." + " Average fulfillment grade:  " + sloViolations[3]);
+			progressMonitor.done();
 		}
 	}
 
 	private ServiceLevelObjectiveRepository filterSloRepo() {
     	final PCMResourceSetPartition partition = (PCMResourceSetPartition) this.getBlackboard()
-                .getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+                .getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
     	if (partition == null) {
     		return null;
     	}
