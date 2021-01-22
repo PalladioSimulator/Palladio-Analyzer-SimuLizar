@@ -12,17 +12,16 @@ import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
 import org.palladiosimulator.experimentanalysis.SlidingWindow;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.probeframework.calculator.DefaultCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
 
 public class SimuComModelMock extends SimuComModel {
 
@@ -66,7 +65,7 @@ public class SimuComModelMock extends SimuComModel {
     }
 
     public void triggerMockWindowMoveOn(final SimulizarSlidingWindow window) {
-        new MockWindowMoveOnTriggeredEvent(this, window).triggerInternal();
+        new MockWindowMoveOnTriggeredEvent(this.getSimEngineFactory(), window).triggerInternal();
     }
 
     public static SimuComModel obtainMockModel(TemporaryFolder repoFolder, IResourceTableManager resourceTableManager) throws IOException {
@@ -93,8 +92,8 @@ public class SimuComModelMock extends SimuComModel {
     private static class MockWindowMoveOnTriggeredEvent extends PeriodicallyTriggeredSimulationEntity {
         private final SimulizarSlidingWindow window;
 
-        private MockWindowMoveOnTriggeredEvent(final SimuComModel model, final SimulizarSlidingWindow window) {
-            super(model, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
+        private MockWindowMoveOnTriggeredEvent(final ISimEventFactory eventFactory, final SimulizarSlidingWindow window) {
+            super(eventFactory, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY);
             this.window = window;
         }
 

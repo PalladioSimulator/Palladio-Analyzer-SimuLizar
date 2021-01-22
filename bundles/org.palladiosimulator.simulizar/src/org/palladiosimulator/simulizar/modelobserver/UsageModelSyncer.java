@@ -38,7 +38,7 @@ public class UsageModelSyncer extends AbstractUsageModelObserver {
         globalPCMInstance.getUsageModel()
             .getUsageScenario_UsageModel()
             .forEach(us -> {
-                usageModels.createAndAddWorkloadDriver(us).run();
+                usageModels.createAndAddWorkloadDriver(us);
             });
     }
 

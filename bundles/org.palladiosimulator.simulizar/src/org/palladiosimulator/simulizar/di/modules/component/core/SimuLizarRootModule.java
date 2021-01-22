@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLi
 import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarRuntimeFactoryModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
+import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRootJob;
 
 import dagger.Binds;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -21,6 +21,6 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
 })
 public interface SimuLizarRootModule {
     
-    @Binds IJob bindRootJob(PCMInterpreterRootCompositeJob job);
+    @Binds IJob bindRootJob(SimuLizarRootJob job);
 
 }

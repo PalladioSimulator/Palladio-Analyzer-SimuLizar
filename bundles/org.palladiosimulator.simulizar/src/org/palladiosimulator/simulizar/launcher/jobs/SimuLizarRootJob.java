@@ -17,7 +17,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Joachim Meyer
  *
  */
-public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
+public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
         implements IBlackboardInteractingJob<MDSDBlackboard> {
 
     /**
@@ -27,7 +27,7 @@ public class PCMInterpreterRootCompositeJob extends SequentialBlackboardInteract
      *            the SimuCom workflow configuration.
      */
     @Inject
-    public PCMInterpreterRootCompositeJob(final SimuLizarWorkflowConfiguration configuration,
+    public SimuLizarRootJob(final SimuLizarWorkflowConfiguration configuration,
             MDSDBlackboard blackboard,
             LoadSimuLizarModelsIntoBlackboardJob modelLoadJob,
             AnalysisRuntimeComponent.Factory runtimeComponentFactory) {

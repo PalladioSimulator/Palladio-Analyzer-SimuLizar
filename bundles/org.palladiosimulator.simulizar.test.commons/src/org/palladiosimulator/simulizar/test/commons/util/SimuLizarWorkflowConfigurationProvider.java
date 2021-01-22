@@ -34,7 +34,7 @@ public class SimuLizarWorkflowConfigurationProvider implements Supplier<IJobConf
         properties.put(SimuComConfig.SIMULATE_LINKING_RESOURCES, annotation.simulateLinkingResource());
         properties.put(SimuComConfig.SIMULATE_THROUGHPUT_OF_LINKING_RESOURCES, annotation.simulateLinkThroughput());
         var simulizarConfiguration = new SimuLizarWorkflowConfiguration(properties);
-        simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
+        simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false, null));
         return simulizarConfiguration;
     }
 

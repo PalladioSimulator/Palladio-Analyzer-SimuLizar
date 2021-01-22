@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Optional;
 
 import org.eclipse.emf.common.CommonPlugin;
 import org.eclipse.emf.common.util.BasicEList;
@@ -22,8 +21,8 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -55,6 +54,8 @@ import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
+import com.google.common.collect.Streams;
+
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -62,6 +63,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 import tools.mdsd.junit5utils.extensions.PlatformStandaloneExtension;
 
+@ExtendWith(PlatformStandaloneExtension.class)
 @PluginTestOnly
 public class QVToReconfigurationTest {
 
@@ -377,14 +379,18 @@ public class QVToReconfigurationTest {
     
     
     private EObject assignMonitorToModelElement(PCMResourceSetPartition pcmResourceSet, String modelElementId) {
-        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
-        EObject monitoredElement = pcmResourceSet.getRepositories()
-            .stream()
-            .flatMap(repo -> Optional.ofNullable(repo.eResource()
-                .getEObject(modelElementId))
-                .stream())
-            .findAny()
-            .orElseThrow(() -> new IllegalStateException("Expected model element not present in test models"));
+        var result = pcmResourceSet.getRepositories().stream().map(EObject::eAllContents).flatMap(Streams::stream)
+            .filter(element -> {
+                final EAttribute id = element.eClass()
+                    .getEIDAttribute();
+                final Object idAttribute = element.eGet(id);
+                
+                return idAttribute.toString().equals(modelElementId);
+            })
+            .findAny();
+        assertTrue(result.isPresent());
+        return result.get();
+    }
 
     
     private SimuLizarWorkflowConfiguration createWorkflowConfiguration(URI allocationURI, String reconfigurationRulesFolderPath) {
@@ -400,8 +406,9 @@ public class QVToReconfigurationTest {
 
     private PCMPartitionManager loadPcmModelsIntoBlackboard(SimuLizarWorkflowConfiguration workflowConfig, ResourceSetPartition pcmResourceSet, String reconfigurationRulesFolderPath) {
         final MDSDBlackboard blackboard = new MDSDBlackboard();
-        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
+        blackboard.addPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID, pcmResourceSet);
         final PCMPartitionManager pcmPartitionManager = new PCMPartitionManager(blackboard, workflowConfig);
+        pcmPartitionManager.initialize();
         return pcmPartitionManager;
     }
     

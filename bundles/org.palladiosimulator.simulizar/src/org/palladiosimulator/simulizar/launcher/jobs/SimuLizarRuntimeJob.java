@@ -22,9 +22,9 @@ import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 
-public class PCMStartInterpretationJob extends SequentialJob {
+public class SimuLizarRuntimeJob extends SequentialJob {
     
-    private static final Logger LOGGER = Logger.getLogger(PCMStartInterpretationJob.class);
+    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeJob.class);
     
     private final PCMPartitionManager pcmPartitionManager;
     private final EventDispatcher eventHelper;
@@ -39,7 +39,7 @@ public class PCMStartInterpretationJob extends SequentialJob {
     
     
     @Inject
-    public PCMStartInterpretationJob(
+    public SimuLizarRuntimeJob(
             final SimuLizarWorkflowConfiguration configuration,
             final PCMPartitionManager pcmPartitionManager,
             final EventDispatcher eventHelper,  
@@ -100,7 +100,7 @@ public class PCMStartInterpretationJob extends SequentialJob {
 
     @Override
     public String getName() {
-       return PCMStartInterpretationJob.class.getName();
+       return SimuLizarRuntimeJob.class.getName();
     }
 
 }

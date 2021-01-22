@@ -3,15 +3,17 @@ package org.palladiosimulator.simulizar.test.commons.util;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.palladiosimulator.simulizar.di.modules.SimuLizarConfigurationModule;
-import org.palladiosimulator.simulizar.di.modules.legacy.custom.CustomMDSDBlackboardProvidingModule;
+import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
+import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
 import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
-import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
-import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
@@ -30,18 +32,19 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
     }
 
     @Override
-    public IBlackboardInteractingJob<MDSDBlackboard> get() {
-        var result = new SequentialBlackboardInteractingJob<MDSDBlackboard>(false);
-        
-        var component = DaggerSimuLizarTestComponent.builder()
-            .simuLizarConfigurationModule(new SimuLizarConfigurationModule(configuration))
-            .customMDSDBlackboardProvidingModule(new CustomMDSDBlackboardProvidingModule(blackboard))
-            .build();
-        
-        result.setBlackboard(blackboard);
-        result.addJob(component.interpreterJob());
-        
-        return result;
+    public IJob get() {
+        var component = DaggerTestSimuLizarRootComponent.factory()
+            .create(configuration, 
+                    new ComponentFactoriesModule() {
+                        @Override
+                        public Factory providesSimEngineComponentFactory() {
+                            return DaggerTestSimEngineComponent.factory();
+                        }
+                    }, 
+                    new ExtensionComponentsModule(), 
+                    new MDSDBlackboardProvidingModule(blackboard));
+
+        return component.runtimeComponentFactory().create().runtimeJob();
     }
 
 }

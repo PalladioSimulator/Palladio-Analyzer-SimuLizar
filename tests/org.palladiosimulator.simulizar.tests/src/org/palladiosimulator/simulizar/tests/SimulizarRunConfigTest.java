@@ -19,10 +19,14 @@ import org.junit.jupiter.api.io.TempDir;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
-import org.palladiosimulator.simulizar.di.modules.SimuLizarConfigurationModule;
+import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
+import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.test.commons.util.DaggerSimuLizarTestComponent;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -98,9 +102,13 @@ public class SimulizarRunConfigTest {
         this.simulizarConfiguration.setUsageEvolutionFile(SimulizarConstants.DEFAULT_USAGEEVOLUTION_FILE);
         this.simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
         
-        this.simulizarJob = DaggerSimuLizarTestComponent.builder()
-            .simuLizarConfigurationModule(new SimuLizarConfigurationModule(simulizarConfiguration))
-            .build()
+        this.simulizarJob = DaggerTestSimuLizarRootComponent.factory()
+            .create(simulizarConfiguration, new ComponentFactoriesModule() {
+                @Override
+                public Factory providesSimEngineComponentFactory() {
+                    return DaggerTestSimEngineComponent.factory();
+                }
+            }, new ExtensionComponentsModule(), new MDSDBlackboardProvidingModule())
             .rootJob();
     }
 

@@ -11,7 +11,7 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
+import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRuntimeJob;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
@@ -27,7 +27,7 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
     
     @Override
-    PCMStartInterpretationJob runtimeJob();
+    SimuLizarRuntimeJob runtimeJob();
     
     PCMPartitionManager globalPartitionManager();
 
