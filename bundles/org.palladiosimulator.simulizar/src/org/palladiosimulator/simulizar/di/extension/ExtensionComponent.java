@@ -1,6 +1,9 @@
 package org.palladiosimulator.simulizar.di.extension;
 
 import java.util.Set;
+import java.util.function.Function;
+
+import com.google.common.collect.ImmutableSet;
 
 public interface ExtensionComponent<ComponentType extends ExtensionComponent<ComponentType>> {
 
@@ -15,6 +18,11 @@ public interface ExtensionComponent<ComponentType extends ExtensionComponent<Com
      */
     public interface Factory {
 
+    }
+    
+    public default <ET extends Extension> Set<ExtensionContribution<? extends Extension, ComponentType>> contribute(Class<ET> extensionType,
+            Function<ComponentType, ET> supplier) {
+        return ImmutableSet.of(ExtensionContribution.of(extensionType, supplier));
     }
 
 }

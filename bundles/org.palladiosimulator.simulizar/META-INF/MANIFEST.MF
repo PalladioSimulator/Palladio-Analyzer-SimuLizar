@@ -56,6 +56,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.di.modules.scoped.runtime,
  org.palladiosimulator.simulizar.di.modules.stateless.configuration,
  org.palladiosimulator.simulizar.di.modules.stateless.core,
+ org.palladiosimulator.simulizar.di.modules.stateless.extension,
  org.palladiosimulator.simulizar.di.modules.stateless.mdsd,
  org.palladiosimulator.simulizar.entity,
  org.palladiosimulator.simulizar.entity.access,

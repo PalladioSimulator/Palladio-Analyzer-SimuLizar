@@ -14,6 +14,7 @@ import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFacto
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
+import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import com.google.common.collect.Multimap;
@@ -43,6 +44,13 @@ public interface ExtensionComponentRuntimeExtensionBindings {
     @ElementsIntoSet
     static Set<RuntimeStateEntityManager> entityManagers(ExtensionLookup lookup) {
         return lookup.lookup(RuntimeStateEntityManager.class).stream().map(Supplier::get).collect(Collectors.toSet());
+    }
+    
+    @Provides
+    @SimulationRuntimeScope
+    @ElementsIntoSet
+    static Set<RuntimeStateEntityObserver> entityObservers(ExtensionLookup lookup) {
+        return lookup.lookup(RuntimeStateEntityObserver.class).stream().map(Supplier::get).collect(Collectors.toSet());
     }
     
     @Provides

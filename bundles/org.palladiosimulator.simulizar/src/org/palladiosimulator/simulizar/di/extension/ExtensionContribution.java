@@ -19,5 +19,9 @@ public class ExtensionContribution<ExtensionType, ExtensionComponentType> {
         return supplier.apply(component);
     }
     
+    public static <ET, ECT> ExtensionContribution<ET, ECT> of(Class<ET> extensionType, Function<ECT, ET> supplier) {
+        return new ExtensionContribution<ET, ECT>(extensionType, supplier);
+    }
+    
 
 }

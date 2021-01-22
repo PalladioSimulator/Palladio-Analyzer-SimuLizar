@@ -14,6 +14,7 @@ import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
+import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
@@ -33,6 +34,8 @@ public class PCMStartInterpretationJob extends SequentialJob {
     private final SimuLizarWorkflowConfiguration configuration;
 
     private final Set<RuntimeStateEntityManager> entityManagers;
+
+    private final Set<RuntimeStateEntityObserver> entityObservers;
     
     
     @Inject
@@ -46,7 +49,8 @@ public class PCMStartInterpretationJob extends SequentialJob {
             final ProbeFrameworkContext probeFrameworkContext,
             final IRecorderConfigurationFactory recorderConfigurationFactory,
             final Set<AbstractReconfigurationLoader> reconfigurationLoaders,
-            final Set<RuntimeStateEntityManager> entityManagers) {
+            final Set<RuntimeStateEntityManager> entityManagers,
+            final Set<RuntimeStateEntityObserver> entityObservers) {
         this.configuration = configuration;
         this.pcmPartitionManager = pcmPartitionManager;
         this.eventHelper = eventHelper;
@@ -54,6 +58,7 @@ public class PCMStartInterpretationJob extends SequentialJob {
         this.modelObservers = modelObservers;
         this.reconfigurationLoaders = reconfigurationLoaders;
         this.entityManagers = entityManagers;
+        this.entityObservers = entityObservers;
         
         this.addJob(interpreterJob);
     }
@@ -67,6 +72,9 @@ public class PCMStartInterpretationJob extends SequentialJob {
 
         LOGGER.debug("Initialize managers of internal simulation state");
         entityManagers.forEach(RuntimeStateEntityManager::initialize);
+        
+        LOGGER.debug("Initialize observers of internal simulation state");
+        entityObservers.forEach(RuntimeStateEntityObserver::initialize);
 
         LOGGER.debug("Initialize model observers, e.g., to runtime state objects in sync with global PCM model");
         modelObservers.forEach(m -> m.initialize());
