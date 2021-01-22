@@ -10,7 +10,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
 import javax.inject.Qualifier;
 
 import org.apache.log4j.Logger;
@@ -131,7 +130,6 @@ public class PCMPartitionManager {
      * @param config
      *            SimuLizar workflow configuration object.
      */
-    @Inject
     public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
         this.blackboard = blackboard;
         this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);

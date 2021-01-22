@@ -35,7 +35,7 @@ public interface DefaultSimuComFrameworkBindings {
     @Provides
     @SimuComFrameworkScope
     static ResourceRegistry provideResourceRegistry(SimuComModel simuComModel) {
-        return new ResourceRegistry(simuComModel);
+        return simuComModel.getResourceRegistry();
     }
     
     @Provides

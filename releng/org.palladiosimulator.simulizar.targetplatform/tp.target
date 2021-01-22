@@ -44,8 +44,8 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="de.uka.ipd.sdq.workflow.feature.core.feature.group" version="tbd"/>
-			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>-->
-			<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Supporting-WorkflowEngine/releng/de.uka.ipd.sdq.workflow.updatesite/target/repository/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>
+			<!--<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Supporting-WorkflowEngine/releng/de.uka.ipd.sdq.workflow.updatesite/target/repository/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">

@@ -165,7 +165,10 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
     public Object caseInternalAction(final InternalAction internalAction) {
         invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action());
         invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action());
-        invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
+        
+        // We include the following, once failure simulation has been fully integrated
+        //invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
+        
         invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action());
         return SUCCESS;
     }
