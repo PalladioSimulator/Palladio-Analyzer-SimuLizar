@@ -7,8 +7,8 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="tbd"/>
-			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly"/>-->
-			<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Analyzer-SimuCom/releng/org.palladiosimulator.simucom.updatesite/target/repository"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/branches/slimDownSimuComModel/"/>
+			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -45,7 +45,6 @@
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="de.uka.ipd.sdq.workflow.feature.core.feature.group" version="tbd"/>
 			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>
-			<!--<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Supporting-WorkflowEngine/releng/de.uka.ipd.sdq.workflow.updatesite/target/repository/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -115,13 +114,10 @@
 			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
 			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/releases/latest/"/>
 		</location>
-		<!--<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
-			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/nightly/"/>
-		</location>-->
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
-			<repository location="file:///c:/users_local/krach/palladio/git/Palladio-Simulation-AbstractSimEngine/releng/org.palladiosimulator.simulation.abstractsimengine.updatesite/target/repository"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/branches/timeProvider/"/>
+			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/nightly/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -254,14 +250,14 @@
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
 			<unit id="com.google.dagger.feature.feature.group" version="2.31.0"/>
 			<unit id="org.jgrapht.feature.feature.group" version="1.5.0"/>
-			<!--<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>-->
-			<repository location="file:///c:/users_local/krach/projects/mdsd_tools/git/ThirdParty-Library/build/updatesite"/>
+			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
 			<unit id="com.google.dagger.feature.feature.group" version="2.31"/>
+			<unit id="org.jgrapht.feature.feature.group" version="1.5.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
