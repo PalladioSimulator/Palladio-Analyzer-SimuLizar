@@ -3,7 +3,6 @@ package org.palladiosimulator.simulizar.events;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
-import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -111,13 +110,13 @@ public class EventsTransformationExtensionTab extends AbstractLaunchConfiguratio
 	public final void initializeFrom(final ILaunchConfiguration configuration) {
 		try {
 			simulateFailuresButton.setSelection(
-					configuration.getAttribute(EventsTransformationWorkflowExtensionJob.SIMULATE_EVENTS, true));
+					configuration.getAttribute(EventsTransformationConfiguration.SIMULATE_EVENTS, true));
 			eventMiddlewareRepository.setText(
-					configuration.getAttribute(EventsTransformationWorkflowExtensionJob.EVENT_MIDDLEWARE_FILE, ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE));
+					configuration.getAttribute(EventsTransformationConfiguration.EVENT_MIDDLEWARE_FILE, ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE));
 			storeTransformedModelsButton.setSelection(
-					configuration.getAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS, true));
+					configuration.getAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS, true));
 			storeTransformedModelsProject.setText(
-					configuration.getAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS_PROJECT, ConstantsContainer.DEFAULT_TEMPORARY_DATA_LOCATION));
+					configuration.getAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS_PROJECT, ConstantsContainer.DEFAULT_TEMPORARY_DATA_LOCATION));
 		} catch (CoreException e) {
 			simulateFailuresButton.setSelection(false);
 			eventMiddlewareRepository.setText(ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE);
@@ -128,21 +127,21 @@ public class EventsTransformationExtensionTab extends AbstractLaunchConfiguratio
 
 	@Override
 	public final void performApply(final ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.SIMULATE_EVENTS,
+		configuration.setAttribute(EventsTransformationConfiguration.SIMULATE_EVENTS,
 				this.simulateFailuresButton.getSelection());
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.EVENT_MIDDLEWARE_FILE,
+		configuration.setAttribute(EventsTransformationConfiguration.EVENT_MIDDLEWARE_FILE,
 				this.eventMiddlewareRepository.getText());
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS, storeTransformedModelsButton.getSelection());
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS_PROJECT, storeTransformedModelsProject.getText());
+		configuration.setAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS, storeTransformedModelsButton.getSelection());
+		configuration.setAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS_PROJECT, storeTransformedModelsProject.getText());
 	}
 
 	@Override
 	public final void setDefaults(final ILaunchConfigurationWorkingCopy configuration) {
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.SIMULATE_EVENTS, DEFAULT_SIMULATE_EVENTS);
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.EVENT_MIDDLEWARE_FILE,
+		configuration.setAttribute(EventsTransformationConfiguration.SIMULATE_EVENTS, DEFAULT_SIMULATE_EVENTS);
+		configuration.setAttribute(EventsTransformationConfiguration.EVENT_MIDDLEWARE_FILE,
 				ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE);
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS, true);
-		configuration.setAttribute(EventsTransformationWorkflowExtensionJob.STORE_TRANSFORMED_MODELS_PROJECT, ConstantsContainer.DEFAULT_TEMPORARY_DATA_LOCATION);
+		configuration.setAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS, true);
+		configuration.setAttribute(EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS_PROJECT, ConstantsContainer.DEFAULT_TEMPORARY_DATA_LOCATION);
 	}
 
 }
