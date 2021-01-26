@@ -12,9 +12,4 @@ public interface RuntimeStateEntityManager extends Extension {
         
     }
     
-    @Override
-    default Class<? extends Extension> getExtensionType() {
-        return RuntimeStateEntityManager.class;
-    }
-
 }

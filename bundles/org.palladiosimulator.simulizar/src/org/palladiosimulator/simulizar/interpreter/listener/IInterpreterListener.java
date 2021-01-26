@@ -43,8 +43,4 @@ public interface IInterpreterListener extends Extension {
     
     public <R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(AssemblyProvidedOperationPassedEvent<R, S> event);
     
-    @Override
-    default Class<? extends Extension> getExtensionType() {
-        return IInterpreterListener.class;
-    }
 }

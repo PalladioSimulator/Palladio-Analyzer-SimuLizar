@@ -11,9 +11,4 @@ public interface IModelObserver extends Extension {
     default void unregister() {
     }
     
-    @Override
-    default Class<? extends Extension> getExtensionType() {
-        return IModelObserver.class;
-    }
-
 }

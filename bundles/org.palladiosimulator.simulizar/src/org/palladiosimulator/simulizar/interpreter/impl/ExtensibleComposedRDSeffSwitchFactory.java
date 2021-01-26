@@ -13,10 +13,10 @@ import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFacto
 
 public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwitchFactory {
 
-    private final Provider<Set<RDSeffSwitchContributionFactory<Object>>> elementFactoriesProvider;
+    private final Provider<Set<RDSeffSwitchContributionFactory>> elementFactoriesProvider;
 
     @Inject
-    public ExtensibleComposedRDSeffSwitchFactory(Provider<Set<RDSeffSwitchContributionFactory<Object>>> elementFactoriesProvider) {
+    public ExtensibleComposedRDSeffSwitchFactory(Provider<Set<RDSeffSwitchContributionFactory>> elementFactoriesProvider) {
         this.elementFactoriesProvider = elementFactoriesProvider;
     }
 

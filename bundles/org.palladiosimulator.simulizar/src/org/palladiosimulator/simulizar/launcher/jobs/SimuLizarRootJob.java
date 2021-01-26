@@ -1,12 +1,13 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
+import de.uka.ipd.sdq.workflow.jobs.BlackboardAwareJobProxy;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.JobProxy;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -29,13 +30,13 @@ public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBla
     @Inject
     public SimuLizarRootJob(final SimuLizarWorkflowConfiguration configuration,
             MDSDBlackboard blackboard,
-            LoadSimuLizarModelsIntoBlackboardJob modelLoadJob,
+            Provider<LoadSimuLizarModelsIntoBlackboardJob> modelLoadJob,
             AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
         super(false);
         setBlackboard(blackboard);
         
-        this.addJob(modelLoadJob);        
-        this.addJob(new JobProxy(() -> runtimeComponentFactory.create().runtimeJob()));
+        this.addJob(new BlackboardAwareJobProxy<>("Load models into blackboard", modelLoadJob::get));        
+        this.addJob(new BlackboardAwareJobProxy<>("Run simulizar runtime", () -> runtimeComponentFactory.create().runtimeJob()));
 
         if (configuration.getServiceLevelObjectivesFile() != null
                 && !(configuration.getServiceLevelObjectivesFile().isBlank())) {

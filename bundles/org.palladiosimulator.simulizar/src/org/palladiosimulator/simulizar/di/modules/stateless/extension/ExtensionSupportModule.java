@@ -1,42 +1,41 @@
 package org.palladiosimulator.simulizar.di.modules.stateless.extension;
 
 import java.util.Set;
-import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
-import org.palladiosimulator.simulizar.di.extension.Extension;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponentDependencyResolution;
-import org.palladiosimulator.simulizar.di.extension.ExtensionContribution;
+import org.palladiosimulator.simulizar.di.extension.GenericExtensionComponent;
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
-
-import com.google.common.collect.LinkedHashMultimap;
-import com.google.common.collect.Multimap;
+import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 
 import dagger.Module;
 import dagger.Provides;
+import dagger.multibindings.ElementsIntoSet;
 import dagger.multibindings.Multibinds;
 
-@Module
+@Module(includes = ExtensionComponentsModule.class)
 public interface ExtensionSupportModule {
 
     @RegisteredComponent
     @Multibinds
     Set<Object> bindRegisteredComponents();
-    
+
     @Multibinds
     Set<ExtensionComponent.Factory> bindExtensionFactories();
-        
-    @SuppressWarnings({ "rawtypes", "unchecked" })
+
     @Provides
-    static Multimap<Class<? extends Extension>, Supplier<Extension>> provideExtensions(ExtensionComponentDependencyResolution resolution) {
-        Multimap<Class<? extends Extension>, Supplier<Extension>> result = LinkedHashMultimap.create();
-        
-        resolution.initializeExtensionComponentSet().forEach(component -> {
-            component.contributions().forEach(contribution -> {
-                result.put(contribution.getExtensionType(), () -> (Extension) ((ExtensionContribution) contribution).contribute(component));
-            });
-        });
-        
-        return result;
+    @ElementsIntoSet
+    static Set<ExtensionComponent> providesExtensionComponents(ExtensionComponentDependencyResolution resolution) {
+        return resolution.getExtensionComponents();
     }
+    
+    @Provides
+    @ElementsIntoSet
+    static Set<GenericExtensionComponent> providesGenericExtensionComponents(Set<ExtensionComponent> extensions) {
+        return extensions.stream()
+            .map(GenericExtensionComponent::new)
+            .collect(Collectors.toSet());
+    }
+
 }

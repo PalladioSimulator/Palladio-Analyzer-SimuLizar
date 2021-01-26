@@ -58,7 +58,7 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  */
 public class RDSeffSwitch extends SeffSwitch<Object> {
     @AssistedFactory
-    public interface Factory extends RDSeffSwitchContributionFactory<Object> {
+    public interface Factory extends RDSeffSwitchContributionFactory {
         @Override
         RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
                 RDSeffElementDispatcher<Object> parentSwitch);

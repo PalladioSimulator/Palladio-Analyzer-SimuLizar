@@ -5,12 +5,14 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
@@ -23,7 +25,7 @@ import dagger.Component;
 
 public class GenericComponentFactory<ComponentType> implements Supplier<ComponentType> {
     private Class<ComponentType> componentType;
-    private Map<Class<?>, Supplier<?>> suppliers;
+    private Map<Class<?>, Supplier<?>> suppliers = new HashMap<>();
     private Set<Class<?>> unfullfilledRequirements;
     private Supplier<ComponentType> daggerComponentFactory;
 
@@ -47,7 +49,7 @@ public class GenericComponentFactory<ComponentType> implements Supplier<Componen
         var componentAnnotation = componentType.getAnnotation(Component.class);
         unfullfilledRequirements = new HashSet<>(Arrays.asList(componentAnnotation.dependencies()));
         
-        var factoryMethod = Arrays.asList(factoryInterface.getClass().getDeclaredMethods()).stream()
+        var factoryMethod = Arrays.asList(factoryInterface.getDeclaredMethods()).stream()
                 .filter(m -> componentType.isAssignableFrom(m.getReturnType()) &&
                         requirementsFullfillFactoryMethod(m, unfullfilledRequirements))
                 .findAny();
@@ -76,21 +78,33 @@ public class GenericComponentFactory<ComponentType> implements Supplier<Componen
         return Sets.difference(set, unfullfilledRequirements).isEmpty();
     }
 
-    public Class<ComponentType> getProvidedComponentType() {
-        return componentType;
+    public Set<Class<?>> getProvidedComponentTypes() {
+        return Streams.stream(getClassHierarchy(componentType)).filter(cls -> cls.getAnnotation(Component.class) != null)
+                .collect(Collectors.toSet());
     }
     public Set<Class<?>> getUnfullfilledRequirements() {
         return ImmutableSet.copyOf(unfullfilledRequirements);
     }
 
-    <T> void fulfillRequirement(Class<T> componentType, Supplier<T> factory) {
-        Streams.stream(getClassHierarchy(componentType))
-            .filter(cls -> cls.getAnnotation(Component.class) != null)
-            .forEach(cls -> {
-                var requirement = unfullfilledRequirements.remove(cls);
-                if (requirement)
-                    suppliers.put(cls, factory);
-            });
+    public <T> void fulfillRequirement(Supplier<T> factory) {
+        Stream<Class<?>> providedTypes = null;
+        Supplier<T> realFactory = null;
+        if (factory instanceof GenericComponentFactory) {
+            providedTypes = ((GenericComponentFactory<?>) factory).getProvidedComponentTypes().stream();
+            realFactory = factory;
+        } else {
+            var object = factory.get();
+            realFactory = () -> object;
+            providedTypes = Streams.stream(getClassHierarchy(object.getClass()))
+                .filter(cls -> cls.getAnnotation(Component.class) != null);
+        }
+        final var finalFactory = realFactory;
+        providedTypes.forEach(cls -> {
+            var requirement = unfullfilledRequirements.remove(cls);
+            if (requirement) {
+                suppliers.put(cls, finalFactory);
+            }
+        });
     }
 
     @Override

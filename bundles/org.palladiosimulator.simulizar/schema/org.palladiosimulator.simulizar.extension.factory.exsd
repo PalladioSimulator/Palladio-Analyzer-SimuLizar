@@ -3,11 +3,10 @@
 <schema targetNamespace="org.palladiosimulator.simulizar" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="org.palladiosimulator.simulizar" id="org.palladiosimulator.simulizar.interpreter.rdseffswitch" name="RDSeff Switch Factory"/>
+         <meta.schema plugin="org.palladiosimulator.simulizar" id="org.palladiosimulator.simulizar.extension.factory" name="SimuLizar Extension Component Factory"/>
       </appinfo>
       <documentation>
-         Extension Point to add the interpretation of new PCM model elements to the RDSeffSwitch.
-         Use-Case: Plugin extends PCM and these new objects should be interpreted by SimuLizar.
+         [Enter description of this extension point.]
       </documentation>
    </annotation>
 
@@ -19,26 +18,26 @@
       </annotation>
       <complexType>
          <sequence minOccurs="1" maxOccurs="unbounded">
-            <element ref="rdseffswitch"/>
+            <element ref="component"/>
          </sequence>
          <attribute name="point" type="string" use="required">
             <annotation>
                <documentation>
-                  Point of extension point.
+                  
                </documentation>
             </annotation>
          </attribute>
          <attribute name="id" type="string">
             <annotation>
                <documentation>
-                   ID of extension point.
+                  
                </documentation>
             </annotation>
          </attribute>
          <attribute name="name" type="string">
             <annotation>
                <documentation>
-                    Name of extension point.
+                  
                </documentation>
                <appinfo>
                   <meta.attribute translatable="true"/>
@@ -48,16 +47,15 @@
       </complexType>
    </element>
 
-   <element name="rdseffswitch">
+   <element name="component">
       <complexType>
-         <attribute name="rdseffswitch" type="string" use="required">
+         <attribute name="factory" type="string" use="required">
             <annotation>
                <documentation>
-                  Factory class that creates a switch for the new PCM object.
-                  This switch is used by SimuLizar to interpret the object.
+                  
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.palladiosimulator.simulizar.interpreter.AbstractRDSeffSwitchFactory:"/>
+                  <meta.attribute kind="java" basedOn=":org.palladiosimulator.simulizar.di.extension.ExtensionComponent$Factory"/>
                </appinfo>
             </annotation>
          </attribute>

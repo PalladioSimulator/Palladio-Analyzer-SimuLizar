@@ -48,7 +48,7 @@ public interface CoreRuntimeExtensionBindings {
 
     @Provides
     @ElementsIntoSet
-    static Set<RDSeffSwitchContributionFactory<Object>> provideCoreRDSeffSwitchFactories(
+    static Set<RDSeffSwitchContributionFactory> provideCoreRDSeffSwitchFactories(
             RDSeffPerformanceSwitch.Factory performanceSwitchFactory, RDSeffSwitch.Factory rdseffSwitchFactory) {
         return ImmutableSet.of(rdseffSwitchFactory, performanceSwitchFactory);
     }

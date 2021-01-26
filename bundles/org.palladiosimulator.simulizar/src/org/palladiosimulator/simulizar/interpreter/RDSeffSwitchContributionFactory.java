@@ -11,7 +11,7 @@ import org.palladiosimulator.simulizar.di.extension.Extension;
  * @author mrombach
  *
  */
-public interface RDSeffSwitchContributionFactory<T> extends Extension {
+public interface RDSeffSwitchContributionFactory extends Extension {
     public interface RDSeffElementDispatcher<T> {
         T doSwitch(EClass theEClass, EObject theEObject);
         
@@ -30,11 +30,7 @@ public interface RDSeffSwitchContributionFactory<T> extends Extension {
      *				The composed switch which is containing the created switch
 	 * @return a composable switch
 	 */
-	public Switch<T> createRDSeffSwitch(final InterpreterDefaultContext context,
-	        RDSeffElementDispatcher<T> parentSwitch);
+	public Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
+	        RDSeffElementDispatcher<Object> parentSwitch);
 	
-	@Override
-	default Class<? extends Extension> getExtensionType() {
-	    return RDSeffSwitchContributionFactory.class;
-	}
 }

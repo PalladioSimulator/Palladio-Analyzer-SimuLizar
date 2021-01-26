@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponen
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
+import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -49,7 +50,16 @@ public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
                 SimuLizarRootComponent rootComponent,
                 SimuComFrameworkComponent frameworkComponent, 
                 QUALComponent qualComponent,
-                SimEngineComponent simEngineComponent);
+                SimEngineComponent simEngineComponent,
+                ExtensionComponentsModule extensionModule);
+        
+        default SimuLizarRuntimeComponent create(
+                SimuLizarRootComponent rootComponent,
+                SimuComFrameworkComponent frameworkComponent, 
+                QUALComponent qualComponent,
+                SimEngineComponent simEngineComponent) {
+            return create(rootComponent, frameworkComponent, qualComponent, simEngineComponent, new ExtensionComponentsModule());
+        }
     }
 
 }

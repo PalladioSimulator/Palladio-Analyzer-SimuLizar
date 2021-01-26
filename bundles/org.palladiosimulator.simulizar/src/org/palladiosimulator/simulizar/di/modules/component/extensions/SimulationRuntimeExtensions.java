@@ -27,6 +27,6 @@ public interface SimulationRuntimeExtensions {
     Set<IModelObserver> modelObservers();
     
     @Multibinds
-    Set<RDSeffSwitchContributionFactory<Object>> rdseffSwitchFactories();
+    Set<RDSeffSwitchContributionFactory> rdseffSwitchFactories();
 
 }

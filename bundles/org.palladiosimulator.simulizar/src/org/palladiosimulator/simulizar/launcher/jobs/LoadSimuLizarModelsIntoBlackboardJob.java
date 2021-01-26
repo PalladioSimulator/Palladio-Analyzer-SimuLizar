@@ -1,7 +1,12 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
-import javax.inject.Inject;
+import java.util.Set;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
+import org.eclipse.emf.common.util.URI;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadModelIntoBlackboardJob;
 import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -16,7 +21,7 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Matthias Becker
  *
  */
-public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> {
+public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardInteractingJob<MDSDBlackboard> implements ModelContribution.Facade {
 
     public static final String PCM_MODELS_ANALYZED_PARTITION_ID = "org.palladiosimulator.analyzed.partition";
 
@@ -24,7 +29,8 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
      * @param config
      */
     @Inject
-    public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration) {
+    public LoadSimuLizarModelsIntoBlackboardJob(final SimuLizarWorkflowConfiguration configuration,
+            Provider<Set<ModelContribution>> modelContributionExtensions) {
         super(false);
 
         addJob(new PreparePCMBlackboardPartitionJob());
@@ -33,9 +39,8 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
         addLoadMonitorRepository(configuration);
         addSLORepository(configuration);
         addUsageEvolution(configuration);
-
-        //addModelLoadExtensionJobs(modelLoadComponentBuilder, modelLoaderFactory);
         
+        modelContributionExtensions.get().forEach(contrib -> contrib.loadModel(this));
     }
     
     protected void addLoadPCMModelJobs(final SimuLizarWorkflowConfiguration configuration) {
@@ -53,10 +58,14 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
     protected void addUsageEvolution(final SimuLizarWorkflowConfiguration configuration) {
         LoadModelIntoBlackboardJob.parseUriAndAddModelLoadJob(configuration.getUsageEvolutionFile(), this);
     }
-    
-    /*
-    private void addModelLoadExtensionJobs(SimuLizarPreparationComponent.Builder modelLoadComponentBuilder, ModelLoad.Factory modelLoaderFactory) {
-        modelLoaderFactory.create(modelLoadComponentBuilder.build()).appendModelLoadJobs(this::addJob);
+
+    @Override
+    public void loadModel(URI modelURI) {
+        loadModel(modelURI, ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
     }
-    */
+
+    @Override
+    public void loadModel(URI modelURI, String partitionId) {
+        this.addJob(new LoadModelIntoBlackboardJob(modelURI, partitionId));
+    }
 }

@@ -12,9 +12,4 @@ public interface RuntimeStateEntityObserver extends Extension {
         
     }
     
-    @Override
-    default Class<? extends Extension> getExtensionType() {
-        return RuntimeStateEntityObserver.class;
-    }
-    
 }
