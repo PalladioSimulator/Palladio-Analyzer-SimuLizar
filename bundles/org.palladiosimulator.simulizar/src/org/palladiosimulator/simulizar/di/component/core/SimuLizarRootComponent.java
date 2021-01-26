@@ -22,19 +22,19 @@ public interface SimuLizarRootComponent {
     SimuLizarWorkflowConfiguration config();
 
     @Component.Factory
-    public abstract class Factory {
-        public SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration) {
+    public static interface Factory {
+        default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration) {
             return create(configuration, new ComponentFactoriesModule(), new ExtensionComponentsModule(),
                     new MDSDBlackboardProvidingModule());
         }
         
-        public SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration,
+        default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration,
                 ExtensionComponentsModule extensionModule) {
             return create(configuration, new ComponentFactoriesModule(),
                     extensionModule, new MDSDBlackboardProvidingModule());
         }
 
-        public abstract SimuLizarRootComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration,
+        SimuLizarRootComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration,
                 ComponentFactoriesModule factoriesModule, ExtensionComponentsModule extensionModule,
                 MDSDBlackboardProvidingModule blackBoardModule);
     }

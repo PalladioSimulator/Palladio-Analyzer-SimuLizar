@@ -21,7 +21,7 @@ public interface TestSimuLizarRootComponent extends SimuLizarRootComponent {
     AnalysisRuntimeComponent.Factory runtimeComponentFactory();
 
     @Component.Factory
-    public abstract class Factory extends SimuLizarRootComponent.Factory {
+    public static interface Factory extends SimuLizarRootComponent.Factory {
         
         @Override
         public abstract TestSimuLizarRootComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration,

@@ -4,28 +4,7 @@
    <extension-point id="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor" name="Simulizar Runtime State Accessor" schema="schema/org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.interpreter.listener.probeframework" name="Simulizar Probe Framework Listener Decorator" schema="schema/org.palladiosimulator.simulizar.interpreter.listener.probeframework.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.reconfigurationengine" name="SimuLizar Reconfiguration Engine" schema="schema/org.palladiosimulator.simulizar.reconfigurationengine.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.launcher.modelload" name="Simulizar Launcher Model Loader" schema="schema/org.palladiosimulator.simulizar.launcher.modelload.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.configurator" name="SimuLizar Workflow Configuration Customization" schema="schema/org.palladiosimulator.simulizar.configurator.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.modelobserver" name="Simulizar Model Observer" schema="schema/org.palladiosimulator.simulizar.modelobserver.exsd"/>
    <extension-point id="org.palladiosimulator.simulizar.reconfigurationloader" name="Reconfiguration loader" schema="schema/org.palladiosimulator.simulizar.reconfigurationloader.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.interpreter.rdseffswitch" name="RDSeff Switch" schema="schema/org.palladiosimulator.simulizar.interpreter.rdseffswitch.exsd"/>
-   <extension-point id="org.palladiosimulator.simulizar.extension" name="SimuLizar Extension" schema="schema/org.palladiosimulator.simulizar.extension.exsd"/>
-	   <extension
-         point="org.palladiosimulator.simulizar.modelobserver">
-      <modelObserver
-            modelObserver="org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer">
-      </modelObserver>
-   </extension>
-   <extension
-         point="org.palladiosimulator.simulizar.modelobserver">
-      <modelObserver
-            modelObserver="org.palladiosimulator.simulizar.modelobserver.UsageModelSyncer">
-      </modelObserver>
-   </extension>
-   <extension
-         point="org.palladiosimulator.simulizar.modelobserver">
-      <modelObserver
-            modelObserver="org.palladiosimulator.simulizar.modelobserver.UsageEvolutionSyncer">
-      </modelObserver>
-   </extension>
+   <extension-point id="org.palladiosimulator.simulizar.extension.factory" name="SimuLizar Extension Component Factory" schema="schema/org.palladiosimulator.simulizar.extension.factory.exsd"/>
 </plugin>
