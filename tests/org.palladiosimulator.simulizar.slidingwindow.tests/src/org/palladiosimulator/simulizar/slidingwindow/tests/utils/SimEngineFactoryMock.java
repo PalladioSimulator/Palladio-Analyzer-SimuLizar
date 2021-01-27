@@ -3,12 +3,12 @@ package org.palladiosimulator.simulizar.slidingwindow.tests.utils;
 import java.util.Observer;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEntityDelegator;
-import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimEventDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.AbstractSimProcessDelegator;
 import de.uka.ipd.sdq.simulation.abstractsimengine.IEntity;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEvent;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimProcess;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimRunnable;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.SimCondition;
@@ -69,7 +69,7 @@ final class SimEngineFactoryMock implements ISimEngineFactory {
 
 	@Override
 	public <E extends IEntity> ISimEvent<E> createSimEvent(
-			AbstractSimEventDelegator<E> myEvent, String name) {
+			ISimRunnable<E> myEvent, String name) {
 		return new ISimEvent<E>() {
 
 			@Override
