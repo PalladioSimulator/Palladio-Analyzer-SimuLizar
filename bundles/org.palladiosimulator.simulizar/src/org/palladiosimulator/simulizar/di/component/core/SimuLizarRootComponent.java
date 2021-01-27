@@ -12,7 +12,7 @@ import dagger.Component;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
-@Component(modules = SimuLizarRootModule.class)
+@Component(modules = { SimuLizarRootModule.class })
 @AnalysisRootScope
 public interface SimuLizarRootComponent {
     IJob rootJob();
@@ -23,14 +23,18 @@ public interface SimuLizarRootComponent {
 
     @Component.Factory
     public static interface Factory {
+        default ComponentFactoriesModule defaultComponentFactoriesModule() {
+            return new ComponentFactoriesModule();
+        }
+        
         default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration) {
-            return create(configuration, new ComponentFactoriesModule(), new ExtensionComponentsModule(),
+            return create(configuration, defaultComponentFactoriesModule(), new ExtensionComponentsModule(),
                     new MDSDBlackboardProvidingModule());
         }
         
         default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration,
                 ExtensionComponentsModule extensionModule) {
-            return create(configuration, new ComponentFactoriesModule(),
+            return create(configuration, defaultComponentFactoriesModule(),
                     extensionModule, new MDSDBlackboardProvidingModule());
         }
 

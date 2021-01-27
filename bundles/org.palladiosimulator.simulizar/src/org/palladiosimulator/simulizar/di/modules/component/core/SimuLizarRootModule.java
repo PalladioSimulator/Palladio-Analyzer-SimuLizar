@@ -21,12 +21,14 @@ import dagger.multibindings.ElementsIntoSet;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 @dagger.Module(includes = {
-        MDSDBlackboardProvidingModule.class,
-        SimuLizarConfigurationModule.class,
+        MDSDBlackboardProvidingModule.class,          // Provides a shared blackboard instance
+        SimuLizarConfigurationModule.class,           // Provides the underlying configuration support
+        
         ComponentFactoriesModule.class,
-        ExtensionComponentRootExtensionBindings.class,
-        DependencyComponentsModule.class,
-        DefaultSimuLizarRuntimeFactoryModule.class
+        DependencyComponentsModule.class,             // Provides shared instances of dependency components
+        DefaultSimuLizarRuntimeFactoryModule.class,   // Provides the default SimuLizar analysis setup
+        
+        ExtensionComponentRootExtensionBindings.class // Binds root component extensions
 })
 public interface SimuLizarRootModule {
     

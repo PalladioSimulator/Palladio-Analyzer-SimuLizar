@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.commons.eclipseutils.FileHelper;
+import org.palladiosimulator.simulizar.di.extension.Extension;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -17,7 +18,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
  * @author scheerer
  *
  */
-public abstract class AbstractReconfigurationLoader {
+public abstract class AbstractReconfigurationLoader implements Extension {
 
 	private static final Logger LOGGER = Logger.getLogger(AbstractReconfigurationLoader.class.getName());
 

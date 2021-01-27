@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkC
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreSimulationRuntimeEntitiesBindings;
+import org.palladiosimulator.simulizar.di.modules.scoped.runtime.ExtensionComponentReconfigurationExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.ExtensionComponentRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LinkingResourceSimulationModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.QUALRuntimeExtensionBindings;
@@ -35,6 +36,7 @@ import dagger.multibindings.ElementsIntoSet;
         CoreRuntimeExtensionBindings.class, // required observers, as e.g. UsageModelSyncer
         QUALRuntimeExtensionBindings.class, // extensions contributed by QUAL
         ExtensionComponentRuntimeExtensionBindings.class, // dynamic externally provided extensions
+        ExtensionComponentReconfigurationExtensionBindings.class, // externally provided reconfiguration extensions 
         
         // Import integral extensions to the interpreters, 
         ReconfiguratorBindingsModule.class, // reconfiguration support

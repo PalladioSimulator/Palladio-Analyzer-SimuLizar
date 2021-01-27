@@ -10,13 +10,13 @@ import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntim
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LegacyRuntimeStateAccessorAdapterModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import com.google.common.collect.ImmutableSet;
 
 import dagger.Binds;
+import dagger.MembersInjector;
 import dagger.Module;
 import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
@@ -28,12 +28,22 @@ public interface EclipseSimulizarRuntimeModule {
     @Provides
     @SimulationRuntimeScope
     @ElementsIntoSet
-    static Set<AbstractReconfigurationLoader> provideReconfigurationLoader(SimuLizarWorkflowConfiguration configuration,
-            PCMPartitionManager partitionManager) {
+    static Set<AbstractReconfigurationLoader> provideReconfigurationLoaders() {
         final List<AbstractReconfigurationLoader> reconfigLoaders = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_ID,
                 SimulizarConstants.RECONFIGURATION_LOADER_EXTENSION_POINT_LOADER_ATTRIBUTE);
         return ImmutableSet.copyOf(reconfigLoaders);
+    }
+    
+    @Provides
+    @SimulationRuntimeScope
+    @ElementsIntoSet
+    static Set<IReconfigurationEngine> provideReconfigurationEngines(MembersInjector<IReconfigurationEngine> injector) {
+        final List<IReconfigurationEngine> reconfigEngines = ExtensionHelper.getExecutableExtensions(
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ID,
+                SimulizarConstants.RECONFIGURATION_ENGINE_EXTENSION_POINT_ENGINE_ATTRIBUTE);
+        reconfigEngines.forEach(engine -> injector.injectMembers(engine));
+        return ImmutableSet.copyOf(reconfigEngines);
     }
 
 }
