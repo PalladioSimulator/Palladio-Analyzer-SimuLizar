@@ -7,7 +7,6 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
@@ -35,15 +34,14 @@ public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSD
      *            the SimuCom workflow configuration.
      */
     @Inject
-    public ModelCompletionsJob(final SimuLizarWorkflowConfiguration configuration,
-            Provider<Set<ModelCompletionJobContributor>> modelCompletionJobs) {
+    public ModelCompletionsJob(Provider<Set<ModelCompletionJobContributor>> modelCompletionJobs) {
         super(false);
         this.modelCompletionJobs = modelCompletionJobs;
     }
     
     @Override
     public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-        modelCompletionJobs.get().forEach(contributor -> contributor.loadModel(this));
+        modelCompletionJobs.get().forEach(contributor -> contributor.contribute(this));
         this.myJobs.sort(this);
         super.execute(monitor);
     }
@@ -58,11 +56,11 @@ public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSD
     public int compare(IJob o1, IJob o2) {
         int o1Result = 0;
         int o2Result = 0;
-        if (o1 instanceof Comparator) {
-            o1Result = ((Comparator<IJob>)o1).compare(o1, o2);
+        if (o1 instanceof Comparable) {
+            o1Result = ((Comparable<IJob>)o1).compareTo(o2);
         }
-        if (o2 instanceof Comparator) {
-            o2Result = ((Comparator<IJob>)o2).compare(o1, o2);
+        if (o2 instanceof Comparable) {
+            o2Result = (-1) * ((Comparable<IJob>)o2).compareTo(o1);
         }
         if (o1Result != 0 && o2Result != 0 && o1Result != o2Result) {
             throw new IllegalStateException(

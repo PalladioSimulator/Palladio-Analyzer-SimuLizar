@@ -12,8 +12,8 @@ public interface ModelCompletionJobContributor extends Extension {
          * loaded into the blackboard.
          * 
          * If the contributed job has to be executed in a particular order with respect to an other
-         * job, have it implement {@link Comparator<IJob>}. Jobs are executed in the order small to
-         * large. Therefore, to signal job o1 should be executed before job o2, compare(o1, o2)
+         * job, have it implement {@link Comparable<IJob>}. Jobs are executed in the order small to
+         * large. Therefore, to signal job o1 should be executed before job o2, o1.compareTo(o2)
          * needs to return a number < 0. Return 0 by default. All orderings are relative, two jobs
          * imposing a contradictory ordering, will raise an {@link IllegalStateException}.
          * 
@@ -35,6 +35,6 @@ public interface ModelCompletionJobContributor extends Extension {
      *            the delegate to appen black board preparation jobs.
      * 
      */
-    public void loadModel(ModelCompletionJobContributor.Facade delegate);
+    public void contribute(ModelCompletionJobContributor.Facade delegate);
 
 }

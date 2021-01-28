@@ -15,7 +15,7 @@ public class EventsTransformationWorkflowExtensionJob implements ModelCompletion
     }
 
     @Override
-    public void loadModel(Facade delegate) {
+    public void contribute(Facade delegate) {
         if (config.simulateEvents) {
             delegate.contribute(new EventsTransformationJob(config.storeTransformedModelsProject,
                     config.eventMiddlewareFile, config.storeTransformedModels));
