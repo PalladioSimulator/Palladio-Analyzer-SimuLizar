@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
+import org.palladiosimulator.simulizar.di.modules.scoped.root.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.DependencyComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.ExtensionComponentRootExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLizarConfigurationModule;
@@ -28,6 +29,7 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
         DependencyComponentsModule.class,             // Provides shared instances of dependency components
         DefaultSimuLizarRuntimeFactoryModule.class,   // Provides the default SimuLizar analysis setup
         
+        CoreRuntimeExtensionBindings.class,
         ExtensionComponentRootExtensionBindings.class // Binds root component extensions
 })
 public interface SimuLizarRootModule {
