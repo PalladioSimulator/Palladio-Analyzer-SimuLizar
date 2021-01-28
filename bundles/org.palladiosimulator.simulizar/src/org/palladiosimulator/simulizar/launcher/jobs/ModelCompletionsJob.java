@@ -1,25 +1,32 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import java.util.Comparator;
+import java.util.Set;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.workflow.jobs.DynamicSequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.JobProxy;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
+import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
+import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
- * Composite job loading pcm and Monitor Repository model, as well as all sdm models and usage
- * evolution model and starting pcm interpretation.
- *
- * @author Joachim Meyer
+ * This job executes all model completion contributions in order.
+ * 
+ * @author Sebastian Krach
  *
  */
-public class ModelCompletionsJob extends DynamicSequentialBlackboardInteractingJob<MDSDBlackboard>
-        implements IBlackboardInteractingJob<MDSDBlackboard> {
+public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
+        implements IBlackboardInteractingJob<MDSDBlackboard>, ModelCompletionJobContributor.Facade,
+        Comparator<IJob> {
+
+    private final Provider<Set<ModelCompletionJobContributor>> modelCompletionJobs;
 
     /**
      * Constructor
@@ -29,29 +36,44 @@ public class ModelCompletionsJob extends DynamicSequentialBlackboardInteractingJ
      */
     @Inject
     public ModelCompletionsJob(final SimuLizarWorkflowConfiguration configuration,
-            MDSDBlackboard blackboard,
-            Provider<LoadSimuLizarModelsIntoBlackboardJob> modelLoadJob,
-            AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
+            Provider<Set<ModelCompletionJobContributor>> modelCompletionJobs) {
         super(false);
-        setBlackboard(blackboard);
-        
-        this.addJob(new JobProxy(modelLoadJob::get));        
-        this.addJob(new JobProxy(() -> runtimeComponentFactory.create().runtimeJob()));
+        this.modelCompletionJobs = modelCompletionJobs;
+    }
+    
+    @Override
+    public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
+        modelCompletionJobs.get().forEach(contributor -> contributor.loadModel(this));
+        this.myJobs.sort(this);
+        super.execute(monitor);
+    }
 
-        if (configuration.getServiceLevelObjectivesFile() != null
-                && !(configuration.getServiceLevelObjectivesFile().isBlank())) {
-            addEvaluateResultsJob(configuration);
+    @Override
+    public void contribute(IBlackboardInteractingJob<MDSDBlackboard> contribution) {
+        this.add(contribution);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public int compare(IJob o1, IJob o2) {
+        int o1Result = 0;
+        int o2Result = 0;
+        if (o1 instanceof Comparator) {
+            o1Result = ((Comparator<IJob>)o1).compare(o1, o2);
         }
-    }
-
-    protected void addLoadLinkingResourceSimulationModelsJob(SimuLizarWorkflowConfiguration configuration) {
-        
-    }
-
-    protected void addEvaluateResultsJob(final SimuLizarWorkflowConfiguration configuration) {
-        this.addJob(new EvaluateResultsJob(configuration));
+        if (o2 instanceof Comparator) {
+            o2Result = ((Comparator<IJob>)o2).compare(o1, o2);
+        }
+        if (o1Result != 0 && o2Result != 0 && o1Result != o2Result) {
+            throw new IllegalStateException(
+                    String.format("Both jobs <%s> and <%s> request contradictory ordering.", o1.getName(), o2.getName()));
+        }
+        return o1Result != 0 ? o1Result : o2Result;
     }
     
-    
+    @Override
+    public String getName() {
+        return "Model Completions Composite Job";
+    }
 
 }

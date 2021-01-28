@@ -54,11 +54,12 @@ public class NumberOfResourceContainerTrackingListener implements IReconfigurati
     }
 
     
-    int previousNumberOfContainers = getNumberOfResourceContainers();
+    int previousNumberOfContainers = 0;
     Optional<TriggeredProbe> numberOfResourceContainerProbe = Optional.empty();
     
     @Override
     public void initialize() {
+        previousNumberOfContainers = getNumberOfResourceContainers();
         numberOfResourceContainerProbe = initNumberOfResourceContainersCalculator();
     }
 

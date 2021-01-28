@@ -4,6 +4,7 @@ import javax.inject.Named;
 
 import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
+import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.di.modules.component.core.QUALModule;
@@ -22,8 +23,10 @@ public interface EclipseQUALModule {
     static IGenericCalculatorFactory provideCalculatorFactory(
             @Named(SimulationConfigBindingModule.RECORDERFRAMEWORK_RECORDERNAME) String recorderName,
             IRecorderConfigurationFactory recorderConfigurationFactory) {
-        return new RecorderAttachingCalculatorFactoryDecorator(new ExtensibleCalculatorFactoryDelegatingFactory(),
-                recorderName, recorderConfigurationFactory);
+        return new RegisterCalculatorFactoryDecorator(
+                    new RecorderAttachingCalculatorFactoryDecorator(
+                            new ExtensibleCalculatorFactoryDelegatingFactory(),
+                            recorderName, recorderConfigurationFactory));
     }
     
     @Provides

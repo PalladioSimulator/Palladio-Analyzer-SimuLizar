@@ -6,8 +6,6 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
@@ -32,9 +30,7 @@ public class SimuLizarRuntimeJob extends SequentialJob {
     private final Set<IInterpreterListener> interpreterListeners;
     private final Set<AbstractReconfigurationLoader> reconfigurationLoaders;
     private final SimuLizarWorkflowConfiguration configuration;
-
     private final Set<RuntimeStateEntityManager> entityManagers;
-
     private final Set<RuntimeStateEntityObserver> entityObservers;
     
     
@@ -46,8 +42,6 @@ public class SimuLizarRuntimeJob extends SequentialJob {
             final Set<IModelObserver> modelObservers,
             final Set<IInterpreterListener> interpreterListeners,
             final RunInterpreterJob interpreterJob,
-            final ProbeFrameworkContext probeFrameworkContext,
-            final IRecorderConfigurationFactory recorderConfigurationFactory,
             final Set<AbstractReconfigurationLoader> reconfigurationLoaders,
             final Set<RuntimeStateEntityManager> entityManagers,
             final Set<RuntimeStateEntityObserver> entityObservers) {

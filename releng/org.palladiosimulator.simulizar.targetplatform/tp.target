@@ -116,8 +116,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/branches/timeProvider/"/>
-			<!--<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/nightly/"/>-->
+			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/nightly/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -135,7 +134,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.probeframework.feature.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/nightly/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">

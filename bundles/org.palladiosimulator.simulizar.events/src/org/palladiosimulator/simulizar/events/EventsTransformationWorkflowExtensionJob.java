@@ -3,16 +3,16 @@ package org.palladiosimulator.simulizar.events;
 import javax.inject.Inject;
 
 import org.palladiosimulator.analyzer.workflow.jobs.EventsTransformationJob;
-import org.palladiosimulator.simulizar.launcher.jobs.BlackBoardPreparationJobContributor;
+import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 
-public class EventsTransformationWorkflowExtensionJob implements BlackBoardPreparationJobContributor {
-    
-	private final EventsTransformationConfiguration config;
+public class EventsTransformationWorkflowExtensionJob implements ModelCompletionJobContributor {
 
-	@Inject
-	public EventsTransformationWorkflowExtensionJob(EventsTransformationConfiguration config) {
+    private final EventsTransformationConfiguration config;
+
+    @Inject
+    public EventsTransformationWorkflowExtensionJob(EventsTransformationConfiguration config) {
         this.config = config;
-	}
+    }
 
     @Override
     public void loadModel(Facade delegate) {

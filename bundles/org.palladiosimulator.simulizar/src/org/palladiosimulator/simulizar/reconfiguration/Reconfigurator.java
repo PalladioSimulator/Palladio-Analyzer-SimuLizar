@@ -1,7 +1,5 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import javax.inject.Inject;
-
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.notify.Notification;
@@ -18,7 +16,6 @@ import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfiguration
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
@@ -34,7 +31,6 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
  * @author Florian Rosenthal
  *
  */
-@SimulationRuntimeScope
 public class Reconfigurator extends AbstractObservable<IReconfigurationListener> implements IModelObserver {
 
 	/**
@@ -83,8 +79,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 	 *            Set of reconfigurators which will be triggered as soon as new,
 	 *            interesting monitoring data arrives.
 	 */
-    @Inject
-	public Reconfigurator(@Global PCMResourceSetPartition partition,
+    public Reconfigurator(@Global PCMResourceSetPartition partition,
 	        ReconfigurationProcessFactory processFactory,
 			ISimulationTimeProvider simTimeProvider) {
 		this.partition = partition;
@@ -104,6 +99,7 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
         } else {
             runtimeMeasurementModel = (RuntimeMeasurementModel) models.get(0);
             runtimeMeasurementModel.eAdapters().add(this.runtimeMeasurementListener);
+            this.getEventDispatcher().initialize();
         }
     }
 

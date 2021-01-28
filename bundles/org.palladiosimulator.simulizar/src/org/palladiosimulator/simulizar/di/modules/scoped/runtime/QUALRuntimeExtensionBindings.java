@@ -1,6 +1,8 @@
 package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
+import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
+import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRuntimeExtensions;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
@@ -25,7 +27,8 @@ public interface QUALRuntimeExtensionBindings {
     @Provides
     @IntoSet
     @SimulationRuntimeScope
-    static RuntimeStateEntityManager provideProbeFrameworkCleanupTask(SimuLizarWorkflowConfiguration config, ProbeFrameworkContext ctx, IRecorderConfigurationFactory fact) {
+    static RuntimeStateEntityManager provideProbeFrameworkCleanupTask(SimuLizarWorkflowConfiguration config, ProbeFrameworkContext ctx, IRecorderConfigurationFactory fact,
+            IObservableCalculatorRegistry calculatorRegistry) {
         return new RuntimeStateEntityManager() {
             @Override
             public void initialize() {
@@ -34,6 +37,9 @@ public interface QUALRuntimeExtensionBindings {
             @Override
             public void cleanup() {
                 ctx.finish();
+                if (calculatorRegistry instanceof RegisterCalculatorFactoryDecorator) {
+                    ((RegisterCalculatorFactoryDecorator) calculatorRegistry).finish();
+                }
                 fact.finalizeRecorderConfigurationFactory();
             }
         };

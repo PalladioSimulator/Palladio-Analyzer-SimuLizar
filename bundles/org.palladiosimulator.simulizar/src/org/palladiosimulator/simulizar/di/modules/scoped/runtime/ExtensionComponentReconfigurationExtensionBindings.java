@@ -6,6 +6,7 @@ import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ReconfigurationExtensions;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import dagger.Module;
@@ -27,6 +28,13 @@ public interface ExtensionComponentReconfigurationExtensionBindings {
     @ElementsIntoSet
     static Set<IReconfigurationEngine> bindReconfigurationEngines(ExtensionLookup lookup) {
         return lookup.lookup(IReconfigurationEngine.class);
+    }
+    
+    @Provides
+    @SimulationRuntimeScope
+    @ElementsIntoSet
+    static Set<IReconfigurationListener> bindReconfigurationListener(ExtensionLookup lookup) {
+        return lookup.lookup(IReconfigurationListener.class);
     }
 
 }

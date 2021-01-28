@@ -4,6 +4,7 @@ import java.util.Set;
 
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
+import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 
 import dagger.Module;
 import dagger.multibindings.Multibinds;
@@ -15,4 +16,7 @@ public interface ReconfigurationExtensions {
     
     @Multibinds
     Set<IReconfigurationEngine> bindReconfigurationEngines();
+    
+    @Multibinds
+    Set<IReconfigurationListener> bindReconfigurationListeners();
 }

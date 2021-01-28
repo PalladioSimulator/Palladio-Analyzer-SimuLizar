@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.extension.RootExtensions;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRootExtensions;
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
+import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelContribution;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
@@ -45,6 +46,13 @@ public interface ExtensionComponentRootExtensionBindings {
     @ElementsIntoSet
     static Set<ModelContribution> modelContributions(ExtensionLookup lookup) {
         return lookup.lookup(ModelContribution.class);
+    }
+    
+    @Provides
+    @AnalysisRootScope
+    @ElementsIntoSet
+    static Set<ModelCompletionJobContributor> provideExtensionCompletionJobs(ExtensionLookup lookup) {
+        return lookup.lookup(ModelCompletionJobContributor.class);
     }
 
 }

@@ -31,21 +31,19 @@ public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBla
     public SimuLizarRootJob(final SimuLizarWorkflowConfiguration configuration,
             MDSDBlackboard blackboard,
             Provider<LoadSimuLizarModelsIntoBlackboardJob> modelLoadJob,
+            Provider<ModelCompletionsJob> modelCompletionsJob,
             AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
         super(false);
         setBlackboard(blackboard);
         
-        this.addJob(new BlackboardAwareJobProxy<>("Load models into blackboard", modelLoadJob::get));        
+        this.addJob(new BlackboardAwareJobProxy<>("Load models into blackboard", modelLoadJob::get));
+        this.addJob(new BlackboardAwareJobProxy<>("Run registered model completions", modelCompletionsJob::get));
         this.addJob(new BlackboardAwareJobProxy<>("Run simulizar runtime", () -> runtimeComponentFactory.create().runtimeJob()));
 
         if (configuration.getServiceLevelObjectivesFile() != null
                 && !(configuration.getServiceLevelObjectivesFile().isBlank())) {
             addEvaluateResultsJob(configuration);
         }
-    }
-
-    protected void addLoadLinkingResourceSimulationModelsJob(SimuLizarWorkflowConfiguration configuration) {
-        
     }
 
     protected void addEvaluateResultsJob(final SimuLizarWorkflowConfiguration configuration) {
