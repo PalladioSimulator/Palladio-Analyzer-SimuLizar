@@ -496,7 +496,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                      * reasons we need an InterpreterDefaultContext. Thus we have to copy the
                      * context including its stack.
                      */
-                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.myContext,
+                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.forkContext,
                             RDSeffSwitch.this.context.getRuntimeState(), true,
                             RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
                     seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
