@@ -27,9 +27,17 @@ public interface SimuLizarRootComponent {
             return new ComponentFactoriesModule();
         }
         
+        default ExtensionComponentsModule defaultExtensionComponentsModule() {
+            return new ExtensionComponentsModule();
+        }
+        
+        default MDSDBlackboardProvidingModule defaultMDSDBlackboardProvidingModule() {
+            return new MDSDBlackboardProvidingModule();
+        }
+        
         default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration) {
-            return create(configuration, defaultComponentFactoriesModule(), new ExtensionComponentsModule(),
-                    new MDSDBlackboardProvidingModule());
+            return create(configuration, defaultComponentFactoriesModule(), defaultExtensionComponentsModule(),
+                    defaultMDSDBlackboardProvidingModule());
         }
         
         default SimuLizarRootComponent create(SimuLizarWorkflowConfiguration configuration,
