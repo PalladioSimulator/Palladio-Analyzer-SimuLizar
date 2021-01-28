@@ -76,7 +76,7 @@ public class InterpreterFileNamesInputTab extends ProtocomFileNamesInputTab {
         TabHelper.createFileInputSection(container, modifyListener, "Optional: Service Level Objectives File",
                 SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE_EXTENSION, serviceLevelObjectivesFile,
                 "Select Service Level Objective Repository File", getShell(),
-                SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE);
+                SimulizarConstants.DEFAULT_SERVICELEVELOBJECTIVE_FILE);
 
         /**
          * Create UsageEvolution file section
