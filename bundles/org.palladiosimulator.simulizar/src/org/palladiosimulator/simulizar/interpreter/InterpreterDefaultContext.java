@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
@@ -70,6 +72,8 @@ public class InterpreterDefaultContext extends Context {
     private static final long serialVersionUID = -5027373777424401211L;
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
+    
+    private final Deque<SimulatedStackframe<Object>> resultFrameStack = new LinkedList<>();
 
     private final PCMPartitionManager pcmPartitionManager;
 
@@ -152,6 +156,14 @@ public class InterpreterDefaultContext extends Context {
             result.add(stack.get(i));
         }
         return result;
+    }
+
+    public Deque<SimulatedStackframe<Object>> getResultFrameStack() {
+        return resultFrameStack;
+    }
+    
+    public SimulatedStackframe<Object> getCurrentResultFrame() {
+        return resultFrameStack.peek();
     }
     
 }

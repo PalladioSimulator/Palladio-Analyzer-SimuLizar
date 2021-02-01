@@ -4,6 +4,7 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**
  * Abstract Factory used by the extensible behaviour switches extension point.
@@ -12,10 +13,10 @@ import org.palladiosimulator.simulizar.di.extension.Extension;
  *
  */
 public interface RDSeffSwitchContributionFactory extends Extension {
-    public interface RDSeffElementDispatcher<T> {
-        T doSwitch(EClass theEClass, EObject theEObject);
+    public interface RDSeffElementDispatcher {
+        InterpreterResult doSwitch(EClass theEClass, EObject theEObject);
         
-        default T doSwitch(EObject theEObject) {
+        default InterpreterResult doSwitch(EObject theEObject) {
             return doSwitch(theEObject.eClass(), theEObject);
         }
     }
@@ -30,7 +31,7 @@ public interface RDSeffSwitchContributionFactory extends Extension {
      *				The composed switch which is containing the created switch
 	 * @return a composable switch
 	 */
-	public Switch<Object> createRDSeffSwitch(final InterpreterDefaultContext context,
-	        RDSeffElementDispatcher<Object> parentSwitch);
+	public Switch<InterpreterResult> createRDSeffSwitch(final InterpreterDefaultContext context,
+	        RDSeffElementDispatcher parentSwitch);
 	
 }

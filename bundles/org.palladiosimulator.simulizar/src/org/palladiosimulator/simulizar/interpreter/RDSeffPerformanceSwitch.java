@@ -13,6 +13,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_performance.util.SeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import dagger.assisted.Assisted;
@@ -25,26 +26,26 @@ import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
-public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
+public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterResult> {
     @AssistedFactory
     public interface Factory extends RDSeffSwitchContributionFactory {
         @Override
         public RDSeffPerformanceSwitch createRDSeffSwitch(InterpreterDefaultContext context,
-                RDSeffElementDispatcher<Object> parentSwitch);
+                RDSeffElementDispatcher parentSwitch);
     }
 
     private final InterpreterDefaultContext context;
     private final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup;
     private final ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess;
-    private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
+    private final ComposedStructureInnerSwitch.Factory composedSwitchFactory;
     
 
     @AssistedInject
     public RDSeffPerformanceSwitch(@Assisted InterpreterDefaultContext context,
-            @Assisted RDSeffElementDispatcher<Object> parentSwitch,
+            @Assisted RDSeffElementDispatcher parentSwitch,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess,
-            ComposedStructureInnerSwitchFactory composedSwitchFactory) {
+            ComposedStructureInnerSwitch.Factory composedSwitchFactory) {
         this.context = context;
         this.allocationLookup = allocationLookup;
         this.rcAccess = rcAccess;
@@ -52,7 +53,7 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
     }
     
     @Override
-    public Object caseParametricResourceDemand(ParametricResourceDemand parametricResourceDemand) {
+    public InterpreterResult caseParametricResourceDemand(ParametricResourceDemand parametricResourceDemand) {
         final String idRequiredResourceType = parametricResourceDemand
                 .getRequiredResource_ParametricResourceDemand().getId();
         final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
@@ -63,11 +64,11 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
         var rcEntity = allocationLookup.getAllocatedEntity(context.computeFQComponentID().getFQIDString());
         rcAccess.getSimulatedEntity(rcEntity.getId()).loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
         
-        return RDSeffSwitch.SUCCESS;
+        return InterpreterResult.OK;
     }
     
     @Override
-    public Object caseResourceCall(ResourceCall resourceCall) {
+    public InterpreterResult caseResourceCall(ResourceCall resourceCall) {
         // find the corresponding resource type which was invoked by the resource call
         final ResourceInterface resourceInterface = resourceCall.getSignature__ResourceCall()
                 .getResourceInterface__ResourceSignature();
@@ -98,11 +99,11 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
             .getFQIDString());
         rcAccess.getSimulatedEntity(rcEntity.getId())
             .loadActiveResource(context.getThread(), resourceServiceId, idRequiredResourceType, evaluatedDemand);
-        return RDSeffSwitch.SUCCESS;
+        return InterpreterResult.OK;
     }
     
     @Override
-    public Object caseInfrastructureCall(InfrastructureCall infrastructureCall) {
+    public InterpreterResult caseInfrastructureCall(InfrastructureCall infrastructureCall) {
         final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
         final int repetitions = StackContext.evaluateStatic(
                 infrastructureCall.getNumberOfCalls__InfrastructureCall().getSpecification(), Integer.class,
@@ -119,7 +120,6 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<Object> {
             this.context.getAssemblyContextStack().push(myContext);
             this.context.getStack().removeStackFrame();
         }
-        return RDSeffSwitch.SUCCESS;
-        
+        return InterpreterResult.OK;
     }
 }

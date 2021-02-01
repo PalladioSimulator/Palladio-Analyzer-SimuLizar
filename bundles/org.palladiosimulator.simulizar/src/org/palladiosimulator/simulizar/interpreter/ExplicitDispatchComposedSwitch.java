@@ -4,11 +4,12 @@ import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
-public class ExplicitDispatchComposedSwitch<T> extends ComposedSwitch<T> implements RDSeffElementDispatcher<Object> {
+public class ExplicitDispatchComposedSwitch extends ComposedSwitch<InterpreterResult> implements RDSeffElementDispatcher {
 
 	@Override
-	public T doSwitch(EClass theEClass, EObject theEObject) {
+	public InterpreterResult doSwitch(EClass theEClass, EObject theEObject) {
 		return super.doSwitch(theEClass, theEObject);
 	}
 

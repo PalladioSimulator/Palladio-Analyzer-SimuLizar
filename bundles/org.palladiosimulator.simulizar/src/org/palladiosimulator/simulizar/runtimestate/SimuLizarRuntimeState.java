@@ -2,10 +2,11 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import javax.inject.Inject;
 
+import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent.Factory;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
@@ -41,22 +42,22 @@ public class SimuLizarRuntimeState {
     private final Reconfigurator reconfigurator;
     protected final UsageEvolverFacade usageEvolverFacade;
     private final Lazy<InterpreterDefaultContext> mainContext;
-    private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
+    private final Factory simulatedThreadComponentFactory;
 
     /**
      * @param configuration
      * @param modelAccess
      */
     @Inject
-    public SimuLizarRuntimeState(final PCMPartitionManager pcmPartitionManager, 
-            final SimuComModel simuComModel,
-            final EventDispatcher eventHelper,
-            final ComponentInstanceRegistry componentInstanceRegistry, 
-            final SimulatedUsageModels simulatedUsageModels, 
-            final Reconfigurator reconfigurator,
-            final UsageEvolverFacade usageEvolverFacade,  
-            final @MainContext Lazy<InterpreterDefaultContext> mainContext,
-            final UsageScenarioSwitchFactory usageScenarioSwitchFactory) {
+    public SimuLizarRuntimeState(PCMPartitionManager pcmPartitionManager, 
+            SimuComModel simuComModel,
+            EventDispatcher eventHelper,
+            ComponentInstanceRegistry componentInstanceRegistry, 
+            SimulatedUsageModels simulatedUsageModels, 
+            Reconfigurator reconfigurator,
+            UsageEvolverFacade usageEvolverFacade,  
+            @MainContext Lazy<InterpreterDefaultContext> mainContext,
+            SimulatedThreadComponent.Factory simulatedThreadComponentFactory) {
         this.pcmPartitionManager = pcmPartitionManager;
         this.model = simuComModel;
         this.eventHelper = eventHelper;
@@ -65,7 +66,7 @@ public class SimuLizarRuntimeState {
         this.reconfigurator = reconfigurator;
         this.usageEvolverFacade = usageEvolverFacade;
         this.mainContext = mainContext;
-        this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
+        this.simulatedThreadComponentFactory = simulatedThreadComponentFactory;
     }
 
     /**
@@ -141,14 +142,9 @@ public class SimuLizarRuntimeState {
     public UsageEvolverFacade getUsageEvolverFacade() {
         return this.usageEvolverFacade;
     }
-
-    /**
-     * @return the Usage Scenario Switch Factory
-     * @deprecated Use dependency injection to retrieve the UsageScenarioSwitchFactory instance.
-     */
-    @Deprecated
-    public UsageScenarioSwitchFactory getUsageScenarioSwitchFactory() {
-        return this.usageScenarioSwitchFactory;
+    
+    public SimulatedThreadComponent.Factory getSimulatedThreadComponentFactory() {
+        return this.simulatedThreadComponentFactory;
     }
     
 }

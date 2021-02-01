@@ -36,6 +36,10 @@ import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
@@ -56,46 +60,49 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker, Sebastian Lehrig
  *
  */
-public class RDSeffSwitch extends SeffSwitch<Object> {
+public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @AssistedFactory
     public interface Factory extends RDSeffSwitchContributionFactory {
         @Override
         RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
-                RDSeffElementDispatcher<Object> parentSwitch);
+                RDSeffElementDispatcher parentSwitch);
     }
 
     public static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
 
-    private RDSeffElementDispatcher<Object> parentSwitch;
+    private RDSeffElementDispatcher parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
 
-    private final SimulatedStackframe<Object> resultStackFrame;
-
     private final SimulatedBasicComponentInstance basicComponentInstance;
     private final IResourceTableManager resourceTableManager;
-    private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
+    private final ComposedStructureInnerSwitch.Factory composedSwitchFactory;
     private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
     private final EventDispatcher eventHelper;
+    private final InterpreterResultHandler issueHandler;
+    private final InterpreterResultMerger resultMerger;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
      */
     @AssistedInject
-    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher<Object> parentSwitch,
+    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher parentSwitch,
             IResourceTableManager resourceTableManager,
             ComponentInstanceRegistry componentInstanceRegistry,
-            ComposedStructureInnerSwitchFactory composedSwitchFactory,
+            ComposedStructureInnerSwitch.Factory composedSwitchFactory,
             ComposedRDSeffSwitchFactory rdseffSwitchFactory, 
-            EventDispatcher eventHelper) {
+            EventDispatcher eventHelper,
+            InterpreterResultHandler issueHandler,
+            InterpreterResultMerger resultMerger) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
         this.rdseffSwitchFactory = rdseffSwitchFactory;
         this.eventHelper = eventHelper;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
         this.transitionDeterminer = new TransitionDeterminer(context);
-        this.resultStackFrame = new SimulatedStackframe<Object>();
         this.basicComponentInstance = Optional.ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
                 .filter(SimulatedBasicComponentInstance.class::isInstance)
                 .map(SimulatedBasicComponentInstance.class::cast)
@@ -108,7 +115,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour)
      */
     @Override
-    public Object caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
+    public InterpreterResult caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
         final int stacksize = this.context.getStack().size();
 
         AbstractAction currentAction = null;
@@ -125,12 +132,14 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
             throw new PCMModelInterpreterException("RDSEFF is invalid, it misses a start action");
         }
 
-        while (currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
+        InterpreterResult result = InterpreterResult.OK;
+        while (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
+                && currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
-            parentSwitch.doSwitch(currentAction);
+            result = resultMerger.merge(result, parentSwitch.doSwitch(currentAction));
             this.firePassedEvent(currentAction, EventType.END);
             currentAction = currentAction.getSuccessor_AbstractAction();
         }
@@ -139,7 +148,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
 
-        return this.resultStackFrame;
+        return result;
     }
 
     /**
@@ -153,7 +162,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * seff.AbstractAction )
      */
     @Override
-    public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
+    public InterpreterResult caseAbstractAction(final AbstractAction object) {
         throw new UnsupportedOperationException(
                 "SEFF Interpreter tried to interpret unsupported action type: " + object.eClass().getName());
     }
@@ -162,28 +171,22 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseInternalAction(org.palladiosimulator.pcm.seff.InternalAction)
      */
     @Override
-    public Object caseInternalAction(final InternalAction internalAction) {
-        invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action());
-        invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action());
-        
+    public InterpreterResult caseInternalAction(final InternalAction internalAction) {
+        var result = InterpreterResult.OK;
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action()));
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action()));
         // We include the following, once failure simulation has been fully integrated
-        //invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
-        
-        invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action());
-        return SUCCESS;
+        //result = resultMerger.merge(invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action()));
+        return result;
     }
     
-    private void invokeRecursiveAndHandleFailure(Collection<? extends EObject> nestedElements) {
+    private InterpreterResult invokeRecursiveAndHandleFailure(Collection<? extends EObject> nestedElements) {
+        var result = InterpreterResult.OK;
         for (var element: nestedElements) {
-            var result = this.parentSwitch.doSwitch(element);
-            if (!SUCCESS.equals(result)) {
-                if (result == null) {
-                    throw new UnsupportedOperationException("Unsupported element of type " + element.eClass().getName());
-                } else {
-                    throw new RuntimeException("The interpretation failed due to unexpected behavior.");
-                }
-            }
+            result = resultMerger.merge(result, this.parentSwitch.doSwitch(element));
         }
+        return result;
     }
 
 
@@ -191,7 +194,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseExternalCallAction(org.palladiosimulator.pcm.seff.ExternalCallAction)
      */
     @Override
-    public Object caseExternalCallAction(final ExternalCallAction externalCall) {
+    public InterpreterResult caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = composedSwitchFactory.create(this.context,
                 externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
@@ -199,28 +202,29 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
             final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
             final SimulatedStackframe<Object> callFrame = SimulatedStackHelper.createAndPushNewStackFrame(
                     this.context.getStack(), externalCall.getInputVariableUsages__CallAction(), currentFrame);
-            callFrame.addVariables(this.resultStackFrame);
+            callFrame.addVariables(this.context.getCurrentResultFrame());
         } else {
             // create new stack frame for input parameter
             SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                     externalCall.getInputVariableUsages__CallAction());
         }
         final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
+        context.getResultFrameStack().push(new SimulatedStackframe<>());
+        var result = composedStructureSwitch.doSwitch(myContext);
         this.context.getAssemblyContextStack().push(myContext);
         this.context.getStack().removeStackFrame();
 
-        SimulatedStackHelper.addParameterToStackFrame(outputFrame,
+        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack().pop(),
                 externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
 
-        return SUCCESS;
+        return result;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseBranchAction(org.palladiosimulator.pcm.seff.BranchAction)
      */
     @Override
-    public Object caseBranchAction(final BranchAction object) {
+    public InterpreterResult caseBranchAction(final BranchAction object) {
         final EList<AbstractBranchTransition> abstractBranchTransitions = object.getBranches_Branch();
         if (abstractBranchTransitions.isEmpty()) {
             throw new PCMModelInterpreterException("Empty branch action is not allowed");
@@ -251,27 +255,23 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
             LOGGER.error("No branch's condition evaluated to true, no branch selected: " + object);
             throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
-            parentSwitch.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
+            return parentSwitch.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
-
-        return SUCCESS;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseCollectionIteratorAction(org.palladiosimulator.pcm.seff.CollectionIteratorAction)
      */
     @Override
-    public Object caseCollectionIteratorAction(final CollectionIteratorAction object) {
-        this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
-
-        return SUCCESS;
+    public InterpreterResult caseCollectionIteratorAction(final CollectionIteratorAction object) {
+        return this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseForkAction(org.palladiosimulator.pcm.seff.ForkAction)
      */
     @Override
-    public Object caseForkAction(final ForkAction object) {
+    public InterpreterResult caseForkAction(final ForkAction object) {
         /*
          * Component developers can use a SynchronisationPoint to join synchronously
          * ForkedBehaviours and specify a result of the computations with its attached
@@ -300,14 +300,14 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
 
         forkExecutor.run();
 
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseLoopAction(org.palladiosimulator.pcm.seff.LoopAction)
      */
     @Override
-    public Object caseLoopAction(final LoopAction object) {
+    public InterpreterResult caseLoopAction(final LoopAction object) {
         final PCMRandomVariable iterationCount = object.getIterationCount_LoopAction();
         final String stoex = iterationCount.getSpecification();
 
@@ -320,18 +320,16 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
         }
 
         // interpret behavior the given number of times
-        this.interpretLoop(object, numberOfLoops);
-
-        return SUCCESS;
+        return this.interpretLoop(object, numberOfLoops);
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseSetVariableAction(org.palladiosimulator.pcm.seff.SetVariableAction)
      */
     @Override
-    public Object caseSetVariableAction(final SetVariableAction object) {
+    public InterpreterResult caseSetVariableAction(final SetVariableAction object) {
         SimulatedStackHelper.addParameterToStackFrame(this.context.getStack().currentStackFrame(),
-                object.getLocalVariableUsages_SetVariableAction(), this.resultStackFrame);
+                object.getLocalVariableUsages_SetVariableAction(), context.getCurrentResultFrame());
         /*
          * Special attention has to be paid if the random variable to set is an INNER
          * characterisation. In this case, a late evaluating random variable has to be stored with
@@ -339,7 +337,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
          *
          * Why?
          */
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /*
@@ -350,7 +348,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * seff.AcquireAction )
      */
     @Override
-    public Object caseAcquireAction(final AcquireAction acquireAction) {
+    public InterpreterResult caseAcquireAction(final AcquireAction acquireAction) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Process " + this.context.getThread().getId() + " tries to acquire "
                     + acquireAction.getPassiveresource_AcquireAction().getEntityName());
@@ -362,7 +360,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
             LOGGER.debug("Process " + this.context.getThread().getId() + " successfully acquired "
                     + acquireAction.getPassiveresource_AcquireAction().getEntityName());
         }
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /*
@@ -373,14 +371,14 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * seff.ReleaseAction )
      */
     @Override
-    public Object caseReleaseAction(final ReleaseAction releaseAction) {
+    public InterpreterResult caseReleaseAction(final ReleaseAction releaseAction) {
         this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction(),
                 this.context);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Process " + this.context.getThread().getId() + " released "
                     + releaseAction.getPassiveResource_ReleaseAction().getEntityName());
         }
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /**
@@ -483,16 +481,19 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      * @param numberOfLoops
      *            number of loops.
      */
-    private void interpretLoop(final LoopAction object, final int numberOfLoops) {
-        for (int i = 0; i < numberOfLoops; i++) {
+    private InterpreterResult interpretLoop(final LoopAction object, final int numberOfLoops) {
+        InterpreterResult result = InterpreterResult.OK;
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
+                i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
-            parentSwitch.doSwitch(object.getBodyBehaviour_Loop());
+            result = resultMerger.merge(result, parentSwitch.doSwitch(object.getBodyBehaviour_Loop()));
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
         }
+        return result;
     }
 
     /**
@@ -504,7 +505,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
      *            parameter of the collection.
      * @return
      */
-    private void iterateOverCollection(final CollectionIteratorAction object, final Parameter parameter) {
+    private InterpreterResult iterateOverCollection(final CollectionIteratorAction object, final Parameter parameter) {
         // TODO make better
         final String idNumberOfLoops = parameter.getParameterName() + ".NUMBER_OF_ELEMENTS";
 
@@ -515,7 +516,9 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
-        for (int i = 0; i < numberOfLoops; i++) {
+        InterpreterResult result = InterpreterResult.OK;
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
+                i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
@@ -546,7 +549,7 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
              * within an iteration.
              */
 
-            parentSwitch.doSwitch(object.getBodyBehaviour_Loop());
+            result = resultMerger.merge(result, parentSwitch.doSwitch(object.getBodyBehaviour_Loop()));
 
             // remove stack frame for value characterisations of inner
             // collection variable
@@ -563,5 +566,6 @@ public class RDSeffSwitch extends SeffSwitch<Object> {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
         }
+        return result;
     }
 }

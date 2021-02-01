@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.component.core;
 
+import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThreadBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.PCMPartitionManagerAdapterModule;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -13,7 +14,9 @@ import dagger.Module;
 import dagger.Provides;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
-@Module(includes = { CoreBindingsModule.class, PCMPartitionManagerAdapterModule.class } )
+@Module(includes = { CoreBindingsModule.class, 
+        PCMPartitionManagerAdapterModule.class,
+        CoreSimulatedThreadBindings.class } )
 public interface SimulatedThreadModule {
 
     @Provides

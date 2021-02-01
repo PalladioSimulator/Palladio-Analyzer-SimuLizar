@@ -10,6 +10,7 @@ import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.ExplicitDispatchComposedSwitch;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwitchFactory {
 
@@ -21,8 +22,8 @@ public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwit
     }
 
     @Override
-    public Switch<Object> createRDSeffSwitch(InterpreterDefaultContext context) {
-        final  ExplicitDispatchComposedSwitch<Object> interpreter = new ExplicitDispatchComposedSwitch<Object>();
+    public Switch<InterpreterResult> createRDSeffSwitch(InterpreterDefaultContext context) {
+        final  ExplicitDispatchComposedSwitch interpreter = new ExplicitDispatchComposedSwitch();
         elementFactoriesProvider.get().stream().forEach(s -> interpreter.addSwitch(
                 s.createRDSeffSwitch(context, interpreter)));
         

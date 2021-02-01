@@ -5,6 +5,7 @@ import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponen
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
+import org.palladiosimulator.simulizar.usagemodel.IScenarioRunnerFactory;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
@@ -14,8 +15,14 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 
 public class SimulatedThreadComponentDelegatingScenarioRunner implements IScenarioRunner {
     @AssistedFactory
-    public static interface Factory {
+    public static interface Factory extends IScenarioRunnerFactory<Entity> {
         SimulatedThreadComponentDelegatingScenarioRunner create(EntityReference<? extends Entity> reference);
+      
+        @Override
+        default SimulatedThreadComponentDelegatingScenarioRunner createScenarioRunner(
+                EntityReference<? extends Entity> reference) {
+            return create(reference);
+        }
     }
 
     private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;

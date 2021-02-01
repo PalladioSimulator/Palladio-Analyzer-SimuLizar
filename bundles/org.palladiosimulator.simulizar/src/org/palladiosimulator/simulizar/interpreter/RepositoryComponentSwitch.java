@@ -25,6 +25,7 @@ import org.palladiosimulator.pcm.seff.ServiceEffectSpecification;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.AssemblyProvidedOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
@@ -32,6 +33,7 @@ import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentI
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import dagger.assisted.Assisted;
+import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
@@ -41,7 +43,12 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author snowball
  *
  */
-public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackframe<Object>> {
+public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResult> {
+    @AssistedFactory
+    public static interface Factory {
+        RepositoryComponentSwitch create(final InterpreterDefaultContext context, final AssemblyContext assemblyContext,
+                final Signature signature, final ProvidedRole providedRole);
+    }
 
     private static final Logger LOGGER = Logger.getLogger(RepositoryComponentSwitch.class);
     public static final AssemblyContext SYSTEM_ASSEMBLY_CONTEXT = CompositionFactory.eINSTANCE.createAssemblyContext();
@@ -52,7 +59,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     private final AssemblyContext instanceAssemblyContext;
     private final IResourceTableManager resourceTableManager;
     private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
-    private final RepositoryComponentSwitchFactory repositoryComponentSwitchFactory;
+    private final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory;
     private final ComponentInstanceRegistry componentRegistry;
     private final EventDispatcher eventHelper;
     private final SimulatedBasicComponentInstanceFactory simComponentFactory;
@@ -63,7 +70,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     @AssistedInject
     RepositoryComponentSwitch(@Assisted final InterpreterDefaultContext context, @Assisted final AssemblyContext assemblyContext,
             @Assisted final Signature signature, @Assisted final ProvidedRole providedRole, IResourceTableManager resourceTableManager,
-            RepositoryComponentSwitchFactory repositoryComponentSwitchFactory,
+            RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory,
             ComponentInstanceRegistry componentRegistry,
             ComposedRDSeffSwitchFactory rdseffSwitchFactory,
             EventDispatcher eventHelper,
@@ -82,7 +89,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     }
 
     @Override
-    public SimulatedStackframe<Object> caseBasicComponent(final BasicComponent basicComponent) {
+    public InterpreterResult caseBasicComponent(final BasicComponent basicComponent) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering BasicComponent: " + basicComponent);
         }
@@ -112,20 +119,18 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         final List<ServiceEffectSpecification> calledSeffs = this
                 .getSeffsForCall(basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
 
-        final SimulatedStackframe<Object> result = this.interpretSeffs(calledSeffs, resourceTableManager);
+        final var result = this.interpretSeffs(calledSeffs, resourceTableManager);
 
-        /*
-         * Remove created stack frame (including stack frame created for the results of an external
-         * call in RDSEFF, done in RDSEFF Interpreter).
-         */
+        // Remove stack frame which contains assembly context parameters
         stack.removeStackFrame();
+        // Remove stack frame which contains component parameters
         stack.removeStackFrame();
 
         return result;
     }
 
     @Override
-    public SimulatedStackframe<Object> caseComposedProvidingRequiringEntity(
+    public InterpreterResult caseComposedProvidingRequiringEntity(
             final ComposedProvidingRequiringEntity entity) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering ComposedProvidingRequiringEntity: " + entity);
@@ -156,7 +161,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
      * @see org.palladiosimulator.pcm.repository.util.CompositionSwitch#caseProvidedRole(org.palladiosimulator.pcm.repository.ProvidedRole)
      */
     @Override
-    public SimulatedStackframe<Object> caseProvidedRole(final ProvidedRole providedRole) {
+    public InterpreterResult caseProvidedRole(final ProvidedRole providedRole) {
         this.context.getAssemblyContextStack().push(this.instanceAssemblyContext == SYSTEM_ASSEMBLY_CONTEXT
                 ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
         
@@ -164,7 +169,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
         	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
         			EventType.BEGIN, this.context, this.signature, this.instanceAssemblyContext));
 
-        final SimulatedStackframe<Object> result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
+        final var result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
 
         this.context.getAssemblyContextStack().pop();
         
@@ -209,8 +214,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
      * @param calledSeffs
      *            a list of seffs.
      */
-    @SuppressWarnings("unchecked")
-    private SimulatedStackframe<Object> interpretSeffs(final List<ServiceEffectSpecification> calledSeffs
+    private InterpreterResult interpretSeffs(final List<ServiceEffectSpecification> calledSeffs
             , IResourceTableManager resourceTableManager) {
         /*
          * we assume exactly one seff per call, the meta model also allows no seffs, but we omit
@@ -223,7 +227,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
             var interpreter = rdseffSwitchFactory.createRDSeffSwitch(context);
-            return (SimulatedStackframe<Object>) interpreter.doSwitch(calledSeffs.get(0));
+            return interpreter.doSwitch(calledSeffs.get(0));
         }
     }
 
@@ -253,7 +257,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<SimulatedStackfr
     }
 
     @Override
-    protected SimulatedStackframe<Object> doSwitch(final EClass theEClass, final EObject theEObject) {
+    protected InterpreterResult doSwitch(final EClass theEClass, final EObject theEObject) {
         if (EntityPackage.eINSTANCE.getComposedProvidingRequiringEntity().isSuperTypeOf(theEClass)) {
             return this.caseComposedProvidingRequiringEntity((ComposedProvidingRequiringEntity) theEObject);
         }
