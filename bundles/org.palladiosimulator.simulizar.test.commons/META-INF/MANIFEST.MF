@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Test Commons
 Bundle-SymbolicName: org.palladiosimulator.simulizar.test.commons
-Bundle-Version: 4.3.0.qualifier
+Bundle-Version: 5.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.test.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",
- org.palladiosimulator.simulizar;bundle-version="4.3.0",
+ org.palladiosimulator.simulizar;bundle-version="5.0.0",
  org.palladiosimulator.analyzer.workflow,
  org.junit.jupiter.api,
  de.uka.ipd.sdq.workflow.mdsd;bundle-version="4.3.0",
