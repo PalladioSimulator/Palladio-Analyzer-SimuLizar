@@ -2,9 +2,11 @@ package org.palladiosimulator.simulizar.di.modules.scoped.thread;
 
 import java.util.Set;
 
+import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RDSeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
+import org.palladiosimulator.simulizar.interpreter.impl.ExtensibleComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResultMerger;
@@ -28,7 +30,10 @@ public interface CoreSimulatedThreadBindings {
     @Binds
     @SimulatedThreadScope
     InterpreterResultMerger bindResultMerger(BasicInterpreterResultMerger impl);
-
+    
+    @Binds
+    @SimulatedThreadScope
+    ComposedRDSeffSwitchFactory bindComposedRDSeffSwitchFactory(ExtensibleComposedRDSeffSwitchFactory impl);
 
     @Provides
     @ElementsIntoSet

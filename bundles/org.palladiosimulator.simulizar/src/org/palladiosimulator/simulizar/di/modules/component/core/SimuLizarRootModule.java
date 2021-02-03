@@ -7,7 +7,7 @@ import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.DependencyComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.ExtensionComponentRootExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLizarConfigurationModule;
-import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarRuntimeFactoryModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRootJob;
@@ -24,7 +24,7 @@ import de.uka.ipd.sdq.workflow.jobs.IJob;
         MDSDBlackboardProvidingModule.class,          // Provides a shared blackboard instance
         SimuLizarConfigurationModule.class,           // Provides the underlying configuration support
         
-        ComponentFactoriesModule.class,
+        RootComponentFactoriesModule.class,
         DependencyComponentsModule.class,             // Provides shared instances of dependency components
         DefaultSimuLizarRuntimeFactoryModule.class,   // Provides the default SimuLizar analysis setup
         

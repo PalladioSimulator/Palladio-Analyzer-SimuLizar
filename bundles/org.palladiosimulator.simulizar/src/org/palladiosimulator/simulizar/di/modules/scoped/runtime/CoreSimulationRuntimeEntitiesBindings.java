@@ -2,16 +2,13 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.interpreter.impl.ExtensibleComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
-import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
@@ -35,10 +32,7 @@ public interface CoreSimulationRuntimeEntitiesBindings {
     static EventDispatcher provideEventNotificationHelper() {
         return new EventDispatcher();
     }
-    
-    @Binds
-    ComposedRDSeffSwitchFactory bindComposedSwitchFactory(ExtensibleComposedRDSeffSwitchFactory impl);
-    
+
     @Provides
     @SimulationRuntimeScope
     @MainContext 
@@ -46,6 +40,6 @@ public interface CoreSimulationRuntimeEntitiesBindings {
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> assemblyAllocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> simRCAccess,
             IResourceTableManager resourceTableManager) {
-        return new InterpreterDefaultContext(simuComModel, partitionManager, assemblyAllocationLookup, simRCAccess, resourceTableManager);
+        return InterpreterDefaultContext.createRootContext(simuComModel, partitionManager, assemblyAllocationLookup, simRCAccess, resourceTableManager);
     }
 }

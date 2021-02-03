@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.component.core;
 
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
-import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
@@ -23,8 +23,8 @@ public interface SimuLizarRootComponent {
 
     @Component.Factory
     public static interface Factory {
-        default ComponentFactoriesModule defaultComponentFactoriesModule() {
-            return new ComponentFactoriesModule();
+        default RootComponentFactoriesModule defaultComponentFactoriesModule() {
+            return new RootComponentFactoriesModule();
         }
         
         default ExtensionComponentsModule defaultExtensionComponentsModule() {
@@ -47,7 +47,7 @@ public interface SimuLizarRootComponent {
         }
 
         SimuLizarRootComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration,
-                ComponentFactoriesModule factoriesModule, ExtensionComponentsModule extensionModule,
+                RootComponentFactoriesModule factoriesModule, ExtensionComponentsModule extensionModule,
                 MDSDBlackboardProvidingModule blackBoardModule);
     }
 

@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.util.Objects;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
@@ -165,7 +167,8 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                 entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
         this.context.getResultFrameStack().push(new SimulatedStackframe<>());
-        var result = providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
+        var result = Objects.requireNonNull(providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall()));
+        
         this.context.getResultFrameStack().pop();
         this.context.getStack().removeStackFrame();
 

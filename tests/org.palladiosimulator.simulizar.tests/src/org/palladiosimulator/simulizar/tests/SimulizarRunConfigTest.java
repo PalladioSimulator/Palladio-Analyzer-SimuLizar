@@ -21,7 +21,7 @@ import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
-import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
@@ -103,7 +103,7 @@ public class SimulizarRunConfigTest {
         this.simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false));
         
         this.simulizarJob = DaggerTestSimuLizarRootComponent.factory()
-            .create(simulizarConfiguration, new ComponentFactoriesModule() {
+            .create(simulizarConfiguration, new RootComponentFactoriesModule() {
                 @Override
                 public Factory providesSimEngineComponentFactory() {
                     return DaggerTestSimEngineComponent.factory();

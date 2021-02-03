@@ -2,8 +2,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent.Factory;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
@@ -42,7 +41,7 @@ public class SimuLizarRuntimeState {
     private final Reconfigurator reconfigurator;
     protected final UsageEvolverFacade usageEvolverFacade;
     private final Lazy<InterpreterDefaultContext> mainContext;
-    private final Factory simulatedThreadComponentFactory;
+    private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
 
     /**
      * @param configuration

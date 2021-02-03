@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -153,8 +154,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
                 this.context, connectedProvidedDelegationConnector.getAssemblyContext_ProvidedDelegationConnector(),
                 this.signature,
                 connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
-        return repositoryComponentSwitch
-                .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector());
+        return Objects.requireNonNull(repositoryComponentSwitch
+                .doSwitch(connectedProvidedDelegationConnector.getInnerProvidedRole_ProvidedDelegationConnector()));
     }
 
     /**
@@ -227,7 +228,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
             throw new PCMModelInterpreterException("Only ResourceDemandingSEFFs are currently supported.");
         } else {
             var interpreter = rdseffSwitchFactory.createRDSeffSwitch(context);
-            return interpreter.doSwitch(calledSeffs.get(0));
+            return Objects.requireNonNull(interpreter.doSwitch(calledSeffs.get(0)));
         }
     }
 

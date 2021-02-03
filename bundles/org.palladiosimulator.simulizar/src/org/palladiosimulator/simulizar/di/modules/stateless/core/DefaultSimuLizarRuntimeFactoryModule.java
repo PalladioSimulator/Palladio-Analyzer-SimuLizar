@@ -21,7 +21,7 @@ import dagger.Provides;
 
 @dagger.Module
 public interface DefaultSimuLizarRuntimeFactoryModule {
-    
+
     @Provides
     static AnalysisRuntimeComponent.Factory provideAnalysisRuntimeComponentFactory(SimuLizarRootComponent rootComponent,
             SimuLizarRuntimeComponent.Factory runtimeFactory, Provider<QUALComponent> qualComponent,
@@ -31,8 +31,10 @@ public interface DefaultSimuLizarRuntimeFactoryModule {
             Set<ExtensionComponent.Factory> extensionComponentFactories) {
         return () -> {
             return runtimeFactory.create(rootComponent, simucomComponent.get(), qualComponent.get(),
-                    simEngineComponent.get(), new ExtensionComponentsModule(extensionComponentFactories, 
-                            Sets.union(bootStrappingComponents, rootExtensions)));
+                    simEngineComponent.get(),
+                    new ExtensionComponentsModule(extensionComponentFactories,
+                            Sets.union(bootStrappingComponents, rootExtensions)),
+                    runtimeFactory.defaultRuntimeComponentFactoriesModule());
         };
     }
 

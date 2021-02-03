@@ -12,7 +12,7 @@ import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkC
 import dagger.Provides;
 
 @dagger.Module
-public class ComponentFactoriesModule {
+public class RootComponentFactoriesModule {
 
     @Provides public SimuLizarRuntimeComponent.Factory providesRuntimeComponentFactory() {
         return DaggerSimuLizarRuntimeComponent.factory(); 

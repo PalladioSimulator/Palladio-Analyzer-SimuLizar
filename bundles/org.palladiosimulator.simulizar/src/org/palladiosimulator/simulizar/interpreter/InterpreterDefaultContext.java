@@ -64,76 +64,28 @@ public class InterpreterDefaultContext extends Context {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface ParentContext {
     }
-    
-    
-    /**
-    *
-    */
+
     private static final long serialVersionUID = -5027373777424401211L;
 
     private final Stack<AssemblyContext> assemblyContextStack = new Stack<AssemblyContext>();
-    
     private final Deque<SimulatedStackframe<Object>> resultFrameStack = new LinkedList<>();
-
-    private final PCMPartitionManager pcmPartitionManager;
-
-    private PCMResourceSetPartition localPCMModelCopy;
-
+    private final PCMResourceSetPartition localPCMModelCopy;
     private final IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    public InterpreterDefaultContext(final SimuComModel simuComModel, PCMPartitionManager partitionManager,
-            IAssemblyAllocationLookup<EntityReference<ResourceContainer>> assemblyAllocationLookup,
-            ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> simRCAccess,
-            IResourceTableManager resourceTableManager) {
+    private InterpreterDefaultContext(
+            final SimuComModel simuComModel, 
+            PCMResourceSetPartition localPartition,
+            IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup,
+            IResourceTableManager resourceTableManager,
+            SimulatedStack<Object> stack) {
         super(simuComModel, resourceTableManager);
-        this.stack = new SimulatedStack<Object>();
-        this.pcmPartitionManager = partitionManager;
-        this.localPCMModelCopy = this.pcmPartitionManager.getLocalPCMModel();
-        this.assemblyAllocationLookup = id -> simRCAccess
-            .getSimulatedEntity(assemblyAllocationLookup.getAllocatedEntity(id)
-                .getId());
-    }
-
-    InterpreterDefaultContext(final Context context, PCMPartitionManager partitionManager, final boolean copyStack,
-            final PCMResourceSetPartition pcmLocalCopy) {
-        super(context.getModel(), context.getResourceTableManager());
-        this.assemblyAllocationLookup = context.getAssemblyAllocationLookup();
-        this.pcmPartitionManager = partitionManager.makeSnapshot();
-        this.localPCMModelCopy = pcmLocalCopy;
-        this.setEvaluationMode(context.getEvaluationMode());
-        this.setSimProcess(context.getThread());
-        this.stack = new SimulatedStack<Object>();
-        if (copyStack && context.getStack()
-            .size() > 0) {
-            this.stack.pushStackFrame(context.getStack()
-                .currentStackFrame()
-                .copyFrame());
-        } else {
-            this.stack.pushStackFrame(new SimulatedStackframe<Object>());
-        }
-    }
-
-    /**
-     * Create interpreter default context from the given default context (model, sim process and
-     * stack are set according to the given default context). The contents of the stack will be
-     * copied.
-     *
-     * @param context
-     *            the default context from which the new default context should be created.
-     * @param thread
-     */
-    public InterpreterDefaultContext(final InterpreterDefaultContext context, final SimuComSimProcess thread) {
-        this(context, context.getPCMPartitionManager(), true, context.getPCMPartitionManager()
-            .getLocalPCMModel());
-        this.setSimProcess(thread);
+        this.stack = stack;
+        this.localPCMModelCopy = localPartition;
+        this.assemblyAllocationLookup = assemblyAllocationLookup;      
     }
 
     public Stack<AssemblyContext> getAssemblyContextStack() {
         return this.assemblyContextStack;
-    }
-
-    public PCMPartitionManager getPCMPartitionManager() {
-        return this.pcmPartitionManager;
     }
 
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
@@ -144,11 +96,11 @@ public class InterpreterDefaultContext extends Context {
     public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
         return this.assemblyAllocationLookup;
     };
-    
+
     public FQComponentID computeFQComponentID() {
         return new FQComponentID(this.computeAssemblyContextPath());
     }
-    
+
     private List<AssemblyContext> computeAssemblyContextPath() {
         final Stack<AssemblyContext> stack = getAssemblyContextStack();
         final ArrayList<AssemblyContext> result = new ArrayList<AssemblyContext>(stack.size() - 1);
@@ -161,9 +113,55 @@ public class InterpreterDefaultContext extends Context {
     public Deque<SimulatedStackframe<Object>> getResultFrameStack() {
         return resultFrameStack;
     }
-    
+
     public SimulatedStackframe<Object> getCurrentResultFrame() {
         return resultFrameStack.peek();
     }
+
+    public static InterpreterDefaultContext createRootContext(SimuComModel simuComModel,
+            PCMPartitionManager partitionManager,
+            IAssemblyAllocationLookup<EntityReference<ResourceContainer>> assemblyAllocationLookup,
+            ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> simRCAccess,
+            IResourceTableManager resourceTableManager) {
+        return new InterpreterDefaultContext(simuComModel, partitionManager.getLocalPCMModel(),
+                id -> simRCAccess.getSimulatedEntity(assemblyAllocationLookup.getAllocatedEntity(id)
+                    .getId()),
+                resourceTableManager, new SimulatedStack<>());
+    }
     
+
+    /**
+     * Create interpreter default context from the given default context (model, sim process and
+     * stack are set according to the given default context). The contents of the stack will be
+     * copied.
+     *
+     * @param context
+     *            the default context from which the new default context should be created.
+     * @param thread
+     */
+    public static InterpreterDefaultContext createChildContext(InterpreterDefaultContext parentContext, SimuComSimProcess simProcess) {
+        var stackCopy = new SimulatedStack<Object>();
+        if (parentContext.getStack()
+            .size() > 0) {
+            stackCopy.pushStackFrame(parentContext.getStack()
+                .currentStackFrame()
+                .copyFrame());
+        } else {
+            stackCopy.pushStackFrame(new SimulatedStackframe<Object>());
+        }
+
+        var context = new InterpreterDefaultContext(
+                parentContext.getModel(),
+                parentContext.localPCMModelCopy,
+                parentContext.assemblyAllocationLookup,
+                parentContext.getResourceTableManager(),
+                stackCopy);
+
+        context.assemblyContextStack.addAll(((InterpreterDefaultContext) context).getAssemblyContextStack());
+        
+        if (simProcess != null) context.setSimProcess(simProcess);
+        context.setEvaluationMode(parentContext.getEvaluationMode());
+        
+        return context;
+    }
 }

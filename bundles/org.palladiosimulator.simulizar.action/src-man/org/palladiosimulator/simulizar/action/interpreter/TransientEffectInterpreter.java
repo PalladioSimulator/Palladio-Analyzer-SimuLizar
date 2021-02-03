@@ -52,7 +52,7 @@ import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;

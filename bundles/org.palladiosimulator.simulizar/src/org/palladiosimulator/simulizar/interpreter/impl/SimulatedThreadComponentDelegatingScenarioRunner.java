@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.impl;
 
 import org.palladiosimulator.pcm.core.entity.Entity;
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;

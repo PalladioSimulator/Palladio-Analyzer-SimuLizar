@@ -281,15 +281,6 @@ public class PCMPartitionManager {
     }
 
     /**
-     * @return a snapshot of the current PCMPartitionManager object.
-     * 
-     * @see #PCMPartitionManager(PCMPartitionManager)
-     */
-    public PCMPartitionManager makeSnapshot() {
-        return new PCMPartitionManager(this);
-    }
-
-    /**
      * @return the blackboard that contains the global PCM partition.
      */
     public MDSDBlackboard getBlackboard() {

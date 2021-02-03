@@ -4,7 +4,7 @@ import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
-import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
@@ -25,7 +25,7 @@ public interface TestSimuLizarRootComponent extends SimuLizarRootComponent {
         
         @Override
         public abstract TestSimuLizarRootComponent create(@BindsInstance SimuLizarWorkflowConfiguration configuration,
-                ComponentFactoriesModule factoriesModule, ExtensionComponentsModule extensionModule,
+                RootComponentFactoriesModule factoriesModule, ExtensionComponentsModule extensionModule,
                 MDSDBlackboardProvidingModule blackBoardModule);
         
     }

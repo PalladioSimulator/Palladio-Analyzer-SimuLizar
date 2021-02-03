@@ -12,5 +12,10 @@ public class ExplicitDispatchComposedSwitch extends ComposedSwitch<InterpreterRe
 	public InterpreterResult doSwitch(EClass theEClass, EObject theEObject) {
 		return super.doSwitch(theEClass, theEObject);
 	}
+	
+	@Override
+	public InterpreterResult defaultCase(EObject eObject) {
+	    throw new UnsupportedOperationException("Unsupported model element encountered: " + eObject.eClass().getName());
+	}
 
 }

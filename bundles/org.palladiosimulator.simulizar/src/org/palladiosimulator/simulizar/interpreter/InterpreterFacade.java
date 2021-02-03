@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**
  * The InterpreterFacade consitutes the entry point for model-traversal based interpretation.
@@ -25,7 +26,7 @@ public interface InterpreterFacade {
      * @param object
      *            the model element to interpret
      */
-    void submit(EObject object);
+    InterpreterResult submit(EObject object);
 
     /**
      * Submit the referenced entity for interpretation. The entity will be resolved against the
@@ -38,6 +39,6 @@ public interface InterpreterFacade {
      * @param object
      *            the reference to the model element to interpret.
      */
-    void submit(EntityReference<?> object);
+    InterpreterResult submit(EntityReference<?> object);
 
 }

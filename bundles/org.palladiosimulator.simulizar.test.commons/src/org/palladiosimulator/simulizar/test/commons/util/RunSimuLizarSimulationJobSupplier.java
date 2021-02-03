@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
-import org.palladiosimulator.simulizar.di.modules.stateless.core.ComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
@@ -35,7 +35,7 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
     public IJob get() {
         var component = DaggerTestSimuLizarRootComponent.factory()
             .create(configuration, 
-                    new ComponentFactoriesModule() {
+                    new RootComponentFactoriesModule() {
                         @Override
                         public Factory providesSimEngineComponentFactory() {
                             return DaggerTestSimEngineComponent.factory();

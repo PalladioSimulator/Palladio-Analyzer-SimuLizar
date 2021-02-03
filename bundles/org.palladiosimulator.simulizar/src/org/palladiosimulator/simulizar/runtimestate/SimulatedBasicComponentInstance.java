@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
@@ -14,7 +15,7 @@ import org.palladiosimulator.pcm.repository.PassiveResource;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
@@ -31,7 +32,7 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
 
     @AssistedInject
     public SimulatedBasicComponentInstance(@Assisted final InterpreterDefaultContext context, @Assisted final FQComponentID fqID,
-            @Assisted final List<PassiveResource> passiveResources, SimuComModel simuComModel, PCMPartitionManager partitionManager,
+            @Assisted final List<PassiveResource> passiveResources, SimuComModel simuComModel, @Global PCMResourceSetPartition partition,
             CalculatorFactoryFacade calcFactory) {
         super(fqID.getFQIDString());
 
@@ -45,25 +46,26 @@ public class SimulatedBasicComponentInstance extends SimulatedComponentInstance 
                     simuComModel, initialCount);
             this.passiveResourcesMap.put(passiveResource.getId(), simulatedResource);
 
-            MonitorRepository monitorRepo = partitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository()); 
-            
-            MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    monitorRepo, passiveResource, MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
-            if (this.isMonitored(measurementSpecification)) {
-                calcFactory.setupPassiveResourceStateCalculator(simulatedResource);
-            }
+            partition.<MonitorRepository> getElement(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository())
+                .forEach(monitorRepo -> {
+                MeasurementSpecification measurementSpecification = MonitorRepositoryUtil.isMonitored(
+                        monitorRepo, passiveResource, MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC);
+                if (this.isMonitored(measurementSpecification)) {
+                    calcFactory.setupPassiveResourceStateCalculator(simulatedResource);
+                }
 
-            measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    monitorRepo, passiveResource, MetricDescriptionConstants.WAITING_TIME_METRIC);
-            if (this.isMonitored(measurementSpecification)) {
-                calcFactory.setupWaitingTimeCalculator(simulatedResource);
-            }
+                measurementSpecification = MonitorRepositoryUtil.isMonitored(
+                        monitorRepo, passiveResource, MetricDescriptionConstants.WAITING_TIME_METRIC);
+                if (this.isMonitored(measurementSpecification)) {
+                    calcFactory.setupWaitingTimeCalculator(simulatedResource);
+                }
 
-            measurementSpecification = MonitorRepositoryUtil.isMonitored(
-                    monitorRepo, passiveResource, MetricDescriptionConstants.HOLDING_TIME_METRIC);
-            if (this.isMonitored(measurementSpecification)) {
-                calcFactory.setupHoldTimeCalculator(simulatedResource);
-            }
+                measurementSpecification = MonitorRepositoryUtil.isMonitored(
+                        monitorRepo, passiveResource, MetricDescriptionConstants.HOLDING_TIME_METRIC);
+                if (this.isMonitored(measurementSpecification)) {
+                    calcFactory.setupHoldTimeCalculator(simulatedResource);
+                }
+            });
         }
     }
 

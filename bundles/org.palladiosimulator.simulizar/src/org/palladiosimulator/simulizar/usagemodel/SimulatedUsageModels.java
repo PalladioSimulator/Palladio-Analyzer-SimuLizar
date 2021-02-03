@@ -15,7 +15,6 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
@@ -46,7 +45,6 @@ public class SimulatedUsageModels {
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
             @Global PCMResourceSetPartition globalPartition, SimuComModel simucomModel, IResourceTableManager resourceTableManager, 
-            SimulatedThreadComponent.Factory simulatedThreadComponentFactory, 
             EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
             IScenarioRunnerFactory<Entity> scenarioRunnerFactory) {
         super();

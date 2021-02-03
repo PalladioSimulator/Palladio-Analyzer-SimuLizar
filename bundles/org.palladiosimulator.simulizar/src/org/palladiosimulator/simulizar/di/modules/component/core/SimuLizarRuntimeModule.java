@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
-import org.palladiosimulator.simulizar.di.component.core.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
@@ -17,6 +16,8 @@ import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LinkingResource
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.QUALRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.ReconfiguratorBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLizarConfigurationModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarSimulatedThreadFactoryModule;
+import org.palladiosimulator.simulizar.di.modules.stateless.core.RuntimeComponentFactoriesModule;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import com.google.common.collect.ImmutableSet;
@@ -31,6 +32,10 @@ import dagger.multibindings.ElementsIntoSet;
         
         // Import bindings of central classes as e.g. EventDispatcher and PCMPartitionManager
         CoreSimulationRuntimeEntitiesBindings.class,
+        
+        //Component factories for components to create (i. e. SimulatedThreadComponent)
+        RuntimeComponentFactoriesModule.class, 
+        DefaultSimuLizarSimulatedThreadFactoryModule.class,
 
         // Import runtime extensions 
         CoreRuntimeExtensionBindings.class, // required observers, as e.g. UsageModelSyncer
@@ -41,9 +46,6 @@ import dagger.multibindings.ElementsIntoSet;
         // Import integral extensions to the interpreters, 
         ReconfiguratorBindingsModule.class, // reconfiguration support
         LinkingResourceSimulationModule.class // linking resource simulation support
-},
-subcomponents = {
-        SimulatedThreadComponent.class
 })
 public interface SimuLizarRuntimeModule {
     

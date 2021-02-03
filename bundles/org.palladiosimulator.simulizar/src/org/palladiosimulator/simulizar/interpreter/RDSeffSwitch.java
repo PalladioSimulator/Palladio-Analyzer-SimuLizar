@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Stack;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -31,6 +30,8 @@ import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
+import org.palladiosimulator.simulizar.di.component.core.SimuLizarSimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
@@ -78,10 +79,10 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     private final SimulatedBasicComponentInstance basicComponentInstance;
     private final IResourceTableManager resourceTableManager;
     private final ComposedStructureInnerSwitch.Factory composedSwitchFactory;
-    private final ComposedRDSeffSwitchFactory rdseffSwitchFactory;
     private final EventDispatcher eventHelper;
     private final InterpreterResultHandler issueHandler;
     private final InterpreterResultMerger resultMerger;
+    private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
@@ -91,14 +92,14 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             IResourceTableManager resourceTableManager,
             ComponentInstanceRegistry componentInstanceRegistry,
             ComposedStructureInnerSwitch.Factory composedSwitchFactory,
-            ComposedRDSeffSwitchFactory rdseffSwitchFactory, 
+            SimulatedThreadComponent.Factory simulatedThreadComponentFactory,
             EventDispatcher eventHelper,
             InterpreterResultHandler issueHandler,
             InterpreterResultMerger resultMerger) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
-        this.rdseffSwitchFactory = rdseffSwitchFactory;
+        this.simulatedThreadComponentFactory = simulatedThreadComponentFactory;
         this.eventHelper = eventHelper;
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
@@ -440,32 +441,17 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         // for each create process, and add to array of processes
 
         for (final ForkedBehaviour forkedBehaviour : forkedBehaviours) {
-            @SuppressWarnings("unchecked")
-            final Stack<AssemblyContext> parentAssemblyContextStack = (Stack<AssemblyContext>) this.context
-            .getAssemblyContextStack().clone();
             processes.add(new ForkedBehaviourProcess(this.context,
                     this.context.getAssemblyContextStack().peek().getId(), isAsync, resourceTableManager) {
 
                 @Override
                 protected void executeBehaviour() {
-
-                    /*
-                     * The forked behavior process has its own copied stack in its context, for type
-                     * reasons we need an InterpreterDefaultContext. Thus we have to copy the
-                     * context including its stack.
-                     */
-                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.forkContext,
-                            RDSeffSwitch.this.context.getPCMPartitionManager(), true,
-                            RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
-                    seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
-                    final var seffInterpreter = rdseffSwitchFactory.createRDSeffSwitch(seffContext);
-
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
                                 + " forked baviour: " + this);
                     }
-                    // no use of parentSwitch.doSwitch() because we want the inner switches
-                    seffInterpreter.doSwitch(forkedBehaviour);
+                    simulatedThreadComponentFactory.create(context, this)
+                        .interpreterFacade().submit(forkedBehaviour);
                 }
 
             });
