@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.di.component.core;
 
+import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
@@ -20,6 +21,8 @@ public interface SimuLizarRootComponent {
     MDSDBlackboard blackboard();
 
     SimuLizarWorkflowConfiguration config();
+    
+    AnalysisRuntimeComponent.Factory runtimeComponentFactory();
 
     @Component.Factory
     public static interface Factory {
