@@ -105,7 +105,9 @@ public class Reconfigurator extends AbstractObservable<IReconfigurationListener>
 
     @Override
     public void unregister() {
-        this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
+        if (this.runtimeMeasurementModel != null) {
+            this.runtimeMeasurementModel.eAdapters().remove(this.runtimeMeasurementListener);
+        }
         // this also requires that the reconfiguration process be terminated
         if (this.reconfigurationProcess != null) {
             this.reconfigurationProcess.requestTermination();

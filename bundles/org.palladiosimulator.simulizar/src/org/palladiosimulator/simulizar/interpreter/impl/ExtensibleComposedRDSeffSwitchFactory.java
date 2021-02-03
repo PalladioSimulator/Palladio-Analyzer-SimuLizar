@@ -24,7 +24,11 @@ public class ExtensibleComposedRDSeffSwitchFactory implements ComposedRDSeffSwit
     @Override
     public Switch<InterpreterResult> createRDSeffSwitch(InterpreterDefaultContext context) {
         final  ExplicitDispatchComposedSwitch interpreter = new ExplicitDispatchComposedSwitch();
-        elementFactoriesProvider.get().stream().forEach(s -> interpreter.addSwitch(
+        var elementFactories = elementFactoriesProvider.get();
+        if (elementFactories.isEmpty()) {
+            throw new IllegalStateException("No Seff switches are registered.");
+        }
+        elementFactories.stream().forEach(s -> interpreter.addSwitch(
                 s.createRDSeffSwitch(context, interpreter)));
         
         return interpreter;

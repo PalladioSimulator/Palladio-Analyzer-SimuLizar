@@ -157,7 +157,7 @@ public class InterpreterDefaultContext extends Context {
                 parentContext.getResourceTableManager(),
                 stackCopy);
 
-        context.assemblyContextStack.addAll(((InterpreterDefaultContext) context).getAssemblyContextStack());
+        context.assemblyContextStack.addAll(parentContext.getAssemblyContextStack());
         
         if (simProcess != null) context.setSimProcess(simProcess);
         context.setEvaluationMode(parentContext.getEvaluationMode());
