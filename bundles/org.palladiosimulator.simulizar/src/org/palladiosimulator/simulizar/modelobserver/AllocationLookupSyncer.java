@@ -6,18 +6,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.jgrapht.Graph;
+import org.jgrapht.alg.shortestpath.AllDirectedPaths;
+import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedAcyclicGraph;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.core.composition.ComposedStructure;
+import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
@@ -42,6 +51,8 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
  */
 @SimulationRuntimeScope
 public class AllocationLookupSyncer implements IModelObserver {
+    private static final Logger LOGGER = Logger.getLogger(AllocationLookupSyncer.class);
+    
     private final EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory;
     private final AssemblyAllocationManager allocationManager;
     private PCMResourceSetPartition globalPartition;
@@ -70,7 +81,7 @@ public class AllocationLookupSyncer implements IModelObserver {
         allocation.eAdapters().add(new EContentAdapter() {
             @Override
             public void notifyChanged(Notification notification) {
-                
+                handleNotification(notification);
                 super.notifyChanged(notification);
             }
         });
@@ -124,24 +135,65 @@ public class AllocationLookupSyncer implements IModelObserver {
      * @param container    the simulated resource container to which the assembly
      *                     context is allocated.
      */
-    protected void addAssemblyAllocation(AssemblyContext ctx, List<AssemblyContext> ctxHierarchy,
+    protected void addAssemblyAllocation(AssemblyContext ctx, System system, List<AssemblyContext> ctxHierarchy,
             EntityReference<ResourceContainer> container) {
-        var hierarchy = ctxHierarchy;
+        List<AssemblyContext> baseHierarchy;
         if (ctxHierarchy.isEmpty()) {
-            allocationManager.allocateAssembly(ctx.getId(), container);
+            // We need to determine the assembly base path, in case the allocation refers to a
+            // nested assembly.
+            baseHierarchy = determineBaseAssemblyPath(ctx, system);
         } else {
-            var newHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
-            newHierarchy.push(ctx);
-            allocationManager.allocateAssembly(new FQComponentID(newHierarchy).getFQIDString(), container);
-            hierarchy = newHierarchy;
+            // In this case the add operation has been called recursively, therefore, the
+            // ctxHierarchy already contains the appropriate base path
+            baseHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
+            baseHierarchy.add(ctx);
         }
+        allocationManager.allocateAssembly(new FQComponentID(baseHierarchy).getFQIDString(), container);
 
-        var component = ctx.getEncapsulatedComponent__AssemblyContext(); 
-        if (component instanceof CompositeComponent) {
-            var composite = (CompositeComponent) component;
+        var component = ctx.getEncapsulatedComponent__AssemblyContext();         
+        if (component instanceof ComposedStructure) {
+            var composite = (ComposedStructure) component;
             for (var compCtx : composite.getAssemblyContexts__ComposedStructure()) {
-                addAssemblyAllocation(compCtx, hierarchy, container);
+                addAssemblyAllocation(compCtx, system, baseHierarchy, container);
             }
+        }
+    }
+    
+    protected List<AssemblyContext> determineBaseAssemblyPath(AssemblyContext ctx, System system) {
+        var parentStructure = ctx.getParentStructure__AssemblyContext();
+        if (parentStructure instanceof System) {
+            // In this case we do not have a nested component assembly
+            return Collections.singletonList(ctx);
+        } else {
+            // In this case we unfortunately have to make sure, that the path is unique
+            Graph<Entity, ?> graph = new DirectedAcyclicGraph<>(DefaultEdge.class);
+            system.getAssemblyContexts__ComposedStructure().forEach(c -> 
+                    appendAssemblyContextRecursively(system, c, graph));
+            var pathLookup = new AllDirectedPaths<>(graph);
+            var paths = pathLookup.getAllPaths(system, ctx, false, 100);
+            if (paths.size() > 1) {
+                LOGGER.error("Ambiguous assembly allocation. The following paths exist:");
+                for (var path : paths) {
+                    var pathStr = path.getVertexList().stream().map(Entity::getId).collect(Collectors.joining("->"));
+                    LOGGER.error("Alternative: " + pathStr);
+                }
+                throw new IllegalStateException("Cannot determine unique path to nested assembly context " + ctx.getId());
+            } else if (paths.isEmpty()) {
+                throw new IllegalStateException("Could not determine any path from the system to the nested assembly context " + ctx.getId());
+            } else {
+                var vertexList = paths.get(0).getVertexList(); 
+                return (List<AssemblyContext>) (List) vertexList.subList(1, vertexList.size());
+            }
+        }
+    }
+    
+    protected void appendAssemblyContextRecursively(Entity container, AssemblyContext context, Graph<Entity, ?> graph) {
+        graph.addVertex(container);
+        graph.addVertex(context);
+        graph.addEdge(container, context);
+        if (context.getEncapsulatedComponent__AssemblyContext() instanceof ComposedStructure) {
+            ((ComposedStructure)context.getEncapsulatedComponent__AssemblyContext()).getAssemblyContexts__ComposedStructure()
+                .forEach(ctx -> appendAssemblyContextRecursively(context, ctx, graph));
         }
     }
 
@@ -210,7 +262,8 @@ public class AllocationLookupSyncer implements IModelObserver {
      */
     private void doAddAllocationContext(AllocationContext ctx) {
         if (ctx.getAssemblyContext_AllocationContext() != null) {
-            addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), Collections.emptyList(),
+            addAssemblyAllocation(ctx.getAssemblyContext_AllocationContext(), ctx.getAllocation_AllocationContext()
+                .getSystem_Allocation(), Collections.emptyList(),
                     resourceContainerReferenceFactory.createCached(ctx.getResourceContainer_AllocationContext()));    
         } 
     }

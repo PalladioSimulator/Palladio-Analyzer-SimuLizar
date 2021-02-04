@@ -10,6 +10,8 @@ import org.palladiosimulator.pcm.core.entity.NamedElement;
 import de.uka.ipd.sdq.identifier.Identifier;
 
 public class FQComponentID {
+    
+    public static final String SEPARATOR = "::";
 
     private final List<AssemblyContext> assembyContextPath;
 
@@ -76,7 +78,7 @@ public class FQComponentID {
     
     public String getFQIDString() {
     	return this.assembyContextPath.stream().map(Identifier::getId)
-        		.collect(Collectors.joining("::"));
+        		.collect(Collectors.joining(SEPARATOR));
     }
     /*
      * (non-Javadoc)
@@ -86,7 +88,7 @@ public class FQComponentID {
     @Override
     public String toString() {
     	return this.assembyContextPath.stream().map(NamedElement::getEntityName)
-    		.collect(Collectors.joining("::", "FQComponentID [assembyContextPath=", "]"));
+    		.collect(Collectors.joining(SEPARATOR, "FQComponentID [assembyContextPath=", "]"));
     }
 
 }
