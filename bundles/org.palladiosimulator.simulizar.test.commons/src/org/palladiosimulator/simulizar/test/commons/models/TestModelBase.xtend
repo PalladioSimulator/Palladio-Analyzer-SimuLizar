@@ -11,12 +11,16 @@ import org.eclipse.emf.ecore.plugin.EcorePlugin
 import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.SystemFactory
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory
+import org.palladiosimulator.pcm.core.composition.CompositionFactory
+import org.palladiosimulator.pcm.subsystem.SubsystemFactory
 
 class TestModelBase {
     protected static val af = AllocationFactory.eINSTANCE
+    protected static val cpf = CompositionFactory.eINSTANCE
     protected static val cf = CoreFactory.eINSTANCE
     protected static val rf = RepositoryFactory.eINSTANCE
     protected static val sf = SystemFactory.eINSTANCE
+    protected static val ssf = SubsystemFactory.eINSTANCE
     protected static val ref = ResourceenvironmentFactory.eINSTANCE
     protected static val rtf = ResourcetypeFactory.eINSTANCE
     protected static val uf = UsagemodelFactory.eINSTANCE

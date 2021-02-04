@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.util.Objects;
+
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
@@ -61,8 +63,11 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
         final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
-        var rcEntity = allocationLookup.getAllocatedEntity(context.computeFQComponentID().getFQIDString());
-        rcAccess.getSimulatedEntity(rcEntity.getId()).loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
+        var fqid = context.computeFQComponentID().getFQIDString();
+        var rcEntity = Objects.requireNonNull(allocationLookup.getAllocatedEntity(fqid),
+                () -> "No allocation found for assembly identified by " + fqid);
+        rcAccess.getSimulatedEntity(rcEntity.getId())
+            .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
         
         return InterpreterResult.OK;
     }
