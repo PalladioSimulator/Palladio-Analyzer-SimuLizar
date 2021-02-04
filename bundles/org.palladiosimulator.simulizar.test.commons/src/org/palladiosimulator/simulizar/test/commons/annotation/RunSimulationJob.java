@@ -14,4 +14,5 @@ import org.palladiosimulator.simulizar.test.commons.extension.RunSimulationJobEx
 @Target({ METHOD, ANNOTATION_TYPE })
 @ExtendWith(RunSimulationJobExtension.class)
 public @interface RunSimulationJob {
+    boolean skipSimulation() default false;
 }

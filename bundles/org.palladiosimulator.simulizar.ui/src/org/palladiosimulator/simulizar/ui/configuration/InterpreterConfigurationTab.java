@@ -6,7 +6,6 @@ import java.util.List;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.FeatureOptionsTab;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComConfigurationTab;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuConfigurationTab;
 import de.uka.ipd.sdq.codegen.simucontroller.workflow.jobs.WorkflowHooks;
@@ -32,10 +31,11 @@ public class InterpreterConfigurationTab extends ExtendableTabGroup {
         tabs.add(new InterpreterFileNamesInputTab());
         tabs.add(new SimuComConfigurationTab());
         tabs.add(new SimuConfigurationTab());
+        tabs.add(new LinkingResourceSimulationConfigurationTab());
+        
         for (String workflowExtensionPointId : WorkflowHooks.getAllWorkflowHookIDs()) {
             tabs.addAll(createExtensionTabs(dialog, mode, workflowExtensionPointId));
         }
-        tabs.add(new FeatureOptionsTab());
         tabs.add(commonTab);
         setTabs(tabs.toArray(new ILaunchConfigurationTab[] {}));
     }

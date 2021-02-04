@@ -13,7 +13,7 @@ public class ProvideSimuLizarConfigurationExtension implements BeforeEachCallbac
     @Override
     public void beforeEach(ExtensionContext context) throws Exception {
         var job = findAnnotation(context.getElement(), SimulationConfigSupplier.class)
-            .map(an -> SimuLizarTestExtensionCommons.loadInstance(an.value(), context))
+            .map(an -> SimuLizarTestExtensionCommons.loadSupplierInstance(an.value(), context))
             .orElseThrow(() -> new IllegalArgumentException(
                     "The extension was not propery registered. No (meta-)present SimulationConfigSupplier annotation found."));
         SimuLizarTestExtensionCommons.putObjectIntoStore(context, IJobConfiguration.class, job);

@@ -37,8 +37,13 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
         config.setServiceLevelObjectivesFile(
                 this.getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
         config.setUsageEvolutionFile(this.getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
-
+        
         final SimuComConfig simuComConfig = new SimuComConfig(this.properties, config.isDebug());
+        
+        if (simuComConfig.getSimulateLinkingResources()) {
+            config.setRMIMiddlewareFile(this.getStringAttribute(ConstantsContainer.RMI_MIDDLEWARE_REPOSITORY_FILE));
+            config.setFeatureConfigFile(this.getStringAttribute(ConstantsContainer.FEATURE_CONFIG));
+        }
 
         // Set SimuCom config extensions based on registered extensions
         for (final String workflowHookId : WorkflowHooks.getAllWorkflowHookIDs()) {

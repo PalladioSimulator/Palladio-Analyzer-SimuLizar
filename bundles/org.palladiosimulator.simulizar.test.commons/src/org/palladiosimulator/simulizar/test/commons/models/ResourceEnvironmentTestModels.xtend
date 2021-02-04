@@ -1,16 +1,15 @@
 package org.palladiosimulator.simulizar.test.commons.models
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition
-import java.util.function.Supplier
-import org.palladiosimulator.pcm.resourcetype.ProcessingResourceType
 import org.palladiosimulator.pcm.resourcetype.CommunicationLinkResourceType
+import org.palladiosimulator.pcm.resourcetype.ProcessingResourceType
+import org.palladiosimulator.simulizar.test.commons.util.PartitionSupplier
 
 class ResourceEnvironmentTestModels extends TestModelBase {
     /**
      * Creates a fully equipped PCMResourceSetPartition with a resource environment of two resource 
      * containers and on linking resource.
      */
-    static class WithTwoContainersAndOneLink implements Supplier<PCMResourceSetPartition> {
+    static class WithTwoContainersAndOneLink implements PartitionSupplier {
         override get() {
             val cpuType = rtf.createProcessingResourceType => [entityName = "CPU"]
             val sPolicy = rtf.createSchedulingPolicy
@@ -62,7 +61,7 @@ class ResourceEnvironmentTestModels extends TestModelBase {
         }
     }
     
-    static class WithThreeContainersAndTwoLinks implements Supplier<PCMResourceSetPartition> {
+    static class WithThreeContainersAndTwoLinks implements PartitionSupplier {
         override get() {
         	(new WithTwoContainersAndOneLink).get => [
         		val cpuType = resourceTypeRepository.availableResourceTypes_ResourceRepository.filter(ProcessingResourceType).head

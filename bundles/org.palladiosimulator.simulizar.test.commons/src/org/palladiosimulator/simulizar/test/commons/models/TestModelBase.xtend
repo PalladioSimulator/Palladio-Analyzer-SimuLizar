@@ -1,16 +1,16 @@
 package org.palladiosimulator.simulizar.test.commons.models
 
-import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
+import org.eclipse.emf.ecore.plugin.EcorePlugin
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition
 import org.palladiosimulator.pcm.allocation.AllocationFactory
 import org.palladiosimulator.pcm.core.CoreFactory
+import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentFactory
 import org.palladiosimulator.pcm.resourcetype.ResourcetypeFactory
-import org.eclipse.emf.ecore.plugin.EcorePlugin
-import org.palladiosimulator.pcm.repository.RepositoryFactory
 import org.palladiosimulator.pcm.system.SystemFactory
 import org.palladiosimulator.pcm.usagemodel.UsagemodelFactory
+import org.palladiosimulator.simulizar.test.commons.util.PartitionSupplier
 
 class TestModelBase {
     protected static val af = AllocationFactory.eINSTANCE
@@ -24,7 +24,7 @@ class TestModelBase {
     /**
      * Creates a fully instantiated PCMResourceSetPartion with empty models.
      */
-    static class Empty implements Supplier<PCMResourceSetPartition> {
+    static class Empty implements PartitionSupplier {
         override get() {
             EcorePlugin.ExtensionProcessor.process(null);
             new PCMResourceSetPartition => [ rsp |

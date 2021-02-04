@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import org.palladiosimulator.analyzer.workflow.jobs.LoadModelIntoBlackboardJob;
 import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
@@ -35,16 +36,35 @@ public class LoadSimuLizarModelsIntoBlackboardJob extends SequentialBlackboardIn
             final boolean loadExtensions) {
         super(false);
 
-        this.addJob(new PreparePCMBlackboardPartitionJob());
-        this.addJob(new LoadPCMModelsInterpreterJob(configuration));
-        this.addJob(new LoadMonitorRepositoryModelIntoBlackboardJob(configuration));
-        this.addJob(new LoadServiceLevelObjectiveRepositoryIntoBlackboardJob(configuration));
-        this.addJob(new LoadUEModelIntoBlackboardJob(configuration));
+        addJob(new PreparePCMBlackboardPartitionJob());
+        
+        addLoadPCMModelJobs(configuration);
+        addLoadMonitorRepository(configuration);
+        addSLORepository(configuration);
+        addUsageEvolution(configuration);
+        
         if (loadExtensions) {
-            this.addModelLoadExtensionJobs(configuration);
+            addModelLoadExtensionJobs(configuration);
         }
+        
     }
-
+    
+    protected void addLoadPCMModelJobs(final SimuLizarWorkflowConfiguration configuration) {
+        configuration.getPCMModelFiles().forEach(m -> LoadModelIntoBlackboardJob.parseUriAndAddModelLoadJob(m, this));
+    }
+    
+    protected void addLoadMonitorRepository(final SimuLizarWorkflowConfiguration configuration) {
+        LoadModelIntoBlackboardJob.parseUriAndAddModelLoadJob(configuration.getMonitorRepositoryFile(), this);
+    }
+    
+    protected void addSLORepository(final SimuLizarWorkflowConfiguration configuration) {
+        LoadModelIntoBlackboardJob.parseUriAndAddModelLoadJob(configuration.getServiceLevelObjectivesFile(), this);
+    }
+    
+    protected void addUsageEvolution(final SimuLizarWorkflowConfiguration configuration) {
+        LoadModelIntoBlackboardJob.parseUriAndAddModelLoadJob(configuration.getUsageEvolutionFile(), this);
+    }
+    
     private void addModelLoadExtensionJobs(final SimuLizarWorkflowConfiguration configuration) {
         final Iterable<AbstractWorkflowExtensionJob<MDSDBlackboard>> loadJobs = ExtensionHelper.getExecutableExtensions(
                 SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,

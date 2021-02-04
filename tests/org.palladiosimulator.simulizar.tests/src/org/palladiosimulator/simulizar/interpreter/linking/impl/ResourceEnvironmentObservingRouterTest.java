@@ -16,7 +16,6 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
-import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
 import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
 import org.palladiosimulator.simulizar.test.commons.models.ResourceEnvironmentTestModels;
 

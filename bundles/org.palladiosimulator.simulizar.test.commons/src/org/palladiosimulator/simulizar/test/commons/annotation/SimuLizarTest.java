@@ -9,7 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.palladiosimulator.simulizar.test.commons.extension.LoadModelFromSupplierExtension;
+import org.palladiosimulator.simulizar.test.commons.extension.ExtensibleLoadModelExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.ProvideEDP2RepositoryExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.ProvideSimuLizarConfigurationExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.ProvideSimuLizarJobExtension;
@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestParam
 
 @Retention(RUNTIME)
 @Target({ TYPE, METHOD, ANNOTATION_TYPE })
-@ExtendWith({ LoadModelFromSupplierExtension.class, ProvideEDP2RepositoryExtension.class, ProvideSimuLizarConfigurationExtension.class,
+@ExtendWith({ ExtensibleLoadModelExtension.class, ProvideEDP2RepositoryExtension.class, ProvideSimuLizarConfigurationExtension.class,
     ProvideSimuLizarJobExtension.class, SimuLizarTestParameterProvider.class })
 public @interface SimuLizarTest {
 

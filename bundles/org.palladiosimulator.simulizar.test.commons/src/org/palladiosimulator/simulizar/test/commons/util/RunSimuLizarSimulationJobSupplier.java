@@ -1,43 +1,30 @@
 package org.palladiosimulator.simulizar.test.commons.util;
 
-import java.util.function.Supplier;
+import java.util.Optional;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.simulizar.launcher.jobs.PCMStartInterpretationJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
-import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
-import de.uka.ipd.sdq.workflow.jobs.IJob;
-import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
-public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
-    protected final SimuLizarWorkflowConfiguration configuration;
-
+public class RunSimuLizarSimulationJobSupplier extends AbstractSimulationJobSupplier<SimuLizarWorkflowConfiguration> {
+    
     public RunSimuLizarSimulationJobSupplier(ExtensionContext context) {
-        configuration = SimuLizarTestExtensionCommons.getObjectFromStore(context, IJobConfiguration.class)
-            .filter(SimuLizarWorkflowConfiguration.class::isInstance)
-            .map(SimuLizarWorkflowConfiguration.class::cast)
-            .orElseThrow(() -> new IllegalArgumentException(
-                    "No SimuLizar Configuration present repository initialized. Please make sure to annotate your test accordingly."));
+        super(Optional.of(SimuLizarWorkflowConfiguration.class), context);
     }
 
     @Override
     public IBlackboardInteractingJob<MDSDBlackboard> get() {
-        var result = new SequentialBlackboardInteractingJob<MDSDBlackboard>(false);
-
-        result.add(new PCMStartInterpretationJob(configuration) {
+        return new PCMStartInterpretationJob(configuration.get()) {
             @Override
             protected SimuLizarRuntimeState buildRuntimeState(IProgressMonitor monitor) {
                 return buildRuntimeState(DaggerSimuLizarTestComponent.builder(), monitor);
             }
-        });
-
-        return result;
+        };
     }
 
 }
