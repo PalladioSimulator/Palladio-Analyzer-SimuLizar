@@ -52,8 +52,7 @@ import org.palladiosimulator.simulizar.action.mapping.ControllerMapping;
 import org.palladiosimulator.simulizar.action.mapping.Mapping;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsage;
 import org.palladiosimulator.simulizar.action.parameter.ControllerCallInputVariableUsageCollection;
-import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcess;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoModelTransformation;
@@ -93,7 +92,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 	private Optional<ExecutionContext> executionContext;
 	
 	private final IResourceTableManager resourceTableManager;
-	private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
+	private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
 
 	/**
 	 * Initializes a new instance of the {@link TransientEffectInterpreter}
@@ -127,7 +126,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 		this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
 		this.executionContext = executionContext;
 		this.resourceTableManager = resourceTableManager;
-		this.usageScenarioSwitchFactory = state.getUsageScenarioSwitchFactory();
+		this.simulatedThreadComponentFactory = state.getSimulatedThreadComponentFactory();
 	}
 
 	private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
@@ -374,7 +373,6 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			return process -> {
 				LOGGER.info("Start executing the controller scenario ('" + mappedCall.getEntityName() + "')!");
 
-				InterpreterDefaultContext newContext = new InterpreterDefaultContext(state.getMainContext(), process);
 				UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
 				ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
 				usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
@@ -391,7 +389,8 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
 				start.setSuccessor(sysCall);
 				sysCall.setSuccessor(stop);
-				usageScenarioSwitchFactory.create(newContext).doSwitch(usageScenario);
+				simulatedThreadComponentFactory.create(state.getMainContext(), process)
+				    .interpreterFacade().submit(usageScenario);
 				// finally, reschedule the executing process (this is crucial!)
 				// as it is passivated in caseResourceDemandingAction if mapped
 				// calls are running

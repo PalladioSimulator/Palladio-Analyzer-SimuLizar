@@ -38,7 +38,8 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
                 this.getStringAttribute(SimulizarConstants.SERVICELEVELOBJECTIVEREPOSITORY_FILE));
         config.setUsageEvolutionFile(this.getStringAttribute(SimulizarConstants.USAGEEVOLUTION_FILE));
 
-        final SimuComConfig simuComConfig = new SimuComConfig(this.properties, config.isDebug());
+        // The recorder framework will be initialized separately
+        final SimuComConfig simuComConfig = new SimuComConfig(this.properties, config.isDebug(), null);
 
         // Set SimuCom config extensions based on registered extensions
         for (final String workflowHookId : WorkflowHooks.getAllWorkflowHookIDs()) {

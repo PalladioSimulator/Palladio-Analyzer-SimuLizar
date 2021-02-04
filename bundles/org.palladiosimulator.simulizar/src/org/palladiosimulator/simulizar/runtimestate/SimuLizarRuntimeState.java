@@ -1,30 +1,17 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import org.apache.log4j.Logger;
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
-import org.palladiosimulator.simulizar.interpreter.EventNotificationHelper;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
-import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
-import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-import org.scaledl.usageevolution.UsageEvolution;
-import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import dagger.Lazy;
-import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 
 /**
@@ -43,43 +30,34 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  * @author Steffen Becker, Sebastian Lehrig, Florian Rosenthal, Sebastian Krach
  *
  */
-@Singleton
+@Deprecated
 public class SimuLizarRuntimeState {
 
-    private static final Logger LOGGER = Logger.getLogger(SimuLizarRuntimeState.class);
-
     protected final SimuComModel model;
-    protected final EventNotificationHelper eventHelper;
+    protected final EventDispatcher eventHelper;
     private final ComponentInstanceRegistry componentInstanceRegistry;
     private final SimulatedUsageModels usageModels;
     private final PCMPartitionManager pcmPartitionManager;
     private final Reconfigurator reconfigurator;
-    private List<IModelObserver> modelObservers;
-    private final SimulationCancelationDelegate cancelationDelegate;
     protected final UsageEvolverFacade usageEvolverFacade;
-    private final Set<IInterpreterListener> interpreterListeners;
     private final Lazy<InterpreterDefaultContext> mainContext;
-    private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
+    private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
 
     /**
      * @param configuration
      * @param modelAccess
      */
     @Inject
-    public SimuLizarRuntimeState(final PCMPartitionManager pcmPartitionManager, 
-            final SimuComModel simuComModel,
-            final EventNotificationHelper eventHelper,
-            final ComponentInstanceRegistry componentInstanceRegistry, 
-            final SimulatedUsageModels simulatedUsageModels, 
-            final Reconfigurator reconfigurator,
-            final UsageEvolverFacade usageEvolverFacade, 
-            final Set<IInterpreterListener> interpreterListeners, 
-            final SimulationCancelationDelegate cancelationDelegate,
-            final @MainContext Lazy<InterpreterDefaultContext> mainContext,
-            final UsageScenarioSwitchFactory usageScenarioSwitchFactory) {
+    public SimuLizarRuntimeState(PCMPartitionManager pcmPartitionManager, 
+            SimuComModel simuComModel,
+            EventDispatcher eventHelper,
+            ComponentInstanceRegistry componentInstanceRegistry, 
+            SimulatedUsageModels simulatedUsageModels, 
+            Reconfigurator reconfigurator,
+            UsageEvolverFacade usageEvolverFacade,  
+            @MainContext Lazy<InterpreterDefaultContext> mainContext,
+            SimulatedThreadComponent.Factory simulatedThreadComponentFactory) {
         this.pcmPartitionManager = pcmPartitionManager;
-        this.interpreterListeners = interpreterListeners;
-        this.cancelationDelegate = cancelationDelegate;
         this.model = simuComModel;
         this.eventHelper = eventHelper;
         this.componentInstanceRegistry = componentInstanceRegistry;
@@ -87,22 +65,7 @@ public class SimuLizarRuntimeState {
         this.reconfigurator = reconfigurator;
         this.usageEvolverFacade = usageEvolverFacade;
         this.mainContext = mainContext;
-        this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
-    }
-    
-    public void initialize() {
-        this.modelObservers = this.initializeModelObservers(Collections.emptyList());
-        this.initializeWorkloadDrivers();
-        this.initializeCancelation();
-        /*
-         * ensure to initialize model syncers (in particular ResourceEnvironmentSyncer)
-         * prior to interpreter listeners (in particular ProbeFrameworkListener) as
-         * ProbeFrameworkListener uses calculators of resources created in
-         * ResourceEnvironmentSyncer!
-         */
-        interpreterListeners.forEach(this.eventHelper::addObserver);
-        this.initializeUsageEvolver();
-        this.pcmPartitionManager.startObservingPcmChanges();
+        this.simulatedThreadComponentFactory = simulatedThreadComponentFactory;
     }
 
     /**
@@ -117,7 +80,7 @@ public class SimuLizarRuntimeState {
      * @return the event notification helper
      * @deprecated Use dependency injection to retrieve the EventNotificationHelper instance.
      */
-    public EventNotificationHelper getEventNotificationHelper() {
+    public EventDispatcher getEventNotificationHelper() {
         return this.eventHelper;
     }
 
@@ -156,9 +119,6 @@ public class SimuLizarRuntimeState {
         return this.pcmPartitionManager;
     }
 
-    public boolean isCanceled() {
-        return this.cancelationDelegate.isCanceled();
-    }
 
     /**
      * Returns the reconfigurator responsible for executing reconfigurations and
@@ -172,60 +132,6 @@ public class SimuLizarRuntimeState {
     public Reconfigurator getReconfigurator() {
         return this.reconfigurator;
     }
-
-    public void runSimulation() {
-        if (this.modelObservers == null) {
-            this.initialize();
-        }
-        LOGGER.debug("Starting Simulizar simulation...");
-        final double simRealTimeNano = ExperimentRunner.run(this.model);
-        LOGGER.debug(
-                "Finished Simulation. Simulator took " + (simRealTimeNano / Math.pow(10, 9)) + " real time seconds");
-    }
-
-    public void cleanUp() {
-        LOGGER.debug("Deregister all listeners and execute cleanup code");
-        this.eventHelper.removeAllListener();
-        this.reconfigurator.removeAllObserver();
-        this.reconfigurator.cleanUp();
-        this.pcmPartitionManager.stopObservingPcmChanges();
-        this.model.getProbeFrameworkContext().finish();
-        this.model.getConfiguration().getRecorderConfigurationFactory().finalizeRecorderConfigurationFactory();
-        this.modelObservers.forEach(IModelObserver::unregister);
-//        this.pcmPartitionManager.cleanUp();
-    }
-
-    private void initializeWorkloadDrivers() {
-        LOGGER.debug("Initialise simucom framework's workload drivers");
-        this.model.setUsageScenarios(this.usageModels.createWorkloadDrivers());
-    }
-
-    private List<IModelObserver> initializeModelObservers(List<IModelObserver> internalObservers) {
-        LOGGER.debug(
-                "Initialize model observers, e.g., to keep simucom framework objects in sync with global PCM model");
-
-        final List<IModelObserver> modelObservers = new ArrayList<>();
-        modelObservers.addAll(internalObservers);
-        modelObservers.addAll(ExtensionHelper.getExecutableExtensions("org.palladiosimulator.simulizar.modelobserver",
-                "modelObserver"));
-        modelObservers.forEach(m -> m.initialize(this));
-
-        return Collections.unmodifiableList(modelObservers);
-    }
-
-    private void initializeUsageEvolver() {
-        UsageEvolution ueModel = this.pcmPartitionManager
-                .findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
-        if (ueModel != null) {
-            LOGGER.debug("Start the code to evolve the usage model over time");
-
-            this.usageEvolverFacade.start(this);
-        }
-    }
-
-    private void initializeCancelation() {
-        this.model.getSimulationControl().addStopCondition(this::isCanceled);
-    }
     
     /**
      * @return the Usage Evolver Facade
@@ -235,14 +141,9 @@ public class SimuLizarRuntimeState {
     public UsageEvolverFacade getUsageEvolverFacade() {
         return this.usageEvolverFacade;
     }
-
-    /**
-     * @return the Usage Scenario Switch Factory
-     * @deprecated Use dependency injection to retrieve the UsageScenarioSwitchFactory instance.
-     */
-    @Deprecated
-    public UsageScenarioSwitchFactory getUsageScenarioSwitchFactory() {
-        return this.usageScenarioSwitchFactory;
+    
+    public SimulatedThreadComponent.Factory getSimulatedThreadComponentFactory() {
+        return this.simulatedThreadComponentFactory;
     }
     
 }

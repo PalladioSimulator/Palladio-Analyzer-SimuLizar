@@ -1,49 +1,45 @@
 package org.palladiosimulator.simulizar.simulationevents;
 
+import java.util.Optional;
+
 import org.apache.log4j.Logger;
 
-import de.uka.ipd.sdq.simucomframework.entities.SimuComEntity;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.SimpleEventBasedSimEntity;
 
-public class PeriodicallyTriggeredSimulationEntity extends SimuComEntity {
+public abstract class PeriodicallyTriggeredSimulationEntity extends SimpleEventBasedSimEntity {
 
-    private PeriodicSimulationEvent myTriggerEvent;
     private static final Logger LOGGER = Logger.getLogger(PeriodicallyTriggeredSimulationEntity.class);
+    private double delay;
 
-    public PeriodicallyTriggeredSimulationEntity(final SimuComModel model, final double firstOccurrence,
+    public PeriodicallyTriggeredSimulationEntity(final ISimEventFactory eventFactory, final double firstOccurrence,
             final double delay) {
-        super(model, "PeriodicallyTriggeredSimulationEntity");
-        this.myTriggerEvent = new PeriodicSimulationEvent(model, delay);
-        this.myTriggerEvent.schedule(this, firstOccurrence);
-    }
-
-    public final void trigger() {
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Periodic trigger for entity " + this.getName() + " occurred at simulation time "
-                    + this.getModel().getSimulationControl().getCurrentSimulationTime());
-        }
-        this.triggerInternal();
+        super(eventFactory, "PeriodicallyTriggeredSimulationEntity");
+        this.activate(firstOccurrence);
+        this.delay = delay;
     }
 
     public double getSimulationTimeOfNextEventTrigger() {
-        return this.myTriggerEvent.scheduledAtTime();
-    }
-
-    public void setDelayAndReinitialize(final double nextOccurrence, final double delay) {
-        this.removeEvent();
-        this.myTriggerEvent = new PeriodicSimulationEvent(this.getModel(), delay);
-        this.myTriggerEvent.schedule(this, nextOccurrence);
+        return this.getNextOccurence().get();
     }
 
     public void stopScheduling() {
-        this.removeEvent();
+        this.unschedule();
     }
 
-    protected void triggerInternal() {
+    protected void setDelay(double delay) {
+        this.delay = delay;        
     }
-
-    protected void removeEvent() {
-        this.myTriggerEvent.removeEvent();
+    
+    @Override
+    protected Optional<Double> entityRoutine() {
+        if (LOGGER.isDebugEnabled()) {
+            LOGGER.debug("Periodic trigger for periodic entity entity " + this.getClass().getName() + " occurred.");
+        }
+        triggerInternal();
+        return Optional.of(delay);
     }
+    
+    abstract protected void triggerInternal();
 
 }

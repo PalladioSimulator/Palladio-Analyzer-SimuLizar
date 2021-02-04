@@ -1,21 +1,20 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import java.util.Objects;
+import java.util.stream.Stream;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 
 public abstract class AbstractUsageEvolutionObserver extends AbstractModelObserver<UsageEvolution> {
 
-    public AbstractUsageEvolutionObserver() {
-        super();
+    public AbstractUsageEvolutionObserver(@Global PCMResourceSetPartition globalPCMInstance) {
+        super(globalPCMInstance);
     }
-
+    
     @Override
-    public void initialize(final SimuLizarRuntimeState runtimeState) {
-    	PCMPartitionManager manager = Objects.requireNonNull(runtimeState).getPCMPartitionManager();
-        super.initialize(manager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution()), runtimeState);
+    protected Stream<UsageEvolution> selectObservees(PCMResourceSetPartition partition) {
+        return partition.<UsageEvolution>getElement(UsageevolutionPackage.Literals.USAGE_EVOLUTION).stream();
     }
 }

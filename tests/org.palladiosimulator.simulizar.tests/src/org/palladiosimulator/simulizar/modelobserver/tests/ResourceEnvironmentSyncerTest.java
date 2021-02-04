@@ -14,8 +14,8 @@ import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentFactory;
+import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
 import org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.test.commons.annotation.Identified;
 import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
 import org.palladiosimulator.simulizar.test.commons.annotation.Named;
@@ -34,9 +34,15 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 class ResourceEnvironmentSyncerTest {
     ResourceEnvironmentSyncer syncerUnderTest;
 
-    private void setUpSyncer(SimuLizarRuntimeState runtimeState) {
-        syncerUnderTest = new ResourceEnvironmentSyncer();
-        syncerUnderTest.initialize(runtimeState);
+    private void setUpSyncer(PCMResourceSetPartition partition) {
+        setUpSyncer(partition, Mockito.mock(ResourceRegistry.class));
+    }
+    
+    private void setUpSyncer(PCMResourceSetPartition partition,
+            ResourceRegistry resourceRegistry) {
+        syncerUnderTest = new ResourceEnvironmentSyncer(partition,
+                resourceRegistry, Mockito.mock(CalculatorFactoryFacade.class));
+        syncerUnderTest.initialize();
     }
 
     /**
@@ -45,12 +51,12 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testRegisterAdapter(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition) {
+    final void testRegisterAdapter(PCMResourceSetPartition partition) {
         var adapterCount = partition.getResourceEnvironment()
             .eAdapters()
             .size();
 
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition);
 
         assertThat(partition.getResourceEnvironment()
             .eAdapters(), hasSize(adapterCount + 1));
@@ -63,9 +69,9 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testAddResourceContainer(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testAddResourceContainer(PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry) {
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition, resourceRegistry);
         var container = ResourceenvironmentFactory.eINSTANCE.createResourceContainer();
         partition.getResourceEnvironment()
             .getResourceContainer_ResourceEnvironment()
@@ -81,9 +87,9 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(TestModelBase.Empty.class)
     @MockSimulation
-    final void testAddLinkingResource(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testAddLinkingResource(PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry) {
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition, resourceRegistry);
         var link = ResourceenvironmentFactory.eINSTANCE.createLinkingResource();
         partition.getResourceEnvironment()
             .getLinkingResources__ResourceEnvironment()
@@ -97,13 +103,13 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation
-    final void testInitialize(SimuLizarRuntimeState runtimeState, PCMResourceSetPartition partition,
+    final void testInitialize(PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry, @Named("Container A") ResourceContainer rca,
             @Named("Container B") ResourceContainer rcb, @Named("Link 1") LinkingResource link,
             @Identified("A1") ProcessingResourceSpecification specRca,
             @Identified("B1") ProcessingResourceSpecification specRcb) {
-        setUpSyncer(runtimeState);
-
+        setUpSyncer(partition, resourceRegistry);
+        
         verify(resourceRegistry).createResourceContainer(rca.getId());
         verify(resourceRegistry).createResourceContainer(rcb.getId());
         verify(resourceRegistry).createLinkingResourceContainer(link.getId());
@@ -126,10 +132,10 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testNoUnnecessaryInitialize(SimuLizarRuntimeState runtimeState,
+    final void testNoUnnecessaryInitialize(PCMResourceSetPartition partition,
             ResourceRegistry resourceRegistry) {
 
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition, resourceRegistry);
 
         verify(resourceRegistry, Mockito.never()).createResourceContainer(Mockito.anyString());
         verify(resourceRegistry, Mockito.never()).createLinkingResourceContainer(Mockito.anyString());
@@ -142,10 +148,10 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testSyncProcessingRate(SimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
+    final void testSyncProcessingRate(PCMResourceSetPartition partition, ResourceRegistry resourceRegistry,
             @Named("Container A") ResourceContainer rca, @Identified("A1") ProcessingResourceSpecification specRca) {
 
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition, resourceRegistry);
 
         var schedResource = (ScheduledResource) resourceRegistry.getResourceContainer(rca.getId())
             .getAllActiveResources()
@@ -180,10 +186,10 @@ class ResourceEnvironmentSyncerTest {
     @Test
     @PCMInstanceFromSupplier(ResourceEnvironmentTestModels.WithTwoContainersAndOneLink.class)
     @MockSimulation(initializeRegistry = true)
-    final void testSyncLinkingResource(SimuLizarRuntimeState runtimeState, ResourceRegistry resourceRegistry,
+    final void testSyncLinkingResource(PCMResourceSetPartition partition, ResourceRegistry resourceRegistry,
             @Named("Link 1") LinkingResource link, @Identified("L1") CommunicationLinkResourceSpecification specLink) {
 
-        setUpSyncer(runtimeState);
+        setUpSyncer(partition, resourceRegistry);
 
         var schedResource = (SimulatedLinkingResource) resourceRegistry.getResourceContainer(link.getId())
             .getAllActiveResources()

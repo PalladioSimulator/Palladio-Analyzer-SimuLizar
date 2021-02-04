@@ -1,60 +1,58 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import java.util.Objects;
+import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractModelObserver<T extends EObject> implements IModelObserver {
 
     protected static final Logger LOGGER = Logger.getLogger(AbstractModelObserver.class);
 
-    protected SimuLizarRuntimeState runtimeModel;
-    protected T model;
+    protected Collection<T> model;
 
     private EContentAdapter adapter;
 
-    protected AbstractModelObserver() {
-        super();
+    protected final PCMResourceSetPartition globalPCMInstance;
+
+    protected AbstractModelObserver(@Global PCMResourceSetPartition globalPCMInstance) {
+        this.globalPCMInstance = globalPCMInstance;
     }
 
-    public void initialize(final T model, final SimuLizarRuntimeState runtimeState) {
-        if (model != null) {
-            initialize(model);
-        } else {
-            LOGGER.info(this.getClass().getName() + " cannot observe model, as none has been specified");
-        }
-        this.runtimeModel = Objects.requireNonNull(runtimeState);
-    }
+    abstract protected Stream<T> selectObservees(PCMResourceSetPartition partition);
 
-    private void initialize(final T model) {
-        this.model = model;
-        this.adapter = new EContentAdapter() {
+    public void initialize() {
+        model = selectObservees(globalPCMInstance).collect(Collectors.toList());
+        adapter = new EContentAdapter() {
 
             @Override
             public void notifyChanged(final Notification notification) {
                 super.notifyChanged(notification);
                 if (!(notification.getEventType() == Notification.REMOVING_ADAPTER
                         || notification.getEventType() == Notification.RESOLVE)) {
-                    LOGGER.debug(model.eClass().getName() + " changed by reconfiguration - Resync simulation entities: "
-                            + notification);
-
+                    LOGGER
+                        .debug(getClass().getName() + " detected change - Resync simulation entities: " + notification);
                     AbstractModelObserver.this.notifyModelObservers(notification);
                 }
             }
-
         };
-        model.eAdapters().add(this.adapter);
+
+        model.forEach(m -> m.eAdapters()
+            .add(adapter));
     }
 
     @Override
     public void unregister() {
-        if (this.adapter != null && this.model.eAdapters().contains(this.adapter)) {
-            this.model.eAdapters().remove(this.adapter);
+        if (this.adapter != null) {
+            model.forEach(m -> m.eAdapters()
+                .remove(adapter));
         }
     }
 

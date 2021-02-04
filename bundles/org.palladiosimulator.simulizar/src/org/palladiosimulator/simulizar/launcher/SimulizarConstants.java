@@ -37,6 +37,13 @@ public class SimulizarConstants {
      */
     public static final String CONFIGURATOR_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.configurator";
     public static final String CONFIGURATOR_EXTENSION_POINT_ATTRIBUTE = "configurator";
+    
+    /**
+     * Id of the extension point used for SimuLizar Extension Component Factories
+     */
+    public static final String EXTENSION_COMPONENT_EXTENSION_POINT_ID = "org.palladiosimulator.simulizar.extension.component";
+    public static final String EXTENSION_COMPONENT_EXTENSION_POINT_ATTRIBUTE = "factory";
+
 
     /*
      * Set the file extensions which the dialogs will use as selection filter and for file name

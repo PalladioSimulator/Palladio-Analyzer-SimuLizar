@@ -10,4 +10,10 @@
     <providedRole_AssemblyConnector href="server.repository#_mKQvQLwGEeSxGbiYbg6Waw"/>
     <requiredRole_AssemblyConnector href="server.repository#_M9_kYMiZEeSwuLsOH33EQA"/>
   </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_jTt7tC81EeuDKt6xG-6bJg" entityName="System_level_provides" outerProvidedRole_ProvidedDelegationConnector="_PFSTjy81EeuDKt6xG-6bJg" assemblyContext_ProvidedDelegationConnector="_CQWXwLwpEeSjHMSRTqzAVg">
+    <innerProvidedRole_ProvidedDelegationConnector href="server.repository#_mKQvQLwGEeSxGbiYbg6Waw"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_PFSTjy81EeuDKt6xG-6bJg" entityName="Provided_server1">
+    <providedInterface__OperationProvidedRole href="server.repository#_gl1dYLwGEeSxGbiYbg6Waw"/>
+  </providedRoles_InterfaceProvidingEntity>
 </system:System>

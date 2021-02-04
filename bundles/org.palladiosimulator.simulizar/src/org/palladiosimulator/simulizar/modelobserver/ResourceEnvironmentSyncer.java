@@ -10,11 +10,14 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -30,11 +33,13 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import de.uka.ipd.sdq.identifier.Identifier;
+import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
 import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
@@ -49,11 +54,11 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
  *
  * @author Joachim Meyer, Sebastian Lehrig, Matthias Becker, Florian Rosenthal
  */
+@SimulationRuntimeScope
 public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserver {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
-    private MonitorRepository monitorRepository;
-
+    
     /** The stoex-based features of processing resource specification which support updates */
     private static final Set<EStructuralFeature> SUPPORTED_PROCESSING_RESOURCE_STOEX_PROPERTIES = Collections.singleton(
             ResourceenvironmentPackage.Literals.PROCESSING_RESOURCE_SPECIFICATION__PROCESSING_RATE_PROCESSING_RESOURCE_SPECIFICATION);
@@ -63,25 +68,34 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         .unmodifiableSet(new HashSet<>(Arrays.asList(
                 ResourceenvironmentPackage.Literals.COMMUNICATION_LINK_RESOURCE_SPECIFICATION__LATENCY_COMMUNICATION_LINK_RESOURCE_SPECIFICATION,
                 ResourceenvironmentPackage.Literals.COMMUNICATION_LINK_RESOURCE_SPECIFICATION__THROUGHPUT_COMMUNICATION_LINK_RESOURCE_SPECIFICATION)));
+    
+    private final ResourceRegistry resourceRegistry;
+    private Optional<MonitorRepository> monitorRepository;
+    private final CalculatorFactoryFacade calcFactory;
 
+    @Inject
+    public ResourceEnvironmentSyncer(@Global PCMResourceSetPartition globalPCMInstance, ResourceRegistry resourceRegistry, CalculatorFactoryFacade calcFactory) {
+        super(globalPCMInstance);
+        this.resourceRegistry = resourceRegistry;
+        this.calcFactory = calcFactory;
+    }
+    
     /**
      * {@inheritDoc}
      */
     @Override
-    public void initialize(final SimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState);
-
-        PCMPartitionManager manager = runtimeState.getPCMPartitionManager();
-        this.monitorRepository = manager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+    public void initialize() {
+        monitorRepository = globalPCMInstance.<MonitorRepository>getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findFirst();
+        super.initialize();
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initializing Simulated ResourcesContainer");
         }
-
-        this.model.getResourceContainer_ResourceEnvironment()
-            .forEach(this::createSimulatedResourceContainer);
-        this.model.getLinkingResources__ResourceEnvironment()
-            .forEach(this::createSimulatedLinkingResource);
+        
+        for (var resEnv: model) {
+            resEnv.getResourceContainer_ResourceEnvironment().forEach(this::createSimulatedResourceContainer);
+            resEnv.getLinkingResources__ResourceEnvironment().forEach(this::createSimulatedLinkingResource);
+        }
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initialization done");
@@ -187,12 +201,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      *            the new resource container.
      */
     private void createSimulatedResourceContainer(final ResourceContainer resourceContainer) {
-        if (!this.runtimeModel.getModel()
-            .getResourceRegistry()
-            .containsResourceContainer(resourceContainer.getId())) {
-            final var simulatedResourceContainer = this.runtimeModel.getModel()
-                .getResourceRegistry()
-                .createResourceContainer(resourceContainer.getId());
+        if (!resourceRegistry.containsResourceContainer(resourceContainer.getId())) {
+            final var simulatedResourceContainer = resourceRegistry.createResourceContainer(resourceContainer.getId());
 
             resourceContainer.getActiveResourceSpecifications_ResourceContainer()
                 .forEach(this::createSimulatedActiveResource);
@@ -213,12 +223,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      *            the new linking resource.
      */
     private void createSimulatedLinkingResource(final LinkingResource linkingResource) {
-        if (!this.runtimeModel.getModel()
-            .getResourceRegistry()
-            .containsResourceContainer(linkingResource.getId())) {
-            final var simulatedResourceContainer = this.runtimeModel.getModel()
-                .getResourceRegistry()
-                .createLinkingResourceContainer(linkingResource.getId());
+        if (!resourceRegistry.containsResourceContainer(linkingResource.getId())) {
+            final var simulatedResourceContainer = resourceRegistry.createLinkingResourceContainer(linkingResource.getId());
             if (linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource() != null) {
                 syncLinkingResource(linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource());
             }
@@ -326,9 +332,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     }
 
     private AbstractSimulatedResourceContainer getSimulatedResourceContainer(final Identifier container) {
-        return this.runtimeModel.getModel()
-            .getResourceRegistry()
-            .getResourceContainer(container.getId());
+        return this.resourceRegistry.getResourceContainer(container.getId());
     }
 
     /**
@@ -355,21 +359,22 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     private void attachMonitors(final ProcessingResourceSpecification processingResource,
             final ResourceContainer resourceContainer, final String schedulingStrategy,
             final ScheduledResource scheduledResource) {
-        for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-            .getMeasurementSpecificationsForElement(this.monitorRepository, processingResource)) {
+        monitorRepository.ifPresent(repo -> {
+            for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
+                    .getMeasurementSpecificationsForElement(repo, processingResource)) {
 
-            new PcmmeasuringpointSwitch<Calculator>() {
+                    new PcmmeasuringpointSwitch<Calculator>() {
+                        @Override
+                        public Calculator caseActiveResourceMeasuringPoint(
+                                final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
+                            return attachMonitorForActiveResourceMeasuringPoint(activeResourceMeasuringPoint,
+                                    measurementSpecification, resourceContainer, scheduledResource, schedulingStrategy);
+                        };
 
-                @Override
-                public Calculator caseActiveResourceMeasuringPoint(
-                        final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
-                    return attachMonitorForActiveResourceMeasuringPoint(activeResourceMeasuringPoint,
-                            measurementSpecification, resourceContainer, scheduledResource, schedulingStrategy);
-                };
-
-            }.doSwitch(measurementSpecification.getMonitor()
-                .getMeasuringPoint());
-        }
+                    }.doSwitch(measurementSpecification.getMonitor()
+                        .getMeasuringPoint());
+                }    
+        });
     }
 
     private Calculator attachMonitorForActiveResourceMeasuringPoint(
@@ -401,30 +406,26 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                     || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
                 assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                         + "have exactly one core";
-                result = CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                        this.runtimeModel.getModel(), activeResourceMeasuringPoint, 0);
+                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource,
+                        activeResourceMeasuringPoint, 0);
             } else {
                 // the general case includes the PROCESSOR_SHARING strategy which is the most common
-                result = CalculatorHelper.setupActiveResourceStateCalculator(scheduledResource,
-                        this.runtimeModel.getModel(), activeResourceMeasuringPoint,
-                        activeResourceMeasuringPoint.getReplicaID());
+                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource, 
+                        activeResourceMeasuringPoint, activeResourceMeasuringPoint.getReplicaID());
             }
         } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.WAITING_TIME_METRIC)) {
             // return CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
         } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.HOLDING_TIME_METRIC)) {
             // return CalculatorHelper.setupHoldingTimeCalculator(r, this.myModel); FIXME
         } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.RESOURCE_DEMAND_METRIC)) {
-            result = CalculatorHelper.setupDemandCalculator(scheduledResource, this.runtimeModel.getModel(),
-                    activeResourceMeasuringPoint);
+            result = calcFactory.setupDemandCalculator(scheduledResource, activeResourceMeasuringPoint);
         }
         return result;
     }
 
     private void includeOverallUtilizationCalculator(final ScheduledResource scheduledResource) {
-
         MeasuringPoint utilization = CalculatorHelper.createMeasuringPoint(scheduledResource,
                 scheduledResource.getNumberOfInstances());
-        CalculatorHelper.setupOverallUtilizationCalculator(scheduledResource, this.runtimeModel.getModel(),
-                utilization);
+        calcFactory.setupOverallUtilizationCalculator(scheduledResource, utilization);
     }
 }

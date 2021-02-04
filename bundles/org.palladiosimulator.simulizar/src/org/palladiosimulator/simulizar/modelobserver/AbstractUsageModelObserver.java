@@ -1,19 +1,19 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import java.util.Objects;
+import java.util.stream.Stream;
 
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractUsageModelObserver extends AbstractModelObserver<UsageModel> {
 
-    public AbstractUsageModelObserver() {
-        super();
+    public AbstractUsageModelObserver(@Global PCMResourceSetPartition globalPCMInstance) {
+        super(globalPCMInstance);
     }
-
+    
     @Override
-    public void initialize(final SimuLizarRuntimeState runtimeState) {
-        super.initialize(runtimeState.getPCMPartitionManager().getGlobalPCMModel().getUsageModel(),
-                Objects.requireNonNull(runtimeState));
+    protected Stream<UsageModel> selectObservees(PCMResourceSetPartition partition) {
+        return Stream.of(partition.getUsageModel());
     }
 }

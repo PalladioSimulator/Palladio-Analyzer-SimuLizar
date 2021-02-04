@@ -1,28 +1,20 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
-import java.util.Stack;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
-import org.palladiosimulator.pcm.allocation.Allocation;
-import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.repository.Parameter;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.pcm.resourcetype.ResourceInterface;
-import org.palladiosimulator.pcm.resourcetype.ResourceRepository;
-import org.palladiosimulator.pcm.resourcetype.ResourceSignature;
-import org.palladiosimulator.pcm.resourcetype.ResourceType;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AcquireAction;
@@ -37,28 +29,30 @@ import org.palladiosimulator.pcm.seff.ReleaseAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.SetVariableAction;
-import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
-import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
-import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
-import org.palladiosimulator.simulizar.exceptions.PCMModelAccessException;
+import org.palladiosimulator.simulizar.di.component.core.SimuLizarSimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
+import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
+import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
-import com.google.auto.factory.AutoFactory;
-import com.google.auto.factory.Provided;
-
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedFactory;
+import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.fork.ForkExecutor;
 import de.uka.ipd.sdq.simucomframework.fork.ForkedBehaviourProcess;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
-import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 /**
@@ -67,51 +61,54 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
  * @author Joachim Meyer, Steffen Becker, Sebastian Lehrig
  *
  */
-@AutoFactory
-class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
+public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
+    @AssistedFactory
+    public interface Factory extends RDSeffSwitchContributionFactory {
+        @Override
+        RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
+                RDSeffElementDispatcher parentSwitch);
+    }
 
-    private static final Boolean SUCCESS = true;
+    public static final Boolean SUCCESS = true;
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
 
-    private ComposedSwitch<Object> parentSwitch;
+    private RDSeffElementDispatcher parentSwitch;
     private final TransitionDeterminer transitionDeterminer;
     private final InterpreterDefaultContext context;
-    private final Allocation allocation;
-
-    private final SimulatedStackframe<Object> resultStackFrame;
 
     private final SimulatedBasicComponentInstance basicComponentInstance;
     private final IResourceTableManager resourceTableManager;
-    private final ComposedStructureInnerSwitchFactory composedSwitchFactory;
-    private final RDSeffSwitchFactory rdseffSwitchFactory;
-
-    /**
-     * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance)
-     */
-    RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, @Provided IResourceTableManager resourceTableManager, @Provided ComposedStructureInnerSwitchFactory composedSwitchFactory,
-            @Provided RDSeffSwitchFactory rdseffSwitchFactory) {
-        super();
-        this.context = context;
-        this.composedSwitchFactory = composedSwitchFactory;
-        this.rdseffSwitchFactory = rdseffSwitchFactory;
-        this.allocation = context.getLocalPCMModelAtContextCreation().getAllocation();
-        this.transitionDeterminer = new TransitionDeterminer(context);
-        this.resultStackFrame = new SimulatedStackframe<Object>();
-        this.basicComponentInstance = basicComponentInstance;
-        this.resourceTableManager = resourceTableManager;
-    }
-
+    private final ComposedStructureInnerSwitch.Factory composedSwitchFactory;
+    private final EventDispatcher eventHelper;
+    private final InterpreterResultHandler issueHandler;
+    private final InterpreterResultMerger resultMerger;
+    private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
      */
-    RDSeffSwitch(final InterpreterDefaultContext context,
-            final SimulatedBasicComponentInstance basicComponentInstance, ComposedSwitch<Object> parentSwitch,
-            @Provided IResourceTableManager resourceTableManager,
-            @Provided ComposedStructureInnerSwitchFactory composedSwitchFactory,
-            @Provided RDSeffSwitchFactory rdseffSwitchFactory) {
-        this(context, basicComponentInstance, resourceTableManager, composedSwitchFactory, rdseffSwitchFactory);
+    @AssistedInject
+    RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher parentSwitch,
+            IResourceTableManager resourceTableManager,
+            ComponentInstanceRegistry componentInstanceRegistry,
+            ComposedStructureInnerSwitch.Factory composedSwitchFactory,
+            SimulatedThreadComponent.Factory simulatedThreadComponentFactory,
+            EventDispatcher eventHelper,
+            InterpreterResultHandler issueHandler,
+            InterpreterResultMerger resultMerger) {
+        super();
+        this.context = context;
+        this.composedSwitchFactory = composedSwitchFactory;
+        this.simulatedThreadComponentFactory = simulatedThreadComponentFactory;
+        this.eventHelper = eventHelper;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
+        this.transitionDeterminer = new TransitionDeterminer(context);
+        this.basicComponentInstance = Optional.ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
+                .filter(SimulatedBasicComponentInstance.class::isInstance)
+                .map(SimulatedBasicComponentInstance.class::cast)
+                .orElseThrow(() -> new IllegalStateException("RDSeffSwitch requires an SimulatedBasicComponentInstance to be initialized already."));
+        this.resourceTableManager = resourceTableManager;
         this.parentSwitch = parentSwitch;
     }
 
@@ -119,7 +116,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseResourceDemandingBehaviour(org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour)
      */
     @Override
-    public Object caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
+    public InterpreterResult caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
         final int stacksize = this.context.getStack().size();
 
         AbstractAction currentAction = null;
@@ -136,12 +133,14 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             throw new PCMModelInterpreterException("RDSEFF is invalid, it misses a start action");
         }
 
-        while (currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
+        InterpreterResult result = InterpreterResult.OK;
+        while (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
+                && currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
-            this.getParentSwitch().doSwitch(currentAction);
+            result = resultMerger.merge(result, parentSwitch.doSwitch(currentAction));
             this.firePassedEvent(currentAction, EventType.END);
             currentAction = currentAction.getSuccessor_AbstractAction();
         }
@@ -150,7 +149,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
 
-        return this.resultStackFrame;
+        return result;
     }
 
     /**
@@ -164,7 +163,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * seff.AbstractAction )
      */
     @Override
-    public SimulatedStackframe<Object> caseAbstractAction(final AbstractAction object) {
+    public InterpreterResult caseAbstractAction(final AbstractAction object) {
         throw new UnsupportedOperationException(
                 "SEFF Interpreter tried to interpret unsupported action type: " + object.eClass().getName());
     }
@@ -173,65 +172,30 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseInternalAction(org.palladiosimulator.pcm.seff.InternalAction)
      */
     @Override
-    public Object caseInternalAction(final InternalAction internalAction) {
-        if (internalAction.getResourceDemand_Action().size() > 0) {
-            interpretResourceDemands(internalAction);
+    public InterpreterResult caseInternalAction(final InternalAction internalAction) {
+        var result = InterpreterResult.OK;
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action()));
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action()));
+        // We include the following, once failure simulation has been fully integrated
+        //result = resultMerger.merge(invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action()));
+        return result;
+    }
+    
+    private InterpreterResult invokeRecursiveAndHandleFailure(Collection<? extends EObject> nestedElements) {
+        var result = InterpreterResult.OK;
+        for (var element: nestedElements) {
+            result = resultMerger.merge(result, this.parentSwitch.doSwitch(element));
         }
-        if (internalAction.getInfrastructureCall__Action().size() > 0) {
-            interpretInfrastructureCalls(internalAction);
-        }
-        if (internalAction.getInternalFailureOccurrenceDescriptions__InternalAction().size() > 0) {
-            interpretFailures(internalAction);
-        }
-        if (internalAction.getResourceCall__Action().size() > 0) {
-            interpretResourceCall(internalAction);
-        }
-        return SUCCESS;
+        return result;
     }
 
-    /**
-     * @param internalAction
-     */
-    private void interpretInfrastructureCalls(final InternalAction internalAction) {
-        for (final InfrastructureCall infrastructureCall : internalAction.getInfrastructureCall__Action()) {
-            final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-            final int repetitions = StackContext.evaluateStatic(
-                    infrastructureCall.getNumberOfCalls__InfrastructureCall().getSpecification(), Integer.class,
-                    currentStackFrame);
-            for (int i = 0; i < repetitions; i++) {
-                final ComposedStructureInnerSwitch composedStructureSwitch = composedSwitchFactory.create(this.context,
-                        infrastructureCall.getSignature__InfrastructureCall(),
-                        infrastructureCall.getRequiredRole__InfrastructureCall());
-                // create new stack frame for input parameter
-                SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
-                        infrastructureCall.getInputVariableUsages__CallAction());
-                final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-                composedStructureSwitch.doSwitch(myContext);
-                this.context.getAssemblyContextStack().push(myContext);
-                this.context.getStack().removeStackFrame();
-            }
-        }
-    }
-
-    /**
-     * @param internalAction
-     *
-     */
-    private void interpretFailures(final InternalAction internalAction) {
-        if (this.context.getModel().getConfiguration().getSimulateFailures()) {
-            throw new UnsupportedOperationException("Simulation of failures not yet supported by Simulizar");
-        } else {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("A failure description is available in an action, but skipped due to configuration set to not simulate failures.");
-            }
-        }
-    }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseExternalCallAction(org.palladiosimulator.pcm.seff.ExternalCallAction)
      */
     @Override
-    public Object caseExternalCallAction(final ExternalCallAction externalCall) {
+    public InterpreterResult caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = composedSwitchFactory.create(this.context,
                 externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
@@ -239,28 +203,29 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
             final SimulatedStackframe<Object> callFrame = SimulatedStackHelper.createAndPushNewStackFrame(
                     this.context.getStack(), externalCall.getInputVariableUsages__CallAction(), currentFrame);
-            callFrame.addVariables(this.resultStackFrame);
+            callFrame.addVariables(this.context.getCurrentResultFrame());
         } else {
             // create new stack frame for input parameter
             SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                     externalCall.getInputVariableUsages__CallAction());
         }
         final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        final SimulatedStackframe<Object> outputFrame = composedStructureSwitch.doSwitch(myContext);
+        context.getResultFrameStack().push(new SimulatedStackframe<>());
+        var result = composedStructureSwitch.doSwitch(myContext);
         this.context.getAssemblyContextStack().push(myContext);
         this.context.getStack().removeStackFrame();
 
-        SimulatedStackHelper.addParameterToStackFrame(outputFrame,
+        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack().pop(),
                 externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
 
-        return SUCCESS;
+        return result;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseBranchAction(org.palladiosimulator.pcm.seff.BranchAction)
      */
     @Override
-    public Object caseBranchAction(final BranchAction object) {
+    public InterpreterResult caseBranchAction(final BranchAction object) {
         final EList<AbstractBranchTransition> abstractBranchTransitions = object.getBranches_Branch();
         if (abstractBranchTransitions.isEmpty()) {
             throw new PCMModelInterpreterException("Empty branch action is not allowed");
@@ -291,27 +256,23 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             LOGGER.error("No branch's condition evaluated to true, no branch selected: " + object);
             throw new PCMModelInterpreterException("No branch transition was active. This is not allowed.");
         } else {
-            this.getParentSwitch().doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
+            return parentSwitch.doSwitch(branchTransition.getBranchBehaviour_BranchTransition());
         }
-
-        return SUCCESS;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseCollectionIteratorAction(org.palladiosimulator.pcm.seff.CollectionIteratorAction)
      */
     @Override
-    public Object caseCollectionIteratorAction(final CollectionIteratorAction object) {
-        this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
-
-        return SUCCESS;
+    public InterpreterResult caseCollectionIteratorAction(final CollectionIteratorAction object) {
+        return this.iterateOverCollection(object, object.getParameter_CollectionIteratorAction());
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseForkAction(org.palladiosimulator.pcm.seff.ForkAction)
      */
     @Override
-    public Object caseForkAction(final ForkAction object) {
+    public InterpreterResult caseForkAction(final ForkAction object) {
         /*
          * Component developers can use a SynchronisationPoint to join synchronously
          * ForkedBehaviours and specify a result of the computations with its attached
@@ -340,14 +301,14 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
 
         forkExecutor.run();
 
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseLoopAction(org.palladiosimulator.pcm.seff.LoopAction)
      */
     @Override
-    public Object caseLoopAction(final LoopAction object) {
+    public InterpreterResult caseLoopAction(final LoopAction object) {
         final PCMRandomVariable iterationCount = object.getIterationCount_LoopAction();
         final String stoex = iterationCount.getSpecification();
 
@@ -360,18 +321,16 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         }
 
         // interpret behavior the given number of times
-        this.interpretLoop(object, numberOfLoops);
-
-        return SUCCESS;
+        return this.interpretLoop(object, numberOfLoops);
     }
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseSetVariableAction(org.palladiosimulator.pcm.seff.SetVariableAction)
      */
     @Override
-    public Object caseSetVariableAction(final SetVariableAction object) {
+    public InterpreterResult caseSetVariableAction(final SetVariableAction object) {
         SimulatedStackHelper.addParameterToStackFrame(this.context.getStack().currentStackFrame(),
-                object.getLocalVariableUsages_SetVariableAction(), this.resultStackFrame);
+                object.getLocalVariableUsages_SetVariableAction(), context.getCurrentResultFrame());
         /*
          * Special attention has to be paid if the random variable to set is an INNER
          * characterisation. In this case, a late evaluating random variable has to be stored with
@@ -379,7 +338,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
          *
          * Why?
          */
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /*
@@ -390,7 +349,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * seff.AcquireAction )
      */
     @Override
-    public Object caseAcquireAction(final AcquireAction acquireAction) {
+    public InterpreterResult caseAcquireAction(final AcquireAction acquireAction) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Process " + this.context.getThread().getId() + " tries to acquire "
                     + acquireAction.getPassiveresource_AcquireAction().getEntityName());
@@ -402,7 +361,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
             LOGGER.debug("Process " + this.context.getThread().getId() + " successfully acquired "
                     + acquireAction.getPassiveresource_AcquireAction().getEntityName());
         }
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /*
@@ -413,14 +372,14 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * seff.ReleaseAction )
      */
     @Override
-    public Object caseReleaseAction(final ReleaseAction releaseAction) {
+    public InterpreterResult caseReleaseAction(final ReleaseAction releaseAction) {
         this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction(),
                 this.context);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Process " + this.context.getThread().getId() + " released "
                     + releaseAction.getPassiveResource_ReleaseAction().getEntityName());
         }
-        return SUCCESS;
+        return InterpreterResult.OK;
     }
 
     /**
@@ -428,7 +387,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @param eventType
      */
     private <T extends AbstractAction> void firePassedEvent(final T abstractAction, final EventType eventType) {
-        this.context.getRuntimeState().getEventNotificationHelper().firePassedEvent(new RDSEFFElementPassedEvent<T>(
+        eventHelper.firePassedEvent(new RDSEFFElementPassedEvent<T>(
                 abstractAction, eventType, this.context, this.context.getAssemblyContextStack().peek()));
     }
 
@@ -482,33 +441,17 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         // for each create process, and add to array of processes
 
         for (final ForkedBehaviour forkedBehaviour : forkedBehaviours) {
-            @SuppressWarnings("unchecked")
-            final Stack<AssemblyContext> parentAssemblyContextStack = (Stack<AssemblyContext>) this.context
-            .getAssemblyContextStack().clone();
             processes.add(new ForkedBehaviourProcess(this.context,
                     this.context.getAssemblyContextStack().peek().getId(), isAsync, resourceTableManager) {
 
                 @Override
                 protected void executeBehaviour() {
-
-                    /*
-                     * The forked behavior process has its own copied stack in its context, for type
-                     * reasons we need an InterpreterDefaultContext. Thus we have to copy the
-                     * context including its stack.
-                     */
-                    final InterpreterDefaultContext seffContext = new InterpreterDefaultContext(this.forkContext,
-                            RDSeffSwitch.this.context.getRuntimeState(), true,
-                            RDSeffSwitch.this.context.getLocalPCMModelAtContextCreation());
-                    seffContext.getAssemblyContextStack().addAll(parentAssemblyContextStack);
-                    final RDSeffSwitch seffInterpreter = rdseffSwitchFactory.create(seffContext,
-                            RDSeffSwitch.this.basicComponentInstance);
-
                     if (LOGGER.isDebugEnabled()) {
                         LOGGER.debug("Created new RDSeff interpreter for " + ((this.isAsync()) ? "asynced" : "synced")
                                 + " forked baviour: " + this);
                     }
-                    // no use of parentSwitch.doSwitch() because we want the inner switches
-                    seffInterpreter.doSwitch(forkedBehaviour);
+                    simulatedThreadComponentFactory.create(context, this)
+                        .interpreterFacade().submit(forkedBehaviour);
                 }
 
             });
@@ -524,16 +467,19 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      * @param numberOfLoops
      *            number of loops.
      */
-    private void interpretLoop(final LoopAction object, final int numberOfLoops) {
-        for (int i = 0; i < numberOfLoops; i++) {
+    private InterpreterResult interpretLoop(final LoopAction object, final int numberOfLoops) {
+        InterpreterResult result = InterpreterResult.OK;
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
+                i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
-            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
+            result = resultMerger.merge(result, parentSwitch.doSwitch(object.getBodyBehaviour_Loop()));
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
         }
+        return result;
     }
 
     /**
@@ -545,7 +491,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
      *            parameter of the collection.
      * @return
      */
-    private void iterateOverCollection(final CollectionIteratorAction object, final Parameter parameter) {
+    private InterpreterResult iterateOverCollection(final CollectionIteratorAction object, final Parameter parameter) {
         // TODO make better
         final String idNumberOfLoops = parameter.getParameterName() + ".NUMBER_OF_ELEMENTS";
 
@@ -556,7 +502,9 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
-        for (int i = 0; i < numberOfLoops; i++) {
+        InterpreterResult result = InterpreterResult.OK;
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
+                i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
@@ -587,7 +535,7 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
              * within an iteration.
              */
 
-            this.getParentSwitch().doSwitch(object.getBodyBehaviour_Loop());
+            result = resultMerger.merge(result, parentSwitch.doSwitch(object.getBodyBehaviour_Loop()));
 
             // remove stack frame for value characterisations of inner
             // collection variable
@@ -604,113 +552,6 @@ class RDSeffSwitch extends SeffSwitch<Object> implements IComposableSwitch {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
         }
+        return result;
     }
-
-    /**
-     * @param internalAction
-     * 				The internal action containing the resource demand
-     */
-    private void interpretResourceDemands(final InternalAction internalAction) {
-        final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
-        final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
-
-        for (final ParametricResourceDemand parametricResourceDemand : internalAction.getResourceDemand_Action()) {
-
-            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
-            final String idRequiredResourceType = parametricResourceDemand
-                    .getRequiredResource_ParametricResourceDemand().getId();
-            final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
-                    .getSpecification();
-            final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-            final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
-
-            resourceRegistry.getResourceContainer(resourceContainer.getId())
-            .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
-
-        }
-    }
-
-
-    /**
-     * @param internalAction
-     */
-    private void interpretResourceCall(final InternalAction internalAction) {
-        final AllocationContext allocationContext = this.getAllocationContext(this.allocation);
-        final ResourceContainer resourceContainer = allocationContext.getResourceContainer_AllocationContext();
-
-        for (final ResourceCall resourceCall : internalAction.getResourceCall__Action()) {
-
-            // find the corresponding resource type which was invoked by the resource call
-            final ResourceInterface resourceInterface = resourceCall.getSignature__ResourceCall()
-                    .getResourceInterface__ResourceSignature();
-            final ResourceRepository resourceRepository = resourceInterface.getResourceRepository__ResourceInterface();
-            ResourceType currentResourceType = null;
-
-            for (final ResourceType resourceType : resourceRepository.getAvailableResourceTypes_ResourceRepository()) {
-                for (final ResourceProvidedRole resourceProvidedRole : resourceType
-                        .getResourceProvidedRoles__ResourceInterfaceProvidingEntity()) {
-                    if (resourceProvidedRole.getProvidedResourceInterface__ResourceProvidedRole().getId()
-                            .equals(resourceInterface.getId())) {
-                        currentResourceType = resourceType;
-                        break;
-                    }
-                }
-            }
-
-            final ResourceSignature resourceSignature = resourceCall.getSignature__ResourceCall();
-            final int resourceServiceId = resourceSignature.getResourceServiceId();
-
-            final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
-            final Double evaluatedDemand = NumberConverter.toDouble(
-                    StackContext.evaluateStatic(resourceCall.getNumberOfCalls__ResourceCall().getSpecification(),
-                            Double.class, currentStackFrame));
-            final String idRequiredResourceType = currentResourceType.getId();
-
-            final ResourceRegistry resourceRegistry = this.context.getModel().getResourceRegistry();
-
-            resourceRegistry.getResourceContainer(resourceContainer.getId())
-            .loadActiveResource(this.context.getThread(), resourceServiceId, idRequiredResourceType,
-                    evaluatedDemand);
-
-        }
-    }
-
-
-    /**
-     * Gets the allocation context for the current assembly context stack. The stack is investigated
-     * in a FIFO-manner, i.e., first upper elements are checked. This is needed for the case of sub
-     * systems.
-     *
-     * @param allocation
-     *            The allocation to find a suitable allocation context in.
-     * @return The allocation context.
-     * @throws PCMModelAccessException
-     *             if no allocation context could be found.
-     */
-    private AllocationContext getAllocationContext(final Allocation allocation) {
-        // For iterating top-down through a stack see:
-        // http://stackoverflow.com/questions/16992758/is-there-a-bug-in-java-util-stacks-iterator
-        for (final AllocationContext allocationContext : allocation.getAllocationContexts_Allocation()) {
-            for (final ListIterator<AssemblyContext> iterator = this.context.getAssemblyContextStack()
-                    .listIterator(this.context.getAssemblyContextStack().size()); iterator.hasPrevious();) {
-                if (allocationContext.getAssemblyContext_AllocationContext().getId()
-                        .equals(iterator.previous().getId())) {
-                    return allocationContext;
-                }
-            }
-        }
-
-        throw new PCMModelAccessException("No AllocationContext in Allocation " + allocation + " for AssemblyContext "
-                + this.context.getAssemblyContextStack().peek() + " or its parents.");
-    }
-
-
-	@Override
-	public Switch<Object> getParentSwitch() {
-		if (this.parentSwitch != null) {
-			return this.parentSwitch;
-		}
-
-		return this;
-	}
 }

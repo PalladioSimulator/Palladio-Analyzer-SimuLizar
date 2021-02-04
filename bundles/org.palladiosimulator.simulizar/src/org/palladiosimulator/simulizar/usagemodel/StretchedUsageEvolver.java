@@ -1,8 +1,18 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
-import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import java.util.Optional;
 
+import javax.inject.Named;
+
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
+
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 import tools.descartes.dlim.generator.ModelEvaluator;
 
 /**
@@ -31,16 +41,23 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param evolvedScenario
      *            The scenario evolved by <code>this</code>.
      */
-    public StretchedUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
-            final UsageScenario evolvedScenario) {
-        super(rtState, firstOccurrence, delay, evolvedScenario);
-        this.timeFactor = this.getModel().getConfiguration().getSimuTime() / this.getDLIMFinalDuration();
+    @AssistedInject
+    public StretchedUsageEvolver(@Assisted final double firstOccurrence, @Assisted final double delay,
+            @Assisted final EntityReference<UsageScenario> evolvedScenario,
+            @Named("maxSimTime") Optional<Double> maxSimTime, @Global PCMResourceSetPartition pcmPartition,
+            ISimEventFactory simEventFactory, ISimulationTimeProvider timeProvider) {
+        super(firstOccurrence, delay, evolvedScenario, pcmPartition, simEventFactory, timeProvider);
+        if (maxSimTime.isEmpty()) {
+            throw new IllegalArgumentException("Initializing a streched usage evolver requires a specified maximum simulation time");
+        }
+        this.timeFactor = maxSimTime.get() / this.getDLIMFinalDuration();
+        setDelay(delay / timeFactor);
     }
 
     @Override
     protected double getNewRate(final ModelEvaluator loadEvaluator) {
         final double evaluationTime = this.getCurrentTime() / this.timeFactor;
-        if (evaluationTime == this.getDLIMFinalDuration()) {
+        if (evaluationTime >= this.getDLIMFinalDuration() - DELTA) {
             // The LIMBO evaluator do not define a value at the total duration
             // time, so get a value close to end of the simulation by requesting
             // the value one millionth of a time unit before the total duration

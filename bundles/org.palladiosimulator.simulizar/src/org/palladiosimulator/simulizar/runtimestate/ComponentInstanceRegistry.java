@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-@Singleton
-public class ComponentInstanceRegistry {
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+
+@SimulationRuntimeScope
+public class ComponentInstanceRegistry implements RuntimeStateEntityManager {
     @Inject
     public ComponentInstanceRegistry() {
     }
@@ -52,7 +53,8 @@ public class ComponentInstanceRegistry {
         return this.componentInstances.get(fqid);
     }
     
-    public void cleanUpInstancesAndRegistry() {
+    @Override
+    public void cleanup() {
     	this.componentInstances.values().forEach(SimulatedComponentInstance::cleanUp);
     	this.componentInstances.clear();
     }

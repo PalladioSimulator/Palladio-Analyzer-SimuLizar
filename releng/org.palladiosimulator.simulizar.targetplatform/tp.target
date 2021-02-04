@@ -7,7 +7,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -133,7 +133,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
 			<unit id="org.palladiosimulator.probeframework.feature.feature.group" version="tbd"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/nightly/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
@@ -246,20 +246,20 @@
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
-			<unit id="com.google.dagger.feature.feature.group" version="2.29.1"/>
-			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
+			<unit id="com.google.dagger.feature.feature.group" version="2.31.0"/>
+			<unit id="org.jgrapht.feature.feature.group" version="1.5.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/nightly"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release" refresh="true">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="tbd"/>
 			<unit id="net.bytebuddy.byte-buddy.feature.feature.group" version="tbd"/>
 			<unit id="org.hamcrest.feature.feature.group" version="tbd"/>
-			<unit id="com.google.dagger.feature.feature.group" version="2.29.1"/>
-			<unit id="com.google.auto.factory-annotations.feature.feature.group" version="1.0.0"/>
+			<unit id="com.google.dagger.feature.feature.group" version="2.31"/>
+			<unit id="org.jgrapht.feature.feature.group" version="1.5.0"/>
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/tools/orbit/downloads/2020-06/"/>
+			<repository location="https://download.eclipse.org/tools/orbit/downloads/2020-12/"/>
 			<unit id="org.objenesis" version="2.6.0.v20180420-1519"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">

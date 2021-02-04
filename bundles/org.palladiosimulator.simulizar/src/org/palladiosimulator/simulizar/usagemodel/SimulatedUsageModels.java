@@ -7,21 +7,20 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
 import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
-import org.palladiosimulator.pcm.usagemodel.UsageModel;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
-import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitchFactory;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.usage.ClosedWorkloadUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.ICancellableWorkloadDriver;
@@ -38,37 +37,24 @@ public class SimulatedUsageModels {
     private final Map<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload> openWorkloads = new HashMap<OpenWorkload, de.uka.ipd.sdq.simucomframework.usage.OpenWorkload>();
 
     private final IResourceTableManager resourceTableManager;
-    private final Provider<InterpreterDefaultContext> rootContextProvider;
-    private final PCMPartitionManager partitionManager;
     private final SimuComModel simucomModel;
-    private final UsageScenarioSwitchFactory usageScenarioSwitchFactory;
+    private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
+    private final IScenarioRunnerFactory<Entity> scenarioRunnerFactory;
+    
     
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
-            PCMPartitionManager partitionManager, SimuComModel simucomModel, IResourceTableManager resourceTableManager, UsageScenarioSwitchFactory usageScenarioSwitchFactory) {
+            @Global PCMResourceSetPartition globalPartition, SimuComModel simucomModel, IResourceTableManager resourceTableManager, 
+            EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
+            IScenarioRunnerFactory<Entity> scenarioRunnerFactory) {
         super();
-        this.rootContextProvider = rootContextProvider;
-        this.partitionManager = partitionManager;
         this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
-        this.usageScenarioSwitchFactory = usageScenarioSwitchFactory;
+        this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
+        this.scenarioRunnerFactory = scenarioRunnerFactory;
     }
 
-    /**
-     * Gets workload drivers for the usage scenarios in the usage model
-     *
-     * @return a list of workload drivers
-     */
-    public IWorkloadDriver[] createWorkloadDrivers() {
-        final EList<UsageScenario> usageScenarios = partitionManager.getGlobalPCMModel()
-                .getUsageModel().getUsageScenario_UsageModel();
-        final IWorkloadDriver[] workloads = new IWorkloadDriver[usageScenarios.size()];
-        for (int i = 0; i < usageScenarios.size(); i++) {
-            workloads[i] = this.createAndAddWorkloadDriver(usageScenarios.get(i));
-        }
-        return workloads;
-    }
-    
+
     public IWorkloadDriver createAndAddWorkloadDriver(final UsageScenario usageScenario) {
         // get workload of scenario
         final Workload workload = usageScenario.getWorkload_UsageScenario();
@@ -78,14 +64,33 @@ public class SimulatedUsageModels {
             final de.uka.ipd.sdq.simucomframework.usage.ClosedWorkload driver = this.createClosedWorkloadDriver(workload,
                     usageScenario);
             this.closedWorkloads.put((ClosedWorkload) workload, driver);
+            this.simucomModel.getUsageScenarios().add(driver);
             return driver;
         } else if (workload.eClass() == UsagemodelPackage.eINSTANCE.getOpenWorkload()) {
             final de.uka.ipd.sdq.simucomframework.usage.OpenWorkload driver = this.createOpenWorkloadDriver(workload,
                     usageScenario);
             this.openWorkloads.put((OpenWorkload) workload, driver);
+            this.simucomModel.getUsageScenarios().add(driver);
             return driver;
         } else {
             throw new UnsupportedOperationException("Unsupported Workload Found");
+        }
+    }
+    
+    public void cancelAndUnregisterWorkloadDriver(Workload workload) {
+        var workloadDriver = (new UsagemodelSwitch<ICancellableWorkloadDriver>() {
+            public ICancellableWorkloadDriver caseOpenWorkload(OpenWorkload object) {
+                return SimulatedUsageModels.this.openWorkloads.remove(object);
+            };
+
+            public ICancellableWorkloadDriver caseClosedWorkload(ClosedWorkload object) {
+                return SimulatedUsageModels.this.closedWorkloads.remove(object);
+            };
+        }).doSwitch(workload);
+        if (workloadDriver != null) {
+            workloadDriver.cancel();
+            SimulatedUsageModels.this.simucomModel.getUsageScenarios()
+                .remove(workloadDriver);
         }
     }
 
@@ -101,7 +106,7 @@ public class SimulatedUsageModels {
 
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return SimulatedUsageModels.this.getScenarioRunner(usageScenario, resourceTableManager);
+                return scenarioRunnerFactory.createScenarioRunner(usageScenarioReferenceFactory.createCached(usageScenario));
             }
         };
 
@@ -120,34 +125,13 @@ public class SimulatedUsageModels {
 
             @Override
             public IScenarioRunner createScenarioRunner() {
-                return SimulatedUsageModels.this.getScenarioRunner(usageScenario, resourceTableManager);
+                return scenarioRunnerFactory.createScenarioRunner(usageScenarioReferenceFactory.createCached(usageScenario));
             }
         };
 
         // create workload driver by using given factory
         return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
-    }
-
-    private IScenarioRunner getScenarioRunner(final UsageScenario scenario, IResourceTableManager resourceTableManager) {
-        return new IScenarioRunner() {
-
-            @Override
-            public void scenarioRunner(final SimuComSimProcess thread) {
-                final InterpreterDefaultContext newContext = new InterpreterDefaultContext(
-                        rootContextProvider.get(), thread);
-                final UsageModel usageModel = newContext.getPCMPartitionManager().getLocalPCMModel().getUsageModel();
-                
-                // If the UsageScenario is not contained in the UsageModel (e.g. it has
-                // been removed after the workload scheduled the new user, and before the 
-                // user starts execution) simply exit without processing the scenario.
-                usageModel.getUsageScenario_UsageModel().stream()
-                	.filter(sc -> sc.getId().equals(scenario.getId()))
-                	.findAny().ifPresent(sc -> {
-                	    usageScenarioSwitchFactory.create(newContext).doSwitch(sc);
-                	});
-            }
-        };
     }
 
     public ICancellableWorkloadDriver getWorkloadDriver(final Workload workload) {

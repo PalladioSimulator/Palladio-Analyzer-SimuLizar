@@ -4,48 +4,40 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.inject.Inject;
-import javax.inject.Singleton;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.scaledl.usageevolution.Usage;
-import org.scaledl.usageevolution.UsageEvolution;
-import org.scaledl.usageevolution.UsageevolutionPackage;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
-@Singleton
-public class UsageEvolverFacade {
+@SimulationRuntimeScope
+public class UsageEvolverFacade implements RuntimeStateEntityManager {
 
     protected Map<Usage, PeriodicallyTriggeredUsageEvolver> usageEvolvers;
     
-    /** Runtime state of the simulation. Required to start evolution(s). */
-    private final PCMPartitionManager partitionManager;
     private final ISimulationControl simulationControl;
-    
-    //FIXME: This dependency should be factored out
-    private SimuLizarRuntimeState runtimeState;
+
+    private final LoopingUsageEvolverFactory loopingFactory;
+    private final StretchedUsageEvolverFactory stretchedFactory;
+    private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
 
     @Inject
-    public UsageEvolverFacade(final PCMPartitionManager partitionManager, 
-            final ISimulationControl simulationControl) {
-        this.partitionManager = partitionManager;
+    public UsageEvolverFacade(
+            final ISimulationControl simulationControl,
+            final LoopingUsageEvolverFactory loopingFactory,
+            final StretchedUsageEvolverFactory stretchedFactory,
+            final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory) {
         this.simulationControl = simulationControl;
+        this.loopingFactory = loopingFactory;
+        this.stretchedFactory = stretchedFactory;
         this.usageEvolvers = new HashMap<Usage, PeriodicallyTriggeredUsageEvolver>();
-    }
-
-    public void start(SimuLizarRuntimeState runtimeState) {
-        this.runtimeState = runtimeState;
-        // TODO: add check on duration of evolutions for work parameters.
-        // For now, assume that the duration of these are the same as for the load evolution
-    	UsageEvolution ueModel = partitionManager.findModel(UsageevolutionPackage.eINSTANCE.getUsageEvolution());
-        ueModel.getUsages().forEach(usage -> startUsageEvolution(usage));
+        this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
     }
     
     public void startUsageEvolution(Usage usage) {
-        if (runtimeState == null) {
-            throw new IllegalStateException("The UsageEvolverFacade has not been started yet.");
-        }
         this.usageEvolvers.put(usage, createUsageEvolver(usage));
     }
     
@@ -64,13 +56,11 @@ public class UsageEvolverFacade {
             simulationTimeOffset = simulationControl.getCurrentSimulationTime();
         }
         
+        var ref = usageScenarioReferenceFactory.createCached(usage.getScenario());
         if (usage.isRepeatingPattern()) {
-            return new LoopingUsageEvolver(runtimeState, 0d, timePerStep, usage.getScenario(), simulationTimeOffset);
+            return loopingFactory.create(0d, timePerStep, simulationTimeOffset, ref);
         } else {
-            // TODO remove this line once 'legacy' support is no longer needed.
-            timePerStep = runtimeState.getModel().getConfiguration().getSimuTime()
-                    / (usage.getLoadEvolution().getFinalDuration() + 1);
-            return new StretchedUsageEvolver(runtimeState, 0d, timePerStep, usage.getScenario());
+            return stretchedFactory.create(0.0, timePerStep, ref);
         }
     }
 }

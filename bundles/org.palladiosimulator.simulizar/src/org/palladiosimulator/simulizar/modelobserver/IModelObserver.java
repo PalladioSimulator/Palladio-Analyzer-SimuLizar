@@ -1,14 +1,14 @@
 package org.palladiosimulator.simulizar.modelobserver;
 
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.di.extension.Extension;
 
-public interface IModelObserver {
+public interface IModelObserver extends Extension {
+    
+    default public void initialize() {
+        
+    }
 
-    /**
-     * Syncs PCM models with SimuCom.
-     */
-    public void initialize(final SimuLizarRuntimeState runtimeState);
-
-    public void unregister();
-
+    default void unregister() {
+    }
+    
 }

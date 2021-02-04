@@ -10,9 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Inject;
 import javax.inject.Qualifier;
-import javax.inject.Singleton;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;
@@ -25,8 +23,8 @@ import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.eclipse.emf.ecore.util.EcoreUtil;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.commons.emfutils.EMFCopyHelper;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.PcmPackage;
@@ -44,7 +42,6 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author scheerer
  *
  */
-@Singleton
 public class PCMPartitionManager {
     /**
      * The Global annotation should be used to reference to the global PCMResourceSet partition for
@@ -59,6 +56,19 @@ public class PCMPartitionManager {
     @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Global {
+    }
+    
+    /**
+     * The Local annotation should be used to reference to the PCMResourceSet partition of the
+     * current interpretation scope for constructor injection.
+     * 
+     * The local partition should always be used for model interpretation (i. e. visitor-based
+     * interpreters).
+     */
+    @Qualifier
+    @Target({ ElementType.FIELD, ElementType.PARAMETER, ElementType.METHOD })
+    @Retention(RetentionPolicy.RUNTIME)
+    public @interface Local {
     }
 
     private static final Logger LOGGER = Logger.getLogger(PCMPartitionManager.class.getName());
@@ -120,12 +130,13 @@ public class PCMPartitionManager {
      * @param config
      *            SimuLizar workflow configuration object.
      */
-    @Inject
     public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
         this.blackboard = blackboard;
-        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID);
+        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
+        if (globalPartition == null) {
+            throw new IllegalStateException("The provided blackboard does not contain the required PCM partition");
+        }
         this.currentPartition = this.copyPCMPartition();
-        initRuntimeMeasurementModel();
     }
 
     /**
@@ -141,7 +152,7 @@ public class PCMPartitionManager {
         this.globalPartition = managerToCopy.globalPartition;
     }
 
-    private void initRuntimeMeasurementModel() {
+    public void initialize() {
         Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findAny();
         if (result.isPresent()) {
             var uri = result.get().eResource().getURI().appendFileExtension(RM_MODEL_FILE_EXTENSION);
@@ -151,7 +162,6 @@ public class PCMPartitionManager {
             LOGGER.error("No monitor repository set in global partition.");
         }
     }
-
 
     /**
      * @return the global PCM modeling partition. The global PCM model is the primary model under
@@ -268,15 +278,6 @@ public class PCMPartitionManager {
             return null;
         }
         return result.get(0);
-    }
-
-    /**
-     * @return a snapshot of the current PCMPartitionManager object.
-     * 
-     * @see #PCMPartitionManager(PCMPartitionManager)
-     */
-    public PCMPartitionManager makeSnapshot() {
-        return new PCMPartitionManager(this);
     }
 
     /**

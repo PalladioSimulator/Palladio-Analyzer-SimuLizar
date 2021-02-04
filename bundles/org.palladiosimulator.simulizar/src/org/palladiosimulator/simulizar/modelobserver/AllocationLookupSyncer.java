@@ -2,10 +2,8 @@ package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -13,6 +11,7 @@ import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
@@ -21,15 +20,14 @@ import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
-
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 /**
- * The Allocation Lookup Syncer provides an accessible cache for the mapping of
- * allocation context to resource container. It provides the lookup
- * functionality of the <code>Context</code> for SimuLizar.
+ * The Allocation Lookup Syncer updates the cache for the mapping of
+ * allocation context to resource container.
  * 
  * In contrast to the generated SimuComContext variant, the allocation lookup
  * syncer also supports nested assembly contexts through the usage of
@@ -42,10 +40,12 @@ import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
  * @author Sebastian Krach
  *
  */
-public class AllocationLookupSyncer
-        implements IAssemblyAllocationLookup<EntityReference<ResourceContainer>> {
-    private final Map<String, EntityReference<ResourceContainer>> containerIdStorage = new HashMap<>();
+@SimulationRuntimeScope
+public class AllocationLookupSyncer implements IModelObserver {
     private final EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory;
+    private final AssemblyAllocationManager allocationManager;
+    private PCMResourceSetPartition globalPartition;
+    
     /**
      * Creates a new Allocation Lookup Syncer.
      * 
@@ -56,15 +56,23 @@ public class AllocationLookupSyncer
     @Inject
     public AllocationLookupSyncer(
             EntityReferenceFactory<ResourceContainer> resourceContainerReferenceFactory,
-            PCMPartitionManager modelManager) {
+            @Global PCMResourceSetPartition globalPartition,
+            AssemblyAllocationManager allocationManager) {
         this.resourceContainerReferenceFactory = resourceContainerReferenceFactory;
-        var allocation = modelManager.getGlobalPCMModel().getAllocation();
+        this.globalPartition = globalPartition;
+        this.allocationManager = allocationManager;
+        
+    }
+    
+    @Override
+    public void initialize() {
+        var allocation = globalPartition.getAllocation();
         allocation.eAdapters().add(new EContentAdapter() {
-        	@Override
-        	public void notifyChanged(Notification notification) {
-        		
-        		super.notifyChanged(notification);
-        	}
+            @Override
+            public void notifyChanged(Notification notification) {
+                
+                super.notifyChanged(notification);
+            }
         });
         addInitialAllocations(allocation);
     }
@@ -90,19 +98,6 @@ public class AllocationLookupSyncer
     	
     }
 
-
-    /**
-     * Returns the simulated resource container to which the provided assembly is
-     * allocated to. If the assembly is not allocated directly, but through a
-     * hierarchy of <code>CompositeComponent</code>s, the lookup needs to be done
-     * using the string representation of the <code>FQComponentID</code>.
-     * 
-     * @return the simulated resource container
-     */
-    @Override
-    public EntityReference<ResourceContainer> getAllocatedEntity(String assemblyContextId) {
-        return containerIdStorage.get(assemblyContextId);
-    }
 
     /**
      * Traverses a provided Allocation model and creates mappings for all containers
@@ -133,11 +128,11 @@ public class AllocationLookupSyncer
             EntityReference<ResourceContainer> container) {
         var hierarchy = ctxHierarchy;
         if (ctxHierarchy.isEmpty()) {
-            containerIdStorage.put(ctx.getId(), container);
+            allocationManager.allocateAssembly(ctx.getId(), container);
         } else {
             var newHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
             newHierarchy.push(ctx);
-            containerIdStorage.put(new FQComponentID(newHierarchy).getFQIDString(), container);
+            allocationManager.allocateAssembly(new FQComponentID(newHierarchy).getFQIDString(), container);
             hierarchy = newHierarchy;
         }
 
@@ -166,11 +161,11 @@ public class AllocationLookupSyncer
     protected void removeAssemblyAllocation(AssemblyContext ctx, List<AssemblyContext> ctxHierarchy) {
         var hierarchy = ctxHierarchy;
         if (ctxHierarchy.isEmpty()) {
-            containerIdStorage.remove(ctx.getId());
+            allocationManager.deallocateAssembly(ctx.getId());
         } else {
             var newHierarchy = new LinkedList<AssemblyContext>(ctxHierarchy);
             newHierarchy.push(ctx);
-            containerIdStorage.remove(new FQComponentID(newHierarchy).getFQIDString());
+            allocationManager.deallocateAssembly(new FQComponentID(newHierarchy).getFQIDString());
             hierarchy = newHierarchy;
         }
 

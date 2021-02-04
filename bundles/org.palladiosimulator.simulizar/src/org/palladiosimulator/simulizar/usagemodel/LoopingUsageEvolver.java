@@ -1,9 +1,15 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
+import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
+import dagger.assisted.Assisted;
+import dagger.assisted.AssistedInject;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
+import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 import tools.descartes.dlim.generator.ModelEvaluator;
 
 /**
@@ -32,9 +38,14 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      *            The evolved scenario.
      * @param simulationTimeOffset 
      */
-    public LoopingUsageEvolver(final SimuLizarRuntimeState rtState, final double firstOccurrence, final double delay,
-            final UsageScenario evolvedScenario, double simulationTimeOffset) {
-        super(rtState, firstOccurrence, delay, evolvedScenario);
+    @AssistedInject
+    public LoopingUsageEvolver(@Assisted final double firstOccurrence, @Assisted final double delay,
+            @Assisted double simulationTimeOffset, 
+            @Assisted final EntityReference<UsageScenario> evolvedScenario,
+            @Global PCMResourceSetPartition pcmPartition, 
+            ISimEventFactory simEventFactory,
+            ISimulationTimeProvider timeProvider) {
+        super(firstOccurrence, delay, evolvedScenario, pcmPartition, simEventFactory, timeProvider);
         if (!this.getCorrespondingUsage().isRepeatingPattern()) {
             throw new IllegalArgumentException("The corresponding usage model must contain a repeating pattern.");
         }

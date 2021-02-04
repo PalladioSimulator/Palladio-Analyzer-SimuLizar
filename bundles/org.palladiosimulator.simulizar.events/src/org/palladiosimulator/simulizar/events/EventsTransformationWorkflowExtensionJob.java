@@ -1,35 +1,24 @@
 package org.palladiosimulator.simulizar.events;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import javax.inject.Inject;
+
 import org.palladiosimulator.analyzer.workflow.jobs.EventsTransformationJob;
+import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 
-import de.uka.ipd.sdq.workflow.extension.AbstractWorkflowExtensionJob;
-import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
-import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
-import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
+public class EventsTransformationWorkflowExtensionJob implements ModelCompletionJobContributor {
 
-public class EventsTransformationWorkflowExtensionJob extends AbstractWorkflowExtensionJob<MDSDBlackboard> {
-	public static final String SIMULATE_EVENTS = "simulateEvents";
-	public static final String EVENT_MIDDLEWARE_FILE = "eventMiddleware";
-	public static final String STORE_TRANSFORMED_MODELS = "storeTransformedModels";
-	public static final String STORE_TRANSFORMED_MODELS_PROJECT = "storageProject";
+    private final EventsTransformationConfiguration config;
 
-	public EventsTransformationWorkflowExtensionJob() {
+    @Inject
+    public EventsTransformationWorkflowExtensionJob(EventsTransformationConfiguration config) {
+        this.config = config;
+    }
 
-	}
-
-	@Override
-	public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
-		super.execute(monitor);
-
-		EventsTransformationConfiguration configuration = (EventsTransformationConfiguration) getJobConfiguration();
-		
-		if (configuration.simulateFailures) {
-			EventsTransformationJob delegate = new EventsTransformationJob(configuration.storeTransformedModelsProject,
-					configuration.eventMiddlewareFile, configuration.storeTransformedModels);
-	
-			delegate.setBlackboard(myBlackboard);
-			delegate.execute(monitor);
-		}
-	}
+    @Override
+    public void contribute(Facade delegate) {
+        if (config.simulateEvents) {
+            delegate.contribute(new EventsTransformationJob(config.storeTransformedModelsProject,
+                    config.eventMiddlewareFile, config.storeTransformedModels));
+        }
+    }
 }

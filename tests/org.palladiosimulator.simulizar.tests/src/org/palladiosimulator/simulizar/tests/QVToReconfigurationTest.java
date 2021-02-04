@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -53,6 +53,8 @@ import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationL
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
+
+import com.google.common.collect.Streams;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
@@ -377,18 +379,17 @@ public class QVToReconfigurationTest {
     
     
     private EObject assignMonitorToModelElement(PCMResourceSetPartition pcmResourceSet, String modelElementId) {
-        final TreeIterator<EObject> pcmModelIterator = pcmResourceSet.getRepositories().get(0).eAllContents();
-        EObject monitoredElement = null;
-        while (pcmModelIterator.hasNext()) {
-            final EObject element = pcmModelIterator.next();
-            final EAttribute id = element.eClass()
-                .getEIDAttribute();
-            final Object idAttribute = element.eGet(id);
-            if (idAttribute.toString().equals(modelElementId)) {
-                monitoredElement = element;
-            }
-        }
-        return monitoredElement;
+        var result = pcmResourceSet.getRepositories().stream().map(EObject::eAllContents).flatMap(Streams::stream)
+            .filter(element -> {
+                final EAttribute id = element.eClass()
+                    .getEIDAttribute();
+                final Object idAttribute = element.eGet(id);
+                
+                return idAttribute.toString().equals(modelElementId);
+            })
+            .findAny();
+        assertTrue(result.isPresent());
+        return result.get();
     }
 
     
@@ -405,8 +406,9 @@ public class QVToReconfigurationTest {
 
     private PCMPartitionManager loadPcmModelsIntoBlackboard(SimuLizarWorkflowConfiguration workflowConfig, ResourceSetPartition pcmResourceSet, String reconfigurationRulesFolderPath) {
         final MDSDBlackboard blackboard = new MDSDBlackboard();
-        blackboard.addPartition(LoadPCMModelsIntoBlackboardJob.PCM_MODELS_PARTITION_ID, pcmResourceSet);
+        blackboard.addPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID, pcmResourceSet);
         final PCMPartitionManager pcmPartitionManager = new PCMPartitionManager(blackboard, workflowConfig);
+        pcmPartitionManager.initialize();
         return pcmPartitionManager;
     }
     

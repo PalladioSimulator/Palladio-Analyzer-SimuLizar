@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,10 +15,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreSwitch;
+import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.analyzer.workflow.jobs.LoadSharedPCMLibrariesIntoBlackboard;
-import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
-import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
@@ -146,14 +143,9 @@ public class QVToModelCache {
         MDSDBlackboard blackboard = this.pcmPartitionManager.getBlackboard();
         if (blackboard.hasPartition(Objects.requireNonNull(partitionId, "partitionId must not be null."))) {
             ResourceSetPartition partition = blackboard.getPartition(partitionId);
-            if (partition != null) {
-                List<Resource> resources = partition.getResourceSet().getResources();
-                // handle case when no model has been specified, i.e., resources is an empty list
-                if (!resources.isEmpty()) {
-                    EObject currentModel = resources.get(0).getContents().get(0);
-                    storeModel(currentModel);
-                }
-            }
+            partition.getResourceSet().getResources().stream().map(Resource::getContents)
+                .filter(contents -> !contents.isEmpty() && !isBlacklisted(contents.get(0)))
+                .forEach(contents -> storeModel(contents.get(0)));
         }
     }
 
@@ -243,17 +235,12 @@ public class QVToModelCache {
     private void storeBlackboardModels() {
         assert this.pcmPartitionManager != null;
 
-        storeModel(this.pcmPartitionManager.findModel(RuntimeMeasurementPackage.eINSTANCE.getRuntimeMeasurementModel()));
         // now store the all pcm models (we want the root of each model, the root EObject)
-        this.pcmPartitionManager.getGlobalPCMModel().getResourceSet().getResources().stream().map(Resource::getContents)
-                .filter(contents -> !contents.isEmpty() && !isBlacklisted(contents.get(0)))
-                .forEach(contents -> storeModel(contents.get(0)));
-        // now collect all models that were added to blackboard via extension point
-        ExtensionHelper
-                .getAttributes(SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_ID,
-                        SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_JOB_ATTRIBUTE,
-                        SimulizarConstants.MODEL_LOAD_EXTENSION_POINT_BLACKBOARD_PARTITION_ID_ATTRIBUTE)
-                .forEach(this::storeModelFromBlackboardPartition);
+        var partitions = new HashSet<>(pcmPartitionManager.getBlackboard().getPartitionIds());
+        partitions.remove(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
+        partitions.forEach(this::storeModelFromBlackboardPartition);
+        // We store the default partition last, to avoid conflicts of similar models
+        storeModelFromBlackboardPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
     }
 
     private static boolean isBlacklisted(EObject model) {

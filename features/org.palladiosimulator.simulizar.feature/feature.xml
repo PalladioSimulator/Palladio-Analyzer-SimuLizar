@@ -111,6 +111,7 @@
       <import feature="org.palladiosimulator.metricspec.feature" version="1.0.3.201610151428"/>
       <import plugin="org.palladiosimulator.branding"/>
       <import plugin="com.google.dagger"/>
+      <import plugin="org.jgrapht.core"/>
    </requires>
 
    <plugin

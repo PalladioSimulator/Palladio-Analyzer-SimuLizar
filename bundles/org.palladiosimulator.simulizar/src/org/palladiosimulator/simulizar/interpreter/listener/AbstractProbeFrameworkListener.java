@@ -69,11 +69,15 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
         this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getGenericCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = Objects.requireNonNull(reconfigurator);
-
+    }
+    
+    @Override
+    public void initialize() {
         this.initResponseTimeMeasurements();
         this.initReconfigurationTimeMeasurement();
         this.initExtensionMeasurements();
     }
+    
 
     private void initExtensionMeasurements() {
         Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper.getExecutableExtensions(

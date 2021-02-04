@@ -7,8 +7,17 @@ import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.di.extension.Extension;
 
-public interface IInterpreterListener {
+public interface IInterpreterListener extends Extension {
+    
+    default public void initialize() {
+        
+    }
+    
+    default void cleanup() {
+        
+    }
 
     public void beginUsageScenarioInterpretation(ModelElementPassedEvent<UsageScenario> event);
 
@@ -33,4 +42,5 @@ public interface IInterpreterListener {
     public <R extends ProvidedRole, S extends Signature> void beginAssemblyProvidedOperationCallInterpretation(AssemblyProvidedOperationPassedEvent<R, S> event);
     
     public <R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(AssemblyProvidedOperationPassedEvent<R, S> event);
+    
 }

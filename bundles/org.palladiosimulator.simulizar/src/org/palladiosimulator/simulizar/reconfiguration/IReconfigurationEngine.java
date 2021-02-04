@@ -1,7 +1,10 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
+import javax.inject.Inject;
+
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.simulizar.di.extension.Extension;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
@@ -14,7 +17,7 @@ import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
  * @author snowball
  * 
  */
-public interface IReconfigurationEngine {
+public interface IReconfigurationEngine extends Extension {
 
 	public static int RECONFIGURATION_CHECK_SUCCEEDED = 0;
 	public static int RECONFIGURATION_CHECK_FAILED = 1;
@@ -48,8 +51,14 @@ public interface IReconfigurationEngine {
 	 */
 	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement, IResourceTableManager resourceTableManager);
 	
-	public void setConfiguration(final SimuLizarWorkflowConfiguration configuration);
+	@Inject
+	default void setConfiguration(final SimuLizarWorkflowConfiguration configuration) {
+	    // This needs to be an empty default implementations for dagger to recognize it properly
+	}
 	
-	public void setPCMPartitionManager(final PCMPartitionManager pcmPartitionManager);
+	@Inject
+	default void setPCMPartitionManager(final PCMPartitionManager pcmPartitionManager) {
+	    // This needs to be an empty default implementations for dagger to recognize it properly
+	}
 
 }

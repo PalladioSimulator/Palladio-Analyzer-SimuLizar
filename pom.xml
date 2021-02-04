@@ -24,86 +24,20 @@
 	</modules>
 
 	<profiles>
-
 		<profile>
+			<id>nightly-snapshot-dependencies</id>
 			<activation>
-				<file>
-					<exists>.enable_dagger_auto_factory_annotation_processing</exists>
-				</file>
+				<property>
+					<name>!release</name>
+				</property>
 			</activation>
-
-			<dependencies>
-				<dependency>
-					<groupId>com.google.dagger</groupId>
-					<artifactId>dagger-compiler</artifactId>
-					<version>2.29.1</version>
-					<optional>true</optional>
-				</dependency>
-				<dependency>
-					<groupId>com.google.auto.factory</groupId>
-					<artifactId>auto-factory</artifactId>
-					<version>1.0-beta8</version>
-					<optional>true</optional>
-				</dependency>
-			</dependencies>
-
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.bsc.maven</groupId>
-						<artifactId>maven-processor-plugin</artifactId>
-						<version>4.4</version>
-						<executions>
-							<execution>
-								<id>process</id>
-								<goals>
-									<goal>process</goal>
-								</goals>
-								<phase>generate-sources</phase>
-								<configuration>
-									<processors>
-										<processor>dagger.internal.codegen.ComponentProcessor</processor>
-										<processor>com.google.auto.factory.processor.AutoFactoryProcessor</processor>
-									</processors>
-									<sourceDirectory>src/</sourceDirectory>
-									<outputDirectory>src-gen/</outputDirectory>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-clean-plugin</artifactId>
-						<version>3.1.0</version>
-						<executions>
-							<execution>
-								<id>clean-src-gen</id>
-								<phase>clean</phase>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-								<configuration>
-									<excludeDefaultDirectories>true</excludeDefaultDirectories>
-									<filesets>
-										<fileset>
-											<directory>${project.basedir}</directory>
-											<includes>
-												<include>src-gen/**</include>
-											</includes>
-											<excludes>
-												<exclude>*/.gitkeep</exclude>
-											</excludes>
-										</fileset>
-									</filesets>
-								</configuration>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-
+			<repositories>
+				<repository>
+					<id>sonatype-snapshots</id>
+					<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+				</repository>
+			</repositories> 
 		</profile>
-
 	</profiles>
 
 </project>

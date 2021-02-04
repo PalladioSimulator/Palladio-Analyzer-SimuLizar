@@ -1,13 +1,14 @@
 package org.palladiosimulator.simulizar.launcher;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.apache.log4j.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.palladiosimulator.analyzer.workflow.configurations.PCMWorkflowConfigurationBuilder;
-import org.palladiosimulator.simulizar.launcher.jobs.PCMInterpreterRootCompositeJob;
+import org.palladiosimulator.simulizar.SimuLizarPlatform;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
@@ -16,6 +17,7 @@ import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowLauncher;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowConfigurationBuilder;
 import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
+import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
 /**
  * Factory for the job for launching the pcm interpreter.
@@ -25,14 +27,26 @@ import de.uka.ipd.sdq.workflow.logging.console.LoggerAppenderStruct;
  */
 public class PCMInterpreterLauncher extends SimuComWorkflowLauncher {
 
+    private Optional<MDSDBlackboard> blackboard = Optional.empty();
+    
+    @Override
+    protected MDSDBlackboard createBlackboard() {
+        return blackboard.orElseGet(super::createBlackboard);
+    }
+    
     @Override
     protected IJob createWorkflowJob(final SimuComWorkflowConfiguration config, final ILaunch launch)
             throws CoreException {
         if (!(config instanceof SimuLizarWorkflowConfiguration)) {
             throw new IllegalArgumentException("SimuLizarWorkflowConfiguration expected for PCMInterpreterLauncher");
         }
-
-        return new PCMInterpreterRootCompositeJob((SimuLizarWorkflowConfiguration) config);
+        
+        var rootComponent = SimuLizarPlatform.getPlatformComponent()
+                .analysisFactory()
+                .create((SimuLizarWorkflowConfiguration) config);
+        
+        blackboard = Optional.of(rootComponent.blackboard());
+        return rootComponent.rootJob();
     }
 
     @Override
