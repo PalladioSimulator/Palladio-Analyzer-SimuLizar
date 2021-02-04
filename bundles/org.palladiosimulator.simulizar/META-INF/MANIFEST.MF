@@ -38,12 +38,17 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  de.uka.ipd.sdq.pcm.stochasticexpressions;bundle-version="4.3.0",
  de.uka.ipd.sdq.featureconfig;bundle-version="4.3.0",
  org.apache.commons.lang;bundle-version="2.6.0",
- org.jgrapht.core;bundle-version="1.5.0"
+ org.jgrapht.core;bundle-version="1.5.0",
+ com.google.guava,
+ org.eclipse.xtext.xbase.lib,
+ org.eclipse.xtend.lib,
+ org.eclipse.xtend.lib.macro
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.di.component.core,
  org.palladiosimulator.simulizar.di.component.dependency,
+ org.palladiosimulator.simulizar.di.component.eclipse,
  org.palladiosimulator.simulizar.di.component.interfaces,
  org.palladiosimulator.simulizar.di.extension,
  org.palladiosimulator.simulizar.di.modules.component.core,
@@ -79,6 +84,7 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    de.uka.ipd.sdq.workflow.jobs,
    org.palladiosimulator.analyzer.workflow.jobs,
    de.uka.ipd.sdq.workflow.mdsd.blackboard",
+ org.palladiosimulator.simulizar.launcher.jobs.extensions,
  org.palladiosimulator.simulizar.launcher.partitions;
   uses:="org.scaledl.usageevolution,
    de.uka.ipd.sdq.workflow.mdsd.blackboard,

@@ -37,8 +37,10 @@ public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBla
         setBlackboard(blackboard);
         
         this.addJob(new BlackboardAwareJobProxy<>("Load models into blackboard", modelLoadJob::get));
+        this.addJob(new ResolveModelPartitionsJob());
         this.addJob(new BlackboardAwareJobProxy<>("Run registered model completions", modelCompletionsJob::get));
         this.addJob(new BlackboardAwareJobProxy<>("Run simulizar runtime", () -> runtimeComponentFactory.create().runtimeJob()));
+        
 
         if (configuration.getServiceLevelObjectivesFile() != null
                 && !(configuration.getServiceLevelObjectivesFile().isBlank())) {
