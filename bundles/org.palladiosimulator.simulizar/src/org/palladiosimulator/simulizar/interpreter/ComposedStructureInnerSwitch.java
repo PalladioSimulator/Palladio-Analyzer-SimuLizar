@@ -1,5 +1,9 @@
 package org.palladiosimulator.simulizar.interpreter;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.core.composition.AssemblyConnector;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -15,10 +19,12 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
+import de.uka.ipd.sdq.identifier.Identifier;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -81,15 +87,30 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
         final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(
                 this.context, assemblyConnector.getProvidingAssemblyContext_AssemblyConnector(), this.signature,
                 assemblyConnector.getProvidedRole_AssemblyConnector());
-        var source = resourceContainerLookup
-            .getAllocatedEntity(assemblyConnector.getRequiringAssemblyContext_AssemblyConnector());
-        var target = resourceContainerLookup
-            .getAllocatedEntity(assemblyConnector.getProvidingAssemblyContext_AssemblyConnector());
-
+        var source = getAllocationTarget(assemblyConnector.getRequiringAssemblyContext_AssemblyConnector());
+        var target = getAllocationTarget(assemblyConnector.getProvidingAssemblyContext_AssemblyConnector());
+        
         transmissionInterpreter.interpretTransmission(source, target, context.getStack().currentStackFrame(), context);
         var result = repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
         transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack().peek(), context);
         return result;
+    }
+    
+    protected EntityReference<ResourceContainer> getAllocationTarget(AssemblyContext ctx) {
+        var fqid = getFQComponentID(ctx); 
+        return Objects.requireNonNull(resourceContainerLookup.getAllocatedEntity(fqid),
+                "No allocation registered for assembly context " + fqid);
+    }
+    
+    protected String getFQComponentID(AssemblyContext ctx) {
+        var contextStack = context.getAssemblyContextStack();
+        
+        if (contextStack.size() < 2) return ctx.getId();
+        
+        // We have to strip the system context created by simulizar
+        return Stream.concat(contextStack.subList(1, contextStack.size()).stream(), Stream.of(ctx))
+            .map(Identifier::getId)
+            .collect(Collectors.joining(FQComponentID.SEPARATOR));
     }
 
     /*
