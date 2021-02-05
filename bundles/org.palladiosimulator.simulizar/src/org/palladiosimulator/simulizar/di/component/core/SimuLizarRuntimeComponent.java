@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponen
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RuntimeComponentFactoriesModule;
@@ -52,7 +53,9 @@ public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
     
     SimulatedThreadComponent.Factory interpreterThreadComponentFactory();
     
-    ITransmissionInterpreter<EntityReference<ResourceContainer>,SimulatedStackframe<Object>,InterpreterDefaultContext> transmissionInterpreter(); 
+    ITransmissionInterpreter<EntityReference<ResourceContainer>,SimulatedStackframe<Object>,InterpreterDefaultContext> transmissionInterpreter();
+    
+    ExtensionLookup runtimeExtensionLookup();
 
     @Component.Factory
     public interface Factory {
