@@ -38,7 +38,7 @@ import tools.mdsd.library.standalone.initialization.InitializationTask;
 @ExtendWith(PlatformStandaloneExtension.class)
 public class SimulizarRunConfigTest {
 
-    private static final String MODEL_FOLDER = "/org.palladiosimulator.simulizar.tests/testmodel";
+    private static final String MODEL_FOLDER = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/";
     private static final String ALLOCATION_PATH = MODEL_FOLDER + "/server.allocation";
     private static final String USAGE_MODEL_PATH = MODEL_FOLDER + "/server.usagemodel";
     private static final String MONITOR_REPO_PATH = MODEL_FOLDER + "/monitors/server.monitorrepository";

@@ -70,16 +70,16 @@ public class QVToReconfigurationTest {
     private static final String PCM_TEST_MODEL_SEFF_BRANCH_ACTION_ID = "_1P7G0LwGEeSxGbiYbg6Waw";
     private static final String MEASUREMENT_SPECIFICATION_ID = "_sEx-cMLAEeSZr8oGpigbHA";
  
-    private final static String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.repository";
-    private final static String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.resourceenvironment";
-    private final static String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.system";
-    private final static String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/server.allocation";
-    private final static String MONITOR_REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/monitors/server.monitorrepository";
+    private final static String REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/server.repository";
+    private final static String RESOURCE_ENVIRONMENT_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/server.resourceenvironment";
+    private final static String SYSTEM_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/server.system";
+    private final static String ALLOCATION_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/server.allocation";
+    private final static String MONITOR_REPOSITORY_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/monitors/server.monitorrepository";
 
-    private final static String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addClonedServer";
-    private final static String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/addNewServer";
-    private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/outsource";
-    private final static String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodel/rules/scaleUp";
+    private final static String TRANSFORMATION_RULES_ADD_DUPLICATED_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/rules/addClonedServer";
+    private final static String TRANSFORMATION_RULES_ADD_SERVER_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/rules/addNewServer";
+    private final static String TRANSFORMATION_RULES_OUTSOURCE_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/rules/outsource";
+    private final static String TRANSFORMATION_RULES_SCALE_UP_PATH = "/org.palladiosimulator.simulizar.tests/testmodels/runconfigtest/rules/scaleUp";
 
     private final static String WF_CONFIGURATION_KEY_ALLOCATION_FILE = "allocationFile";
     private final static String REPOSITORY_EXTENSION = "repository";
