@@ -1,9 +1,5 @@
 package org.palladiosimulator.simulizar.action.jobs.config;
 
-import org.palladiosimulator.simulizar.action.jobs.LoadAdaptationBehaviorRepositoryIntoBlackBoardJob;
-
-import de.uka.ipd.sdq.workflow.extension.AbstractExtensionJobConfiguration;
-
 /**
  * This class is the configuration for the {@link LoadAdaptationBehaviorRepositoryIntoBlackBoardJob}
  * .
@@ -12,7 +8,7 @@ import de.uka.ipd.sdq.workflow.extension.AbstractExtensionJobConfiguration;
  * @author Christian Stier, Florian Rosenthal
  *
  */
-public class LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig extends AbstractExtensionJobConfiguration {
+public class LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig {
 
     private String adaptationBehaviorRepositoryPath;
 
@@ -40,21 +36,6 @@ public class LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig extends Abs
      */
     public String getAdaptationBehaviorRepositoryPath() {
         return this.adaptationBehaviorRepositoryPath;
-    }
-
-    @Override
-    public String getErrorMessage() {
-        return "Invalid Action Configuration!";
-    }
-
-    /**
-     * {@inheritDoc}<br>
-     * In this case, the path to the power infrastructure repository model is set to the
-     * out-of-the-box supported Adaptation Behavior Repository path.
-     */
-    @Override
-    public void setDefaults() {
-        this.adaptationBehaviorRepositoryPath = DEFAULT_ADAPTATION_BEHAVIOR_REPOSITORY_PATH;
     }
 
 }

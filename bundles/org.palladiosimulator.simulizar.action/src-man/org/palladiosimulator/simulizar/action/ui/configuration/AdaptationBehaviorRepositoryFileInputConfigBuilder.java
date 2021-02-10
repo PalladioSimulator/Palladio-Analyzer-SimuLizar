@@ -34,5 +34,14 @@ public class AdaptationBehaviorRepositoryFileInputConfigBuilder extends Abstract
 
         return new ExtensionFileInputConfiguration(properties);
     }
+    
+    public static LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig createConfig(Map<String, Object> properties) {
+        if (properties == null || !properties.containsKey(AdaptationBehaviorRepositoryFileInputConfigBuilder.ACTION_MODEL_FILE)) {
+            throw new IllegalArgumentException("Given properties map must contain entry for key "
+                    + AdaptationBehaviorRepositoryFileInputConfigBuilder.ACTION_MODEL_FILE + ".");
+        }
+        String path = String.valueOf(properties.get(AdaptationBehaviorRepositoryFileInputConfigBuilder.ACTION_MODEL_FILE));
+        return new LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig(path);
+    }
 
 }

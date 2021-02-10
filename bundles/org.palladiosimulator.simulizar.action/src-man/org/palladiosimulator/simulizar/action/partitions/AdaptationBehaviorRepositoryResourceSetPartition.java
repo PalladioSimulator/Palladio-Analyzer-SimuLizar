@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.action.partitions;
 
 import java.util.List;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;
 import org.palladiosimulator.simulizar.action.core.CorePackage;
@@ -20,6 +22,10 @@ public class AdaptationBehaviorRepositoryResourceSetPartition extends ResourceSe
     private static final Logger LOGGER = Logger.getLogger(AdaptationBehaviorRepositoryResourceSetPartition.class);
     private AdaptationBehaviorRepository adaptationBehaviorRepositoryModel;
 
+    @Inject
+    public AdaptationBehaviorRepositoryResourceSetPartition() {
+    }
+    
     /**
      * Gets the {@link AdaptationBehaviorRepository} which is currently contained within this
      * partition.

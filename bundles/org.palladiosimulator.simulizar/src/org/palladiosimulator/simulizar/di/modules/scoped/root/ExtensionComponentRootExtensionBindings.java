@@ -12,6 +12,7 @@ import org.palladiosimulator.simulizar.di.modules.component.extensions.Simulatio
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelContribution;
+import org.palladiosimulator.simulizar.launcher.jobs.PartitionContribution;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Module;
@@ -39,6 +40,13 @@ public interface ExtensionComponentRootExtensionBindings {
     @AnalysisRootScope
     static ExtensionLookup provideExtensionLookup(Set<GenericExtensionComponent> genericRuntimeExtensions) {
         return ExtensionLookup.createLookup(genericRuntimeExtensions);
+    }
+    
+    @Provides
+    @AnalysisRootScope
+    @ElementsIntoSet
+    static Set<PartitionContribution> provideExtensionPartitionContribution(ExtensionLookup lookup) {
+        return lookup.lookup(PartitionContribution.class);
     }
     
     @Provides
