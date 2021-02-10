@@ -13,3 +13,4 @@ Require-Bundle: de.uka.ipd.sdq.workflow,
 Import-Package: dagger;version="2.31.0",
  dagger.internal;version="2.31.0",
  javax.inject;version="1.0.0"
+Export-Package: org.palladiosimulator.simulizar.events
