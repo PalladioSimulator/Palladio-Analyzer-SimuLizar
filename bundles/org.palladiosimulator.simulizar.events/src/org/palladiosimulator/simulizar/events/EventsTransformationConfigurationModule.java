@@ -11,9 +11,9 @@ public class EventsTransformationConfigurationModule {
     static EventsTransformationConfiguration provideEventConfig(SimuLizarWorkflowConfiguration config) {
         var attributes = config.getAttributes();
         String eventMiddlewareFile = null;
-        Boolean storeTransformedModels = null;
+        boolean storeTransformedModels = false;
         String storeTransformedModelsProject = null;
-        Boolean simulateEvents =
+        boolean simulateEvents =
                 attributes.containsKey(EventsTransformationConfiguration.SIMULATE_EVENTS)
                 && Boolean.parseBoolean(attributes.get(EventsTransformationConfiguration.SIMULATE_EVENTS).toString());
         if (simulateEvents) {
