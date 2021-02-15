@@ -33,7 +33,7 @@ public interface LinkingResourceSimulationModule {
             SimuLizarWorkflowConfiguration config, Lazy<NoDemandCalculator> noDemand,
             Lazy<MiddlewareCompletionAwareDemandCalculator> middlewareAware,
             Lazy<StackFrameBytesizeAccumulatingDemandCalculator> stackAccumulating) {
-        if (config.getSimulateFailures())
+        if (config.getSimulateLinkingResources())
             return middlewareAware.get();
         else if (config.getSimulateThroughputOfLinkingResources())
             return stackAccumulating.get();
