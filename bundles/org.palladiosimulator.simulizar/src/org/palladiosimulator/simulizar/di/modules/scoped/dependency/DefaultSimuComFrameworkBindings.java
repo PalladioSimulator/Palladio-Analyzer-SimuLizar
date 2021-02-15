@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.scopes.SimuComFrameworkScope;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+import de.uka.ipd.sdq.probfunction.math.IRandomGenerator;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
@@ -42,6 +43,12 @@ public interface DefaultSimuComFrameworkBindings {
     @SimuComFrameworkScope
     static ISimulationControl provideSimulationControl(SimuComModel simuComModel) {
         return simuComModel.getSimulationControl();
+    }
+    
+    @Provides
+    @SimuComFrameworkScope
+    static IRandomGenerator provideRandomGenerator(SimuComModel simuComModel) {
+        return simuComModel.getConfiguration().getRandomGenerator();
     }
     
     @Binds

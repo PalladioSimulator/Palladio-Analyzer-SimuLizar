@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.result;
 
+import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResult;
+
 import com.google.common.collect.ImmutableSet;
 
 /**
@@ -28,4 +30,8 @@ public interface InterpreterResult {
     boolean hasNoIssues();
     
     Iterable<InterpretationIssue> getIssues();
+    
+    public static InterpreterResult of(InterpretationIssue issue) {
+        return BasicInterpreterResult.of(issue);
+    }
 }
