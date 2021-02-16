@@ -5,32 +5,35 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.action.di.ActionRuntimeComponent;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
+import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
+@RuntimeExtensionScope
 public class TransientEffectTransformationCacheKeeper implements IModelObserver {
-	protected static Map<SimuLizarRuntimeState, ModelTransformationCache> CACHE_MAP = new HashMap<>();
-	protected SimuLizarRuntimeState runtimeState = null;
-
-	public static ModelTransformationCache getTransformationCacheForRuntimeState(SimuLizarRuntimeState state) {
-		return TransientEffectTransformationCacheKeeper.CACHE_MAP.get(state);
+	protected static Map<InterpreterDefaultContext, ModelTransformationCache> CACHE_MAP = new HashMap<>();
+    private final InterpreterDefaultContext mainContext;
+	
+	public static ModelTransformationCache getTransformationCacheForRuntimeState(SimuLizarRuntimeState runtimeState) {
+		return TransientEffectTransformationCacheKeeper.CACHE_MAP.get(runtimeState.getMainContext());
 	}
 	
 	@Inject
-	public TransientEffectTransformationCacheKeeper(SimuLizarRuntimeState runtimeState) {
-	    this.runtimeState = runtimeState;
+	public TransientEffectTransformationCacheKeeper(@MainContext InterpreterDefaultContext mainContext) {
+        this.mainContext = mainContext;
 	}
 	
 	@Override
 	public void initialize() {
-		TransientEffectTransformationCacheKeeper.CACHE_MAP.put(runtimeState, new ModelTransformationCache());
+		TransientEffectTransformationCacheKeeper.CACHE_MAP.put(mainContext, new ModelTransformationCache());
 	}
 
 	@Override
 	public void unregister() {
-		ModelTransformationCache cache = TransientEffectTransformationCacheKeeper.CACHE_MAP.remove(this.runtimeState);
+		ModelTransformationCache cache = TransientEffectTransformationCacheKeeper.CACHE_MAP.remove(this.mainContext);
 		cache.clear();
 	}
 

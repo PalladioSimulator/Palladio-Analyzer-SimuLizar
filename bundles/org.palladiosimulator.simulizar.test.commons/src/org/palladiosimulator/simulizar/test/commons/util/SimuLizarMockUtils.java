@@ -1,9 +1,8 @@
 package org.palladiosimulator.simulizar.test.commons.util;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.collection.IsIn.in;
+import static org.hamcrest.collection.IsIn.isIn;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.HashMap;
@@ -161,7 +160,7 @@ public class SimuLizarMockUtils {
                 public ScheduledResource answer(InvocationOnMock invocation) throws Throwable {
                     var prs = invocation.<ProcessingResourceSpecification> getArgument(0);
                     assertThat(invocation.getArgument(0),
-                            is(in(rc.getActiveResourceSpecifications_ResourceContainer())));
+                            isIn(rc.getActiveResourceSpecifications_ResourceContainer()));
 
                     var sr = Mockito.mock(ScheduledResource.class);
                     mockResources.put(prs.getActiveResourceType_ActiveResourceSpecification()

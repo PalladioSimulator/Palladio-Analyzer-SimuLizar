@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
+import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
@@ -31,6 +32,7 @@ import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
  *
  */
 @Deprecated
+@SimulationRuntimeScope
 public class SimuLizarRuntimeState {
 
     protected final SimuComModel model;

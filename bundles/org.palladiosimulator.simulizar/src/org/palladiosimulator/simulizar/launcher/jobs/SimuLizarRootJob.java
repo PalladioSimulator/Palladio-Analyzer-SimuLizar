@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
+import java.util.function.Supplier;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 
@@ -9,6 +11,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.BlackboardAwareJobProxy;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;
+import de.uka.ipd.sdq.workflow.jobs.IJob;
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
 
@@ -31,18 +34,19 @@ public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBla
     @Inject
     public SimuLizarRootJob(final SimuLizarWorkflowConfiguration configuration,
             MDSDBlackboard blackboard,
+            Provider<SimuLizarPrepareBlackboardJob> prepareBlackboardJob,
             Provider<LoadSimuLizarModelsIntoBlackboardJob> modelLoadJob,
             Provider<ModelCompletionsJob> modelCompletionsJob,
             AnalysisRuntimeComponent.Factory runtimeComponentFactory) {
         super(false);
         setBlackboard(blackboard);
         
-        this.addJob(new BlackboardAwareJobProxy<>("Load models into blackboard", modelLoadJob::get));
+        this.addSuppliedJob("Prepare blackboard", prepareBlackboardJob::get);
+        this.addSuppliedJob("Load models into blackboard", modelLoadJob::get);
         this.addJob(new ResolveModelPartitionsJob());
         this.addJob(new ValidatePCMModelsJob(configuration));
-        this.addJob(new BlackboardAwareJobProxy<>("Run registered model completions", modelCompletionsJob::get));
-        this.addJob(new BlackboardAwareJobProxy<>("Run simulizar runtime", () -> runtimeComponentFactory.create().runtimeJob()));
-        
+        this.addSuppliedJob("Run registered model completions", modelCompletionsJob::get);
+        this.addSuppliedJob("Run simulizar runtime", () -> runtimeComponentFactory.create().runtimeJob());
 
         if (configuration.getServiceLevelObjectivesFile() != null
                 && !(configuration.getServiceLevelObjectivesFile().isBlank())) {
@@ -54,6 +58,7 @@ public class SimuLizarRootJob extends SequentialBlackboardInteractingJob<MDSDBla
         this.addJob(new EvaluateResultsJob(configuration));
     }
     
-    
-
+    protected void addSuppliedJob(String jobName, Supplier<IJob> jobSupplier) {
+        this.addJob(new BlackboardAwareJobProxy<>(jobName, jobSupplier));
+    }
 }
