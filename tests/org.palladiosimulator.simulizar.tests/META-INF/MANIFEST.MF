@@ -20,7 +20,6 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  tools.mdsd.junit5utils;bundle-version="0.1.0",
  org.palladiosimulator.examples.package;bundle-version="4.3.0",
  org.palladiosimulator.simulizar.test.commons;bundle-version="5.0.1",
- org.palladiosimulator.commons.stoex.api;bundle-version="4.3.0",
  org.palladiosimulator.simulizar.events
 Import-Package: com.google.common.util.concurrent.internal;version="1.0.1",
  com.google.inject.util;version="1.4.0",
