@@ -4,7 +4,7 @@
       label="Palladio Component Model - Analyzer: SimuLizar - Test Commons"
       version="5.0.0.qualifier"
       plugin="org.palladiosimulator.branding"
-      license-feature="org.palladiosimulator.license"
+      license-feature="org.palladiosimulator.license.epl2"
       license-feature-version="1.0.0">
 
    <description url="http://www.example.com/description">
@@ -32,8 +32,8 @@
       <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="4.3.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.probeframework" version="4.3.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.recorderframework" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="com.google.dagger"/>
-      <import plugin="org.hamcrest"/>
+      <import plugin="com.google.dagger" version="2.3.1" match="greaterOrEqual"/>
+      <import plugin="org.hamcrest" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.junit.platform.commons"/>
       <import plugin="org.mockito.mockito-merged"/>
       <import plugin="javax.inject"/>
