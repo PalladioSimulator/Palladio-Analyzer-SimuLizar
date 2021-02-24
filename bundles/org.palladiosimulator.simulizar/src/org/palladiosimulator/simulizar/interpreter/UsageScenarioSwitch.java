@@ -166,11 +166,13 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                 entryLevelSystemCall.getInputParameterUsages_EntryLevelSystemCall());
+        
         this.context.getResultFrameStack().push(new SimulatedStackframe<>());
         var result = Objects.requireNonNull(providedDelegationSwitch.doSwitch(entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall()));
-        
-        this.context.getResultFrameStack().pop();
         this.context.getStack().removeStackFrame();
+        
+        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack().pop(),
+                entryLevelSystemCall.getOutputParameterUsages_EntryLevelSystemCall(), this.context.getStack().currentStackFrame());
 
         // FIXME We stick to single model elements here even though several would be needed to
         // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]

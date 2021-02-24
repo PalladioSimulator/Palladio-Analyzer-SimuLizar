@@ -16,4 +16,5 @@ public @interface SimulationConfig {
     boolean simulateLinkingResource() default false;
     boolean simulateLinkThroughput() default false;
     boolean simulateReliability() default false;
+    SetConfigProperty[] value() default {};
 }

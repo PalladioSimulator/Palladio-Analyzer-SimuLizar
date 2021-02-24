@@ -56,16 +56,6 @@
 
    <extension
          id="org.palladiosimulator.action"
-         name="Action Model Load Job"
-         point="org.palladiosimulator.simulizar.launcher.modelload">
-      <loadJob
-            blackboardPartitionId="org.palladiosimulator.simulizar.action"
-            loadJob="org.palladiosimulator.simulizar.action.jobs.LoadAdaptationBehaviorRepositoryIntoBlackBoardJob"
-            loadJobConfigBuilder="org.palladiosimulator.simulizar.action.jobs.config.LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfigBuilder">
-      </loadJob>
-   </extension>
-   <extension
-         id="org.palladiosimulator.action"
          name="Action Runtime State Accessor"
          point="org.palladiosimulator.simulizar.runtimestate.runtimestateaccessor">
       <runtimeStateAccessor
@@ -74,10 +64,15 @@
    </extension>
 	<extension-point name="State Transformation Task" id="stratetransformation" schema="schema/org.palladiosimulator.simulizar.action.statetransformation.exsd"/>
  <extension
-       id="org.palladiosimulator.action.util.TransientEffectTransformationCacheKeeper"
-       point="org.palladiosimulator.simulizar.modelobserver">
-    <modelObserver
-          modelObserver="org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper">
-    </modelObserver>
+       point="org.palladiosimulator.simulizar.extension.factory">
+    <component
+          factory="org.palladiosimulator.simulizar.action.di.ActionRootComponent$EclipseFactory">
+    </component>
+ </extension>
+ <extension
+       point="org.palladiosimulator.simulizar.extension.factory">
+    <component
+          factory="org.palladiosimulator.simulizar.action.di.ActionRuntimeComponent$EclipseFactory">
+    </component>
  </extension>
 </plugin>
