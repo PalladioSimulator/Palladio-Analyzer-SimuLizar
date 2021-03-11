@@ -9,9 +9,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
+import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
+import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -34,6 +36,7 @@ import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
@@ -64,8 +67,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @AssistedFactory
     public interface Factory extends RDSeffSwitchContributionFactory {
         @Override
-        RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context,
-                RDSeffElementDispatcher parentSwitch);
+        RDSeffSwitch createRDSeffSwitch(final InterpreterDefaultContext context, RDSeffElementDispatcher parentSwitch);
     }
 
     public static final Boolean SUCCESS = true;
@@ -84,17 +86,14 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     private final ForkedBehaviorProcessFactory forkFactory;
 
     /**
-     * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance, ComposedSwitch)
+     * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance,
+     *      ComposedSwitch)
      */
     @AssistedInject
     RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher parentSwitch,
-            IResourceTableManager resourceTableManager,
-            ComponentInstanceRegistry componentInstanceRegistry,
-            ComposedStructureInnerSwitch.Factory composedSwitchFactory,
-            ForkedBehaviorProcessFactory forkFactory,
-            EventDispatcher eventHelper,
-            InterpreterResultHandler issueHandler,
-            InterpreterResultMerger resultMerger) {
+            IResourceTableManager resourceTableManager, ComponentInstanceRegistry componentInstanceRegistry,
+            ComposedStructureInnerSwitch.Factory composedSwitchFactory, ForkedBehaviorProcessFactory forkFactory,
+            EventDispatcher eventHelper, InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
@@ -103,10 +102,12 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
         this.transitionDeterminer = new TransitionDeterminer(context);
-        this.basicComponentInstance = Optional.ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
-                .filter(SimulatedBasicComponentInstance.class::isInstance)
-                .map(SimulatedBasicComponentInstance.class::cast)
-                .orElseThrow(() -> new IllegalStateException("RDSeffSwitch requires an SimulatedBasicComponentInstance to be initialized already."));
+        this.basicComponentInstance = Optional
+            .ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
+            .filter(SimulatedBasicComponentInstance.class::isInstance)
+            .map(SimulatedBasicComponentInstance.class::cast)
+            .orElseThrow(() -> new IllegalStateException(
+                    "RDSeffSwitch requires an SimulatedBasicComponentInstance to be initialized already."));
         this.resourceTableManager = resourceTableManager;
         this.parentSwitch = parentSwitch;
     }
@@ -116,7 +117,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
      */
     @Override
     public InterpreterResult caseResourceDemandingBehaviour(final ResourceDemandingBehaviour object) {
-        final int stacksize = this.context.getStack().size();
+        final int stacksize = this.context.getStack()
+            .size();
 
         AbstractAction currentAction = null;
         // interpret start action
@@ -136,15 +138,31 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         while (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
                 && currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
             if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Interpret " + currentAction.eClass().getName() + ": " + currentAction);
+                LOGGER.debug("Interpret " + currentAction.eClass()
+                    .getName() + ": " + currentAction);
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
-            result = resultMerger.merge(result, parentSwitch.doSwitch(currentAction));
+
+            // TODO
+            // Search for an adapted pre-interpretation-behavior to execute them before doSwitch()
+            // For example to stop interpretation through InterpreterResult of SWCrashFailure
+            EList<Adapter> adapters = currentAction.eAdapters();
+            
+            PreInterpretationBehaviorAdapter pIBAdapter = (PreInterpretationBehaviorAdapter) EcoreUtil
+                .getAdapter(currentAction.eAdapters(), PreInterpretationBehaviorAdapter.class);
+            if (pIBAdapter != null) {
+                result = resultMerger.merge(result, pIBAdapter.executeBehavior());
+            }
+            if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+                result = resultMerger.merge(result, parentSwitch.doSwitch(currentAction));
+            }
+
             this.firePassedEvent(currentAction, EventType.END);
             currentAction = currentAction.getSuccessor_AbstractAction();
         }
 
-        if (this.context.getStack().size() != stacksize) {
+        if (this.context.getStack()
+            .size() != stacksize) {
             throw new PCMModelInterpreterException("Interpreter did not pop all pushed stackframes");
         }
 
@@ -164,7 +182,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @Override
     public InterpreterResult caseAbstractAction(final AbstractAction object) {
         throw new UnsupportedOperationException(
-                "SEFF Interpreter tried to interpret unsupported action type: " + object.eClass().getName());
+                "SEFF Interpreter tried to interpret unsupported action type: " + object.eClass()
+                    .getName());
     }
 
     /**
@@ -173,24 +192,28 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @Override
     public InterpreterResult caseInternalAction(final InternalAction internalAction) {
         var result = InterpreterResult.OK;
-        context.getStack().createAndPushNewStackFrame(context.getStack().currentStackFrame());
+        context.getStack()
+            .createAndPushNewStackFrame(context.getStack()
+                .currentStackFrame());
         result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action()));
-        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action()));
+        result = resultMerger.merge(result,
+                invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action()));
         // We include the following, once failure simulation has been fully integrated
-        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction()));
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(
+                internalAction.getInternalFailureOccurrenceDescriptions__InternalAction()));
         result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action()));
-        context.getStack().removeStackFrame();
+        context.getStack()
+            .removeStackFrame();
         return result;
     }
-    
+
     private InterpreterResult invokeRecursiveAndHandleFailure(Collection<? extends EObject> nestedElements) {
         var result = InterpreterResult.OK;
-        for (var element: nestedElements) {
+        for (var element : nestedElements) {
             result = resultMerger.merge(result, this.parentSwitch.doSwitch(element));
         }
         return result;
     }
-
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseExternalCallAction(org.palladiosimulator.pcm.seff.ExternalCallAction)
@@ -201,7 +224,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
                 externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
 
         if (externalCall instanceof DelegatingExternalCallAction) {
-            final SimulatedStackframe<Object> currentFrame = this.context.getStack().currentStackFrame();
+            final SimulatedStackframe<Object> currentFrame = this.context.getStack()
+                .currentStackFrame();
             final SimulatedStackframe<Object> callFrame = SimulatedStackHelper.createAndPushNewStackFrame(
                     this.context.getStack(), externalCall.getInputVariableUsages__CallAction(), currentFrame);
             callFrame.addVariables(this.context.getCurrentResultFrame());
@@ -210,14 +234,20 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                     externalCall.getInputVariableUsages__CallAction());
         }
-        final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
-        context.getResultFrameStack().push(new SimulatedStackframe<>());
+        final AssemblyContext myContext = this.context.getAssemblyContextStack()
+            .pop();
+        context.getResultFrameStack()
+            .push(new SimulatedStackframe<>());
         var result = composedStructureSwitch.doSwitch(myContext);
-        this.context.getAssemblyContextStack().push(myContext);
-        this.context.getStack().removeStackFrame();
+        this.context.getAssemblyContextStack()
+            .push(myContext);
+        this.context.getStack()
+            .removeStackFrame();
 
-        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack().pop(),
-                externalCall.getReturnVariableUsage__CallReturnAction(), this.context.getStack().currentStackFrame());
+        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack()
+            .pop(), externalCall.getReturnVariableUsage__CallReturnAction(),
+                this.context.getStack()
+                    .currentStackFrame());
 
         return result;
     }
@@ -240,13 +270,14 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             sb.append("\" [ID: ");
             sb.append(object.getId());
             sb.append("\"] with ");
-            sb.append(object.getBranches_Branch().size());
+            sb.append(object.getBranches_Branch()
+                .size());
             sb.append(" branches.");
 
             LOGGER.debug(sb.toString());
         }
         final AbstractBranchTransition branchTransition = this.transitionDeterminer
-                .determineTransition(abstractBranchTransitions);
+            .determineTransition(abstractBranchTransitions);
 
         /*
          * In case of a guarded transition, it must not necessarily be the case, that any branch
@@ -288,7 +319,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
 
         // get asynced processes
         final List<ForkedBehaviourProcess> asyncProcesses = this
-                .getProcesses(object.getAsynchronousForkedBehaviours_ForkAction(), true, resourceTableManager);
+            .getProcesses(object.getAsynchronousForkedBehaviours_ForkAction(), true, resourceTableManager);
 
         // get synced processes
         final List<ForkedBehaviourProcess> syncProcesses = this.determineSyncedProcesses(object, resourceTableManager);
@@ -314,8 +345,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         final String stoex = iterationCount.getSpecification();
 
         // we expect an int here
-        final int numberOfLoops = StackContext.evaluateStatic(stoex, Integer.class,
-                this.context.getStack().currentStackFrame());
+        final int numberOfLoops = StackContext.evaluateStatic(stoex, Integer.class, this.context.getStack()
+            .currentStackFrame());
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Determined number of loops: " + numberOfLoops + " " + object);
@@ -330,8 +361,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
      */
     @Override
     public InterpreterResult caseSetVariableAction(final SetVariableAction object) {
-        SimulatedStackHelper.addParameterToStackFrame(this.context.getStack().currentStackFrame(),
-                object.getLocalVariableUsages_SetVariableAction(), context.getCurrentResultFrame());
+        SimulatedStackHelper.addParameterToStackFrame(this.context.getStack()
+            .currentStackFrame(), object.getLocalVariableUsages_SetVariableAction(), context.getCurrentResultFrame());
         /*
          * Special attention has to be paid if the random variable to set is an INNER
          * characterisation. In this case, a late evaluating random variable has to be stored with
@@ -352,15 +383,21 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @Override
     public InterpreterResult caseAcquireAction(final AcquireAction acquireAction) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Process " + this.context.getThread().getId() + " tries to acquire "
-                    + acquireAction.getPassiveresource_AcquireAction().getEntityName());
+            LOGGER.debug("Process " + this.context.getThread()
+                .getId() + " tries to acquire "
+                    + acquireAction.getPassiveresource_AcquireAction()
+                        .getEntityName());
         }
         this.basicComponentInstance.acquirePassiveResource(acquireAction.getPassiveresource_AcquireAction(),
-                this.context, this.context.getModel().getConfiguration().getSimulateFailures(),
+                this.context, this.context.getModel()
+                    .getConfiguration()
+                    .getSimulateFailures(),
                 acquireAction.getTimeoutValue());
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Process " + this.context.getThread().getId() + " successfully acquired "
-                    + acquireAction.getPassiveresource_AcquireAction().getEntityName());
+            LOGGER.debug("Process " + this.context.getThread()
+                .getId() + " successfully acquired "
+                    + acquireAction.getPassiveresource_AcquireAction()
+                        .getEntityName());
         }
         return InterpreterResult.OK;
     }
@@ -377,8 +414,10 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         this.basicComponentInstance.releasePassiveResource(releaseAction.getPassiveResource_ReleaseAction(),
                 this.context);
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug("Process " + this.context.getThread().getId() + " released "
-                    + releaseAction.getPassiveResource_ReleaseAction().getEntityName());
+            LOGGER.debug("Process " + this.context.getThread()
+                .getId() + " released "
+                    + releaseAction.getPassiveResource_ReleaseAction()
+                        .getEntityName());
         }
         return InterpreterResult.OK;
     }
@@ -388,8 +427,9 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
      * @param eventType
      */
     private <T extends AbstractAction> void firePassedEvent(final T abstractAction, final EventType eventType) {
-        eventHelper.firePassedEvent(new RDSEFFElementPassedEvent<T>(
-                abstractAction, eventType, this.context, this.context.getAssemblyContextStack().peek()));
+        eventHelper.firePassedEvent(new RDSEFFElementPassedEvent<T>(abstractAction, eventType, this.context,
+                this.context.getAssemblyContextStack()
+                    .peek()));
     }
 
     /**
@@ -416,12 +456,13 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
      *            the fork action.
      * @return a list with synced processes.
      */
-    private List<ForkedBehaviourProcess> determineSyncedProcesses(final ForkAction object, IResourceTableManager resourceTableManager) {
+    private List<ForkedBehaviourProcess> determineSyncedProcesses(final ForkAction object,
+            IResourceTableManager resourceTableManager) {
         List<ForkedBehaviourProcess> syncProcesses = new ArrayList<ForkedBehaviourProcess>();
 
         if (object.getSynchronisingBehaviours_ForkAction() != null) {
             syncProcesses = this.getProcesses(object.getSynchronisingBehaviours_ForkAction()
-                    .getSynchronousForkedBehaviours_SynchronisationPoint(), false, resourceTableManager);
+                .getSynchronousForkedBehaviours_SynchronisationPoint(), false, resourceTableManager);
         }
         return syncProcesses;
     }
@@ -452,8 +493,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
      */
     private InterpreterResult interpretLoop(final LoopAction object, final int numberOfLoops) {
         InterpreterResult result = InterpreterResult.OK;
-        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
-                i < numberOfLoops; i++) {
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
+                && i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
@@ -479,15 +520,15 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         final String idNumberOfLoops = parameter.getParameterName() + ".NUMBER_OF_ELEMENTS";
 
         // get number of loops
-        final int numberOfLoops = StackContext.evaluateStatic(idNumberOfLoops, Integer.class,
-                this.context.getStack().currentStackFrame());
+        final int numberOfLoops = StackContext.evaluateStatic(idNumberOfLoops, Integer.class, this.context.getStack()
+            .currentStackFrame());
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Determined number of loops: " + numberOfLoops + " " + object);
         }
         InterpreterResult result = InterpreterResult.OK;
-        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE && 
-                i < numberOfLoops; i++) {
+        for (int i = 0; issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
+                && i < numberOfLoops; i++) {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Interpret loop number " + i + ": " + object);
             }
@@ -495,7 +536,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             // create new stack frame for value characterizations of inner
             // collection variable
             final SimulatedStackframe<Object> innerVariableStackFrame = this.context.getStack()
-                    .createAndPushNewStackFrame(this.context.getStack().currentStackFrame());
+                .createAndPushNewStackFrame(this.context.getStack()
+                    .currentStackFrame());
 
             /*
              * evaluate value characterization of inner collection variable, store them on created
@@ -522,7 +564,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
 
             // remove stack frame for value characterisations of inner
             // collection variable
-            if (this.context.getStack().currentStackFrame() != innerVariableStackFrame) {
+            if (this.context.getStack()
+                .currentStackFrame() != innerVariableStackFrame) {
                 throw new SimulatedStackAccessException(
                         "Inner value characterisations of inner collection variable expected");
             }
@@ -530,7 +573,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Remove stack frame: " + innerVariableStackFrame);
             }
-            this.context.getStack().removeStackFrame();
+            this.context.getStack()
+                .removeStackFrame();
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Finished loop number " + i + ": " + object);
             }
