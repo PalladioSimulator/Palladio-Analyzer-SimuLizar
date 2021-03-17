@@ -14,7 +14,7 @@ public class LoadFailurescenarioExtensionIntoBlackboardJobConfig {
      *            A string containing the path to the Failure model to load.
      */
     public LoadFailurescenarioExtensionIntoBlackboardJobConfig(String failureModelPath) {
-        if (failureModelPath == null || failureModelPath == "") {
+        if (failureModelPath == null) {
             throw new IllegalArgumentException("Given path must not be null.");
         }
         this.failureModelPath = failureModelPath;

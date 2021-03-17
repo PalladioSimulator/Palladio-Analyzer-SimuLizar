@@ -3,9 +3,15 @@ package org.palladiosimulator.simulizar.failurescenario.interpreter.adapter;
 import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
-public class SWCrashBehavior extends PreInterpretationBehavior {
+/**
+ * Simple Crash behavior which returns the InterpreterResult during its execute() call.
+ * 
+ * @author Jonas Lehmann
+ *
+ */
+public class CrashBehavior extends PreInterpretationBehavior {
 
-	public SWCrashBehavior(InterpreterResult result) {
+	public CrashBehavior(InterpreterResult result) {
 		
 		super(result);
 	}

@@ -8,7 +8,9 @@ import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.failuremodel.failurescenario.Reference;
 import org.palladiosimulator.failuremodel.failuretype.Failure;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.failuremanager.FailureManager;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
 import de.uka.ipd.sdq.simulation.abstractsimengine.SimpleEventBasedSimEntity;
@@ -17,13 +19,15 @@ public class FailureOccurenceSimulationEntity extends SimpleEventBasedSimEntity 
 
 	private static final Logger LOGGER = Logger.getLogger(FailureOccurenceSimulationEntity.class);
 
-	private PreInterpretationBehaviorAdapter pIBAdapter;
+	private final PreInterpretationBehaviorAdapter pIBAdapter;
+	private final PreInterpretationBehavior behavior;
 
 	protected FailureOccurenceSimulationEntity(final ISimEventFactory eventFactory, final double firstOccurrence,
-			PreInterpretationBehaviorAdapter pIBAdapter) {
+			PreInterpretationBehaviorAdapter pIBAdapter, PreInterpretationBehavior behavior) {
 		super(eventFactory, "FailureOccurenceSimulationEntity");
 		this.activate(firstOccurrence);
 		this.pIBAdapter = pIBAdapter;
+		this.behavior = behavior;
 	}
 
 	public double getSimulationTimeOfNextEventTrigger() {
@@ -44,9 +48,6 @@ public class FailureOccurenceSimulationEntity extends SimpleEventBasedSimEntity 
 	}
 
 	protected void triggerInternal() {
-		EList<Adapter> adapters = this.pIBAdapter.getTarget().eAdapters();
-		this.pIBAdapter.getTarget().eAdapters().add(pIBAdapter);
-		EList<Adapter> adapters2 = this.pIBAdapter.getTarget().eAdapters();
-		int i = 1;
+		this.pIBAdapter.addBehavior(behavior);
 	}
 }

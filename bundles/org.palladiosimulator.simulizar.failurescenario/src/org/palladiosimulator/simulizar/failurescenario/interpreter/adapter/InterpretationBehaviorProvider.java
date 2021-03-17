@@ -12,20 +12,16 @@ public class InterpretationBehaviorProvider extends FailuretypeSwitch<PreInterpr
 	
 	@Override
 	public PreInterpretationBehavior caseSWCrashFailure(SWCrashFailure object) {
-		return new SWCrashBehavior(InterpreterResult.of(new FailureOccurredIssue(object)));
+		return new CrashBehavior(InterpreterResult.of(new FailureOccurredIssue(object)));
 	}
 	
 	@Override
 	public PreInterpretationBehavior caseHWCrashFailure(HWCrashFailure object) {
-		
-		//var result = FailureManager;
-		return null;
+		return new CrashBehavior(InterpreterResult.of(new FailureOccurredIssue(object)));
 	}
 	
 	@Override
 	public PreInterpretationBehavior caseLinkCrashFailure(LinkCrashFailure object) {
-		
-		//var result = FailureManager;
-		return null;
+		return new CrashBehavior(InterpreterResult.of(new FailureOccurredIssue(object)));
 	}
 }

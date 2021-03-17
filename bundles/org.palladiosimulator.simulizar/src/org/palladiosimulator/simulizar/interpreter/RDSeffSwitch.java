@@ -9,11 +9,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.notify.Adapter;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.ComposedSwitch;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
@@ -44,6 +42,7 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandl
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
@@ -84,6 +83,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     private final InterpreterResultHandler issueHandler;
     private final InterpreterResultMerger resultMerger;
     private final ForkedBehaviorProcessFactory forkFactory;
+    private final PreInterpretationBehaviorManager pibManager;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance,
@@ -93,7 +93,8 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     RDSeffSwitch(@Assisted final InterpreterDefaultContext context, @Assisted RDSeffElementDispatcher parentSwitch,
             IResourceTableManager resourceTableManager, ComponentInstanceRegistry componentInstanceRegistry,
             ComposedStructureInnerSwitch.Factory composedSwitchFactory, ForkedBehaviorProcessFactory forkFactory,
-            EventDispatcher eventHelper, InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger) {
+            EventDispatcher eventHelper, InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger,
+            PreInterpretationBehaviorManager pibManager) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
@@ -101,6 +102,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         this.eventHelper = eventHelper;
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
+        this.pibManager = pibManager;
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.basicComponentInstance = Optional
             .ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
@@ -143,15 +145,12 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
 
-            // TODO
             // Search for an adapted pre-interpretation-behavior to execute them before doSwitch()
-            // For example to stop interpretation through InterpreterResult of SWCrashFailure
-            EList<Adapter> adapters = currentAction.eAdapters();
-            
-            PreInterpretationBehaviorAdapter pIBAdapter = (PreInterpretationBehaviorAdapter) EcoreUtil
-                .getAdapter(currentAction.eAdapters(), PreInterpretationBehaviorAdapter.class);
-            if (pIBAdapter != null) {
-                result = resultMerger.merge(result, pIBAdapter.executeBehavior());
+            // For example to stop interpretation through InterpretationIssue of SWCrashFailure
+            if (pibManager.hasAdapterForEntityAlreadyBeenCreated(currentAction.getId())) {
+                PreInterpretationBehaviorAdapter adapter = pibManager.getAdapterForEntity(currentAction.getId());
+                InterpreterResult newResult = adapter.executeBehavior();
+                result = resultMerger.merge(result, newResult);
             }
             if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
                 result = resultMerger.merge(result, parentSwitch.doSwitch(currentAction));

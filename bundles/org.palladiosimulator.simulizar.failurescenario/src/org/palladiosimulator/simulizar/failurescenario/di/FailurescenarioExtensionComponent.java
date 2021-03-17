@@ -12,7 +12,9 @@ import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 import dagger.Component;
 
 @Component(dependencies = { SimuLizarRuntimeComponent.class, SimuComFrameworkComponent.class,
-		SimEngineComponent.class })
+		SimEngineComponent.class }
+//, modules = {FailurescenarioExtensionModule.class}
+)
 @RuntimeExtensionScope
 public interface FailurescenarioExtensionComponent extends ExtensionComponent {
 
