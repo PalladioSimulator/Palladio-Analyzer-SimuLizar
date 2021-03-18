@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.interpreter.adapter;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**
- * Behavior for a PreInterpretationBehaviorAdapter.
+ * Behavior for a PreInterpretationBehaviorContainer.
  * 
  * @author Jonas Lehmann
  *

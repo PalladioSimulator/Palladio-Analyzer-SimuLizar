@@ -14,7 +14,7 @@ import org.palladiosimulator.failuremodel.failurescenario.FailurescenarioPackage
 import org.palladiosimulator.simulizar.failurescenario.interpreter.adapter.InterpretationBehaviorProvider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.adapter.ReferenceResolverSwitch;
 import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
@@ -30,6 +30,7 @@ public class FailurescenarioObserver implements IModelObserver {
 	private FailureScenarioRepository fsRepository;
 	private ISimEventFactory simEventFactory;
 	private final PreInterpretationBehaviorManager pibManager;
+	//private final ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource> linkingResourceAccess;
 
 	@Inject
 	public FailurescenarioObserver(ISimEventFactory simEventFactory, @Global PCMResourceSetPartition globalPartition,
@@ -38,6 +39,11 @@ public class FailurescenarioObserver implements IModelObserver {
 		this.globalPartition = globalPartition;
 		this.pibManager = pibManager;
 		this.fsRepository = null;
+		
+//		var link = linkingResourceAccess.getSimulatedEntity(l.getId());
+//      if(link != null) {
+//          ((SimulatedLinkingResource) link).getUnderlyingResource().getId();
+//      }
 	}
 
 	@Override
@@ -52,7 +58,11 @@ public class FailurescenarioObserver implements IModelObserver {
 	}
 
 	private void registerOccurences(FailureScenario fs) {
-
+		// Only FS with the attribute executionEnabled == true are interpreted.
+		if (!fs.getExecutionEnabled()) {
+			return;
+		}
+		
 		InterpretationBehaviorProvider ibProvider = new InterpretationBehaviorProvider();
 		ReferenceResolverSwitch referenceResolver = new ReferenceResolverSwitch();
 
@@ -66,12 +76,12 @@ public class FailurescenarioObserver implements IModelObserver {
 
 			// if failuretype is already supported create event/simulationEntity
 			if (b != null && id != null) {
-				// get the global adapter of the failure-attached-simEntity and add an occurence
+				// get the global container of the failure-attached-simEntity and add an occurence
 				// during simulation.
-				// when it is triggered it adds the PreInterpretationBehavior to the adapter.
-				PreInterpretationBehaviorAdapter adapter = pibManager.getAdapterForEntity(id);
+				// when it is triggered it adds the PreInterpretationBehavior to the container.
+				PreInterpretationBehaviorContainer pibcontainer = pibManager.getContainerForEntity(id);
 				failureSimEntities.add(new FailureOccurenceSimulationEntity(simEventFactory,
-						Double.parseDouble(o.getPointInTime().getSpecification()), adapter, b));
+						Double.parseDouble(o.getPointInTime().getSpecification()), pibcontainer, b));
 			}
 		});
 	}

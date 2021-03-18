@@ -15,7 +15,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_performance.util.SeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
@@ -81,15 +81,15 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         var rcEntity = Objects.requireNonNull(allocationLookup.getAllocatedEntity(fqid),
                 () -> "No allocation found for assembly identified by " + fqid);
 
-        // Search for an adapted pre-interpretation-behavior to execute them before loadActiveResource()
+        // Search for pre-interpretation-behaviors to execute them before loadActiveResource()
         // For example to stop interpretation through InterpretationIssue of HWCrashFailure
         InterpreterResult result = InterpreterResult.OK;
         for (AbstractScheduledResource r : rcAccess.getSimulatedEntity(rcEntity.getId())
                 .getAllActiveResources().values()) {
             String resourceId = r.getName();
-            if (pibManager.hasAdapterForEntityAlreadyBeenCreated(resourceId)) {
-                PreInterpretationBehaviorAdapter adapter = pibManager.getAdapterForEntity(resourceId);
-                InterpreterResult newResult = adapter.executeBehavior();
+            if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(resourceId)) {
+                PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(resourceId);
+                InterpreterResult newResult = pibContainer.executeBehaviors();
                 result = resultMerger.merge(result, newResult);
             }
         }

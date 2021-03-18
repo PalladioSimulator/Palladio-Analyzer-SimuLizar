@@ -34,7 +34,7 @@ import org.palladiosimulator.pcm.seff.util.SeffSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.exceptions.SimulatedStackAccessException;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.RDSEFFElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
@@ -145,11 +145,11 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             }
             this.firePassedEvent(currentAction, EventType.BEGIN);
 
-            // Search for an adapted pre-interpretation-behavior to execute them before doSwitch()
+            // Search for pre-interpretation-behaviors to execute them before doSwitch()
             // For example to stop interpretation through InterpretationIssue of SWCrashFailure
-            if (pibManager.hasAdapterForEntityAlreadyBeenCreated(currentAction.getId())) {
-                PreInterpretationBehaviorAdapter adapter = pibManager.getAdapterForEntity(currentAction.getId());
-                InterpreterResult newResult = adapter.executeBehavior();
+            if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(currentAction.getId())) {
+                PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(currentAction.getId());
+                InterpreterResult newResult = pibContainer.executeBehaviors();
                 result = resultMerger.merge(result, newResult);
             }
             if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {

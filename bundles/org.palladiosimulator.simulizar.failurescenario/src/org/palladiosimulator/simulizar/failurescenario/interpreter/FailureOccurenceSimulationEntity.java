@@ -3,14 +3,8 @@ package org.palladiosimulator.simulizar.failurescenario.interpreter;
 import java.util.Optional;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.notify.Adapter;
-import org.eclipse.emf.common.util.EList;
-import org.palladiosimulator.failuremodel.failurescenario.Reference;
-import org.palladiosimulator.failuremodel.failuretype.Failure;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.failuremanager.FailureManager;
 import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
-import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
 
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
 import de.uka.ipd.sdq.simulation.abstractsimengine.SimpleEventBasedSimEntity;
@@ -19,14 +13,14 @@ public class FailureOccurenceSimulationEntity extends SimpleEventBasedSimEntity 
 
 	private static final Logger LOGGER = Logger.getLogger(FailureOccurenceSimulationEntity.class);
 
-	private final PreInterpretationBehaviorAdapter pIBAdapter;
+	private final PreInterpretationBehaviorContainer pIBContainer;
 	private final PreInterpretationBehavior behavior;
 
 	protected FailureOccurenceSimulationEntity(final ISimEventFactory eventFactory, final double firstOccurrence,
-			PreInterpretationBehaviorAdapter pIBAdapter, PreInterpretationBehavior behavior) {
+			PreInterpretationBehaviorContainer pIBContainer, PreInterpretationBehavior behavior) {
 		super(eventFactory, "FailureOccurenceSimulationEntity");
 		this.activate(firstOccurrence);
-		this.pIBAdapter = pIBAdapter;
+		this.pIBContainer = pIBContainer;
 		this.behavior = behavior;
 	}
 
@@ -48,6 +42,6 @@ public class FailureOccurenceSimulationEntity extends SimpleEventBasedSimEntity 
 	}
 
 	protected void triggerInternal() {
-		this.pIBAdapter.addBehavior(behavior);
+		this.pIBContainer.addBehavior(behavior);
 	}
 }

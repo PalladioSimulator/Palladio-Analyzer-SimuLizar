@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorAdapter;
+import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadDemandCalculator;
@@ -15,9 +15,6 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandl
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
-
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
 
 /**
  * The {@link DefaultSimuLizarTransmissionInterpreter} encapsulated the default behavior of how link
@@ -49,7 +46,6 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
     private final InterpreterResultHandler issueHandler;
     private final InterpreterResultMerger resultMerger;
     private final PreInterpretationBehaviorManager pibManager;
-    //private final ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource> linkingResourceAccess;
 
     @Inject
     public DefaultSimuLizarTransmissionInterpreter(
@@ -57,16 +53,13 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
             ITransmissionPayloadDemandCalculator<PayloadType, Double> calculator,
             ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext> transmissionSimulation,
             InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger,
-            PreInterpretationBehaviorManager pibManager
-            //ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource> linkingResourceAccess
-            ) {
+            PreInterpretationBehaviorManager pibManager) {
         this.router = router;
         this.calculator = calculator;
         this.transmissionSimulation = transmissionSimulation;
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
         this.pibManager = pibManager;
-        //this.linkingResourceAccess = linkingResourceAccess;
     }
 
     @Override
@@ -79,19 +72,13 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
             throw new RuntimeException(
                     "Could not determine route between nodes. This should be turned into a simulation feature.");
         } else {
-            // TODO
-
-            // Search for an adapted pre-interpretation-behavior to execute them before
-            // simulateTransmission()
+            // Search for pre-interpretation-behaviors to execute them before simulateTransmission()
             // For example to stop interpretation through InterpretationIssue of LinkCrashFailure
-
             for (EntityReference<LinkingResource> l : links.get()) {
-                String identifier = l.getId();
-                //var link = linkingResourceAccess.getSimulatedEntity(l.getId());
                 String linkId = l.getId();
-                if (pibManager.hasAdapterForEntityAlreadyBeenCreated(linkId)) {
-                    PreInterpretationBehaviorAdapter adapter = pibManager.getAdapterForEntity(linkId);
-                    InterpreterResult newResult = adapter.executeBehavior();
+                if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(linkId)) {
+                    PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(linkId);
+                    InterpreterResult newResult = pibContainer.executeBehaviors();
                     result = resultMerger.merge(result, newResult);
                 }
             }
