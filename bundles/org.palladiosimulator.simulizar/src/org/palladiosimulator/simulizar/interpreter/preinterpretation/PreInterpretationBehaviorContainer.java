@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.interpreter.adapter;
+package org.palladiosimulator.simulizar.interpreter.preinterpretation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,12 @@ import javax.inject.Inject;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 
+/**
+ * Container to collect PreInterpretationBehaviors and execute them all together.
+ * 
+ * @author Jonas Lehmann
+ *
+ */
 public class PreInterpretationBehaviorContainer {
     
     private List<PreInterpretationBehavior> behaviors;

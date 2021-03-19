@@ -1,11 +1,11 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.adapter;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation;
 
 import org.palladiosimulator.failuremodel.failuretype.HWCrashFailure;
 import org.palladiosimulator.failuremodel.failuretype.LinkCrashFailure;
 import org.palladiosimulator.failuremodel.failuretype.SWCrashFailure;
 import org.palladiosimulator.failuremodel.failuretype.util.FailuretypeSwitch;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.issue.FailureOccurredIssue;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
+import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 public class InterpretationBehaviorProvider extends FailuretypeSwitch<PreInterpretationBehavior>{

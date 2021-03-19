@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.interpreter.adapter;
+package org.palladiosimulator.simulizar.interpreter.preinterpretation;
 
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 

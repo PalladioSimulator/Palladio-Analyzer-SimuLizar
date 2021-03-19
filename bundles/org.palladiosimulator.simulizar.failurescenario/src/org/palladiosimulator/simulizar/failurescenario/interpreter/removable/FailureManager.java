@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.failuremanager;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.removable;
 
 public interface FailureManager {
 	

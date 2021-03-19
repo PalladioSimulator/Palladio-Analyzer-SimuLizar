@@ -11,10 +11,7 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenario;
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenarioRepository;
 import org.palladiosimulator.failuremodel.failurescenario.FailurescenarioPackage;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.adapter.InterpretationBehaviorProvider;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.adapter.ReferenceResolverSwitch;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehaviorContainer;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation.ReferenceResolverSwitch;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
@@ -30,7 +27,8 @@ public class FailurescenarioObserver implements IModelObserver {
 	private FailureScenarioRepository fsRepository;
 	private ISimEventFactory simEventFactory;
 	private final PreInterpretationBehaviorManager pibManager;
-	//private final ISimulatedModelEntityAccess<LinkingResource, SimulatedLinkingResource> linkingResourceAccess;
+	// private final ISimulatedModelEntityAccess<LinkingResource,
+	// SimulatedLinkingResource> linkingResourceAccess;
 
 	@Inject
 	public FailurescenarioObserver(ISimEventFactory simEventFactory, @Global PCMResourceSetPartition globalPartition,
@@ -39,7 +37,7 @@ public class FailurescenarioObserver implements IModelObserver {
 		this.globalPartition = globalPartition;
 		this.pibManager = pibManager;
 		this.fsRepository = null;
-		
+
 //		var link = linkingResourceAccess.getSimulatedEntity(l.getId());
 //      if(link != null) {
 //          ((SimulatedLinkingResource) link).getUnderlyingResource().getId();
@@ -62,27 +60,43 @@ public class FailurescenarioObserver implements IModelObserver {
 		if (!fs.getExecutionEnabled()) {
 			return;
 		}
-		
-		InterpretationBehaviorProvider ibProvider = new InterpretationBehaviorProvider();
-		ReferenceResolverSwitch referenceResolver = new ReferenceResolverSwitch();
 
-		List<FailureOccurenceSimulationEntity> failureSimEntities = new ArrayList<FailureOccurenceSimulationEntity>();
+		ReferenceResolverSwitch referenceResolver = new ReferenceResolverSwitch();
+		FailureBehaviorChangesProvider fbChangesProvider = new FailureBehaviorChangesProvider();
+
+		List<FailureBehaviorChangingSimulationEntity> failureSimEntities = new ArrayList<FailureBehaviorChangingSimulationEntity>();
 
 		fs.getOccurences().forEach(o -> {
-			// get the failure behavior
-			PreInterpretationBehavior b = ibProvider.doSwitch(o.getFailure());
-			// get the reference where the adapter should be added
-			String id = referenceResolver.doSwitch(o.getOrigin());
+			
+			List<FailureBehaviorChangeDTO> fbChangeDTOs = fbChangesProvider.doSwitch(o.getFailure());
 
-			// if failuretype is already supported create event/simulationEntity
-			if (b != null && id != null) {
-				// get the global container of the failure-attached-simEntity and add an occurence
-				// during simulation.
-				// when it is triggered it adds the PreInterpretationBehavior to the container.
-				PreInterpretationBehaviorContainer pibcontainer = pibManager.getContainerForEntity(id);
-				failureSimEntities.add(new FailureOccurenceSimulationEntity(simEventFactory,
-						Double.parseDouble(o.getPointInTime().getSpecification()), pibcontainer, b));
+			for (FailureBehaviorChangeDTO dto : fbChangeDTOs) {
+				// check if failuretype is already supported
+				// && try to allocate context of the strategy
+				if (dto != null && dto.getStrategy().allocateContext(referenceResolver, pibManager, o)) {
+
+					double simulationPointInTime = Double.parseDouble(o.getPointInTime().getSpecification());
+					failureSimEntities.add(new FailureBehaviorChangingSimulationEntity(simEventFactory,
+							simulationPointInTime + dto.getRelativePointInTime(), dto.getStrategy()));
+				}
 			}
+
+//			// get the failure behavior
+//			InterpretationBehaviorProvider ibProvider = new InterpretationBehaviorProvider();
+//			PreInterpretationBehavior b = ibProvider.doSwitch(o.getFailure());
+//			// get the reference where the adapter should be added
+//			String id = referenceResolver.doSwitch(o.getOrigin());
+//
+//			// if failuretype is already supported create event/simulationEntity
+//			if (b != null && id != null) {
+//				// get the global container of the failure-attached-simEntity and add an
+//				// occurence
+//				// during simulation.
+//				// when it is triggered it adds the PreInterpretationBehavior to the container.
+//				PreInterpretationBehaviorContainer pibcontainer = pibManager.getContainerForEntity(id);
+//				failureSimEntities.add(new FailureBehaviorChangingSimulationEntity(simEventFactory,
+//						Double.parseDouble(o.getPointInTime().getSpecification()), pibcontainer, b));
+//			}
 		});
 	}
 

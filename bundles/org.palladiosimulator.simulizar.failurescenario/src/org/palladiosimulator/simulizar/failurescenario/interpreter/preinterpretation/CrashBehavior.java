@@ -1,6 +1,6 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.adapter;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation;
 
-import org.palladiosimulator.simulizar.interpreter.adapter.PreInterpretationBehavior;
+import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**

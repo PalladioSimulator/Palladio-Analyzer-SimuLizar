@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.failuremanager;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.removable;
 
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.palladiosimulator.pcm.seff.impl.InternalActionImpl;

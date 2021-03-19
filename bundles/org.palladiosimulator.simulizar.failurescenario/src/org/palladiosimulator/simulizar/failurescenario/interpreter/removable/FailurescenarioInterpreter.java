@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.removable;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.failuremodel.failurescenario.Occurence;
