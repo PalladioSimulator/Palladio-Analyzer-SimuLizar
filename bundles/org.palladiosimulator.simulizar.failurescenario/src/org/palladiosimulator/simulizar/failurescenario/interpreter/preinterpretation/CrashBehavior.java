@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation;
 
+import org.palladiosimulator.failuremodel.failuretype.Failure;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.issue.FailureOccurredIssue;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
@@ -11,8 +13,7 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
  */
 public class CrashBehavior extends PreInterpretationBehavior {
 
-	public CrashBehavior(InterpreterResult result) {
-		
-		super(result);
+	public CrashBehavior(Failure failure) {
+		super(InterpreterResult.of(new FailureOccurredIssue(failure)));
 	}
 }

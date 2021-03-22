@@ -89,7 +89,8 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
             String resourceId = r.getName();
             if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(resourceId)) {
                 PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(resourceId);
-                InterpreterResult newResult = pibContainer.executeBehaviors();
+                //TODO inject context??
+                InterpreterResult newResult = pibContainer.executeBehaviors(null);
                 result = resultMerger.merge(result, newResult);
             }
         }

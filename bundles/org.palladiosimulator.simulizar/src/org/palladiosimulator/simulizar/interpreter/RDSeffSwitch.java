@@ -149,7 +149,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             // For example to stop interpretation through InterpretationIssue of SWCrashFailure
             if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(currentAction.getId())) {
                 PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(currentAction.getId());
-                InterpreterResult newResult = pibContainer.executeBehaviors();
+                InterpreterResult newResult = pibContainer.executeBehaviors(context);
                 result = resultMerger.merge(result, newResult);
             }
             if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {

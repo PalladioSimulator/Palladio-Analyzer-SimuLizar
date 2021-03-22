@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter.preinterpretation;
 
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**
@@ -21,7 +22,7 @@ public abstract class PreInterpretationBehavior {
      * After that call super.execute(); to return the InterpreterResult.
      * @return the InterpreterResult
      */
-    public InterpreterResult execute() {
+    public InterpreterResult execute(InterpreterDefaultContext context) {
         return this.result;
     }
 

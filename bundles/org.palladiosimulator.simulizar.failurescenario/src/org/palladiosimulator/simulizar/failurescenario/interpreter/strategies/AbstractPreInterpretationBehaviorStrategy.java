@@ -1,24 +1,21 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
 import org.palladiosimulator.failuremodel.failurescenario.Occurence;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation.ReferenceResolverSwitch;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ReferenceResolverSwitch;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ScheduledResourceProviderSwitch;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 
-public abstract class AbstractCrashBehaviorStrategy implements FailureBehaviorChangingStrategy {
+public abstract class AbstractPreInterpretationBehaviorStrategy implements FailureBehaviorChangingStrategy {
 
 	protected PreInterpretationBehaviorContainer pIBContainer;
 	protected final PreInterpretationBehavior behavior;
 
-	public AbstractCrashBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer,
+	public AbstractPreInterpretationBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer,
 			PreInterpretationBehavior behavior) {
 		this.pIBContainer = pIBContainer;
 		this.behavior = behavior;
-	}
-
-	public AbstractCrashBehaviorStrategy(PreInterpretationBehavior behavior) {
-		this(null, behavior);
 	}
 
 	@Override
@@ -33,9 +30,11 @@ public abstract class AbstractCrashBehaviorStrategy implements FailureBehaviorCh
 	}
 
 	@Override
-	public boolean allocateContext(ReferenceResolverSwitch r, PreInterpretationBehaviorManager pibManager,
+	public boolean allocateContext(ReferenceResolverSwitch referenceResolver,
+			ScheduledResourceProviderSwitch resourceProvider, PreInterpretationBehaviorManager pibManager,
 			Occurence o) {
-		String id = r.doSwitch(o.getOrigin());
+		// get the reference where the adapter should be added
+		String id = referenceResolver.doSwitch(o.getOrigin());
 		if (id == null) {
 			return false;
 		}

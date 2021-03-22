@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 
@@ -25,10 +26,10 @@ public class PreInterpretationBehaviorContainer {
         this.behaviors = new ArrayList<PreInterpretationBehavior>();
     }
     
-    public InterpreterResult executeBehaviors() {
+    public InterpreterResult executeBehaviors(InterpreterDefaultContext context) {
         InterpreterResult result = InterpreterResult.OK;
         for (PreInterpretationBehavior b : behaviors) {
-            result = merger.merge(result, b.execute());
+            result = merger.merge(result, b.execute(context));
         }
         return result;
     }

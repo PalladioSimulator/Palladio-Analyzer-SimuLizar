@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.provider;
 
 import org.palladiosimulator.failuremodel.failurescenario.InternalActionReference;
 import org.palladiosimulator.failuremodel.failurescenario.LinkingResourceReference;

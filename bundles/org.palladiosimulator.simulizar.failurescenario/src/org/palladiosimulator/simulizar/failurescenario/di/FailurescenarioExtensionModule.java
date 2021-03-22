@@ -1,7 +1,6 @@
 package org.palladiosimulator.simulizar.failurescenario.di;
 
-import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
-import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 import dagger.Binds;
@@ -11,5 +10,5 @@ import dagger.Module;
 public interface FailurescenarioExtensionModule {
 	@Binds
     @RuntimeExtensionScope
-    InterpreterResultMerger bindResultMerger(BasicInterpreterResultMerger impl);
+	InterpreterDefaultContext bindContext(InterpreterDefaultContext impl);
 }
