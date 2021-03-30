@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation.DelayBehavior;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DelayBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.AbstractPreInterpretationBehaviorStrategy;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.FailureBehaviorChangingStrategy;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;

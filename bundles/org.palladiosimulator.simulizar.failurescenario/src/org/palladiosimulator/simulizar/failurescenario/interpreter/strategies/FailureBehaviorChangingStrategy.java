@@ -1,9 +1,7 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.failuremodel.failurescenario.Occurence;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ReferenceResolverSwitch;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ScheduledResourceProviderSwitch;
-import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.StrategyAllocationContextDTO;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 
 public interface FailureBehaviorChangingStrategy {
 
@@ -21,16 +19,18 @@ public interface FailureBehaviorChangingStrategy {
 	public boolean isValid();
 
 	/**
+	 * Sets a Decider to the Behavior.
+	 * 
+	 * @param decider
+	 */
+	public void setDecider(Decider decider);
+
+	/**
 	 * Allocate the strategies context.
 	 * 
-	 * @param referenceResolver ReferenceResolverSwitch
-	 * @param resourceProvider  ScheduledResourceProviderSwitch
-	 * @param pibManager        PreInterpretationBehaviorManager
-	 * @param o                 Occurence
 	 * @return Returns false if it was impossible to allocate the strategy.
 	 */
-	public boolean allocateContext(ReferenceResolverSwitch referenceResolver,
-			ScheduledResourceProviderSwitch resourceProvider, PreInterpretationBehaviorManager pibManager, Occurence o);
+	public boolean allocateContext(StrategyAllocationContextDTO allocationContext);
 
 	public FailureBehaviorChangingStrategy getRevertedStrategy();
 }

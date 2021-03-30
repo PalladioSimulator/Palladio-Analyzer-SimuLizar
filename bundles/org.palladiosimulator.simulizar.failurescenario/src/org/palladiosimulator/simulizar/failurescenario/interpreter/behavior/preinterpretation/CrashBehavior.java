@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter.preinterpretation;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation;
 
 import org.palladiosimulator.failuremodel.failuretype.Failure;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.issue.FailureOccurredIssue;

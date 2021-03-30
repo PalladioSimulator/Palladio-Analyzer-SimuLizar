@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<system:System xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:composition="http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:system="http://palladiosimulator.org/PalladioComponentModel/System/5.2" id="_v6ytwIcVEeufJIrNtJeJrw" entityName="FailureTestingSystem">
+  <assemblyContexts__ComposedStructure id="_7iVYoIcVEeufJIrNtJeJrw" entityName="Assembly_ComponentA">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="secondscenario.repository#_Rbz1YIWtEeuOD_IgqaI_0Q"/>
+  </assemblyContexts__ComposedStructure>
+  <assemblyContexts__ComposedStructure id="_6kRz8IcgEeufJIrNtJeJrw" entityName="Assembly_ComponentB">
+    <encapsulatedComponent__AssemblyContext xsi:type="repository:BasicComponent" href="secondscenario.repository#_UHNrsIWtEeuOD_IgqaI_0Q"/>
+  </assemblyContexts__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:ProvidedDelegationConnector" id="_L8N7sIcXEeufJIrNtJeJrw" entityName="provDelegationToA" outerProvidedRole_ProvidedDelegationConnector="_6x7Z8IcWEeufJIrNtJeJrw" assemblyContext_ProvidedDelegationConnector="_7iVYoIcVEeufJIrNtJeJrw">
+    <innerProvidedRole_ProvidedDelegationConnector href="secondscenario.repository#_8tAvoIXvEeuOD_IgqaI_0Q"/>
+  </connectors__ComposedStructure>
+  <connectors__ComposedStructure xsi:type="composition:AssemblyConnector" id="_PNi-AIchEeufJIrNtJeJrw" entityName="aToBConnector" requiringAssemblyContext_AssemblyConnector="_7iVYoIcVEeufJIrNtJeJrw" providingAssemblyContext_AssemblyConnector="_6kRz8IcgEeufJIrNtJeJrw">
+    <providedRole_AssemblyConnector href="secondscenario.repository#_FnrqkIWuEeuOD_IgqaI_0Q"/>
+    <requiredRole_AssemblyConnector href="secondscenario.repository#_Yts5MIWuEeuOD_IgqaI_0Q"/>
+  </connectors__ComposedStructure>
+  <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_6x7Z8IcWEeufJIrNtJeJrw" entityName="providedUserService">
+    <providedInterface__OperationProvidedRole href="secondscenario.repository#_uPZ98IXsEeuOD_IgqaI_0Q"/>
+  </providedRoles_InterfaceProvidingEntity>
+</system:System>

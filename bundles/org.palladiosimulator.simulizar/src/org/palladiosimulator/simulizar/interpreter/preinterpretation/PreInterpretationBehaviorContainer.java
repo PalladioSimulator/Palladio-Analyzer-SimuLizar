@@ -9,6 +9,8 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 
+import com.google.common.collect.ImmutableList;
+
 /**
  * Container to collect PreInterpretationBehaviors and execute them all together.
  * 
@@ -28,20 +30,20 @@ public class PreInterpretationBehaviorContainer {
     
     public InterpreterResult executeBehaviors(InterpreterDefaultContext context) {
         InterpreterResult result = InterpreterResult.OK;
-        for (PreInterpretationBehavior b : behaviors) {
+        var localBehaviors = ImmutableList.copyOf(behaviors);
+        for (PreInterpretationBehavior b : localBehaviors) {
             result = merger.merge(result, b.execute(context));
         }
         return result;
     }
     
     public void addBehavior(PreInterpretationBehavior b) {
-        if (behaviors.contains(b)) {
+        if (!behaviors.contains(b)) {
             // no duplicate behaviors allowed, e.g. 2 SWCrashes
             // if you want to add 2 delay behaviors, they should be 2 different objects (!delay1.equals(delay2))
             // this makes it possible to remove the delay behaviors separately if necessary.
-            return;
+            behaviors.add(b);
         }
-        behaviors.add(b);
     }
     
     public void removeBehavior(PreInterpretationBehavior b) {

@@ -78,8 +78,7 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
                 String linkId = l.getId();
                 if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(linkId)) {
                     PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(linkId);
-                    // TODO inject context??
-                    InterpreterResult newResult = pibContainer.executeBehaviors(null);
+                    InterpreterResult newResult = pibContainer.executeBehaviors(context);
                     result = resultMerger.merge(result, newResult);
                 }
             }

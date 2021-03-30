@@ -18,7 +18,10 @@ import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
+import de.uka.ipd.sdq.probfunction.math.IRandomGenerator;
 import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.variables.StackContext;
+import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEventFactory;
 
 public class FailurescenarioObserver implements IModelObserver {
@@ -30,16 +33,17 @@ public class FailurescenarioObserver implements IModelObserver {
 	private ISimEventFactory simEventFactory;
 	private final PreInterpretationBehaviorManager pibManager;
 	private final ScheduledResourceProviderSwitch resourceProvider;
-	// private final InterpreterDefaultContext context;
+
+	private final IRandomGenerator randomNumberGenerator;
 
 	@Inject
-	public FailurescenarioObserver(// final InterpreterDefaultContext context,
-			ISimEventFactory simEventFactory, @Global PCMResourceSetPartition globalPartition,
-			PreInterpretationBehaviorManager pibManager, ResourceRegistry resourceRegistry) {
-		// this.context = context;
+	public FailurescenarioObserver(ISimEventFactory simEventFactory, @Global PCMResourceSetPartition globalPartition,
+			PreInterpretationBehaviorManager pibManager, ResourceRegistry resourceRegistry,
+			IRandomGenerator randomNumberGenerator) {
 		this.simEventFactory = simEventFactory;
 		this.globalPartition = globalPartition;
 		this.pibManager = pibManager;
+		this.randomNumberGenerator = randomNumberGenerator;
 		this.resourceProvider = new ScheduledResourceProviderSwitch(resourceRegistry);
 		this.fsRepository = null;
 	}
@@ -57,25 +61,31 @@ public class FailurescenarioObserver implements IModelObserver {
 
 	private void registerOccurences(FailureScenario fs) {
 		// Only FS with the attribute executionEnabled == true are interpreted.
-		if (!fs.getExecutionEnabled()) {
+		if (fs.getExecutionEnabled() != null && !fs.getExecutionEnabled()) {
 			return;
 		}
 
 		ReferenceResolverSwitch referenceResolver = new ReferenceResolverSwitch();
-		FailureBehaviorChangesProviderSwitch fbChangesProvider = new FailureBehaviorChangesProviderSwitch();
+		FailureBehaviorChangesProviderSwitch fbChangesProvider = new FailureBehaviorChangesProviderSwitch(
+				randomNumberGenerator);
 
-		fs.getOccurences().forEach(o -> {
+		fs.getOccurrences().forEach(o -> {
 
 			List<FailureBehaviorChangeDTO> fbChangeDTOs = fbChangesProvider.doSwitch(o.getFailure());
+			StrategyAllocationContextDTO allocationContext = new StrategyAllocationContextDTO(referenceResolver,
+					resourceProvider, pibManager, o);
 
 			for (FailureBehaviorChangeDTO dto : fbChangeDTOs) {
 				// check if failuretype is already supported and a DataTransferObject for its
 				// strategy exists
 				// && try to allocate context of the strategy
-				if (dto != null
-						&& dto.getStrategy().allocateContext(referenceResolver, resourceProvider, pibManager, o)) {
+				if (dto != null && dto.getStrategy().allocateContext(allocationContext)) {
 
-					double simulationPointInTime = Double.parseDouble(o.getPointInTime().getSpecification());
+					// TODO check if correct and delete next line
+					// double simulationPointInTime =
+					// Double.parseDouble(o.getPointInTime().getSpecification());
+					double simulationPointInTime = NumberConverter
+							.toDouble(StackContext.evaluateStatic(o.getPointInTime().getSpecification()));
 					// create simulation event for failure behavior change
 					new FailureBehaviorChangingSimulationEntity(simEventFactory,
 							simulationPointInTime + dto.getRelativePointInTime(), dto.getStrategy());
