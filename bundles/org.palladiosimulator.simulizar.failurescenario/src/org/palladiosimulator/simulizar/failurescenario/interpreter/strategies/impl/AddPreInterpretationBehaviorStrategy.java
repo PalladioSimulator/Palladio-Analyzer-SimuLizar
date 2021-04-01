@@ -5,9 +5,9 @@ import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.Fa
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 
-public class RemoveCrashBehaviorStrategy extends AbstractPreInterpretationBehaviorStrategy {
+public class AddPreInterpretationBehaviorStrategy extends AbstractPreInterpretationBehaviorStrategy {
 
-	public RemoveCrashBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer,
+	public AddPreInterpretationBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer,
 			PreInterpretationBehavior behavior) {
 		super(pIBContainer, behavior);
 	}
@@ -18,17 +18,17 @@ public class RemoveCrashBehaviorStrategy extends AbstractPreInterpretationBehavi
 	 * 
 	 * @param behavior
 	 */
-	public RemoveCrashBehaviorStrategy(PreInterpretationBehavior behavior) {
+	public AddPreInterpretationBehaviorStrategy(PreInterpretationBehavior behavior) {
 		this(null, behavior);
 	}
 
 	@Override
 	public void execute() {
-		super.pIBContainer.removeBehavior(super.behavior);
+		super.pIBContainer.addBehavior(super.behavior);
 	}
 
 	@Override
 	public FailureBehaviorChangingStrategy getRevertedStrategy() {
-		return new AddCrashBehaviorStrategy(super.pIBContainer, super.behavior);
+		return new RemovePreInterpretationBehaviorStrategy(super.pIBContainer, super.behavior);
 	}
 }

@@ -1,9 +1,9 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DecisionDecoratedPreInterpretationBehavior;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 

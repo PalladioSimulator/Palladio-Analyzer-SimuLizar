@@ -134,7 +134,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
                 this.firePassedEvent(abstractAction, EventType.BEGIN);
                 
                 this.addDegreeOfCorruptionCharacterisation(); // TODO encapsulate, move in failurescenario extension as PIB
-                ResourceDemandingBehaviour resourceDemandingBehaviour = currentAction.getResourceDemandingBehaviour_AbstractAction();
+                ResourceDemandingBehaviour resourceDemandingBehaviour = abstractAction.getResourceDemandingBehaviour_AbstractAction();
                 if(resourceDemandingBehaviour instanceof ResourceDemandingSEFF) {
                     Signature describedService__SEFF = ((ResourceDemandingSEFF)resourceDemandingBehaviour).getDescribedService__SEFF();
                     if(describedService__SEFF instanceof OperationSignature) {

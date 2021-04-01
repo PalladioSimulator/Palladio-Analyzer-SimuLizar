@@ -1,9 +1,9 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.demandmodifying.DecisionDecoratedDemandModifyingBehavior;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 
 import de.uka.ipd.sdq.simucomframework.resources.DemandModifyingBehavior;
 import de.uka.ipd.sdq.simucomframework.resources.IResourceDemandModifiable;

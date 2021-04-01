@@ -10,6 +10,8 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenario;
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenarioRepository;
 import org.palladiosimulator.failuremodel.failurescenario.FailurescenarioPackage;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.FailureBehaviorChangeDTO;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.FailureBehaviorChangesProviderSwitch;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ReferenceResolverSwitch;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ScheduledResourceProviderSwitch;
@@ -81,9 +83,6 @@ public class FailurescenarioObserver implements IModelObserver {
 				// && try to allocate context of the strategy
 				if (dto != null && dto.getStrategy().allocateContext(allocationContext)) {
 
-					// TODO check if correct and delete next line
-					// double simulationPointInTime =
-					// Double.parseDouble(o.getPointInTime().getSpecification());
 					double simulationPointInTime = NumberConverter
 							.toDouble(StackContext.evaluateStatic(o.getPointInTime().getSpecification()));
 					// create simulation event for failure behavior change

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<failurescenario:FailureScenarioRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:failurescenario="http://palladiosimulator.org/failurescenario/1.0" xmlns:failuretype="http://palladiosimulator.org/failuretype/1.0" id="_F_xYEJGvEeuyxYcnF5tjyQ">
+  <failurescenarios id="_G7eLUJGvEeuyxYcnF5tjyQ">
+    <occurrences>
+      <failure xsi:type="failuretype:HWTimingFailure" href="My.failuretype#_8pVYtpGkEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:ProcessingResourceReference">
+        <processingResource href="My.resourceenvironment#_v05wsIbfEeu_3J2CgEmd4g"/>
+      </origin>
+      <pointInTime specification="300.0"/>
+    </occurrences>
+    <occurrences>
+      <failure xsi:type="failuretype:SWTimingFailure" href="My.failuretype#_P6sUoZGlEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:InternalActionReference">
+        <internalAction href="fstest.repository#_3-UccIWuEeuOD_IgqaI_0Q"/>
+      </origin>
+      <pointInTime specification="300.0"/>
+    </occurrences>
+    <occurrences>
+      <failure xsi:type="failuretype:LinkTimingFailure" href="My.failuretype#_e4OD65GlEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:LinkingResourceReference">
+        <linkingResource href="My.resourceenvironment#_AFN9gIbgEeu_3J2CgEmd4g"/>
+      </origin>
+      <pointInTime specification="300.0"/>
+    </occurrences>
+    <occurrences>
+      <failure xsi:type="failuretype:HWTimingFailure" href="My.failuretype#_8pVYtpGkEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:ProcessingResourceReference">
+        <processingResource href="My.resourceenvironment#_v05wsIbfEeu_3J2CgEmd4g"/>
+      </origin>
+      <pointInTime specification="800.0"/>
+    </occurrences>
+    <occurrences>
+      <failure xsi:type="failuretype:SWTimingFailure" href="My.failuretype#_P6sUoZGlEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:InternalActionReference">
+        <internalAction href="fstest.repository#_3-UccIWuEeuOD_IgqaI_0Q"/>
+      </origin>
+      <pointInTime specification="800.0"/>
+    </occurrences>
+    <occurrences>
+      <failure xsi:type="failuretype:LinkTimingFailure" href="My.failuretype#_e4OD65GlEeuyxYcnF5tjyQ"/>
+      <origin xsi:type="failurescenario:LinkingResourceReference">
+        <linkingResource href="My.resourceenvironment#_AFN9gIbgEeu_3J2CgEmd4g"/>
+      </origin>
+      <pointInTime specification="800.0"/>
+    </occurrences>
+  </failurescenarios>
+</failurescenario:FailureScenarioRepository>

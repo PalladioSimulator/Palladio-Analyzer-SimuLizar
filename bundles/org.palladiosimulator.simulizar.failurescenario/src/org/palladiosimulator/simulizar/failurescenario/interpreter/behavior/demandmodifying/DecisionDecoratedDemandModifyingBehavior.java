@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.dem
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
 
+import de.uka.ipd.sdq.simucomframework.resources.DemandModificationDTO;
 import de.uka.ipd.sdq.simucomframework.resources.DemandModifyingBehavior;
 
 public class DecisionDecoratedDemandModifyingBehavior extends DemandModifyingBehavior implements IDecisionDecorated {
@@ -30,17 +31,19 @@ public class DecisionDecoratedDemandModifyingBehavior extends DemandModifyingBeh
 	 * The return value is calculated by the decorated behavior if the decision
 	 * delegation returns true.
 	 *
-	 * Calculates an additive demand of time units: additiveValue = prevDemand /
-	 * scaleFactor + delay - prevDemand.
+	 * Scales a demand with the scalingFactor (newDemand = prevDemand /
+	 * scalingFactor). Returns the scaled demand and an additive demand of time
+	 * units (delay, latency).
 	 * 
 	 * @param previousDemand demand value before modification
-	 * @return an additive value to get the newDemand by adding it to the prevDemand
+	 * @return A Demand Modification Data Transfer Object which store the two
+	 *         values.
 	 */
 	@Override
-	public double getAdditiveDemandValue(double previousDemand) {
+	public DemandModificationDTO modifyDemand(double previousDemand) {
 		if (this.decider.decide()) {
-			return this.decoratedBehavior.getAdditiveDemandValue(previousDemand);
+			return this.decoratedBehavior.modifyDemand(previousDemand);
 		}
-		return super.getAdditiveDemandValue(previousDemand);
+		return super.modifyDemand(previousDemand);
 	}
 }

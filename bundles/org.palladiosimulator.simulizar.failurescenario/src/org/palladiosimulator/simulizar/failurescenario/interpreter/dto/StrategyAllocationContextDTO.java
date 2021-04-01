@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.failurescenario.interpreter;
+package org.palladiosimulator.simulizar.failurescenario.interpreter.dto;
 
 import org.palladiosimulator.failuremodel.failurescenario.Occurrence;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.ReferenceResolverSwitch;

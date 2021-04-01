@@ -11,14 +11,13 @@ import org.palladiosimulator.failuremodel.failuretype.SWTimingFailure;
 import org.palladiosimulator.failuremodel.failuretype.Timing;
 import org.palladiosimulator.failuremodel.failuretype.Transient;
 import org.palladiosimulator.failuremodel.failuretype.util.FailuretypeSwitch;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.FailureBehaviorChangeDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.ProbabilisticDecider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.CrashBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DelayBehavior;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl.AddCrashBehaviorStrategy;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl.AddDelayBehaviorStrategy;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.FailureBehaviorChangeDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl.AddDemandModifyingBehaviorStrategy;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl.AddPreInterpretationBehaviorStrategy;
 
 import de.uka.ipd.sdq.probfunction.math.IRandomGenerator;
 import de.uka.ipd.sdq.simucomframework.resources.DemandModifyingBehavior;
@@ -47,31 +46,11 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 	public List<FailureBehaviorChangeDTO> caseCrash(Crash object) {
 		FailureBehaviorChangeDTO dto = null;
 		if (object instanceof Failure) {
-			dto = new FailureBehaviorChangeDTO(new AddCrashBehaviorStrategy(new CrashBehavior((Failure) object)), 0.0);
+			dto = new FailureBehaviorChangeDTO(
+					new AddPreInterpretationBehaviorStrategy(new CrashBehavior((Failure) object)), 0.0);
 		}
 		return Arrays.asList(new FailureBehaviorChangeDTO[] { dto });
 	}
-
-//	@Override
-//	public List<FailureBehaviorChangeDTO> caseSWCrashFailure(SWCrashFailure object) {
-//		PreInterpretationBehavior pib = new CrashBehavior(object);
-//		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-//				new FailureBehaviorChangeDTO(new AddCrashBehaviorStrategy(pib), 0.0) });
-//	}
-//
-//	@Override
-//	public List<FailureBehaviorChangeDTO> caseHWCrashFailure(HWCrashFailure object) {
-//		PreInterpretationBehavior pib = new CrashBehavior(object);
-//		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-//				new FailureBehaviorChangeDTO(new AddCrashBehaviorStrategy(pib), 0.0) });
-//	}
-//
-//	@Override
-//	public List<FailureBehaviorChangeDTO> caseLinkCrashFailure(LinkCrashFailure object) {
-//		PreInterpretationBehavior pib = new CrashBehavior(object);
-//		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-//				new FailureBehaviorChangeDTO(new AddCrashBehaviorStrategy(pib), 0.0) });
-//	}
 
 	// Transient Failures
 	// ------------------------------------------------------------------------------------------
@@ -97,11 +76,9 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 		String probabilitySpec = object.getProbabilityOfOccurrence().getSpecification();
 		Decider decider = new ProbabilisticDecider(randomNumberGenerator, probabilitySpec);
 
-		List<FailureBehaviorChangeDTO> behaviors = this.doSwitch(object.getDecoratedFailure());
-		for (FailureBehaviorChangeDTO dto : behaviors) {
-			dto.getStrategy().setDecider(decider);
-		}
-		return behaviors;
+		FailureBehaviorChangeDTO behavior = this.doSwitch(object.getDecoratedFailure()).get(0);
+		behavior.getStrategy().setDecider(decider);
+		return Arrays.asList(new FailureBehaviorChangeDTO[] { behavior });
 	}
 
 	// Timing Failures
@@ -119,11 +96,11 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 	public List<FailureBehaviorChangeDTO> caseSWTimingFailure(SWTimingFailure object) {
 		DelayBehavior delayPib = new DelayBehavior(object.getDelay().getSpecification());
 		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-				new FailureBehaviorChangeDTO(new AddDelayBehaviorStrategy(delayPib), 0.0) });
+				new FailureBehaviorChangeDTO(new AddPreInterpretationBehaviorStrategy(delayPib), 0.0) });
 	}
 
 	/**
-	 * returns the failure behavior changes (Represented as DataTransferObjects with
+	 * Returns the failure behavior changes (Represented as DataTransferObjects with
 	 * a changingStrategy and a relativePointInTime)
 	 */
 	@Override

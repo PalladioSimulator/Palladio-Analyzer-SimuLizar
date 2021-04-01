@@ -1,13 +1,14 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.impl;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DelayBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.AbstractPreInterpretationBehaviorStrategy;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.strategies.FailureBehaviorChangingStrategy;
+import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 
-public class AddDelayBehaviorStrategy extends AbstractPreInterpretationBehaviorStrategy {
-
-	public AddDelayBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer, DelayBehavior behavior) {
+public class RemovePreInterpretationBehaviorStrategy extends AbstractPreInterpretationBehaviorStrategy {
+	
+	public RemovePreInterpretationBehaviorStrategy(PreInterpretationBehaviorContainer pIBContainer,
+			PreInterpretationBehavior behavior) {
 		super(pIBContainer, behavior);
 	}
 
@@ -17,17 +18,17 @@ public class AddDelayBehaviorStrategy extends AbstractPreInterpretationBehaviorS
 	 * 
 	 * @param behavior
 	 */
-	public AddDelayBehaviorStrategy(DelayBehavior behavior) {
+	public RemovePreInterpretationBehaviorStrategy(PreInterpretationBehavior behavior) {
 		this(null, behavior);
 	}
 
 	@Override
 	public void execute() {
-		super.pIBContainer.addBehavior(super.behavior);
+		super.pIBContainer.removeBehavior(super.behavior);
 	}
 
 	@Override
 	public FailureBehaviorChangingStrategy getRevertedStrategy() {
-		return new RemoveDelayBehaviorStrategy(super.pIBContainer, (DelayBehavior)super.behavior);
+		return new AddPreInterpretationBehaviorStrategy(super.pIBContainer, super.behavior);
 	}
 }
