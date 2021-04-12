@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.UseSimuLizarExtension;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.TestSimuLizarRootComponent.TestConfigurationModule;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
@@ -64,6 +65,11 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
                         @Override
                         public Factory providesSimEngineComponentFactory() {
                             return DaggerTestSimEngineComponent.factory();
+                        }
+                        
+                        @Override
+                        public org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent.Factory providesRuntimeComponentFactory() {
+                            return DaggerTestSimuLizarRuntimeComponent.factory();
                         }
                     }, 
                     new ExtensionComponentsModule(extensionFactories, ImmutableSet.of()), 
