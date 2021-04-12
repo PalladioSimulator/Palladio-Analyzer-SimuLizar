@@ -24,7 +24,7 @@ import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 @PluginTestOnly
 public class EntryLevelSystemCallSimulationTest {
 	@Test
-	@LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodel/entry-level-system-call-return-testmodel", modelFiles = {
+	@LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/entry-level-system-call-return-testmodel", modelFiles = {
 			"default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
 			"default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
 	@RunSimuLizar
