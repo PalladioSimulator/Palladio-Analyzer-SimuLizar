@@ -10,6 +10,8 @@ import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartitio
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenario;
 import org.palladiosimulator.failuremodel.failurescenario.FailureScenarioRepository;
 import org.palladiosimulator.failuremodel.failurescenario.FailurescenarioPackage;
+import org.palladiosimulator.pcm.seff.SeffPackage;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.AddDegreeOfCorruptionCharacterisationBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.FailureBehaviorChangeDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.provider.FailureBehaviorChangesProviderSwitch;
@@ -59,6 +61,10 @@ public class FailurescenarioObserver implements IModelObserver {
 			fsRepository = (FailureScenarioRepository) failureScenarioResources.get(0);
 			fsRepository.getFailurescenarios().forEach(fs -> this.registerOccurences(fs));
 		}
+
+		// For Content Failures a behavior has to be added to each startaction
+		this.pibManager.getContainerForEntity(SeffPackage.eINSTANCE.getStartAction())
+				.addBehavior(new AddDegreeOfCorruptionCharacterisationBehavior());
 	}
 
 	private void registerOccurences(FailureScenario fs) {

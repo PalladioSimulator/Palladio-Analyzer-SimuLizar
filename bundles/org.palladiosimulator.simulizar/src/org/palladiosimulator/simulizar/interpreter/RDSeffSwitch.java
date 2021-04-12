@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -16,9 +15,7 @@ import org.eclipse.emf.ecore.util.ComposedSwitch;
 import org.palladiosimulator.analyzer.completions.DelegatingExternalCallAction;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.repository.OperationSignature;
 import org.palladiosimulator.pcm.repository.Parameter;
-import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.AbstractAction;
 import org.palladiosimulator.pcm.seff.AbstractBranchTransition;
 import org.palladiosimulator.pcm.seff.AcquireAction;
@@ -31,7 +28,6 @@ import org.palladiosimulator.pcm.seff.InternalAction;
 import org.palladiosimulator.pcm.seff.LoopAction;
 import org.palladiosimulator.pcm.seff.ReleaseAction;
 import org.palladiosimulator.pcm.seff.ResourceDemandingBehaviour;
-import org.palladiosimulator.pcm.seff.ResourceDemandingSEFF;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.seff.SetVariableAction;
 import org.palladiosimulator.pcm.seff.util.SeffSwitch;
@@ -74,7 +70,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     }
 
     public static final Boolean SUCCESS = true;
-    public static final String DEGREE_OF_CORRUPTION = "DEGREE_OF_CORRUPTION";
+    public static final String DEGREE_OF_CORRUPTION = "DEGREE_OF_CORRUPTION.VALUE";
     private static final Logger LOGGER = Logger.getLogger(RDSeffSwitch.class);
 
     private RDSeffElementDispatcher parentSwitch;
@@ -127,20 +123,27 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         final int stacksize = this.context.getStack()
             .size();
 
+        InterpreterResult result = InterpreterResult.OK;
         AbstractAction currentAction = null;
         // interpret start action
         for (final AbstractAction abstractAction : object.getSteps_Behaviour()) {
             if (abstractAction.eClass() == SeffPackage.eINSTANCE.getStartAction()) {
                 this.firePassedEvent(abstractAction, EventType.BEGIN);
                 
-                this.addDegreeOfCorruptionCharacterisation(); // TODO encapsulate, move in failurescenario extension as PIB
-                ResourceDemandingBehaviour resourceDemandingBehaviour = abstractAction.getResourceDemandingBehaviour_AbstractAction();
-                if(resourceDemandingBehaviour instanceof ResourceDemandingSEFF) {
-                    Signature describedService__SEFF = ((ResourceDemandingSEFF)resourceDemandingBehaviour).getDescribedService__SEFF();
-                    if(describedService__SEFF instanceof OperationSignature) {
-                        EList<Parameter> parameters__OperationSignature = ((OperationSignature) describedService__SEFF).getParameters__OperationSignature();
-                    }
+                
+                if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(abstractAction.eClass())) {
+                    PreInterpretationBehaviorContainer pIBContainer = pibManager
+                        .getContainerForEntity(abstractAction.eClass());
+                    InterpreterResult newResult = pIBContainer.executeBehaviors(context);
+                    result = resultMerger.merge(result, newResult);
                 }
+//                ResourceDemandingBehaviour resourceDemandingBehaviour = abstractAction.getResourceDemandingBehaviour_AbstractAction();
+//                if(resourceDemandingBehaviour instanceof ResourceDemandingSEFF) {
+//                    Signature describedService__SEFF = ((ResourceDemandingSEFF)resourceDemandingBehaviour).getDescribedService__SEFF();
+//                    if(describedService__SEFF instanceof OperationSignature) {
+//                        EList<Parameter> parameters__OperationSignature = ((OperationSignature) describedService__SEFF).getParameters__OperationSignature();
+//                    }
+//                }
                 currentAction = abstractAction.getSuccessor_AbstractAction();
                 this.firePassedEvent(abstractAction, EventType.END);
                 break;
@@ -149,8 +152,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         if (currentAction == null) {
             throw new PCMModelInterpreterException("RDSEFF is invalid, it misses a start action");
         }
-
-        InterpreterResult result = InterpreterResult.OK;
+        
         while (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE
                 && currentAction.eClass() != SeffPackage.eINSTANCE.getStopAction()) {
             if (LOGGER.isDebugEnabled()) {
@@ -162,9 +164,9 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             // Search for pre-interpretation-behaviors to execute them before doSwitch()
             // For example to stop interpretation through InterpretationIssue of SWCrashFailure
             if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(currentAction.getId())) {
-                PreInterpretationBehaviorContainer pibContainer = pibManager
+                PreInterpretationBehaviorContainer pIBContainer = pibManager
                     .getContainerForEntity(currentAction.getId());
-                InterpreterResult newResult = pibContainer.executeBehaviors(context);
+                InterpreterResult newResult = pIBContainer.executeBehaviors(context);
                 result = resultMerger.merge(result, newResult);
             }
             if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
@@ -182,23 +184,6 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
 
         return result;
     }
-
-    /**
-     * Adds DegreeOfCorruption to every parameter and variable of the stackFrame
-     */
-    private void addDegreeOfCorruptionCharacterisation() {
-        final SimulatedStackframe<Object> currentFrame = this.context.getStack()
-            .currentStackFrame();
-        List<Entry<String, Object>> entries = currentFrame.getContents();
-        for (Entry<String, Object> e : entries) {
-            String id = e.getKey();
-            String newKey = id.split("\\.")[0] + "." + DEGREE_OF_CORRUPTION;
-            // TODO exception handling if other format??
-            Double newValue = 0.0;
-            currentFrame.addValue(newKey, newValue);
-        }
-    }
-
 
     /**
      * @see org.palladiosimulator.pcm.seff.util.SeffSwitch#caseAbstractAction(org.palladiosimulator.pcm.seff.AbstractAction)

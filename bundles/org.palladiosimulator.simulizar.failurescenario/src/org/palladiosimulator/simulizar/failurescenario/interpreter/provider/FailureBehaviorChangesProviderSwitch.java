@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.failuremodel.failuretype.Byzantine;
+import org.palladiosimulator.failuremodel.failuretype.Content;
 import org.palladiosimulator.failuremodel.failuretype.Crash;
 import org.palladiosimulator.failuremodel.failuretype.Failure;
 import org.palladiosimulator.failuremodel.failuretype.SWTimingFailure;
@@ -13,6 +14,7 @@ import org.palladiosimulator.failuremodel.failuretype.Transient;
 import org.palladiosimulator.failuremodel.failuretype.util.FailuretypeSwitch;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.ProbabilisticDecider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.CorruptContentBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.CrashBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DelayBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.FailureBehaviorChangeDTO;
@@ -52,6 +54,34 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 		return Arrays.asList(new FailureBehaviorChangeDTO[] { dto });
 	}
 
+	// Timing Failures
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public List<FailureBehaviorChangeDTO> caseTiming(Timing object) {
+		DemandModifyingBehavior dmb = new DemandModifyingBehavior(object.getScalingFactor().getSpecification(),
+				object.getDelay().getSpecification());
+		return Arrays.asList(new FailureBehaviorChangeDTO[] {
+				new FailureBehaviorChangeDTO(new AddDemandModifyingBehaviorStrategy(dmb), 0.0) });
+	}
+
+	@Override
+	public List<FailureBehaviorChangeDTO> caseSWTimingFailure(SWTimingFailure object) {
+		DelayBehavior delayPib = new DelayBehavior(object.getDelay().getSpecification());
+		return Arrays.asList(new FailureBehaviorChangeDTO[] {
+				new FailureBehaviorChangeDTO(new AddPreInterpretationBehaviorStrategy(delayPib), 0.0) });
+	}
+
+	// Content Failures
+	// ------------------------------------------------------------------------------------------
+
+	@Override
+	public List<FailureBehaviorChangeDTO> caseContent(Content object) {
+		FailureBehaviorChangeDTO dto = new FailureBehaviorChangeDTO(new AddPreInterpretationBehaviorStrategy(
+				new CorruptContentBehavior(object.getDegreeOfCorruption().getSpecification())), 0.0);
+		return Arrays.asList(new FailureBehaviorChangeDTO[] { dto });
+	}
+
 	// Transient Failures
 	// ------------------------------------------------------------------------------------------
 
@@ -79,24 +109,6 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 		FailureBehaviorChangeDTO behavior = this.doSwitch(object.getDecoratedFailure()).get(0);
 		behavior.getStrategy().setDecider(decider);
 		return Arrays.asList(new FailureBehaviorChangeDTO[] { behavior });
-	}
-
-	// Timing Failures
-	// ------------------------------------------------------------------------------------------
-
-	@Override
-	public List<FailureBehaviorChangeDTO> caseTiming(Timing object) {
-		DemandModifyingBehavior dmb = new DemandModifyingBehavior(object.getScalingFactor().getSpecification(),
-				object.getDelay().getSpecification());
-		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-				new FailureBehaviorChangeDTO(new AddDemandModifyingBehaviorStrategy(dmb), 0.0) });
-	}
-
-	@Override
-	public List<FailureBehaviorChangeDTO> caseSWTimingFailure(SWTimingFailure object) {
-		DelayBehavior delayPib = new DelayBehavior(object.getDelay().getSpecification());
-		return Arrays.asList(new FailureBehaviorChangeDTO[] {
-				new FailureBehaviorChangeDTO(new AddPreInterpretationBehaviorStrategy(delayPib), 0.0) });
 	}
 
 	/**

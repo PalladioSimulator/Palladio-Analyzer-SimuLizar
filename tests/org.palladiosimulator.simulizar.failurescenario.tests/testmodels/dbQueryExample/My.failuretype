@@ -51,4 +51,13 @@
   <failuretypes xsi:type="failuretype:LinkTransientFailure" id="_Wzj5cZIzEeuFc9bhlLg3-w" entityName="Link Transient Byzantine Crash" decoratedFailure="_n_rG75HBEeuyxYcnF5tjyQ">
     <duration specification="1000.0"/>
   </failuretypes>
+  <failuretypes xsi:type="failuretype:SWContentFailure" id="_8X9n8JaeEeuHo8ag6GtBlw" entityName="SW Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWContentFailure" id="_yNgsh5amEeuHo8ag6GtBlw" entityName="HW Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkContentFailure" id="_BdOX_JanEeuHo8ag6GtBlw" entityName="Link Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
 </failuretype:FailureTypeRepository>

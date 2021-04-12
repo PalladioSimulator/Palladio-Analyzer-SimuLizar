@@ -44,14 +44,14 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// HW Crash at t = 300
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// after t = 300 --> Missing Processing Time of 0.0-3.1sec
+		// after t = 300 --> Missing Processing Time of 0.0-3.0sec
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 		assertTrue(allBetween(8.0, 8.0, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
 	}
 
@@ -67,14 +67,14 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// SW Crash at t = 300
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// after t = 300 --> Missing Processing Time of 0.0-3.1sec
+		// after t = 300 --> Missing Processing Time of 0.0-3.0sec
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 		assertTrue(allBetween(8.0, 8.0, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
 	}
 
@@ -90,16 +90,16 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Link Crash at t = 300
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// after t = 300 --> Missing Processing Time of 0.0-3.1sec
+		// after t = 300 --> Missing Processing Time of 0.0-3.0sec
 		// and Missing Transmission Time of 8.0sec
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(0.0, 0.0, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(0.0, 0.0, getMeasuredValuesOfInterval(350.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -114,15 +114,15 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// HW Timing at t = 300, delay +3.0, demand scaling *2
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000,
 		// after t = 300 --> y = (transmission) + 3.0 + (processing) * 2
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(11.0, 17.2, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(11.0, 17.0, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -137,15 +137,15 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// SW Timing at t = 300, delay +3.0
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
 		// after t = 300 --> y = (transmission) + 3.0 + (processing)
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(11.0, 14.1, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(11.0, 14.0, getMeasuredValuesOfInterval(300.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -160,7 +160,7 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Link Timing at t = 300, delay +3.0, demand scaling *2
 		// ---------------------------------------------------------------------------------------------
@@ -168,8 +168,8 @@ public class FailurescenarioExtensionTest {
 		// after t = 300 --> y = (transmission) * 2 + 6.0[latencyCall & latencyReturn]
 		// + (processing)
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(22.0, 25.1, getMeasuredValuesOfInterval(350.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(22.0, 25.0, getMeasuredValuesOfInterval(350.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -184,7 +184,7 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// HW Timing at t = 300, delay +3.0, demand scaling *2
 		// SW Timing at t = 300, delay +3.0
@@ -193,16 +193,16 @@ public class FailurescenarioExtensionTest {
 		// simulation time 0 -> 2000
 		// after t = 300 --> y =
 		// (transmission) * 2 + 6.0 + (processing) * 2 + 3.0[HW delay] + 3.0[SW delay] =
-		// {28, 34.2}
+		// {28, 34.0}
 		// ---------------------------------------------------------------------------------------------
 		// Same 3 Failures are added at t = 800 again
 		// after t = 800 --> y =
 		// (transmission) * 4 + 12.0 + (processing) * 4 + 6.0[HW delay] + 6.0[SW delay]
-		// {56, 68.4}
+		// {56, 68.0}
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(28.0, 34.2, getMeasuredValuesOfInterval(350.0, 800.0, dataOfQuery)));
-		assertTrue(allBetween(56.0, 68.4, getMeasuredValuesOfInterval(850.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(28.0, 34.0, getMeasuredValuesOfInterval(350.0, 800.0, dataOfQuery)));
+		assertTrue(allBetween(56.0, 68.0, getMeasuredValuesOfInterval(850.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -217,24 +217,24 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient HW Crash at t = 300 -> t = 600
 		// Transient SW Crash at t = 700 -> t = 1000
 		// Transient Link Crash at t = 1100 -> t = 1400
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// t = {300, 600} --> Missing Processing Time of 0.0-3.1sec
+		// t = {300, 600} --> Missing Processing Time of 0.0-3.0sec
 		// t = {700, 1000} --> "
 		// t = {1100, 1400} --> " and Missing Transmission Time of 8.0sec
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 		assertTrue(allBetween(8.0, 8.0, getMeasuredValuesOfInterval(300.0, 600.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(600.0, 700.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(600.0, 700.0, dataOfQuery)));
 		assertTrue(allBetween(8.0, 8.0, getMeasuredValuesOfInterval(700.0, 1000.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1000.0, 1100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1000.0, 1100.0, dataOfQuery)));
 		assertTrue(allBetween(0.0, 0.0, getMeasuredValuesOfInterval(1150.0, 1400.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1450.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1450.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -249,7 +249,7 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient HW Timing at t = 300 -> t = 600
 		// Transient SW Timing at t = 700 -> t = 1000
@@ -260,13 +260,13 @@ public class FailurescenarioExtensionTest {
 		// t = {700, 1000} --> y = (transmission) + 3.0 + (processing)
 		// t = {1100, 1400} --> y = (transmission) * 2 + 6.0 + (processing)
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
-		assertTrue(allBetween(11.0, 17.2, getMeasuredValuesOfInterval(300.0, 600.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(650.0, 700.0, dataOfQuery)));
-		assertTrue(allBetween(11.0, 14.1, getMeasuredValuesOfInterval(700.0, 1000.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1050.0, 1100.0, dataOfQuery)));
-		assertTrue(allBetween(22.0, 25.1, getMeasuredValuesOfInterval(1150.0, 1400.0, dataOfQuery)));
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1450.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(allBetween(11.0, 17.0, getMeasuredValuesOfInterval(300.0, 600.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(650.0, 700.0, dataOfQuery)));
+		assertTrue(allBetween(11.0, 14.0, getMeasuredValuesOfInterval(700.0, 1000.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1050.0, 1100.0, dataOfQuery)));
+		assertTrue(allBetween(22.0, 25.0, getMeasuredValuesOfInterval(1150.0, 1400.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1450.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -281,7 +281,7 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient Byzantine Link Crash at t = 300 -> t = 1300
 		// with a CrashProbability of 50%
@@ -290,12 +290,12 @@ public class FailurescenarioExtensionTest {
 		// t = {300, 1300} --> y = 0.0 or normal
 		// --> check if at least one 0.0-Value and one normal-Value exists in interval
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 
 		assertTrue(atLeastOneBetween(0.0, 0.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
 
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -310,22 +310,22 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient Byzantine HW Timing at t = 300 -> t = 1300
 		// with a CrashProbability of 50%
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// t = {300, 1300} --> y = {11.0, 17.2} or normal
+		// t = {300, 1300} --> y = {11.0, 17.0} or normal
 		// --> check if at least one scaled-Value and one normal-Value exists in
 		// interval
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 
-		assertTrue(atLeastOneBetween(11.0, 17.2, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(11.0, 17.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
 
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -340,22 +340,22 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient Byzantine SW Timing at t = 300 -> t = 1300
 		// with a CrashProbability of 50%
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// t = {300, 1300} --> y = {11.0, 14.1} or normal
+		// t = {300, 1300} --> y = {11.0, 14.0} or normal
 		// --> check if at least one scaled-Value and one normal-Value exists in
 		// interval
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 
-		assertTrue(atLeastOneBetween(11.0, 14.1, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(11.0, 14.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(300.0, 1300.0, dataOfQuery)));
 
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1350.0, 2100.0, dataOfQuery)));
 	}
 
 	@Test
@@ -370,32 +370,43 @@ public class FailurescenarioExtensionTest {
 		var ResponseTimeMeasurementOfQuery = getMeasurementOfAt(expRun.getMeasurement(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, callQueryAction);
 		assertTrue(ResponseTimeMeasurementOfQuery.isPresent());
-		ArrayList<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
+		List<Double[]> dataOfQuery = parseMeasurement(ResponseTimeMeasurementOfQuery);
 
 		// Transient Byzantine SW Timing at t = 300 -> t = 1300
 		// with a CrashProbability of 50%
 		// Same failure is added at at t = 700 -> t = 1700 again
 		// ---------------------------------------------------------------------------------------------
 		// simulation time 0 -> 2000
-		// t = {300, 700} --> y = {11.0, 14.1} or normal
-		// t = {700, 1300} --> y = {11.0, 14.1} = scaled two times, or one time, or normal
-		// t = {1300, 1700} --> y = {11.0, 14.1} or normal
+		// t = {300, 700} --> y = {11.0, 14.0} or normal
+		// t = {700, 1300} --> y = {11.0, 14.0} = scaled two times, or one time, or normal
+		// t = {1300, 1700} --> y = {11.0, 14.0} or normal
 		// --> check if at least one scaled-Value and one normal-Value exists in
 		// interval
 		// ---------------------------------------------------------------------------------------------
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(0.0, 300.0, dataOfQuery)));
 
-		assertTrue(atLeastOneBetween(11.0, 14.1, getMeasuredValuesOfInterval(300.0, 700.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(300.0, 700.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(11.0, 14.0, getMeasuredValuesOfInterval(300.0, 700.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(300.0, 700.0, dataOfQuery)));
 		
-		assertTrue(atLeastOneBetween(14.0, 17.1, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(11.0, 14.1, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(14.0, 17.0, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(11.0, 14.0, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(700.0, 1300.0, dataOfQuery)));
 		
-		assertTrue(atLeastOneBetween(11.0, 14.1, getMeasuredValuesOfInterval(1350.0, 1700.0, dataOfQuery)));
-		assertTrue(atLeastOneBetween(8.0, 11.1, getMeasuredValuesOfInterval(1350.0, 1700.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(11.0, 14.0, getMeasuredValuesOfInterval(1350.0, 1700.0, dataOfQuery)));
+		assertTrue(atLeastOneBetween(8.0, 11.0, getMeasuredValuesOfInterval(1350.0, 1700.0, dataOfQuery)));
 
-		assertTrue(allBetween(8.0, 11.1, getMeasuredValuesOfInterval(1750.0, 2100.0, dataOfQuery)));
+		assertTrue(normal(getMeasuredValuesOfInterval(1750.0, 2100.0, dataOfQuery)));
+	}
+	
+	/**
+	 * Checks if all values of the interval are normal.
+	 * (Without failure scaling: between 8.0 and 11.0)
+	 * 
+	 * @param measuredValuesOfInterval
+	 * @return
+	 */
+	private boolean normal(List<Double> measuredValuesOfInterval) {
+		return allBetween(8.0, 11.0, measuredValuesOfInterval);
 	}
 
 	/**
@@ -406,8 +417,8 @@ public class FailurescenarioExtensionTest {
 	 * @param source ArrayList of measuring tuples
 	 * @return List of the y values
 	 */
-	private ArrayList<Double> getMeasuredValuesOfInterval(double xMin, double xMax, ArrayList<Double[]> source) {
-		ArrayList<Double> result = new ArrayList<>();
+	private List<Double> getMeasuredValuesOfInterval(double xMin, double xMax, List<Double[]> source) {
+		List<Double> result = new ArrayList<>();
 		for (int i = 0; i < source.size(); i++) {
 			if (source.get(i)[0] >= xMin - EPSILON && source.get(i)[0] <= xMax + EPSILON) {
 				result.add(source.get(i)[1]);
@@ -424,7 +435,7 @@ public class FailurescenarioExtensionTest {
 	 * @param source ArrayList of values
 	 * @return true if all values are between
 	 */
-	private boolean allBetween(double yMin, double yMax, ArrayList<Double> source) {
+	private boolean allBetween(double yMin, double yMax, List<Double> source) {
 		boolean allBetween = true;
 		for (Double y : source) {
 			allBetween = allBetween && (y >= yMin - EPSILON && y <= yMax + EPSILON);
@@ -440,7 +451,7 @@ public class FailurescenarioExtensionTest {
 	 * @param source ArrayList of values
 	 * @return true if at least one value is between
 	 */
-	private boolean atLeastOneBetween(double yMin, double yMax, ArrayList<Double> source) {
+	private boolean atLeastOneBetween(double yMin, double yMax, List<Double> source) {
 		boolean atLeastOneBetween = false;
 		for (Double y : source) {
 			atLeastOneBetween = atLeastOneBetween || (y >= yMin - EPSILON && y <= yMax + EPSILON);
@@ -454,12 +465,12 @@ public class FailurescenarioExtensionTest {
 	 * @param m The Optional of Measurement
 	 * @return ArrayList of measuring tuples
 	 */
-	private ArrayList<Double[]> parseMeasurement(Optional<Measurement> m) {
+	private List<Double[]> parseMeasurement(Optional<Measurement> m) {
 		List<Measure<?, Duration>> yVars = MeasurementTestUtils.allMeasurementsOfMetric(m.get(),
 				MetricDescriptionConstants.RESPONSE_TIME_METRIC);
 		List<Measure<?, Duration>> xVars = MeasurementTestUtils.allMeasurementsOfMetric(m.get(),
 				MetricDescriptionConstants.POINT_IN_TIME_METRIC);
-		ArrayList<Double[]> result = new ArrayList<>();
+		List<Double[]> result = new ArrayList<>();
 		for (int i = 0; i < yVars.size(); i++) {
 			double x = xVars.get(i).doubleValue(SI.SECOND);
 			double y = yVars.get(i).doubleValue(SI.SECOND);

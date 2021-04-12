@@ -11,6 +11,7 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 import de.uka.ipd.sdq.simucomframework.variables.exceptions.ValueNotInFrameException;
+import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 public class CorruptContentBehavior extends PreInterpretationBehavior {
 	private String degreeOfCorruptionSpec;
@@ -34,29 +35,35 @@ public class CorruptContentBehavior extends PreInterpretationBehavior {
 	}
 
 	/**
+	 * Sets DegreeOfCorruption to every parameter of the stackFrame
+	 * 
 	 * @param context The DefaultInterpreterContext
 	 */
 	private void setDegreeOfCorruptionCharacterisation(InterpreterDefaultContext context) {
+		double corruptionSummand = NumberConverter.toDouble(StackContext.evaluateStatic(degreeOfCorruptionSpec));
+
 		List<Entry<String, Object>> entries = context.getStack().currentStackFrame().getContents();
+		List<Entry<String, Object>> entriesOfResult = context.getCurrentResultFrame().getContents();
+		final SimulatedStackframe<Object> resultFrame = context.getCurrentResultFrame();
+		try {
+			resultFrame.getValue("parameter0." + RDSeffSwitch.DEGREE_OF_CORRUPTION);
+		} catch (ValueNotInFrameException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		entries.addAll(entriesOfResult);
 		entries.forEach(e -> {
 			String key = e.getKey();
 			if (key.endsWith("." + RDSeffSwitch.DEGREE_OF_CORRUPTION)) {
-				setDegreeOfCorruptionCharacterisation(context, e.getKey());
+				try {
+					double newDegreeOfCorruption = Math.max(0.0, Math.min(1.0,
+							(double) context.getStack().currentStackFrame().getValue(key) + corruptionSummand));
+					context.getStack().currentStackFrame().addValue(key, newDegreeOfCorruption);
+					resultFrame.addValue(key, newDegreeOfCorruption);
+				} catch (ValueNotInFrameException exception) {
+					// Not found
+				}
 			}
 		});
-	}
-
-	/**
-	 * Sets DegreeOfCorruption to every parameter of the stackFrame
-	 */
-	private void setDegreeOfCorruptionCharacterisation(InterpreterDefaultContext context, String idOfParameter) {
-		double corruptionSummand = NumberConverter.toDouble(StackContext.evaluateStatic(degreeOfCorruptionSpec)); //TODO hochziehen, nur einmal auswerten
-		try {
-			double newDegreeOfCorruption = Math.min(1.0,
-					(double) context.getStack().currentStackFrame().getValue(idOfParameter) + corruptionSummand);
-			context.getStack().currentStackFrame().addValue(idOfParameter, newDegreeOfCorruption);
-		} catch (ValueNotInFrameException e) {
-			// Not found
-		}
 	}
 }
