@@ -139,19 +139,6 @@ public class PCMPartitionManager {
         this.currentPartition = this.copyPCMPartition();
     }
 
-    /**
-     * The constructor is only used to make a copy of the PCMPartitionManager.
-     * 
-     * @param managerToCopy
-     *            The manager instance that is to be copied.
-     */
-    private PCMPartitionManager(PCMPartitionManager managerToCopy) {
-        managerToCopy.checkAndHandleDeferredChanges();
-        this.currentPartition = managerToCopy.currentPartition;
-        this.blackboard = managerToCopy.blackboard;
-        this.globalPartition = managerToCopy.globalPartition;
-    }
-
     public void initialize() {
         Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findAny();
         if (result.isPresent()) {
