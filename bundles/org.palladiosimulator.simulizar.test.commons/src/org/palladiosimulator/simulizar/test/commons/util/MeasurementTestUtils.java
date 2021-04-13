@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.test.commons.util;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.everyItem;
 import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.asDoubleIn;
 
 import java.util.Collection;
@@ -30,12 +30,12 @@ public final class MeasurementTestUtils {
             BaseMetricDescription valueMetric, Unit<Q> unit, Matcher<Double> matcher) {
         allMeasurementValuesMatch(measurement, valueMetric, asDoubleIn(unit, matcher));
     }
-    
+
     public static <Q extends Quantity> void allMeasurementValuesMatch(Measurement measurement,
             BaseMetricDescription valueMetric, Matcher<Measure<?, Q>> matcher) {
         assertThat(allMeasurementsOfMetric(measurement, valueMetric), everyItem(matcher));
     }
-    
+
     public static <Q extends Quantity> List<Measure<?, Q>> allMeasurementsOfMetric(Measurement measurement,
             BaseMetricDescription valueMetric) {
         var dataSeriesIdx = (new MetricSpecSwitch<Integer>() {
@@ -76,7 +76,7 @@ public final class MeasurementTestUtils {
                 .stream())
             .collect(Collectors.toList());
     }
-    
+
     public static Optional<Measurement> getMeasurementOfAt(Collection<Measurement> measurements,
             MetricDescription metric, EObject location) {
         return measurements.stream()

@@ -15,10 +15,7 @@ import javax.inject.Qualifier;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
-import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.simucomframework.Context;
@@ -26,7 +23,6 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
@@ -72,7 +68,7 @@ public class InterpreterDefaultContext extends Context {
     private final PCMResourceSetPartition localPCMModelCopy;
     private final IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup;
 
-    private InterpreterDefaultContext(
+    protected InterpreterDefaultContext(
             final SimuComModel simuComModel, 
             PCMResourceSetPartition localPartition,
             IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> assemblyAllocationLookup,
@@ -88,10 +84,26 @@ public class InterpreterDefaultContext extends Context {
         return this.assemblyContextStack;
     }
 
+    /**
+     * Returns the local pcm model which was valid once the context was created.
+     * 
+     * @deprecated use {@link #getLocalPCMModel()}, which was renamed, as the context which
+     *             should be used for interpretation, is not necessarily reflected by the model at
+     *             context creation (e. g. in case of the root context)
+     */
+    @Deprecated
     public PCMResourceSetPartition getLocalPCMModelAtContextCreation() {
-        return this.localPCMModelCopy;
+        return this.getLocalPCMModel();
     }
+    
 
+    /**
+     * Returns the local pcm model, which should be used for interpretation in the current and child contexts.
+     */
+    public PCMResourceSetPartition getLocalPCMModel() {
+        return localPCMModelCopy;
+    }
+    
     @Override
     public IAssemblyAllocationLookup<AbstractSimulatedResourceContainer> getAssemblyAllocationLookup() {
         return this.assemblyAllocationLookup;
@@ -117,18 +129,6 @@ public class InterpreterDefaultContext extends Context {
     public SimulatedStackframe<Object> getCurrentResultFrame() {
         return resultFrameStack.peek();
     }
-
-    public static InterpreterDefaultContext createRootContext(SimuComModel simuComModel,
-            PCMPartitionManager partitionManager,
-            IAssemblyAllocationLookup<EntityReference<ResourceContainer>> assemblyAllocationLookup,
-            ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> simRCAccess,
-            IResourceTableManager resourceTableManager) {
-        return new InterpreterDefaultContext(simuComModel, partitionManager.getLocalPCMModel(),
-                id -> simRCAccess.getSimulatedEntity(assemblyAllocationLookup.getAllocatedEntity(id)
-                    .getId()),
-                resourceTableManager, new SimulatedStack<>());
-    }
-    
 
     /**
      * Create interpreter default context from the given default context (model, sim process and
