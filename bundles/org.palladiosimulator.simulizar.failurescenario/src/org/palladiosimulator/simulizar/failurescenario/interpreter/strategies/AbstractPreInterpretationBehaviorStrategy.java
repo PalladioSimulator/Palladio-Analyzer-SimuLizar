@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IBehavioralDecisionDecorated;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.DecisionDecoratedPreInterpretationBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
@@ -25,9 +25,9 @@ public abstract class AbstractPreInterpretationBehaviorStrategy implements Failu
 	public abstract FailureBehaviorChangingStrategy getRevertedStrategy();
 
 	@Override
-	public void setDecider(Decider decider) {
-		if (this.behavior instanceof IDecisionDecorated) {
-			((IDecisionDecorated) this.behavior).setDecider(decider);
+	public void setDecider(BehavioralDecider decider) {
+		if (this.behavior instanceof IBehavioralDecisionDecorated) {
+			((IBehavioralDecisionDecorated) this.behavior).setDecider(decider);
 		} else {
 			this.behavior = new DecisionDecoratedPreInterpretationBehavior(this.behavior, decider);
 		}

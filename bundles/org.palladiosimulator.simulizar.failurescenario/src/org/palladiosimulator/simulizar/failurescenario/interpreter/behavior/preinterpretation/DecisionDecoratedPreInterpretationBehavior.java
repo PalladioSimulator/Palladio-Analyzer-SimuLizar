@@ -1,30 +1,30 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IBehavioralDecisionDecorated;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 public class DecisionDecoratedPreInterpretationBehavior extends PreInterpretationBehavior
-		implements IDecisionDecorated {
+		implements IBehavioralDecisionDecorated {
 
 	private final PreInterpretationBehavior decoratedBehavior;
-	private Decider decider;
+	private BehavioralDecider decider;
 
-	public DecisionDecoratedPreInterpretationBehavior(PreInterpretationBehavior decoratedBehavior, Decider decider) {
+	public DecisionDecoratedPreInterpretationBehavior(PreInterpretationBehavior decoratedBehavior, BehavioralDecider decider) {
 		super(InterpreterResult.OK);
 		this.decoratedBehavior = decoratedBehavior;
 		this.decider = decider;
 	}
 
 	@Override
-	public Decider getDecider() {
+	public BehavioralDecider getDecider() {
 		return this.decider;
 	}
 
 	@Override
-	public void setDecider(Decider d) {
+	public void setDecider(BehavioralDecider d) {
 		this.decider = d;
 	}
 

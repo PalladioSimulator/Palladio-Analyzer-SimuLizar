@@ -4,7 +4,7 @@ import de.uka.ipd.sdq.probfunction.math.IRandomGenerator;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 import de.uka.ipd.sdq.simucomframework.variables.converter.NumberConverter;
 
-public class ProbabilisticDecider implements Decider {
+public class ProbabilisticDecider implements BehavioralDecider {
 
 	IRandomGenerator randomNumberGenerator;
 	private final String probabilitySpec;

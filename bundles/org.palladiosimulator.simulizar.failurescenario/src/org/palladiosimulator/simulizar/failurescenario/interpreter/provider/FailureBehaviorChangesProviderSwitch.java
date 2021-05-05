@@ -12,7 +12,7 @@ import org.palladiosimulator.failuremodel.failuretype.SWTimingFailure;
 import org.palladiosimulator.failuremodel.failuretype.Timing;
 import org.palladiosimulator.failuremodel.failuretype.Transient;
 import org.palladiosimulator.failuremodel.failuretype.util.FailuretypeSwitch;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.ProbabilisticDecider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.CorruptContentBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.preinterpretation.CrashBehavior;
@@ -104,7 +104,7 @@ public class FailureBehaviorChangesProviderSwitch extends FailuretypeSwitch<List
 	public <Failuretype extends Failure> List<FailureBehaviorChangeDTO> caseByzantine(Byzantine<Failuretype> object) {
 
 		String probabilitySpec = object.getProbabilityOfOccurrence().getSpecification();
-		Decider decider = new ProbabilisticDecider(randomNumberGenerator, probabilitySpec);
+		BehavioralDecider decider = new ProbabilisticDecider(randomNumberGenerator, probabilitySpec);
 
 		FailureBehaviorChangeDTO behavior = this.doSwitch(object.getDecoratedFailure()).get(0);
 		behavior.getStrategy().setDecider(decider);

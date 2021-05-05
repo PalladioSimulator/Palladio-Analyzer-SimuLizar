@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 
 public interface FailureBehaviorChangingStrategy {
@@ -23,7 +23,7 @@ public interface FailureBehaviorChangingStrategy {
 	 * 
 	 * @param decider
 	 */
-	public void setDecider(Decider decider);
+	public void setDecider(BehavioralDecider decider);
 
 	/**
 	 * Allocate the strategies context.

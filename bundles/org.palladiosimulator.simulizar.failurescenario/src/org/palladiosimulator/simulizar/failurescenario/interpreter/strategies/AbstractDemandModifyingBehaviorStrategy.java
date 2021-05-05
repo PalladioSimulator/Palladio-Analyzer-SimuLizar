@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.strategies;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IBehavioralDecisionDecorated;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.demandmodifying.DecisionDecoratedDemandModifyingBehavior;
 import org.palladiosimulator.simulizar.failurescenario.interpreter.dto.StrategyAllocationContextDTO;
 
@@ -26,9 +26,9 @@ public abstract class AbstractDemandModifyingBehaviorStrategy implements Failure
 	public abstract FailureBehaviorChangingStrategy getRevertedStrategy();
 
 	@Override
-	public void setDecider(Decider decider) {
-		if (this.behavior instanceof IDecisionDecorated) {
-			((IDecisionDecorated) this.behavior).setDecider(decider);
+	public void setDecider(BehavioralDecider decider) {
+		if (this.behavior instanceof IBehavioralDecisionDecorated) {
+			((IBehavioralDecisionDecorated) this.behavior).setDecider(decider);
 		} else {
 			this.behavior = new DecisionDecoratedDemandModifyingBehavior(this.behavior, decider);
 		}

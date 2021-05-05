@@ -1,29 +1,29 @@
 package org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.demandmodifying;
 
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.Decider;
-import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IDecisionDecorated;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.BehavioralDecider;
+import org.palladiosimulator.simulizar.failurescenario.interpreter.behavior.IBehavioralDecisionDecorated;
 
 import de.uka.ipd.sdq.simucomframework.resources.DemandModificationDTO;
 import de.uka.ipd.sdq.simucomframework.resources.DemandModifyingBehavior;
 
-public class DecisionDecoratedDemandModifyingBehavior extends DemandModifyingBehavior implements IDecisionDecorated {
+public class DecisionDecoratedDemandModifyingBehavior extends DemandModifyingBehavior implements IBehavioralDecisionDecorated {
 
 	private final DemandModifyingBehavior decoratedBehavior;
-	private Decider decider;
+	private BehavioralDecider decider;
 
-	public DecisionDecoratedDemandModifyingBehavior(DemandModifyingBehavior decoratedBehavior, Decider decider) {
+	public DecisionDecoratedDemandModifyingBehavior(DemandModifyingBehavior decoratedBehavior, BehavioralDecider decider) {
 		super("1.0", "0.0");
 		this.decoratedBehavior = decoratedBehavior;
 		this.decider = decider;
 	}
 
 	@Override
-	public Decider getDecider() {
+	public BehavioralDecider getDecider() {
 		return this.decider;
 	}
 
 	@Override
-	public void setDecider(Decider d) {
+	public void setDecider(BehavioralDecider d) {
 		this.decider = d;
 	}
 
