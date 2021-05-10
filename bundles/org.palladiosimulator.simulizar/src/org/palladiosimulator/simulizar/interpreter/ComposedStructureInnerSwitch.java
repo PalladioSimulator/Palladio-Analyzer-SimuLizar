@@ -61,13 +61,12 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     private final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory;
 
     /**
-     * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature, RequiredRole)
+     * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature,
+     *      RequiredRole)
      */
     @AssistedInject
-    ComposedStructureInnerSwitch(
-            @Assisted final InterpreterDefaultContext context,
-            @Assisted final Signature operationSignature,
-            @Assisted final RequiredRole requiredRole,
+    ComposedStructureInnerSwitch(@Assisted final InterpreterDefaultContext context,
+            @Assisted final Signature operationSignature, @Assisted final RequiredRole requiredRole,
             ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
             ComposedStructureInnerSwitch.Factory composedStructureSwitchFactory,
@@ -89,26 +88,30 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
                 assemblyConnector.getProvidedRole_AssemblyConnector());
         var source = getAllocationTarget(assemblyConnector.getRequiringAssemblyContext_AssemblyConnector());
         var target = getAllocationTarget(assemblyConnector.getProvidingAssemblyContext_AssemblyConnector());
-        
-        transmissionInterpreter.interpretTransmission(source, target, context.getStack().currentStackFrame(), context);
+
+        transmissionInterpreter.interpretTransmission(source, target, context.getStack()
+            .currentStackFrame(), context);
         var result = repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
-        transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack().peek(), context);
+        transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack()
+            .peek(), context);
         return result;
     }
-    
+
     protected EntityReference<ResourceContainer> getAllocationTarget(AssemblyContext ctx) {
-        var fqid = getFQComponentID(ctx); 
+        var fqid = getFQComponentID(ctx);
         return Objects.requireNonNull(resourceContainerLookup.getAllocatedEntity(fqid),
                 "No allocation registered for assembly context " + fqid);
     }
-    
+
     protected String getFQComponentID(AssemblyContext ctx) {
         var contextStack = context.getAssemblyContextStack();
-        
-        if (contextStack.size() < 2) return ctx.getId();
-        
+
+        if (contextStack.size() < 2)
+            return ctx.getId();
+
         // We have to strip the system context created by simulizar
-        return Stream.concat(contextStack.subList(1, contextStack.size()).stream(), Stream.of(ctx))
+        return Stream.concat(contextStack.subList(1, contextStack.size())
+            .stream(), Stream.of(ctx))
             .map(Identifier::getId)
             .collect(Collectors.joining(FQComponentID.SEPARATOR));
     }
@@ -123,7 +126,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     @Override
     public InterpreterResult caseAssemblyInfrastructureConnector(
             final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
-        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(this.context,
+        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(
+                this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
                 this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
         return repositoryComponentSwitch
@@ -133,25 +137,28 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     @Override
     public InterpreterResult caseRequiredDelegationConnector(
             final RequiredDelegationConnector requiredDelegationConnector) {
-        final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
-		final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
-				.create(this.context, this.signature,
-						requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
+        final AssemblyContext parentContext = this.context.getAssemblyContextStack()
+            .pop();
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory.create(
+                this.context, this.signature,
+                requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
         final var result = composedStructureInnerSwitch.doSwitch(parentContext);
-        this.context.getAssemblyContextStack().push(parentContext);
+        this.context.getAssemblyContextStack()
+            .push(parentContext);
         return result;
     }
 
     @Override
     public InterpreterResult caseRequiredInfrastructureDelegationConnector(
             final RequiredInfrastructureDelegationConnector requiredInfrastructureDelegationConnector) {
-        final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
-		final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
-				.create(this.context, this.signature,
-						requiredInfrastructureDelegationConnector
-								.getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
-		final var result = composedStructureInnerSwitch.doSwitch(parentContext);
-        this.context.getAssemblyContextStack().push(parentContext);
+        final AssemblyContext parentContext = this.context.getAssemblyContextStack()
+            .pop();
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
+            .create(this.context, this.signature, requiredInfrastructureDelegationConnector
+                .getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
+        final var result = composedStructureInnerSwitch.doSwitch(parentContext);
+        this.context.getAssemblyContextStack()
+            .push(parentContext);
         return result;
     }
 
@@ -226,11 +233,15 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
                 return null;
             }
         };
-        for (final Connector connector : myContext.getParentStructure__AssemblyContext()
-            .getConnectors__ComposedStructure()) {
-            final Connector result = connectorSelector.doSwitch(connector);
-            if (result != null) {
-                return result;
+        if (myContext.getParentStructure__AssemblyContext() == null) {
+            throw new PCMModelInterpreterException("Required delegation of the system cannot be simulated");
+        } else {
+            for (final Connector connector : myContext.getParentStructure__AssemblyContext()
+                .getConnectors__ComposedStructure()) {
+                final Connector result = connectorSelector.doSwitch(connector);
+                if (result != null) {
+                    return result;
+                }
             }
         }
         throw new PCMModelInterpreterException("Found unbound provided role. PCM model is invalid.");
