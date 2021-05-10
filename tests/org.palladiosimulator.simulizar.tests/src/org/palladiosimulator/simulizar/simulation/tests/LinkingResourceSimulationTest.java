@@ -28,7 +28,7 @@ class LinkingResourceSimulationTest {
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/LinkingResource_Test", modelFiles = {
             "default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
             "default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
-    @SimulationConfig(simulateLinkThroughput = true)
+    @SimulationConfig(simulateLinkThroughput = true, maxMeasurements = "100")
     @RunSimuLizar
     void testLinkingResourceThroughputSimulation(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {
@@ -46,7 +46,7 @@ class LinkingResourceSimulationTest {
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/LinkingResource_Test", modelFiles = {
             "default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
             "default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
-    @SimulationConfig(simulateLinkThroughput = false)
+    @SimulationConfig(simulateLinkThroughput = false, maxMeasurements = "100")
     @RunSimuLizar
     void testNoLinkingResourceSimulation(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {

@@ -12,6 +12,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
+import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -27,6 +28,7 @@ class SimuLizar154Test {
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/simulizar154", modelFiles = {
             "default.allocation", "default.usagemodel", "default.monitorrepository" })
+    @SimulationConfig(maxMeasurements = "20")
     @RunSimuLizar
     void testSimulizar154Fix(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {

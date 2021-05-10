@@ -17,6 +17,7 @@ import org.palladiosimulator.simulizar.events.EventsTransformationConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
 import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
+import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.annotation.UseSimuLizarExtension;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -30,6 +31,7 @@ class EventExtensionTest {
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/MinimumEvent_Example", modelFiles = {
             "default.allocation", "default.usagemodel" })
     @UseSimuLizarExtension(DaggerEventExtensionComponent.class)
+    @SimulationConfig(maxMeasurements = "100")
     @SetConfigProperty(id = EventsTransformationConfiguration.SIMULATE_EVENTS, value = "true")
     @SetConfigProperty(id = EventsTransformationConfiguration.EVENT_MIDDLEWARE_FILE, value = ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE)
     @SetConfigProperty(id = EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS, value = "false")
