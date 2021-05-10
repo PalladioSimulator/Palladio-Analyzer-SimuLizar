@@ -31,7 +31,7 @@ class EventExtensionTest {
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/MinimumEvent_Example", modelFiles = {
             "default.allocation", "default.usagemodel" })
     @UseSimuLizarExtension(DaggerEventExtensionComponent.class)
-    @SimulationConfig(maxMeasurements = "100")
+    @SimulationConfig(maxMeasurements = "1000")
     @SetConfigProperty(id = EventsTransformationConfiguration.SIMULATE_EVENTS, value = "true")
     @SetConfigProperty(id = EventsTransformationConfiguration.EVENT_MIDDLEWARE_FILE, value = ConstantsContainer.DEFAULT_EVENT_MIDDLEWARE_FILE)
     @SetConfigProperty(id = EventsTransformationConfiguration.STORE_TRANSFORMED_MODELS, value = "false")
@@ -45,7 +45,7 @@ class EventExtensionTest {
         assertThat(allMeasurementsOfMetric(measurement.get(), MetricDescriptionConstants.RESPONSE_TIME_METRIC),
                 match(withProbability(closeTo(0.5, 0.1), asDoubleIn(SI.SECOND, is(closeTo(5, 0.0001)))),
                       withProbability(closeTo(0.5, 0.1), asDoubleIn(SI.SECOND, is(closeTo(4, 0.0001)))),
-                      withProbability(lessThan(0.01), asDoubleIn(SI.SECOND, is(lessThan(3.999))))));
+                      withProbability(lessThan(0.05), asDoubleIn(SI.SECOND, is(lessThan(3.999))))));
     }
 
 }
