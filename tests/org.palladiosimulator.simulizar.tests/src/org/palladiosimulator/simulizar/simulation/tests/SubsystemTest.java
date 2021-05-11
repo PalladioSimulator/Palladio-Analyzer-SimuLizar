@@ -13,6 +13,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
+import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -25,6 +26,7 @@ class SubsystemTest {
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/Subsystem_Test", modelFiles = {
             "nestedSubsystems.allocation", "nestedSubsystems.monitorrepository", "nestedSubSystem.usagemodel" })
+    @SimulationConfig(maxMeasurements = "100")
     @RunSimuLizar
     void testNestedSubsystemAllocation(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {
@@ -42,6 +44,7 @@ class SubsystemTest {
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.examples.package", basePath = "initiatorTemplates/Subsystem_Test", modelFiles = {
             "default.allocation", "default.monitorrepository", "default.usagemodel" })
+    @SimulationConfig(maxMeasurements = "100")
     @RunSimuLizar
     void testDefault(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {

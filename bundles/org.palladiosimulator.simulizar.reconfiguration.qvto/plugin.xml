@@ -15,15 +15,9 @@
 	   </sourceContainer>
 	</extension>
  <extension
-       point="org.palladiosimulator.simulizar.reconfigurationloader">
-    <reconfigurationLoader
-          reconfigurationLoader="org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader">
-    </reconfigurationLoader>
- </extension>
- <extension
-       point="org.palladiosimulator.simulizar.reconfigurationengine">
-    <reconfigurationEngine
-          reconfigurationEngine="org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator">
-    </reconfigurationEngine>
+       point="org.palladiosimulator.simulizar.extension.factory">
+    <component
+          factory="org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurationComponent$EclipseFactory">
+    </component>
  </extension>
 </plugin>

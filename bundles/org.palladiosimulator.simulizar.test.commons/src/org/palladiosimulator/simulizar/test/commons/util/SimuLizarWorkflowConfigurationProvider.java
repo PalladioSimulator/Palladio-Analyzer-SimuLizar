@@ -4,16 +4,19 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
 import static org.junit.platform.commons.support.AnnotationSupport.findRepeatableAnnotations;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.edp2.models.Repository.Repository;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
 import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 
 public class SimuLizarWorkflowConfigurationProvider implements Supplier<IJobConfiguration> {
@@ -38,9 +41,15 @@ public class SimuLizarWorkflowConfigurationProvider implements Supplier<IJobConf
         properties.put(SimuComConfig.SIMULATE_FAILURES, annotation.simulateReliability());
         properties.put(SimuComConfig.SIMULATE_LINKING_RESOURCES, annotation.simulateLinkingResource());
         properties.put(SimuComConfig.SIMULATE_THROUGHPUT_OF_LINKING_RESOURCES, annotation.simulateLinkThroughput());
+        properties.put(AbstractSimulationConfig.MAXIMUM_MEASUREMENT_COUNT, annotation.maxMeasurements());
+        properties.put(AbstractSimulationConfig.SIMULATION_TIME, annotation.maxSimTime());
         additionalConfig.forEach(prop -> properties.put(prop.id(), prop.value()));
         var simulizarConfiguration = new SimuLizarWorkflowConfiguration(properties);
         simulizarConfiguration.setSimuComConfiguration(new SimuComConfig(properties, false, null));
+        
+        Optional.ofNullable(properties.get(SimulizarConstants.RECONFIGURATION_RULES_FOLDER))
+            .ifPresent(o -> simulizarConfiguration.setReconfigurationRulesFolder(o.toString()));
+        
         return simulizarConfiguration;
     }
 

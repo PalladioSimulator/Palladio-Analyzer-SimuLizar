@@ -49,7 +49,7 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
-import org.palladiosimulator.simulizar.reconfiguration.qvto.QvtoReconfigurationLoader;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
@@ -441,10 +441,8 @@ public class QVToReconfigurationTest {
 
     
     private void executeTransformation(SimuLizarWorkflowConfiguration wfConfig, PCMPartitionManager pcmPartitionManager, EObject monitoredElement) {
-        QVTOReconfigurator reconfigurator = new QVTOReconfigurator();
-        reconfigurator.setConfiguration(wfConfig);
-        reconfigurator.setPCMPartitionManager(pcmPartitionManager);
-        QvtoReconfigurationLoader reconfigurationLoader = new QvtoReconfigurationLoader();
+        QVTOReconfigurator reconfigurator = new QVTOReconfigurator(wfConfig, pcmPartitionManager);
+        QVTOReconfigurationLoader reconfigurationLoader = new QVTOReconfigurationLoader();
         reconfigurationLoader.load(wfConfig);
         EList<ModelTransformation<? extends Object>> transformations = new BasicEList<>(reconfigurationLoader.getTransformations());
         boolean checkedAndExceuted = reconfigurator.runExecute(transformations, monitoredElement, resourceTableManager);
