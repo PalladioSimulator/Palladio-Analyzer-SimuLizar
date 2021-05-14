@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.utils;
 
+import java.io.NotSerializableException;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -8,6 +9,7 @@ import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
+import org.palladiosimulator.pcm.stoex.api.StoExSerialiser;
 
 import de.uka.ipd.sdq.simucomframework.variables.EvaluationProxy;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -17,7 +19,6 @@ import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 import de.uka.ipd.sdq.stoex.AbstractNamedReference;
 import de.uka.ipd.sdq.stoex.NamespaceReference;
 import de.uka.ipd.sdq.stoex.VariableReference;
-import de.uka.ipd.sdq.stoex.analyser.visitors.StoExPrettyPrintVisitor;
 import de.uka.ipd.sdq.stoex.util.StoexSwitch;
 
 /**
@@ -29,6 +30,8 @@ import de.uka.ipd.sdq.stoex.util.StoexSwitch;
 public final class SimulatedStackHelper {
 
     private static final Logger LOGGER = Logger.getLogger(SimulatedStackHelper.class);
+
+    protected static final StoExSerialiser STOEX_SERIALISER = StoExSerialiser.createInstance();
 
     /**
      * Adds parameters to given stack frame.
@@ -50,9 +53,14 @@ public final class SimulatedStackHelper {
                 final AbstractNamedReference namedReference = variableCharacterisation
                         .getVariableUsage_VariableCharacterisation().getNamedReference__VariableUsage();
 
-                final String id = new StoExPrettyPrintVisitor().doSwitch(namedReference).toString() + "."
-                        + variableCharacterisation.getType().getLiteral();
-                ;
+                String id;
+                try {
+                    id = STOEX_SERIALISER.serialise(namedReference) + "."
+                            + variableCharacterisation.getType().getLiteral();
+                } catch (NotSerializableException e1) {
+                    throw new RuntimeException("Could not serialise reference name.", e1);
+                }
+
                 if (SimulatedStackHelper.isInnerReference(namedReference)) {
                     targetStackFrame.addValue(id,
                             new EvaluationProxy(randomVariable.getSpecification(), contextStackFrame.copyFrame()));
