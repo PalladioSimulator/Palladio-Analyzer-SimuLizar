@@ -5,9 +5,10 @@
 			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="0.0.0"/>
 			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/releases/latest/"/>
 		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
-			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly/"/>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
+			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="tbd"/>
+			<!-- <repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly/"/>-->
+			<repository location="file:///C:/Users/legua/ba_jonas_lehmann/Palladio-Analyzer-SimuCom/releng/org.palladiosimulator.simucom.updatesite/target/repository"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -289,6 +290,11 @@
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
 			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
 			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/releases/latest"/>
+		</location>
+
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly" refresh="true">
+			<unit id="org.palladiosimulator.failuremodel.feature.feature.group" version="0.0.0"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-addons-failurescenario/nightly/"/>
 		</location>
 </locations>
 </target>

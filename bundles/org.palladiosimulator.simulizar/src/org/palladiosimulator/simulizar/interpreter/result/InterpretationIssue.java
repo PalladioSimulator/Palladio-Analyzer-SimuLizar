@@ -10,5 +10,7 @@ package org.palladiosimulator.simulizar.interpreter.result;
  *
  */
 public interface InterpretationIssue {
+    
+    boolean isHandled();
 
 }

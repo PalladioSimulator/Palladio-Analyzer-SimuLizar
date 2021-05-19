@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<failuretype:FailureTypeRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:failuretype="http://palladiosimulator.org/failuretype/1.0" id="__7h4IJF2EeuBgLa-6J1mpg">
+  <failuretypes xsi:type="failuretype:HWCrashFailure" id="_DANxI5F3EeuBgLa-6J1mpg" entityName="HW Crash"/>
+  <failuretypes xsi:type="failuretype:HWTimingFailure" id="_8pVYtpGkEeuyxYcnF5tjyQ" entityName="HW Timing">
+    <delay specification="3.0"/>
+    <scalingFactor specification="0.5"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWTransientFailure" id="_PWpGypIxEeuFc9bhlLg3-w" entityName="HW Transient Crash" decoratedFailure="_DANxI5F3EeuBgLa-6J1mpg">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWTransientFailure" id="_7AM8qpIxEeuFc9bhlLg3-w" entityName="HW Transient Timing" decoratedFailure="_8pVYtpGkEeuyxYcnF5tjyQ">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWByzantineFailure" id="_p9M2YJJ4EeuIIYx7sd86Rw" entityName="HW Byzantine Timing" decoratedFailure="_8pVYtpGkEeuyxYcnF5tjyQ">
+    <probabilityOfOccurrence specification="0.5"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWTransientFailure" id="_2ineyJJ4EeuIIYx7sd86Rw" entityName="HW Transient Byzantine Timing" decoratedFailure="_p9M2YJJ4EeuIIYx7sd86Rw">
+    <duration specification="1000.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWCrashFailure" id="_IJL2EJF3EeuBgLa-6J1mpg" entityName="SW Crash"/>
+  <failuretypes xsi:type="failuretype:SWTimingFailure" id="_P6sUoZGlEeuyxYcnF5tjyQ" entityName="SW Timing">
+    <delay specification="3.0"/>
+    <scalingFactor specification="1.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWTransientFailure" id="_5MYrEJIwEeuFc9bhlLg3-w" entityName="SW Transient Crash" decoratedFailure="_IJL2EJF3EeuBgLa-6J1mpg">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWTransientFailure" id="_FRXqc5IyEeuFc9bhlLg3-w" entityName="SW Transient Timing" decoratedFailure="_P6sUoZGlEeuyxYcnF5tjyQ">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWByzantineFailure" id="_7lZKNJJ6EeuIIYx7sd86Rw" entityName="SW Byzantine Timing" decoratedFailure="_P6sUoZGlEeuyxYcnF5tjyQ">
+    <probabilityOfOccurrence specification="0.5"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWTransientFailure" id="_ClWl85J7EeuIIYx7sd86Rw" entityName="SW Transient Byzantine Timing" decoratedFailure="_7lZKNJJ6EeuIIYx7sd86Rw">
+    <duration specification="1000.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkCrashFailure" id="_NQUH-pF3EeuBgLa-6J1mpg" entityName="Link Crash"/>
+  <failuretypes xsi:type="failuretype:LinkTimingFailure" id="_e4OD65GlEeuyxYcnF5tjyQ" entityName="Link Timing">
+    <delay specification="3.0"/>
+    <scalingFactor specification="0.5"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkTransientFailure" id="_a_dkEZIxEeuFc9bhlLg3-w" entityName="Link Transient Crash" decoratedFailure="_NQUH-pF3EeuBgLa-6J1mpg">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkTransientFailure" id="_XJIWQZIyEeuFc9bhlLg3-w" entityName="Link Transient Timing" decoratedFailure="_e4OD65GlEeuyxYcnF5tjyQ">
+    <duration specification="300.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkByzantineFailure" id="_n_rG75HBEeuyxYcnF5tjyQ" entityName="Link Byzantine Crash" decoratedFailure="_NQUH-pF3EeuBgLa-6J1mpg">
+    <probabilityOfOccurrence specification="0.5"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkTransientFailure" id="_Wzj5cZIzEeuFc9bhlLg3-w" entityName="Link Transient Byzantine Crash" decoratedFailure="_n_rG75HBEeuyxYcnF5tjyQ">
+    <duration specification="1000.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:SWContentFailure" id="_8X9n8JaeEeuHo8ag6GtBlw" entityName="SW Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:HWContentFailure" id="_yNgsh5amEeuHo8ag6GtBlw" entityName="HW Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
+  <failuretypes xsi:type="failuretype:LinkContentFailure" id="_BdOX_JanEeuHo8ag6GtBlw" entityName="Link Content">
+    <degreeOfCorruption specification="1.0"/>
+  </failuretypes>
+</failuretype:FailureTypeRepository>
