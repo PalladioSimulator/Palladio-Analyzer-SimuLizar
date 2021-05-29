@@ -46,6 +46,7 @@
 		<module>org.palladiosimulator.simulizar.reconfigurationrule</module>
 		<module>org.palladiosimulator.simulizar.reconfigurationrule.edit</module>
 		<module>org.palladiosimulator.simulizar.reconfigurationrule.editor</module>
+		<module>org.palladiosimulator.simulizar.reliability</module>
 		<module>org.palladiosimulator.simulizar.runtimemeasurement</module>
 		<module>org.palladiosimulator.simulizar.runtimemeasurement.edit</module>
 		<module>org.palladiosimulator.simulizar.slidingwindow</module>

@@ -173,11 +173,13 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     @Override
     public InterpreterResult caseInternalAction(final InternalAction internalAction) {
         var result = InterpreterResult.OK;
+        context.getStack().createAndPushNewStackFrame(context.getStack().currentStackFrame());
         result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceDemand_Action()));
         result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInfrastructureCall__Action()));
         // We include the following, once failure simulation has been fully integrated
-        //result = resultMerger.merge(invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction());
+        result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getInternalFailureOccurrenceDescriptions__InternalAction()));
         result = resultMerger.merge(result, invokeRecursiveAndHandleFailure(internalAction.getResourceCall__Action()));
+        context.getStack().removeStackFrame();
         return result;
     }
     
