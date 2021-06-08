@@ -19,6 +19,9 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 
 import dagger.assisted.Assisted;
@@ -60,18 +63,22 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
 
     private final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory;
 
+    private final InterpreterResultMerger resultMerger;
+
+    private final InterpreterResultHandler issueHandler;
+
     /**
-     * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature, RequiredRole)
+     * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature,
+     *      RequiredRole)
      */
     @AssistedInject
-    ComposedStructureInnerSwitch(
-            @Assisted final InterpreterDefaultContext context,
-            @Assisted final Signature operationSignature,
-            @Assisted final RequiredRole requiredRole,
+    ComposedStructureInnerSwitch(@Assisted final InterpreterDefaultContext context,
+            @Assisted final Signature operationSignature, @Assisted final RequiredRole requiredRole,
             ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
             ComposedStructureInnerSwitch.Factory composedStructureSwitchFactory,
-            RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory) {
+            RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory, InterpreterResultHandler issueHandler,
+            InterpreterResultMerger resultMerger) {
         super();
         this.context = context;
         this.signature = operationSignature;
@@ -80,6 +87,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
         this.resourceContainerLookup = resourceContainerLookup;
         this.composedStructureSwitchFactory = composedStructureSwitchFactory;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
     }
 
     @Override
@@ -89,26 +98,36 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
                 assemblyConnector.getProvidedRole_AssemblyConnector());
         var source = getAllocationTarget(assemblyConnector.getRequiringAssemblyContext_AssemblyConnector());
         var target = getAllocationTarget(assemblyConnector.getProvidingAssemblyContext_AssemblyConnector());
-        
-        transmissionInterpreter.interpretTransmission(source, target, context.getStack().currentStackFrame(), context);
-        var result = repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
-        transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack().peek(), context);
+
+        InterpreterResult result = transmissionInterpreter.interpretTransmission(source, target, context.getStack()
+            .currentStackFrame(), context);
+        if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+            result = resultMerger.merge(result,
+                    repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector()));
+        }
+        if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+            result = resultMerger.merge(result,
+                    transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack()
+                        .peek(), context));
+        }
         return result;
     }
-    
+
     protected EntityReference<ResourceContainer> getAllocationTarget(AssemblyContext ctx) {
-        var fqid = getFQComponentID(ctx); 
+        var fqid = getFQComponentID(ctx);
         return Objects.requireNonNull(resourceContainerLookup.getAllocatedEntity(fqid),
                 "No allocation registered for assembly context " + fqid);
     }
-    
+
     protected String getFQComponentID(AssemblyContext ctx) {
         var contextStack = context.getAssemblyContextStack();
-        
-        if (contextStack.size() < 2) return ctx.getId();
-        
+
+        if (contextStack.size() < 2)
+            return ctx.getId();
+
         // We have to strip the system context created by simulizar
-        return Stream.concat(contextStack.subList(1, contextStack.size()).stream(), Stream.of(ctx))
+        return Stream.concat(contextStack.subList(1, contextStack.size())
+            .stream(), Stream.of(ctx))
             .map(Identifier::getId)
             .collect(Collectors.joining(FQComponentID.SEPARATOR));
     }
@@ -123,7 +142,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     @Override
     public InterpreterResult caseAssemblyInfrastructureConnector(
             final AssemblyInfrastructureConnector assemblyInfrastructureConnector) {
-        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(this.context,
+        final RepositoryComponentSwitch repositoryComponentSwitch = repositoryComponentSwitchFactory.create(
+                this.context,
                 assemblyInfrastructureConnector.getProvidingAssemblyContext__AssemblyInfrastructureConnector(),
                 this.signature, assemblyInfrastructureConnector.getProvidedRole__AssemblyInfrastructureConnector());
         return repositoryComponentSwitch
@@ -133,25 +153,28 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     @Override
     public InterpreterResult caseRequiredDelegationConnector(
             final RequiredDelegationConnector requiredDelegationConnector) {
-        final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
-		final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
-				.create(this.context, this.signature,
-						requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
+        final AssemblyContext parentContext = this.context.getAssemblyContextStack()
+            .pop();
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory.create(
+                this.context, this.signature,
+                requiredDelegationConnector.getOuterRequiredRole_RequiredDelegationConnector());
         final var result = composedStructureInnerSwitch.doSwitch(parentContext);
-        this.context.getAssemblyContextStack().push(parentContext);
+        this.context.getAssemblyContextStack()
+            .push(parentContext);
         return result;
     }
 
     @Override
     public InterpreterResult caseRequiredInfrastructureDelegationConnector(
             final RequiredInfrastructureDelegationConnector requiredInfrastructureDelegationConnector) {
-        final AssemblyContext parentContext = this.context.getAssemblyContextStack().pop();
-		final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
-				.create(this.context, this.signature,
-						requiredInfrastructureDelegationConnector
-								.getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
-		final var result = composedStructureInnerSwitch.doSwitch(parentContext);
-        this.context.getAssemblyContextStack().push(parentContext);
+        final AssemblyContext parentContext = this.context.getAssemblyContextStack()
+            .pop();
+        final ComposedStructureInnerSwitch composedStructureInnerSwitch = composedStructureSwitchFactory
+            .create(this.context, this.signature, requiredInfrastructureDelegationConnector
+                .getOuterRequiredRole__RequiredInfrastructureDelegationConnector());
+        final var result = composedStructureInnerSwitch.doSwitch(parentContext);
+        this.context.getAssemblyContextStack()
+            .push(parentContext);
         return result;
     }
 

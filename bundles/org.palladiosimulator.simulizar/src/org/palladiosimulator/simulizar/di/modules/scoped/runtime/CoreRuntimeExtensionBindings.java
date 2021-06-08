@@ -9,6 +9,8 @@ import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsMod
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.PCMPartitionManagerAdapterModule;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.impl.SimulatedThreadComponentDelegatingScenarioRunner;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResultMerger;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.modelobserver.ResourceEnvironmentSyncer;
@@ -16,6 +18,7 @@ import org.palladiosimulator.simulizar.modelobserver.UsageEvolutionSyncer;
 import org.palladiosimulator.simulizar.modelobserver.UsageModelSyncer;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.IScenarioRunnerFactory;
@@ -34,8 +37,8 @@ public interface CoreRuntimeExtensionBindings {
     @Provides
     @ElementsIntoSet
     static Set<RuntimeStateEntityManager> provideCoreEntityManagers(ComponentInstanceRegistry registry,
-            AssemblyAllocationManager allocationManager) {
-        return ImmutableSet.of(registry, allocationManager);
+            AssemblyAllocationManager allocationManager, PreInterpretationBehaviorManager pIBManager) {
+        return ImmutableSet.of(registry, allocationManager, pIBManager);
     }
 
     @Provides
@@ -50,6 +53,10 @@ public interface CoreRuntimeExtensionBindings {
     @SimulationRuntimeScope
     IAssemblyAllocationLookup<EntityReference<ResourceContainer>> bindAssemblyAllocationLookup(
             AssemblyAllocationManager manager);
+    
+    @Binds
+    @SimulationRuntimeScope
+    InterpreterResultMerger bindResultMerger(BasicInterpreterResultMerger impl);
     
     @Binds
     @SimulationRuntimeScope

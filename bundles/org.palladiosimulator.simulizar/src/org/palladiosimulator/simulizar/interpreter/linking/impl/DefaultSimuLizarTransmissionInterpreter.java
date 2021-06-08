@@ -9,6 +9,12 @@ import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRoute
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionPayloadDemandCalculator;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionSimulationStrategy;
+import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
+import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 
 /**
  * The {@link DefaultSimuLizarTransmissionInterpreter} encapsulated the default behavior of how link
@@ -37,29 +43,51 @@ public class DefaultSimuLizarTransmissionInterpreter<NodeType, PayloadType>
     private ILinkingResourceRouter<NodeType, EntityReference<LinkingResource>> router;
     private ITransmissionPayloadDemandCalculator<PayloadType, Double> calculator;
     private ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext> transmissionSimulation;
+    private final InterpreterResultHandler issueHandler;
+    private final InterpreterResultMerger resultMerger;
+    private final PreInterpretationBehaviorManager pibManager;
 
     @Inject
     public DefaultSimuLizarTransmissionInterpreter(
             ILinkingResourceRouter<NodeType, EntityReference<LinkingResource>> router,
             ITransmissionPayloadDemandCalculator<PayloadType, Double> calculator,
-            ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext> transmissionSimulation) {
+            ITransmissionSimulationStrategy<EntityReference<LinkingResource>, Double, InterpreterDefaultContext> transmissionSimulation,
+            InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger,
+            PreInterpretationBehaviorManager pibManager) {
         this.router = router;
         this.calculator = calculator;
         this.transmissionSimulation = transmissionSimulation;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
+        this.pibManager = pibManager;
     }
 
     @Override
-    public void interpretTransmission(NodeType source, NodeType target, PayloadType payload,
+    public InterpreterResult interpretTransmission(NodeType source, NodeType target, PayloadType payload,
             InterpreterDefaultContext context) {
+        InterpreterResult result = InterpreterResult.OK;
         var demand = calculator.calculatePayloadDemand(payload);
         var links = router.findRoute(source, target);
         if (links.isEmpty()) {
             throw new RuntimeException(
                     "Could not determine route between nodes. This should be turned into a simulation feature.");
         } else {
-            links.get()
-                .forEach(link -> transmissionSimulation.simulateTransmission(link, demand, context));
+            // Search for pre-interpretation-behaviors to execute them before simulateTransmission()
+            // For example to stop interpretation through InterpretationIssue of LinkCrashFailure
+            for (EntityReference<LinkingResource> l : links.get()) {
+                String linkId = l.getId();
+                if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(linkId)) {
+                    PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(linkId);
+                    InterpreterResult newResult = pibContainer.executeBehaviors(context);
+                    result = resultMerger.merge(result, newResult);
+                }
+            }
+            if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+                links.get()
+                    .forEach(link -> transmissionSimulation.simulateTransmission(link, demand, context));
+            }
         }
+        return result;
     }
 
 }

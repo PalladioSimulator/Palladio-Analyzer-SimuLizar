@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:reliability="http://palladiosimulator.org/PalladioComponentModel/Reliability/5.2" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" id="_CR5rMCjgEeKEJ8UeV7BBTw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_FmEKoCjgEeKEJ8UeV7BBTw">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_G57mQCjgEeKEJ8UeV7BBTw" entityName="Provided_start_aName" providedInterface__OperationProvidedRole="_DQDVgCjgEeKEJ8UeV7BBTw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_gHR7kG1UEeuaIJFDGS5PXg" entityName="aName.Interface2.OperationRequiredRole1" requiredInterface__OperationRequiredRole="_bm784G1UEeuaIJFDGS5PXg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_G57mQSjgEeKEJ8UeV7BBTw" describedService__SEFF="_EQjwQCjgEeKEJ8UeV7BBTw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_G58NUCjgEeKEJ8UeV7BBTw" entityName="start" successor_AbstractAction="_JWnxwG1VEeuaIJFDGS5PXg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_G58NUSjgEeKEJ8UeV7BBTw" entityName="stop" predecessor_AbstractAction="_pF-U4G1UEeuaIJFDGS5PXg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_jm3EwCjgEeKEJ8UeV7BBTw" predecessor_AbstractAction="_JWnxwG1VEeuaIJFDGS5PXg" successor_AbstractAction="_pF-U4G1UEeuaIJFDGS5PXg">
+        <internalFailureOccurrenceDescriptions__InternalAction failureProbability="0.25" softwareInducedFailureType__InternalFailureOccurrenceDescription="_mT-LSSjgEeKEJ8UeV7BBTw"/>
+        <internalFailureOccurrenceDescriptions__InternalAction failureProbability="0.25" softwareInducedFailureType__InternalFailureOccurrenceDescription="_KIF_-W7fEeuhd6DNNtY2lQ"/>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_pF-U4G1UEeuaIJFDGS5PXg" entityName="ExternalCallActionBar" predecessor_AbstractAction="_jm3EwCjgEeKEJ8UeV7BBTw" successor_AbstractAction="_G58NUSjgEeKEJ8UeV7BBTw" calledService_ExternalService="_Ha1agG1VEeuaIJFDGS5PXg" role_ExternalService="_gHR7kG1UEeuaIJFDGS5PXg"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_JWnxwG1VEeuaIJFDGS5PXg" entityName="ExternalCallActionFoo" predecessor_AbstractAction="_G58NUCjgEeKEJ8UeV7BBTw" successor_AbstractAction="_jm3EwCjgEeKEJ8UeV7BBTw" calledService_ExternalService="_d_S7YG1UEeuaIJFDGS5PXg" role_ExternalService="_gHR7kG1UEeuaIJFDGS5PXg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_gkO9UG1UEeuaIJFDGS5PXg" entityName="BasicComponent2">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_RKpuwG1VEeuaIJFDGS5PXg" entityName="BasicComponent2.Interface2.OperationProvidedRole1" providedInterface__OperationProvidedRole="_bm784G1UEeuaIJFDGS5PXg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_hLw3YG1UEeuaIJFDGS5PXg" describedService__SEFF="_d_S7YG1UEeuaIJFDGS5PXg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_hLw3YW1UEeuaIJFDGS5PXg" successor_AbstractAction="_hLxecG1UEeuaIJFDGS5PXg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_hLxecG1UEeuaIJFDGS5PXg" predecessor_AbstractAction="_hLw3YW1UEeuaIJFDGS5PXg"/>
+    </serviceEffectSpecifications__BasicComponent>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_RK0G0G1VEeuaIJFDGS5PXg" describedService__SEFF="_Ha1agG1VEeuaIJFDGS5PXg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_RK0G0W1VEeuaIJFDGS5PXg" successor_AbstractAction="_RK0G0m1VEeuaIJFDGS5PXg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_RK0G0m1VEeuaIJFDGS5PXg" predecessor_AbstractAction="_RK0G0W1VEeuaIJFDGS5PXg"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_DQDVgCjgEeKEJ8UeV7BBTw" entityName="start">
+    <signatures__OperationInterface id="_EQjwQCjgEeKEJ8UeV7BBTw" entityName="execute"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_bm784G1UEeuaIJFDGS5PXg" entityName="Interface2">
+    <signatures__OperationInterface id="_d_S7YG1UEeuaIJFDGS5PXg" entityName="foo"/>
+    <signatures__OperationInterface id="_Ha1agG1VEeuaIJFDGS5PXg" entityName="bar"/>
+  </interfaces__Repository>
+  <failureTypes__Repository xsi:type="reliability:SoftwareInducedFailureType" id="_mT-LSSjgEeKEJ8UeV7BBTw" entityName="SWFailure" internalFailureOccurrenceDescriptions__SoftwareInducedFailureType="//@components__Repository.0/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@internalFailureOccurrenceDescriptions__InternalAction.0"/>
+  <failureTypes__Repository xsi:type="reliability:SoftwareInducedFailureType" id="_KIF_-W7fEeuhd6DNNtY2lQ" entityName="SWFailure2" internalFailureOccurrenceDescriptions__SoftwareInducedFailureType="//@components__Repository.0/@serviceEffectSpecifications__BasicComponent.0/@steps_Behaviour.2/@internalFailureOccurrenceDescriptions__InternalAction.1"/>
+</repository:Repository>

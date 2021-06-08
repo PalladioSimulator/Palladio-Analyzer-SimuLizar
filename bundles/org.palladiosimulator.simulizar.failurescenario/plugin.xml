@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.palladiosimulator.simulizar.ui.configuration.fileinput">
+      <fileInputConfigurationBuilder
+            fileInputConfigurationBuilder="org.palladiosimulator.simulizar.failurescenario.ui.config.FailurescenarioExtensionFileInputConfigurationBuilder">
+      </fileInputConfigurationBuilder>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.extension.factory">
+      <component
+            factory="org.palladiosimulator.simulizar.failurescenario.di.FailurescenarioExtensionComponent$EclipseFactory">
+      </component>
+   </extension>
+   <extension
+         point="org.palladiosimulator.simulizar.extension.factory">
+      <component
+            factory="org.palladiosimulator.simulizar.failurescenario.di.FailurescenarioRootComponent$EclipseFactory">
+      </component>
+   </extension>
+
+</plugin>

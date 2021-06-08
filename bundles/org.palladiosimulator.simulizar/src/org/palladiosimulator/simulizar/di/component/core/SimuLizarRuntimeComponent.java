@@ -19,6 +19,7 @@ import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpre
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRuntimeJob;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
+import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
@@ -56,6 +57,8 @@ public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
     ITransmissionInterpreter<EntityReference<ResourceContainer>,SimulatedStackframe<Object>,InterpreterDefaultContext> transmissionInterpreter();
     
     ExtensionLookup runtimeExtensionLookup();
+    
+    PreInterpretationBehaviorManager preInterpretationBehaviorManager();
 
     @Component.Factory
     public interface Factory {

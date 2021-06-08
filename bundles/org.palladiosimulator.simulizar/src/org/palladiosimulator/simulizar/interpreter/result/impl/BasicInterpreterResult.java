@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.result.impl;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.palladiosimulator.simulizar.interpreter.result.InterpretationIssue;
@@ -18,6 +20,12 @@ public class BasicInterpreterResult implements InterpreterResult {
     @Override
     public Iterable<InterpretationIssue> getIssues() {
         return ImmutableList.copyOf(issues);
+    }
+    
+    public static BasicInterpreterResult of(InterpretationIssue issue) {
+        var result = new BasicInterpreterResult();
+        result.issues = new ArrayList<>(Collections.singletonList(issue));
+        return result;                
     }
     
 

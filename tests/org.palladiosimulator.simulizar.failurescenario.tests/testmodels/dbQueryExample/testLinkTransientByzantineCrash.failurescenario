@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<failurescenario:FailureScenarioRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:failurescenario="http://palladiosimulator.org/failurescenario/1.0" xmlns:failuretype="http://palladiosimulator.org/failuretype/1.0" id="_-pJ1MJHBEeuyxYcnF5tjyQ">
+  <failurescenarios id="_ElPZIJHCEeuyxYcnF5tjyQ">
+    <occurrences>
+      <failure xsi:type="failuretype:LinkTransientFailure" href="My.failuretype#_Wzj5cZIzEeuFc9bhlLg3-w"/>
+      <origin xsi:type="failurescenario:LinkingResourceReference">
+        <linkingResource href="My.resourceenvironment#_AFN9gIbgEeu_3J2CgEmd4g"/>
+      </origin>
+      <pointInTime specification="300.0"/>
+    </occurrences>
+  </failurescenarios>
+</failurescenario:FailureScenarioRepository>

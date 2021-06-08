@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resourceenvironment:ResourceEnvironment xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:resourceenvironment="http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2">
+  <linkingResources__ResourceEnvironment id="_AFN9gIbgEeu_3J2CgEmd4g" entityName="LinkingResource" connectedResourceContainers_LinkingResource="_qrpX4IbfEeu_3J2CgEmd4g _GAeeUCpXEeKNWc2UWjbmuw">
+    <communicationLinkResourceSpecifications_LinkingResource id="_AFQZwIbgEeu_3J2CgEmd4g">
+      <communicationLinkResourceType_CommunicationLinkResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_o3sScH2AEdyH8uerKnHYug"/>
+      <latency_CommunicationLinkResourceSpecification specification="0.0"/>
+      <throughput_CommunicationLinkResourceSpecification specification="1.0"/>
+    </communicationLinkResourceSpecifications_LinkingResource>
+  </linkingResources__ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_GAeeUCpXEeKNWc2UWjbmuw" entityName="AppServer">
+    <activeResourceSpecifications_ResourceContainer id="_KFRwgCpXEeKNWc2UWjbmuw">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+  <resourceContainer_ResourceEnvironment id="_qrpX4IbfEeu_3J2CgEmd4g" entityName="DBServer">
+    <activeResourceSpecifications_ResourceContainer id="_v05wsIbfEeu_3J2CgEmd4g">
+      <schedulingPolicy href="pathmap://PCM_MODELS/Palladio.resourcetype#ProcessorSharing"/>
+      <activeResourceType_ActiveResourceSpecification href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+      <processingRate_ProcessingResourceSpecification specification="1.0"/>
+    </activeResourceSpecifications_ResourceContainer>
+  </resourceContainer_ResourceEnvironment>
+</resourceenvironment:ResourceEnvironment>
