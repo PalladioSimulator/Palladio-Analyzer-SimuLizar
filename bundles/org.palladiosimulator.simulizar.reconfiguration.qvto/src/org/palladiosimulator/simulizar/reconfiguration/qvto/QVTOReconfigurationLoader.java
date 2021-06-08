@@ -1,12 +1,20 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
+import javax.inject.Inject;
+
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
+import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
-public class QvtoReconfigurationLoader extends AbstractReconfigurationLoader {
+@RuntimeExtensionScope
+public class QVTOReconfigurationLoader extends AbstractReconfigurationLoader {
 
 	private static final String QVTO_FILE_EXTENSION = ".qvto";
+	
+	@Inject
+	public QVTOReconfigurationLoader() {
+    }
 
 	@Override
 	protected String getTransformationFileExtension() {

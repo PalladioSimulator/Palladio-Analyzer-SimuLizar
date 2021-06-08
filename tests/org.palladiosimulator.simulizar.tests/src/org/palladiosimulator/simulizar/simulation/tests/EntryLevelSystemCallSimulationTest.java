@@ -15,6 +15,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
+import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
@@ -27,6 +28,7 @@ public class EntryLevelSystemCallSimulationTest {
 	@LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/entry-level-system-call-return-testmodel", modelFiles = {
 			"default.allocation", "default.measuringpoint", "default.monitorrepository", "default.repository",
 			"default.resourceenvironment", "default.slo", "default.system", "default.usagemodel" })
+	@SimulationConfig(maxMeasurements = "100")
 	@RunSimuLizar
 	void testEntryLevelSystemCallResultSimulation(UsageScenario scenario, ExperimentRun expRun)
 			throws JobFailedException, UserCanceledException {

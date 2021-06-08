@@ -19,7 +19,9 @@ import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFr
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
 import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
+import org.palladiosimulator.simulizar.test.commons.annotation.UseSimuLizarExtension;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
+import org.palladiosimulator.simulizar.reconfiguration.qvto.DaggerQVTOReconfigurationComponent;
 
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.UserCanceledException;
@@ -43,8 +45,9 @@ public class ReconfigurationSimulationTest {
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/reconfiguration", modelFiles = {
             "default.allocation", "default.usagemodel", "default.monitorrepository" })
+    @UseSimuLizarExtension(DaggerQVTOReconfigurationComponent.class)
     @SetConfigProperty(id = SimulizarConstants.RECONFIGURATION_RULES_FOLDER, value = "platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/reconfiguration/reconfigs")
-    @SimulationConfig(maxMeasurements = "100")
+    @SimulationConfig(maxMeasurements = "10")
     @RunSimuLizar
     void testReconfiguratedModelIsPickedUpByNewUsers(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {

@@ -30,6 +30,12 @@
 	<feature url="features/org.palladiosimulator.simulizar.monitorrepository.map.feature.source_5.0.1.qualifier.jar" id="org.palladiosimulator.simulizar.monitorrepository.map.feature.source" version="5.0.1.qualifier">
 	   <category name="org.palladiosimulator.addons.source.category"/>
 	</feature>
+	<feature url="features/org.palladiosimulator.simulizar.test.commons.feature_5.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.test.commons.feature" version="5.0.0.qualifier">
+		<category name="org.palladiosimulator.addons.category"/>
+	 </feature>
+	<feature url="features/org.palladiosimulator.simulizar.test.commons.feature.source_5.0.0.qualifier.jar" id="org.palladiosimulator.simulizar.test.commons.feature.source" version="5.0.0.qualifier">
+		<category name="org.palladiosimulator.addons.source.category"/>
+	 </feature>
 	<category-def name="org.palladiosimulator.addons.category" label="Palladio Bench Addons">
 	   <description>
 	      Palladio Bench Addons
