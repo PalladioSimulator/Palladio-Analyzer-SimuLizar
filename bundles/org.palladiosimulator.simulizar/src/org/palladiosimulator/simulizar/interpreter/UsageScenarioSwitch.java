@@ -3,7 +3,8 @@ package org.palladiosimulator.simulizar.interpreter;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.usagemodel.AbstractUserAction;
 import org.palladiosimulator.pcm.usagemodel.Branch;
 import org.palladiosimulator.pcm.usagemodel.BranchTransition;
@@ -17,6 +18,7 @@ import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
+import org.palladiosimulator.simulizar.interpreter.listener.SystemOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
@@ -157,11 +159,13 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
                 entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
                 entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall());
 
-        // FIXME We stick to single model elements here even though several would be needed to
-        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
-        eventHelper.firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
-                        entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.BEGIN,
-                        this.context));
+        eventHelper.firePassedEvent(
+                new SystemOperationPassedEvent<org.palladiosimulator.pcm.system.System, ProvidedRole, Signature>(
+                        entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), EventType.BEGIN, this.context,
+                        entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
+                        (org.palladiosimulator.pcm.system.System) entryLevelSystemCall
+                            .getProvidedRole_EntryLevelSystemCall()
+                            .getProvidingEntity_ProvidedRole()));
 
         // create new stack frame for input parameter
         SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
@@ -174,11 +178,13 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
         SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack().pop(),
                 entryLevelSystemCall.getOutputParameterUsages_EntryLevelSystemCall(), this.context.getStack().currentStackFrame());
 
-        // FIXME We stick to single model elements here even though several would be needed to
-        // uniquely identify the measuring point of interest (system + role + signature) [Lehrig]
-        eventHelper.firePassedEvent(new ModelElementPassedEvent<OperationSignature>(
-                        entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(), EventType.END,
-                        this.context));
+        eventHelper.firePassedEvent(
+                new SystemOperationPassedEvent<org.palladiosimulator.pcm.system.System, ProvidedRole, Signature>(
+                        entryLevelSystemCall.getProvidedRole_EntryLevelSystemCall(), EventType.END, this.context,
+                        entryLevelSystemCall.getOperationSignature__EntryLevelSystemCall(),
+                        (org.palladiosimulator.pcm.system.System) entryLevelSystemCall
+                            .getProvidedRole_EntryLevelSystemCall()
+                            .getProvidingEntity_ProvidedRole()));
 
         return result;
     }

@@ -38,6 +38,7 @@ import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 
+import de.uka.ipd.sdq.identifier.Identifier;
 import simulizarmeasuringpoint.ReconfigurationMeasuringPoint;
 import simulizarmeasuringpoint.util.SimulizarmeasuringpointSwitch;
 
@@ -75,10 +76,51 @@ public final class MonitorRepositoryUtil {
         }
         return null;
     }
+    
+
+    public static String getMeasurementIdentifier(MeasuringPoint measuringPoint) {
+
+        String result = new PcmmeasuringpointSwitch<String>() {
+
+            @Override
+            public String caseAssemblyOperationMeasuringPoint(final AssemblyOperationMeasuringPoint object) {
+
+                return object.getAssembly().getId()
+                        + "::"
+                        + object.getRole().getId()
+                        + "::" 
+                        + object.getOperationSignature().getId();
+
+            }
+            
+            @Override
+            public String caseSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint object) {
+                
+                return object.getSystem().getId()
+                        + "::"
+                        + object.getRole().getId()
+                        + "::"
+                        + object.getOperationSignature().getId();
+                
+            }
+            
+            @Override
+            public String defaultCase(EObject object) {
+                
+                return ((Identifier) MonitorRepositoryUtil.getMonitoredElement(measuringPoint)).getId();
+                
+            }
+
+        }.doSwitch(measuringPoint);
+        
+        return result;
+
+    }
 
     /**
      * Method returns the monitored element EObject for a measuring point.
      *
+     * @deprecated
      * @param mp
      *            the measuring point for which the monitored element shall be returned
      * @return the monitored element
@@ -170,15 +212,6 @@ public final class MonitorRepositoryUtil {
                 return object.getActiveResource();
             }
 
-            /**
-             * FIXME We stick to single model elements here even though several would be needed to
-             * uniquely identify the measuring point of interest (system + role + signature).
-             * [Lehrig]
-             */
-            @Override
-            public EObject caseSystemOperationMeasuringPoint(final SystemOperationMeasuringPoint object) {
-                return object.getOperationSignature();
-            };
 
             @Override
             public EObject caseExternalCallActionMeasuringPoint(final ExternalCallActionMeasuringPoint object) {

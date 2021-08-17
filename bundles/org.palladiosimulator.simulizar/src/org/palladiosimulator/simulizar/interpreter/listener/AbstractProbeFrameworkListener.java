@@ -22,8 +22,10 @@ import org.palladiosimulator.monitorrepository.Monitor;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.monitorrepository.ProcessingType;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.core.entity.Entity;
-import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
@@ -62,22 +64,23 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      * @param simuComModel
      *            Provides access to the central simulation
      */
-    public AbstractProbeFrameworkListener(final PCMPartitionManager pcmPartitionManager, final SimuComModel simuComModel,
-            final Reconfigurator reconfigurator) {
+    public AbstractProbeFrameworkListener(final PCMPartitionManager pcmPartitionManager,
+            final SimuComModel simuComModel, final Reconfigurator reconfigurator) {
         super();
         this.pcmPartitionManager = Objects.requireNonNull(pcmPartitionManager);
-        this.calculatorFactory = Objects.requireNonNull(simuComModel).getProbeFrameworkContext().getGenericCalculatorFactory();
+        this.calculatorFactory = Objects.requireNonNull(simuComModel)
+            .getProbeFrameworkContext()
+            .getGenericCalculatorFactory();
         this.simuComModel = simuComModel;
         this.reconfigurator = Objects.requireNonNull(reconfigurator);
     }
-    
+
     @Override
     public void initialize() {
         this.initResponseTimeMeasurements();
         this.initReconfigurationTimeMeasurement();
         this.initExtensionMeasurements();
     }
-    
 
     private void initExtensionMeasurements() {
         Iterable<AbstractRecordingProbeFrameworkListenerDecorator> extensions = ExtensionHelper.getExecutableExtensions(
@@ -176,7 +179,7 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     public SimuComModel getSimuComModel() {
         return this.simuComModel;
     }
-    
+
     /**
      * Gets the {@link PCMPartitionManager} attached to this instance.
      *
@@ -241,11 +244,16 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
             final Predicate<? super MeasurementSpecification> predicate) {
         assert predicate != null;
 
-        MonitorRepository monitorRepositoryModel = this.pcmPartitionManager.findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
+        MonitorRepository monitorRepositoryModel = this.pcmPartitionManager
+            .findModel(MonitorRepositoryPackage.eINSTANCE.getMonitorRepository());
         if (monitorRepositoryModel != null) {
-            return monitorRepositoryModel.getMonitors().stream().filter(Monitor::isActivated)
-                    .flatMap(monitor -> monitor.getMeasurementSpecifications().stream()).filter(predicate)
-                    .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
+            return monitorRepositoryModel.getMonitors()
+                .stream()
+                .filter(Monitor::isActivated)
+                .flatMap(monitor -> monitor.getMeasurementSpecifications()
+                    .stream())
+                .filter(predicate)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Collections::unmodifiableList));
         }
         return Collections.emptyList();
     }
@@ -257,8 +265,9 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
      */
     private void initResponseTimeMeasurements() {
         for (MeasurementSpecification responseTimeMeasurementSpec : this
-                .getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
-            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor().getMeasuringPoint();
+            .getMeasurementSpecificationsForMetricDescription(MetricDescriptionConstants.RESPONSE_TIME_METRIC)) {
+            MeasuringPoint measuringPoint = responseTimeMeasurementSpec.getMonitor()
+                .getMeasuringPoint();
             var probes = this.createStartAndStopProbe(measuringPoint, this.simuComModel);
             this.calculatorFactory.buildCalculator(MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE,
                     measuringPoint, DefaultCalculatorProbeSets.createStartStopProbeConfiguration(
@@ -278,8 +287,8 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
         final List probeList = new ArrayList<TriggeredProbe>(2);
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
         probeList.add(new TakeCurrentSimulationTimeProbe(simuComModel.getSimulationControl()));
-        final EObject modelElement = MonitorRepositoryUtil.getMonitoredElement(measuringPoint);
-        this.currentTimeProbes.put(((Entity) modelElement).getId(), Collections.unmodifiableList(probeList));
+        this.currentTimeProbes.put(MonitorRepositoryUtil.getMeasurementIdentifier(measuringPoint),
+                Collections.unmodifiableList(probeList));
         return probeList;
     }
 
@@ -298,8 +307,10 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     private <T extends Entity> void startMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId())
                 && this.simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId())
+                .get(START_PROBE_INDEX)
+                .takeMeasurement(event.getThread()
+                    .getRequestContext());
         }
     }
 
@@ -309,28 +320,87 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     private <T extends Entity> void endMeasurement(final ModelElementPassedEvent<T> event) {
         if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId())
                 && this.simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId())
+                .get(STOP_PROBE_INDEX)
+                .takeMeasurement(event.getThread()
+                    .getRequestContext());
         }
     }
 
+    /**
+     * Special case SystemOperationCall needs three elements to be uniquely identified: System, ProvidedRole, Signature.
+     *
+     */
     @Override
-    public void beginSystemOperationCallInterpretation(final ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId())
-                && this.simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(START_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+    public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void beginSystemOperationCallInterpretation(final SystemOperationPassedEvent<T, R, S> event) {
+        
+        String key = this.calcSystemOperationMeasuringPointId(event);
+        
+        if (this.currentTimeProbes.containsKey(key) && this.simulationIsRunning()) {
+
+            this.currentTimeProbes.get(key)
+                .get(START_PROBE_INDEX)
+                .takeMeasurement(event.getThread()
+                    .getRequestContext());
         }
     }
 
+    /**
+     * Special case SystemOperationCall needs three elements to be uniquely identified: System, ProvidedRole, Signature.
+     *
+     */
     @Override
-    public void endSystemOperationCallInterpretation(final ModelElementPassedEvent<OperationSignature> event) {
-        if (this.currentTimeProbes.containsKey(((Entity) event.getModelElement()).getId())
-                && this.simulationIsRunning()) {
-            this.currentTimeProbes.get(((Entity) event.getModelElement()).getId()).get(STOP_PROBE_INDEX)
-                    .takeMeasurement(event.getThread().getRequestContext());
+    public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void endSystemOperationCallInterpretation(final SystemOperationPassedEvent<T, R, S> event) {
+        
+        String key = this.calcSystemOperationMeasuringPointId(event);
+        
+            if (this.currentTimeProbes.containsKey(key) && this.simulationIsRunning()) {
+
+                this.currentTimeProbes.get(key)
+                    .get(STOP_PROBE_INDEX)
+                    .takeMeasurement(event.getThread()
+                        .getRequestContext());
+            }
+    }
+
+    /**
+     * Special case AssemblyProvidedOperationCall needs three elements to be uniquely identified: AssemblyContext, ProvidedRole, Signature.
+     *
+     */
+    @Override
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void beginAssemblyProvidedOperationCallInterpretation(
+            AssemblyProvidedOperationPassedEvent<T, R, S> event) {
+
+        String key = this.calcAssemblyProvidedOperationMeasuringPointId(event);
+
+        if (this.currentTimeProbes.containsKey(key) && this.simulationIsRunning()) {
+
+            this.currentTimeProbes.get(key)
+                .get(START_PROBE_INDEX)
+                .takeMeasurement(event.getThread()
+                    .getRequestContext());
         }
     }
+
+    /**
+     * Special case AssemblyProvidedOperationCall needs three elements to be uniquely identified: AssemblyContext, ProvidedRole, Signature.
+     *
+     */
+    @Override
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(
+            AssemblyProvidedOperationPassedEvent<T, R, S> event) {
+        
+        String key = this.calcAssemblyProvidedOperationMeasuringPointId(event);
+
+        if (this.currentTimeProbes.containsKey(key) && this.simulationIsRunning()) {
+
+            this.currentTimeProbes.get(key)
+                .get(STOP_PROBE_INDEX)
+                .takeMeasurement(event.getThread()
+                        .getRequestContext());
+        }
+    }
+    
 
     /**
      * Initializes reconfiguration time measurement.
@@ -338,6 +408,29 @@ public abstract class AbstractProbeFrameworkListener extends AbstractInterpreter
     protected abstract void initReconfigurationTimeMeasurement();
 
     private boolean simulationIsRunning() {
-        return this.simuComModel.getSimulationControl().isRunning();
+        return this.simuComModel.getSimulationControl()
+            .isRunning();
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private String calcSystemOperationMeasuringPointId(SystemOperationPassedEvent event) {
+        
+        return event.getSystem().getId()
+                + "::"
+                + event.getProvidedRole().getId()
+                + "::"
+                + event.getSignature().getId();
+
+    }
+    
+    @SuppressWarnings("rawtypes")
+    private String calcAssemblyProvidedOperationMeasuringPointId(AssemblyProvidedOperationPassedEvent event) {
+        
+        return event.getAssemblyContext().getId()
+                + "::"
+                + event.getProvidedRole().getId()
+                + "::"
+                + event.getSignature().getId();
+
     }
 }
