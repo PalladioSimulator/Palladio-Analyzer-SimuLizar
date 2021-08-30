@@ -405,9 +405,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
                         .getEntityName());
         }
         this.basicComponentInstance.acquirePassiveResource(acquireAction.getPassiveresource_AcquireAction(),
-                this.context, this.context.getModel()
-                    .getConfiguration()
-                    .getSimulateFailures(),
+                this.context, acquireAction.isTimeout(),
                 acquireAction.getTimeoutValue());
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Process " + this.context.getThread()
