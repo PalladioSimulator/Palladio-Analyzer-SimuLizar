@@ -67,7 +67,7 @@ public class ReconfigurationProcess extends SimuComSimProcess {
 	        IReconfigurationListener reconfigurationEventDispatcher, 
 	        IResourceTableManager resourceTableManager, 
 	        ISimulationTimeProvider simTimeProvider) {
-		super(model, "Reconfiguration Process", resourceTableManager);
+		super(model, "Reconfiguration Process", resourceTableManager, true);
         this.simTimeProvider = simTimeProvider;
         this.reconfigurationEventDispatcher = Objects.requireNonNull(reconfigurationEventDispatcher, "EventDispatcher must not be null");
 		this.reconfigurators = Objects.requireNonNull(reconfigurators, "reconfigurators must not be null");

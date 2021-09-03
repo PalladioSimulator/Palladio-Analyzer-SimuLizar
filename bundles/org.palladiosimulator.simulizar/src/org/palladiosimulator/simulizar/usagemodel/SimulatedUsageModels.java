@@ -130,8 +130,10 @@ public class SimulatedUsageModels {
         };
 
         // create workload driver by using given factory
-        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
+        de.uka.ipd.sdq.simucomframework.usage.OpenWorkload openWorkload2 = new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
                 openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
+        openWorkload2.startProcess();
+        return openWorkload2;
     }
 
     public ICancellableWorkloadDriver getWorkloadDriver(final Workload workload) {
