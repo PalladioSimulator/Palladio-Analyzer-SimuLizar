@@ -29,6 +29,8 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
+import de.uka.ipd.sdq.simucomframework.usage.UserProcessCountMonitor;
+import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
 public class SimulatedUsageModels {
 
@@ -40,20 +42,21 @@ public class SimulatedUsageModels {
     private final SimuComModel simucomModel;
     private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
     private final IScenarioRunnerFactory<Entity> scenarioRunnerFactory;
-    
+    private final UserProcessCountMonitor userProcessCountMonitor;
     
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
             @Global PCMResourceSetPartition globalPartition, SimuComModel simucomModel, IResourceTableManager resourceTableManager, 
             EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
             IScenarioRunnerFactory<Entity> scenarioRunnerFactory) {
-        super();
         this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
         this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
         this.scenarioRunnerFactory = scenarioRunnerFactory;
+        // TODO: get from model instead of global?
+        int maxProcessCount = SimulationPreferencesHelper.getMaximumUserProcessesCount();
+        this.userProcessCountMonitor = new UserProcessCountMonitor(simucomModel.getSimulationControl(), maxProcessCount);
     }
-
 
     public IWorkloadDriver createAndAddWorkloadDriver(final UsageScenario usageScenario) {
         // get workload of scenario
@@ -131,7 +134,7 @@ public class SimulatedUsageModels {
 
         // create workload driver by using given factory
         de.uka.ipd.sdq.simucomframework.usage.OpenWorkload openWorkload2 = new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
-                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
+                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager, userProcessCountMonitor);
         openWorkload2.startProcess();
         return openWorkload2;
     }
