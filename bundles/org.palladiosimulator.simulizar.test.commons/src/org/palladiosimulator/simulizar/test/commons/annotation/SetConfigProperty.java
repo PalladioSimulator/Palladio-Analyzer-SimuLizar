@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Retention(RUNTIME)
 @Target({ METHOD, ANNOTATION_TYPE })
-@Repeatable(SimulationConfig.class)
+@Repeatable(SetConfigProperties.class)
 public @interface SetConfigProperty {
     String id();
     

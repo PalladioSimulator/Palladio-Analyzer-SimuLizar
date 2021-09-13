@@ -34,7 +34,9 @@ public class TransientEffectTransformationCacheKeeper implements IModelObserver 
 	@Override
 	public void unregister() {
 		ModelTransformationCache cache = TransientEffectTransformationCacheKeeper.CACHE_MAP.remove(this.mainContext);
-		cache.clear();
+		if (cache != null) {
+		    cache.clear();
+		}
 	}
 
 }

@@ -5,6 +5,8 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EObject;
@@ -12,6 +14,9 @@ import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
+import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
+import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 
@@ -23,6 +28,7 @@ import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
  * @author Matthias Becker
  *
  */
+@RuntimeExtensionScope
 public class QVTOReconfigurator extends AbstractReconfigurator {
 
 	/**
@@ -37,8 +43,11 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	/**
 	 * QVTO Reconfigurator default constructor.
 	 */
-	public QVTOReconfigurator() {
-        super();
+	@Inject
+	public QVTOReconfigurator(SimuLizarWorkflowConfiguration configuration,
+	        PCMPartitionManager partitionManager) {
+	    this.configuration = configuration;
+	    this.pcmPartitionManager = partitionManager;
     }
 	
 	private QVTOExecutor getQVTOExecutor() {
@@ -57,6 +66,7 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 	public boolean runExecute(EList<? extends ModelTransformation<? extends Object>> actions, EObject monitoredElement
 	        , IResourceTableManager resourceTableManager) {
 		LOGGER.debug("Checking reconfiguration rules due to PRM change");
+
 		ArrayList<QvtoModelTransformation> transformations = new ArrayList<QvtoModelTransformation>();
 		for (ModelTransformation<? extends Object> action : actions) {
 			try {
