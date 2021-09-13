@@ -2,7 +2,6 @@ package org.palladiosimulator.simulizar.utils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.EList;
@@ -40,8 +39,7 @@ public class TransitionDeterminer {
      */
     public TransitionDeterminer(final InterpreterDefaultContext context) {
         super();
-        this.config = context.getModel()
-            .getConfiguration();
+        this.config = context.getModel().getConfiguration();
         this.context = context;
     }
 
@@ -53,8 +51,8 @@ public class TransitionDeterminer {
      * @return true if holds, otherwise false.
      */
     private boolean conditionHolds(final PCMRandomVariable condition) {
-        return StackContext.evaluateStatic(condition.getSpecification(), Boolean.class, this.context.getStack()
-            .currentStackFrame());
+        return StackContext.evaluateStatic(condition.getSpecification(), Boolean.class,
+                this.context.getStack().currentStackFrame());
     }
 
     /**
@@ -88,7 +86,7 @@ public class TransitionDeterminer {
      */
     public BranchTransition determineBranchTransition(final EList<BranchTransition> branchTransitions) {
         final List<Double> summedProbabilityList = this
-            .createSummedProbabilityList(this.extractProbabiltiesUsageModel(branchTransitions));
+                .createSummedProbabilityList(this.extractProbabiltiesUsageModel(branchTransitions));
 
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
@@ -150,17 +148,12 @@ public class TransitionDeterminer {
     public ProbabilisticBranchTransition determineProbabilisticBranchTransition(
             final EList<AbstractBranchTransition> probabilisticBranchTransitions) {
         final List<Double> summedProbabilityList = this
-            .createSummedProbabilityList(this.extractProbabiltiesRDSEFF(probabilisticBranchTransitions));
+                .createSummedProbabilityList(this.extractProbabiltiesRDSEFF(probabilisticBranchTransitions));
 
-        if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(summedProbabilityList.stream()
-                .map(e -> e.toString())
-                .collect(Collectors.joining(", ", "Summed branch probabilities: ", "")));
-        }
         final int transitionIndex = this.getRandomIndex(summedProbabilityList, this.config);
 
         final ProbabilisticBranchTransition branchTransition = (ProbabilisticBranchTransition) probabilisticBranchTransitions
-            .get(transitionIndex);
+                .get(transitionIndex);
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Chosen branch transition " + transitionIndex + " " + branchTransition);
         }
@@ -239,8 +232,7 @@ public class TransitionDeterminer {
         }
 
         final double lastSum = summedProbabilityList.get(summedProbabilityList.size() - 1);
-        final double randomNumer = simuComConfig.getRandomGenerator()
-            .random();
+        final double randomNumer = simuComConfig.getRandomGenerator().random();
 
         // get branch
         int i = 0;

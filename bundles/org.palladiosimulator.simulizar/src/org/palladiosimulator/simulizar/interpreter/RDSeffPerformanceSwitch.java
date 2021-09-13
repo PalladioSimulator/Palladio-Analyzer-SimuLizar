@@ -49,6 +49,7 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
     private final PreInterpretationBehaviorManager pibManager;
     private final InterpreterResultHandler issueHandler;
     private final InterpreterResultMerger resultMerger;
+    
 
     @AssistedInject
     public RDSeffPerformanceSwitch(@Assisted InterpreterDefaultContext context,
@@ -65,22 +66,20 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         this.resultMerger = resultMerger;
         this.pibManager = pibManager;
     }
-
+    
     @Override
     public InterpreterResult caseParametricResourceDemand(ParametricResourceDemand parametricResourceDemand) {
-        final String idRequiredResourceType = parametricResourceDemand.getRequiredResource_ParametricResourceDemand()
-            .getId();
+        final String idRequiredResourceType = parametricResourceDemand
+                .getRequiredResource_ParametricResourceDemand().getId();
         final String specification = parametricResourceDemand.getSpecification_ParametericResourceDemand()
-            .getSpecification();
-        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack()
-            .currentStackFrame();
+                .getSpecification();
+        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
         final Double value = StackContext.evaluateStatic(specification, Double.class, currentStackFrame);
 
-        var fqid = context.computeFQComponentID()
-            .getFQIDString();
+        var fqid = context.computeFQComponentID().getFQIDString();
         var rcEntity = Objects.requireNonNull(allocationLookup.getAllocatedEntity(fqid),
                 () -> "No allocation found for assembly identified by " + fqid);
-
+        
         // Search for pre-interpretation-behaviors to execute them before loadActiveResource()
         // For example to stop interpretation through InterpretationIssue of HWCrashFailure
         InterpreterResult result = InterpreterResult.OK;
@@ -99,21 +98,20 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         }
         return result;
     }
-
+    
     @Override
     public InterpreterResult caseResourceCall(ResourceCall resourceCall) {
         // find the corresponding resource type which was invoked by the resource call
         final ResourceInterface resourceInterface = resourceCall.getSignature__ResourceCall()
-            .getResourceInterface__ResourceSignature();
+                .getResourceInterface__ResourceSignature();
         final ResourceRepository resourceRepository = resourceInterface.getResourceRepository__ResourceInterface();
         ResourceType currentResourceType = null;
 
         for (final ResourceType resourceType : resourceRepository.getAvailableResourceTypes_ResourceRepository()) {
             for (final ResourceProvidedRole resourceProvidedRole : resourceType
-                .getResourceProvidedRoles__ResourceInterfaceProvidingEntity()) {
-                if (resourceProvidedRole.getProvidedResourceInterface__ResourceProvidedRole()
-                    .getId()
-                    .equals(resourceInterface.getId())) {
+                    .getResourceProvidedRoles__ResourceInterfaceProvidingEntity()) {
+                if (resourceProvidedRole.getProvidedResourceInterface__ResourceProvidedRole().getId()
+                        .equals(resourceInterface.getId())) {
                     currentResourceType = resourceType;
                     break;
                 }
@@ -123,11 +121,10 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         final ResourceSignature resourceSignature = resourceCall.getSignature__ResourceCall();
         final int resourceServiceId = resourceSignature.getResourceServiceId();
 
-        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack()
-            .currentStackFrame();
-        final Double evaluatedDemand = NumberConverter
-            .toDouble(StackContext.evaluateStatic(resourceCall.getNumberOfCalls__ResourceCall()
-                .getSpecification(), Double.class, currentStackFrame));
+        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
+        final Double evaluatedDemand = NumberConverter.toDouble(
+                StackContext.evaluateStatic(resourceCall.getNumberOfCalls__ResourceCall().getSpecification(),
+                        Double.class, currentStackFrame));
         final String idRequiredResourceType = currentResourceType.getId();
 
         var rcEntity = allocationLookup.getAllocatedEntity(context.computeFQComponentID()
@@ -136,13 +133,13 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
             .loadActiveResource(context.getThread(), resourceServiceId, idRequiredResourceType, evaluatedDemand);
         return InterpreterResult.OK;
     }
-
+    
     @Override
     public InterpreterResult caseInfrastructureCall(InfrastructureCall infrastructureCall) {
-        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack()
-            .currentStackFrame();
-        final int repetitions = StackContext.evaluateStatic(infrastructureCall.getNumberOfCalls__InfrastructureCall()
-            .getSpecification(), Integer.class, currentStackFrame);
+        final SimulatedStackframe<Object> currentStackFrame = this.context.getStack().currentStackFrame();
+        final int repetitions = StackContext.evaluateStatic(
+                infrastructureCall.getNumberOfCalls__InfrastructureCall().getSpecification(), Integer.class,
+                currentStackFrame);
         for (int i = 0; i < repetitions; i++) {
             final ComposedStructureInnerSwitch composedStructureSwitch = composedSwitchFactory.create(this.context,
                     infrastructureCall.getSignature__InfrastructureCall(),
@@ -150,13 +147,10 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
             // create new stack frame for input parameter
             SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
                     infrastructureCall.getInputVariableUsages__CallAction());
-            final AssemblyContext myContext = this.context.getAssemblyContextStack()
-                .pop();
+            final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
             composedStructureSwitch.doSwitch(myContext);
-            this.context.getAssemblyContextStack()
-                .push(myContext);
-            this.context.getStack()
-                .removeStackFrame();
+            this.context.getAssemblyContextStack().push(myContext);
+            this.context.getStack().removeStackFrame();
         }
         return InterpreterResult.OK;
     }

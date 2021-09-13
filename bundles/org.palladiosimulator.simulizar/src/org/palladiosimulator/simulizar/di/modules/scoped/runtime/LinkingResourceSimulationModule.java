@@ -16,8 +16,6 @@ import org.palladiosimulator.simulizar.interpreter.linking.impl.NoDemandCalculat
 import org.palladiosimulator.simulizar.interpreter.linking.impl.ResourceEnvironmentObservingLegacyRouter;
 import org.palladiosimulator.simulizar.interpreter.linking.impl.SimulatedLinkingResourceContainerTransmissionStrategy;
 import org.palladiosimulator.simulizar.interpreter.linking.impl.StackFrameBytesizeAccumulatingDemandCalculator;
-import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
-import org.palladiosimulator.simulizar.interpreter.result.impl.NoIssuesHandler;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.Binds;
@@ -61,7 +59,4 @@ public interface LinkingResourceSimulationModule {
     @Reusable
     ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> bindTransmissionInterpreter(
             DefaultSimuLizarTransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>> impl);
-    
-    @Binds
-    InterpreterResultHandler bindResultHandler(NoIssuesHandler impl);
 }
