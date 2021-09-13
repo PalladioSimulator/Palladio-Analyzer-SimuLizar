@@ -29,7 +29,6 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
-import de.uka.ipd.sdq.simucomframework.usage.UserProcessCountMonitor;
 import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
 public class SimulatedUsageModels {
@@ -42,7 +41,7 @@ public class SimulatedUsageModels {
     private final SimuComModel simucomModel;
     private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
     private final IScenarioRunnerFactory<Entity> scenarioRunnerFactory;
-    private final UserProcessCountMonitor userProcessCountMonitor;
+    private final IUserProcessCountMonitor userProcessCountMonitor;
     
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
