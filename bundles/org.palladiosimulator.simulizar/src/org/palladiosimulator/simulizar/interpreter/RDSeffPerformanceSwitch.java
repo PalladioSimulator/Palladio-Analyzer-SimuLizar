@@ -15,12 +15,18 @@ import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_performance.util.SeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
+import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
+import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
+import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
 import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
@@ -40,6 +46,9 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
     private final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup;
     private final ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess;
     private final ComposedStructureInnerSwitch.Factory composedSwitchFactory;
+    private final PreInterpretationBehaviorManager pibManager;
+    private final InterpreterResultHandler issueHandler;
+    private final InterpreterResultMerger resultMerger;
     
 
     @AssistedInject
@@ -47,11 +56,15 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
             @Assisted RDSeffElementDispatcher parentSwitch,
             IAssemblyAllocationLookup<EntityReference<ResourceContainer>> allocationLookup,
             ISimulatedModelEntityAccess<ResourceContainer, AbstractSimulatedResourceContainer> rcAccess,
-            ComposedStructureInnerSwitch.Factory composedSwitchFactory) {
+            ComposedStructureInnerSwitch.Factory composedSwitchFactory, InterpreterResultHandler issueHandler,
+            InterpreterResultMerger resultMerger, PreInterpretationBehaviorManager pibManager) {
         this.context = context;
         this.allocationLookup = allocationLookup;
         this.rcAccess = rcAccess;
         this.composedSwitchFactory = composedSwitchFactory;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
+        this.pibManager = pibManager;
     }
     
     @Override
@@ -66,10 +79,24 @@ public class RDSeffPerformanceSwitch extends SeffPerformanceSwitch<InterpreterRe
         var fqid = context.computeFQComponentID().getFQIDString();
         var rcEntity = Objects.requireNonNull(allocationLookup.getAllocatedEntity(fqid),
                 () -> "No allocation found for assembly identified by " + fqid);
-        rcAccess.getSimulatedEntity(rcEntity.getId())
-            .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
         
-        return InterpreterResult.OK;
+        // Search for pre-interpretation-behaviors to execute them before loadActiveResource()
+        // For example to stop interpretation through InterpretationIssue of HWCrashFailure
+        InterpreterResult result = InterpreterResult.OK;
+        for (AbstractScheduledResource r : rcAccess.getSimulatedEntity(rcEntity.getId())
+                .getAllActiveResources().values()) {
+            String resourceId = r.getName();
+            if (pibManager.hasContainerAlreadyBeenRegisteredForEntity(resourceId)) {
+                PreInterpretationBehaviorContainer pibContainer = pibManager.getContainerForEntity(resourceId);
+                InterpreterResult newResult = pibContainer.executeBehaviors(context);
+                result = resultMerger.merge(result, newResult);
+            }
+        }
+        if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+            rcAccess.getSimulatedEntity(rcEntity.getId())
+                .loadActiveResource(this.context.getThread(), idRequiredResourceType, value);
+        }
+        return result;
     }
     
     @Override

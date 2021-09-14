@@ -19,6 +19,9 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionPolicy;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 
 import dagger.assisted.Assisted;
@@ -59,6 +62,11 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
     private final ComposedStructureInnerSwitch.Factory composedStructureSwitchFactory;
 
     private final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory;
+    
+    private final InterpreterResultMerger resultMerger;
+
+    private final InterpreterResultHandler issueHandler;
+
 
     /**
      * @see ComposedStructureInnerSwitchFactory#create(InterpreterDefaultContext, Signature,
@@ -70,7 +78,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
             final ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter,
             final IAssemblyAllocationLookup<EntityReference<ResourceContainer>> resourceContainerLookup,
             final ComposedStructureInnerSwitch.Factory composedStructureSwitchFactory,
-            final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory) {
+            final RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory, InterpreterResultHandler issueHandler,
+            InterpreterResultMerger resultMerger) {
         super();
         this.context = context;
         this.signature = operationSignature;
@@ -79,6 +88,8 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
         this.resourceContainerLookup = resourceContainerLookup;
         this.composedStructureSwitchFactory = composedStructureSwitchFactory;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
+        this.issueHandler = issueHandler;
+        this.resultMerger = resultMerger;
     }
 
     @Override
@@ -89,11 +100,17 @@ public class ComposedStructureInnerSwitch extends CompositionSwitch<InterpreterR
         final var source = this.getAllocationTarget(assemblyConnector.getRequiringAssemblyContext_AssemblyConnector());
         final var target = this.getAllocationTarget(assemblyConnector.getProvidingAssemblyContext_AssemblyConnector());
 
-        this.transmissionInterpreter.interpretTransmission(source, target, this.context.getStack()
-            .currentStackFrame(), this.context);
-        final var result = repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector());
-        this.transmissionInterpreter.interpretTransmission(target, source, this.context.getResultFrameStack()
-            .peek(), this.context);
+        InterpreterResult result = transmissionInterpreter.interpretTransmission(source, target, context.getStack()
+            .currentStackFrame(), context);
+        if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+            result = resultMerger.merge(result,
+                    repositoryComponentSwitch.doSwitch(assemblyConnector.getProvidedRole_AssemblyConnector()));
+        }
+        if (issueHandler.handleIssues(result) == InterpreterResumptionPolicy.CONTINUE) {
+            result = resultMerger.merge(result,
+                    transmissionInterpreter.interpretTransmission(target, source, context.getResultFrameStack()
+                        .peek(), context));
+        }
         return result;
     }
 

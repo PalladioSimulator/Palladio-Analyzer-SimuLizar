@@ -1,5 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.linking;
 
+import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
+
 /**
  * The transmission interpreter encapsulates the logic how a transmission between a source and a
  * target node impacts the current simulation w. r. t. performance relevant side effects.
@@ -26,7 +28,7 @@ public interface ITransmissionInterpreter<NodeType, PayloadType, TransmissionCon
      * @param transmissionContext
      *            the context representing the current user thread of activity
      */
-    void interpretTransmission(NodeType source, NodeType target, PayloadType payload,
+    InterpreterResult interpretTransmission(NodeType source, NodeType target, PayloadType payload,
             TransmissionContext transmissionContext);
 
 }
