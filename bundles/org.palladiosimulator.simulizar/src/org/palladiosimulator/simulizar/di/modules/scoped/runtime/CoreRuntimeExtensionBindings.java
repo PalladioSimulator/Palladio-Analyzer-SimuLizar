@@ -28,7 +28,7 @@ import dagger.Provides;
 import dagger.multibindings.ElementsIntoSet;
 import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
 
-@Module(includes = { CoreBindingsModule.class, SimulationRuntimeExtensions.class, PCMPartitionManagerAdapterModule.class })
+@Module(includes = { CoreBindingsModule.class, SimulationRuntimeExtensions.class, PCMPartitionManagerAdapterModule.class, UserProcessCountMonitorModule.class })
 public interface CoreRuntimeExtensionBindings {
 
     @Provides

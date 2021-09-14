@@ -29,7 +29,6 @@ import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
 import de.uka.ipd.sdq.simucomframework.usage.IUserFactory;
 import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.simucomframework.usage.OpenWorkloadUserFactory;
-import de.uka.ipd.sdq.simulation.preferences.SimulationPreferencesHelper;
 
 public class SimulatedUsageModels {
 
@@ -47,14 +46,13 @@ public class SimulatedUsageModels {
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
             @Global PCMResourceSetPartition globalPartition, SimuComModel simucomModel, IResourceTableManager resourceTableManager, 
             EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
-            IScenarioRunnerFactory<Entity> scenarioRunnerFactory) {
+            IScenarioRunnerFactory<Entity> scenarioRunnerFactory, IUserProcessCountMonitor userProcessCountMonitor) {
         this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
         this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
         this.scenarioRunnerFactory = scenarioRunnerFactory;
         // TODO: get from model instead of global?
-        int maxProcessCount = SimulationPreferencesHelper.getMaximumUserProcessesCount();
-        this.userProcessCountMonitor = new UserProcessCountMonitor(simucomModel.getSimulationControl(), maxProcessCount);
+        this.userProcessCountMonitor = userProcessCountMonitor;
     }
 
     public IWorkloadDriver createAndAddWorkloadDriver(final UsageScenario usageScenario) {
