@@ -7,7 +7,9 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
+import org.palladiosimulator.pcm.repository.ProvidedRole;
+import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
@@ -111,12 +113,12 @@ public class LogDebugListener extends AbstractInterpreterListener {
     }
 
     @Override
-    public void beginSystemOperationCallInterpretation(final ModelElementPassedEvent<OperationSignature> event) {
+    public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void beginSystemOperationCallInterpretation(final SystemOperationPassedEvent<T, R, S> event) {
         this.logEvent(event);
     }
 
     @Override
-    public void endSystemOperationCallInterpretation(final ModelElementPassedEvent<OperationSignature> event) {
+    public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void endSystemOperationCallInterpretation(final SystemOperationPassedEvent<T, R, S> event) {
         this.logEvent(event);
     }
 
@@ -140,6 +142,20 @@ public class LogDebugListener extends AbstractInterpreterListener {
             msgBuilder.append(event.getPassageTime());
             LOGGER.debug(msgBuilder.toString());
         }
+    }
+
+    @Override
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void beginAssemblyProvidedOperationCallInterpretation(
+            AssemblyProvidedOperationPassedEvent<T, R, S> event) {
+        this.logEvent(event);
+        
+    }
+
+    @Override
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(
+            AssemblyProvidedOperationPassedEvent<T, R, S> event) {
+        this.logEvent(event);
+        
     }
 
 }

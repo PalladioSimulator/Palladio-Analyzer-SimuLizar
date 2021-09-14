@@ -167,7 +167,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
                 ? this.generateSystemAssemblyContext(providedRole) : this.instanceAssemblyContext);
         
         eventHelper.firePassedEvent(
-        	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
+        	new AssemblyProvidedOperationPassedEvent<AssemblyContext, ProvidedRole, Signature>(providedRole, 
         			EventType.BEGIN, this.context, this.signature, this.instanceAssemblyContext));
 
         final var result = this.doSwitch(providedRole.getProvidingEntity_ProvidedRole());
@@ -175,7 +175,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
         this.context.getAssemblyContextStack().pop();
         
         eventHelper.firePassedEvent(
-            	new AssemblyProvidedOperationPassedEvent<ProvidedRole, Signature>(providedRole, 
+            	new AssemblyProvidedOperationPassedEvent<AssemblyContext, ProvidedRole, Signature>(providedRole, 
             			EventType.END, this.context, this.signature, this.instanceAssemblyContext));
         
         return result;

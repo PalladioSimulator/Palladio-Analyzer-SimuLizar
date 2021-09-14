@@ -4,7 +4,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.pcm.repository.OperationSignature;
+import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
@@ -99,21 +99,21 @@ public abstract class AbstractInterpreterListener implements IInterpreterListene
 	}
 
 	@Override
-	public void beginSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+	public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void beginSystemOperationCallInterpretation(SystemOperationPassedEvent<T, R, S> event) {
 	}
 
 	@Override
-	public void endSystemOperationCallInterpretation(ModelElementPassedEvent<OperationSignature> event) {
+	public <T extends org.palladiosimulator.pcm.system.System, R extends ProvidedRole, S extends Signature> void endSystemOperationCallInterpretation(SystemOperationPassedEvent<T, R, S> event) {
 	}
 
 
     @Override
-    public <R extends ProvidedRole, S extends Signature> void beginAssemblyProvidedOperationCallInterpretation(
-    		AssemblyProvidedOperationPassedEvent<R, S> event) {
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void beginAssemblyProvidedOperationCallInterpretation(
+    		AssemblyProvidedOperationPassedEvent<T, R, S> event) {
     }
     
     @Override
-    public <R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(
-    		AssemblyProvidedOperationPassedEvent<R, S> event) {
+    public <T extends AssemblyContext, R extends ProvidedRole, S extends Signature> void endAssemblyProvidedOperationCallInterpretation(
+    		AssemblyProvidedOperationPassedEvent<T, R, S> event) {
     }
 }
