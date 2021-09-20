@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
@@ -25,11 +26,13 @@ import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.core.CorePackage;
+import org.palladiosimulator.pcm.core.entity.ResourceProvidedRole;
 import org.palladiosimulator.pcm.resourceenvironment.CommunicationLinkResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
+import org.palladiosimulator.pcm.resourcetype.ResourceInterface;
 import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
@@ -202,14 +205,27 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      */
     private void createSimulatedResourceContainer(final ResourceContainer resourceContainer) {
         if (!resourceRegistry.containsResourceContainer(resourceContainer.getId())) {
-            final var simulatedResourceContainer = resourceRegistry.createResourceContainer(resourceContainer.getId());
+            final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) resourceRegistry.createResourceContainer(resourceContainer.getId());
 
+            if(resourceContainer.getParentResourceContainer__ResourceContainer() != null)
+               simulatedResourceContainer.setParentResourceContainer(resourceContainer.getParentResourceContainer__ResourceContainer().getId());
+            
+ 
+            
             resourceContainer.getActiveResourceSpecifications_ResourceContainer()
                 .forEach(this::createSimulatedActiveResource);
+
             if (LOGGER.isDebugEnabled()) {
                 LOGGER.debug("Added SimulatedResourceContainer: ID: " + resourceContainer.getId() + " "
                         + simulatedResourceContainer);
             }
+
+            // add nested resource container
+            resourceContainer.getNestedResourceContainers__ResourceContainer().forEach((c) -> {
+                this.createSimulatedResourceContainer(c);
+                simulatedResourceContainer.addNestedResourceContainer(c.getId());
+            });
+            
         } else {
             LOGGER.warn("SimulatedResourceContainer was already present for ID: " + resourceContainer.getId());
         }
@@ -256,8 +272,15 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 .getId())) {
             syncProcessingResource(processingResource);
         } else {
+            
+            //collect provided resource interfaces
+            final var resProvidedRoles = processingResource.getActiveResourceType_ActiveResourceSpecification().getResourceProvidedRoles__ResourceInterfaceProvidingEntity();
+            var providedInterfaces = resProvidedRoles.stream().map(ResourceProvidedRole::getProvidedResourceInterface__ResourceProvidedRole)
+                .map(ResourceInterface::getId)
+                .collect(Collectors.toList());
+            
             final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
-                    processingResource, new String[] {}, resourceContainer.getId(),
+                    processingResource, providedInterfaces.toArray(new String[] {}), resourceContainer.getId(),
                     processingResource.getSchedulingPolicy()
                         .getId());
             scheduledResource.activateResource();
