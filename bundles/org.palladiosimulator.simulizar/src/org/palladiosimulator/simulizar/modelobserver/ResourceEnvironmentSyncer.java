@@ -61,7 +61,7 @@ import de.uka.ipd.sdq.stoex.StoexPackage;
 public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserver {
 
     private static final Logger LOGGER = Logger.getLogger(ResourceEnvironmentSyncer.class.getName());
-    
+
     /** The stoex-based features of processing resource specification which support updates */
     private static final Set<EStructuralFeature> SUPPORTED_PROCESSING_RESOURCE_STOEX_PROPERTIES = Collections.singleton(
             ResourceenvironmentPackage.Literals.PROCESSING_RESOURCE_SPECIFICATION__PROCESSING_RATE_PROCESSING_RESOURCE_SPECIFICATION);
@@ -71,33 +71,39 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         .unmodifiableSet(new HashSet<>(Arrays.asList(
                 ResourceenvironmentPackage.Literals.COMMUNICATION_LINK_RESOURCE_SPECIFICATION__LATENCY_COMMUNICATION_LINK_RESOURCE_SPECIFICATION,
                 ResourceenvironmentPackage.Literals.COMMUNICATION_LINK_RESOURCE_SPECIFICATION__THROUGHPUT_COMMUNICATION_LINK_RESOURCE_SPECIFICATION)));
-    
+
     private final ResourceRegistry resourceRegistry;
     private Optional<MonitorRepository> monitorRepository;
     private final CalculatorFactoryFacade calcFactory;
 
     @Inject
-    public ResourceEnvironmentSyncer(@Global PCMResourceSetPartition globalPCMInstance, ResourceRegistry resourceRegistry, CalculatorFactoryFacade calcFactory) {
+    public ResourceEnvironmentSyncer(@Global PCMResourceSetPartition globalPCMInstance,
+            ResourceRegistry resourceRegistry, CalculatorFactoryFacade calcFactory) {
         super(globalPCMInstance);
         this.resourceRegistry = resourceRegistry;
         this.calcFactory = calcFactory;
     }
-    
+
     /**
      * {@inheritDoc}
      */
     @Override
     public void initialize() {
-        monitorRepository = globalPCMInstance.<MonitorRepository>getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findFirst();
+        monitorRepository = globalPCMInstance
+            .<MonitorRepository> getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY)
+            .stream()
+            .findFirst();
         super.initialize();
 
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Initializing Simulated ResourcesContainer");
         }
-        
-        for (var resEnv: model) {
-            resEnv.getResourceContainer_ResourceEnvironment().forEach(this::createSimulatedResourceContainer);
-            resEnv.getLinkingResources__ResourceEnvironment().forEach(this::createSimulatedLinkingResource);
+
+        for (var resEnv : model) {
+            resEnv.getResourceContainer_ResourceEnvironment()
+                .forEach(this::createSimulatedResourceContainer);
+            resEnv.getLinkingResources__ResourceEnvironment()
+                .forEach(this::createSimulatedLinkingResource);
         }
 
         if (LOGGER.isDebugEnabled()) {
@@ -114,19 +120,18 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         Object changedFeature = notification.getFeature();
 
         if (changedFeature == resourceenvironmentPackage
-                .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
+            .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
             this.createSimulatedResourceContainer((ResourceContainer) notification.getNewValue());
         } else if (changedFeature == resourceenvironmentPackage
             .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
             this.createSimulatedActiveResource((ProcessingResourceSpecification) notification.getNewValue());
         } else if (changedFeature == resourceenvironmentPackage
-                .getResourceEnvironment_LinkingResources__ResourceEnvironment()) {
-        	this.createSimulatedLinkingResource((LinkingResource) notification.getNewValue());
+            .getResourceEnvironment_LinkingResources__ResourceEnvironment()) {
+            this.createSimulatedLinkingResource((LinkingResource) notification.getNewValue());
         } else {
             this.logDebugInfo(notification);
         }
     }
-    
 
     /**
      * {@inheritDoc}
@@ -205,13 +210,14 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      */
     private void createSimulatedResourceContainer(final ResourceContainer resourceContainer) {
         if (!resourceRegistry.containsResourceContainer(resourceContainer.getId())) {
-            final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) resourceRegistry.createResourceContainer(resourceContainer.getId());
+            final SimulatedResourceContainer simulatedResourceContainer = (SimulatedResourceContainer) resourceRegistry
+                .createResourceContainer(resourceContainer.getId());
 
-            if(resourceContainer.getParentResourceContainer__ResourceContainer() != null)
-               simulatedResourceContainer.setParentResourceContainer(resourceContainer.getParentResourceContainer__ResourceContainer().getId());
-            
- 
-            
+            if (resourceContainer.getParentResourceContainer__ResourceContainer() != null)
+                simulatedResourceContainer
+                    .setParentResourceContainer(resourceContainer.getParentResourceContainer__ResourceContainer()
+                        .getId());
+
             resourceContainer.getActiveResourceSpecifications_ResourceContainer()
                 .forEach(this::createSimulatedActiveResource);
 
@@ -221,11 +227,12 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             }
 
             // add nested resource container
-            resourceContainer.getNestedResourceContainers__ResourceContainer().forEach((c) -> {
-                this.createSimulatedResourceContainer(c);
-                simulatedResourceContainer.addNestedResourceContainer(c.getId());
-            });
-            
+            resourceContainer.getNestedResourceContainers__ResourceContainer()
+                .forEach((c) -> {
+                    this.createSimulatedResourceContainer(c);
+                    simulatedResourceContainer.addNestedResourceContainer(c.getId());
+                });
+
         } else {
             LOGGER.warn("SimulatedResourceContainer was already present for ID: " + resourceContainer.getId());
         }
@@ -240,7 +247,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
      */
     private void createSimulatedLinkingResource(final LinkingResource linkingResource) {
         if (!resourceRegistry.containsResourceContainer(linkingResource.getId())) {
-            final var simulatedResourceContainer = resourceRegistry.createLinkingResourceContainer(linkingResource.getId());
+            final var simulatedResourceContainer = resourceRegistry
+                .createLinkingResourceContainer(linkingResource.getId());
             if (linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource() != null) {
                 syncLinkingResource(linkingResource.getCommunicationLinkResourceSpecifications_LinkingResource());
             }
@@ -272,13 +280,15 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 .getId())) {
             syncProcessingResource(processingResource);
         } else {
-            
-            //collect provided resource interfaces
-            final var resProvidedRoles = processingResource.getActiveResourceType_ActiveResourceSpecification().getResourceProvidedRoles__ResourceInterfaceProvidingEntity();
-            var providedInterfaces = resProvidedRoles.stream().map(ResourceProvidedRole::getProvidedResourceInterface__ResourceProvidedRole)
+
+            // collect provided resource interfaces
+            final var resProvidedRoles = processingResource.getActiveResourceType_ActiveResourceSpecification()
+                .getResourceProvidedRoles__ResourceInterfaceProvidingEntity();
+            var providedInterfaces = resProvidedRoles.stream()
+                .map(ResourceProvidedRole::getProvidedResourceInterface__ResourceProvidedRole)
                 .map(ResourceInterface::getId)
                 .collect(Collectors.toList());
-            
+
             final ScheduledResource scheduledResource = simulatedResourceContainer.addActiveResourceWithoutCalculators(
                     processingResource, providedInterfaces.toArray(new String[] {}), resourceContainer.getId(),
                     processingResource.getSchedulingPolicy()
@@ -294,7 +304,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             }
         }
     }
-    
+
     /**
      * Updates the simulation entities of a linking resource according to a changed specification.
      * This method takes into account the features as specified in
@@ -384,19 +394,19 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
             final ScheduledResource scheduledResource) {
         monitorRepository.ifPresent(repo -> {
             for (final MeasurementSpecification measurementSpecification : MonitorRepositoryUtil
-                    .getMeasurementSpecificationsForElement(repo, processingResource)) {
+                .getMeasurementSpecificationsForElement(repo, processingResource)) {
 
-                    new PcmmeasuringpointSwitch<Calculator>() {
-                        @Override
-                        public Calculator caseActiveResourceMeasuringPoint(
-                                final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
-                            return attachMonitorForActiveResourceMeasuringPoint(activeResourceMeasuringPoint,
-                                    measurementSpecification, resourceContainer, scheduledResource, schedulingStrategy);
-                        };
+                new PcmmeasuringpointSwitch<Calculator>() {
+                    @Override
+                    public Calculator caseActiveResourceMeasuringPoint(
+                            final ActiveResourceMeasuringPoint activeResourceMeasuringPoint) {
+                        return attachMonitorForActiveResourceMeasuringPoint(activeResourceMeasuringPoint,
+                                measurementSpecification, resourceContainer, scheduledResource, schedulingStrategy);
+                    };
 
-                    }.doSwitch(measurementSpecification.getMonitor()
-                        .getMeasuringPoint());
-                }    
+                }.doSwitch(measurementSpecification.getMonitor()
+                    .getMeasuringPoint());
+            }
         });
     }
 
@@ -429,12 +439,12 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                     || schedulingStrategy.equals(SchedulingStrategy.FCFS)) {
                 assert (scheduledResource.getNumberOfInstances() == 1) : "DELAY and FCFS resources are expected to "
                         + "have exactly one core";
-                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource,
-                        activeResourceMeasuringPoint, 0);
+                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource, activeResourceMeasuringPoint,
+                        0);
             } else {
                 // the general case includes the PROCESSOR_SHARING strategy which is the most common
-                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource, 
-                        activeResourceMeasuringPoint, activeResourceMeasuringPoint.getReplicaID());
+                result = calcFactory.setupActiveResourceStateCalculator(scheduledResource, activeResourceMeasuringPoint,
+                        activeResourceMeasuringPoint.getReplicaID());
             }
         } else if (metricDescriptionIdsEqual(metric, MetricDescriptionConstants.WAITING_TIME_METRIC)) {
             // return CalculatorHelper.setupWaitingTimeCalculator(r, this.myModel); FIXME
