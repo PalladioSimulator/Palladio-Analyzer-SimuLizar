@@ -18,11 +18,13 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.hamcrest.Matcher;
 import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.edp2.models.ExperimentData.MeasurementRange;
+import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MeasurementsUtility;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
+import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
 public final class MeasurementTestUtils {
 
@@ -90,5 +92,22 @@ public final class MeasurementTestUtils {
                         .equals(EcoreUtil.getURI(location)
                             .toString()))
             .findAny();
+    }
+    
+    public static Optional<Measurement> getMeasurementOfAt(Collection<Measurement> measurements,
+            MetricDescription metric, MeasuringPoint location) {
+        return measurements.stream()
+            .filter(m -> m.getMeasuringType()
+                .getMetric()
+                .getId()
+                .equals(metric.getId())
+                    && sameMeasuringPoint(m.getMeasuringType().getMeasuringPoint(), location))
+            .findAny();
+    }
+    
+    public static boolean sameMeasuringPoint(MeasuringPoint point1, MeasuringPoint point2) {
+        var id1 = MonitorRepositoryUtil.getMeasurementIdentifier(point1);
+        var id2 = MonitorRepositoryUtil.getMeasurementIdentifier(point2);
+        return id1.equals(id2);
     }
 }
