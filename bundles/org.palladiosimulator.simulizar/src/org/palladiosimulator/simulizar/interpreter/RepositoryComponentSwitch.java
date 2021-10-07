@@ -31,6 +31,7 @@ import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstanceFactory;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedCompositeComponentInstance;
+import org.palladiosimulator.simulizar.stack.StackManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 
 import dagger.assisted.Assisted;
@@ -64,6 +65,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
     private final ComponentInstanceRegistry componentRegistry;
     private final EventDispatcher eventHelper;
     private final SimulatedBasicComponentInstanceFactory simComponentFactory;
+    private final StackManager stackManager;
 
     /**
      * @see RepositoryComponentSwitchFactory#create(InterpreterDefaultContext, AssemblyContext, Signature, ProvidedRole)
@@ -75,7 +77,8 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
             ComponentInstanceRegistry componentRegistry,
             ComposedRDSeffSwitchFactory rdseffSwitchFactory,
             EventDispatcher eventHelper,
-            SimulatedBasicComponentInstanceFactory simComponentFactory) {
+            SimulatedBasicComponentInstanceFactory simComponentFactory,
+            StackManager stackManager) {
         super();
         this.context = context;
         this.instanceAssemblyContext = assemblyContext;
@@ -87,6 +90,7 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
         this.eventHelper = eventHelper;
         this.simComponentFactory = simComponentFactory;
+        this.stackManager = stackManager;
     }
 
     @Override
@@ -94,40 +98,30 @@ public class RepositoryComponentSwitch extends RepositorySwitch<InterpreterResul
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Entering BasicComponent: " + basicComponent);
         }
+        
+        return stackManager.inChildFrame(this.context)
+                .evaluateInput(basicComponent.getComponentParameterUsage_ImplementationComponentType())
+                .execute(() -> {
+            return stackManager.inChildFrame(this.context)
+                    .evaluateInput(this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext())
+                    .execute(() -> {
+                final FQComponentID fqID = this.context.computeFQComponentID();
+                if (!componentRegistry.hasComponentInstance(fqID)) {
+                    if (LOGGER.isDebugEnabled()) {
+                        LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
+                        LOGGER.debug("FQComponentID is " + fqID);
+                    }
+                    componentRegistry.addComponentInstance(simComponentFactory.create(this.context, fqID,
+                                    basicComponent.getPassiveResource_BasicComponent()));
+                }
 
-        // create new stack frame for component parameters
-        final SimulatedStack<Object> stack = this.context.getStack();
-        final SimulatedStackframe<Object> componentParameterStackFrame = SimulatedStackHelper
-                .createAndPushNewStackFrame(stack,
-                        basicComponent.getComponentParameterUsage_ImplementationComponentType(),
-                        stack.currentStackFrame());
+                // get seffs for call
+                final List<ServiceEffectSpecification> calledSeffs = this
+                        .getSeffsForCall(basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
 
-        // create new stack frame for assembly context component parameters
-        SimulatedStackHelper.createAndPushNewStackFrame(stack,
-                this.instanceAssemblyContext.getConfigParameterUsages__AssemblyContext(), componentParameterStackFrame);
-
-        final FQComponentID fqID = context.computeFQComponentID();
-        if (!componentRegistry.hasComponentInstance(fqID)) {
-            if (LOGGER.isDebugEnabled()) {
-                LOGGER.debug("Found new basic component component instance, registering it: " + basicComponent);
-                LOGGER.debug("FQComponentID is " + fqID);
-            }
-            componentRegistry.addComponentInstance(simComponentFactory.create(this.context, fqID,
-                            basicComponent.getPassiveResource_BasicComponent()));
-        }
-
-        // get seffs for call
-        final List<ServiceEffectSpecification> calledSeffs = this
-                .getSeffsForCall(basicComponent.getServiceEffectSpecifications__BasicComponent(), this.signature);
-
-        final var result = this.interpretSeffs(calledSeffs, resourceTableManager);
-
-        // Remove stack frame which contains assembly context parameters
-        stack.removeStackFrame();
-        // Remove stack frame which contains component parameters
-        stack.removeStackFrame();
-
-        return result;
+                return this.interpretSeffs(calledSeffs, resourceTableManager);
+            });     
+        });
     }
 
     @Override

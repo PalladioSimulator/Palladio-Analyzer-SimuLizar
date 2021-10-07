@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/2.2" id="_dqFLECHbEd6tG9VclJz3cw" entityName="defaultRepository">
+  <components__Repository xsi:type="repository:BasicComponent" id="_os1t4CHbEd62GabW1zGSBw" entityName="ImplicitSettingComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_qZKs0CHbEd62GabW1zGSBw" entityName="Provided_AnInterface_AComponent" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_diLF4CaxEeyZPuEBGJPDwA" entityName="Component1.AnInterface.OperationRequiredRole1" requiredInterface__OperationRequiredRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="12345" describedService__SEFF="_KjhikgzkEeCFg86gxKwVPw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_qZUd0CHbEd62GabW1zGSBw" successor_AbstractAction="_g_pSUCaxEeyZPuEBGJPDwA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_qZUd0SHbEd62GabW1zGSBw" predecessor_AbstractAction="_1Bx_YCa7EeyATK26xlTmlw"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_g_pSUCaxEeyZPuEBGJPDwA" entityName="ExternalCallAction1" predecessor_AbstractAction="_qZUd0CHbEd62GabW1zGSBw" successor_AbstractAction="_1Bx_YCa7EeyATK26xlTmlw" calledService_ExternalService="_KjhikgzkEeCFg86gxKwVPw" role_ExternalService="_diLF4CaxEeyZPuEBGJPDwA">
+        <inputVariableUsages__CallAction>
+          <variableCharacterisation_VariableUsage type="VALUE">
+            <specification_VariableCharacterisation specification="10"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="__implicit_in__test_value_1"/>
+        </inputVariableUsages__CallAction>
+        <inputVariableUsages__CallAction>
+          <variableCharacterisation_VariableUsage type="VALUE">
+            <specification_VariableCharacterisation specification="&quot;Not-Expected&quot;"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="__implicit_inout__test_value_2"/>
+        </inputVariableUsages__CallAction>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:BranchAction" id="_1Bx_YCa7EeyATK26xlTmlw" entityName="BranchAction1" predecessor_AbstractAction="_g_pSUCaxEeyZPuEBGJPDwA" successor_AbstractAction="_qZUd0SHbEd62GabW1zGSBw">
+        <branches_Branch xsi:type="seff:GuardedBranchTransition" id="_4sunICa7EeyATK26xlTmlw" entityName="GuardedBranchTransition1">
+          <branchBehaviour_BranchTransition id="_4sv1QCa7EeyATK26xlTmlw">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_4sv1QSa7EeyATK26xlTmlw" successor_AbstractAction="_4sv1Qia7EeyATK26xlTmlw"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_4sv1Qia7EeyATK26xlTmlw" predecessor_AbstractAction="_4sv1QSa7EeyATK26xlTmlw"/>
+          </branchBehaviour_BranchTransition>
+          <branchCondition_GuardedBranchTransition specification="__implicit_inout__test_value_2.VALUE == &quot;Expected&quot; AND __implicit_out__test_value_3.VALUE == &quot;ExpectedOutput&quot;"/>
+        </branches_Branch>
+        <branches_Branch xsi:type="seff:GuardedBranchTransition" id="_M0wsYCa8EeyATK26xlTmlw" entityName="GuardedBranchTransition2">
+          <branchBehaviour_BranchTransition id="_M0wsYSa8EeyATK26xlTmlw">
+            <steps_Behaviour xsi:type="seff:StartAction" id="_M0wsYia8EeyATK26xlTmlw" successor_AbstractAction="_adE8MCa8EeyATK26xlTmlw"/>
+            <steps_Behaviour xsi:type="seff:StopAction" id="_M0wsYya8EeyATK26xlTmlw" predecessor_AbstractAction="_adE8MCa8EeyATK26xlTmlw"/>
+            <steps_Behaviour xsi:type="seff:SetVariableAction" id="_adE8MCa8EeyATK26xlTmlw" entityName="SetVariableAction1" predecessor_AbstractAction="_M0wsYia8EeyATK26xlTmlw" successor_AbstractAction="_M0wsYya8EeyATK26xlTmlw">
+              <localVariableUsages_SetVariableAction>
+                <variableCharacterisation_VariableUsage type="VALUE">
+                  <specification_VariableCharacterisation specification="invalid.key.to.fail.simulation.VALUE"/>
+                </variableCharacterisation_VariableUsage>
+                <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="irrelevant"/>
+              </localVariableUsages_SetVariableAction>
+            </steps_Behaviour>
+          </branchBehaviour_BranchTransition>
+          <branchCondition_GuardedBranchTransition specification="__implicit_inout__test_value_2.VALUE &lt;> &quot;Expected&quot; OR __implicit_out__test_value_3.VALUE &lt;> &quot;ExpectedOutput&quot;"/>
+        </branches_Branch>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_S-8XsCaxEeyZPuEBGJPDwA" entityName="NOPComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_Yw1d0CaxEeyZPuEBGJPDwA" entityName="Component2.AnInterface.OperationProvidedRole1" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_ezEtECaxEeyZPuEBGJPDwA" entityName="Component2.AnInterface.OperationRequiredRole1" requiredInterface__OperationRequiredRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_YxVNECaxEeyZPuEBGJPDwA" describedService__SEFF="_KjhikgzkEeCFg86gxKwVPw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_YxVNESaxEeyZPuEBGJPDwA" successor_AbstractAction="_sJ0rwCaxEeyZPuEBGJPDwA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_YxV0ICaxEeyZPuEBGJPDwA" predecessor_AbstractAction="_sJ0rwCaxEeyZPuEBGJPDwA"/>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_sJ0rwCaxEeyZPuEBGJPDwA" entityName="ExternalCallAction1" predecessor_AbstractAction="_YxVNESaxEeyZPuEBGJPDwA" successor_AbstractAction="_YxV0ICaxEeyZPuEBGJPDwA" calledService_ExternalService="_KjhikgzkEeCFg86gxKwVPw" role_ExternalService="_ezEtECaxEeyZPuEBGJPDwA">
+        <inputVariableUsages__CallAction>
+          <variableCharacterisation_VariableUsage type="VALUE">
+            <specification_VariableCharacterisation specification="&quot;Expected&quot;"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="__implicit_inout__test_value_2"/>
+        </inputVariableUsages__CallAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_UTfv0CaxEeyZPuEBGJPDwA" entityName="ImplicitCheckingComponent">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ZwNQICaxEeyZPuEBGJPDwA" entityName="Component3.AnInterface.OperationProvidedRole1" providedInterface__OperationProvidedRole="_n7g-oCHbEd62GabW1zGSBw"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ZwOeQCaxEeyZPuEBGJPDwA" describedService__SEFF="_KjhikgzkEeCFg86gxKwVPw">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_ZwOeQSaxEeyZPuEBGJPDwA" successor_AbstractAction="_2aN9gCaxEeyZPuEBGJPDwA"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_ZwPFUCaxEeyZPuEBGJPDwA" predecessor_AbstractAction="_HRv7UCayEeyZPuEBGJPDwA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_2aN9gCaxEeyZPuEBGJPDwA" entityName="InternalAction1" predecessor_AbstractAction="_ZwOeQSaxEeyZPuEBGJPDwA" successor_AbstractAction="_HRv7UCayEeyZPuEBGJPDwA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="__implicit_in__test_value_1.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:SetVariableAction" id="_HRv7UCayEeyZPuEBGJPDwA" entityName="SetVariableAction1" predecessor_AbstractAction="_2aN9gCaxEeyZPuEBGJPDwA" successor_AbstractAction="_ZwPFUCaxEeyZPuEBGJPDwA">
+        <localVariableUsages_SetVariableAction>
+          <variableCharacterisation_VariableUsage type="VALUE">
+            <specification_VariableCharacterisation specification="&quot;ExpectedOutput&quot;"/>
+          </variableCharacterisation_VariableUsage>
+          <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="__implicit_out__test_value_3"/>
+        </localVariableUsages_SetVariableAction>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_n7g-oCHbEd62GabW1zGSBw" entityName="AnInterface">
+    <signatures__OperationInterface id="_KjhikgzkEeCFg86gxKwVPw" entityName="do"/>
+  </interfaces__Repository>
+</repository:Repository>

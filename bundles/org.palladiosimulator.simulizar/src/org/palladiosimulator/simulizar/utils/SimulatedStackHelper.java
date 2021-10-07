@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
-import org.eclipse.emf.common.util.EList;
 import org.palladiosimulator.pcm.core.PCMRandomVariable;
 import org.palladiosimulator.pcm.parameter.VariableCharacterisation;
 import org.palladiosimulator.pcm.parameter.VariableUsage;
 import org.palladiosimulator.pcm.stoex.api.StoExSerialiser;
+import org.palladiosimulator.simulizar.stack.StackManager;
 
 import de.uka.ipd.sdq.simucomframework.variables.EvaluationProxy;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
@@ -42,7 +42,7 @@ public final class SimulatedStackHelper {
      *            the stack frame.
      */
     public static final void addParameterToStackFrame(final SimulatedStackframe<Object> contextStackFrame,
-            final EList<VariableUsage> parameter, final SimulatedStackframe<Object> targetStackFrame) {
+            final Iterable<VariableUsage> parameter, final SimulatedStackframe<Object> targetStackFrame) {
         for (final VariableUsage variableUsage : parameter) {
             for (final VariableCharacterisation variableCharacterisation : variableUsage
                     .getVariableCharacterisation_VariableUsage()) {
@@ -112,9 +112,12 @@ public final class SimulatedStackHelper {
      * @param parameter
      *            the parameter.
      * @return the created stack frame.
+     * 
+     * @deprecated Please use {@link StackManager} instead.
      */
+    @Deprecated
     public static final SimulatedStackframe<Object> createAndPushNewStackFrame(final SimulatedStack<Object> stack,
-            final EList<VariableUsage> parameter) {
+            final Iterable<VariableUsage> parameter) {
         return createAndPushNewStackFrame(stack, parameter, null);
     }
 
@@ -127,9 +130,12 @@ public final class SimulatedStackHelper {
      * @param parent
      *            the parent, if null no parent will be set.
      * @return the created stack frame.
+     * 
+     * @deprecated Please use {@link StackManager} instead.
      */
+    @Deprecated
     public static final SimulatedStackframe<Object> createAndPushNewStackFrame(final SimulatedStack<Object> stack,
-            final EList<VariableUsage> parameter, final SimulatedStackframe<Object> parent) {
+            final Iterable<VariableUsage> parameter, final SimulatedStackframe<Object> parent) {
         SimulatedStackframe<Object> stackFrame;
         if (parent == null) {
             stackFrame = new SimulatedStackframe<Object>();

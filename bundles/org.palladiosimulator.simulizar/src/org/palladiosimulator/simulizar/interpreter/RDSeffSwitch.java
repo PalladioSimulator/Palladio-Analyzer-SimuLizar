@@ -44,6 +44,7 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResumptionP
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
 import org.palladiosimulator.simulizar.runtimestate.SimulatedBasicComponentInstance;
+import org.palladiosimulator.simulizar.stack.StackManager;
 import org.palladiosimulator.simulizar.utils.SimulatedStackHelper;
 import org.palladiosimulator.simulizar.utils.TransitionDeterminer;
 
@@ -85,6 +86,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     private final InterpreterResultMerger resultMerger;
     private final ForkedBehaviorProcessFactory forkFactory;
     private final PreInterpretationBehaviorManager pibManager;
+    private final StackManager stackManager;
 
     /**
      * @see RDSeffSwitchFactory#create(InterpreterDefaultContext, SimulatedBasicComponentInstance,
@@ -95,7 +97,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
             IResourceTableManager resourceTableManager, ComponentInstanceRegistry componentInstanceRegistry,
             ComposedStructureInnerSwitch.Factory composedSwitchFactory, ForkedBehaviorProcessFactory forkFactory,
             EventDispatcher eventHelper, InterpreterResultHandler issueHandler, InterpreterResultMerger resultMerger,
-            PreInterpretationBehaviorManager pibManager) {
+            PreInterpretationBehaviorManager pibManager, StackManager stackManager) {
         super();
         this.context = context;
         this.composedSwitchFactory = composedSwitchFactory;
@@ -104,6 +106,7 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
         this.pibManager = pibManager;
+        this.stackManager = stackManager;
         this.transitionDeterminer = new TransitionDeterminer(context);
         this.basicComponentInstance = Optional
             .ofNullable(componentInstanceRegistry.getComponentInstance(context.computeFQComponentID()))
@@ -238,32 +241,21 @@ public class RDSeffSwitch extends SeffSwitch<InterpreterResult> {
     public InterpreterResult caseExternalCallAction(final ExternalCallAction externalCall) {
         final ComposedStructureInnerSwitch composedStructureSwitch = composedSwitchFactory.create(this.context,
                 externalCall.getCalledService_ExternalService(), externalCall.getRole_ExternalService());
-
-        if (externalCall instanceof DelegatingExternalCallAction) {
-            final SimulatedStackframe<Object> currentFrame = this.context.getStack()
-                .currentStackFrame();
-            final SimulatedStackframe<Object> callFrame = SimulatedStackHelper.createAndPushNewStackFrame(
-                    this.context.getStack(), externalCall.getInputVariableUsages__CallAction(), currentFrame);
-            callFrame.addVariables(this.context.getCurrentResultFrame());
-        } else {
-            // create new stack frame for input parameter
-            SimulatedStackHelper.createAndPushNewStackFrame(this.context.getStack(),
-                    externalCall.getInputVariableUsages__CallAction());
-        }
-        final AssemblyContext myContext = this.context.getAssemblyContextStack()
-            .pop();
-        context.getResultFrameStack()
-            .push(new SimulatedStackframe<>());
-        var result = composedStructureSwitch.doSwitch(myContext);
-        this.context.getAssemblyContextStack()
-            .push(myContext);
-        this.context.getStack()
-            .removeStackFrame();
-
-        SimulatedStackHelper.addParameterToStackFrame(context.getResultFrameStack()
-            .pop(), externalCall.getReturnVariableUsage__CallReturnAction(),
-                this.context.getStack()
-                    .currentStackFrame());
+        
+        var isDelegatingCall = externalCall instanceof DelegatingExternalCallAction;
+        
+        final AssemblyContext myContext = this.context.getAssemblyContextStack().pop();
+        var result = stackManager.inChildFrame(this.context)
+            .evaluateInput(externalCall.getInputVariableUsages__CallAction())
+            .enhanceInput(newFrame -> {
+                if (isDelegatingCall) {
+                    newFrame.addVariables(this.context.getCurrentResultFrame());
+                }     
+            })
+            .setConnectedToParent(isDelegatingCall)
+            .evaluateReturns(externalCall.getReturnVariableUsage__CallReturnAction())
+            .execute(() -> composedStructureSwitch.doSwitch(myContext));
+        this.context.getAssemblyContextStack().push(myContext);
 
         return result;
     }

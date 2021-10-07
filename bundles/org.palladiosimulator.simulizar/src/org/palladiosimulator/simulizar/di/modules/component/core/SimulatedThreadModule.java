@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThreadBindings;
+import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThreadExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.ExtensionComponentSimulatedThreadExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.SimulatedThreadBindingsModule;
@@ -19,6 +20,7 @@ import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
 @Module(includes = { CoreBindingsModule.class, 
         CoreSimulatedThreadBindings.class,
+        CoreSimulatedThreadExtensionBindings.class,
         SimulatedThreadBindingsModule.class, //stateless bindings
         ExtensionComponentSimulatedThreadExtensionBindings.class } )
 public interface SimulatedThreadModule {

@@ -16,7 +16,6 @@ import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
-import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRuntimeJob;
