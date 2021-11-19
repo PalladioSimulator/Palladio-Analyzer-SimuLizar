@@ -4,6 +4,8 @@ import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultRootContext;
+import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultEventEmitter;
+import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultListenerDispatch;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResultMerger;
@@ -44,4 +46,8 @@ public interface CoreSimulationRuntimeEntitiesBindings {
     @Binds
     @SimulationRuntimeScope
     InterpreterResultHandler bindResultHandler(NoIssuesHandler merger);
+    
+    @Binds
+    @SimulationRuntimeScope
+    InterpreterResultEventEmitter bindEventEmitter(InterpreterResultListenerDispatch impl);
 }

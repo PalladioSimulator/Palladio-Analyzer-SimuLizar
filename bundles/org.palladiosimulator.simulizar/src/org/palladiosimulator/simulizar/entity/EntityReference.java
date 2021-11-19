@@ -32,7 +32,7 @@ import com.google.common.collect.Iterators;
  * @param <EntityType>
  *            the type of the referenced model entity.
  */
-public class EntityReference<EntityType extends Entity> {
+public class EntityReference<EntityType extends Entity> implements InterpretableLocationReference {
     public static abstract class AbstractEntityReferenceFactory<EntityType extends Entity>
             implements EntityReferenceFactory<EntityType> {
 
@@ -121,6 +121,20 @@ public class EntityReference<EntityType extends Entity> {
         } else if (!id.equals(other.id))
             return false;
         return true;
+    }
+    
+    @Override
+    public boolean isLocationIdentifiedBy(EntityReference<?>... entityReferences) {
+        if (entityReferences == null || entityReferences.length != 1) {
+            return false;
+        } else {
+            return entityReferences[0].equals(this);
+        }
+    }
+
+    @Override
+    public String getLocationIdentifier() {
+        return this.id;
     }
 
 }
