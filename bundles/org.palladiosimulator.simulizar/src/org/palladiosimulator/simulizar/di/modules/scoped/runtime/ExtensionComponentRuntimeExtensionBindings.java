@@ -12,6 +12,7 @@ import org.palladiosimulator.simulizar.di.modules.component.extensions.Simulatio
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
+import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
@@ -63,6 +64,13 @@ public interface ExtensionComponentRuntimeExtensionBindings {
     @ElementsIntoSet
     static Set<IInterpreterListener> bindInterpreterListeners(ExtensionLookup lookup) {
         return lookup.lookup(IInterpreterListener.class);
+    }
+    
+    @Provides
+    @SimulationRuntimeScope
+    @ElementsIntoSet
+    static Set<InterpreterResultListener> bindInterpreterResultListeners(ExtensionLookup lookup) {
+        return lookup.lookup(InterpreterResultListener.class);
     }
     
     @Provides
