@@ -15,8 +15,11 @@ import org.palladiosimulator.pcm.usagemodel.ScenarioBehaviour;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
+import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
 import org.palladiosimulator.simulizar.exceptions.PCMModelInterpreterException;
 import org.palladiosimulator.simulizar.interpreter.listener.EventType;
+import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultEventEmitter;
 import org.palladiosimulator.simulizar.interpreter.listener.ModelElementPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.SystemOperationPassedEvent;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
@@ -57,20 +60,27 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
 
     private final InterpreterResultMerger resultMerger;
     private final InterpreterResultHandler issueHandler;
+
+    private final InterpreterResultEventEmitter resultEventEmitter;
+    private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
     
     /**
      * @see UsageScenarioSwitchFactory#create(InterpreterDefaultContext)
      */
     @AssistedInject
     UsageScenarioSwitch(@Assisted final InterpreterDefaultContext context, RepositoryComponentSwitch.Factory repositoryComponentSwitchFactory,
+            EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
             EventDispatcher eventHelper,
             InterpreterResultHandler issueHandler,
-            InterpreterResultMerger resultMerger) {
+            InterpreterResultMerger resultMerger,
+            InterpreterResultEventEmitter resultEventEmitter) {
         this.context = context;
         this.repositoryComponentSwitchFactory = repositoryComponentSwitchFactory;
+        this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
         this.eventHelper = eventHelper;
         this.issueHandler = issueHandler;
         this.resultMerger = resultMerger;
+        this.resultEventEmitter = resultEventEmitter;
         this.transitionDeterminer = new TransitionDeterminer(context);
     }
     
@@ -233,6 +243,7 @@ public class UsageScenarioSwitch extends UsagemodelSwitch<InterpreterResult> {
         }
         eventHelper.firePassedEvent(
                 new ModelElementPassedEvent<UsageScenario>(usageScenario, EventType.END, this.context));
+        resultEventEmitter.emitInterpretationFinished(usageScenarioReferenceFactory.createCached(usageScenario), result, context);
         return result;
     }
     
