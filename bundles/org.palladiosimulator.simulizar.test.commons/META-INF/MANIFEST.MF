@@ -2,11 +2,11 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Test Commons
 Bundle-SymbolicName: org.palladiosimulator.simulizar.test.commons
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.test.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",
- org.palladiosimulator.simulizar;bundle-version="5.0.1",
+ org.palladiosimulator.simulizar;bundle-version="5.1.0",
  org.palladiosimulator.analyzer.workflow,
  org.junit.jupiter.api,
  de.uka.ipd.sdq.workflow.mdsd;bundle-version="4.3.0",
@@ -24,7 +24,7 @@ Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",
  de.uka.ipd.sdq.simucomframework.variables;bundle-version="4.3.0",
  org.palladiosimulator.probeframework;bundle-version="4.3.0",
  org.palladiosimulator.recorderframework;bundle-version="4.3.0",
- org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.0.1"
+ org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.1.0"
 Import-Package: com.google.common.collect;version="21.0.0",
  dagger;version="2.29.1",
  dagger.internal;version="2.29.1",

@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature"
       label="Palladio Component Model - Analyzer: SimuLizar - Henshin Reconfiguations"
-      version="5.0.1.qualifier"
+      version="5.1.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">

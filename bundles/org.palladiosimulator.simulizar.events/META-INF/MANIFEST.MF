@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.simulizar.events
 Bundle-SymbolicName: org.palladiosimulator.simulizar.events;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.events
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Require-Bundle: de.uka.ipd.sdq.workflow,

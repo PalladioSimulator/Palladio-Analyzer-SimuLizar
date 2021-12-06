@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.edp2.measuringpoint.edit;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: simulizarmeasuringpoint.provider.SimulizarmeasuringpointEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -10,7 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: simulizarmeasuringpoint.provider
 Require-Bundle: org.eclipse.core.runtime,
- org.palladiosimulator.simulizar.edp2.measuringpoint;bundle-version="5.0.1";visibility:=reexport,
+ org.palladiosimulator.simulizar.edp2.measuringpoint;bundle-version="5.1.0";visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.palladiosimulator.edp2;bundle-version="2.0.0";visibility:=reexport,
  org.palladiosimulator.edp2.edit;bundle-version="1.0.0";visibility:=reexport,

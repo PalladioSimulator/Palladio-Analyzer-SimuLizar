@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfigurationrule;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -24,5 +24,5 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.units;bundle-version="2.1.0";visibility:=reexport,
  org.apache.commons.collections15;bundle-version="1.0.0",
  org.apache.log4j;bundle-version="1.2.15",
- org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.0.1"
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.1.0"
 Bundle-ActivationPolicy: lazy

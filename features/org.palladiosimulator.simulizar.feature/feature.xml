@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="Palladio Component Model - Analyzer: SimuLizar"
-      version="5.0.1.qualifier"
+      version="5.1.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -17,19 +17,19 @@
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          name="Henshin Reconfiguration Engine"
          optional="true"/>
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          name="QVT Operational Reconfiguration Engine"
          optional="true"/>
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          name="Story Diagram Reconfiguration Engine"
          optional="true"/>
 
@@ -67,7 +67,7 @@
       <import plugin="org.eclipse.ui.ide" version="3.10.1" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui.ide" version="3.10.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.debug.core" version="3.9.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.simulizar.edp2.measuringpoint" version="5.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.edp2.measuringpoint" version="5.1.0" match="greaterOrEqual"/>
       <import plugin="org.modelversioning.emfprofile.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.filesystem"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="2.1.0" match="greaterOrEqual"/>
@@ -104,7 +104,7 @@
       <import plugin="de.uka.ipd.sdq.statistics"/>
       <import plugin="org.palladiosimulator.edp2.dao" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="de.uka.ipd.sdq.probfunction.math"/>
-      <import plugin="org.palladiosimulator.simulizar.reconfigurationrule" version="5.0.1" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.simulizar.reconfigurationrule" version="5.1.0" match="greaterOrEqual"/>
       <import plugin="org.apache.log4j" version="1.2.15" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.experimentanalysis"/>
       <import feature="org.palladiosimulator.monitorrepository.feature" version="3.0.0.qualifier"/>
@@ -118,21 +118,21 @@
          id="org.palladiosimulator.simulizar.runtimemeasurement"
          download-size="0"
          install-size="0"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.runtimemeasurement.edit"
          download-size="0"
          install-size="0"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.ui"
          download-size="0"
          install-size="0"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          unpack="false"/>
 
    <plugin
@@ -167,14 +167,14 @@
          id="org.palladiosimulator.simulizar.measuringpoint"
          download-size="0"
          install-size="0"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.measuringpoint.create"
          download-size="0"
          install-size="0"
-         version="5.0.1.qualifier"
+         version="5.1.0.qualifier"
          unpack="false"/>
 
    <plugin

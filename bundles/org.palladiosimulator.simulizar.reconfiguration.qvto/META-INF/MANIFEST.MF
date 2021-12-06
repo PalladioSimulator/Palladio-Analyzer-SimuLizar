@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: QVT-o Reconfiguration Engine
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfiguration.qvto;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.qvto.Activator
 Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.core.runtime,

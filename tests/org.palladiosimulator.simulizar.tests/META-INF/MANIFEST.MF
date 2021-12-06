@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Tests
 Bundle-SymbolicName: org.palladiosimulator.simulizar.tests;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-Vendor: palladiosimulator.org
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Fragment-Host: org.palladiosimulator.simulizar
 Require-Bundle: org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.0.1",
+ org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.1.0",
  org.palladiosimulator.edp2.repository.local;bundle-version="4.3.0",
  org.palladiosimulator.pcm.resources;bundle-version="4.3.0",
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj;bundle-version="4.3.0",
@@ -18,9 +18,9 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  de.desmoj;bundle-version="2.3.3",
  tools.mdsd.junit5utils;bundle-version="0.1.0",
  org.palladiosimulator.examples.package;bundle-version="4.3.0",
- org.palladiosimulator.simulizar.test.commons;bundle-version="5.0.1",
+ org.palladiosimulator.simulizar.test.commons;bundle-version="5.1.0",
  org.palladiosimulator.simulizar.events,
- org.palladiosimulator.simulizar.monitorrepository.feedthrough;bundle-version="5.0.1"
+ org.palladiosimulator.simulizar.monitorrepository.feedthrough;bundle-version="5.1.0"
 Import-Package: com.google.common.util.concurrent.internal;version="1.0.1",
  net.bytebuddy.dynamic.loading;version="1.6.0",
  org.hamcrest;version="2.2.0",

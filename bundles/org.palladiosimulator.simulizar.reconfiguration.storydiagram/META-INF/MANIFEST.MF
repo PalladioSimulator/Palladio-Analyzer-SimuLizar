@@ -2,13 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Storydiagram Reconfiguration Engine
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfiguration.storydiagram;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.storydiagram.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.apache.log4j,
  org.storydriven.storydiagrams,
  org.palladiosimulator.pcm,
- org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.0.1",
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.1.0",
  org.storydriven.storydiagrams.interpreter.eclipse,
  org.palladiosimulator.analyzer.workflow,
  de.mdelab.sdm.interpreter.core,

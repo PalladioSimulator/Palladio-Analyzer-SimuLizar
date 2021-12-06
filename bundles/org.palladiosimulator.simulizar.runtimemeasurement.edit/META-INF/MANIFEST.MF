@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.runtimemeasurement.edit;singleton:=true
-Bundle-Version: 5.0.1.qualifier
+Bundle-Version: 5.1.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: org.palladiosimulator.runtimemeasurement.provider.RuntimeMeasurementEditPlugin$Implementation
 Bundle-Vendor: %providerName
@@ -10,7 +10,7 @@ Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: org.palladiosimulator.runtimemeasurement.provider
 Require-Bundle: org.eclipse.core.runtime,
- org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.0.1";visibility:=reexport,
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.1.0";visibility:=reexport,
  org.eclipse.emf.edit;visibility:=reexport,
  org.palladiosimulator.edp2;bundle-version="2.0.0";visibility:=reexport,
  org.palladiosimulator.edp2.edit;bundle-version="1.0.0";visibility:=reexport,
