@@ -218,6 +218,14 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                     .setParentResourceContainer(resourceContainer.getParentResourceContainer__ResourceContainer()
                         .getId());
 
+            // add nested resource container
+            resourceContainer.getNestedResourceContainers__ResourceContainer()
+            .forEach((c) -> {
+                this.createSimulatedResourceContainer(c);
+                simulatedResourceContainer.addNestedResourceContainer(c.getId());
+            });
+
+            // create active resources
             resourceContainer.getActiveResourceSpecifications_ResourceContainer()
                 .forEach(this::createSimulatedActiveResource);
 
@@ -226,12 +234,6 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                         + simulatedResourceContainer);
             }
 
-            // add nested resource container
-            resourceContainer.getNestedResourceContainers__ResourceContainer()
-                .forEach((c) -> {
-                    this.createSimulatedResourceContainer(c);
-                    simulatedResourceContainer.addNestedResourceContainer(c.getId());
-                });
 
         } else {
             LOGGER.warn("SimulatedResourceContainer was already present for ID: " + resourceContainer.getId());
