@@ -12,14 +12,14 @@ import dagger.Component;
 import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
 
 @Component(modules = { SimulatedThreadModule.class }, dependencies = {SimuLizarRuntimeComponent.class, 
-        SimuComFrameworkComponent.class})
+        SimuComFrameworkComponent.class, SimuLizarRootComponent.class})
 @SimulatedThreadScope
 public interface SimuLizarSimulatedThreadComponent extends SimulatedThreadComponent {
     
     @Component.Factory
     interface Factory {
         SimuLizarSimulatedThreadComponent create(@BindsInstance @ParentContext InterpreterDefaultContext parentContext,
-                @BindsInstance SimuComSimProcess simProcess, SimuLizarRuntimeComponent runtimeComponent, SimuComFrameworkComponent frameworkComponent);
+                @BindsInstance SimuComSimProcess simProcess, SimuLizarRuntimeComponent runtimeComponent, SimuComFrameworkComponent frameworkComponent, SimuLizarRootComponent rootComponent);
     }
 
 }

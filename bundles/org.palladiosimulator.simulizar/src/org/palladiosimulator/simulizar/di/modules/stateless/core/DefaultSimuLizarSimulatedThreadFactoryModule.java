@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.stateless.core;
 
 import javax.inject.Provider;
 
+import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarSimulatedThreadComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
@@ -16,9 +17,10 @@ public interface DefaultSimuLizarSimulatedThreadFactoryModule {
     static SimulatedThreadComponent.Factory provideSimulatedThreadComponentFactory(
             SimuLizarSimulatedThreadComponent.Factory threadComponentFactory,
             Provider<SimuLizarRuntimeComponent> runtimeComponent,
-            Provider<SimuComFrameworkComponent> simucomComponent) {
+            Provider<SimuComFrameworkComponent> simucomComponent,
+            Provider<SimuLizarRootComponent> rootComponent) {
         return (context, process) -> threadComponentFactory.create(context, process, runtimeComponent.get(),
-                simucomComponent.get());
+                simucomComponent.get(), rootComponent.get());
     }
 
 }
