@@ -22,6 +22,14 @@ import dagger.assisted.AssistedInject;
 
 /**
  * This Switch acts as legacy adapter to provide previous behaviour of allowing SimuLizar to silently ignore reliability model elements.
+ *
+ * This switch registers for the two packages which contain reliability SEFF elements. For the most elements, if it encounters them it does
+ * nothing and continues execution with the next element of the seff.
+ * 
+ * The only deviating element is the RecoveryAction. As the primary behavior of this action contains the potentially failing sub-seff, we
+ * cannot simply ignore this behavior. When encountering a RecoveryAction, we therefore directly pass control to the primary behavior. Since
+ * failure simulation is deactivated, the primary behavior cannot fail and, consequently, we can ignore all of the fall-back behaviors.
+ * Nevertheless, the primary behavior needs to be executed.
  * 
  * This NOP interpreter became necessary after modularizing the RDSEFF interpreter, in case reliability simulation is turned off.
  * 
