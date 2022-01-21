@@ -5,12 +5,17 @@ import static org.hamcrest.Matchers.everyItem;
 import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.asDoubleIn;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.SI;
 import javax.measure.unit.Unit;
 
 import org.eclipse.emf.ecore.EObject;
@@ -23,6 +28,7 @@ import org.palladiosimulator.edp2.util.MeasurementsUtility;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.metricspec.MetricSetDescription;
+import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.metricspec.util.MetricSpecSwitch;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 
@@ -109,5 +115,28 @@ public final class MeasurementTestUtils {
         var id1 = MonitorRepositoryUtil.getMeasurementIdentifier(point1);
         var id2 = MonitorRepositoryUtil.getMeasurementIdentifier(point2);
         return id1.equals(id2);
+    }
+    
+    @SuppressWarnings("unchecked")
+    public static Map<Integer, Double> calculateIntBucketsBasedOnStateDuration(Measurement measurement, 
+            BaseMetricDescription contentMetric, Unit<? extends Quantity> convertContentToMetric) {
+        var result = new HashMap<Integer, Double>();
+        var timeIter = MeasurementTestUtils.<Duration>allMeasurementsOfMetric(measurement, MetricDescriptionConstants.POINT_IN_TIME_METRIC)
+                .iterator();
+        var contentIter = allMeasurementsOfMetric(measurement, contentMetric)
+                .iterator();
+        
+        double lastTime = 0.0;
+        int lastVal = 0;
+        while (timeIter.hasNext() && contentIter.hasNext()) {
+            double thisTime = timeIter.next().doubleValue(SI.SECOND);
+            int thisVal = contentIter.next().intValue((Unit<Quantity>) convertContentToMetric);
+            var duration = thisTime - lastTime;
+            var prevDuration = result.getOrDefault(lastVal, 0.0);
+            result.put(lastVal, prevDuration + duration);
+            lastTime = thisTime;
+            lastVal = thisVal;
+        }
+        return result;
     }
 }
