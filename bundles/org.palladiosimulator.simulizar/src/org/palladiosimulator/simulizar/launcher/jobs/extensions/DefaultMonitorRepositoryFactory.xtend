@@ -9,6 +9,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.ExternalCallActionMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.SystemOperationMeasuringPoint
 import org.palladiosimulator.pcmmeasuringpoint.UsageScenarioMeasuringPoint
+import org.palladiosimulator.pcmmeasuringpoint.AssemblyPassiveResourceMeasuringPoint
 
 class DefaultMonitorRepositoryFactory {
 	static val mf = MonitorRepositoryFactory.eINSTANCE
@@ -72,4 +73,24 @@ class DefaultMonitorRepositoryFactory {
 		]
 	}
 	
+	static def dispatch createDefaultMonitors(AssemblyPassiveResourceMeasuringPoint p, MonitorRepository repo) {
+		repo.monitors += mf.createMonitor => [
+			measuringPoint = p
+			measurementSpecifications += mf.createMeasurementSpecification => [
+				metricDescription = MetricDescriptionConstants.WAITING_TIME_METRIC
+				triggersSelfAdaptations = false
+				processingType = mf.createFeedThrough
+			]
+			measurementSpecifications += mf.createMeasurementSpecification => [
+				metricDescription = MetricDescriptionConstants.HOLDING_TIME_METRIC
+				triggersSelfAdaptations = false
+				processingType = mf.createFeedThrough
+			]
+			measurementSpecifications += mf.createMeasurementSpecification => [
+				metricDescription = MetricDescriptionConstants.STATE_OF_PASSIVE_RESOURCE_METRIC
+				triggersSelfAdaptations = false
+				processingType = mf.createFeedThrough
+			]
+		]
+	}
 }
