@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.List;
 
 import javax.measure.Measure;
+import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
+import javax.measure.unit.SI;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
@@ -39,9 +41,9 @@ class UsageevolutionTest {
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, scenario);
         assertTrue(measurement.isPresent());
 
-        List<Measure<?, Quantity>> responseTimeMeasurements = MeasurementTestUtils
+        List<Measure<?, Duration>> responseTimeMeasurements = MeasurementTestUtils
             .allMeasurementsOfMetric(measurement.get(), MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        List<Measure<?, Quantity>> timeMeasurements = MeasurementTestUtils.allMeasurementsOfMetric(measurement.get(),
+        List<Measure<?, Duration>> timeMeasurements = MeasurementTestUtils.allMeasurementsOfMetric(measurement.get(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(responseTimeMeasurements.size(), timeMeasurements.size());
 
@@ -51,14 +53,25 @@ class UsageevolutionTest {
         // Stage 1: 2000s with Constant 1.0
         // Stage 2: 2000s with Constant 2.0 (Leads to Response Time 4.0 as both values evolve)
         // Stage 3: 6000s with Constant 1.0
+        // ^
+        // |        ...........
+        // |
+        // |
+        // |........           .............
+        // ---------------------------------------->
+        
         for (int i = 0; i < 100; i++) {
-            if ((i < 20) || (i >= 60 && i < 100)) {
-                assertEquals((Double) responseTimeMeasurements.get(i)
-                    .getValue(), 1.0, 0.001);
+            if ((i < 20)) {
+                assertEquals( responseTimeMeasurements.get(i)
+                    .doubleValue(SI.SECOND), 1.0, 0.001);
             }
             if (i >= 20 && i < 60) {
-                assertEquals((Double) responseTimeMeasurements.get(i)
-                    .getValue(), 4.0, 0.001);
+                assertEquals( responseTimeMeasurements.get(i)
+                    .doubleValue(SI.SECOND), 4.0, 0.001);
+            }
+            if (i >= 60) {
+                assertEquals( responseTimeMeasurements.get(i)
+                        .doubleValue(SI.SECOND), 1.0, 0.001);
             }
         }
     }
@@ -87,13 +100,15 @@ class UsageevolutionTest {
         // The simulated test scenario evolves response time and user amount.
         // Population is 1 and Think Time is 99.0
         // It evolves in 3 stages.
-        // Stage 1: 2000s with Constant 1.0
+        // Stage 1: 2000s with Constant 1.0 20 Measurements in 20 Timesteps
         // Stage 2: 2000s with Constant 2.0 (Leads to Response Time 4.0 as both values evolve)
+        // 40 Measurements in 20 Timesteps (two parallel)
         // Stage 3: 6000s with Constant 1.0
+        // 40 Measurements in 40 timesteps
         // It is important to know, that this constant evolves the user requests from 1 to 2 aswell
         // as the response time.
         // In Stage 2, two requests finish at the exact same time stamp.
-        // Section 1 -> Section 2 time stamps with 2 measurements at the same time for whole section
+        // Stage 1 -> Stage 2 time stamps with 2 measurements at the same time for whole section
         // 2 with response time 4s
         assertEquals((Double) timeMeasurements.get(19)
             .getValue(), 1901.0, 0.001);
@@ -112,7 +127,7 @@ class UsageevolutionTest {
             .getValue(), 4.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(22)
             .getValue(), 4.0, 0.001);
-        // Section 2 -> Section 3 same as above but with Section 3 only having 1 user again.
+        // Stage 2 -> Stage 3 same as above but with Section 3 only having 1 user again.
         assertEquals((Double) timeMeasurements.get(59)
             .getValue(), 3961.0, 0.001);
         assertEquals((Double) timeMeasurements.get(60)
