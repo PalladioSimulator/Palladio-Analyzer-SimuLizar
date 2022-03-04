@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tools.descartes.dlim:Sequence xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tools.descartes.dlim="http://descartes.tools/dlim/0.1" name="default" terminateAfterLoops="1" firstIterationEnd="100.0" loopDuration="100.0" finalDuration="100.0">
+  <sequenceFunctionContainers duration="2000.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="1.0"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers name="constantSeasonal" duration="2000.0" firstIterationStart="20.0" firstIterationEnd="40.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="2.0"/>
+  </sequenceFunctionContainers>
+  <sequenceFunctionContainers name="constantSeasonal" duration="6000.0" firstIterationStart="40.0" firstIterationEnd="100.0">
+    <function xsi:type="tools.descartes.dlim:Constant" constant="1.0"/>
+  </sequenceFunctionContainers>
+</tools.descartes.dlim:Sequence>
