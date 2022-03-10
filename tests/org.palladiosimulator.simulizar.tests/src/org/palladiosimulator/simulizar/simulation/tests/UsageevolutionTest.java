@@ -10,6 +10,7 @@ import javax.measure.quantity.Duration;
 import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
 
+
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
@@ -95,6 +96,7 @@ class UsageevolutionTest {
         var measurement = MeasurementTestUtils.getMeasurementOfAt(expRun.getMeasurement(),
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, scenario);
         assertTrue(measurement.isPresent());
+
 
         List<Measure<?, Duration>> responseTimeMeasurements = MeasurementTestUtils
             .allMeasurementsOfMetric(measurement.get(), MetricDescriptionConstants.RESPONSE_TIME_METRIC);
