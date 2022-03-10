@@ -50,16 +50,21 @@ class UsageevolutionTest {
         // The simulated test scenario evolves response time and user amount.
         // Population is 1 and Think Time is 99.0
         // It evolves in 3 stages.
-        // Stage 1: 2000s with Constant 1.0
-        // Stage 2: 2000s with Constant 2.0 (Leads to Response Time 4.0 as both values evolve)
-        // Stage 3: 6000s with Constant 1.0
+        // Stage 1: 2000s with constant 1.0 20 measurements in 20 timesteps
+        // Stage 2: 2000s with constant 2.0 (Leads to Response Time 4.0 as both values evolve)
+        // 40 Measurements in 20 Timesteps (two parallel)
+        // Stage 3: 6000s with constant 1.0 40 measurements in 40 timesteps
+        // It is important to know, that this constant evolves the user requests from 1 to 2 aswell
+        // as the response time.
         // ^
-        // |        ...........
+        // |          ...[20]...
         // |
         // |
-        // |........           .............
+        // |...[20]..           ....[40].....
         // ---------------------------------------->
-        
+        // Number in Brackets means total 20 measuring Points
+        // In Stage 2 every Point is representing two measurements as both values evolved to 2 they have the exact same
+        // resonse time at the same point in time.
         for (int i = 0; i < 100; i++) {
             if ((i < 20)) {
                 assertEquals( responseTimeMeasurements.get(i)
@@ -91,9 +96,9 @@ class UsageevolutionTest {
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, scenario);
         assertTrue(measurement.isPresent());
 
-        List<Measure<?, Quantity>> responseTimeMeasurements = MeasurementTestUtils
+        List<Measure<?, Duration>> responseTimeMeasurements = MeasurementTestUtils
             .allMeasurementsOfMetric(measurement.get(), MetricDescriptionConstants.RESPONSE_TIME_METRIC);
-        List<Measure<?, Quantity>> timeMeasurements = MeasurementTestUtils.allMeasurementsOfMetric(measurement.get(),
+        List<Measure<?, Duration>> timeMeasurements = MeasurementTestUtils.allMeasurementsOfMetric(measurement.get(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(responseTimeMeasurements.size(), timeMeasurements.size());
 
@@ -110,35 +115,42 @@ class UsageevolutionTest {
         // In Stage 2, two requests finish at the exact same time stamp.
         // Stage 1 -> Stage 2 time stamps with 2 measurements at the same time for whole section
         // 2 with response time 4s
+        // The Test tests wether the measurements happen at the expected time also after the evolution.
+        // ^
+        // |          ...[20]...
+        // |
+        // |
+        // |...[20]..           ....[40].....
+        // ---------------------------------------->
         assertEquals((Double) timeMeasurements.get(19)
-            .getValue(), 1901.0, 0.001);
+                .doubleValue(SI.SECOND), 1901.0, 0.001);
         assertEquals((Double) timeMeasurements.get(20)
-            .getValue(), 2004.0, 0.001);
+            .doubleValue(SI.SECOND), 2004.0, 0.001);
         assertEquals((Double) timeMeasurements.get(21)
-            .getValue(), 2004.0, 0.001);
+            .doubleValue(SI.SECOND), 2004.0, 0.001);
         assertEquals((Double) timeMeasurements.get(22)
-            .getValue(), 2107.0, 0.001);
+            .doubleValue(SI.SECOND), 2107.0, 0.001);
         // Section 1 -> Section 2 matching evolution of response time
         assertEquals((Double) responseTimeMeasurements.get(19)
-            .getValue(), 1.0, 0.001);
+            .doubleValue(SI.SECOND), 1.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(20)
-            .getValue(), 4.0, 0.001);
+            .doubleValue(SI.SECOND), 4.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(21)
-            .getValue(), 4.0, 0.001);
+            .doubleValue(SI.SECOND), 4.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(22)
-            .getValue(), 4.0, 0.001);
+            .doubleValue(SI.SECOND), 4.0, 0.001);
         // Stage 2 -> Stage 3 same as above but with Section 3 only having 1 user again.
         assertEquals((Double) timeMeasurements.get(59)
-            .getValue(), 3961.0, 0.001);
+            .doubleValue(SI.SECOND), 3961.0, 0.001);
         assertEquals((Double) timeMeasurements.get(60)
-            .getValue(), 4061.0, 0.001);
+            .doubleValue(SI.SECOND), 4061.0, 0.001);
         assertEquals((Double) timeMeasurements.get(61)
-            .getValue(), 4161.0, 0.001);
+            .doubleValue(SI.SECOND), 4161.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(59)
-            .getValue(), 4.0, 0.001);
+            .doubleValue(SI.SECOND), 4.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(60)
-            .getValue(), 1.0, 0.001);
+            .doubleValue(SI.SECOND), 1.0, 0.001);
         assertEquals((Double) responseTimeMeasurements.get(61)
-            .getValue(), 1.0, 0.001);
+            .doubleValue(SI.SECOND), 1.0, 0.001);
     }
 }
