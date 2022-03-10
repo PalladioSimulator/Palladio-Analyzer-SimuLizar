@@ -124,6 +124,9 @@ class UsageevolutionTest {
         // |
         // |...[20]..           ....[40].....
         // ---------------------------------------->
+        // Number in Brackets means total 20 measuring Points
+        // In Stage 2 every Point is representing two measurements as both values evolved to 2 they have the exact same
+        // resonse time at the same point in time.
         assertEquals((Double) timeMeasurements.get(19)
                 .doubleValue(SI.SECOND), 1901.0, 0.001);
         assertEquals((Double) timeMeasurements.get(20)
