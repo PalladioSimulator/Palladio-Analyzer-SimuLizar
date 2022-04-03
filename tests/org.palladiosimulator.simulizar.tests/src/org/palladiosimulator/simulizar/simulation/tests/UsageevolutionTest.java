@@ -20,8 +20,10 @@ import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
 import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
+import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
 
@@ -39,7 +41,7 @@ class UsageevolutionTest {
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/usageevolutionTest", modelFiles = {
             "default.allocation", "default.usagemodel", "default.repository", "default.usageevolution" })
-    @SimulationConfig(maxMeasurements = "100")
+    @SimulationConfig(maxMeasurements = "100") 
     @RunSimuLizar
     void testUsageevolutionResponseTimeVariation(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {
