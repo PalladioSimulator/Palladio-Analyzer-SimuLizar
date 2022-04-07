@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.simulation.tests;
 
-
 import static org.hamcrest.Matchers.closeTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -32,15 +31,13 @@ import tools.mdsd.junit5utils.annotations.PluginTestOnly;
 class QVTOExecutionTest {
 
     /**
-     * Tests the execution of a simple qvto reconfiguration.
-     * The reconfiguration changes the Usage Model's Population Parameter from 1 -> 2
-     * In the beginning until the 2000s Simulation Time is reached, Population == 1
-     * Between 2000s and 4000s Population == 2
-     * After 4000 until the end of the simulation the Population is 1 again.
-     * This results into two consecutive measurements between 2000 and 4000.
-     * The ThinkTime is 99.0, which results into one measurement every 100s.
-     * The responseTime itself doesn't change due to the reconfiguration.
-     * Only the amount of measurements every 100s changes from 1 -> 2 -> 1
+     * Tests the execution of a simple qvto reconfiguration. The reconfiguration changes the Usage
+     * Model's Population Parameter from 1 -> 2 In the beginning until the 2000s Simulation Time is
+     * reached, Population == 1 Between 2000s and 4000s Population == 2 After 4000 until the end of
+     * the simulation the Population is 1 again. This results into two consecutive measurements
+     * between 2000 and 4000. The ThinkTime is 99.0, which results into one measurement every 100s.
+     * The responseTime itself doesn't change due to the reconfiguration. Only the amount of
+     * measurements every 100s changes from 1 -> 2 -> 1
      */
     @Test
     @LoadPCMInstanceFromBundle(bundleName = "org.palladiosimulator.simulizar.tests", basePath = "testmodels/transformationQVTTest", modelFiles = {
@@ -60,19 +57,18 @@ class QVTOExecutionTest {
         List<Measure<?, Duration>> timeMeasurements = MeasurementTestUtils.allMeasurementsOfMetric(measurement.get(),
                 MetricDescriptionConstants.POINT_IN_TIME_METRIC);
         assertEquals(responseTimeMeasurements.size(), timeMeasurements.size());
-        
+
         double expectedMeasurementTime = 1.0;
-        
+
         assertEquals(1901.0, timeMeasurements.get(19)
-                .doubleValue(SI.SECOND), 0.001);
+            .doubleValue(SI.SECOND), 0.001);
         assertEquals(2001.0, timeMeasurements.get(20)
-                .doubleValue(SI.SECOND), 0.001);
+            .doubleValue(SI.SECOND), 0.001);
         assertEquals(2002.0, timeMeasurements.get(21)
-                .doubleValue(SI.SECOND), 0.001);
+            .doubleValue(SI.SECOND), 0.001);
         assertEquals(2101.0, timeMeasurements.get(22)
-                .doubleValue(SI.SECOND), 0.001);
-        
-        
+            .doubleValue(SI.SECOND), 0.001);
+
 //        for (int i = 0; i < 100; i++) {
 //            if ((i < 100)) {
 //                assertEquals(expectedMeasurementTime, timeMeasurements.get(i)
@@ -104,4 +100,3 @@ class QVTOExecutionTest {
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC, SI.SECOND, closeTo(1.0, 0.001));
     }
 }
-
