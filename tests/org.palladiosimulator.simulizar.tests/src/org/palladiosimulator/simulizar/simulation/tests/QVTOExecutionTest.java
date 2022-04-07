@@ -46,7 +46,7 @@ class QVTOExecutionTest {
     @SimulationConfig(maxMeasurements = "100")
     @SetConfigProperty(id = SimulizarConstants.RECONFIGURATION_RULES_FOLDER, value = "platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/transformationQVTTest/reconfigurations")
     @RunSimuLizar
-    void testUsageevolutionResponseTimeVariation(UsageScenario scenario, ExperimentRun expRun)
+    void testQVTOPopulationReconfiguration(UsageScenario scenario, ExperimentRun expRun)
             throws JobFailedException, UserCanceledException {
         var measurement = MeasurementTestUtils.getMeasurementOfAt(expRun.getMeasurement(),
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC_TUPLE, scenario);
@@ -60,43 +60,35 @@ class QVTOExecutionTest {
 
         double expectedMeasurementTime = 1.0;
 
-        assertEquals(1901.0, timeMeasurements.get(19)
-            .doubleValue(SI.SECOND), 0.001);
-        assertEquals(2001.0, timeMeasurements.get(20)
-            .doubleValue(SI.SECOND), 0.001);
-        assertEquals(2002.0, timeMeasurements.get(21)
-            .doubleValue(SI.SECOND), 0.001);
-        assertEquals(2101.0, timeMeasurements.get(22)
-            .doubleValue(SI.SECOND), 0.001);
-
-//        for (int i = 0; i < 100; i++) {
-//            if ((i < 100)) {
-//                assertEquals(expectedMeasurementTime, timeMeasurements.get(i)
-//                    .doubleValue(SI.SECOND), 0.001);
-//                expectedMeasurementTime += 100.0;
-//            }
-//            if (i >= 20 && i < 60) {
-//                assertEquals(expectedMeasurementTime, timeMeasurements.get(i)
-//                    .doubleValue(SI.SECOND), 0.001);
-//                expectedMeasurementTime += 1.0;
-//                System.out.println("expectedMeaurementTime: " + expectedMeasurementTime);
-//                System.out.println("Measurement: " + timeMeasurements.get(i)
-//                        .doubleValue(SI.SECOND));
-//                assertEquals(expectedMeasurementTime, timeMeasurements.get(i + 1)
-//                        .doubleValue(SI.SECOND), 0.001);
-//                expectedMeasurementTime += 99.0;
-//                i++;
-//            }
-//            // From here as the second phase with Population = 2.0 ends with value 4002,
-//            // The following measurements are off by 1.0s
-//            if (i >= 60) {
-//                assertEquals(expectedMeasurementTime + 1.0, timeMeasurements.get(i)
-//                    .doubleValue(SI.SECOND), 0.001);
-//                expectedMeasurementTime += 100.0;
-//            }
-//        }
+        for (int i = 0; i < 100; i++) {
+            if (i < 20) {
+                assertEquals(expectedMeasurementTime, timeMeasurements.get(i)
+                    .doubleValue(SI.SECOND), 0.001);
+                expectedMeasurementTime += 100.0;
+            }
+            if (i >= 20 && i <= 60) {
+                assertEquals(expectedMeasurementTime, timeMeasurements.get(i)
+                    .doubleValue(SI.SECOND), 0.001);
+                expectedMeasurementTime += 1.0;
+                System.out.println("expectedMeaurementTime: " + expectedMeasurementTime);
+                System.out.println("Measurement: " + timeMeasurements.get(i)
+                    .doubleValue(SI.SECOND));
+                assertEquals(expectedMeasurementTime, timeMeasurements.get(i + 1)
+                    .doubleValue(SI.SECOND), 0.001);
+                expectedMeasurementTime += 99.0;
+                i++;
+            }
+            // From here as the second phase with Population = 2.0 ends with value 4002,
+            // The following measurements are off by 1.0s
+            if (i > 61) {
+                assertEquals(expectedMeasurementTime + 1.0, timeMeasurements.get(i)
+                    .doubleValue(SI.SECOND), 0.001);
+                expectedMeasurementTime += 100.0;
+            }
+        }
         // Check whether all the response time stay at 1.0
         MeasurementTestUtils.allDoubleMeasurementValuesMatch(measurement.get(),
                 MetricDescriptionConstants.RESPONSE_TIME_METRIC, SI.SECOND, closeTo(1.0, 0.001));
     }
+
 }
