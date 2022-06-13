@@ -63,7 +63,7 @@ class UsageevolutionTest {
         // 40 Measurements in 20 Timesteps (two parallel)
         // Stage 3: 6000s with constant 1.0 40 measurements in 40 timesteps
         // It is important to know, that this constant evolves the user requests from 1 to 2 aswell
-        // as the response time.
+        // as the response time. 
         // ^
         // | ...[20]...
         // |
