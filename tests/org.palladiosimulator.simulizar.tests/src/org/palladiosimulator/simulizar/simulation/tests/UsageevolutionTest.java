@@ -3,27 +3,19 @@ package org.palladiosimulator.simulizar.simulation.tests;
 import static org.hamcrest.Matchers.closeTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.asDoubleIn;
 
 import java.util.List;
 
 import javax.measure.Measure;
 import javax.measure.quantity.Duration;
-import javax.measure.quantity.Quantity;
 import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
 
-import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;
-import org.palladiosimulator.edp2.models.ExperimentData.Measurement;
-import org.palladiosimulator.metricspec.BaseMetricDescription;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 import org.palladiosimulator.simulizar.test.commons.annotation.RunSimuLizar;
-import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils;
 
@@ -68,7 +60,7 @@ class UsageevolutionTest {
         // | ...[20]...
         // |
         // |
-        // |...[20].. ....[40].....
+        // |...[20].. ....[40]..... 
         // ---------------------------------------->
         // Number in Brackets means total 20 measuring Points
         // In Stage 2 every Point is representing two measurements as both values evolved to 2 they
