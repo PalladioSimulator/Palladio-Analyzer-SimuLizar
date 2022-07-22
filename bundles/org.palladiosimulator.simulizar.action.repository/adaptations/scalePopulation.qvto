@@ -1,0 +1,61 @@
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+transformation instantiateComponent(
+							inout pcmUsage : PCM_USAGE,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionMapping : ACTION_MAPPING
+							) {
+		
+property instantiatedComponentResourceContainerName = 'InstantiatedComponentResourceContainer';
+property newPopulation : Integer = 2;
+							
+	/**
+	 * Enact Adaptation Step Transformation to scale Population.
+	 */
+	main() {	
+		assert fatal(pcmUsage.rootObjects()[Allocation]->size() > 0)
+			with log ("Usage Model is empty!");
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var usageScenario : UsageScenario := pcmUsage.rootObjects()[UsageScenario]->any(true);
+		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
+		usageScenario.xmap enactScaling(roleSet, mappingRes);
+	}
+	
+	mapping inout UsageScenario::enactScaling(roleSet : RoleSet, mappingRes : Mapping) {
+		var roles := roleSet.roles;
+		var usageScenarioRole : instance::Role := roles->select(role | role.roleType.id = '_QGoXJQlYEe2py52lapYZiQ')->any(true);
+		
+		var usageScenarioScale : UsageScenario := usageScenarioRole.value.oclAsType(UsageScenario);
+		
+		usageScenarioScale.workload_UsageScenario = self.subobjectsOfType(ClosedWorkload)->map reconfigureClosedWorkload(newPopulation);
+
+		// No stereotype is removed here.
+		
+		log("Workload scaled to " + newPopulation.toString());
+	}
+	
+	mapping inout ClosedWorkload::reconfigureClosedWorkload(newPopulation : Integer)
+	{
+		self._population := newPopulation;
+		log("Reconfigured Population!");
+	}
+}

@@ -96,5 +96,18 @@
     <involvedRoles id="_Fi5x1LUoEeW-zrkZJ6KTtQ" entityName="Probability branch 2">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//seff/ProbabilisticBranchTransition"/>
     </involvedRoles>
+    <transientStateProfile href="../../../plugin/org.palladiosimulator.simulizar.action.repository/transientstates/componentinstantiation.emfprofile_diagram#_X3rWMBwIEeWmcO0Zlkc2yA"/>
+  </actions>
+  <actions id="_Gs5npQlYEe2py52lapYZiQ" entityName="scalePopulationTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_NteHYwlYEe2py52lapYZiQ" entityName="preconditionsMet">
+      <guardedTransitions id="_WPrZAAlYEe2py52lapYZiQ" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditions.qvto">
+        <nestedAdaptationBehavior id="_jsXnoAlYEe2py52lapYZiQ" entityName="scalePopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_n7moMQlYEe2py52lapYZiQ" entityName="scalePopulationToTwo" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_QGoXJQlYEe2py52lapYZiQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
   </actions>
 </org.palladiosimulator.action:AdaptationBehaviorRepository>

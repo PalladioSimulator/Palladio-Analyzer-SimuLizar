@@ -1,0 +1,54 @@
+/*
+ * This QVTO SimuLizar reconfiguration rule scales population if the set time has passed.
+ *
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+
+transformation vmInstantiationStereotypeApplication(
+							inout pcmUsage : PCM_USAGE,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
+property usageScenarioRoleId : String = '_QGoXJQlYEe2py52lapYZiQ';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 * No test for stereotypes, as this is not needed in the simple test case to test only the execution.
+	 */
+	main() {	
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var usageScenarioRole : instance::Role := roleSet.roles->selectOne(roleType.id = usageScenarioRoleId);
+		var scaleUsageScenario : ResourceContainer := usageScenarioRole.value.oclAsType(ResourceContainer);
+		// No stereotype will be applied, as in this testcase there won't be any conflicts.'
+		// Dummy precondiions are checked.
+		log("Preconditions of scalePopulation successfully checked.");
+	}
+	
+	
+}
