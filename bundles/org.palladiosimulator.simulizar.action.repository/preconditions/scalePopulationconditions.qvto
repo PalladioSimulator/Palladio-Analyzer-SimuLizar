@@ -1,11 +1,13 @@
 /*
- * This QVTO SimuLizar reconfiguration rule scales population if the set time has passed.
+ * This QVTO transformation represents the precoditions to scale a workloard's population.
  *
  */
 
 
 import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
 import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
 
 
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
@@ -27,7 +29,7 @@ modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Pa
 modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
 
-transformation vmInstantiationStereotypeApplication(
+transformation scalePopulationActionConditions(
 							inout pcmUsage : PCM_USAGE,
 							in actionRoleSet : ACTION_INSTANCE,
 							in actionStep : ACTION_CORE
@@ -35,19 +37,15 @@ transformation vmInstantiationStereotypeApplication(
 							
 property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
 property usageScenarioRoleId : String = '_QGoXJQlYEe2py52lapYZiQ';
+property scalePopulationUpTime : Real = 2000.0;
 
 	/**
-	 * The main transformation.
-	 * This is the entry point to the overall transformation.
-	 * No test for stereotypes, as this is not needed in the simple test case to test only the execution.
+	 * The main transformation to check the precondition whether the action should be executed.
 	 */
-	main() {	
-		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
-		var usageScenarioRole : instance::Role := roleSet.roles->selectOne(roleType.id = usageScenarioRoleId);
-		var scaleUsageScenario : ResourceContainer := usageScenarioRole.value.oclAsType(ResourceContainer);
-		// No stereotype will be applied, as in this testcase there won't be any conflicts.'
-		// Dummy precondiions are checked.
-		log("Preconditions of scalePopulation successfully checked.");
+	main() {
+		log("Conditions passed");
+//		assert fatal(not(getSimulationTime() > scalePopulationUpTime and getSimulationTime() < (scalePopulationUpTime + 2.0)))
+//			with log("Precondition to scale population up is not met.");
 	}
 	
 	

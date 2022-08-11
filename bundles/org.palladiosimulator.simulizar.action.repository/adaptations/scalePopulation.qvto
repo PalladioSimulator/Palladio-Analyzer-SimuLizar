@@ -1,3 +1,9 @@
+/*
+ * This QVTO transformation represents the adaptation step to scale a workloard's population.
+ *
+ */
+
+
 import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
 modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
 modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
@@ -19,43 +25,44 @@ modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
 modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
 modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
 
-transformation instantiateComponent(
+transformation scalePopulationAdaptationStep(
 							inout pcmUsage : PCM_USAGE,
-							in actionRoleSet : ACTION_INSTANCE,
-							in actionMapping : ACTION_MAPPING
+							in actionRoleSet : ACTION_INSTANCE
 							) {
 		
-property instantiatedComponentResourceContainerName = 'InstantiatedComponentResourceContainer';
 property newPopulation : Integer = 2;
+property roleTypeId : String = '_QGoXJQlYEe2py52lapYZiQ';
 							
 	/**
 	 * Enact Adaptation Step Transformation to scale Population.
 	 */
-	main() {	
-		assert fatal(pcmUsage.rootObjects()[Allocation]->size() > 0)
+	main() {
+		log("Start Adaptation Step to scale Action");
+		assert fatal(pcmUsage.rootObjects()[UsageModel]->size() > 0)
 			with log ("Usage Model is empty!");
 		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
-		var usageScenario : UsageScenario := pcmUsage.rootObjects()[UsageScenario]->any(true);
-		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
-		usageScenario.xmap enactScaling(roleSet, mappingRes);
+		var roles := roleSet.roles;
+		var usageScenarioRole : instance::Role := roles->select(role | role.roleType.id = roleTypeId)->any(true);
+		var usageScenarioScale : UsageScenario := usageScenarioRole.value.oclAsType(UsageScenario);
+		usageScenarioScale.map enactScaling();
 	}
 	
-	mapping inout UsageScenario::enactScaling(roleSet : RoleSet, mappingRes : Mapping) {
-		var roles := roleSet.roles;
-		var usageScenarioRole : instance::Role := roles->select(role | role.roleType.id = '_QGoXJQlYEe2py52lapYZiQ')->any(true);
-		
-		var usageScenarioScale : UsageScenario := usageScenarioRole.value.oclAsType(UsageScenario);
-		
-		usageScenarioScale.workload_UsageScenario = self.subobjectsOfType(ClosedWorkload)->map reconfigureClosedWorkload(newPopulation);
-
+	mapping inout UsageScenario::enactScaling() {
+		self.workload_UsageScenario.map reconfigureWorkload(newPopulation);
 		// No stereotype is removed here.
-		
 		log("Workload scaled to " + newPopulation.toString());
 	}
 	
-	mapping inout ClosedWorkload::reconfigureClosedWorkload(newPopulation : Integer)
+	mapping inout Workload::reconfigureWorkload(newPopulation : Integer)
+	{
+		assert fatal(true) with log("Test Action only transforms ClosedWorkloads.");
+	}
+	
+	mapping inout ClosedWorkload::reconfigureWorkload(newPopulation : Integer)
 	{
 		self._population := newPopulation;
 		log("Reconfigured Population!");
 	}
+	
+	
 }
