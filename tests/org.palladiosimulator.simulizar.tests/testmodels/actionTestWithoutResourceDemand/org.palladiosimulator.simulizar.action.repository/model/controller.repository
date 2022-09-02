@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" xmlns:stoex="http://sdq.ipd.uka.de/StochasticExpressions/2.2" id="_y7TzUOp-EeS1xrjFer2CUg" entityName="ControllerInterfaces" repositoryDescription="">
+  <components__Repository xsi:type="repository:BasicComponent" id="_63lUEOqDEeS1xrjFer2CUg" entityName="MigrationController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_ITgtsOqEEeS1xrjFer2CUg" entityName="Provided_IComponentMigration_MigrationController" providedInterface__OperationProvidedRole="_wMjRkOp_EeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_Jh2wIOqEEeS1xrjFer2CUg" entityName="Required_IMigrationSource_MigrationController" requiredInterface__OperationRequiredRole="_3nb5UOqAEeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_KbTgoOqEEeS1xrjFer2CUg" entityName="Required_IMigrationTarget_MigrationController" requiredInterface__OperationRequiredRole="_Ahg4YOqBEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_ITh70OqEEeS1xrjFer2CUg" describedService__SEFF="_zm-xEOp_EeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_ITii4OqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_wof8sfDgEeSZL9AWvTd4qw"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_wof8sfDgEeSZL9AWvTd4qw" entityName="controllerProcess" predecessor_AbstractAction="_ITii4OqEEeS1xrjFer2CUg" successor_AbstractAction="_eLOU2KWlEeW63qPeMs7JTA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="42 * dummyInput.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_eLOU2KWlEeW63qPeMs7JTA" entityName="triggerComponentMigration" predecessor_AbstractAction="_wof8sfDgEeSZL9AWvTd4qw" successor_AbstractAction="_ITii4eqEEeS1xrjFer2CUg" calledService_ExternalService="_B8EK0OqBEeS1xrjFer2CUg" role_ExternalService="_KbTgoOqEEeS1xrjFer2CUg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_ITii4eqEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_eLOU2KWlEeW63qPeMs7JTA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_CizTUOqEEeS1xrjFer2CUg" entityName="MigrationSource">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_N0MvEOqEEeS1xrjFer2CUg" entityName="Provided_IMigrationSource_MigrationSource" providedInterface__OperationProvidedRole="_3nb5UOqAEeS1xrjFer2CUg"/>
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_XNbvUOqEEeS1xrjFer2CUg" entityName="Provided_IComponentTransfer_MigrationSource" providedInterface__OperationProvidedRole="_RfswcOqEEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_N0MvEeqEEeS1xrjFer2CUg" describedService__SEFF="_YtKcsOqEEeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_N0MvEuqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_uXMCnqWkEeW63qPeMs7JTA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_uXMCnqWkEeW63qPeMs7JTA" entityName="process" predecessor_AbstractAction="_N0MvEuqEEeS1xrjFer2CUg" successor_AbstractAction="_N0MvE-qEEeS1xrjFer2CUg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="1000"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_N0MvE-qEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_uXMCnqWkEeW63qPeMs7JTA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_FFJUQOqEEeS1xrjFer2CUg" entityName="MigrationTarget">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_8UdsUOqEEeS1xrjFer2CUg" entityName="Provided_IMigrationTarget_MigrationTarget" providedInterface__OperationProvidedRole="_Ahg4YOqBEeS1xrjFer2CUg"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_XxISQOqEEeS1xrjFer2CUg" entityName="Required_IComponentTransfer_MigrationTarget" requiredInterface__OperationRequiredRole="_RfswcOqEEeS1xrjFer2CUg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_8Ue6cOqEEeS1xrjFer2CUg" describedService__SEFF="_B8EK0OqBEeS1xrjFer2CUg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_8UfhgOqEEeS1xrjFer2CUg" entityName="start" successor_AbstractAction="_OEhzjqWkEeW63qPeMs7JTA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_OEhzjqWkEeW63qPeMs7JTA" entityName="prepareMigration" predecessor_AbstractAction="_8UfhgOqEEeS1xrjFer2CUg" successor_AbstractAction="_QC16WKWkEeW63qPeMs7JTA">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="500"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:ExternalCallAction" id="_QC16WKWkEeW63qPeMs7JTA" entityName="obtainVM" predecessor_AbstractAction="_OEhzjqWkEeW63qPeMs7JTA" successor_AbstractAction="_ThtN7KWkEeW63qPeMs7JTA" calledService_ExternalService="_YtKcsOqEEeS1xrjFer2CUg" role_ExternalService="_XxISQOqEEeS1xrjFer2CUg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_ThtN7KWkEeW63qPeMs7JTA" entityName="finalizeMigration" predecessor_AbstractAction="_QC16WKWkEeW63qPeMs7JTA" successor_AbstractAction="_8UfhgeqEEeS1xrjFer2CUg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="1500"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_8UfhgeqEEeS1xrjFer2CUg" entityName="stop" predecessor_AbstractAction="_ThtN7KWkEeW63qPeMs7JTA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_oATY4KJKEeWC7_GU8VFHHA" entityName="ComponentInstantiationController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_L2VLkKJMEeWC7_GU8VFHHA" entityName="Provided_IComponentInstantiation_ComponentInstantiationController" providedInterface__OperationProvidedRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <requiredRoles_InterfaceRequiringEntity xsi:type="repository:OperationRequiredRole" id="_od2lpaJMEeWC7_GU8VFHHA" entityName="Required_IComponentInstantiation_ComponentInstantiationController" requiredInterface__OperationRequiredRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_L2Y18KJMEeWC7_GU8VFHHA" describedService__SEFF="_veoLoKJKEeWC7_GU8VFHHA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_L2ZdAKJMEeWC7_GU8VFHHA" entityName="start" successor_AbstractAction="_fa0lTKJUEeWC7_GU8VFHHA"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_fa0lTKJUEeWC7_GU8VFHHA" entityName="instantiateComponent" predecessor_AbstractAction="_L2ZdAKJMEeWC7_GU8VFHHA" successor_AbstractAction="_L2ZdAaJMEeWC7_GU8VFHHA2">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="75600 * factor.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_L2ZdAaJMEeWC7_GU8VFHHA2" entityName="stop" predecessor_AbstractAction="_fa0lTKJUEeWC7_GU8VFHHA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_1TXxcKJKEeWC7_GU8VFHHA" entityName="ComponentInstantiationLocation">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_jeP4EKJMEeWC7_GU8VFHHA" entityName="Provided_IComponentInstantiation_ComponentInstantiationLocation" providedInterface__OperationProvidedRole="_rliaN6JKEeWC7_GU8VFHHA"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_jeP4EaJMEeWC7_GU8VFHHA" describedService__SEFF="_veoLoKJKEeWC7_GU8VFHHA">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_jeRGMKJMEeWC7_GU8VFHHA" entityName="start" successor_AbstractAction="_jeRGMaJMEeWC7_GU8VFHHA2"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_jeRGMaJMEeWC7_GU8VFHHA2" entityName="stop" predecessor_AbstractAction="_jeRGMKJMEeWC7_GU8VFHHA"/>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_nH4QwJR5Eeake9YPyNtTvg" entityName="DelayedExecutionController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_3uCxwJR5Eeake9YPyNtTvg" entityName="Provided_IDelayedExecution_DelayedExecutionController" providedInterface__OperationProvidedRole="_qEz78JR5Eeake9YPyNtTvg"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_3uHDMJR5Eeake9YPyNtTvg" describedService__SEFF="_taWUYJR5Eeake9YPyNtTvg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_3uHqQJR5Eeake9YPyNtTvg" entityName="start" successor_AbstractAction="__EgB8JR5Eeake9YPyNtTvg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_3uIRUJR5Eeake9YPyNtTvg" entityName="stop" predecessor_AbstractAction="__EgB8JR5Eeake9YPyNtTvg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="__EgB8JR5Eeake9YPyNtTvg" entityName="delayExecution" predecessor_AbstractAction="_3uHqQJR5Eeake9YPyNtTvg" successor_AbstractAction="_3uIRUJR5Eeake9YPyNtTvg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="delayInSeconds.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_XwPVkNHIEeaNAIlD4-dfHg" entityName="DelayController">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_drfzENHIEeaNAIlD4-dfHg" entityName="Provided_IDelay_DelayController" providedInterface__OperationProvidedRole="_b60foNHIEeaNAIlD4-dfHg"/>
+    <componentParameterUsage_ImplementationComponentType>
+      <variableCharacterisation_VariableUsage type="VALUE">
+        <specification_VariableCharacterisation specification="1"/>
+      </variableCharacterisation_VariableUsage>
+      <namedReference__VariableUsage xsi:type="stoex:VariableReference" referenceName="delay"/>
+    </componentParameterUsage_ImplementationComponentType>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_gmgLoNHIEeaNAIlD4-dfHg" describedService__SEFF="_etpMkNHIEeaNAIlD4-dfHg">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_g6v9UNHIEeaNAIlD4-dfHg" entityName="start" successor_AbstractAction="_h6gKINHIEeaNAIlD4-dfHg"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_g6wkYNHIEeaNAIlD4-dfHg" entityName="stop" predecessor_AbstractAction="_h6gKINHIEeaNAIlD4-dfHg"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_h6gKINHIEeaNAIlD4-dfHg" entityName="executeDelay" predecessor_AbstractAction="_g6v9UNHIEeaNAIlD4-dfHg" successor_AbstractAction="_g6wkYNHIEeaNAIlD4-dfHg">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="delay.VALUE"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_nvHX4KkREdyEA_b89s7q9w"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_wMjRkOp_EeS1xrjFer2CUg" entityName="IComponentMigration">
+    <signatures__OperationInterface id="_zm-xEOp_EeS1xrjFer2CUg" entityName="migrate">
+      <parameters__OperationSignature parameterName="input" modifier__Parameter="in">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.0"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_3nb5UOqAEeS1xrjFer2CUg" entityName="IMigrationSource">
+    <signatures__OperationInterface id="_6KXJEOqAEeS1xrjFer2CUg" entityName="migrate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_Ahg4YOqBEeS1xrjFer2CUg" entityName="IMigrationTarget">
+    <signatures__OperationInterface id="_B8EK0OqBEeS1xrjFer2CUg" entityName="migrate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_RfswcOqEEeS1xrjFer2CUg" entityName="IComponentTransfer">
+    <signatures__OperationInterface id="_YtKcsOqEEeS1xrjFer2CUg" entityName="transferComponent"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_rliaN6JKEeWC7_GU8VFHHA" entityName="IComponentInstantiation">
+    <signatures__OperationInterface id="_veoLoKJKEeWC7_GU8VFHHA" entityName="instantiate"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_qEz78JR5Eeake9YPyNtTvg" entityName="IDelayedExecution">
+    <signatures__OperationInterface id="_taWUYJR5Eeake9YPyNtTvg" entityName="execute">
+      <parameters__OperationSignature parameterName="delayInSeconds">
+        <dataType__Parameter xsi:type="repository:PrimitiveDataType" href="pathmap://PCM_MODELS/PrimitiveTypes.repository#//@dataTypes__Repository.3"/>
+      </parameters__OperationSignature>
+    </signatures__OperationInterface>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_b60foNHIEeaNAIlD4-dfHg" entityName="IDelay">
+    <signatures__OperationInterface id="_etpMkNHIEeaNAIlD4-dfHg" entityName="execute"/>
+  </interfaces__Repository>
+</repository:Repository>

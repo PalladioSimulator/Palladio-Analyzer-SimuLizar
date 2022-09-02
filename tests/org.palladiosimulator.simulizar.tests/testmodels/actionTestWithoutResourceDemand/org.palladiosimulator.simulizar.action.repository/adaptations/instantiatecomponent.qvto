@@ -1,0 +1,54 @@
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation instantiateComponent(
+							inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionMapping : ACTION_MAPPING
+							) {
+		
+property instantiatedComponentResourceContainerName = 'InstantiatedComponentResourceContainer';		
+							
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
+		allocation.xmap enactComponentInstantiation(roleSet, mappingRes);
+	}
+	
+	mapping inout Allocation::enactComponentInstantiation(roleSet : RoleSet, mappingRes : Mapping) {
+		var roles := roleSet.roles;
+		var targetResourceContainerRole : instance::Role := roles->select(role | role.roleType.id = '_9TESQRwLEeW4AMv4FxCz8w')->any(true);
+		var instantiatedComponentRole : instance::Role := roles->select(role | role.roleType.id = '_p7wp4RwMEeW4AMv4FxCz8w')->any(true);
+		var instantiationControllerLocationRole : instance::Role := roles->select(role | role.roleType.id = '_MEXt8RwNEeW4AMv4FxCz8w')->any(true);
+		
+		var targetResourceContainer : ResourceContainer := targetResourceContainerRole.value.oclAsType(ResourceContainer);
+		var instantiatedComponent : BasicComponent := instantiatedComponentRole.value.oclAsType(BasicComponent);
+		var instantiationControllerLocation : ResourceContainer := instantiationControllerLocationRole.value.oclAsType(ResourceContainer);
+		
+		var instantiatedComponentContext = object AssemblyContext {
+			entityName := 'Assembly_' + instantiatedComponent.entityName;
+			encapsulatedComponent__AssemblyContext := instantiatedComponent;			 
+		};
+		
+		system_Allocation.assemblyContexts__ComposedStructure += instantiatedComponentContext;
+		
+		allocationContexts_Allocation += object AllocationContext {
+			resourceContainer_AllocationContext := targetResourceContainer;
+			assemblyContext_AllocationContext := instantiatedComponentContext;
+		};
+		targetResourceContainer.removeStereotypeApplications(instantiatedComponentResourceContainerName);
+		log("Component " + instantiatedComponent.entityName + " instantiated at " + targetResourceContainer.entityName);
+	}
+}

@@ -1,0 +1,49 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule migrates the application to another
+ * server node as defined by the OptimizationPlan
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation vmInstantiationStereotypeApplication(
+							inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+property resourceContainerStereotypeName = 'InstantiatedComponentResourceContainer';
+property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var targetContainerRole : instance::Role := roleSet.roles->selectOne(roleType.id = targetResourceContainerRoleId);
+		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
+		assert fatal(targetResourceContainer.noConflictingInstantiationInProgress())
+				with log('Component instantiation preconditions not met');
+		targetResourceContainer.applyStereotype(resourceContainerStereotypeName);
+	}
+	
+	query ResourceContainer::noConflictingInstantiationInProgress() : Boolean {
+		return not self.hasAppliedStereotype(resourceContainerStereotypeName);
+	}
+}

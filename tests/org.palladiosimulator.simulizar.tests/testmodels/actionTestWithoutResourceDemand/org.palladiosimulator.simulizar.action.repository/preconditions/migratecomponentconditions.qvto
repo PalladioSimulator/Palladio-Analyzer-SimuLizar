@@ -1,0 +1,53 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule migrates the application to another
+ * server node as defined by the OptimizationPlan
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation vmMigrationRoles(
+							inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+property migratedComponentContextName = 'MigratedComponentAssemblyContext';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var assemblyRole : instance::Role := roleSet.roles->select(role | role.roleType.id = "_kPTj0OztEeSasuhUPGMaRg")->any(true);
+		var targetContainerRole : instance::Role := roleSet.roles->select(role | role.roleType.id = '_or2AkeztEeSasuhUPGMaRg')->any(true);
+		var migratedAssembly : AssemblyContext := assemblyRole.value.oclAsType(AssemblyContext);
+		var targetResourceContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
+		assert fatal(allocation.noConflictingMigrationInProgress(migratedAssembly) and allocation.targetResourceContainerNotEqualSource(migratedAssembly, targetResourceContainer))
+				with log('Migration preconditions not met');
+		migratedAssembly.applyStereotype(migratedComponentContextName);
+	}
+	
+	query Allocation::noConflictingMigrationInProgress(migratedAssembly : AssemblyContext) : Boolean {
+		return not migratedAssembly.hasAppliedStereotype(migratedComponentContextName);
+	}
+	
+	query Allocation::targetResourceContainerNotEqualSource(migratedAssembly : AssemblyContext, targetContainer : ResourceContainer) : Boolean {
+		var allocationCtx : AllocationContext := self.allocationContexts_Allocation->select(a | a.assemblyContext_AllocationContext.id = migratedAssembly.id)->any(true);
+		return allocationCtx.resourceContainer_AllocationContext.id <> targetContainer.id;
+	}
+}

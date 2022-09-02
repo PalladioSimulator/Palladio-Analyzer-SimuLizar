@@ -1,0 +1,37 @@
+modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype POWER_BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype IDENTIFIER uses 'http://sdq.ipd.uka.de/Identifier/2.1';
+
+transformation changeToTransitionState(
+							inout powerInfrastructure : INFRASTRUCTURE,
+							in actionRoleSet : ACTION_INSTANCE
+							);
+	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+	
+main() {
+	var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+	var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResourceSet);
+	var affectedStatefulPowerConsumingResource = roleSet.getAffectedStatefulPowerConsumingResourceFromRoles();
+	var desiredPowerStateBinding := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerStateBinding);
+	
+	if(not desiredPowerStateBinding.oclIsKindOf(TransitionStateBinding)) {
+		var potentialStates := desiredPowerStateBinding.statefulResourcePowerBinding.powerStateBindings[TransitionStateBinding]
+			->select(t | t.transitionState.targetState.id = desiredPowerStateBinding.oclAsType(PowerStateBinding).powerState.id);
+		assert warning (potentialStates->size() > 1) with log('More than one transitions to target state. One chosen at random.');
+		affectedStatefulPowerConsumingResource.map changeToTransitionState(potentialStates->any(true));
+	} else {
+		affectedStatefulPowerConsumingResource.powerState := desiredPowerStateBinding;
+	};
+}
+
+mapping inout StatefulPowerConsumingResourceSet::changeToTransitionState(chosenState : TransitionStateBinding) {
+	self.powerState := chosenState;
+}
+
+query RoleSet::getAffectedStatefulPowerConsumingResourceFromRoles() : StatefulPowerConsumingResourceSet {
+	return self.roles[value.oclIsTypeOf(StatefulPowerConsumingResourceSet)]->any(true).value.oclAsType(StatefulPowerConsumingResourceSet);
+}
