@@ -21,7 +21,8 @@ Require-Bundle: org.eclipse.xtext.xbase.lib,
  org.palladiosimulator.simulizar.test.commons;bundle-version="5.1.0",
  org.palladiosimulator.simulizar.events,
  org.palladiosimulator.simulizar.monitorrepository.feedthrough;bundle-version="5.1.0",
- org.palladiosimulator.simulizar.action.repository;bundle-version="5.1.0"
+ org.palladiosimulator.simulizar.action.repository;bundle-version="5.1.0",
+ org.palladiosimulator.simulizar.action
 Import-Package: com.google.common.util.concurrent.internal;version="1.0.1",
  net.bytebuddy.dynamic.loading;version="1.6.0",
  org.hamcrest;version="2.2.0",
