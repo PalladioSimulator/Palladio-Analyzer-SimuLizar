@@ -60,9 +60,9 @@ public class ActionWithoutResourceDemandingStepTest {
 				expectedMeasurementTime += 100.0;
 			} else {
 				assertEquals(expectedMeasurementTime, timeMeasurements.get(i).doubleValue(SI.SECOND), 0.001);
-				expectedMeasurementTime += 1.0;
 				System.out.println("expectedMeaurementTime: " + expectedMeasurementTime);
 				System.out.println("Measurement: " + timeMeasurements.get(i).doubleValue(SI.SECOND));
+				expectedMeasurementTime += 1.0;
 				assertEquals(expectedMeasurementTime, timeMeasurements.get(i + 1).doubleValue(SI.SECOND), 0.001);
 				expectedMeasurementTime += 99.0;
 				i++;
