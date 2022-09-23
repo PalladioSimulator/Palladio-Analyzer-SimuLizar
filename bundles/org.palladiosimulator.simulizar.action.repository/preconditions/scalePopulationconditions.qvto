@@ -35,7 +35,6 @@ transformation scalePopulationActionConditions(
 							in actionStep : ACTION_CORE
 							) {
 							
-property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
 property usageScenarioRoleId : String = '_QGoXJQlYEe2py52lapYZiQ';
 property scalePopulationUpTime : Real = 2000.0;
 
@@ -43,9 +42,10 @@ property scalePopulationUpTime : Real = 2000.0;
 	 * The main transformation to check the precondition whether the action should be executed.
 	 */
 	main() {
+		log("Check Conditions!");
+		assert fatal(getSimulationTime() > scalePopulationUpTime and getSimulationTime() < (scalePopulationUpTime + 2.0))
+			with log("Precondition to scale population up is not met.");
 		log("Conditions passed");
-//		assert fatal(not(getSimulationTime() > scalePopulationUpTime and getSimulationTime() < (scalePopulationUpTime + 2.0)))
-//			with log("Precondition to scale population up is not met.");
 	}
 	
 	
