@@ -1,0 +1,149 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule migrates the application to another
+ * server node as defined by the OptimizationPlan
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation instantiateComponent(
+							inout pcmAllocation : PCM_ALLOC,
+							inout pcmSystem : PCM_SYS,
+							in pcmControllerRepository : PCM_REP,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE,
+							out actionMapping : ACTION_MAPPING
+							) {
+	
+	property instantiationOverheadActionId : String = '_zrz0cipVEe2wiYzkm4StTQ'; // Resource Demanding Step ID
+	
+	// No Roles from Action Model needed here, as only UsageScenario is a Role in this Action and has no influence on Overhead.
+	// Only one Resource Container exists anyways in this testcase.
+	property resourceContainerId : String = '_B0aZ0CHdEd6lJo4DCALHMw'; // ResourceContainer to allocate the overhead component on
+	property overheadComponentControllerScaleId :String = '_eyN5-SpWEe2wiYzkm4StTQ'; // Component from controller.repository for overhead
+	property overheadComponentProvidedRoleId : String = '_jXKr0SpWEe2wiYzkm4StTQ'; // ProvidedRole of the overheadOperation
+	
+	property controllerRepositoryId : String = '_y7TzUOp-EeS1xrjFer2CUg'; // Controller Repository from action model
+	property scaleOverheadActionId : String = '_NjOzsqHHEeWc24RAWmuF8Q'; // Resource Demanding Step ID
+						
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var system : System := pcmSystem.rootObjects()[System]->any(true);
+		var step := actionStep.rootObjects()[ResourceDemandingStep]->any(id = scaleOverheadActionId);
+		log("Executing step " + step.entityName);
+		
+		var controllerRepository : Repository := pcmControllerRepository.rootObjects()[Repository]->any(id = controllerRepositoryId);
+		
+		var overheadComponent: BasicComponent := controllerRepository.getComponentById(overheadComponentControllerScaleId);
+		var overheadResourceContainer: ResourceContainer = allocation.getResourceContainerById(resourceContainerId);
+		
+		step.map instantiateOverheadComponent(system, allocation, controllerRepository, overheadComponent, overheadResourceContainer);
+	}
+	
+	
+	mapping ResourceDemandingStep::instantiateOverheadComponent(inout system : System, inout allocation : Allocation, controllerRepository : Repository,
+		overheadComponentController : BasicComponent, targetResourceContainer: ResourceContainer) : Mapping@actionMapping {
+		log("Adding controller for overhead");
+		result.controllerMappings := self.controllerCalls->map addScaleController(system, allocation, controllerRepository, 
+		overheadComponentController, targetResourceContainer);
+	}
+	
+	// Steps executed - Includes always instantiation as this scaleing is only executed once, so no checks if component exists necessary.
+	// Just instantiate everything always.
+	// Step 1: Create AssemblyContext for the overheadComponent in the SystemModel.
+	// Step 2: Create Allocation on targetResourceContainer for the newly created AssemblyContext
+	// Step 3: Create SystemProvidedRole (OuterProvidedRole) with the scaleOverheadRole / Signature
+	// Step 4: Create Delegation Connector from newly created outer Role to newly created AssemblyContext's Provided Role
+	mapping ControllerCall::addScaleController(inout system : System, inout allocation : Allocation, controllerRepository : Repository,
+		overheadComponentController : BasicComponent, targetResourceContainer : ResourceContainer) : ControllerMapping {
+		log ("Instantiate and add overheadScaleComponent to the models");
+		
+		//Step 1:
+		var assemblyOverheadComponent : AssemblyContext := overheadComponentController.map createAssembly(targetResourceContainer);
+		system.assemblyContexts__ComposedStructure += assemblyOverheadComponent;
+		
+		//Step 2:
+		allocation.allocationContexts_Allocation += assemblyOverheadComponent->allocate(targetResourceContainer);
+		log("Allocating instantiation controller at " + targetResourceContainer.id);
+		
+		//Step 3:
+		var controllerProvidedRole := object OperationProvidedRole @pcmSystem {
+			entityName := 'SystemProvided' + overheadComponentController.entityName;
+			providingEntity_ProvidedRole := overheadComponentController;
+			providedInterface__OperationProvidedRole := self.calledSignature.interface__OperationSignature;			
+		};
+		
+		// Step 4
+		system.providedRoles_InterfaceProvidingEntity += controllerProvidedRole;
+		system.connectors__ComposedStructure += object ProvidedDelegationConnector {
+			innerProvidedRole_ProvidedDelegationConnector := overheadComponentController.selectProvidedRoleById(overheadComponentProvidedRoleId);
+			outerProvidedRole_ProvidedDelegationConnector := controllerProvidedRole;
+			assemblyContext_ProvidedDelegationConnector := assemblyOverheadComponent;
+		};
+		
+		result.mappedCall := self;
+		result.entityName := 'mapped' + mappedCall.entityName;
+		result.controllerRole := controllerProvidedRole;
+	}
+	
+	
+	
+	
+	// Mapping to allocate an AssemblyContext on a given ResourceContainer and return Allocation Context.
+	mapping AssemblyContext::allocate(container : ResourceContainer) : AllocationContext {
+		entityName := self.entityName + 'At' + container.entityName;
+		resourceContainer_AllocationContext := container;
+		assemblyContext_AllocationContext := self;
+	}
+	
+	// Returns Operation Required Role of self::BasicComponent with given id.
+	query BasicComponent::selectRequiredRoleById(requiredRoleId : String) : OperationRequiredRole {
+		return self.requiredRoles_InterfaceRequiringEntity[id = requiredRoleId]->any(true).oclAsType(OperationRequiredRole);
+	}
+	
+	// Returns Operation Provided Role of self::BasicComponent with given id.
+	query BasicComponent::selectProvidedRoleById(providedRoleId : String) : OperationProvidedRole {
+		return self.providedRoles_InterfaceProvidingEntity[id = providedRoleId]->any(true).oclAsType(OperationProvidedRole)
+	}
+	
+	// Creates Assembly on given resource container
+	mapping BasicComponent::createAssembly(inout container : ResourceContainer) : AssemblyContext @ pcmSystem {
+		var nameInput := self.entityName;
+		entityName :=  nameInput + "AssemblyCtxOn" + container.entityName;
+		encapsulatedComponent__AssemblyContext := self;
+	}
+	
+	// Returns Basic Component by Id from Repository
+	query Repository::getComponentById(id : String) : BasicComponent {
+		return self.components__Repository->select(component | component.id = id)->any(true)->oclAsType(BasicComponent)->any(true);
+	}
+	
+	// Returns the resource container a controller is allocated on.
+	query AssemblyContext::getControllerHost(allocation : Allocation) : ResourceContainer {
+		return allocation.allocationContexts_Allocation[assemblyContext_AllocationContext.id = self.id]->any(true).resourceContainer_AllocationContext;
+	}
+	
+	//Returns the resource container given by id.
+	query Allocation::getResourceContainerById(id :String) : ResourceContainer {
+		return self.targetResourceEnvironment_Allocation.resourceContainer_ResourceEnvironment->select(container | container.id = id)->any(true)->oclAsType(ResourceContainer)->any(true);
+	}
+}

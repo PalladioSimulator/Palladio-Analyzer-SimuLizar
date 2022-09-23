@@ -60,6 +60,7 @@ Export-Package: org.palladiosimulator.simulizar.action.context,
    org.eclipse.emf.common.notify.impl,
    org.eclipse.emf.ecore.util,
    de.uka.ipd.sdq.pcm.core.entity",
+ org.palladiosimulator.simulizar.action.di,
  org.palladiosimulator.simulizar.action.instance;
   uses:="org.eclipse.emf.ecore,
    org.palladiosimulator.simulizar.action.core,
