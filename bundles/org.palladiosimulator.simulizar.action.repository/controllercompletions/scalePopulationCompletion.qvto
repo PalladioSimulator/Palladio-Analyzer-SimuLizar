@@ -59,7 +59,7 @@ transformation instantiateComponent(
 		step.map instantiateOverheadComponent(system, allocation, controllerRepository, overheadComponent, overheadResourceContainer);
 	}
 	
-	
+	// Probably needed to map hierachically
 	mapping ResourceDemandingStep::instantiateOverheadComponent(inout system : System, inout allocation : Allocation, controllerRepository : Repository,
 		overheadComponentController : BasicComponent, targetResourceContainer: ResourceContainer) : Mapping@actionMapping {
 		log("Adding controller for overhead");
