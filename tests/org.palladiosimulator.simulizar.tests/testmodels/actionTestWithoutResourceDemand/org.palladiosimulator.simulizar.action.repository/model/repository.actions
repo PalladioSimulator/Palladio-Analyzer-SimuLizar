@@ -100,13 +100,31 @@
   </actions>
   <actions id="_Gs5npQlYEe2py52lapYZiQ" entityName="scalePopulationTest">
     <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_SwqQwxRWEe2lSPWgm3GR-w" entityName="checkPreconditions">
-      <guardedTransitions id="_XM4kcBRWEe2lSPWgm3GR-w" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditions.qvto">
+      <guardedTransitions id="_XM4kcBRWEe2lSPWgm3GR-w" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemand/scalePopulationconditions.qvto">
         <nestedAdaptationBehavior id="_isHn4BRWEe2lSPWgm3GR-w" entityName="scaleUpPopulation">
-          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_jRF9MRRWEe2lSPWgm3GR-w" entityName="testWithPrecondition" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulation.qvto"/>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_jRF9MRRWEe2lSPWgm3GR-w" entityName="testWithPrecondition" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemand/scalePopulation.qvto"/>
         </nestedAdaptationBehavior>
       </guardedTransitions>
     </adaptationSteps>
     <involvedRoles id="_QGoXJQlYEe2py52lapYZiQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_QrpdVSpVEe2wiYzkm4StTQ" entityName="scalePopulationWithResourceDemandTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_XdSwQypVEe2wiYzkm4StTQ" entityName="checkPreconditions">
+      <guardedTransitions id="_kRolcCpVEe2wiYzkm4StTQ" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditionsWithResourceDemand.qvto">
+        <nestedAdaptationBehavior id="_ryWk4CpVEe2wiYzkm4StTQ" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_zrz0cipVEe2wiYzkm4StTQ" entityName="scaleOverhead" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/scalePopulationCompletion.qvto">
+            <controllerCalls id="_LnWAgCpWEe2wiYzkm4StTQ" entityName="scalePopulation">
+              <component href="controller.repository#_eyN5-SpWEe2wiYzkm4StTQ"/>
+              <calledSignature href="controller.repository#_a8oIcCpWEe2wiYzkm4StTQ"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_uhH4QSpVEe2wiYzkm4StTQ" entityName="scale" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_YWdz9CpVEe2wiYzkm4StTQ" entityName="UsageScenario">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
     </involvedRoles>
   </actions>
