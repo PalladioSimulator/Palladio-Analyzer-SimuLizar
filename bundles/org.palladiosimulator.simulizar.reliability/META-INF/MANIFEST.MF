@@ -4,7 +4,7 @@ Bundle-Name: SimuLizar PCM-Rel Extension
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reliability;singleton:=true
 Bundle-Version: 5.1.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.reliability
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.simulizar;bundle-version="5.0.0",
  org.palladiosimulator.pcm;bundle-version="5.0.0",
  de.uka.ipd.sdq.probfunction.math,

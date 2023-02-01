@@ -7,7 +7,7 @@ Bundle-ClassPath: .
 Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.storydiagram.provider.StorydrivenreconfigurationEditPlugin$Implementation
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.storydiagram.provider
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.reconfiguration.storydiagram.model;visibility:=reexport,

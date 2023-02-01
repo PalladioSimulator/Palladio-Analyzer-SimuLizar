@@ -4,7 +4,7 @@ Bundle-Name: SimuLizar Test Commons
 Bundle-SymbolicName: org.palladiosimulator.simulizar.test.commons
 Bundle-Version: 5.1.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.test.commons
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",
  org.palladiosimulator.simulizar;bundle-version="5.1.0",
  org.palladiosimulator.analyzer.workflow,

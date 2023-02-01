@@ -31,7 +31,7 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.simucomframework.simucomstatus,
  org.palladiosimulator.simulizar.reconfigurationrule,
  de.uka.ipd.sdq.codegen.simucontroller;bundle-version="4.3.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.context.impl,
  org.palladiosimulator.simulizar.action.context.util,
