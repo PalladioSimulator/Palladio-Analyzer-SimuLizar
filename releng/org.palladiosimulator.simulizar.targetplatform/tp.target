@@ -303,5 +303,9 @@
 			<unit id="tools.mdsd.library.emfeditutils.feature.feature.group" version="0.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/library-emfeditutils/releases/latest/"/>
 		</location>
+		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
+			<unit id="org.apache.batik.bridge" version="0.0.0"/>
+			<repository location="https://download.eclipse.org/tools/orbit/downloads/2022-12/"/>
+		</location>
 </locations>
 </target>
