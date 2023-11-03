@@ -7,7 +7,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.simucom.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-simucom/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -16,7 +16,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="de.uka.ipd.sdq.identifier.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-core-commons/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-core-commons/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -25,7 +25,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.pcm.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-core-pcm/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-core-pcm/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -34,7 +34,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.analyzer.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-framework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-framework/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -43,7 +43,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="de.uka.ipd.sdq.workflow.feature.core.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-workflowengine/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -52,7 +52,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="de.uka.ipd.sdq.featuremodel.feature.config.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-featuremodel/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-featuremodel/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -61,7 +61,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.editors.commons.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-editors-commons/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-editors-commons/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -70,7 +70,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.edp2.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-edp2/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-edp2/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -79,7 +79,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.metricspec.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-metricspecification/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-metricspecification/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -88,7 +88,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.thirdpartywrapper.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-wrapper/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-wrapper/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -97,7 +97,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.measurementframework.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-measurementframework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-measurementframework/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -106,7 +106,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.scheduler.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-scheduler/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-scheduler/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -115,7 +115,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.simulation.abstractsimengine.desmoj.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-simulation-abstractsimengine/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -124,7 +124,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.reliability.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-reliability/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-reliability/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -133,7 +133,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.probeframework.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/nightly/"/>-->
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-probeframework/branches/testingDay5.2.0/"/>-->
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -142,7 +142,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.recorderframework.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-recorderframework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-recorderframework/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -151,7 +151,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="de.uka.ipd.sdq.sensorframework.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-sensorframework/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-sensorframework/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -160,7 +160,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.solver.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-solver/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-analyzer-solver/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -169,7 +169,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.monitorrepository.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-monitorrepository/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-monitorrepository/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -178,12 +178,12 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.scaledl.usageevolution.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-cloudscaleusageevolution/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-cloudscaleusageevolution/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="LIMBO_DLIM.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-p2mirror-dlim/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-p2mirror-dlim/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -192,7 +192,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.servicelevelobjective.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-addons-servicelevelobjectives/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-addons-servicelevelobjectives/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -201,7 +201,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.mdsdprofiles.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-mdsdprofiles/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-supporting-mdsdprofiles/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -210,7 +210,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.modelversioning.emfprofile.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-emfprofiles/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-thirdparty-emfprofiles/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
@@ -236,7 +236,7 @@
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.storydriven.storydiagrams.feature.feature.group" version="0.0.0"/>
 			<unit id="org.storydriven.storydiagrams.interpreter.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/archive/storydiagraminterpreter/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/archive/storydiagraminterpreter/branches/testingDay5.2.0/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -245,7 +245,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.experimentanalysis.tests.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-experimentanalysis/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-qual-experimentanalysis/branches/testingDay5.2.0/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.mockito.core-with-junit-extension.feature.feature.group" version="0.0.0"/>
@@ -264,7 +264,7 @@
 			<repository location="https://updatesite.mdsd.tools/thirdparty-library/releases/latest/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
-			<repository location="https://download.eclipse.org/tools/orbit/downloads/2022-12/"/>
+			<repository location="https://download.eclipse.org/tools/orbit/downloads/2023-03/"/>
 			<unit id="org.objenesis" version="0.0.0"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
@@ -289,7 +289,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/nightly/"/>
+			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/branches/testingDay5.2.0/"/>
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
 			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
@@ -305,7 +305,7 @@
 		</location>
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.apache.batik.bridge" version="0.0.0"/>
-			<repository location="https://download.eclipse.org/tools/orbit/downloads/2022-12/"/>
+			<repository location="https://download.eclipse.org/tools/orbit/downloads/2023-03/"/>
 		</location>
 </locations>
 </target>
