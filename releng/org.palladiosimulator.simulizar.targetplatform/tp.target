@@ -236,7 +236,7 @@
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="org.storydriven.storydiagrams.feature.feature.group" version="0.0.0"/>
 			<unit id="org.storydriven.storydiagrams.interpreter.feature.feature.group" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/archive/storydiagraminterpreter/branches/testingDay5.2.0/"/>
+			<repository location="https://updatesite.palladio-simulator.com/archive/storydiagraminterpreter/nightly/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
@@ -287,14 +287,7 @@
 			<unit id="tools.mdsd.license.epl2.feature.group" version="0.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/build-licensefeature/releases/1.0.0/"/>
 		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
-			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/branches/testingDay5.2.0/"/>
-		</location>
-		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
-			<unit id="org.palladiosimulator.examples.package" version="0.0.0"/>
-			<repository location="https://updatesite.palladio-simulator.com/palladio-example-models-package/releases/latest"/>
-		</location>
+
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="nightly">
 			<unit id="tools.mdsd.library.emfeditutils.feature.feature.group" version="0.0.0"/>
 			<repository location="https://updatesite.mdsd.tools/library-emfeditutils/nightly/"/>
