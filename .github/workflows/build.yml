@@ -8,6 +8,7 @@ jobs:
     with:
       use-display-output: true
       no-caching: true
+      skip-branch-deploy: false
       deploy-updatesite: 'releng/org.palladiosimulator.simulizar.updatesite/target/repository'
     secrets:
       SERVER_SSH_KEY: ${{ secrets.DEPLOYMENT_SERVER_SSH_KEY }}
