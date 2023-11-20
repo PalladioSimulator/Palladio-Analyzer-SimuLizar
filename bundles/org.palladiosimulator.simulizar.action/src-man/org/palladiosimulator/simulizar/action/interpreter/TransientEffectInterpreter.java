@@ -148,6 +148,11 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 			public void notifyResuming(ISimProcess process) {
 
 			}
+
+            @Override
+            public void notifyStarted(ISimProcess process) {
+                
+            }
 		});
 		return asyncInterpretationProcess;
 	}
@@ -427,7 +432,7 @@ public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecut
 
 		private AsyncInterpretationProcess(Optional<ExecutionContext> context, AdaptationBehavior behaviorToInterpret) {
 			super(TransientEffectInterpreter.this.state.getModel(),
-					"SimuComSimProcess For Async Action Interpretation", resourceTableManager);
+					"SimuComSimProcess For Async Action Interpretation", resourceTableManager, true);
 			this.correspondingContext = context.orElseGet(ContextFactory.eINSTANCE::createExecutionContext);
 			this.behaviorToInterpret = behaviorToInterpret;
 		}

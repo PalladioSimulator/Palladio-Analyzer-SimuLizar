@@ -40,20 +40,20 @@ public class SimulatedUsageModels {
     private final SimuComModel simucomModel;
     private final EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory;
     private final IScenarioRunnerFactory<Entity> scenarioRunnerFactory;
-    
+    private final IUserProcessCountMonitor userProcessCountMonitor;
     
     @Inject
     public SimulatedUsageModels(@MainContext Provider<InterpreterDefaultContext> rootContextProvider, 
             @Global PCMResourceSetPartition globalPartition, SimuComModel simucomModel, IResourceTableManager resourceTableManager, 
             EntityReferenceFactory<UsageScenario> usageScenarioReferenceFactory,
-            IScenarioRunnerFactory<Entity> scenarioRunnerFactory) {
-        super();
+            IScenarioRunnerFactory<Entity> scenarioRunnerFactory, IUserProcessCountMonitor userProcessCountMonitor) {
         this.simucomModel = simucomModel;
         this.resourceTableManager = resourceTableManager;
         this.usageScenarioReferenceFactory = usageScenarioReferenceFactory;
         this.scenarioRunnerFactory = scenarioRunnerFactory;
+        // TODO: get from model instead of global?
+        this.userProcessCountMonitor = userProcessCountMonitor;
     }
-
 
     public IWorkloadDriver createAndAddWorkloadDriver(final UsageScenario usageScenario) {
         // get workload of scenario
@@ -130,8 +130,10 @@ public class SimulatedUsageModels {
         };
 
         // create workload driver by using given factory
-        return new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
-                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager);
+        de.uka.ipd.sdq.simucomframework.usage.OpenWorkload openWorkload2 = new de.uka.ipd.sdq.simucomframework.usage.OpenWorkload(simucomModel, userFactory,
+                openWorkload.getInterArrivalTime_OpenWorkload().getSpecification(), resourceTableManager, userProcessCountMonitor);
+        openWorkload2.startProcess();
+        return openWorkload2;
     }
 
     public ICancellableWorkloadDriver getWorkloadDriver(final Workload workload) {

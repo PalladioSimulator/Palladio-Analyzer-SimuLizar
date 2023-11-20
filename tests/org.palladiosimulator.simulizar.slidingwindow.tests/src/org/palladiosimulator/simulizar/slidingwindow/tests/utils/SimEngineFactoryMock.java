@@ -92,4 +92,9 @@ final class SimEngineFactoryMock implements ISimEngineFactory {
 		return null;
 	}
 
+    @Override
+    public ISimProcess createSimProcess(AbstractSimProcessDelegator myProcess, String name, boolean autostart) {
+        return null;
+    }
+
 }
