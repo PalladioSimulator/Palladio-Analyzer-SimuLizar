@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.edp2.models:MeasuringPointRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.edp2.models="http://palladiosimulator.org/EDP2/MeasuringPoint/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_GpyRkG7VEeuhd6DNNtY2lQ">
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" stringRepresentation="ExternalCall ExternalCallActionBar from aName to aName.Interface2.OperationRequiredRole1->bar [_pF-U4G1UEeuaIJFDGS5PXg]" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.tests/testmodels/simulizar148/default.repository#_pF-U4G1UEeuaIJFDGS5PXg">
+    <externalCall href="default.repository#_pF-U4G1UEeuaIJFDGS5PXg"/>
+  </measuringPoints>
+  <measuringPoints xsi:type="pcmmeasuringpoint:ExternalCallActionMeasuringPoint" stringRepresentation="ExternalCall ExternalCallActionFoo from aName to aName.Interface2.OperationRequiredRole1->foo [_JWnxwG1VEeuaIJFDGS5PXg]" resourceURIRepresentation="platform:/resource/org.palladiosimulator.simulizar.tests/testmodels/simulizar148/default.repository#_JWnxwG1VEeuaIJFDGS5PXg">
+    <externalCall href="default.repository#_JWnxwG1VEeuaIJFDGS5PXg"/>
+  </measuringPoints>
+</org.palladiosimulator.edp2.models:MeasuringPointRepository>
