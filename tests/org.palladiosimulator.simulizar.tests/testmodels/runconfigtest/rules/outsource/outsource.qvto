@@ -1,0 +1,108 @@
+/*
+ * This simple QVTO SimuLizar reconfiguration rule forwards more requests to the second branch
+ * by increasing its BranchProbability.
+ *
+ */
+
+/*
+ * Two modeltypes are declared. The http NS URIs correspond to those used to register the 
+ * Ecore models in the environment. Alternatively, a workspace metamodel may be used 
+ * in conjunction with mappings defined in the project properties.
+ */
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+/*
+ * The transformation signature declares that a PRM modeltype is required as input, while a PCM
+ * modeltype is transformed inplace. The PRM modeltype is referenced as 'prm' throughout the 
+ * transformation definition, while no name is needed for the output PCM modeltype. Note that OCL 
+ * type and namespace notation are used in operational QVT (: and :: respectively).
+ */
+transformation outsource(in runtimeMeasurement : RUNTIMEMEASUREMENT,
+					     in pcmAllocation : PCM_ALLOC) {
+							
+							
+	/*
+	 * Defines when the transformation is going to occur
+	 * and by how much the probability is going to be increased.
+	 */
+	property threshold : Real = 3.0;
+	property outsourceFactor = 0.1;
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+		log('SimuLizar outsource Rule Transformation started');
+		
+		assert fatal(runtimeMeasurement.rootObjects()[RuntimeMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+			
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		
+		var runtimeMeasurements = runtimeMeasurement.rootObjects()[RuntimeMeasurement];
+
+		var allocations = pcmAllocation.rootObjects()[Allocation];
+		
+		/*
+		 * Increase the branch probability if one of the measurements is over the threshold.
+		 */
+		runtimeMeasurements->forEach(measurement){
+			if(measurement.measuringValue > threshold){
+				allocations->forEach(allocation){
+					increaseBranchProbability(allocation);
+				};
+			}
+		}
+	}
+	
+	/*
+	 * Increase the branch probability.
+	 * @param allocation PCM model which is to be transformed.
+	 */
+	helper increaseBranchProbability(allocation : Allocation){
+		/*
+		 * Traversing the PCM model ...
+		 */
+		allocation.allocationContexts_Allocation->forEach(allocationContext){
+		
+			/*
+			 * We are interested only in AssemblyContexts with the name "Server_1"
+			 * because that is where the branch is.
+			 */	
+			if(allocationContext.assemblyContext_AllocationContext.entityName = "Server_1"){
+				// Get to the SEFF where the branch is.
+				var assemblyContext : AssemblyContext = allocationContext.assemblyContext_AllocationContext;
+				var seffs = assemblyContext.
+					encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent).
+					serviceEffectSpecifications__BasicComponent;
+					
+				seffs->forEach(seff){
+					if(seff.oclIsTypeOf(ResourceDemandingSEFF)){
+						/*
+						 * Search all objects within the RDSEFF to find the ProbabilisticBranchTransition "branch2".
+						 * Change its probability.
+						 */
+						var branch2 : ProbabilisticBranchTransition = seff.allSubobjects()[ProbabilisticBranchTransition]->any(entityName="branch2");
+						branch2.branchProbability := branch2.branchProbability + outsourceFactor;
+					}
+				}
+			}
+		};
+	}
+}
