@@ -12,6 +12,8 @@ import org.palladiosimulator.pcm.system.System
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall
 import org.palladiosimulator.pcm.usagemodel.UsageScenario
 import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointFactory
+import org.palladiosimulator.pcm.core.composition.AssemblyContext
+import org.palladiosimulator.pcm.repository.BasicComponent
 
 class DefaultMeasuringPointRepositoryFactory {
 	static val mf = MeasuringpointFactory.eINSTANCE;
@@ -50,6 +52,19 @@ class DefaultMeasuringPointRepositoryFactory {
 		repository.measuringPoints += pmf.createEntryLevelSystemCallMeasuringPoint => [
 			entryLevelSystemCall = call
 		]
+	}
+	
+	static def dispatch createMeasuringPoint(AssemblyContext context, MeasuringPointRepository repository) {
+		val component = context.encapsulatedComponent__AssemblyContext
+		if (component instanceof BasicComponent) {
+			component.passiveResource_BasicComponent.forEach[res |
+				repository.measuringPoints += pmf.createAssemblyPassiveResourceMeasuringPoint => [
+					assembly = context
+					passiveResource = res
+				]	
+			]
+		}
+		
 	}
 	
 	static def dispatch createMeasuringPoint(System sys, MeasuringPointRepository repository) {

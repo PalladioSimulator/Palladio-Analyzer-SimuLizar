@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_bGLg4GvuEeuwJtGwRtvWKA">
+  <monitors id="_ieMQQGvuEeuwJtGwRtvWKA">
+    <measurementSpecifications id="_rZKnMGvuEeuwJtGwRtvWKA" triggersSelfAdaptations="false">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+      <processingType xsi:type="monitorrepository:FeedThrough" id="_ufUf0GvuEeuwJtGwRtvWKA"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="default.measuringpoint#//@measuringPoints.0"/>
+  </monitors>
+  <monitors id="__hHSMBU6EeyPH72L-d0c6Q" entityName="Assembly1">
+    <measurementSpecifications id="_FjdPIBU7EeyPH72L-d0c6Q" triggersSelfAdaptations="false">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+      <processingType xsi:type="monitorrepository:FeedThrough" id="_L6XG1BU7EeyPH72L-d0c6Q"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:AssemblyOperationMeasuringPoint" href="default.measuringpoint#//@measuringPoints.2"/>
+  </monitors>
+  <monitors id="__517QBU6EeyPH72L-d0c6Q" entityName="Assembly2">
+    <measurementSpecifications id="_LVRcwBU7EeyPH72L-d0c6Q" triggersSelfAdaptations="false">
+      <metricDescription xsi:type="metricspec:NumericalBaseMetricDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_6rYmYs7nEeOX_4BzImuHbA"/>
+      <processingType xsi:type="monitorrepository:FeedThrough" id="_MVZdBBU7EeyPH72L-d0c6Q"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:AssemblyOperationMeasuringPoint" href="default.measuringpoint#//@measuringPoints.1"/>
+  </monitors>
+</monitorrepository:MonitorRepository>

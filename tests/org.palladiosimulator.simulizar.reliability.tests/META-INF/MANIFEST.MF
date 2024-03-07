@@ -2,10 +2,10 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Reliability Extension Tests
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reliability.tests
-Bundle-Version: 1.0.0.qualifier
-Fragment-Host: org.palladiosimulator.simulizar.reliability;bundle-version="5.0.0"
+Bundle-Version: 5.2.0.qualifier
+Fragment-Host: org.palladiosimulator.simulizar.reliability;bundle-version="5.2.0"
 Automatic-Module-Name: org.palladiosimulator.simulizar.reliability.tests
-Bundle-RequiredExecutionEnvironment: JavaSE-11
+Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.simulizar.test.commons;bundle-version="5.0.0",
  tools.mdsd.junit5utils;bundle-version="0.1.0",
  de.uka.ipd.sdq.workflow,

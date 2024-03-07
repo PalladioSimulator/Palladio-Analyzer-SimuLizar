@@ -5,6 +5,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
+import de.uka.ipd.sdq.codegen.simucontroller.runconfig.AbstractSimulationLaunchConfigurationBasedConfigBuilder;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComExtensionConfigurationBuilder;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComLaunchConfigurationBasedConfigBuilder;
 import de.uka.ipd.sdq.codegen.simucontroller.workflow.jobs.WorkflowHooks;
@@ -14,7 +15,7 @@ import de.uka.ipd.sdq.workflow.extension.ExtensionHelper;
 import de.uka.ipd.sdq.workflow.extension.WorkflowExtension;
 import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowBasedRunConfiguration;
 
-public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunchConfigurationBasedConfigBuilder {
+public class SimuLizarLaunchConfigurationBasedConfigBuilder extends AbstractSimulationLaunchConfigurationBasedConfigBuilder {
 
     public SimuLizarLaunchConfigurationBasedConfigBuilder(final ILaunchConfiguration configuration, final String mode)
             throws CoreException {
@@ -24,6 +25,8 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder extends SimuComLaunc
 
     @Override
     public void fillConfiguration(final AbstractWorkflowBasedRunConfiguration configuration) throws CoreException {
+        super.fillConfiguration(configuration);
+        
         final SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) configuration;
         config.setSimulateFailures(this.getBooleanAttribute(SimuComConfig.SIMULATE_FAILURES));
 
