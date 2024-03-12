@@ -1,0 +1,35 @@
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+
+transformation dummy_adaptation(inout pcmAllocation : PCM_ALLOC,
+						  		   in actionRoleSet : ACTION_INSTANCE,
+						  		   in actionMapping : ACTION_MAPPING) {
+						  		   
+	property roleForDummyComponent : instance::Role;	
+	property resourceContainerForDummyComponent : ResourceContainer;
+	property outsourceFactor = 0.1;
+						  		   
+	main(){
+		log("Starting the adaptation ...");
+		var m : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var roles := roleSet.roles;
+		var roleForBranchCondidtion1 := roles->select(role | role.roleType.id = "_j4aNJLUnEeW-zrkZJ6KTtQ")->any(true);
+		var roleForBranchCondidtion2 := roles->select(role | role.roleType.id = "_Fi5x1LUoEeW-zrkZJ6KTtQ")->any(true);
+		var branch1 := roleForBranchCondidtion1.value.oclAsType(ProbabilisticBranchTransition);
+		var branch2 := roleForBranchCondidtion2.value.oclAsType(ProbabilisticBranchTransition);
+		if(branch1.branchProbability > 0.5 and branch2.branchProbability < 0.5) {
+			branch2.branchProbability := branch2.branchProbability + outsourceFactor;
+			branch1.branchProbability := branch1.branchProbability - outsourceFactor;
+		};
+		log('Adaptations executed.');
+	}
+}

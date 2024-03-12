@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <emfprofile:Profile xmi:id="_X3rWMBwIEeWmcO0Zlkc2yA" name="InstantiatedComponentProfile" nsURI="org.palladiosimulator.simulizar.action.repository.transientstates.instantiatedcomponentprofile" nsPrefix="org.palladiosimulator.simulizar.action.repository.transientstates">
+    <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_VNKzYDHjEeWdSYCtx3_mDA" name="InstantiatedComponentResourceContainer">
+      <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
+      <extensions xmi:type="emfprofile:Extension" xmi:id="_nUGjkDHjEeWdSYCtx3_mDA">
+        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
+      </extensions>
+    </eClassifiers>
+  </emfprofile:Profile>
+  <notation:Diagram xmi:id="_X3rWMRwIEeWmcO0Zlkc2yA" type="EMFProfile" element="_X3rWMBwIEeWmcO0Zlkc2yA" name="componentinstantiation.emfprofile_diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_VNm4QDHjEeWdSYCtx3_mDA" type="2006" element="_VNKzYDHjEeWdSYCtx3_mDA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_VNm4RDHjEeWdSYCtx3_mDA" type="5008"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_VNm4RTHjEeWdSYCtx3_mDA" type="7008">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_VNm4RjHjEeWdSYCtx3_mDA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_VNm4RzHjEeWdSYCtx3_mDA"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_VNm4QTHjEeWdSYCtx3_mDA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_VNm4QjHjEeWdSYCtx3_mDA" fontName="Segoe UI"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_VNm4QzHjEeWdSYCtx3_mDA" x="330" y="327"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_mOoJQDHjEeWdSYCtx3_mDA" type="2002">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_mOoJSzHjEeWdSYCtx3_mDA" source="Shortcut">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_mOoJTDHjEeWdSYCtx3_mDA" key="modelID" value="EMFProfile"/>
+      </eAnnotations>
+      <children xmi:type="notation:DecorationNode" xmi:id="_mOoJRDHjEeWdSYCtx3_mDA" type="5002"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_mOoJRTHjEeWdSYCtx3_mDA" type="7004">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_mOoJRjHjEeWdSYCtx3_mDA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_mOoJRzHjEeWdSYCtx3_mDA"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_mOoJSDHjEeWdSYCtx3_mDA" type="7005">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_mOoJSTHjEeWdSYCtx3_mDA"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_mOoJSjHjEeWdSYCtx3_mDA"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_mOoJQTHjEeWdSYCtx3_mDA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_mOoJQjHjEeWdSYCtx3_mDA" fontName="Segoe UI"/>
+      <element xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_mOoJQzHjEeWdSYCtx3_mDA" x="355" y="210"/>
+    </children>
+    <edges xmi:type="notation:Edge" xmi:id="_nUGjkTHjEeWdSYCtx3_mDA" type="4005" element="_nUGjkDHjEeWdSYCtx3_mDA" source="_VNm4QDHjEeWdSYCtx3_mDA" target="_mOoJQDHjEeWdSYCtx3_mDA">
+      <children xmi:type="notation:DecorationNode" xmi:id="_nUPtgDHjEeWdSYCtx3_mDA" type="6004">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_nUPtgTHjEeWdSYCtx3_mDA" x="10" y="10"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_nUGjkjHjEeWdSYCtx3_mDA"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_nUGjkzHjEeWdSYCtx3_mDA" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_nUGjlDHjEeWdSYCtx3_mDA" points="[-3, -4, 36, 83]$[-38, -81, 1, 6]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_nUPtgjHjEeWdSYCtx3_mDA" id="(0.49193548387096775,0.1111111111111111)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_nUPtgzHjEeWdSYCtx3_mDA" id="(0.47540983606557374,0.8571428571428571)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>
