@@ -44,6 +44,8 @@ import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 public abstract class AbstractQVTOExecutor {
 
     private static final Logger LOGGER = Logger.getLogger(AbstractQVTOExecutor.class);
+    public static final String KEY_RESOURCE_TABLE_MANAGER = "resourceTableManager";
+
     // store mapping model type -> model instance
     private final QVToModelCache availableModels;
     private final ModelTransformationCache transformationCache;
@@ -172,7 +174,7 @@ public abstract class AbstractQVTOExecutor {
             IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
         ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
         Map<String, Object> contextParams = new HashMap<>(configParams);
-        configParams.put("resourceTableManager", resourceTableManager);
+        configParams.put(KEY_RESOURCE_TABLE_MANAGER, resourceTableManager);
         ExecutionContext executionContext = setupExecutionContext(contextParams);
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
