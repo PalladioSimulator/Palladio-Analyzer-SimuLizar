@@ -96,7 +96,7 @@ public class HenshinReconfigurator extends AbstractReconfigurator {
 
     @Override
     public boolean runCheck(List<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement,
-            IResourceTableManager resourceTableManager) {
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
         // TODO Auto-generated method stub
         return false;
     }
