@@ -128,12 +128,13 @@ public abstract class AbstractQVTOExecutor {
      * @see #executeTransformation(TransformationData)
      * @see #AbstractQVTOExecutor(TransformationCache, QVToModelCache)
      */
-    public boolean executeTransformation(URI transformationURI, IResourceTableManager resourceTableManager) {
+    public boolean executeTransformation(URI transformationURI, IResourceTableManager resourceTableManager,
+            Map<String, Object> configParams) {
         Optional<QvtoModelTransformation> data = this.transformationCache
             .get(Objects.requireNonNull(transformationURI));
         return executeTransformation(data.orElseThrow(
                 () -> new IllegalArgumentException("Given transformation not present in transformation cache.")),
-                resourceTableManager);
+                resourceTableManager, configParams);
     }
 
     /**
@@ -160,18 +161,19 @@ public abstract class AbstractQVTOExecutor {
      *             In case {@code transformationData == null}
      */
     public final boolean executeTransformation(QvtoModelTransformation modelTransformation,
-            IResourceTableManager resourceTableManager) {
-        ExecutionDiagnostic result = executeTransformationInternal(modelTransformation, resourceTableManager);
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
+        ExecutionDiagnostic result = executeTransformationInternal(modelTransformation, resourceTableManager,
+                configParams);
         // check the result for success
         return handleExecutionResult(result);
     }
 
     protected ExecutionDiagnostic executeTransformationInternal(QvtoModelTransformation modelTransformation,
-            IResourceTableManager resourceTableManager) {
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
         ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
-        Map<String, Object> configParams = new HashMap<>();
+        Map<String, Object> contextParams = new HashMap<>(configParams);
         configParams.put("resourceTableManager", resourceTableManager);
-        ExecutionContext executionContext = setupExecutionContext(configParams);
+        ExecutionContext executionContext = setupExecutionContext(contextParams);
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
         ExecutionDiagnostic result = doExecution(modelTransformation, executionContext, modelExtents);
@@ -239,13 +241,13 @@ public abstract class AbstractQVTOExecutor {
      * @return A fully-fledged {@link ExecutionContext}.
      * @see #doExecution(TransformationData, ExecutionContext, ModelExtent[])
      */
-    protected ExecutionContext setupExecutionContext(Map<String, Object> configParams) {
+    protected ExecutionContext setupExecutionContext(Map<String, Object> contextParams) {
         // setup the execution environment details ->
         // configuration properties, LOGGER, monitor object etc.
         ExecutionContextImpl result = new ExecutionContextImpl();
         result.setLog(createLog());
-        for (Map.Entry<String, Object> configParam : configParams.entrySet()) {
-            result.setConfigProperty(configParam.getKey(), configParam.getValue());
+        for (Map.Entry<String, Object> contextParam : contextParams.entrySet()) {
+            result.setConfigProperty(contextParam.getKey(), contextParam.getValue());
         }
         return result;
     }

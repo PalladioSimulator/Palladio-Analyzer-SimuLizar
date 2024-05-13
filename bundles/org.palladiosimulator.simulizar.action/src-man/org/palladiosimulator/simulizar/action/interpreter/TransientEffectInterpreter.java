@@ -69,388 +69,407 @@ import de.uka.ipd.sdq.simulation.abstractsimengine.ISimProcess;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimProcessListener;
 
 /**
- * Visitor implementation specialized to interpret {@link AdaptationBehavior}s
- * that are triggered during Simulizar runs. <br>
+ * Visitor implementation specialized to interpret {@link AdaptationBehavior}s that are triggered
+ * during Simulizar runs. <br>
  * This class is comparable to the interpreter classes within Simulizar.
  * 
  * @author Florian Rosenthal
  *
  */
 public class TransientEffectInterpreter extends CoreSwitch<TransientEffectExecutionResult> {
-	private static final Logger LOGGER = Logger.getLogger(TransientEffectInterpreter.class);
-	private static final String STATE_TRANSFORMING_EXT_POINT_ID = "org.palladiosimulator.simulizar.action.stratetransformation";
-	private static final String STATE_TRANSFORMING_CLASS_NAME = "class";
+    private static final Logger LOGGER = Logger.getLogger(TransientEffectInterpreter.class);
+    private static final String STATE_TRANSFORMING_EXT_POINT_ID = "org.palladiosimulator.simulizar.action.stratetransformation";
+    private static final String STATE_TRANSFORMING_CLASS_NAME = "class";
 
-	private static final ExecutionContext DEFAULT_EXECUTION_CONTEXT = ContextFactory.eINSTANCE.createExecutionContext();
+    private static final ExecutionContext DEFAULT_EXECUTION_CONTEXT = ContextFactory.eINSTANCE.createExecutionContext();
 
-	private final SimuLizarRuntimeState state;
-	private final ReconfigurationProcess associatedReconfigurationProcess;
-	private final RoleSet roleSet;
-	private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
-	private final boolean isAsync;
+    private final SimuLizarRuntimeState state;
+    private final ReconfigurationProcess associatedReconfigurationProcess;
+    private final RoleSet roleSet;
+    private final ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages;
+    private final boolean isAsync;
 
-	private Optional<ExecutionContext> executionContext;
-	
-	private final IResourceTableManager resourceTableManager;
-	private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
+    private Optional<ExecutionContext> executionContext;
 
-	/**
-	 * Initializes a new instance of the {@link TransientEffectInterpreter}
-	 * class with the given arguments.
-	 * 
-	 * @param state
-	 *            The {@link SimuLizarRuntimeState} of the current Simulizar
-	 *            run.
-	 * @param set
-	 *            The {@link RoleSet} instance which shall be used for
-	 *            interpretation.
-	 * @param controllerCallsInputVariableUsages
-	 *            The {@link ControllerCallInputVariableUsageCollection} model
-	 *            element which contains the
-	 *            {@link ControllerCallInputVariableUsage}s.
-	 * @param repository
-	 *            The current {@link AdaptationBehaviorRepository}.
-	 * @param executeAsync
-	 *            A flag to indicate whether the adaptation behaviors shall be
-	 *            interpreted asynchronously in a dedicated
-	 *            {@link SimuComSimProcess}.
-	 */
+    private final IResourceTableManager resourceTableManager;
+    private final SimulatedThreadComponent.Factory simulatedThreadComponentFactory;
+
+    /**
+     * Initializes a new instance of the {@link TransientEffectInterpreter} class with the given
+     * arguments.
+     * 
+     * @param state
+     *            The {@link SimuLizarRuntimeState} of the current Simulizar run.
+     * @param set
+     *            The {@link RoleSet} instance which shall be used for interpretation.
+     * @param controllerCallsInputVariableUsages
+     *            The {@link ControllerCallInputVariableUsageCollection} model element which
+     *            contains the {@link ControllerCallInputVariableUsage}s.
+     * @param repository
+     *            The current {@link AdaptationBehaviorRepository}.
+     * @param executeAsync
+     *            A flag to indicate whether the adaptation behaviors shall be interpreted
+     *            asynchronously in a dedicated {@link SimuComSimProcess}.
+     */
     TransientEffectInterpreter(SimuLizarRuntimeState state, RoleSet set,
             ControllerCallInputVariableUsageCollection controllerCallsInputVariableUsages,
             AdaptationBehaviorRepository repository, boolean executeAsync, Optional<ExecutionContext> executionContext,
             IResourceTableManager resourceTableManager) {
-		this.state = state;
-		this.associatedReconfigurationProcess = this.state.getReconfigurator().getReconfigurationProcess();
-		this.roleSet = set;
-		this.isAsync = executeAsync;
-		this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
-		this.executionContext = executionContext;
-		this.resourceTableManager = resourceTableManager;
-		this.simulatedThreadComponentFactory = state.getSimulatedThreadComponentFactory();
-	}
+        this.state = state;
+        this.associatedReconfigurationProcess = this.state.getReconfigurator()
+            .getReconfigurationProcess();
+        this.roleSet = set;
+        this.isAsync = executeAsync;
+        this.controllerCallsInputVariableUsages = Objects.requireNonNull(controllerCallsInputVariableUsages);
+        this.executionContext = executionContext;
+        this.resourceTableManager = resourceTableManager;
+        this.simulatedThreadComponentFactory = state.getSimulatedThreadComponentFactory();
+    }
 
-	private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
-		AsyncInterpretationProcess asyncInterpretationProcess = new AsyncInterpretationProcess(this.executionContext,
-				behaviorToInterpret);
-		asyncInterpretationProcess.addProcessListener(new ISimProcessListener() {
+    private AsyncInterpretationProcess createAsyncProcess(AdaptationBehavior behaviorToInterpret) {
+        AsyncInterpretationProcess asyncInterpretationProcess = new AsyncInterpretationProcess(this.executionContext,
+                behaviorToInterpret);
+        asyncInterpretationProcess.addProcessListener(new ISimProcessListener() {
 
-			@Override
-			public void notifyTerminated(ISimProcess process) {
-				ExecutionContextKeeper.getInstance().removeContextProcessMapping(
-						asyncInterpretationProcess.getCorrespondingContext(), asyncInterpretationProcess);
-			}
+            @Override
+            public void notifyTerminated(ISimProcess process) {
+                ExecutionContextKeeper.getInstance()
+                    .removeContextProcessMapping(asyncInterpretationProcess.getCorrespondingContext(),
+                            asyncInterpretationProcess);
+            }
 
-			@Override
-			public void notifySuspending(ISimProcess process) {
-			}
+            @Override
+            public void notifySuspending(ISimProcess process) {
+            }
 
-			@Override
-			public void notifyResuming(ISimProcess process) {
+            @Override
+            public void notifyResuming(ISimProcess process) {
 
-			}
-		});
-		return asyncInterpretationProcess;
-	}
+            }
+        });
+        return asyncInterpretationProcess;
+    }
 
-	private SimuComSimProcess obtainExecutingProcessForContext() {
-		assert !this.isAsync;
+    private SimuComSimProcess obtainExecutingProcessForContext() {
+        assert !this.isAsync;
 
-		SimuComSimProcess interpreterProcess = null;
-		ExecutionContext context = this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT);
-		if (context.getId().equals(DEFAULT_EXECUTION_CONTEXT.getId())) {
-			interpreterProcess = this.associatedReconfigurationProcess;
-		} else {
-			interpreterProcess = ExecutionContextKeeper.getInstance().getProcessForContext(context)
-					.orElseThrow(() -> new RuntimeException(
-							"Invalid context for synchronous execution of adaptation behavior:\n"
-									+ "Corresponding process does not exist or has already terminated!"));
-		}
-		return interpreterProcess;
-	}
+        SimuComSimProcess interpreterProcess = null;
+        ExecutionContext context = this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT);
+        if (context.getId()
+            .equals(DEFAULT_EXECUTION_CONTEXT.getId())) {
+            interpreterProcess = this.associatedReconfigurationProcess;
+        } else {
+            interpreterProcess = ExecutionContextKeeper.getInstance()
+                .getProcessForContext(context)
+                .orElseThrow(
+                        () -> new RuntimeException("Invalid context for synchronous execution of adaptation behavior:\n"
+                                + "Corresponding process does not exist or has already terminated!"));
+        }
+        return interpreterProcess;
+    }
 
-	@Override
-	public TransientEffectExecutionResult caseAdaptationBehavior(AdaptationBehavior adaptationBehavior) {
-		TransientEffectExecutionResult result;
+    @Override
+    public TransientEffectExecutionResult caseAdaptationBehavior(AdaptationBehavior adaptationBehavior) {
+        TransientEffectExecutionResult result;
 
-		if (this.isAsync) {
-			// spawn an async process for interpretation and return immediately
-			AsyncInterpretationProcess asyncProcess = createAsyncProcess(adaptationBehavior);
-			ExecutionContextKeeper.getInstance().addContextProcessMapping(asyncProcess.getCorrespondingContext(),
-					asyncProcess);
-					TransientEffectInterpreter.this.executionContext = 
-				Optional.of(asyncProcess.getCorrespondingContext());
-			asyncProcess.activate();
-			LOGGER.debug("Scheduled process for async interpretation of adaptation behavior.");
-			result = new TransientEffectExecutionResult(EventResult.SUCCESS, asyncProcess.getCorrespondingContext());
-		} else {
-			LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" is taking place.");
-			boolean successful = executeAdaptationSteps(adaptationBehavior.getAdaptationSteps(),
-					obtainExecutingProcessForContext());
-			if (successful) {
-				this.forwardReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
-				LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" successfully done.");
-			} else{
-				LOGGER.warn("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName() + "\" finished with failures.");
-			}
-			// synchronous execution: no context shall be part of the result
-			result = new TransientEffectExecutionResult(EventResult.fromBoolean(successful),
-					this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT));
-			
-		}
-		return result;
-	}
+        if (this.isAsync) {
+            // spawn an async process for interpretation and return immediately
+            AsyncInterpretationProcess asyncProcess = createAsyncProcess(adaptationBehavior);
+            ExecutionContextKeeper.getInstance()
+                .addContextProcessMapping(asyncProcess.getCorrespondingContext(), asyncProcess);
+            TransientEffectInterpreter.this.executionContext = Optional.of(asyncProcess.getCorrespondingContext());
+            asyncProcess.activate();
+            LOGGER.debug("Scheduled process for async interpretation of adaptation behavior.");
+            result = new TransientEffectExecutionResult(EventResult.SUCCESS, asyncProcess.getCorrespondingContext());
+        } else {
+            LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName()
+                    + "\" is taking place.");
+            boolean successful = executeAdaptationSteps(adaptationBehavior.getAdaptationSteps(),
+                    obtainExecutingProcessForContext());
+            if (successful) {
+                this.forwardReconfigurationNotification(new AdaptationBehaviorExecutedNotification(adaptationBehavior));
+                LOGGER.debug("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName()
+                        + "\" successfully done.");
+            } else {
+                LOGGER.warn("Synchronous execution of adaptation behavior \"" + adaptationBehavior.getEntityName()
+                        + "\" finished with failures.");
+            }
+            // synchronous execution: no context shall be part of the result
+            result = new TransientEffectExecutionResult(EventResult.fromBoolean(successful),
+                    this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT));
 
-	private Boolean executeAdaptationSteps(Collection<AdaptationStep> adaptationSteps,
-			SimuComSimProcess executingProcess) {
-		assert adaptationSteps != null && executingProcess != null;
-		InternalSwitch executingSwitch = new InternalSwitch(executingProcess);
-		// no short-circuit evaluation: ensure that all actions be executed
-		return adaptationSteps.stream().reduce(true, (result, action) -> executingSwitch.doSwitch(action),
-				Boolean::logicalAnd);
-	}
+        }
+        return result;
+    }
 
-	private void forwardReconfigurationNotification(Notification notification) {
-		this.associatedReconfigurationProcess.appendReconfigurationNotification(notification);
-	}
+    private Boolean executeAdaptationSteps(Collection<AdaptationStep> adaptationSteps,
+            SimuComSimProcess executingProcess) {
+        assert adaptationSteps != null && executingProcess != null;
+        InternalSwitch executingSwitch = new InternalSwitch(executingProcess);
+        // no short-circuit evaluation: ensure that all actions be executed
+        return adaptationSteps.stream()
+            .reduce(true, (result, action) -> executingSwitch.doSwitch(action), Boolean::logicalAnd);
+    }
 
-	private static AbstractStateTransformation getStateTransformation(String extensionId) {
-		Optional<IExtension> stateTransformingExtension = Arrays
-				.stream(Platform.getExtensionRegistry().getExtensionPoint(STATE_TRANSFORMING_EXT_POINT_ID)
-						.getExtensions())
-				.filter(extension -> extension.getUniqueIdentifier().equals(extensionId)).findAny();
-		IExtension extension = stateTransformingExtension.orElseThrow(() -> new IllegalStateException(
-				"No state transformation registered for State Transforming Step " + extensionId));
-		for (IConfigurationElement element : extension.getConfigurationElements()) {
-			try {
-				return (AbstractStateTransformation) element.createExecutableExtension(STATE_TRANSFORMING_CLASS_NAME);
-			} catch (CoreException e) {
-				LOGGER.error(e.getStackTrace());
-			}
-		}
-		throw new IllegalStateException(
-				"No state transformation registered for State Transforming Step " + extensionId);
-	}
+    private void forwardReconfigurationNotification(Notification notification) {
+        this.associatedReconfigurationProcess.appendReconfigurationNotification(notification);
+    }
 
-	private final class InternalSwitch extends CoreSwitch<Boolean> {
+    private static AbstractStateTransformation getStateTransformation(String extensionId) {
+        Optional<IExtension> stateTransformingExtension = Arrays.stream(Platform.getExtensionRegistry()
+            .getExtensionPoint(STATE_TRANSFORMING_EXT_POINT_ID)
+            .getExtensions())
+            .filter(extension -> extension.getUniqueIdentifier()
+                .equals(extensionId))
+            .findAny();
+        IExtension extension = stateTransformingExtension.orElseThrow(() -> new IllegalStateException(
+                "No state transformation registered for State Transforming Step " + extensionId));
+        for (IConfigurationElement element : extension.getConfigurationElements()) {
+            try {
+                return (AbstractStateTransformation) element.createExecutableExtension(STATE_TRANSFORMING_CLASS_NAME);
+            } catch (CoreException e) {
+                LOGGER.error(e.getStackTrace());
+            }
+        }
+        throw new IllegalStateException(
+                "No state transformation registered for State Transforming Step " + extensionId);
+    }
 
-		/**
-		 * Stores the {@link SimuComSimProcess} that creates and starts the user
-		 * processes for the controller scenarios (
-		 * {@link ResourceDemandingAction}s if necessary.<br>
-		 * In case of a synchronous execution of the adaptation behavior, this
-		 * is just the associated {@link ReconfigurationProcess}. Otherwise,
-		 * this is the new process that has been created for the asynchronous
-		 * execution of the adaptation behavior.
-		 * 
-		 * @see #spawnAsyncInterpreterProcess(AdaptationBehavior)
-		 * @see #caseResourceDemandingAction(ResourceDemandingAction)
-		 * @see #createAndScheduleControllerScenarioRunner(ControllerMapping)
-		 */
-		private final SimuComSimProcess executingProcess;
-		private final TransientEffectQVTOExecutor qvtoExecutor;
-		private final Map<ControllerCall, List<VariableUsage>> inputVariableUsagesPerControllerCall;
+    private final class InternalSwitch extends CoreSwitch<Boolean> {
 
-		private InternalSwitch(SimuComSimProcess executingProcess) {
-			this.executingProcess = executingProcess;
-			QVToModelCache availableModels = new QVToModelCache(
-					Objects.requireNonNull(TransientEffectInterpreter.this.state.getPCMPartitionManager()));
+        /**
+         * Stores the {@link SimuComSimProcess} that creates and starts the user processes for the
+         * controller scenarios ( {@link ResourceDemandingAction}s if necessary.<br>
+         * In case of a synchronous execution of the adaptation behavior, this is just the
+         * associated {@link ReconfigurationProcess}. Otherwise, this is the new process that has
+         * been created for the asynchronous execution of the adaptation behavior.
+         * 
+         * @see #spawnAsyncInterpreterProcess(AdaptationBehavior)
+         * @see #caseResourceDemandingAction(ResourceDemandingAction)
+         * @see #createAndScheduleControllerScenarioRunner(ControllerMapping)
+         */
+        private final SimuComSimProcess executingProcess;
+        private final TransientEffectQVTOExecutor qvtoExecutor;
+        private final Map<ControllerCall, List<VariableUsage>> inputVariableUsagesPerControllerCall;
 
-			this.qvtoExecutor = new TransientEffectQVTOExecutor(
-					TransientEffectTransformationCacheKeeper.getTransformationCacheForRuntimeState(
-							TransientEffectInterpreter.this.state), 
-					availableModels.snapshot());
-			this.inputVariableUsagesPerControllerCall = TransientEffectInterpreter.this.controllerCallsInputVariableUsages
-					.getControllerCallInputVariableUsages().stream()
-					.collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
-							mapping(ControllerCallInputVariableUsage::getVariableUsage, toList())));
+        private InternalSwitch(SimuComSimProcess executingProcess) {
+            this.executingProcess = executingProcess;
+            QVToModelCache availableModels = new QVToModelCache(
+                    Objects.requireNonNull(TransientEffectInterpreter.this.state.getPCMPartitionManager()));
 
-			this.qvtoExecutor.addTransformationParameters(TransientEffectInterpreter.this.roleSet,
-					TransientEffectInterpreter.this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT));
-		}
+            this.qvtoExecutor = new TransientEffectQVTOExecutor(TransientEffectTransformationCacheKeeper
+                .getTransformationCacheForRuntimeState(TransientEffectInterpreter.this.state),
+                    availableModels.snapshot());
+            this.inputVariableUsagesPerControllerCall = TransientEffectInterpreter.this.controllerCallsInputVariableUsages
+                .getControllerCallInputVariableUsages()
+                .stream()
+                .collect(groupingBy(ControllerCallInputVariableUsage::getCorrespondingControllerCall,
+                        mapping(ControllerCallInputVariableUsage::getVariableUsage, toList())));
 
-		@Override
-		public Boolean caseNestedAdaptationBehavior(NestedAdaptationBehavior nestedAdaptationBehavior) {
-			return executeAdaptationSteps(nestedAdaptationBehavior.getAdaptationSteps(), this.executingProcess);
-		}
+            this.qvtoExecutor.addTransformationParameters(TransientEffectInterpreter.this.roleSet,
+                    TransientEffectInterpreter.this.executionContext.orElse(DEFAULT_EXECUTION_CONTEXT));
+        }
 
-		@Override
-		public Boolean caseGuardedTransition(GuardedTransition guardedTransition) {
-			this.qvtoExecutor.enableForTransformationExecution(guardedTransition);
-			TransientEffectQVTOExecutorUtil.validateGuardedTransition(this.qvtoExecutor, guardedTransition);
+        @Override
+        public Boolean caseNestedAdaptationBehavior(NestedAdaptationBehavior nestedAdaptationBehavior) {
+            return executeAdaptationSteps(nestedAdaptationBehavior.getAdaptationSteps(), this.executingProcess);
+        }
 
-			return this.qvtoExecutor.executeGuardedTransition(guardedTransition, resourceTableManager);
-		}
+        @Override
+        public Boolean caseGuardedTransition(GuardedTransition guardedTransition) {
+            this.qvtoExecutor.enableForTransformationExecution(guardedTransition);
+            TransientEffectQVTOExecutorUtil.validateGuardedTransition(this.qvtoExecutor, guardedTransition);
 
-		@Override
-		public Boolean caseGuardedStep(GuardedStep guardedStep) {
-			// find the first GuardedTransition whose condition is evaluated to
-			// true
-			Optional<NestedAdaptationBehavior> branchToExecute = guardedStep.getGuardedTransitions().stream()
-					.filter(this::caseGuardedTransition).findFirst()
-					.map(GuardedTransition::getNestedAdaptationBehavior);
-			// incorporate case that no branch is to be executed (all conditions
-			// failed);
-			// then we return false
-			return branchToExecute.map(this::doSwitch).orElse(false);
-		}
+            return this.qvtoExecutor.executeGuardedTransition(guardedTransition, resourceTableManager);
+        }
 
-		@Override
-		public Boolean caseStateTransformingStep(StateTransformingStep stateTransformingStep) {
-			this.qvtoExecutor.enableForTransformationExecution(stateTransformingStep);
+        @Override
+        public Boolean caseGuardedStep(GuardedStep guardedStep) {
+            // find the first GuardedTransition whose condition is evaluated to
+            // true
+            Optional<NestedAdaptationBehavior> branchToExecute = guardedStep.getGuardedTransitions()
+                .stream()
+                .filter(this::caseGuardedTransition)
+                .findFirst()
+                .map(GuardedTransition::getNestedAdaptationBehavior);
+            // incorporate case that no branch is to be executed (all conditions
+            // failed);
+            // then we return false
+            return branchToExecute.map(this::doSwitch)
+                .orElse(false);
+        }
 
-			String extensionId = stateTransformingStep.getId();
-			AbstractStateTransformation transformation = TransientEffectInterpreter.getStateTransformation(extensionId);
-			transformation.setSimulationState(TransientEffectInterpreter.this.state);
-			return transformation.execute(TransientEffectInterpreter.this.roleSet);
-		};
+        @Override
+        public Boolean caseStateTransformingStep(StateTransformingStep stateTransformingStep) {
+            this.qvtoExecutor.enableForTransformationExecution(stateTransformingStep);
 
-		@Override
-		public Boolean caseAbstractAdaptationBehavior(AbstractAdaptationBehavior abstractAdaptationBehavior) {
-			throw new AssertionError("AbstractAdaptationBehavior is abstract, this case should not be reached at all!");
-		}
+            String extensionId = stateTransformingStep.getId();
+            AbstractStateTransformation transformation = TransientEffectInterpreter.getStateTransformation(extensionId);
+            transformation.setSimulationState(TransientEffectInterpreter.this.state);
+            return transformation.execute(TransientEffectInterpreter.this.roleSet);
+        };
 
-		@Override
-		public Boolean caseAdaptationStep(final AdaptationStep step) {
-			throw new AssertionError("AdaptationStep is abstract, this case should not be reached at all!");
-		}
+        @Override
+        public Boolean caseAbstractAdaptationBehavior(AbstractAdaptationBehavior abstractAdaptationBehavior) {
+            throw new AssertionError("AbstractAdaptationBehavior is abstract, this case should not be reached at all!");
+        }
 
-		@Override
-		public Boolean caseResourceDemandingStep(final ResourceDemandingStep resourceDemandingStep) {
-			this.qvtoExecutor.enableForTransformationExecution(resourceDemandingStep);
+        @Override
+        public Boolean caseAdaptationStep(final AdaptationStep step) {
+            throw new AssertionError("AdaptationStep is abstract, this case should not be reached at all!");
+        }
 
-			// perform controller completion
-			Mapping mapping = executeResourceDemandingStep(resourceDemandingStep)
-					.orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
+        @Override
+        public Boolean caseResourceDemandingStep(final ResourceDemandingStep resourceDemandingStep) {
+            this.qvtoExecutor.enableForTransformationExecution(resourceDemandingStep);
 
-			List<OpenWorkloadUser> users = new LinkedList<OpenWorkloadUser>();
-			SimuComModel model = TransientEffectInterpreter.this.state.getMainContext().getModel();
+            // perform controller completion
+            Mapping mapping = executeResourceDemandingStep(resourceDemandingStep)
+                .orElseThrow(() -> new RuntimeException("Controller Completion transformation failed!"));
 
-			// consume resources
-			for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
-				ControllerCall call = controllerMapping.getMappedCall();
-				List<Probe> usageStartStopProbes = Collections.unmodifiableList(
-						Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
-								(Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
-				OpenWorkloadUser user = new OpenWorkloadUser(model,
-						resourceDemandingStep.getEntityName() + " " + call.getEntityName(),
-						createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes, resourceTableManager);
-				users.add(user);
-				user.startUserLife();
-			}
-			// wait until all users have finished executing by passivating the
-			// executing process
-			// if this is the underlying reconfiguration process, this ensures
-			// that no other
-			// reconfigurations can take place concurrently
-			while (checkIfUsersRun(users)) {
-				this.executingProcess.passivate();
-			}
-			return true;
-		}
+            List<OpenWorkloadUser> users = new LinkedList<>();
+            SimuComModel model = TransientEffectInterpreter.this.state.getMainContext()
+                .getModel();
 
-		@Override
-		public Boolean caseEnactAdaptationStep(EnactAdaptationStep enactAdaptationStep) {
-			this.qvtoExecutor.enableForTransformationExecution(enactAdaptationStep);
+            // consume resources
+            for (ControllerMapping controllerMapping : mapping.getControllerMappings()) {
+                ControllerCall call = controllerMapping.getMappedCall();
+                List<Probe> usageStartStopProbes = Collections.unmodifiableList(
+                        Arrays.asList((Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl()),
+                                (Probe) new TakeCurrentSimulationTimeProbe(model.getSimulationControl())));
+                OpenWorkloadUser user = new OpenWorkloadUser(model,
+                        resourceDemandingStep.getEntityName() + " " + call.getEntityName(),
+                        createAndScheduleControllerScenarioRunner(controllerMapping), usageStartStopProbes,
+                        resourceTableManager);
+                users.add(user);
+                user.startUserLife();
+            }
+            // wait until all users have finished executing by passivating the
+            // executing process
+            // if this is the underlying reconfiguration process, this ensures
+            // that no other
+            // reconfigurations can take place concurrently
+            while (checkIfUsersRun(users)) {
+                this.executingProcess.passivate();
+            }
+            return true;
+        }
 
-			// execute adaptation
-			TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationStep);
-			URI adaptationStepUri = URI.createURI(enactAdaptationStep.getAdaptationStepURI());
-			QvtoModelTransformation adaptationStep = this.qvtoExecutor.getTransformationByUri(adaptationStepUri).get();
-			final boolean result = this.qvtoExecutor.executeTransformation(adaptationStep, resourceTableManager);
-			if (result && !TransientEffectInterpreter.this.isAsync) {
-				TransientEffectInterpreter.this.forwardReconfigurationNotification(
-						new AdaptationStepExecutedNotification(enactAdaptationStep));
-			}
-			return result;
-		}
+        @Override
+        public Boolean caseEnactAdaptationStep(EnactAdaptationStep enactAdaptationStep) {
+            this.qvtoExecutor.enableForTransformationExecution(enactAdaptationStep);
 
-		private IScenarioRunner createAndScheduleControllerScenarioRunner(ControllerMapping controllerMapping) {
+            // execute adaptation
+            TransientEffectQVTOExecutorUtil.validateEnactAdaptationStep(this.qvtoExecutor, enactAdaptationStep);
+            URI adaptationStepUri = URI.createURI(enactAdaptationStep.getAdaptationStepURI());
+            QvtoModelTransformation adaptationStep = this.qvtoExecutor.getTransformationByUri(adaptationStepUri)
+                .get();
+            Map<String, Object> configParams = Collections.emptyMap();
+            final boolean result = this.qvtoExecutor.executeTransformation(adaptationStep, resourceTableManager,
+                    configParams);
+            if (result && !TransientEffectInterpreter.this.isAsync) {
+                TransientEffectInterpreter.this
+                    .forwardReconfigurationNotification(new AdaptationStepExecutedNotification(enactAdaptationStep));
+            }
+            return result;
+        }
 
-			ControllerCall mappedCall = controllerMapping.getMappedCall();
-			Collection<VariableUsage> variableUsages = this.inputVariableUsagesPerControllerCall
-					.getOrDefault(mappedCall, Collections.emptyList());
+        private IScenarioRunner createAndScheduleControllerScenarioRunner(ControllerMapping controllerMapping) {
 
-			return process -> {
-				LOGGER.info("Start executing the controller scenario ('" + mappedCall.getEntityName() + "')!");
+            ControllerCall mappedCall = controllerMapping.getMappedCall();
+            Collection<VariableUsage> variableUsages = this.inputVariableUsagesPerControllerCall
+                .getOrDefault(mappedCall, Collections.emptyList());
 
-				UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
-				ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
-				usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
-				List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
-				Start start = UsagemodelFactory.eINSTANCE.createStart();
-				EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
-				Stop stop = UsagemodelFactory.eINSTANCE.createStop();
-				actions.add(start);
-				actions.add(sysCall);
-				actions.add(stop);
-				sysCall.setOperationSignature__EntryLevelSystemCall(mappedCall.getCalledSignature());
-				sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
-				// insert the input variable usages now
-				sysCall.getInputParameterUsages_EntryLevelSystemCall().addAll(variableUsages);
-				start.setSuccessor(sysCall);
-				sysCall.setSuccessor(stop);
-				simulatedThreadComponentFactory.create(state.getMainContext(), process)
-				    .interpreterFacade().submit(usageScenario);
-				// finally, reschedule the executing process (this is crucial!)
-				// as it is passivated in caseResourceDemandingAction if mapped
-				// calls are running
-				this.executingProcess.scheduleAt(0);
+            return process -> {
+                LOGGER.info("Start executing the controller scenario ('" + mappedCall.getEntityName() + "')!");
 
-				LOGGER.info("Execution of the controller scenario ('" + mappedCall.getEntityName() + "') finished!");
-			};
-		}
+                UsageScenario usageScenario = UsagemodelFactory.eINSTANCE.createUsageScenario();
+                ScenarioBehaviour behaviour = UsagemodelFactory.eINSTANCE.createScenarioBehaviour();
+                usageScenario.setScenarioBehaviour_UsageScenario(behaviour);
+                List<AbstractUserAction> actions = behaviour.getActions_ScenarioBehaviour();
+                Start start = UsagemodelFactory.eINSTANCE.createStart();
+                EntryLevelSystemCall sysCall = UsagemodelFactory.eINSTANCE.createEntryLevelSystemCall();
+                Stop stop = UsagemodelFactory.eINSTANCE.createStop();
+                actions.add(start);
+                actions.add(sysCall);
+                actions.add(stop);
+                sysCall.setOperationSignature__EntryLevelSystemCall(mappedCall.getCalledSignature());
+                sysCall.setProvidedRole_EntryLevelSystemCall(controllerMapping.getControllerRole());
+                // insert the input variable usages now
+                sysCall.getInputParameterUsages_EntryLevelSystemCall()
+                    .addAll(variableUsages);
+                start.setSuccessor(sysCall);
+                sysCall.setSuccessor(stop);
+                simulatedThreadComponentFactory.create(state.getMainContext(), process)
+                    .interpreterFacade()
+                    .submit(usageScenario);
+                // finally, reschedule the executing process (this is crucial!)
+                // as it is passivated in caseResourceDemandingAction if mapped
+                // calls are running
+                this.executingProcess.scheduleAt(0);
 
-		private boolean checkIfUsersRun(Collection<OpenWorkloadUser> users) {
-			return users.stream().anyMatch(u -> !u.isTerminated());
-		}
+                LOGGER.info("Execution of the controller scenario ('" + mappedCall.getEntityName() + "') finished!");
+            };
+        }
 
-		private Optional<Mapping> executeResourceDemandingStep(ResourceDemandingStep resourceDemandingStep) {
-			assert resourceDemandingStep != null;
+        private boolean checkIfUsersRun(Collection<OpenWorkloadUser> users) {
+            return users.stream()
+                .anyMatch(u -> !u.isTerminated());
+        }
 
-			// TODO FIXME currently it is assumed that all components are in the
-			// same repository
-			/*
-			 * TODO FIXME Christian 'Real' reconfigurations should be handled
-			 * differently than stereotype applications.
-			 */
-			Repository repository = resourceDemandingStep.getControllerCalls().get(0).getComponent()
-					.getRepository__RepositoryComponent();
-			TransientEffectQVTOExecutorUtil.validateResourceDemandingStep(this.qvtoExecutor, resourceDemandingStep);
-			return this.qvtoExecutor.executeControllerCompletion(repository, resourceDemandingStep.getControllerCompletionURI(), resourceTableManager);
-		}
-	}
+        private Optional<Mapping> executeResourceDemandingStep(ResourceDemandingStep resourceDemandingStep) {
+            assert resourceDemandingStep != null;
 
-	private final class AsyncInterpretationProcess extends SimuComSimProcess {
+            // TODO FIXME currently it is assumed that all components are in the
+            // same repository
+            /*
+             * TODO FIXME Christian 'Real' reconfigurations should be handled differently than
+             * stereotype applications.
+             */
+            Repository repository = resourceDemandingStep.getControllerCalls()
+                .get(0)
+                .getComponent()
+                .getRepository__RepositoryComponent();
+            TransientEffectQVTOExecutorUtil.validateResourceDemandingStep(this.qvtoExecutor, resourceDemandingStep);
+            return this.qvtoExecutor.executeControllerCompletion(repository,
+                    resourceDemandingStep.getControllerCompletionURI(), resourceTableManager);
+        }
+    }
 
-		private final AdaptationBehavior behaviorToInterpret;
-		private final ExecutionContext correspondingContext;
+    private final class AsyncInterpretationProcess extends SimuComSimProcess {
 
-		private AsyncInterpretationProcess(Optional<ExecutionContext> context, AdaptationBehavior behaviorToInterpret) {
-			super(TransientEffectInterpreter.this.state.getModel(),
-					"SimuComSimProcess For Async Action Interpretation", resourceTableManager);
-			this.correspondingContext = context.orElseGet(ContextFactory.eINSTANCE::createExecutionContext);
-			this.behaviorToInterpret = behaviorToInterpret;
-		}
+        private final AdaptationBehavior behaviorToInterpret;
+        private final ExecutionContext correspondingContext;
 
-		@Override
-		protected void internalLifeCycle() {
-			LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" is taking place.");
-			// within the async process, just proceed regularly, that is, do the
-			// interpretation
-			// as usual, that is: with the async process, everything is
-			// processed
-			// synchronously
-			boolean result = TransientEffectInterpreter.this.executeAdaptationSteps(this.behaviorToInterpret.getAdaptationSteps(),
-					this);
-			if (result) {
-				LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" successfully done.");
-			} else{
-				LOGGER.warn("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName() + "\" finished with failures.");
-			}
-		}
+        private AsyncInterpretationProcess(Optional<ExecutionContext> context, AdaptationBehavior behaviorToInterpret) {
+            super(TransientEffectInterpreter.this.state.getModel(), "SimuComSimProcess For Async Action Interpretation",
+                    resourceTableManager);
+            this.correspondingContext = context.orElseGet(ContextFactory.eINSTANCE::createExecutionContext);
+            this.behaviorToInterpret = behaviorToInterpret;
+        }
 
-		private ExecutionContext getCorrespondingContext() {
-			return this.correspondingContext;
-		}
-	}
+        @Override
+        protected void internalLifeCycle() {
+            LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName()
+                    + "\" is taking place.");
+            // within the async process, just proceed regularly, that is, do the
+            // interpretation
+            // as usual, that is: with the async process, everything is
+            // processed
+            // synchronously
+            boolean result = TransientEffectInterpreter.this
+                .executeAdaptationSteps(this.behaviorToInterpret.getAdaptationSteps(), this);
+            if (result) {
+                LOGGER.debug("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName()
+                        + "\" successfully done.");
+            } else {
+                LOGGER.warn("Async execution of adaptation behavior \"" + this.behaviorToInterpret.getEntityName()
+                        + "\" finished with failures.");
+            }
+        }
+
+        private ExecutionContext getCorrespondingContext() {
+            return this.correspondingContext;
+        }
+    }
 }
