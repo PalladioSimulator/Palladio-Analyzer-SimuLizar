@@ -60,8 +60,8 @@ public class QVTOReconfigurator extends AbstractReconfigurator {
 
     @Override
     public boolean runCheck(List<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement,
-            IResourceTableManager resourceTableManager) {
-        return this.runExecute(checks, monitoredElement, resourceTableManager);
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
+        return this.runExecute(checks, monitoredElement, resourceTableManager, configParams);
     }
 
     @Override

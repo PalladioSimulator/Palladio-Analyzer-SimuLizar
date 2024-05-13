@@ -40,7 +40,7 @@ public interface IReconfigurationEngine extends Extension {
      *         negative/did not match
      */
     boolean runCheck(List<? extends ModelTransformation<? extends Object>> checks, EObject monitoredElement,
-            IResourceTableManager resourceTableManager);
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams);
 
     /**
      * Trigger a reconfiguration of the model@runtime. This method should only be called if the

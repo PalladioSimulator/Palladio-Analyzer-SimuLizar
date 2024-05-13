@@ -41,7 +41,8 @@ public class SDReconfigurator extends AbstractReconfigurator {
 
     @Override
     public boolean runCheck(List<? extends ModelTransformation<? extends Object>> checks,
-            final EObject monitoredElement, IResourceTableManager resourceTableManager) {
+            final EObject monitoredElement, IResourceTableManager resourceTableManager,
+            Map<String, Object> configParams) {
 
         ArrayList<SDModelTransformation> transformations = new ArrayList<>();
         for (ModelTransformation<? extends Object> check : checks) {
