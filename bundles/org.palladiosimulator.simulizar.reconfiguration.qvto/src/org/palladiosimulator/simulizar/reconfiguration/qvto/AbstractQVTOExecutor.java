@@ -174,7 +174,7 @@ public abstract class AbstractQVTOExecutor {
             IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
         ModelExtent[] modelExtents = setupModelExtents(Objects.requireNonNull(modelTransformation));
         Map<String, Object> contextParams = new HashMap<>(configParams);
-        configParams.put(KEY_RESOURCE_TABLE_MANAGER, resourceTableManager);
+        contextParams.put(KEY_RESOURCE_TABLE_MANAGER, resourceTableManager);
         ExecutionContext executionContext = setupExecutionContext(contextParams);
         // now run the transformation assigned to the executor with the given
         // input and output and execution context
