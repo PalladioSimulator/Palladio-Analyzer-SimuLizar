@@ -1,0 +1,36 @@
+
+modeltype RUNTIMEMEASUREMENT uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+transformation incrementForTest(in runtimeMeasurement : RUNTIMEMEASUREMENT,
+							inout pcmRepository : PCM_REP) {
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+	
+		log('SimuLizar Increment Demand');
+		pcmRepository.rootObjects()[Repository]->forEach(repo) {
+			var demand = repo.getDemandToAdapt();
+			if (not demand.oclIsUndefined()) {
+				demand.specification := demand.specification + " + 1"; 
+			}
+		}
+	}
+	
+	query Repository::getDemandToAdapt(): RandomVariable {
+		return self.components__Repository[BasicComponent]
+			.serviceEffectSpecifications__BasicComponent[ResourceDemandingSEFF]
+			.steps_Behaviour[InternalAction]->any(entityName = "InternalActionWhichShouldBeAdapted")
+			.resourceDemand_Action->any(true)
+			.specification_ParametericResourceDemand;
+	}
+
+	
+}
