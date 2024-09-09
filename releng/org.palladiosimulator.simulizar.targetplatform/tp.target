@@ -225,7 +225,7 @@
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit">
 			<unit id="org.eclipse.gmf.tooling.runtime.feature.group" version="0.0.0"/>
-			<repository location="http://download.eclipse.org/modeling/gmp/gmf-tooling/updates/releases-3.3.1a/"/>
+			<repository location="https://updatesite.mdsd.tools/thirdparty-gmf-tooling/updates/releases-3.3.1a/"/>
 		</location>
 		
 		<location includeAllPlatforms="false" includeConfigurePhase="true" includeMode="planner" includeSource="false" type="InstallableUnit" filter="release">
