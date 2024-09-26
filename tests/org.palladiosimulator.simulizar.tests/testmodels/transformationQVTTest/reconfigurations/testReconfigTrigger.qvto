@@ -1,0 +1,100 @@
+/*
+ * This reconfiguration is used to automatically test the QVTO reconfiguration.
+ * It is used for a deterministic model and reconfigures deterministically.
+ * The reconfiguration changes the parameter ClosedWorkload.population.
+ * In the unit test, the response time is then tracked.
+ */
+
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+
+transformation TestQVTO(		in prm : PRM,
+							inout pcmUsage : PCM_USAGE) {
+							
+							
+	// Define Threshold and Scale Down
+	property reconfigUpTime : Real = 2000.0;
+	property reconfigDownTime : Real = 4000.0;
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {
+		log('QVTO Reconfiguration Test started');
+		assert fatal(prm.rootObjects()[RuntimeMeasurement]->size() > 0)
+			with log ("No Measurements found!");
+//		pcmUsage.objectsOfType(ClosedWorkload)-> map reconfigureClosedWorkload(1);
+//			log("Reconfigure Population from Closed Workload 2.0 -> 1.0");
+		-- mapping from 2.0 to 1.0 between 4000 and 6000
+	
+		var workloads = pcmUsage.objectsOfType(ClosedWorkload);
+		// Warum funktioniert mit den rootObjects das mapping später nicht? Hier müsste ich eigentlich dann casten
+		// Oder wie macht "man" das normalerweise, wenn man "rootObjects" verwenden soll.
+		//var usagemodel = pcmUsage.rootObjects();
+		var usagemodels = pcmUsage.objectsOfType(UsageModel);
+		
+		-- mapping from 1.0 to 2.0 between 2000 and 4000
+		if ( getSimulationTime() > reconfigUpTime and getSimulationTime() < reconfigDownTime) then {
+			log(getSimulationTime().toString() +  " larger 2000, smaller 4000");
+			usagemodels = usagemodels-> map reconfigureUsageModelsWorkload(2);
+			log("Reconfigure Population from Closed Workload 1.0 -> 2.0");
+		} endif;
+		
+		if ( getSimulationTime() > reconfigDownTime) then {
+			log(getSimulationTime().toString() +  " larger 4000");
+			usagemodels = usagemodels-> map reconfigureUsageModelsWorkload(1);
+			log("Reconfigure Population from Closed Workload 2.0 -> 1.0");
+		} endif;
+
+//		-- mapping from 1.0 to 2.0 between 2000 and 4000
+//		if ( getSimulationTime() > reconfigUpTime and getSimulationTime() < reconfigDownTime) then {
+//			log(getSimulationTime().toString() +  " larger 2000, smaller 4000");
+//			workloads-> map reconfigureClosedWorkload(2);
+//			log("Reconfigure Population from Closed Workload 1.0 -> 2.0");
+//		} endif;
+//		
+//		if ( getSimulationTime() > reconfigDownTime) then {
+//			log(getSimulationTime().toString() +  " larger 4000");
+//			workloads-> map reconfigureClosedWorkload(1);
+//			log("Reconfigure Population from Closed Workload 2.0 -> 1.0");
+//		} endif;
+		
+	}
+	
+	mapping inout UsageModel::reconfigureUsageModelsWorkload(newPopulation : Integer)
+	{
+		self.subobjectsOfType(UsageScenario)-> map reconfigureUsageScenariosWorkload(newPopulation);
+	}
+	
+	mapping inout UsageScenario::reconfigureUsageScenariosWorkload(newPopulation : Integer)
+	{
+		// UsageScenario can only have one workload
+		self.workload_UsageScenario = self.subobjectsOfType(ClosedWorkload)->map reconfigureClosedWorkload(newPopulation);
+	}
+	
+	mapping inout ClosedWorkload::reconfigureClosedWorkload(newPopulation : Integer)
+	{
+		var currentWorkloadThinkTime : String := self.thinkTime_ClosedWorkload.toString();
+		log("self ThinkTime: " + self.thinkTime_ClosedWorkload.specification.toString());
+		//self.thinkTime_ClosedWorkload.specification := "50.0";
+		self._population := newPopulation;
+		log("Reconfigured Population!");
+	}
+}

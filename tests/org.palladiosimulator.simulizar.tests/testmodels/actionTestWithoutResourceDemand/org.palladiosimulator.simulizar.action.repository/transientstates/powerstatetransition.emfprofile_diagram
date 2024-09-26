@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation">
+  <emfprofile:Profile xmi:id="_X3rWMBwIEeWmcO0Zlkc2yA" name="InstantiatedComponentProfile" nsURI="org.palladiosimulator.simulizar.action.repository.transientstates.instantiatedcomponentprofile" nsPrefix="org.palladiosimulator.simulizar.action.repository.transientstates">
+    <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_VNKzYDHjEeWdSYCtx3_mDA" name="InstantiatedComponentResourceContainer">
+      <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
+      <extensions xmi:type="emfprofile:Extension" xmi:id="_nUGjkDHjEeWdSYCtx3_mDA">
+        <target xmi:type="ecore:EClass" href="http://palladiosimulator.org/PalladioComponentModel/5.2#//resourceenvironment/ResourceContainer"/>
+      </extensions>
+    </eClassifiers>
+    <eClassifiers xmi:type="emfprofile:Stereotype" xmi:id="_koye4NHUEeaCUu6IRk1Alg" name="TransitioningStatefulPowerConsumingResource">
+      <eSuperTypes xmi:type="ecore:EClass" href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
+      <extensions xmi:type="emfprofile:Extension" xmi:id="_pY1GcNHUEeaCUu6IRk1Alg">
+        <target xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResourceSet"/>
+      </extensions>
+    </eClassifiers>
+  </emfprofile:Profile>
+  <notation:Diagram xmi:id="_X3rWMRwIEeWmcO0Zlkc2yA" type="EMFProfile" element="_X3rWMBwIEeWmcO0Zlkc2yA" name="componentinstantiation.emfprofile_diagram" measurementUnit="Pixel">
+    <children xmi:type="notation:Node" xmi:id="_jDTu0NHUEeaCUu6IRk1Alg" type="2002">
+      <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jDVkANHUEeaCUu6IRk1Alg" source="Shortcut">
+        <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jDVkAdHUEeaCUu6IRk1Alg" key="modelID" value="EMFProfile"/>
+      </eAnnotations>
+      <children xmi:type="notation:DecorationNode" xmi:id="_jDU88NHUEeaCUu6IRk1Alg" type="5002"/>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_jDU88dHUEeaCUu6IRk1Alg" type="7004">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_jDU88tHUEeaCUu6IRk1Alg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_jDU889HUEeaCUu6IRk1Alg"/>
+      </children>
+      <children xmi:type="notation:BasicCompartment" xmi:id="_jDU89NHUEeaCUu6IRk1Alg" type="7005">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_jDU89dHUEeaCUu6IRk1Alg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_jDU89tHUEeaCUu6IRk1Alg"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_jDTu0dHUEeaCUu6IRk1Alg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_jDTu0tHUEeaCUu6IRk1Alg" fontName="Segoe UI"/>
+      <element xmi:type="ecore:EClass" href="http://www.fzi.de/Power/Infrastructure/1.0#//StatefulPowerConsumingResourceSet"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_jDTu09HUEeaCUu6IRk1Alg" x="220" y="175"/>
+    </children>
+    <children xmi:type="notation:Node" xmi:id="_kozF8NHUEeaCUu6IRk1Alg" type="2006" element="_koye4NHUEeaCUu6IRk1Alg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_kozF9NHUEeaCUu6IRk1Alg" type="5008"/>
+      <children xmi:type="notation:DecorationNode" xmi:id="_koztANHUEeaCUu6IRk1Alg" type="7008">
+        <styles xmi:type="notation:SortingStyle" xmi:id="_koztAdHUEeaCUu6IRk1Alg"/>
+        <styles xmi:type="notation:FilteringStyle" xmi:id="_koztAtHUEeaCUu6IRk1Alg"/>
+      </children>
+      <styles xmi:type="notation:DescriptionStyle" xmi:id="_kozF8dHUEeaCUu6IRk1Alg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_kozF8tHUEeaCUu6IRk1Alg" fontName="Segoe UI"/>
+      <layoutConstraint xmi:type="notation:Bounds" xmi:id="_kozF89HUEeaCUu6IRk1Alg" x="235" y="290"/>
+    </children>
+    <edges xmi:type="notation:Edge" xmi:id="_pY2UkNHUEeaCUu6IRk1Alg" type="4005" element="_pY1GcNHUEeaCUu6IRk1Alg" source="_kozF8NHUEeaCUu6IRk1Alg" target="_jDTu0NHUEeaCUu6IRk1Alg">
+      <children xmi:type="notation:DecorationNode" xmi:id="_pY27oNHUEeaCUu6IRk1Alg" type="6004">
+        <layoutConstraint xmi:type="notation:Location" xmi:id="_pY27odHUEeaCUu6IRk1Alg" x="-7" y="29"/>
+      </children>
+      <styles xmi:type="notation:RoutingStyle" xmi:id="_pY2UkdHUEeaCUu6IRk1Alg"/>
+      <styles xmi:type="notation:FontStyle" xmi:id="_pY2UktHUEeaCUu6IRk1Alg" fontName="Segoe UI"/>
+      <bendpoints xmi:type="notation:RelativeBendpoints" xmi:id="_pY2Uk9HUEeaCUu6IRk1Alg" points="[-3, -8, 44, 111]$[-45, -123, 2, -4]"/>
+      <sourceAnchor xmi:type="notation:IdentityAnchor" xmi:id="_pY5X4NHUEeaCUu6IRk1Alg" id="(0.5454545454545454,0.2)"/>
+      <targetAnchor xmi:type="notation:IdentityAnchor" xmi:id="_pY5X4dHUEeaCUu6IRk1Alg" id="(0.5756097560975609,0.11904761904761904)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>

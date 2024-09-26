@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<repository:Repository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:repository="http://palladiosimulator.org/PalladioComponentModel/Repository/5.2" xmlns:seff="http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2" id="_bBzqwLUlEeW-zrkZJ6KTtQ">
+  <components__Repository xsi:type="repository:BasicComponent" id="_eNducLUlEeW-zrkZJ6KTtQ" entityName="LoadBalancerTransient">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_pzQs4LUlEeW-zrkZJ6KTtQ" entityName="Provided_ILoadBalancerTransient_LoadBalancerTransient" providedInterface__OperationProvidedRole="_lAN0oLUlEeW-zrkZJ6KTtQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_pzVlYLUlEeW-zrkZJ6KTtQ" describedService__SEFF="_nGT-cLUlEeW-zrkZJ6KTtQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_pzWzgLUlEeW-zrkZJ6KTtQ" entityName="start" successor_AbstractAction="_rVRSMLUlEeW-zrkZJ6KTtQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_pzWzgbUlEeW-zrkZJ6KTtQ" entityName="stop" predecessor_AbstractAction="_rVRSMLUlEeW-zrkZJ6KTtQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_rVRSMLUlEeW-zrkZJ6KTtQ" entityName="balance" predecessor_AbstractAction="_pzWzgLUlEeW-zrkZJ6KTtQ" successor_AbstractAction="_pzWzgbUlEeW-zrkZJ6KTtQ">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="DoublePDF[(20.0;0.7)(30.0;0.2)(90;0.1)]"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_lAN0oLUlEeW-zrkZJ6KTtQ" entityName="ILoadBalancerTransient">
+    <signatures__OperationInterface id="_nGT-cLUlEeW-zrkZJ6KTtQ" entityName="balance"/>
+  </interfaces__Repository>
+</repository:Repository>
