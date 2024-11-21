@@ -1,0 +1,60 @@
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+
+modeltype INFRASTRUCTURE uses 'http://www.fzi.de/Power/Infrastructure/1.0';
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_ENVIRONMENT uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype POWER_BINDING uses 'http://www.fzi.de/Power/Binding/1.0';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype IDENTIFIER uses 'http://sdq.ipd.uka.de/Identifier/2.1';
+
+transformation checkPreconditions(
+							inout powerInfrastructure : INFRASTRUCTURE,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+	property affectedResourceRoleId : String = '_AfvooYn0EeWm8ose-zjfHg';
+	property desiredPowerStateRoleId : String = '_P-SaQYn0EeWm8ose-zjfHg';
+	property currentAllocationRoleId : String = '_7ldKUZTzEeWUYbZGIbhTfA';
+	property statefulPowerConsumingResourceName : String = 'TransitioningStatefulPowerConsumingResource';
+
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		var roleSet := actionRoleSet.objectsOfType(RoleSet)->any(true);
+		var statefulPowerConsumingResources := powerInfrastructure.objectsOfType(StatefulPowerConsumingResourceSet);
+		var affectedStatefulResource := roleSet.roles[roleType.id = affectedResourceRoleId]->any(true).value.oclAsType(StatefulPowerConsumingResourceSet);
+		var desiredPowerState := roleSet.roles[roleType.id = desiredPowerStateRoleId]->any(true).value.oclAsType(AbstractPowerStateBinding);
+		var currentAllocation := roleSet.roles[roleType.id=currentAllocationRoleId]->any(true).value.oclAsType(Allocation);
+		
+		log('Desired Power State: ' + desiredPowerState.name.toString());
+
+		assert fatal (not desiredPowerState.oclIsUndefined())
+			with log('Something went wrong: Given role set does not specify the desired power state.');
+		assert fatal ((not affectedStatefulResource.oclIsUndefined()) and statefulPowerConsumingResources->includes(affectedStatefulResource))
+			with log('Something went wrong: Given infrastructure repository does not contain'  
+			+ ' the StatefulPowerConsumingResource wich is affected by this action.');
+		var associatedResourceContainer : ResourceContainer := affectedStatefulResource.processingResourceSpecifications
+			.resourceContainer_ProcessingResourceSpecification->any(true);
+		assert fatal (not affectedStatefulResource.processingResourceSpecifications->isEmpty())
+			with log('No Processing Resource found for: ' + affectedStatefulResource.name, affectedStatefulResource);
+		assert fatal (associatedResourceContainer <> null)
+			with log('Associated Resource Container was null.', affectedStatefulResource);
+		var resourceContainersWithAllocationContext := currentAllocation.allocationContexts_Allocation->collectNested(resourceContainer_AllocationContext)->flatten();
+		assert fatal (affectedStatefulResource.noConflictingInstantiationInProgress())
+			with log('Precondition for the action not met: Condition already executing');
+		assert fatal (not resourceContainersWithAllocationContext->includes(associatedResourceContainer))
+			with log('Precondition for the action not met: '  
+			+ ' Resource container of affected stateful power consuming resource is not allocated!', currentAllocation); 
+			
+		affectedStatefulResource.applyStereotype(statefulPowerConsumingResourceName);
+	}
+	
+	query StatefulPowerConsumingResourceSet::noConflictingInstantiationInProgress() : Boolean {
+		return not self.hasAppliedStereotype(statefulPowerConsumingResourceName);
+	}
+}

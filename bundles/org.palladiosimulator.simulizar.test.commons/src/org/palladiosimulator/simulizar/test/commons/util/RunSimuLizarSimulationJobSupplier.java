@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
+import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
@@ -17,6 +18,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.UseSimuLizarExtension;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
+import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.TestSimuLizarRootComponent.TestConfigurationModule;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
@@ -49,9 +51,10 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
         for (var extension : extensions) {
             var extCls = extension.value();
             try {
-                var factory = (ExtensionComponent.Factory) extCls.getMethod("factory").invoke(null);
+                var factory = (ExtensionComponent.Factory) extCls.getMethod("factory")
+                    .invoke(null);
                 extensionFactories.add(factory);
-                
+
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {
                 throw new RuntimeException(
@@ -59,16 +62,18 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
             }
         }
         var component = DaggerTestSimuLizarRootComponent.factory()
-            .create(configuration, 
-                    new RootComponentFactoriesModule() {
-                        @Override
-                        public Factory providesSimEngineComponentFactory() {
-                            return DaggerTestSimEngineComponent.factory();
-                        }
-                    }, 
-                    new ExtensionComponentsModule(extensionFactories, ImmutableSet.of()), 
-                    new MDSDBlackboardProvidingModule(blackboard),
-                    new TestConfigurationModule() {
+            .create(configuration, new RootComponentFactoriesModule() {
+                @Override
+                public Factory providesSimEngineComponentFactory() {
+                    return DaggerTestSimEngineComponent.factory();
+                }
+
+                @Override
+                public SimuLizarRuntimeComponent.Factory providesRuntimeComponentFactory() {
+                    return DaggerTestSimuLizarRuntimeComponent.factory();
+                }
+            }, new ExtensionComponentsModule(extensionFactories, ImmutableSet.of()),
+                    new MDSDBlackboardProvidingModule(blackboard), new TestConfigurationModule() {
                         @Override
                         public boolean activateModelLoading() {
                             return false;
