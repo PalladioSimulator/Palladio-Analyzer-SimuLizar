@@ -7,15 +7,15 @@ import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.AbstractSimulationLaunchConfigurationBasedConfigBuilder;
 import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComExtensionConfigurationBuilder;
+import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComLaunchConfigurationBasedConfigBuilder;
 import de.uka.ipd.sdq.codegen.simucontroller.workflow.jobs.WorkflowHooks;
 import de.uka.ipd.sdq.simucomframework.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.SimuComConfigExtension;
 import de.uka.ipd.sdq.workflow.extension.ExtensionHelper;
 import de.uka.ipd.sdq.workflow.extension.WorkflowExtension;
-import de.uka.ipd.sdq.workflow.launchconfig.core.AbstractWorkflowBasedRunConfiguration;
+import de.uka.ipd.sdq.workflow.launchconfig.AbstractWorkflowBasedRunConfiguration;
 
-public class SimuLizarLaunchConfigurationBasedConfigBuilder
-        extends AbstractSimulationLaunchConfigurationBasedConfigBuilder {
+public class SimuLizarLaunchConfigurationBasedConfigBuilder extends AbstractSimulationLaunchConfigurationBasedConfigBuilder {
 
     public SimuLizarLaunchConfigurationBasedConfigBuilder(final ILaunchConfiguration configuration, final String mode)
             throws CoreException {
@@ -26,7 +26,7 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder
     @Override
     public void fillConfiguration(final AbstractWorkflowBasedRunConfiguration configuration) throws CoreException {
         super.fillConfiguration(configuration);
-
+        
         final SimuLizarWorkflowConfiguration config = (SimuLizarWorkflowConfiguration) configuration;
         config.setSimulateFailures(this.getBooleanAttribute(SimuComConfig.SIMULATE_FAILURES));
 
@@ -48,9 +48,9 @@ public class SimuLizarLaunchConfigurationBasedConfigBuilder
         for (final String workflowHookId : WorkflowHooks.getAllWorkflowHookIDs()) {
             for (final WorkflowExtension<?> workflowExtension : ExtensionHelper.getWorkflowExtensions(workflowHookId)) {
                 if ((workflowExtension.getExtensionConfigurationBuilder() != null) && (workflowExtension
-                    .getExtensionConfigurationBuilder() instanceof SimuComExtensionConfigurationBuilder)) {
+                        .getExtensionConfigurationBuilder() instanceof SimuComExtensionConfigurationBuilder)) {
                     final SimuComConfigExtension simuComConfigExtension = ((SimuComExtensionConfigurationBuilder) workflowExtension
-                        .getExtensionConfigurationBuilder()).deriveSimuComConfigExtension(this.properties);
+                            .getExtensionConfigurationBuilder()).deriveSimuComConfigExtension(this.properties);
                     if (simuComConfigExtension != null) {
                         simuComConfig.addSimuComConfigExtension(workflowExtension.getId(), simuComConfigExtension);
                     }
