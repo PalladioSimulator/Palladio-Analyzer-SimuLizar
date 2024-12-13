@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
       label="Palladio Component Model - Analyzer: SimuLizar - QVT Operational Reconfiguations"
-      version="5.2.0.qualifier"
+      version="5.2.1.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
