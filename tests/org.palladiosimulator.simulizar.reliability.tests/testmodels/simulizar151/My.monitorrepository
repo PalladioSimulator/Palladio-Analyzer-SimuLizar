@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<monitorrepository:MonitorRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:metricspec="http://palladiosimulator.org/MetricSpec/1.0" xmlns:monitorrepository="http://palladiosimulator.org/MonitorRepository/1.0" xmlns:pcmmeasuringpoint="http://palladiosimulator.org/PCM/MeasuringPoint/1.0" id="_5wGp8EiMEeyfPrrFLfmZ1w">
+  <monitors id="_9WErEEiMEeyfPrrFLfmZ1w">
+    <measurementSpecifications id="_-h2hsEiMEeyfPrrFLfmZ1w" triggersSelfAdaptations="false">
+      <metricDescription xsi:type="metricspec:MetricSetDescription" href="pathmap://METRIC_SPEC_MODELS/commonMetrics.metricspec#_-TkoURX7Eey-ibmvVnJ8rg"/>
+      <processingType xsi:type="monitorrepository:FeedThrough" id="_BizKMEiNEeyfPrrFLfmZ1w"/>
+    </measurementSpecifications>
+    <measuringPoint xsi:type="pcmmeasuringpoint:UsageScenarioMeasuringPoint" href="My.measuringpoint#//@measuringPoints.0"/>
+  </monitors>
+</monitorrepository:MonitorRepository>

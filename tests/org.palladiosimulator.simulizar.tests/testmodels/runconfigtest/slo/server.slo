@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<slo:ServiceLevelObjectiveRepository xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:slo="http://palladiosimulator.org/ServiceLevelObjective/1.0">
+  <servicelevelobjectives id="_zGi-YHmWEeWUWY0RHtHyZg" name="serverCpuSLO" description="">
+    <upperThreshold xsi:type="slo:LinearFuzzyThreshold" id="_FIPpQ3mXEeWUWY0RHtHyZg" thresholdLimit="142" softLimit="100"/>
+    <measurementSpecification href="../monitors/server.monitorrepository#_xAjgIHjDEeWM9vp-oUqXhQ"/>
+  </servicelevelobjectives>
+</slo:ServiceLevelObjectiveRepository>
