@@ -7,7 +7,7 @@ import static org.hamcrest.Matchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import javax.measure.unit.SI;
+import jakarta.measure.unit.SI;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;

@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;

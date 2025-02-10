@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.launcher.jobs;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.analyzer.workflow.jobs.CreateBlackboardPartitionJob;
 import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;

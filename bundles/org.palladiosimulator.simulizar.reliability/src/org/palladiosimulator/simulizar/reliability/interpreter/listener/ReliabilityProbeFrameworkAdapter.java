@@ -4,8 +4,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;

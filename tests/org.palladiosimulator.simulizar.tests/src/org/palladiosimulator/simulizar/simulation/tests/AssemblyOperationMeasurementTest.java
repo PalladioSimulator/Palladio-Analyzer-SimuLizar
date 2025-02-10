@@ -11,7 +11,7 @@ import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.mat
 import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.withProbability;
 import static org.palladiosimulator.simulizar.test.commons.util.MeasurementTestUtils.allMeasurementsOfMetric;
 
-import javax.measure.unit.SI;
+import jakarta.measure.unit.SI;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import java.util.Optional;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;

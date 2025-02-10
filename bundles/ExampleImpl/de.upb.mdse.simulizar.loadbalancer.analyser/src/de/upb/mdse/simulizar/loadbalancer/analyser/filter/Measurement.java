@@ -1,6 +1,6 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
-import javax.measure.quantity.Quantity;
+import jakarta.measure.quantity.Quantity;
 
 import org.jscience.physics.amount.Amount;
 

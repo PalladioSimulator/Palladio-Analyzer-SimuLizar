@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;

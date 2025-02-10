@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.reliability.probe;
 
-import javax.measure.unit.Unit;
+import jakarta.measure.unit.Unit;
 
 import org.palladiosimulator.measurementframework.BasicMeasurement;
 import org.palladiosimulator.measurementframework.measure.IdentifierMeasure;

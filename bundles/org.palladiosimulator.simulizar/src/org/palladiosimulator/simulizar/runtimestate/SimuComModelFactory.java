@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 

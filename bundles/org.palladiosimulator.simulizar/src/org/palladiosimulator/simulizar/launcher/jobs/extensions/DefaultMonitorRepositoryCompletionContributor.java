@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.launcher.jobs.extensions;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.emf.common.util.URI;

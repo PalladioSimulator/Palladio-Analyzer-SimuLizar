@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.legacy;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;

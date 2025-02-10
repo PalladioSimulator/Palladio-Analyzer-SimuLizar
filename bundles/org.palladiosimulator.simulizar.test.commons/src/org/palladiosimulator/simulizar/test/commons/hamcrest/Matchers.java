@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.test.commons.hamcrest;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Quantity;
+import jakarta.measure.unit.Unit;
 
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;

@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.slidingwindow.impl.tests;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
 
 import org.junit.After;
 import org.junit.Before;

@@ -14,14 +14,14 @@ import java.awt.geom.Rectangle2D;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
+import jakarta.swing.JButton;
+import jakarta.swing.JFrame;
+import jakarta.swing.JLabel;
+import jakarta.swing.JPanel;
+import jakarta.swing.JTextArea;
+import jakarta.swing.SwingUtilities;
+import jakarta.swing.UIManager;
+import jakarta.swing.border.EmptyBorder;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;

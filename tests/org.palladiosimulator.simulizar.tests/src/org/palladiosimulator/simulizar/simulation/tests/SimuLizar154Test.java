@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.hamcrest.Matchers.closeTo;
 import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.*;
 
-import javax.measure.unit.SI;
+import jakarta.measure.unit.SI;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.reliability.di;
 
 import java.util.Set;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;

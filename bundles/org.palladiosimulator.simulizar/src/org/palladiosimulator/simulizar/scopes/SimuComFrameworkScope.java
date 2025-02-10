@@ -9,7 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import javax.inject.Scope;
+import jakarta.inject.Scope;
 
 @Retention(RUNTIME)
 @Target({ TYPE, FIELD, METHOD, PARAMETER })

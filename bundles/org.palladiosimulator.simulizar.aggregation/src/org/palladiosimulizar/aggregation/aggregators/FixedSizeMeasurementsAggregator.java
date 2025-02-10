@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Objects;
 
-import javax.measure.quantity.Duration;
+import jakarta.measure.quantity.Duration;
 
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.measurementframework.MeasuringValue;

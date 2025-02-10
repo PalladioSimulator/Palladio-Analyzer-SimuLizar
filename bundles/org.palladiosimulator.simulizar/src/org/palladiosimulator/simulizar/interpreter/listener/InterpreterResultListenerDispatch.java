@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 
 import java.util.Set;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.entity.InterpretableLocationReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;

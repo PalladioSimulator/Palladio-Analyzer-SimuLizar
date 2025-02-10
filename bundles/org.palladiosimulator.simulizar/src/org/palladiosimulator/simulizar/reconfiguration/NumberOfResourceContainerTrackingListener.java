@@ -6,7 +6,7 @@ import static org.palladiosimulator.metricspec.constants.MetricDescriptionConsta
 import java.util.Arrays;
 import java.util.Optional;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;

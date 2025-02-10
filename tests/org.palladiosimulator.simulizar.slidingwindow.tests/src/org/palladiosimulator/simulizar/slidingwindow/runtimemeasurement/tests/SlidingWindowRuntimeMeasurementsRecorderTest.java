@@ -2,10 +2,10 @@ package org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Dimensionless;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Dimensionless;
+import jakarta.measure.unit.NonSI;
+import jakarta.measure.unit.SI;
 
 import org.junit.After;
 import org.junit.Before;
@@ -45,7 +45,7 @@ public class SlidingWindowRuntimeMeasurementsRecorderTest {
         this.spec.setMetricDescription(MetricDescriptionConstants.UTILIZATION_OF_ACTIVE_RESOURCE_TUPLE);
         this.spec.setMonitor(this.monitor);
 
-        Measure<Double, javax.measure.quantity.Duration> timeMeasure = Measure.valueOf(42.0, SI.SECOND);
+        Measure<Double, jakarta.measure.quantity.Duration> timeMeasure = Measure.valueOf(42.0, SI.SECOND);
         Measure<Double, Dimensionless> utilizationMeasure = Measure.valueOf(0.42, Dimensionless.UNIT);
         this.wrongMetricMeasurement = new BasicMeasurement<>(Measure.valueOf(3.5d, NonSI.HOUR),
                 MetricDescriptionConstants.WAITING_TIME_METRIC);

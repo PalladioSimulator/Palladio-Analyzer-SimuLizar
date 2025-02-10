@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.interpreter.impl;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.eclipse.emf.ecore.util.Switch;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;

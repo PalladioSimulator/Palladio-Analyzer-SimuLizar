@@ -1,10 +1,10 @@
 package de.upb.mdse.simulizar.loadbalancer.analyser.helper;
 
-import javax.measure.Measurable;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import jakarta.measure.Measurable;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.NonSI;
+import jakarta.measure.unit.SI;
+import jakarta.measure.unit.Unit;
 
 public class MeasureHelper {
 

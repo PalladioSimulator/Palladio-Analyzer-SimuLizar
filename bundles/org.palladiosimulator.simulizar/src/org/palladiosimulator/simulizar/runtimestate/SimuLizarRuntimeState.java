@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;

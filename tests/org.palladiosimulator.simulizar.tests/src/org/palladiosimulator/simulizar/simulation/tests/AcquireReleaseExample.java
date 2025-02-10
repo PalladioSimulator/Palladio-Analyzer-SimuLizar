@@ -6,8 +6,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.palladiosimulator.simulizar.test.commons.hamcrest.Matchers.firstMeasurementMatchesDifferentlyThanTheRest;
 
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import jakarta.measure.unit.SI;
+import jakarta.measure.unit.Unit;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.edp2.models.ExperimentData.ExperimentRun;

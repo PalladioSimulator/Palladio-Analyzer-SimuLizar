@@ -1,10 +1,10 @@
 package org.palladiosimulator.simulizar.slidingwindow.impl;
 
-import javax.measure.Measurable;
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
-import javax.measure.unit.Unit;
+import jakarta.measure.Measurable;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
+import jakarta.measure.unit.Unit;
 
 import org.palladiosimulator.experimentanalysis.ISlidingWindowListener;
 import org.palladiosimulator.experimentanalysis.ISlidingWindowMoveOnStrategy;

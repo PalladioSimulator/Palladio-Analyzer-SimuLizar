@@ -3,8 +3,8 @@ package org.palladiosimulizar.aggregation.aggregators;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
 
 import org.jscience.physics.amount.Amount;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;

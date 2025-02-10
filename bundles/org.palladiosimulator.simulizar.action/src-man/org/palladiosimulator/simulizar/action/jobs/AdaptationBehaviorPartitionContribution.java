@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.action.jobs;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.simulizar.action.partitions.AdaptationBehaviorRepositoryResourceSetPartition;
 import org.palladiosimulator.simulizar.launcher.jobs.PartitionContribution;

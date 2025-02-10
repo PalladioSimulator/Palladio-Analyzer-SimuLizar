@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement;
 import java.util.Arrays;
 import java.util.Objects;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Quantity;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Quantity;
 
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;

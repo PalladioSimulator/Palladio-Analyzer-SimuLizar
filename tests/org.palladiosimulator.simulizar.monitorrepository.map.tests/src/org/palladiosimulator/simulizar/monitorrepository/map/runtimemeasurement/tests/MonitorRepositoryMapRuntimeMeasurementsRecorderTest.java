@@ -5,10 +5,10 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
-import javax.measure.Measure;
-import javax.measure.quantity.Duration;
-import javax.measure.unit.NonSI;
-import javax.measure.unit.SI;
+import jakarta.measure.Measure;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.NonSI;
+import jakarta.measure.unit.SI;
 
 import org.junit.Before;
 import org.junit.Test;

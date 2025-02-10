@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter.result.impl;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;

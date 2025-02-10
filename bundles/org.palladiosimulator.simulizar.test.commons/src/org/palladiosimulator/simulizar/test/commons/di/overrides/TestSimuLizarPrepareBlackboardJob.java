@@ -2,9 +2,9 @@ package org.palladiosimulator.simulizar.test.commons.di.overrides;
 
 import java.util.Set;
 
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.simulizar.launcher.jobs.PartitionContribution;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarPrepareBlackboardJob;

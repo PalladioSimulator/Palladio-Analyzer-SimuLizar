@@ -2,8 +2,8 @@ package de.upb.mdse.simulizar.loadbalancer.analyser.filter;
 
 import java.util.Map;
 
-import javax.measure.quantity.Duration;
-import javax.measure.unit.SI;
+import jakarta.measure.quantity.Duration;
+import jakarta.measure.unit.SI;
 
 import kieker.analysis.plugin.annotation.InputPort;
 import kieker.analysis.plugin.annotation.OutputPort;

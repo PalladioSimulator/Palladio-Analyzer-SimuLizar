@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 import java.util.List;
 import java.util.Set;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;

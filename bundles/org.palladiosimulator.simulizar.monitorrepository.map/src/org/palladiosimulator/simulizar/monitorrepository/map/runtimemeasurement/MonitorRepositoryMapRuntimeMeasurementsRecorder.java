@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement
 
 import java.util.Objects;
 
-import javax.measure.quantity.Quantity;
-import javax.measure.unit.Unit;
+import jakarta.measure.quantity.Quantity;
+import jakarta.measure.unit.Unit;
 
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.measurementframework.MeasuringValue;

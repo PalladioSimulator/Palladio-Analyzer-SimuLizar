@@ -10,14 +10,14 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
+import jakarta.xml.parsers.DocumentBuilder;
+import jakarta.xml.parsers.DocumentBuilderFactory;
+import jakarta.xml.parsers.ParserConfigurationException;
+import jakarta.xml.transform.Transformer;
+import jakarta.xml.transform.TransformerException;
+import jakarta.xml.transform.TransformerFactory;
+import jakarta.xml.transform.dom.DOMSource;
+import jakarta.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;

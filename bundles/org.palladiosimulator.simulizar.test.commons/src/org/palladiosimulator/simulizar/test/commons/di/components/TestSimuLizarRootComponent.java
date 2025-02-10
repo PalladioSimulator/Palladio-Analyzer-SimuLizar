@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.test.commons.di.components;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;

@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;

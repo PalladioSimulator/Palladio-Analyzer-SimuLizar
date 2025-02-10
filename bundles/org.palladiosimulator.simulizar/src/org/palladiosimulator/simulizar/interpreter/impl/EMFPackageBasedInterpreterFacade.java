@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.impl;
 
 import java.util.Objects;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.action.partitions;
 
 import java.util.List;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehaviorRepository;

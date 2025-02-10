@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.interpreter.linking.impl;
 
 import java.util.Collections;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.simulizar.entity.EntityReference;

@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.usagemodel;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
