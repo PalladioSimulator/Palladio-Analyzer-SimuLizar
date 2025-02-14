@@ -7,7 +7,7 @@ import org.apache.log4j.Level;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.palladiosimulator.analyzer.workflow.configurations.PCMWorkflowConfigurationBuilder;
+import org.palladiosimulator.analyzer.workflow.core.configurations.PCMWorkflowConfigurationBuilder;
 import org.palladiosimulator.simulizar.SimuLizarPlatform;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarLaunchConfigurationBasedConfigBuilder;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
