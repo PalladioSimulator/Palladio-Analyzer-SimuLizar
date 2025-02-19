@@ -11,13 +11,15 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.m2m.qvt.oml;bundle-version="3.4.0",
  org.palladiosimulator.simulizar.runtimemeasurement,
  org.palladiosimulator.analyzer.workflow.core;bundle-version="5.2.1",
- de.uka.ipd.sdq.workflow.mdsd,
+ de.uka.ipd.sdq.workflow.mdsd.core;bundle-version="5.2.1",
  org.scaledl.usageevolution,
  org.palladiosimulator.commons;bundle-version="1.0.0",
- de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
+ de.uka.ipd.sdq.simucomframework.core;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.reconfigurationrule,
  org.apache.commons.collections15,
- javax.inject;bundle-version="1.0.0"
+ javax.inject;bundle-version="1.0.0",
+ de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1",
+ de.uka.ipd.sdq.scheduler;bundle-version="5.2.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,
