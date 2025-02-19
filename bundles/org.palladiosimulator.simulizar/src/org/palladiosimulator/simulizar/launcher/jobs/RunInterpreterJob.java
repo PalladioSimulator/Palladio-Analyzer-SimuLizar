@@ -8,7 +8,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 
 import de.uka.ipd.sdq.simucomframework.ExperimentRunner;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.SimulationResult;
+import de.uka.ipd.sdq.simulation.core.SimulationResult;
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;
 import de.uka.ipd.sdq.workflow.jobs.SequentialJob;
