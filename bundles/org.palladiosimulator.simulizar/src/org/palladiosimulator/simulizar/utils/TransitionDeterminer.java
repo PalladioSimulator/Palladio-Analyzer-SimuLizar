@@ -12,7 +12,7 @@ import org.palladiosimulator.pcm.seff.ProbabilisticBranchTransition;
 import org.palladiosimulator.pcm.usagemodel.BranchTransition;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 /**

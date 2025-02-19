@@ -15,7 +15,7 @@ import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.simulation.core.AbstractSimulationConfig;
 import de.uka.ipd.sdq.workflow.configuration.IJobConfiguration;
 

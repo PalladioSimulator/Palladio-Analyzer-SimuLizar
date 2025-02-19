@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Module;
 import dagger.Provides;
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.statistics.StaticBatchAlgorithm;
 import de.uka.ipd.sdq.statistics.estimation.SampleMeanEstimator;
 
