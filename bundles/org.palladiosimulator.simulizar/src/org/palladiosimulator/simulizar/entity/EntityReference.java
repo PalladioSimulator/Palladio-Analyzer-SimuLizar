@@ -5,7 +5,7 @@ import java.util.Optional;
 import java.util.WeakHashMap;
 
 import org.eclipse.emf.ecore.resource.ResourceSet;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.entity.Entity;
 
 import com.google.common.collect.Iterators;
