@@ -6,7 +6,7 @@ import javax.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;
-import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
+import de.uka.ipd.sdq.simulation.core.AbstractSimulationConfig;
 
 @Module
 public interface SimulationConfigBindingModule {
