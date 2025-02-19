@@ -5,7 +5,7 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadPCMModelsIntoBlackboardJob;
+import org.palladiosimulator.analyzer.workflow.core.jobs.LoadPCMModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;

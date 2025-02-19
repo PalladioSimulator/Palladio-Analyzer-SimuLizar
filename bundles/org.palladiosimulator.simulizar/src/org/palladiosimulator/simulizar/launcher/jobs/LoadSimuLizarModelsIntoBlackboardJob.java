@@ -7,7 +7,7 @@ import javax.inject.Provider;
 
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.analyzer.workflow.core.ConstantsContainer;
-import org.palladiosimulator.analyzer.workflow.jobs.LoadModelIntoBlackboardJob;
+import org.palladiosimulator.analyzer.workflow.core.jobs.LoadModelIntoBlackboardJob;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
