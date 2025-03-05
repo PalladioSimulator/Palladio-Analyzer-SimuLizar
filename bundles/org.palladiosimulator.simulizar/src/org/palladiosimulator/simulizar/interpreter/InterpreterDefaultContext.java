@@ -13,7 +13,7 @@ import java.util.Stack;
 import javax.inject.Inject;
 import javax.inject.Qualifier;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 

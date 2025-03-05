@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;

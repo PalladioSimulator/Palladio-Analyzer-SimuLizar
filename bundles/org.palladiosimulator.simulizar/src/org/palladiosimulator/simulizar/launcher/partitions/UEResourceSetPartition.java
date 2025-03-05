@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.launcher.partitions;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;
 

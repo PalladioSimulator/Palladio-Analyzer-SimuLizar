@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.entity;
 
 import java.util.Iterator;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 
 /**

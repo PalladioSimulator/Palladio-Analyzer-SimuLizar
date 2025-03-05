@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;

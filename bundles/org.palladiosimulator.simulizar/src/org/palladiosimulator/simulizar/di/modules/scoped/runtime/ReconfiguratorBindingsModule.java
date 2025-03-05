@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
 import java.util.Set;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ReconfigurationExtensions;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;

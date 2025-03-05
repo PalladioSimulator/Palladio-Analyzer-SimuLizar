@@ -12,7 +12,7 @@ import org.palladiosimulator.recorderframework.config.AbstractRecorderConfigurat
 import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
 import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 
 /**
  * This class has to be implemented by all clients that wish to have additional measurements

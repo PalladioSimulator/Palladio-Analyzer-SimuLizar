@@ -9,7 +9,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.edp2.util.MetricDescriptionUtility;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;

@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.component.core;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.stream.Stream;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 

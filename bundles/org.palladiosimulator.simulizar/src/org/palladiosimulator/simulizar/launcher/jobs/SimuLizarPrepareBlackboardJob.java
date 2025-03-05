@@ -5,8 +5,8 @@ import java.util.Set;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import org.palladiosimulator.analyzer.workflow.jobs.CreateBlackboardPartitionJob;
-import org.palladiosimulator.analyzer.workflow.jobs.PreparePCMBlackboardPartitionJob;
+import org.palladiosimulator.analyzer.workflow.core.jobs.CreateBlackboardPartitionJob;
+import org.palladiosimulator.analyzer.workflow.core.jobs.PreparePCMBlackboardPartitionJob;
 
 import de.uka.ipd.sdq.workflow.jobs.SequentialBlackboardInteractingJob;
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;

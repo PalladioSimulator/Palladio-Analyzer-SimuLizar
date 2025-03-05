@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 
 public final class SimuLizarTestUtils {
     public static final Map<String, Object> createDefaultSimulationProperties() {

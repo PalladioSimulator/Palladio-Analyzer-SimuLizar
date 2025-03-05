@@ -28,7 +28,7 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import tools.mdsd.junit5utils.annotations.InitializationTaskProvider;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;

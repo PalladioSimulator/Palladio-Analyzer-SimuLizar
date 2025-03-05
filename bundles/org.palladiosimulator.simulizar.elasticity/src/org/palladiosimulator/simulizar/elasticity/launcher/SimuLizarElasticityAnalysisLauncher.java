@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.elasticity.di.components.DaggerElasticity
 import org.palladiosimulator.simulizar.launcher.PCMInterpreterLauncher;
 import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
-import de.uka.ipd.sdq.codegen.simucontroller.runconfig.SimuComWorkflowConfiguration;
+import de.uka.ipd.sdq.codegen.simucontroller.core.runconfig.SimuComWorkflowConfiguration;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 
 public class SimuLizarElasticityAnalysisLauncher extends PCMInterpreterLauncher {

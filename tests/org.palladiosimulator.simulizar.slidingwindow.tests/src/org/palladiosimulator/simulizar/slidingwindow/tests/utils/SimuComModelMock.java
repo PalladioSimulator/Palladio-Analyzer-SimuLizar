@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSim
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimuComStatus;
 import de.uka.ipd.sdq.simucomframework.simucomstatus.SimucomstatusFactory;
