@@ -5,7 +5,7 @@ import javax.inject.Named;
 import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
-import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
 import org.palladiosimulator.simulizar.di.modules.component.core.QUALModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimulationConfigBindingModule;

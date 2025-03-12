@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
-import org.palladiosimulator.recorderframework.config.IRecorderConfigurationFactory;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRuntimeExtensions;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.ProbeFrameworkListener;
