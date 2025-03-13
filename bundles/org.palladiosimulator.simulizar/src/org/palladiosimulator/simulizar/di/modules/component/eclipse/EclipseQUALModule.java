@@ -6,7 +6,7 @@ import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFacto
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.core.config.IRecorderConfigurationFactory;
-import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
+import org.palladiosimulator.recorderframework.utils.RecorderExtensionUiHelper;
 import org.palladiosimulator.simulizar.di.modules.component.core.QUALModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimulationConfigBindingModule;
 import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
@@ -33,6 +33,6 @@ public interface EclipseQUALModule {
     @AnalysisDependencyScope
     static IRecorderConfigurationFactory provideRecorderConfigurationFactory(
             @Named(SimulationConfigBindingModule.RECORDERFRAMEWORK_RECORDERNAME) String recorderName) {
-        return RecorderExtensionHelper.getRecorderConfigurationFactoryForName(recorderName);
+        return RecorderExtensionUiHelper.getRecorderConfigurationFactoryForName(recorderName);
     }
 }
