@@ -7,7 +7,7 @@ import org.palladiosimulator.simulizar.interpreter.impl.ForkedBehaviorProcessFac
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 
 import dagger.Binds;
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
 
 @dagger.Module
 public interface SimuLizarRuntimeBindingsModule {

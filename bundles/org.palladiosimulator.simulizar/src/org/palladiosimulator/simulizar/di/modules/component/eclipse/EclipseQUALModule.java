@@ -13,7 +13,7 @@ import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
 
 import dagger.Module;
 import dagger.Provides;
-import de.uka.ipd.sdq.simucomframework.calculator.RecorderAttachingCalculatorFactoryDecorator;
+import de.uka.ipd.sdq.simucomframework.core.calculator.RecorderAttachingCalculatorFactoryDecorator;
 
 @Module(includes = { QUALModule.class })
 public interface EclipseQUALModule {

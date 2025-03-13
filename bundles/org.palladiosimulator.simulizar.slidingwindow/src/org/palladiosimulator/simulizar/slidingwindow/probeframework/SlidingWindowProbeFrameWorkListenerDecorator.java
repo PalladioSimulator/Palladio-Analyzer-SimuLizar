@@ -26,7 +26,7 @@ import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 
 /**
  * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to

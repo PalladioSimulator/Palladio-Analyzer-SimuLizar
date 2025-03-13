@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.interpreter.listener;
 import org.palladiosimulator.pcm.repository.ProvidedRole;
 import org.palladiosimulator.pcm.repository.Signature;
 
-import de.uka.ipd.sdq.simucomframework.Context;
+import de.uka.ipd.sdq.simucomframework.core.Context;
 
 
 

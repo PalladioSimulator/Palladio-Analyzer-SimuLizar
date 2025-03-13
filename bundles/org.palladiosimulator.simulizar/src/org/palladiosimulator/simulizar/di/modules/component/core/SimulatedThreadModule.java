@@ -15,7 +15,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Local;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
 
 @Module(includes = { CoreBindingsModule.class, 
         CoreSimulatedThreadBindings.class,
