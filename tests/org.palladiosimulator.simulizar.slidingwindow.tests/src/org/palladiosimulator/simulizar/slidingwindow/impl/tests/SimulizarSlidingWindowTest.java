@@ -18,7 +18,7 @@ import org.palladiosimulator.simulizar.slidingwindow.tests.utils.SimuComModelMoc
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 import de.uka.ipd.sdq.scheduler.resources.active.ResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 
 public class SimulizarSlidingWindowTest extends SlidingWindowTest {
 

@@ -23,11 +23,11 @@ import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSu
 import org.palladiosimulator.simulizar.test.commons.models.ResourceEnvironmentTestModels;
 import org.palladiosimulator.simulizar.test.commons.models.TestModelBase;
 
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
-import de.uka.ipd.sdq.simucomframework.resources.ScheduledResource;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.core.resources.ScheduledResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedResourceContainer;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 @ExtendWith(MockitoExtension.class)

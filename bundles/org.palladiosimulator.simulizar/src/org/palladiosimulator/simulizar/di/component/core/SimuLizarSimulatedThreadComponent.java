@@ -9,7 +9,7 @@ import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
 
 import dagger.BindsInstance;
 import dagger.Component;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
 
 @Component(modules = { SimulatedThreadModule.class }, dependencies = {SimuLizarRuntimeComponent.class, 
         SimuComFrameworkComponent.class, SimuLizarRootComponent.class})

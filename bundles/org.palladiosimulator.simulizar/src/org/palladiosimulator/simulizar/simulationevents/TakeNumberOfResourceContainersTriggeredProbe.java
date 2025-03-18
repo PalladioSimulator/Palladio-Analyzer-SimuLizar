@@ -7,7 +7,7 @@ import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.probeframework.measurement.RequestContext;
 import org.palladiosimulator.probeframework.probes.BasicTriggeredProbe;
 
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.core.ResourceRegistry;
 
 /**
  * Probes the number of resource containers within a resource environment. The probe listens to a

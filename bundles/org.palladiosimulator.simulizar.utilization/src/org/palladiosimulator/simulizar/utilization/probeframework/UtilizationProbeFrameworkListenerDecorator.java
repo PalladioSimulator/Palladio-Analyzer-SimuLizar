@@ -30,7 +30,7 @@ import org.palladiosimulator.pcmmeasuringpoint.PcmmeasuringpointPackage;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfiguration;
 import org.palladiosimulator.recorderframework.edp2.config.EDP2RecorderConfiguration;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
@@ -41,7 +41,7 @@ import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingW
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 
 /**
  * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to

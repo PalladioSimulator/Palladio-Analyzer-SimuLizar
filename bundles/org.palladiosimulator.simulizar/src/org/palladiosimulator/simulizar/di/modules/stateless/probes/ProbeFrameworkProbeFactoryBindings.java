@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.modules.stateless.probes;
 
 import dagger.Provides;
-import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.core.probes.TakeCurrentSimulationTimeProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 
 @dagger.Module

@@ -43,7 +43,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.palladiosimulator.commons.stoex;bundle-version="5.2.1"
+ org.palladiosimulator.commons.stoex;bundle-version="5.2.1",
+ de.uka.ipd.sdq.simulation;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",

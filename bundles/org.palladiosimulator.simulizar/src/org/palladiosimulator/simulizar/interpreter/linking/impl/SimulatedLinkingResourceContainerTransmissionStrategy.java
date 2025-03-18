@@ -9,8 +9,8 @@ import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionSimulationStrategy;
 
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResource;
 
 /**
  * This class implements the simulation strategy using {@link SimulatedLinkingResource}s of the

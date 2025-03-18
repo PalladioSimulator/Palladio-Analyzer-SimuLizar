@@ -18,11 +18,11 @@ import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.Context;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.core.Context;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStack;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 

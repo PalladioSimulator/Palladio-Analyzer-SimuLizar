@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
 import org.palladiosimulator.simulizar.action.core.AdaptationBehavior;
 
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
 
 /**
  * Utility class, realized as a singleton, to maintain associations between {@link ExecutionContext}

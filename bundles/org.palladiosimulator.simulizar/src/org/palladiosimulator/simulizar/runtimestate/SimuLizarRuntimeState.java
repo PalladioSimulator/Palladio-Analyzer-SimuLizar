@@ -13,7 +13,7 @@ import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import dagger.Lazy;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 
 /**
  * This class provides access to all simulation and SimuLizar related objects. This includes access

@@ -17,7 +17,7 @@ import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
-import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
+import de.uka.ipd.sdq.simucomframework.core.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 @SimulationRuntimeScope

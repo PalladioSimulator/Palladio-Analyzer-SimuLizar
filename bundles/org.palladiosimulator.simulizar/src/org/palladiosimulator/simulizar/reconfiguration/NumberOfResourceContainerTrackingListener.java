@@ -24,8 +24,8 @@ import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecu
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
-import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
-import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
+import de.uka.ipd.sdq.simucomframework.core.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.core.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**

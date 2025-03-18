@@ -22,8 +22,8 @@ import dagger.Binds;
 import dagger.Lazy;
 import dagger.Provides;
 import dagger.Reusable;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResource;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 @dagger.Module(includes = { CoreBindingsModule.class })

@@ -21,8 +21,8 @@ import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationTimeProvider;
 
 /**

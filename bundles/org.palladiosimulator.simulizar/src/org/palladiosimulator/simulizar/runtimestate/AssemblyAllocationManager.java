@@ -9,7 +9,7 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
 
 @SimulationRuntimeScope
 public class AssemblyAllocationManager

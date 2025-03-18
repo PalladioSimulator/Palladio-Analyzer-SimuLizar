@@ -13,7 +13,7 @@ import org.palladiosimulator.measurementframework.MeasuringValue;
 import org.palladiosimulator.metricspec.NumericalBaseMetricDescription;
 import org.palladiosimulator.monitorrepository.StatisticalCharacterization;
 import org.palladiosimulator.monitorrepository.statisticalcharacterization.StatisticalCharacterizationAggregator;
-import org.palladiosimulator.recorderframework.IRecorder;
+import org.palladiosimulator.recorderframework.core.IRecorder;
 
 /**
  * Specialization of the {@link SlidingWindowAggregator} which is devoted to aggregate the

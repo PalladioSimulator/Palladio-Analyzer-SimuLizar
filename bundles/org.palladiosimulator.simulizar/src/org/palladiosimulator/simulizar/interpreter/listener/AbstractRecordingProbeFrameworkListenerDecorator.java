@@ -7,10 +7,10 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
-import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
+import org.palladiosimulator.recorderframework.core.IRecorder;
+import org.palladiosimulator.recorderframework.core.config.AbstractRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.utils.RecorderExtensionUiHelper;
 
 import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 
@@ -102,7 +102,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
      */
     protected IRecorder instantiateRecorder(SimuComConfig config) {
         assert config != null;
-        return RecorderExtensionHelper.instantiateRecorderImplementationForRecorder(config.getRecorderName());
+        return RecorderExtensionUiHelper.instantiateRecorderImplementationForRecorder(config.getRecorderName());
     }
 
     /**

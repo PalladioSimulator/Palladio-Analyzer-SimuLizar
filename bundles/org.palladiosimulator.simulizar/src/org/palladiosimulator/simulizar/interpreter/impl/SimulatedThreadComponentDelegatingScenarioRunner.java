@@ -10,8 +10,8 @@ import org.palladiosimulator.simulizar.usagemodel.IScenarioRunnerFactory;
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedFactory;
 import dagger.assisted.AssistedInject;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
-import de.uka.ipd.sdq.simucomframework.usage.IScenarioRunner;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.usage.IScenarioRunner;
 
 public class SimulatedThreadComponentDelegatingScenarioRunner implements IScenarioRunner {
     @AssistedFactory

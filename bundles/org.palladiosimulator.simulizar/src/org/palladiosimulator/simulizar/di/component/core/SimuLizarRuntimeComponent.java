@@ -29,7 +29,7 @@ import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import dagger.Component;
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
 import de.uka.ipd.sdq.simucomframework.variables.stackframe.SimulatedStackframe;
 
 @Component(dependencies = { SimuLizarRootComponent.class, SimuComFrameworkComponent.class, QUALComponent.class,
