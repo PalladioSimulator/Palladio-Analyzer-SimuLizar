@@ -4,6 +4,7 @@ Bundle-Name: org.palladiosimulator.simulizar.core
 Bundle-SymbolicName: org.palladiosimulator.simulizar.core
 Automatic-Module-Name: org.palladiosimulator.simulizar.core
 Bundle-Version: 5.2.1.qualifier
+Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org
