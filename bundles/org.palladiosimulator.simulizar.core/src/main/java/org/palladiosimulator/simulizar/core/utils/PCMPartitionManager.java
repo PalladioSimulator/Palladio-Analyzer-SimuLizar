@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.utils;
+package org.palladiosimulator.simulizar.core.utils;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -57,7 +57,7 @@ public class PCMPartitionManager {
     @Retention(RetentionPolicy.RUNTIME)
     public @interface Global {
     }
-    
+
     /**
      * The Local annotation should be used to reference to the PCMResourceSet partition of the
      * current interpretation scope for constructor injection.
@@ -72,8 +72,8 @@ public class PCMPartitionManager {
     }
 
     private static final Logger LOGGER = Logger.getLogger(PCMPartitionManager.class.getName());
-    
-    private final static String RM_MODEL_FILE_EXTENSION = ".runtimemeasurement";
+
+    private static final String RM_MODEL_FILE_EXTENSION = ".runtimemeasurement";
 
     private final PCMResourceSetPartition globalPartition;
     private final MDSDBlackboard blackboard;
@@ -132,7 +132,8 @@ public class PCMPartitionManager {
      */
     public PCMPartitionManager(final MDSDBlackboard blackboard, final SimuLizarWorkflowConfiguration config) {
         this.blackboard = blackboard;
-        this.globalPartition = (PCMResourceSetPartition) blackboard.getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
+        this.globalPartition = (PCMResourceSetPartition) blackboard
+            .getPartition(ConstantsContainer.DEFAULT_PCM_INSTANCE_PARTITION_ID);
         if (globalPartition == null) {
             throw new IllegalStateException("The provided blackboard does not contain the required PCM partition");
         }
@@ -140,11 +141,18 @@ public class PCMPartitionManager {
     }
 
     public void initialize() {
-        Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY).stream().findAny();
+        Optional<EObject> result = this.globalPartition.getElement(MonitorRepositoryPackage.Literals.MONITOR_REPOSITORY)
+            .stream()
+            .findAny();
         if (result.isPresent()) {
-            var uri = result.get().eResource().getURI().appendFileExtension(RM_MODEL_FILE_EXTENSION);
-            Resource resource = this.globalPartition.getResourceSet().createResource(uri);
-            resource.getContents().add(RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel());
+            var uri = result.get()
+                .eResource()
+                .getURI()
+                .appendFileExtension(RM_MODEL_FILE_EXTENSION);
+            Resource resource = this.globalPartition.getResourceSet()
+                .createResource(uri);
+            resource.getContents()
+                .add(RuntimeMeasurementFactory.eINSTANCE.createRuntimeMeasurementModel());
         } else {
             LOGGER.error("No monitor repository set in global partition.");
         }

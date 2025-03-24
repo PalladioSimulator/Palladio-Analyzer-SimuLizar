@@ -10,7 +10,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.mdsdprofiles.notifier.MDSDProfilesNotifier;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractModelObserver<T extends EObject> implements IModelObserver {
 

@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.di.modules.component.core;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Local;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThreadBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.ExtensionComponentSimulatedThreadExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
@@ -10,7 +11,6 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.Par
 import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;
 import org.palladiosimulator.simulizar.interpreter.impl.EMFPackageBasedInterpreterFacade;
 import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Local;
 
 import dagger.Binds;
 import dagger.Module;

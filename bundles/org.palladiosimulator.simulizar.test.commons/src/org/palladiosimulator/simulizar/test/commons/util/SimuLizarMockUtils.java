@@ -15,9 +15,9 @@ import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPar
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ProcessingResourceSpecification;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
 import org.palladiosimulator.simulizar.test.commons.extension.MockSimulationExtension;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.simucomframework.core.ResourceRegistry;
 import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;

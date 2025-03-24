@@ -5,13 +5,21 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.core
 Automatic-Module-Name: org.palladiosimulator.simulizar.core
 Bundle-Version: 5.2.1.qualifier
 Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs,
- org.palladiosimulator.simulizar.core.runconfig
-Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ org.palladiosimulator.simulizar.core.runconfig,
+ org.palladiosimulator.simulizar.core.utils
+Require-Bundle: javax.inject;bundle-version="1.0.0",
+ org.eclipse.emf.ecore;bundle-version="2.33.0",
+ org.apache.log4j;bundle-version="1.2.15",
+ org.palladiosimulator.commons;bundle-version="5.2.1",
  de.uka.ipd.sdq.workflow;bundle-version="5.2.1",
  de.uka.ipd.sdq.simulation.core;bundle-version="5.2.1",
  de.uka.ipd.sdq.workflow.launchconfig.core;bundle-version="5.2.1",
  org.palladiosimulator.analyzer.workflow.core;bundle-version="5.2.1",
- de.uka.ipd.sdq.codegen.simucontroller.core;bundle-version="5.2.1"
+ de.uka.ipd.sdq.codegen.simucontroller.core;bundle-version="5.2.1",
+ de.uka.ipd.sdq.stoex;bundle-version="5.2.1",
+ de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1",
+ org.palladiosimulator.monitorrepository;bundle-version="5.2.1",
+ org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org
