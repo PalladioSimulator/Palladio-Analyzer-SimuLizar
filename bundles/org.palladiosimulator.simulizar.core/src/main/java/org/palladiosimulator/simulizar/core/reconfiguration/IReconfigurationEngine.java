@@ -1,4 +1,5 @@
-package org.palladiosimulator.simulizar.reconfiguration;
+/** */
+package org.palladiosimulator.simulizar.core.reconfiguration;
 
 import java.util.List;
 import java.util.Map;

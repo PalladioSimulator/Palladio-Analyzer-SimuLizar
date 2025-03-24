@@ -1,5 +1,6 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
+import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 
