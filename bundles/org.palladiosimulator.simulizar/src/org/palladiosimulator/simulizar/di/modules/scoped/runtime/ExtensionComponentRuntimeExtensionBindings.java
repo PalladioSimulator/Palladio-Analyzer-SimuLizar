@@ -10,13 +10,13 @@ import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.extension.RuntimeExtensions;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRuntimeExtensions;
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 import org.palladiosimulator.simulizar.interpreter.listener.IInterpreterListener;
 import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultListener;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import dagger.Module;
 import dagger.Provides;

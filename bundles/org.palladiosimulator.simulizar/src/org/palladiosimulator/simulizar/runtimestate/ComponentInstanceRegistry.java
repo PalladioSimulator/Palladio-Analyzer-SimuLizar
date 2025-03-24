@@ -5,7 +5,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 
 @SimulationRuntimeScope
 public class ComponentInstanceRegistry implements RuntimeStateEntityManager {

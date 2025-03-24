@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootMo
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 
 import dagger.BindsInstance;
 import dagger.Component;

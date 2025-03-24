@@ -4,7 +4,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.scopes.RootExtensionScope;
+import org.palladiosimulator.simulizar.di.scopes.RootExtensionScope;
 
 import dagger.Component;
 

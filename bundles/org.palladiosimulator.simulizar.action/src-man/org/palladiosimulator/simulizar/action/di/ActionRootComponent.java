@@ -9,7 +9,7 @@ import org.palladiosimulator.simulizar.action.ui.configuration.AdaptationBehavio
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.scopes.RootExtensionScope;
+import org.palladiosimulator.simulizar.di.scopes.RootExtensionScope;
 
 import dagger.Component;
 import dagger.Provides;

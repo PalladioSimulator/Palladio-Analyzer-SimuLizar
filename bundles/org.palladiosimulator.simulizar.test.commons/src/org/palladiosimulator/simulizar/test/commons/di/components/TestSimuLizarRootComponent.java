@@ -9,9 +9,9 @@ import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootMo
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarPrepareBlackboardJob;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.test.commons.di.components.TestSimuLizarRootComponent.TestRootModule;
 import org.palladiosimulator.simulizar.test.commons.di.overrides.TestSimuLizarLoadModelsJob;
 import org.palladiosimulator.simulizar.test.commons.di.overrides.TestSimuLizarPrepareBlackboardJob;

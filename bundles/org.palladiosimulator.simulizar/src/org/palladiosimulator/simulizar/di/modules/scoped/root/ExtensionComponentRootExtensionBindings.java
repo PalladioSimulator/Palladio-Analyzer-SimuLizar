@@ -10,10 +10,10 @@ import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.extension.RootExtensions;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRootExtensions;
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelContribution;
 import org.palladiosimulator.simulizar.launcher.jobs.PartitionContribution;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Module;
 import dagger.Provides;

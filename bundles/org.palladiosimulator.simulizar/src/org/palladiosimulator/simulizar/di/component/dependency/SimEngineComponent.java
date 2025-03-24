@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.component.dependency;
 
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.modules.component.eclipse.EclipseSimEngineModule;
-import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisDependencyScope;
 
 import dagger.Component;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimEngineFactory;

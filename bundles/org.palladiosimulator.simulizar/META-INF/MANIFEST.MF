@@ -123,7 +123,6 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.simulizar.runconfig,
    de.uka.ipd.sdq.simucomframework.model,
    org.palladiosimulator.simulizar.usagemodel",
- org.palladiosimulator.simulizar.scopes,
  org.palladiosimulator.simulizar.simulationevents;uses:="de.uka.ipd.sdq.simulation.abstractsimengine,de.uka.ipd.sdq.simucomframework.entities,de.uka.ipd.sdq.simucomframework.model",
  org.palladiosimulator.simulizar.usagemodel;
   uses:="org.palladiosimulator.simulizar.interpreter,

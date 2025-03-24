@@ -5,9 +5,9 @@ import java.util.Set;
 import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ReconfigurationExtensions;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import dagger.Module;
 import dagger.Provides;

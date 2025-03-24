@@ -7,8 +7,8 @@ import javax.inject.Inject;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.CalculatorRegistryListener;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
+import org.palladiosimulator.simulizar.di.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 @RuntimeExtensionScope
 public class AggregatorAttachingRuntimeStateObserver implements RuntimeStateEntityObserver, CalculatorRegistryListener {

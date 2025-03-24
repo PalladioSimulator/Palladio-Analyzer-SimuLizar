@@ -7,8 +7,8 @@ import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.di.scopes.ObservationScope;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.scopes.ObservationScope;
 
 import com.google.common.collect.ImmutableSet;
 

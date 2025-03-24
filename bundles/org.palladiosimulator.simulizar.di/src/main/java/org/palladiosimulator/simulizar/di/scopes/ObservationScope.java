@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.scopes;
+package org.palladiosimulator.simulizar.di.scopes;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;

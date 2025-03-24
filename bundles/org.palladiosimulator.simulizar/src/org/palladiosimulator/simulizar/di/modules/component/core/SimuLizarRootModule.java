@@ -11,8 +11,8 @@ import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLi
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarRuntimeFactoryModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRootJob;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import com.google.common.collect.ImmutableSet;
 

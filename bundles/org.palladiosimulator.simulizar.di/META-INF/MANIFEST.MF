@@ -4,7 +4,9 @@ Bundle-Name: org.palladiosimulator.simulizar.di
 Bundle-SymbolicName: org.palladiosimulator.simulizar.di
 Automatic-Module-Name: org.palladiosimulator.simulizar.di
 Bundle-Version: 5.2.1.qualifier
-Export-Package: org.palladiosimulator.simulizar.di.extension
+Export-Package: org.palladiosimulator.simulizar.di.extension,
+ org.palladiosimulator.simulizar.di.scopes
+Require-Bundle: javax.inject;bundle-version="1.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org

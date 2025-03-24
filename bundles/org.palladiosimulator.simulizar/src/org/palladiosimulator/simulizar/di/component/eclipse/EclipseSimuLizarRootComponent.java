@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.component.eclipse;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.modules.component.eclipse.EclipseSimuLizarRootModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 
 import dagger.Component;
 

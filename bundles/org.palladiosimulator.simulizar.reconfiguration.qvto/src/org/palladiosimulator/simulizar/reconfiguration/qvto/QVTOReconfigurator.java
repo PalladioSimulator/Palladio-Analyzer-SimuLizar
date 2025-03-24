@@ -15,10 +15,10 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.core.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.di.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
 

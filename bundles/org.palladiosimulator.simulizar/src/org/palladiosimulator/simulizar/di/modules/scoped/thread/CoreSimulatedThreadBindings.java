@@ -3,13 +3,13 @@ package org.palladiosimulator.simulizar.di.modules.scoped.thread;
 import java.util.Set;
 
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.di.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RDSeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 import org.palladiosimulator.simulizar.interpreter.impl.ExtensibleComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.legacy.NOPReliabilityInterpreter;
-import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
 
 import com.google.common.collect.ImmutableSet;
 

@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfigura
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 
 import dagger.Module;
 import dagger.Provides;

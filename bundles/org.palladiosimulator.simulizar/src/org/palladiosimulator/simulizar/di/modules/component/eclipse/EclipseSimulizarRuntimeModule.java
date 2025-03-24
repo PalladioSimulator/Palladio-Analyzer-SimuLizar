@@ -9,9 +9,9 @@ import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeCompone
 import org.palladiosimulator.simulizar.di.component.eclipse.EclipseSimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LegacyRuntimeStateAccessorAdapterModule;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import com.google.common.collect.ImmutableSet;
 

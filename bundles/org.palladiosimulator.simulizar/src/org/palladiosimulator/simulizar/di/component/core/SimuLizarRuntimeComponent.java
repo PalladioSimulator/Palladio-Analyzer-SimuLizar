@@ -13,6 +13,7 @@ import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RuntimeComponentFactoriesModule;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
@@ -26,7 +27,6 @@ import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRuntimeJob;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.ComponentInstanceRegistry;
 import org.palladiosimulator.simulizar.runtimestate.PreInterpretationBehaviorManager;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import dagger.Component;
 import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;

@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.di.component.core;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimulatedThreadModule;
+import org.palladiosimulator.simulizar.di.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.ParentContext;
-import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
 
 import dagger.BindsInstance;
 import dagger.Component;

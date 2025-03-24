@@ -6,7 +6,7 @@ import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegi
 import org.palladiosimulator.recorderframework.core.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.modules.component.eclipse.EclipseQUALModule;
-import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.scopes.AnalysisDependencyScope;
 
 import dagger.BindsInstance;
 import dagger.Component;

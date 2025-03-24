@@ -5,12 +5,12 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import org.palladiosimulator.simulizar.di.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.runtimestate.SimuLizarRuntimeState;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 @RuntimeExtensionScope
 public class TransientEffectTransformationCacheKeeper implements IModelObserver {

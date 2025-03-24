@@ -13,10 +13,10 @@ import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.modules.stateless.probes.ProbeFrameworkProbeFactoryBindings;
+import org.palladiosimulator.simulizar.di.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 import org.palladiosimulator.simulizar.reliability.interpreter.RDSeffReliabilityInterpreter;
 import org.palladiosimulator.simulizar.reliability.interpreter.listener.ReliabilityProbeFrameworkAdapter;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 import com.google.common.collect.ImmutableSet;
 

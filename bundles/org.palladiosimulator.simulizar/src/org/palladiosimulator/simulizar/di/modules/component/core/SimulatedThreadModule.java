@@ -6,11 +6,11 @@ import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThr
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.ExtensionComponentSimulatedThreadExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.SimulatedThreadBindingsModule;
+import org.palladiosimulator.simulizar.di.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.ParentContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;
 import org.palladiosimulator.simulizar.interpreter.impl.EMFPackageBasedInterpreterFacade;
-import org.palladiosimulator.simulizar.scopes.SimulatedThreadScope;
 
 import dagger.Binds;
 import dagger.Module;

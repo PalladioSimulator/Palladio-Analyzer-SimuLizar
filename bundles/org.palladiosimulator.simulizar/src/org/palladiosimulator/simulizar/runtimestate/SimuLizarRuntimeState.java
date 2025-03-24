@@ -4,11 +4,11 @@ import javax.inject.Inject;
 
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.di.component.interfaces.SimulatedThreadComponent;
+import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
 
