@@ -4,6 +4,10 @@ Bundle-Name: org.palladiosimulator.simulizar.di.modules
 Bundle-SymbolicName: org.palladiosimulator.simulizar.di.modules
 Automatic-Module-Name: org.palladiosimulator.simulizar.di.modules
 Bundle-Version: 5.2.1.qualifier
+Export-Package: org.palladiosimulator.simulizar.di.modules.stateless.mdsd
+Require-Bundle: javax.inject;bundle-version="1.0.0",
+ com.google.dagger;bundle-version="2.31.0",
+ de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org
