@@ -1,6 +1,6 @@
  package org.palladiosimulator.simulizar.di.modules.stateless.configuration;
 
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.Module;
 import dagger.Provides;

@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.events;
 
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.Provides;
 

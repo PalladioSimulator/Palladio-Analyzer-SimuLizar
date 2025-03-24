@@ -1,11 +1,11 @@
 package org.palladiosimulator.simulizar.di.component.core;
 
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.BindsInstance;

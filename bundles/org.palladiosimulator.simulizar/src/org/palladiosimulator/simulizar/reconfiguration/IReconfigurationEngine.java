@@ -6,9 +6,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.extension.Extension;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;

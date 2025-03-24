@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.test.commons.di.components;
 
 import javax.inject.Named;
 
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
@@ -10,7 +11,6 @@ import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFa
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarPrepareBlackboardJob;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.test.commons.di.components.TestSimuLizarRootComponent.TestRootModule;
 import org.palladiosimulator.simulizar.test.commons.di.overrides.TestSimuLizarLoadModelsJob;

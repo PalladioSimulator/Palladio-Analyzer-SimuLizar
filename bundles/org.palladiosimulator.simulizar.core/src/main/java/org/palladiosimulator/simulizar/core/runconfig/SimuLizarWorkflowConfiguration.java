@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.runconfig;
+package org.palladiosimulator.simulizar.core.runconfig;
 
 import java.util.Map;
 

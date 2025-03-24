@@ -6,6 +6,7 @@ import javax.inject.Provider;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
@@ -15,7 +16,6 @@ import org.palladiosimulator.simulizar.di.modules.stateless.probes.ProbeFramewor
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 import org.palladiosimulator.simulizar.reliability.interpreter.RDSeffReliabilityInterpreter;
 import org.palladiosimulator.simulizar.reliability.interpreter.listener.ReliabilityProbeFrameworkAdapter;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 import com.google.common.collect.ImmutableSet;

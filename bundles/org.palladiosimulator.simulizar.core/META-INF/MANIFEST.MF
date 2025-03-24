@@ -4,7 +4,14 @@ Bundle-Name: org.palladiosimulator.simulizar.core
 Bundle-SymbolicName: org.palladiosimulator.simulizar.core
 Automatic-Module-Name: org.palladiosimulator.simulizar.core
 Bundle-Version: 5.2.1.qualifier
-Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs
+Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs,
+ org.palladiosimulator.simulizar.core.runconfig
+Require-Bundle: org.apache.log4j;bundle-version="1.2.15",
+ de.uka.ipd.sdq.workflow;bundle-version="5.2.1",
+ de.uka.ipd.sdq.simulation.core;bundle-version="5.2.1",
+ de.uka.ipd.sdq.workflow.launchconfig.core;bundle-version="5.2.1",
+ org.palladiosimulator.analyzer.workflow.core;bundle-version="5.2.1",
+ de.uka.ipd.sdq.codegen.simucontroller.core;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org

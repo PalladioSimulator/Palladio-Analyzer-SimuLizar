@@ -7,12 +7,12 @@ import javax.inject.Provider;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.core.DaggerSimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 import org.palladiosimulator.simulizar.elasticity.di.components.DaggerElasticityRuntimeExtensionComponent;
 import org.palladiosimulator.simulizar.elasticity.di.components.ElasticityAnalysisComponent;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import com.google.common.collect.ImmutableSet;
 

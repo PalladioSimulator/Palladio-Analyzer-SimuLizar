@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.access.SimulatedLinkingResourceAccess;
@@ -16,7 +17,6 @@ import org.palladiosimulator.simulizar.interpreter.linking.impl.NoDemandCalculat
 import org.palladiosimulator.simulizar.interpreter.linking.impl.ResourceEnvironmentObservingLegacyRouter;
 import org.palladiosimulator.simulizar.interpreter.linking.impl.SimulatedLinkingResourceContainerTransmissionStrategy;
 import org.palladiosimulator.simulizar.interpreter.linking.impl.StackFrameBytesizeAccumulatingDemandCalculator;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import dagger.Binds;
 import dagger.Lazy;

@@ -7,8 +7,8 @@ import javax.inject.Named;
 import javax.inject.Provider;
 
 import org.palladiosimulator.simulizar.launcher.jobs.ModelContribution;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.launcher.jobs.LoadSimuLizarModelsIntoBlackboardJob;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.di.components.TestSimuLizarRootComponent.TestConfigurationModule;
 
 public class TestSimuLizarLoadModelsJob extends LoadSimuLizarModelsIntoBlackboardJob {
