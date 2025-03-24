@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: org.palladiosimulator.simulizar.di
+Bundle-SymbolicName: org.palladiosimulator.simulizar.di
+Automatic-Module-Name: org.palladiosimulator.simulizar.di
+Bundle-Version: 5.2.1.qualifier
+Bundle-ActivationPolicy: lazy
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-Vendor: palladiosimulator.org
