@@ -7,7 +7,7 @@ import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.seff.ExternalCallAction;
 import org.palladiosimulator.pcm.usagemodel.EntryLevelSystemCall;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.di.core.extension.Extension;
 
 public interface IInterpreterListener extends Extension {
     

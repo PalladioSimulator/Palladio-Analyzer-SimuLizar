@@ -4,8 +4,8 @@ import java.util.Set;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ReconfigurationExtensions;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.NumberOfResourceContainerTrackingListener;

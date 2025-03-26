@@ -5,8 +5,8 @@ import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeCompone
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.modules.component.eclipse.EclipseSimulizarRuntimeModule;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 
 import dagger.Component;
 

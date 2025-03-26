@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.elasticity.di.modules;
 
+import org.palladiosimulator.simulizar.di.core.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
-import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
 
 import dagger.Module;

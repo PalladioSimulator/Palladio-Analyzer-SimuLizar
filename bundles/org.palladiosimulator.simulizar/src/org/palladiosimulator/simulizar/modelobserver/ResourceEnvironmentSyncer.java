@@ -34,7 +34,7 @@ import org.palladiosimulator.pcmmeasuringpoint.ActiveResourceMeasuringPoint;
 import org.palladiosimulator.pcmmeasuringpoint.util.PcmmeasuringpointSwitch;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
 

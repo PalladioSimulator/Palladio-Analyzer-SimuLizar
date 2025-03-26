@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 import java.util.Set;
 
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.DependencyComponentsModule;
@@ -11,7 +12,6 @@ import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLi
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarRuntimeFactoryModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
-import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRootJob;
 
 import com.google.common.collect.ImmutableSet;

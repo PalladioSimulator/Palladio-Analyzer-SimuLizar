@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.modules.component.eclipse;
 
+import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimEngineModule;
-import org.palladiosimulator.simulizar.di.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.runtimestate.SimulationPreferencesSimEngineFactoryProvider;
 
 import dagger.Module;

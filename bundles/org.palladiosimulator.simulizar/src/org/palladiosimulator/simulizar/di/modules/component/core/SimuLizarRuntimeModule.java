@@ -7,6 +7,7 @@ import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeCompone
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreSimulationRuntimeEntitiesBindings;
@@ -18,7 +19,6 @@ import org.palladiosimulator.simulizar.di.modules.scoped.runtime.ReconfiguratorB
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.DefaultSimuLizarSimulatedThreadFactoryModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RuntimeComponentFactoriesModule;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 
 import com.google.common.collect.ImmutableSet;
 

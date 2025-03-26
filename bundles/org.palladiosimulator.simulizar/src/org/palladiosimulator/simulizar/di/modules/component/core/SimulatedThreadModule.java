@@ -2,11 +2,11 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Local;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.CoreSimulatedThreadBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.thread.ExtensionComponentSimulatedThreadExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.SimulatedThreadBindingsModule;
-import org.palladiosimulator.simulizar.di.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.ParentContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;

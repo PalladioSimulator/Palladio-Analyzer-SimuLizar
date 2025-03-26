@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.util.URI;
 import org.palladiosimulator.commons.eclipseutils.FileHelper;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.di.core.extension.Extension;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 /**

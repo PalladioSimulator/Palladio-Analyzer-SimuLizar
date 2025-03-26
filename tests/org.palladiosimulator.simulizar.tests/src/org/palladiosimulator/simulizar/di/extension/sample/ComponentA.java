@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.extension.sample;
 
 import javax.inject.Named;
 
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
 
 import dagger.Component;
 

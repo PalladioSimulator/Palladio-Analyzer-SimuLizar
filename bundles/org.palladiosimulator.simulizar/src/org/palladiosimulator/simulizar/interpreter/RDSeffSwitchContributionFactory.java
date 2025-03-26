@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.interpreter;
 import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.util.Switch;
-import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.di.core.extension.Extension;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**

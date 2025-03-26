@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.thread;
 import java.util.Set;
 
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.di.scopes.SimulatedThreadScope;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.RDSeffPerformanceSwitch;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitch;

@@ -7,9 +7,9 @@ import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.eclipse.EclipseSimuLizarRuntimeComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LegacyRuntimeStateAccessorAdapterModule;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 

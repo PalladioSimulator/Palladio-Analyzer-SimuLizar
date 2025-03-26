@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.component.core;
 
+import org.palladiosimulator.simulizar.di.core.scopes.PlatformScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.PlatformModule;
-import org.palladiosimulator.simulizar.di.scopes.PlatformScope;
 
 import dagger.Component;
 

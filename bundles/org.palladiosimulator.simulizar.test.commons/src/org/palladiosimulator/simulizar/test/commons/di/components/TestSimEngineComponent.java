@@ -1,8 +1,8 @@
 package org.palladiosimulator.simulizar.test.commons.di.components;
 
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimEngineModule;
-import org.palladiosimulator.simulizar.di.scopes.AnalysisDependencyScope;
 
 import dagger.Component;
 import dagger.Provides;

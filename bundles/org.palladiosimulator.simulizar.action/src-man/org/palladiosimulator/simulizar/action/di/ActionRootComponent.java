@@ -8,8 +8,8 @@ import org.palladiosimulator.simulizar.action.jobs.config.LoadAdaptationBehavior
 import org.palladiosimulator.simulizar.action.ui.configuration.AdaptationBehaviorRepositoryFileInputConfigBuilder;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.scopes.RootExtensionScope;
+import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.RootExtensionScope;
 
 import dagger.Component;
 import dagger.Provides;

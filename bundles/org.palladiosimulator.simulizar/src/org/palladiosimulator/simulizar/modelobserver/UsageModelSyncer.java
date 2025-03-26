@@ -14,7 +14,7 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
-import org.palladiosimulator.simulizar.di.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.di.core.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
 
 import de.uka.ipd.sdq.simucomframework.core.usage.IWorkloadDriver;

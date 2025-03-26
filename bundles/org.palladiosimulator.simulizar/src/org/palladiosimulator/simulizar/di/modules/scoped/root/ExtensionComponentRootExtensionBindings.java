@@ -2,7 +2,8 @@ package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
 import java.util.Set;
 
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.core.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponentDependencyResolution;
 import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.extension.GenericExtensionComponent;
@@ -10,7 +11,6 @@ import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.extension.RootExtensions;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRootExtensions;
 import org.palladiosimulator.simulizar.di.modules.stateless.extension.ExtensionSupportModule;
-import org.palladiosimulator.simulizar.di.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelContribution;
 import org.palladiosimulator.simulizar.launcher.jobs.PartitionContribution;

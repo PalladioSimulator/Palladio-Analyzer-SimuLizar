@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.extension;
+package org.palladiosimulator.simulizar.di.core.extension;
 
 public interface ExtensionComponent {
 

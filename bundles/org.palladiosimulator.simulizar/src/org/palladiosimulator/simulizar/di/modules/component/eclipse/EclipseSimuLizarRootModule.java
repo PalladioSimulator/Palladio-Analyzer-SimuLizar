@@ -5,7 +5,7 @@ import java.util.Set;
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.eclipse.EclipseSimuLizarRootComponent;
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRootModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 
