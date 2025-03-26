@@ -1,0 +1,140 @@
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_ASSEMBLY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype SEFF_PERFORMANCE uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/SEFF_Performance/5.2';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_SYSTEM uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+transformation wireWithLoadbalancer(inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionMapping : ACTION_MAPPING) {
+
+	// these refer to the 'ComponentInstantiation' adaptation behavior with model/repository.actions
+	property targetResourceContainerRoleId : String = '_9TESQRwLEeW4AMv4FxCz8w';
+	property instantiatedComponentRoleId : String = '_p7wp4RwMEeW4AMv4FxCz8w';
+		
+	// this one refers to ms_base.system within org.palladiosimulator.simulizar.examples.mediastore
+	// the DownloadLoadbalancer component
+	property encapsulatedComponentAssemblyCtxId : String = '_Fslt8OXSEeSa__lJ2-JCxw2';
+	
+	// this one refers to ms.repository within org.palladiosimulator.simulizar.examples.mediastore
+	// the DownloadLoadbalancer component an dits required role
+	property loadbalancerDownloadRequiredRole : String = '_LEN58OXSEeSa__lJ2-JCxw2';
+	
+	// this one refers to ms_base.system within org.palladiosimulator.simulizar.examples.mediastore
+	// the branch 'to first replica' in SEFF 'download' of the DownloadLoadBalancer component
+	property branchId : String = '_nqCD0OXSEeSa__lJ2-JCxw2';
+
+	main() {
+		var roleSet := actionRoleSet.objectsOfType(RoleSet)->any(true);
+		var allocation := pcmAllocation.objectsOfType(Allocation)->any(true);
+		var targetResourceContainer := roleSet.roles->any(roleType.id = targetResourceContainerRoleId).value.oclAsType(ResourceContainer);
+		var instantiatedComponent := roleSet.roles->any(roleType.id = instantiatedComponentRoleId).value.oclAsType(BasicComponent);
+				
+		var instantiatedAllocation := allocation.allocationContexts_Allocation[resourceContainer_AllocationContext.id = targetResourceContainer.id
+			and assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.id = instantiatedComponent.id];
+		log("Instantiated allocation " + instantiatedAllocation->any(true).entityName);
+		
+		assert fatal (instantiatedAllocation->size() = 1)
+			with log('Something went wrong, there should only be 1 instantiated allocation!');
+			
+		instantiatedAllocation.xmap wireWithLoadBalancer(allocation);
+		
+		log('Wiring with load balancer successful.');
+	}
+	
+		mapping AllocationContext::wireWithLoadBalancer(inout allocation : Allocation) {
+		var lbAssembly : AssemblyContext := allocation.allocationContexts_Allocation.assemblyContext_AllocationContext->any(encapsulatedComponent__AssemblyContext.id = encapsulatedComponentAssemblyCtxId);
+		var lbComponent : BasicComponent := lbAssembly.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent);
+		var operationRequiredRole : OperationRequiredRole := lbComponent.requiredRoles_InterfaceRequiringEntity[OperationRequiredRole]->any(id = loadbalancerDownloadRequiredRole);
+		var number : Integer := lbComponent.requiredRoles_InterfaceRequiringEntity->size();
+		var newOperationRequiredRole := object OperationRequiredRole {
+			entityName := operationRequiredRole.entityName + number.toString();
+			requiredInterface__OperationRequiredRole := operationRequiredRole.requiredInterface__OperationRequiredRole;
+		};
+		lbComponent.requiredRoles_InterfaceRequiringEntity += newOperationRequiredRole;
+		var branchAction := lbComponent.serviceEffectSpecifications__BasicComponent[ResourceDemandingSEFF].steps_Behaviour[BranchAction]->any(true);
+		var tBranchTransition := branchAction.branches_Branch->any(id = branchId);
+		var newBranchTransition := object ProbabilisticBranchTransition {
+			entityName := tBranchTransition.entityName + number.toString();
+			branchBehaviour_BranchTransition := object ResourceDemandingBehaviour {
+				var startAction : StartAction := object StartAction{};
+				// TODO generalize this.
+				var copiedCall := tBranchTransition.branchBehaviour_BranchTransition.steps_Behaviour[ExternalCallAction]->any(true);
+				var externalCall := object ExternalCallAction {
+					entityName := copiedCall.entityName + number.toString();				
+					predecessor_AbstractAction := startAction;
+					inputVariableUsages__CallAction := copiedCall.inputVariableUsages__CallAction.xmap copyVariableUsage();
+					returnVariableUsage__CallReturnAction := copiedCall.returnVariableUsage__CallReturnAction.xmap copyVariableUsage();
+					calledService_ExternalService := copiedCall.calledService_ExternalService;
+					log("Called service " + calledService_ExternalService.id);
+					role_ExternalService := newOperationRequiredRole;
+				};
+				var stopAction : StopAction := object StopAction {
+					predecessor_AbstractAction := externalCall;
+				};
+				steps_Behaviour += startAction;
+				steps_Behaviour += externalCall;
+				steps_Behaviour += stopAction;
+			};
+		};
+		branchAction.branches_Branch += newBranchTransition;
+		var numberOfBranches : Real := branchAction.branches_Branch[ProbabilisticBranchTransition]->size();
+		branchAction.branches_Branch[ProbabilisticBranchTransition]->forEach(branch) {
+			log("Branch name " + branch.entityName);
+			branch.branchProbability := 1.0 / number;
+		};
+		
+		assert fatal(self.assemblyContext_AllocationContext <> null) with log ("Target assembly context is empty.");
+		allocation.system_Allocation.connectors__ComposedStructure += object AssemblyConnector {
+			entityName := lbAssembly.entityName + "->" + self.assemblyContext_AllocationContext.entityName;
+			providingAssemblyContext_AssemblyConnector := self.assemblyContext_AllocationContext;
+			requiringAssemblyContext_AssemblyConnector := lbAssembly;
+			requiredRole_AssemblyConnector := newOperationRequiredRole;
+			// TODO Is this generic enough for a template as there could be multiple provided roles?
+			providedRole_AssemblyConnector := self.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity[OperationProvidedRole]->any(true);
+		}
+	}
+	
+	mapping VariableUsage::copyVariableUsage() : VariableUsage {
+		variableCharacterisation_VariableUsage := self.variableCharacterisation_VariableUsage.xmap copyVariableCharacterisation();
+		namedReference__VariableUsage := self.namedReference__VariableUsage.xmap copyNamedReference();
+	}
+	
+	mapping VariableCharacterisation::copyVariableCharacterisation() : VariableCharacterisation {
+		type := self.type;
+		specification_VariableCharacterisation := object PCMRandomVariable {
+			specification := self.specification_VariableCharacterisation.specification;
+		}
+	}
+	
+	mapping AbstractNamedReference::copyNamedReference() : AbstractNamedReference {
+		init {
+			result := null;
+		}
+		assert fatal(false) with log('AbstractNamedReference variant of copyNamedReference() should never be called');
+	}
+	
+	mapping VariableReference::copyNamedReference() : AbstractNamedReference {
+		init {
+			result := object VariableReference {
+				referenceName := self.referenceName;
+			}
+		}
+	}
+	
+	mapping NamespaceReference::copyNamedReference() : AbstractNamedReference {
+		init {
+			result := object NamespaceReference {
+				referenceName := self.referenceName;
+				innerReference_NamespaceReference := self.innerReference_NamespaceReference.xmap copyNamedReference();
+			}
+		}
+	}
+}

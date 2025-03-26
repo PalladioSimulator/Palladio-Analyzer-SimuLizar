@@ -1,0 +1,42 @@
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+
+transformation vmMigration(
+							inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionMapping : ACTION_MAPPING
+							) {
+		
+property migratedComponentContextName = 'MigratedComponentAssemblyContext';		
+							
+	/**
+	 * The main transformation.
+	 * This is the entry point to the overall transformation.
+	 */
+	main() {	
+		assert fatal(pcmAllocation.rootObjects()[Allocation]->size() > 0)
+			with log ("Allocation Model is empty!");
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var mappingRes : Mapping := actionMapping.rootObjects()[Mapping]->any(true);
+		allocation->enactVmMigration(roleSet, mappingRes);
+	}
+	
+	mapping inout Allocation::enactVmMigration(roleSet : RoleSet, mappingRes : Mapping) {
+		var roles := roleSet.roles;
+		var migrationControllerLocation : instance::Role := roles->select(role | role.roleType.id = '_56tD0ezuEeSasuhUPGMaRg')->any(true);
+		var assemblyRole : instance::Role := roles->select(role | role.roleType.id = '_kPTj0OztEeSasuhUPGMaRg')->any(true);
+		var targetContainerRole : instance::Role := roles->select(role | role.roleType.id = '_or2AkeztEeSasuhUPGMaRg')->any(true);
+		
+		var migrationControllerContainer : ResourceContainer := migrationControllerLocation.value.oclAsType(ResourceContainer);
+		var migratedAssembly : AssemblyContext := assemblyRole.value.oclAsType(AssemblyContext);
+		var targetContainer : ResourceContainer := targetContainerRole.value.oclAsType(ResourceContainer);
+		var allocationCtx : AllocationContext := self.allocationContexts_Allocation->select(a | a.assemblyContext_AllocationContext.id = migratedAssembly.id)->any(true);
+		allocationCtx.resourceContainer_AllocationContext := targetContainer;
+		migratedAssembly.removeStereotypeApplications(migratedComponentContextName);
+	}
+}

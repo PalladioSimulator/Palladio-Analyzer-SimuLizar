@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<org.palladiosimulator.action:AdaptationBehaviorRepository xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:org.palladiosimulator.action="http://simulizar.palladiosimulator.org/Actions/Core/1.1" id="_fYQfAKAbEeWZkvqD6d6Miw" entityName="AdaptationBehavior Repository">
+  <actions id="_Ziv7fLerarHsaygm-zjfH" entityName="PowerStateChanging">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_DW_XM6AcEeWZkvqD6d6Miw" entityName="PowerStateChanging Precondition GuardedStep">
+      <guardedTransitions id="_TbofgKAcEeWZkvqD6d6Miw" entityName="PowerStateChanging GuardedTransition" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/changepowerstatecondition.qvto">
+        <nestedAdaptationBehavior id="_g2zrMKAcEeWZkvqD6d6Miw" entityName="PowerStateChanging Adaptation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_WdReUdJ3Eea2FJoINunJaA" entityName="changingToTransitionState" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/changetotransitionstate.qvto"/>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_X4kwQIn0EeWm8ose-zjfHg" entityName="PowerStateChanging" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/changepowerstatecompletion.qvto">
+            <controllerCalls id="_kn6SMIoLEeWm8ose-zjfHg" entityName="delay">
+              <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_XwPVkNHIEeaNAIlD4-dfHg"/>
+              <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_etpMkNHIEeaNAIlD4-dfHg"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_kei380capqWm8ose-zjfHg" entityName="PowerStateChanging Adaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/changepowerstate.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_AfvooYn0EeWm8ose-zjfHg" entityName="AffectedStatefulPowerConsumingResource">
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//infrastructure/StatefulPowerConsumingResourceSet"/>
+    </involvedRoles>
+    <involvedRoles id="_7ldKUZTzEeWUYbZGIbhTfA" entityName="CurrentAllocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//allocation/Allocation"/>
+    </involvedRoles>
+    <involvedRoles id="_P-SaQYn0EeWm8ose-zjfHg" entityName="targetPowerStateBinding">
+      <type href="../../../plugin/de.fzi.power/model/power.ecore#//binding/AbstractPowerStateBinding"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_g-Ud4KAbEeWZkvqD6d6Miw" entityName="ComponentMigration">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_ADWmxKAdEeWZkvqD6d6Miw" entityName="ComponentMigration GuardedStep">
+      <guardedTransitions id="_trITEZ_sEeWSRMWYWeCO6A" entityName="ComponentMigration GuardedTransition" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/migratecomponentconditions.qvto">
+        <nestedAdaptationBehavior id="_-DPJ8InzEeWm8ose-zjfHg" entityName="ComponentMigration Adaptation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_4nuZAOp9EeS7J-g-NrN0TQ" entityName="Migrate Controller Completion" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/migratecomponentcompletion.qvto">
+            <controllerCalls id="_PPtigOw_EeSZKvpqmLO3MQ" entityName="migrateVm">
+              <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_63lUEOqDEeS1xrjFer2CUg"/>
+              <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_zm-xEOp_EeS1xrjFer2CUg"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_1jfdkhp9EeS7J-g-NrN0TQ" entityName="Migrate Controller Adaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/migratecomponent.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_kPTj0OztEeSasuhUPGMaRg" entityName="MigratedComponentAssemblyContext">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//core/composition/AssemblyContext"/>
+    </involvedRoles>
+    <involvedRoles id="_or2AkeztEeSasuhUPGMaRg" entityName="TargetResourceContainer">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
+    <involvedRoles id="_56tD0ezuEeSasuhUPGMaRg" entityName="MigrationControllerLocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
+    <transientStateProfile href="../transientstates/componentmigration.emfprofile_diagram#_horSUPh-EeSxfcKkGEX99A"/>
+  </actions>
+  <actions id="_s5GsIRwJEeWmcO0Zlkc2yA" entityName="ComponentInstantiation">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_zIpLQ6HGEeWc24RAWmuF8Q" entityName="preconditionsMet">
+      <guardedTransitions id="_FP2oQKHHEeWc24RAWmuF8Q" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/instantiatecomponentconditions.qvto">
+        <nestedAdaptationBehavior id="_JEwdQKHHEeWc24RAWmuF8Q" entityName="instantiateComponent">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_NjOzsqHHEeWc24RAWmuF8Q" entityName="instantiationOverhead" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/instantiatecomponentcompletion.qvto">
+            <controllerCalls id="_l9HvsKHHEeWc24RAWmuF8Q" entityName="instantiateController">
+              <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_oATY4KJKEeWC7_GU8VFHHA"/>
+              <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/controller.repository#_veoLoKJKEeWC7_GU8VFHHA"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_PfN_QaHHEeWc24RAWmuF8Q" entityName="enactAdaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/instantiatecomponent.qvto"/>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_8Hg8Yb9iEeWYJNXroRLHsA" entityName="wireWithLoadbalancer" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/wirewithloadbalancer.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_9TESQRwLEeW4AMv4FxCz8w" entityName="TargetResourceContainer">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
+    <involvedRoles id="_p7wp4RwMEeW4AMv4FxCz8w" entityName="InstantiatedComponent">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//repository/BasicComponent"/>
+    </involvedRoles>
+    <involvedRoles id="_MEXt8RwNEeW4AMv4FxCz8w" entityName="InstantiationControllerLocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceContainer"/>
+    </involvedRoles>
+    <transientStateProfile href="../../../plugin/org.palladiosimulator.simulizar.action.repository/transientstates/componentinstantiation.emfprofile_diagram#_X3rWMBwIEeWmcO0Zlkc2yA"/>
+  </actions>
+  <actions id="__jamgLUlEeW-zrkZJ6KTtQ" entityName="Load balancing behavior">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_Dm6qY7XlEeWAPvLQEzKISQ" entityName="Load balancing precondition">
+      <guardedTransitions id="_RMTiALXlEeWAPvLQEzKISQ" entityName="Load balancing precondition" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/loadbalancer_precondition.qvto">
+        <nestedAdaptationBehavior id="_zxA1wLXxEeWwq5FFmcVJMw">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_Becv0rUmEeW-zrkZJ6KTtQ" entityName="Resource demands for load balancing" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/loadbalancer_completion.qvto">
+            <controllerCalls id="_Yp_pYLUmEeW-zrkZJ6KTtQ" entityName="Load balancing controller call">
+              <component href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/loadbalancer.repository#_eNducLUlEeW-zrkZJ6KTtQ"/>
+              <calledSignature href="../../../plugin/org.palladiosimulator.simulizar.action.repository/model/loadbalancer.repository#_nGT-cLUlEeW-zrkZJ6KTtQ"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_mSnbMrUmEeW-zrkZJ6KTtQ" entityName="Load balancer adaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/loadbalancer_adaptation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_j4aNJLUnEeW-zrkZJ6KTtQ" entityName="Probability branch 1">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//seff/ProbabilisticBranchTransition"/>
+    </involvedRoles>
+    <involvedRoles id="_Fi5x1LUoEeW-zrkZJ6KTtQ" entityName="Probability branch 2">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//seff/ProbabilisticBranchTransition"/>
+    </involvedRoles>
+    <transientStateProfile href="../../../plugin/org.palladiosimulator.simulizar.action.repository/transientstates/componentinstantiation.emfprofile_diagram#_X3rWMBwIEeWmcO0Zlkc2yA"/>
+  </actions>
+  <actions id="_Gs5npQlYEe2py52lapYZiQ" entityName="scalePopulationTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_SwqQwxRWEe2lSPWgm3GR-w" entityName="checkPreconditions">
+      <guardedTransitions id="_XM4kcBRWEe2lSPWgm3GR-w" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemand/scalePopulationconditions.qvto">
+        <nestedAdaptationBehavior id="_isHn4BRWEe2lSPWgm3GR-w" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_jRF9MRRWEe2lSPWgm3GR-w" entityName="testWithPrecondition" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemand/scalePopulation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_QGoXJQlYEe2py52lapYZiQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_QrpdVSpVEe2wiYzkm4StTQ" entityName="scalePopulationWithResourceDemandTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_XdSwQypVEe2wiYzkm4StTQ" entityName="checkPreconditions">
+      <guardedTransitions id="_kRolcCpVEe2wiYzkm4StTQ" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditionsWithResourceDemand.qvto">
+        <nestedAdaptationBehavior id="_ryWk4CpVEe2wiYzkm4StTQ" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_zrz0cipVEe2wiYzkm4StTQ" entityName="scaleOverhead" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/scalePopulationCompletion.qvto">
+            <controllerCalls id="_LnWAgCpWEe2wiYzkm4StTQ" entityName="scalePopulation">
+              <component href="controller.repository#_eyN5-SpWEe2wiYzkm4StTQ"/>
+              <calledSignature href="controller.repository#_a8oIcCpWEe2wiYzkm4StTQ"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_uhH4QSpVEe2wiYzkm4StTQ" entityName="scale" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_YWdz9CpVEe2wiYzkm4StTQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+</org.palladiosimulator.action:AdaptationBehaviorRepository>

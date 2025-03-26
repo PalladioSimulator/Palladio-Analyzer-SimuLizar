@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:emfprofile="http://www.modelversioning.org/emfprofile/1.1" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.3/notation">
+  <emfprofile:Profile xmi:id="_horSUPh-EeSxfcKkGEX99A" name="MigratedAssemblyContextProfile" nsURI="org.palladiosimulator.simulizar.action.repository.transientstates.migratedassemblycontextprofile" nsPrefix="org.palladiosimulator.simulizar.action.repository.transientstates">
+    <eClassifiers xsi:type="emfprofile:Stereotype" xmi:id="_qp-CMCGHEeWO5-Sv6naeJg" name="MigratedComponentAssemblyContext">
+      <eSuperTypes href="http://www.modelversioning.org/emfprofile/application/1.1#//StereotypeApplication"/>
+      <extensions xmi:id="_0T1fcCGHEeWO5-Sv6naeJg">
+        <target href="http://palladiosimulator.org/PalladioComponentModel/5.2#//core/composition/AssemblyContext"/>
+      </extensions>
+    </eClassifiers>
+  </emfprofile:Profile>
+  <notation:Diagram xmi:id="_hor5YPh-EeSxfcKkGEX99A" type="EMFProfile" element="_horSUPh-EeSxfcKkGEX99A" name="componentmigration.emfprofile_diagram" measurementUnit="Pixel">
+    <children xmi:id="_qqHzMCGHEeWO5-Sv6naeJg" type="2006" element="_qp-CMCGHEeWO5-Sv6naeJg">
+      <children xsi:type="notation:DecorationNode" xmi:id="_qqHzNCGHEeWO5-Sv6naeJg" type="5008"/>
+      <children xsi:type="notation:DecorationNode" xmi:id="_qqHzNSGHEeWO5-Sv6naeJg" type="7008">
+        <styles xsi:type="notation:SortingStyle" xmi:id="_qqHzNiGHEeWO5-Sv6naeJg"/>
+        <styles xsi:type="notation:FilteringStyle" xmi:id="_qqHzNyGHEeWO5-Sv6naeJg"/>
+      </children>
+      <styles xsi:type="notation:DescriptionStyle" xmi:id="_qqHzMSGHEeWO5-Sv6naeJg"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_qqHzMiGHEeWO5-Sv6naeJg" fontName="Segoe UI"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_qqHzMyGHEeWO5-Sv6naeJg" x="306" y="305"/>
+    </children>
+    <children xmi:id="_zJAEACGHEeWO5-Sv6naeJg" type="2002">
+      <eAnnotations xmi:id="_zJAECyGHEeWO5-Sv6naeJg" source="Shortcut">
+        <details xmi:id="_zJAEDCGHEeWO5-Sv6naeJg" key="modelID" value="EMFProfile"/>
+      </eAnnotations>
+      <children xsi:type="notation:DecorationNode" xmi:id="_zJAEBCGHEeWO5-Sv6naeJg" type="5002"/>
+      <children xsi:type="notation:BasicCompartment" xmi:id="_zJAEBSGHEeWO5-Sv6naeJg" type="7004">
+        <styles xsi:type="notation:SortingStyle" xmi:id="_zJAEBiGHEeWO5-Sv6naeJg"/>
+        <styles xsi:type="notation:FilteringStyle" xmi:id="_zJAEByGHEeWO5-Sv6naeJg"/>
+      </children>
+      <children xsi:type="notation:BasicCompartment" xmi:id="_zJAECCGHEeWO5-Sv6naeJg" type="7005">
+        <styles xsi:type="notation:SortingStyle" xmi:id="_zJAECSGHEeWO5-Sv6naeJg"/>
+        <styles xsi:type="notation:FilteringStyle" xmi:id="_zJAECiGHEeWO5-Sv6naeJg"/>
+      </children>
+      <styles xsi:type="notation:DescriptionStyle" xmi:id="_zJAEASGHEeWO5-Sv6naeJg"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_zJAEAiGHEeWO5-Sv6naeJg" fontName="Segoe UI"/>
+      <element href="http://palladiosimulator.org/PalladioComponentModel/5.2#//core/composition/AssemblyContext"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="_zJAEAyGHEeWO5-Sv6naeJg" x="275" y="170"/>
+    </children>
+    <edges xmi:id="_0T1fcSGHEeWO5-Sv6naeJg" type="4005" element="_0T1fcCGHEeWO5-Sv6naeJg" source="_qqHzMCGHEeWO5-Sv6naeJg" target="_zJAEACGHEeWO5-Sv6naeJg">
+      <children xsi:type="notation:DecorationNode" xmi:id="_0T1fdSGHEeWO5-Sv6naeJg" type="6004">
+        <layoutConstraint xsi:type="notation:Location" xmi:id="_0T1fdiGHEeWO5-Sv6naeJg" x="10" y="10"/>
+      </children>
+      <styles xsi:type="notation:RoutingStyle" xmi:id="_0T1fciGHEeWO5-Sv6naeJg"/>
+      <styles xsi:type="notation:FontStyle" xmi:id="_0T1fcyGHEeWO5-Sv6naeJg" fontName="Segoe UI"/>
+      <bendpoints xsi:type="notation:RelativeBendpoints" xmi:id="_0T1fdCGHEeWO5-Sv6naeJg" points="[-4, -7, 85, 115]$[-33, -117, 56, 5]"/>
+      <sourceAnchor xsi:type="notation:IdentityAnchor" xmi:id="_0T-pYCGHEeWO5-Sv6naeJg" id="(0.5132743362831859,0.17777777777777778)"/>
+    </edges>
+  </notation:Diagram>
+</xmi:XMI>

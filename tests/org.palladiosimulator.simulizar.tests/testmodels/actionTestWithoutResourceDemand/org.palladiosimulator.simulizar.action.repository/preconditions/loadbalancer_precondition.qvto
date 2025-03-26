@@ -1,0 +1,27 @@
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+
+transformation loadbalancer_precondition(inout pcmAllocation : PCM_ALLOC,
+										in actionRoleSet : ACTION_INSTANCE,
+										in actionStep : ACTION_CORE) {
+
+	main() {	
+		var allocation : Allocation := pcmAllocation.rootObjects()[Allocation]->any(true);
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var roleForBranchCondidtion1 := roleSet.roles->select(role | role.roleType.id = "_j4aNJLUnEeW-zrkZJ6KTtQ")->any(true);
+		var roleForBranchCondidtion2 := roleSet.roles->select(role | role.roleType.id = "_Fi5x1LUoEeW-zrkZJ6KTtQ")->any(true);
+		var branch1 := roleForBranchCondidtion1.value.oclAsType(ProbabilisticBranchTransition);
+		var branch2 := roleForBranchCondidtion2.value.oclAsType(ProbabilisticBranchTransition);
+		log("Branch1: " + branch1.branchProbability.toString());
+		log("Branch2: " + branch2.branchProbability.toString());
+		assert fatal(branch1.branchProbability > 0.55 or branch2.branchProbability < 0.45)
+			with log ("No outsourcing will be done because the load is already evenly distributed");
+	}
+}
