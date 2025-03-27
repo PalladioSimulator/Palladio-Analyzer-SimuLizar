@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.component.dependency;
 
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.eclipse.EclipseSimEngineModule;
 
 import dagger.Component;

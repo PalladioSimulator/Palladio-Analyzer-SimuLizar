@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.core.scopes;
+package org.palladiosimulator.simulizar.di.base.scopes;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
@@ -14,6 +14,6 @@ import javax.inject.Scope;
 @Retention(RUNTIME)
 @Target({ TYPE, FIELD, METHOD, PARAMETER })
 @Scope
-public @interface RuntimeExtensionScope {
+public @interface SimulatedThreadScope {
 
 }

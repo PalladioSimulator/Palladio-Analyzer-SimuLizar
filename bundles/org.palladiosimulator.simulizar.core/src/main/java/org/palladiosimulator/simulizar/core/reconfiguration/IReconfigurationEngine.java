@@ -9,7 +9,7 @@ import javax.inject.Inject;
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
-import org.palladiosimulator.simulizar.di.core.extension.Extension;
+import org.palladiosimulator.simulizar.di.base.extension.Extension;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;

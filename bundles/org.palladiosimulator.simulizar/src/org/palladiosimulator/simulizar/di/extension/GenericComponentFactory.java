@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;

@@ -7,7 +7,7 @@ import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory
 import org.palladiosimulator.probeframework.calculator.RegisterCalculatorFactoryDecorator;
 import org.palladiosimulator.recorderframework.core.config.IRecorderConfigurationFactory;
 import org.palladiosimulator.recorderframework.core.utils.RecorderExtensionHelper;
-import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.QUALModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimulationConfigBindingModule;
 

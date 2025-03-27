@@ -7,7 +7,7 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 
 @Retention(RUNTIME)
 @Target(METHOD)

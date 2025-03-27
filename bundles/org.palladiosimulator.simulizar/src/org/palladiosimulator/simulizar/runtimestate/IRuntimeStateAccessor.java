@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
 
 /**
  * This interface is deprecated and only continues to exist, until org.palladiosimulator.action is migrated.

@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;

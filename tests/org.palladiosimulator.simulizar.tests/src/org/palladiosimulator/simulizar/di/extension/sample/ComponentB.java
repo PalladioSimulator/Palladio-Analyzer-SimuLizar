@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.extension.sample;
 
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 
 import dagger.Component;
 

@@ -2,10 +2,10 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.core.scopes.RuntimeExtensionScope;
 
 import dagger.Component;
 

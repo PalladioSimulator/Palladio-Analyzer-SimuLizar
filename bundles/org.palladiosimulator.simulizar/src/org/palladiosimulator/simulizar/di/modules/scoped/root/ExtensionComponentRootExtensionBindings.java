@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
 import java.util.Set;
 
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.core.scopes.AnalysisRootScope;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponentDependencyResolution;
 import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.extension.GenericExtensionComponent;

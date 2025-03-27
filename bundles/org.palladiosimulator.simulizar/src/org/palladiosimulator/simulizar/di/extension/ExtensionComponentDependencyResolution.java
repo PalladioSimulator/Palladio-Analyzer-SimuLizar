@@ -13,8 +13,8 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent.Factory;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent.Factory;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.ImmutableSet;

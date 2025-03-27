@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
-import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimuLizarConfigurationModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.configuration.SimulationConfigBindingModule;
 

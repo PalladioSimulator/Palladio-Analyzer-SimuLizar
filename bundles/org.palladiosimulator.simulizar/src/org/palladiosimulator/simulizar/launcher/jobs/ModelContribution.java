@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
 import org.eclipse.emf.common.util.URI;
-import org.palladiosimulator.simulizar.di.core.extension.Extension;
+import org.palladiosimulator.simulizar.di.base.extension.Extension;
 
 public interface ModelContribution extends Extension {
     public interface Facade {

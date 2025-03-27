@@ -1,8 +1,8 @@
 package org.palladiosimulator.simulizar.elasticity.di.components;
 
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
-import org.palladiosimulator.simulizar.di.core.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.core.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.elasticity.aggregator.AggregatorAttachingRuntimeStateObserver;
 
 import dagger.Component;

@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.component.eclipse;
 
-import org.palladiosimulator.simulizar.di.core.scopes.AnalysisDependencyScope;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimEngineModule;
 import org.palladiosimulator.simulizar.runtimestate.SimulationPreferencesSimEngineFactoryProvider;
 

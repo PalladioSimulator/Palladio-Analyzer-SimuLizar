@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import org.palladiosimulator.simulizar.di.core.extension.Extension;
+import org.palladiosimulator.simulizar.di.base.extension.Extension;
 
 public interface RuntimeStateEntityObserver extends Extension {
 

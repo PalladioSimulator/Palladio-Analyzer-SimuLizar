@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.scoped.thread;
 
 import java.util.Set;
 
-import org.palladiosimulator.simulizar.di.core.scopes.SimulatedThreadScope;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulatedThreadScope;
 import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory;
 

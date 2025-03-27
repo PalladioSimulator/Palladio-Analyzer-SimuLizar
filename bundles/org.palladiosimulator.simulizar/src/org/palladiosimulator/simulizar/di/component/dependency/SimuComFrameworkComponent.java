@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.component.dependency;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.simulizar.di.core.scopes.SimuComFrameworkScope;
+import org.palladiosimulator.simulizar.di.base.scopes.SimuComFrameworkScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuComFrameworkModule;
 
 import dagger.BindsInstance;
