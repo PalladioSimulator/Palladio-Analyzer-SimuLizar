@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: org.palladiosimulator.simulizar.di.core
-Bundle-SymbolicName: org.palladiosimulator.simulizar.di.core
-Automatic-Module-Name: org.palladiosimulator.simulizar.di.core
+Bundle-Name: org.palladiosimulator.simulizar.di.base
+Bundle-SymbolicName: org.palladiosimulator.simulizar.di.base
+Automatic-Module-Name: org.palladiosimulator.simulizar.di.base
 Bundle-Version: 5.2.1.qualifier
 Export-Package: org.palladiosimulator.simulizar.di.core.extension,
  org.palladiosimulator.simulizar.di.core.scopes

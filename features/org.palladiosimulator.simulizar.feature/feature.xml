@@ -201,7 +201,7 @@
          unpack="false"/>
 
    <plugin
-         id="org.palladiosimulator.simulizar.di.core"
+         id="org.palladiosimulator.simulizar.di.base"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -22,7 +22,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1",
  org.palladiosimulator.monitorrepository;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.2.1",
- org.palladiosimulator.simulizar.di.core;bundle-version="5.2.1",
+ org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="5.2.1",
  com.google.dagger
 Bundle-ActivationPolicy: lazy
