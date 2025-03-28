@@ -54,7 +54,6 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.di.component.core,
  org.palladiosimulator.simulizar.di.component.eclipse,
  org.palladiosimulator.simulizar.di.component.interfaces,
- org.palladiosimulator.simulizar.di.extension,
  org.palladiosimulator.simulizar.di.modules.component.core,
  org.palladiosimulator.simulizar.di.modules.component.eclipse,
  org.palladiosimulator.simulizar.di.modules.component.extensions,

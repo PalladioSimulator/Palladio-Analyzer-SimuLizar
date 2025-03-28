@@ -2,13 +2,13 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 
 import java.util.Set;
 
+import org.palladiosimulator.simulizar.di.base.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
-import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.CoreSimulationRuntimeEntitiesBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.ExtensionComponentReconfigurationExtensionBindings;

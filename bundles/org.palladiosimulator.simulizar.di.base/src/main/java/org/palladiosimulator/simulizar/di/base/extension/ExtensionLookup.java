@@ -1,11 +1,9 @@
-package org.palladiosimulator.simulizar.di.extension;
+package org.palladiosimulator.simulizar.di.base.extension;
 
 import java.util.Collection;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import org.palladiosimulator.simulizar.di.base.extension.Extension;
 
 @FunctionalInterface
 public interface ExtensionLookup extends Function<Class<? extends Extension>, Set<Extension>> {
