@@ -60,7 +60,6 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.di.modules.component.eclipse,
  org.palladiosimulator.simulizar.di.modules.component.extensions,
  org.palladiosimulator.simulizar.di.modules.component.standalone,
- org.palladiosimulator.simulizar.di.modules.scoped.dependency,
  org.palladiosimulator.simulizar.di.modules.scoped.root,
  org.palladiosimulator.simulizar.di.modules.scoped.runtime,
  org.palladiosimulator.simulizar.di.modules.stateless.core,
