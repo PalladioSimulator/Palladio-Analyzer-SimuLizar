@@ -52,7 +52,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.di.component.core,
- org.palladiosimulator.simulizar.di.component.dependency,
  org.palladiosimulator.simulizar.di.component.eclipse,
  org.palladiosimulator.simulizar.di.component.interfaces,
  org.palladiosimulator.simulizar.di.extension,
