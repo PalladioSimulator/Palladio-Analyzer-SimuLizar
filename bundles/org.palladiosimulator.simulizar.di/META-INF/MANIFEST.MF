@@ -4,7 +4,8 @@ Bundle-Name: org.palladiosimulator.simulizar.di
 Bundle-SymbolicName: org.palladiosimulator.simulizar.di
 Automatic-Module-Name: org.palladiosimulator.simulizar.di
 Bundle-Version: 5.2.1.qualifier
-Export-Package: org.palladiosimulator.simulizar.di.modules.component.core,
+Export-Package: org.palladiosimulator.simulizar.di.component.dependency,
+ org.palladiosimulator.simulizar.di.modules.component.core,
  org.palladiosimulator.simulizar.di.modules.component.eclipse,
  org.palladiosimulator.simulizar.di.modules.stateless.configuration,
  org.palladiosimulator.simulizar.di.modules.stateless.mdsd
