@@ -29,10 +29,10 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
-import org.palladiosimulator.simulizar.core.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
+import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 
 /**
  * The Allocation Lookup Syncer updates the cache for the mapping of

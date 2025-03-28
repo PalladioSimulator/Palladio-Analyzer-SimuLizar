@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.core.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 
 @SimulationRuntimeScope
