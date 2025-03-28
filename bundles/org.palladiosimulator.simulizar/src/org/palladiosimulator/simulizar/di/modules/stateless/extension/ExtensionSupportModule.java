@@ -4,9 +4,9 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponentDependencyResolution;
-import org.palladiosimulator.simulizar.di.base.extension.GenericExtensionComponent;
-import org.palladiosimulator.simulizar.di.base.extension.RegisteredComponent;
+import org.palladiosimulator.simulizar.di.extension.ExtensionComponentDependencyResolution;
+import org.palladiosimulator.simulizar.di.extension.GenericExtensionComponent;
+import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 
 import dagger.Module;

@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.component.extensions;
 import java.util.Set;
 
 import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.base.extension.RegisteredComponent;
+import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 
 import com.google.common.collect.ImmutableSet;
 

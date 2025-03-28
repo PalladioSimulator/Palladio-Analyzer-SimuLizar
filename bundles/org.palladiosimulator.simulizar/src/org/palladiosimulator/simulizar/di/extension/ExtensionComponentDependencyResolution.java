@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.base.extension;
+package org.palladiosimulator.simulizar.di.extension;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +13,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.traverse.BreadthFirstIterator;
 import org.jgrapht.traverse.TopologicalOrderIterator;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent.Factory;
 
 import com.google.common.collect.HashMultimap;

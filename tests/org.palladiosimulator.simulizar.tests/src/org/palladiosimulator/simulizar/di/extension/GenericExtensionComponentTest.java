@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.base.extension.GenericExtensionComponent;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityObserver;
 

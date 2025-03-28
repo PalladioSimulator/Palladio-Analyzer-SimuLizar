@@ -7,7 +7,6 @@ import static org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInA
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 import org.junit.jupiter.api.Test;
-import org.palladiosimulator.simulizar.di.base.extension.GenericComponentFactory;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentA;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentB;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentC;

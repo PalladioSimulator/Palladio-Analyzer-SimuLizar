@@ -10,7 +10,6 @@ import static org.hamcrest.collection.IsIterableWithSize.iterableWithSize;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponentDependencyResolution;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentA;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentB;
 import org.palladiosimulator.simulizar.di.extension.sample.ComponentC;

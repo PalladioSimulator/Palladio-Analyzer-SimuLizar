@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.base.extension;
+package org.palladiosimulator.simulizar.di.extension;
 
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
@@ -9,6 +9,8 @@ import java.util.Arrays;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 
 import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;

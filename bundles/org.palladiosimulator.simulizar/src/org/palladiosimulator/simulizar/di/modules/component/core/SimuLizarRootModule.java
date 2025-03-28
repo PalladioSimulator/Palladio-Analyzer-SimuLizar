@@ -2,9 +2,9 @@ package org.palladiosimulator.simulizar.di.modules.component.core;
 
 import java.util.Set;
 
-import org.palladiosimulator.simulizar.di.base.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
+import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.CoreRuntimeExtensionBindings;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.DependencyComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.root.ExtensionComponentRootExtensionBindings;

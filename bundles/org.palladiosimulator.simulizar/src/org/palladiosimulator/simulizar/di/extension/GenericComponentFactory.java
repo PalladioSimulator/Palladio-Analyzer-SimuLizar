@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.base.extension;
+package org.palladiosimulator.simulizar.di.extension;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -13,6 +13,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;

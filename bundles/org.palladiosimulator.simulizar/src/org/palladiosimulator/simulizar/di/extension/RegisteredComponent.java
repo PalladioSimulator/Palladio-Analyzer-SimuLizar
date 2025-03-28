@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.di.base.extension;
+package org.palladiosimulator.simulizar.di.extension;
 
 import static java.lang.annotation.ElementType.FIELD;
 import static java.lang.annotation.ElementType.METHOD;
