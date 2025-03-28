@@ -20,9 +20,9 @@ import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.system.System;
 import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.core.entity.SimuLizarEntityReferenceFactories;
+import org.palladiosimulator.simulizar.core.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
-import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.test.commons.annotation.PCMInstanceFromSupplier;
 import org.palladiosimulator.simulizar.test.commons.models.AllocationLookupSyncerTestModels;
 

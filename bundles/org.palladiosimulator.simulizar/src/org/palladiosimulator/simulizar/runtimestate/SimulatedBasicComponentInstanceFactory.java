@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.runtimestate;
 import java.util.List;
 
 import org.palladiosimulator.pcm.repository.PassiveResource;
+import org.palladiosimulator.simulizar.core.runtimestate.FQComponentID;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 
 import dagger.assisted.AssistedFactory;

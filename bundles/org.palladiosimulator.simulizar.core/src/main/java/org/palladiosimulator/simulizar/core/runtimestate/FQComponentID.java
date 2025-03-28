@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.runtimestate;
+package org.palladiosimulator.simulizar.core.runtimestate;
 
 import java.util.Collections;
 import java.util.List;
