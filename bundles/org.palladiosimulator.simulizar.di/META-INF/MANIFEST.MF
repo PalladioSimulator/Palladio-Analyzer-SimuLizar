@@ -17,6 +17,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.uka.ipd.sdq.simucomframework.core;bundle-version="5.2.1",
  org.palladiosimulator.probeframework;bundle-version="5.2.1",
  org.palladiosimulator.recorderframework.core;bundle-version="5.2.1",
+ de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.core;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
