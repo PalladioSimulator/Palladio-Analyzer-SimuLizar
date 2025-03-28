@@ -5,6 +5,7 @@ Bundle-SymbolicName: org.palladiosimulator.simulizar.di
 Automatic-Module-Name: org.palladiosimulator.simulizar.di
 Bundle-Version: 5.2.1.qualifier
 Export-Package: org.palladiosimulator.simulizar.di.modules.component.core,
+ org.palladiosimulator.simulizar.di.modules.component.eclipse,
  org.palladiosimulator.simulizar.di.modules.stateless.configuration,
  org.palladiosimulator.simulizar.di.modules.stateless.mdsd
 Require-Bundle: javax.inject;bundle-version="1.0.0",
@@ -14,6 +15,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1",
  de.uka.ipd.sdq.simucomframework.core;bundle-version="5.2.1",
  org.palladiosimulator.probeframework;bundle-version="5.2.1",
+ org.palladiosimulator.recorderframework.core;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.core;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
