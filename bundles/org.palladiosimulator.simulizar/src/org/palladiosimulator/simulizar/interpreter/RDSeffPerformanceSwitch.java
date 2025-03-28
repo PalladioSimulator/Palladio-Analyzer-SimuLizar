@@ -13,7 +13,7 @@ import org.palladiosimulator.pcm.seff.seff_performance.InfrastructureCall;
 import org.palladiosimulator.pcm.seff.seff_performance.ParametricResourceDemand;
 import org.palladiosimulator.pcm.seff.seff_performance.ResourceCall;
 import org.palladiosimulator.pcm.seff.seff_performance.util.SeffPerformanceSwitch;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.RDSeffSwitchContributionFactory.RDSeffElementDispatcher;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;

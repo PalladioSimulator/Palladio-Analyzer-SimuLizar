@@ -2,9 +2,9 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.entity.access.SimulatedLinkingResourceAccess;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;

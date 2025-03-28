@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter.listener;
 
-import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.entity.InterpretableLocationReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.InterpretableLocationReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 

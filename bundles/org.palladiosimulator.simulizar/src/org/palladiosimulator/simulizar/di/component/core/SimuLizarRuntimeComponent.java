@@ -2,6 +2,7 @@ package org.palladiosimulator.simulizar.di.component.core;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
@@ -14,13 +15,11 @@ import org.palladiosimulator.simulizar.di.extension.ExtensionLookup;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RuntimeComponentFactoriesModule;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionInterpreter;
 import org.palladiosimulator.simulizar.interpreter.listener.InterpreterResultEventEmitter;
-import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehavior;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandler;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.launcher.jobs.SimuLizarRuntimeJob;
@@ -55,19 +54,19 @@ public interface SimuLizarRuntimeComponent extends AnalysisRuntimeComponent {
 
     @MainContext
     InterpreterDefaultContext mainContext();
-    
+
     SimulatedThreadComponent.Factory interpreterThreadComponentFactory();
-    
-    ITransmissionInterpreter<EntityReference<ResourceContainer>,SimulatedStackframe<Object>,InterpreterDefaultContext> transmissionInterpreter();
-    
+
+    ITransmissionInterpreter<EntityReference<ResourceContainer>, SimulatedStackframe<Object>, InterpreterDefaultContext> transmissionInterpreter();
+
     ExtensionLookup runtimeExtensionLookup();
-    
+
     InterpreterResultMerger merger();
-    
+
     InterpreterResultHandler resultHandler();
-    
+
     InterpreterResultEventEmitter resultEventEmitter();
-    
+
     PreInterpretationBehaviorManager preInterpretationBehaviorManager();
 
     @Component.Factory

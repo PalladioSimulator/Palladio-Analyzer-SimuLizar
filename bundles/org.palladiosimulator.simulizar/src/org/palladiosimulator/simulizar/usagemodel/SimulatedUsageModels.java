@@ -15,8 +15,8 @@ import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
 import org.palladiosimulator.pcm.usagemodel.util.UsagemodelSwitch;
+import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
-import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
 

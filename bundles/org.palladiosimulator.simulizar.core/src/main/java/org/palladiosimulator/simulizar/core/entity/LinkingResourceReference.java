@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.entity;
+package org.palladiosimulator.simulizar.core.entity;
 
 import java.util.Iterator;
 

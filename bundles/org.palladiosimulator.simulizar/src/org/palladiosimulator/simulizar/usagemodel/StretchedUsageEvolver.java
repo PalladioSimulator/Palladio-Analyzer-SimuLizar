@@ -6,8 +6,8 @@ import javax.inject.Named;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;

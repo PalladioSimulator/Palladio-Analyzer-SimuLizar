@@ -5,7 +5,7 @@ import java.util.Collections;
 import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.linking.ITransmissionSimulationStrategy;
 

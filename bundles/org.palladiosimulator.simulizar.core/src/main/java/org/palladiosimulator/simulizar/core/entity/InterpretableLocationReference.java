@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.entity;
+package org.palladiosimulator.simulizar.core.entity;
 
 /**
  * This interface is used to point to a generic element within the simulated world. The element

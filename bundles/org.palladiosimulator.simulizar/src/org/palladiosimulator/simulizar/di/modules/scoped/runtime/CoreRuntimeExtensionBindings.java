@@ -4,11 +4,11 @@ import java.util.Set;
 
 import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRuntimeExtensions;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.CoreBindingsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.PCMPartitionManagerAdapterModule;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.impl.SimulatedThreadComponentDelegatingScenarioRunner;
 import org.palladiosimulator.simulizar.modelobserver.AllocationLookupSyncer;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;

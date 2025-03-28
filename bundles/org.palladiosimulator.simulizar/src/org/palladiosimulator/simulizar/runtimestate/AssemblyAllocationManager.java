@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.entity.EntityReference;
 
 import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
 

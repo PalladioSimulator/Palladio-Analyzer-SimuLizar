@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.palladiosimulator.pcm.core.entity.Entity;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 
 import de.uka.ipd.sdq.simucomframework.core.usage.IScenarioRunner;
 

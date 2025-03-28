@@ -1,8 +1,8 @@
-package org.palladiosimulator.simulizar.entity;
+package org.palladiosimulator.simulizar.core.entity;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.entity.EntityReference.AbstractEntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.entity.EntityReference.AbstractEntityReferenceFactory;
 
 /**
  * This class contains specialized entity reference factory implementations for the relevant model

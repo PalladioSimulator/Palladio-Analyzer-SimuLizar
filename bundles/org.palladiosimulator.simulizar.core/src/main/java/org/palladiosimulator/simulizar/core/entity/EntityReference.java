@@ -1,4 +1,4 @@
-package org.palladiosimulator.simulizar.entity;
+package org.palladiosimulator.simulizar.core.entity;
 
 import java.util.Iterator;
 import java.util.Optional;
@@ -62,13 +62,13 @@ public class EntityReference<EntityType extends Entity> implements Interpretable
         return getModelElementIfPresent(partition)
             .orElseThrow(() -> new IllegalStateException("Referenced element not present in resource set partition."));
     }
-    
+
     /**
      * Gets the model element of the referenced entity from the given resource set partition.
      */
     public Optional<EntityType> getModelElementIfPresent(PCMResourceSetPartition partition) {
         var result = Optional.ofNullable(elementCache.get(partition.getResourceSet()));
-        
+
         if (result.isEmpty()) {
             var iter = retrieveModelElements(partition);
             if (iter.hasNext()) {
@@ -76,19 +76,19 @@ public class EntityReference<EntityType extends Entity> implements Interpretable
                 elementCache.put(partition.getResourceSet(), result.get());
             }
         }
-            
+
         return result;
     }
 
     public String getId() {
         return id;
     }
-    
+
     protected Iterator<EntityType> retrieveModelElements(PCMResourceSetPartition partition) {
         return Iterators.filter(Iterators.filter(partition.getResourceSet()
-                .getAllContents(), entityClass),
-                    it -> it.getId()
-                        .equals(id));
+            .getAllContents(), entityClass),
+                it -> it.getId()
+                    .equals(id));
     }
 
     @Override
@@ -122,7 +122,7 @@ public class EntityReference<EntityType extends Entity> implements Interpretable
             return false;
         return true;
     }
-    
+
     @Override
     public boolean isLocationIdentifiedBy(EntityReference<?>... entityReferences) {
         if (entityReferences == null || entityReferences.length != 1) {

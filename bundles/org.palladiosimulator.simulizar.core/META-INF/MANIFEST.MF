@@ -4,7 +4,8 @@ Bundle-Name: org.palladiosimulator.simulizar.core
 Bundle-SymbolicName: org.palladiosimulator.simulizar.core
 Automatic-Module-Name: org.palladiosimulator.simulizar.core
 Bundle-Version: 5.2.1.qualifier
-Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs,
+Export-Package: org.palladiosimulator.simulizar.core.entity,
+ org.palladiosimulator.simulizar.core.launcher.jobs,
  org.palladiosimulator.simulizar.core.reconfiguration,
  org.palladiosimulator.simulizar.core.runconfig,
  org.palladiosimulator.simulizar.core.runtimestate,
@@ -12,6 +13,7 @@ Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs,
 Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.emf.ecore;bundle-version="2.33.0",
  org.apache.log4j;bundle-version="1.2.15",
+ com.google.guava;bundle-version="27.1.0",
  org.palladiosimulator.commons;bundle-version="5.2.1",
  de.uka.ipd.sdq.workflow;bundle-version="5.2.1",
  de.uka.ipd.sdq.simulation.core;bundle-version="5.2.1",

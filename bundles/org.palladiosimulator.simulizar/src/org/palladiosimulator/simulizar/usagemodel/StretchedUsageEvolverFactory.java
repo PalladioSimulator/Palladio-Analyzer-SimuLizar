@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 
 import dagger.assisted.AssistedFactory;
 

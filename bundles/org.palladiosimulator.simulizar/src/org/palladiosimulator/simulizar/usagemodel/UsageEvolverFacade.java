@@ -6,8 +6,8 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
+import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
 import org.palladiosimulator.simulizar.runtimestate.RuntimeStateEntityManager;
 import org.scaledl.usageevolution.Usage;
 
