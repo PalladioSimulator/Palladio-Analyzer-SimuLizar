@@ -7,6 +7,7 @@ Bundle-Version: 5.2.1.qualifier
 Export-Package: org.palladiosimulator.simulizar.core.launcher.jobs,
  org.palladiosimulator.simulizar.core.reconfiguration,
  org.palladiosimulator.simulizar.core.runconfig,
+ org.palladiosimulator.simulizar.core.runtimestate,
  org.palladiosimulator.simulizar.core.utils
 Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.eclipse.emf.ecore;bundle-version="2.33.0",
@@ -22,9 +23,10 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.1",
  org.palladiosimulator.monitorrepository;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.2.1",
- org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.reconfigurationrule;bundle-version="5.2.1",
- com.google.dagger
+ de.uka.ipd.sdq.simulation;bundle-version="5.2.1",
+ de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="5.2.1",
+ org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org
