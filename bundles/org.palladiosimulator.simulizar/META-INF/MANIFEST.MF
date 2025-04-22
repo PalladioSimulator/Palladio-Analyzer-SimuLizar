@@ -47,7 +47,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  de.uka.ipd.sdq.simulation;bundle-version="5.2.1",
  org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1";visibility:=reexport,
  org.palladiosimulator.simulizar.core;bundle-version="5.2.1";visibility:=reexport,
- org.palladiosimulator.simulizar.di;bundle-version="5.2.1";visibility:=reexport
+ org.palladiosimulator.simulizar.di;bundle-version="5.2.1";visibility:=reexport,
+ tools.descartes.dlim.generator;bundle-version="0.17.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
