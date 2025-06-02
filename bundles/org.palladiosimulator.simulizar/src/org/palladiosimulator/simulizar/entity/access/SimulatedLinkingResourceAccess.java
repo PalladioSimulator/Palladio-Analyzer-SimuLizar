@@ -4,10 +4,10 @@ import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResource;
-import de.uka.ipd.sdq.simucomframework.resources.SimulatedLinkingResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.core.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimulatedLinkingResourceContainer;
 
 /**
  * This class supplies access to SimulatedLinkingResources based on the respective entity reference using a given ResourceRegistry.

@@ -2,11 +2,11 @@ package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
 import javax.inject.Provider;
 
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.component.dependency.QUALComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent;
 import org.palladiosimulator.simulizar.di.component.dependency.SimuComFrameworkComponent;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Module;
 import dagger.Provides;

@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Set;
 
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.component.eclipse.EclipseSimuLizarRuntimeComponent;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.di.modules.scoped.runtime.LegacyRuntimeStateAccessorAdapterModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 import com.google.common.collect.ImmutableSet;
 

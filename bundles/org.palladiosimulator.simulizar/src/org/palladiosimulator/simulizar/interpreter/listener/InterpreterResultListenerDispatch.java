@@ -4,7 +4,7 @@ import java.util.Set;
 
 import javax.inject.Inject;
 
-import org.palladiosimulator.simulizar.entity.InterpretableLocationReference;
+import org.palladiosimulator.simulizar.core.entity.InterpretableLocationReference;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 

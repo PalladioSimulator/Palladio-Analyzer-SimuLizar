@@ -30,7 +30,7 @@ import org.palladiosimulator.servicelevelobjective.ServiceLevelObjectiveReposito
 import org.palladiosimulator.servicelevelobjective.ServicelevelObjectivePackage;
 import org.palladiosimulator.servicelevelobjective.edp2.mappers.SLOViolationEDP2DatasourceMapper;
 import org.palladiosimulator.servicelevelobjective.edp2.mappers.SLOViolationEDP2DatasourceMapperConfiguration;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.CleanupFailedException;
 import de.uka.ipd.sdq.workflow.jobs.JobFailedException;

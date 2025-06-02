@@ -19,13 +19,13 @@ import org.palladiosimulator.probeframework.calculator.DefaultCalculatorProbeSet
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;
 import org.palladiosimulator.probeframework.probes.TriggeredProbe;
 import org.palladiosimulator.probeframework.probes.TriggeredProbeList;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 import org.palladiosimulator.simulizar.interpreter.listener.EventResult;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
-import de.uka.ipd.sdq.simucomframework.probes.TakeCurrentSimulationTimeProbe;
-import de.uka.ipd.sdq.simucomframework.probes.TakeNumberOfResourceContainersProbe;
+import de.uka.ipd.sdq.simucomframework.core.probes.TakeCurrentSimulationTimeProbe;
+import de.uka.ipd.sdq.simucomframework.core.probes.TakeNumberOfResourceContainersProbe;
 import de.uka.ipd.sdq.simulation.abstractsimengine.ISimulationControl;
 
 /**

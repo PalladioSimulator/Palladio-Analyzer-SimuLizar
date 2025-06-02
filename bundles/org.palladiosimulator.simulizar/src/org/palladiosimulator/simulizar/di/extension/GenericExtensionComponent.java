@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+
 import com.google.common.collect.Sets;
 import com.google.common.collect.Streams;
 

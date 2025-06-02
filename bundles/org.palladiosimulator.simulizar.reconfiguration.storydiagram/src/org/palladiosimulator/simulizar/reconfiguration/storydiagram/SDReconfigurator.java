@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurator;
+import org.palladiosimulator.simulizar.core.reconfiguration.AbstractReconfigurator;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
 
 import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;

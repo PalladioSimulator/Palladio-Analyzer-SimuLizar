@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
-import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.di.base.extension.Extension;
 
 import de.uka.ipd.sdq.workflow.mdsd.blackboard.ResourceSetPartition;
 

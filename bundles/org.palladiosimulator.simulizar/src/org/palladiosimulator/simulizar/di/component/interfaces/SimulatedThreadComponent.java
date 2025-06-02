@@ -6,7 +6,7 @@ import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;
 import org.palladiosimulator.simulizar.interpreter.RepositoryComponentSwitch;
 
 import dagger.BindsInstance;
-import de.uka.ipd.sdq.simucomframework.SimuComSimProcess;
+import de.uka.ipd.sdq.simucomframework.core.SimuComSimProcess;
 
 public interface SimulatedThreadComponent {
     InterpreterFacade interpreterFacade();

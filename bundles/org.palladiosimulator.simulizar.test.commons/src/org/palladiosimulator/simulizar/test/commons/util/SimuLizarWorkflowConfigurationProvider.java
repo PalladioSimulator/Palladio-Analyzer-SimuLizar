@@ -9,8 +9,8 @@ import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.palladiosimulator.edp2.models.Repository.Repository;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.annotation.SetConfigProperty;
 import org.palladiosimulator.simulizar.test.commons.annotation.SimulationConfig;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestExtensionCommons;

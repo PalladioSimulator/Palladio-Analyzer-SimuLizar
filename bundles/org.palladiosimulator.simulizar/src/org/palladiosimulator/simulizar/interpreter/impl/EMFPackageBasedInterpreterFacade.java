@@ -8,13 +8,13 @@ import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.seff.SeffPackage;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Local;
 import org.palladiosimulator.simulizar.interpreter.ComposedRDSeffSwitchFactory;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterFacade;
 import org.palladiosimulator.simulizar.interpreter.UsageScenarioSwitch;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Local;
 
 public class EMFPackageBasedInterpreterFacade implements InterpreterFacade {
 

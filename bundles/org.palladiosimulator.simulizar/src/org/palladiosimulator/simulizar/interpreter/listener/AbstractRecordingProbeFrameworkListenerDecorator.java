@@ -7,10 +7,10 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.measurementframework.listener.MeasurementSource;
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.probeframework.ProbeFrameworkContext;
-import org.palladiosimulator.recorderframework.IRecorder;
-import org.palladiosimulator.recorderframework.config.AbstractRecorderConfiguration;
-import org.palladiosimulator.recorderframework.config.IRecorderConfiguration;
-import org.palladiosimulator.recorderframework.utils.RecorderExtensionHelper;
+import org.palladiosimulator.recorderframework.core.IRecorder;
+import org.palladiosimulator.recorderframework.core.config.AbstractRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.config.IRecorderConfiguration;
+import org.palladiosimulator.recorderframework.core.utils.RecorderExtensionHelper;
 
 import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 
@@ -57,7 +57,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     protected AbstractProbeFrameworkListener getProbeFrameworkListener() {
         return this.probeFrameworkListener;
     }
-    
+
     /**
      * Gets the current {@link ProbeFrameworkContext}.
      * 
@@ -81,7 +81,8 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
     protected IRecorder initializeRecorder(final Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null;
 
-        SimuComConfig config = this.probeFrameworkListener.getSimuComModel().getConfiguration();
+        SimuComConfig config = this.probeFrameworkListener.getSimuComModel()
+            .getConfiguration();
         IRecorder recorder = instantiateRecorder(config);
         recorder.initialize(createRecorderConfiguration(config, recorderConfigMap));
 
@@ -123,7 +124,8 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
             Map<String, Object> recorderConfigMap) {
         assert recorderConfigMap != null && config != null;
 
-        return config.getRecorderConfigurationFactory().createRecorderConfiguration(recorderConfigMap);
+        return config.getRecorderConfigurationFactory()
+            .createRecorderConfiguration(recorderConfigMap);
     }
 
     /**
@@ -158,7 +160,7 @@ public abstract class AbstractRecordingProbeFrameworkListenerDecorator {
         assert recorderAcceptedMetric != null;
         assert measuringPoint != null;
 
-        final Map<String, Object> result = new HashMap<String, Object>();
+        final Map<String, Object> result = new HashMap<>();
         result.put(AbstractRecorderConfiguration.RECORDER_ACCEPTED_METRIC, recorderAcceptedMetric);
         result.put(AbstractRecorderConfiguration.MEASURING_POINT, measuringPoint);
         return result;

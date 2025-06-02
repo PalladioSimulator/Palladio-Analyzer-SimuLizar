@@ -3,14 +3,14 @@ package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 import java.util.Set;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ReconfigurationExtensions;
 import org.palladiosimulator.simulizar.modelobserver.IModelObserver;
 import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationListener;
 import org.palladiosimulator.simulizar.reconfiguration.NumberOfResourceContainerTrackingListener;
 import org.palladiosimulator.simulizar.reconfiguration.ReconfigurationProcessFactory;
 import org.palladiosimulator.simulizar.reconfiguration.Reconfigurator;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import dagger.Binds;
 import dagger.Module;

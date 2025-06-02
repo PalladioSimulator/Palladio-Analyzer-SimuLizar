@@ -4,11 +4,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.palladiosimulator.commons.eclipseutils.ExtensionHelper;
+import org.palladiosimulator.simulizar.core.reconfiguration.IReconfigurationEngine;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.di.base.scopes.ObservationScope;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.reconfiguration.IReconfigurationEngine;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.scopes.ObservationScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import com.google.common.collect.ImmutableSet;
 

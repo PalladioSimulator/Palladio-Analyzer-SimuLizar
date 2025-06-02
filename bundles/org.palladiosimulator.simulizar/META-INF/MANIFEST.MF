@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: PCM Simulizar Core: PCM Interpreter with self-* features
+Bundle-Name: PCM Simulizar: PCM Interpreter with self-* features
 Bundle-SymbolicName: org.palladiosimulator.simulizar;singleton:=true
 Bundle-Version: 5.2.1.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.Activator
@@ -18,7 +18,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  de.uka.ipd.sdq.scheduler,
  org.palladiosimulator.measurementframework,
  org.palladiosimulator.edp2.util,
- org.palladiosimulator.recorderframework,
+ org.palladiosimulator.recorderframework.core;bundle-version="5.2.1",
  org.palladiosimulator.monitorrepository,
  org.palladiosimulator.pcm.edp2.measuringpoint,
  org.palladiosimulator.edp2.datastream,
@@ -44,12 +44,15 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework;bundle-version="4.1.1",
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
  org.palladiosimulator.commons.stoex;bundle-version="5.2.1",
+ de.uka.ipd.sdq.simulation;bundle-version="5.2.1",
+ org.palladiosimulator.simulizar.di.base;bundle-version="5.2.1";visibility:=reexport,
+ org.palladiosimulator.simulizar.core;bundle-version="5.2.1";visibility:=reexport,
+ org.palladiosimulator.simulizar.di;bundle-version="5.2.1";visibility:=reexport,
  tools.descartes.dlim.generator;bundle-version="0.17.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
  org.palladiosimulator.simulizar.di.component.core,
- org.palladiosimulator.simulizar.di.component.dependency,
  org.palladiosimulator.simulizar.di.component.eclipse,
  org.palladiosimulator.simulizar.di.component.interfaces,
  org.palladiosimulator.simulizar.di.extension,
@@ -57,15 +60,12 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
  org.palladiosimulator.simulizar.di.modules.component.eclipse,
  org.palladiosimulator.simulizar.di.modules.component.extensions,
  org.palladiosimulator.simulizar.di.modules.component.standalone,
- org.palladiosimulator.simulizar.di.modules.scoped.dependency,
  org.palladiosimulator.simulizar.di.modules.scoped.root,
  org.palladiosimulator.simulizar.di.modules.scoped.runtime,
- org.palladiosimulator.simulizar.di.modules.stateless.configuration,
  org.palladiosimulator.simulizar.di.modules.stateless.core,
  org.palladiosimulator.simulizar.di.modules.stateless.extension,
  org.palladiosimulator.simulizar.di.modules.stateless.mdsd,
  org.palladiosimulator.simulizar.di.modules.stateless.probes,
- org.palladiosimulator.simulizar.entity,
  org.palladiosimulator.simulizar.entity.access,
  org.palladiosimulator.simulizar.exceptions;uses:="de.mdelab.sdm.interpreter.core",
  org.palladiosimulator.simulizar.interpreter,
@@ -121,7 +121,6 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
    org.palladiosimulator.simulizar.runconfig,
    de.uka.ipd.sdq.simucomframework.model,
    org.palladiosimulator.simulizar.usagemodel",
- org.palladiosimulator.simulizar.scopes,
  org.palladiosimulator.simulizar.simulationevents;uses:="de.uka.ipd.sdq.simulation.abstractsimengine,de.uka.ipd.sdq.simucomframework.entities,de.uka.ipd.sdq.simucomframework.model",
  org.palladiosimulator.simulizar.usagemodel;
   uses:="org.palladiosimulator.simulizar.interpreter,

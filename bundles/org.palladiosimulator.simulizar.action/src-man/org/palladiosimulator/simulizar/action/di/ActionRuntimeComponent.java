@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.action.di;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IExecutableExtensionFactory;
 import org.palladiosimulator.simulizar.action.interpreter.util.TransientEffectTransformationCacheKeeper;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 import dagger.Component;
 

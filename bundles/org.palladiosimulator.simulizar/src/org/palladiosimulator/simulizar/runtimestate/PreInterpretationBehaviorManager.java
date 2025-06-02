@@ -6,9 +6,9 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import org.eclipse.emf.ecore.EClass;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.interpreter.preinterpretation.PreInterpretationBehaviorContainer;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
 
 /**
  * Manager to exchange behavior for the interpretation of certain simulation entities between

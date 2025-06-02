@@ -3,9 +3,9 @@ package org.palladiosimulator.simulizar.reconfiguration.qvto;
 import javax.inject.Inject;
 
 import org.eclipse.emf.common.util.URI;
+import org.palladiosimulator.simulizar.di.base.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.reconfiguration.AbstractReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
-import org.palladiosimulator.simulizar.scopes.RuntimeExtensionScope;
 
 @RuntimeExtensionScope
 public class QVTOReconfigurationLoader extends AbstractReconfigurationLoader {

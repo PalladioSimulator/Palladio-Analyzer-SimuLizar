@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import org.palladiosimulator.simulizar.di.extension.Extension;
+import org.palladiosimulator.simulizar.di.base.extension.Extension;
 import org.palladiosimulator.simulizar.interpreter.listener.BeginReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.EndReconfigurationEvent;
 import org.palladiosimulator.simulizar.interpreter.listener.ReconfigurationExecutedEvent;

@@ -16,6 +16,9 @@
 		<module>ExampleImpl</module>
 		<module>ExampleModels</module>
 	-->
+		<module>org.palladiosimulator.simulizar.di.base</module>
+		<module>org.palladiosimulator.simulizar.core</module>
+		<module>org.palladiosimulator.simulizar.di</module>
 		<module>org.palladiosimulator.simulizar</module>
 		
 		<module>org.palladiosimulator.simulizar.action</module>

@@ -4,7 +4,7 @@ import java.util.stream.Stream;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractResourceEnvironmentObserver extends AbstractModelObserver<ResourceEnvironment> {
 

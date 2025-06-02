@@ -1,9 +1,9 @@
 package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.SimulationRootExtensions;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;
 import org.palladiosimulator.simulizar.launcher.jobs.extensions.DefaultMonitorRepositoryCompletionContributor;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Binds;
 import dagger.Module;

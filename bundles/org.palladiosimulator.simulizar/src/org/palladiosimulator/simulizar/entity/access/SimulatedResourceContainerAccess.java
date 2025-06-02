@@ -4,9 +4,9 @@ import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 
-import de.uka.ipd.sdq.simucomframework.ResourceRegistry;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.core.ResourceRegistry;
+import de.uka.ipd.sdq.simucomframework.core.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.resources.ISimulatedModelEntityAccess;
 
 /**
  * This class supplies access to AbstractSimulatedResourceContainers based on the respective entity

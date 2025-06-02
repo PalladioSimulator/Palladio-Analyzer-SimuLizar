@@ -7,9 +7,9 @@ import org.palladiosimulator.edp2.models.measuringpoint.MeasuringPoint;
 import org.palladiosimulator.probeframework.calculator.Calculator;
 
 import de.uka.ipd.sdq.scheduler.IPassiveResource;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.resources.AbstractScheduledResource;
-import de.uka.ipd.sdq.simucomframework.resources.CalculatorHelper;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.resources.AbstractScheduledResource;
+import de.uka.ipd.sdq.simucomframework.core.resources.CalculatorHelper;
 
 public class CalculatorFactoryFacade {
 

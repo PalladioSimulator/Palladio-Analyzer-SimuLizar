@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.di.modules.component.standalone;
 
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisDependencyScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimEngineModule;
-import org.palladiosimulator.simulizar.scopes.AnalysisDependencyScope;
 
 import dagger.Module;
 import dagger.Provides;

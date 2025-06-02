@@ -12,11 +12,11 @@ import org.palladiosimulator.monitorrepository.map.MapPackage;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
 import org.palladiosimulator.simulizar.monitorrepository.map.runtimemeasurement.MonitorRepositoryMapRuntimeMeasurementsRecorder;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 /**
  * Implementation of the {@link AbstractRecordingProbeFrameworkListenerDecorator} class dedicated to
