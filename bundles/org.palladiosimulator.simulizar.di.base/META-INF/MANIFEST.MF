@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.simulizar.di.base
 Bundle-SymbolicName: org.palladiosimulator.simulizar.di.base
 Automatic-Module-Name: org.palladiosimulator.simulizar.di.base
-Bundle-Version: 5.2.1.qualifier
+Bundle-Version: 5.2.2
 Export-Package: org.palladiosimulator.simulizar.di.base.extension,
  org.palladiosimulator.simulizar.di.base.scopes
 Require-Bundle: javax.inject;bundle-version="1.0.0"
