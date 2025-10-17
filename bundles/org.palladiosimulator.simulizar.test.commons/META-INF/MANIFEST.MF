@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Test Commons
 Bundle-SymbolicName: org.palladiosimulator.simulizar.test.commons
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.test.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",

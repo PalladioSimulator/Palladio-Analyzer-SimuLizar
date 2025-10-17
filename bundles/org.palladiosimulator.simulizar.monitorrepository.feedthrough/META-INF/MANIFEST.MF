@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Feedthrough Support for SimuLizar PRM Measurements
 Bundle-SymbolicName: org.palladiosimulator.simulizar.monitorrepository.feedthrough;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.simulizar;bundle-version="5.2.2",
  org.palladiosimulator.monitorrepository;bundle-version="3.0.1",
