@@ -2,6 +2,8 @@ package org.palladiosimulator.simulizar.action.interpreter;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -14,6 +16,7 @@ import org.eclipse.m2m.qvt.oml.ModelExtent;
 import org.palladiosimulator.pcm.repository.Repository;
 import org.palladiosimulator.pcm.repository.RepositoryPackage;
 import org.palladiosimulator.simulizar.action.context.ExecutionContext;
+import org.palladiosimulator.simulizar.action.core.AdaptationStep;
 import org.palladiosimulator.simulizar.action.core.EnactAdaptationStep;
 import org.palladiosimulator.simulizar.action.core.GuardedTransition;
 import org.palladiosimulator.simulizar.action.core.ResourceDemandingStep;
@@ -38,14 +41,15 @@ import de.uka.ipd.sdq.scheduler.resources.active.IResourceTableManager;
  */
 class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
 
-	private static final Logger LOGGER = Logger.getLogger(TransientEffectQVTOExecutor.class);
-	
+    private static final Logger LOGGER = Logger.getLogger(TransientEffectQVTOExecutor.class);
+
     private static final EPackage MAPPING_EPACKAGE = MappingPackage.Literals.MAPPING.getEPackage();
     private static final EPackage REPOSITORY_EPACKAGE = RepositoryPackage.Literals.REPOSITORY.getEPackage();
 
     private final Collection<ModelExtent> currentPureOutParams;
-    
-    protected TransientEffectQVTOExecutor(ModelTransformationCache transformationCache, QVToModelCache availableModels) {
+
+    protected TransientEffectQVTOExecutor(ModelTransformationCache transformationCache,
+            QVToModelCache availableModels) {
         super(transformationCache, Objects.requireNonNull(availableModels));
         this.currentPureOutParams = new ArrayList<>();
 
@@ -57,21 +61,27 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
         Collection<EObject> cachedRepo = this.getModelsByType(REPOSITORY_EPACKAGE);
         this.storeModel(controllerCompletionRepository);
         URI controllerCompletionUri = URI.createURI(controllerCompletionPath);
-        QvtoModelTransformation controllerCompletion = this.getTransformationByUri(controllerCompletionUri).get();
-        boolean result = this.executeTransformation(controllerCompletion, resourceTableManager);
+        QvtoModelTransformation controllerCompletion = this.getTransformationByUri(controllerCompletionUri)
+            .get();
+        Map<String, Object> configParams = Collections.emptyMap();
+        boolean result = this.executeTransformation(controllerCompletion, resourceTableManager, configParams);
         // restore if necessary
         cachedRepo.forEach(repoInCache -> this.storeModel(repoInCache));
         if (result) {
-            return this.getModelByType(MAPPING_EPACKAGE).map(obj -> (Mapping) obj);
+            return this.getModelByType(MAPPING_EPACKAGE)
+                .map(obj -> (Mapping) obj);
         }
         return Optional.empty();
     }
 
     boolean executeGuardedTransition(GuardedTransition guardedTransition, IResourceTableManager resourceTableManager) {
-    	URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
-		QvtoModelTransformation condition = this.getTransformationByUri(conditionUri).get();
-		ExecutionDiagnostic result = this.executeTransformationInternal(Objects.requireNonNull(condition), resourceTableManager);
-		return handleExecutionResultForGuardedTransition(guardedTransition, result);
+        URI conditionUri = URI.createURI(guardedTransition.getConditionURI());
+        QvtoModelTransformation condition = this.getTransformationByUri(conditionUri)
+            .get();
+        Map<String, Object> configParams = Collections.emptyMap();
+        ExecutionDiagnostic result = this.executeTransformationInternal(Objects.requireNonNull(condition),
+                resourceTableManager, configParams);
+        return handleExecutionResultForGuardedTransition(guardedTransition, result);
     }
 
     private void storeModel(EObject model) {
@@ -88,10 +98,10 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     void addTransformationParameters(RoleSet roleSet, ExecutionContext context) {
-    	 storeModel(roleSet);
-         storeModel(context);
+        storeModel(roleSet);
+        storeModel(context);
     }
-    
+
     void enableForTransformationExecution(EnactAdaptationStep enactAdaptationStep) {
         storeModel(Objects.requireNonNull(enactAdaptationStep));
         prepareTransformation(enactAdaptationStep.getAdaptationStepURI());
@@ -107,7 +117,8 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
     }
 
     void enableForTransformationExecution(GuardedTransition guardedTransition) {
-        prepareTransformation(Objects.requireNonNull(guardedTransition).getConditionURI());
+        prepareTransformation(Objects.requireNonNull(guardedTransition)
+            .getConditionURI());
     }
 
     Optional<QvtoModelTransformation> getTransformationByUri(URI transformationId) {
@@ -120,35 +131,45 @@ class TransientEffectQVTOExecutor extends AbstractQVTOExecutor {
 
     Optional<EObject> getModelByType(EPackage modelType) {
         Collection<EObject> modelsOfType = this.getModelsByType(Objects.requireNonNull(modelType));
-        return modelsOfType.isEmpty() ? Optional.empty() : Optional.of(modelsOfType.iterator().next());
+        return modelsOfType.isEmpty() ? Optional.empty()
+                : Optional.of(modelsOfType.iterator()
+                    .next());
     }
 
     @Override
     protected boolean handleExecutionResult(ExecutionDiagnostic executionResult) {
         boolean result = super.handleExecutionResult(executionResult);
         if (result) {
-            this.currentPureOutParams.stream().map(ModelExtent::getContents).filter(contents -> !contents.isEmpty())
-                    .map(contents -> contents.get(0)).forEach(getAvailableModels()::storeModel);
+            this.currentPureOutParams.stream()
+                .map(ModelExtent::getContents)
+                .filter(contents -> !contents.isEmpty())
+                .map(contents -> contents.get(0))
+                .forEach(getAvailableModels()::storeModel);
         }
         return result;
     }
-    
-    protected boolean handleExecutionResultForGuardedTransition(GuardedTransition guardedTransition, ExecutionDiagnostic executionResult) {
-    	if (executionResult.getCode() == ExecutionDiagnostic.FATAL_ASSERTION) {
-    		LOGGER.info("Guard Condition of \"" + guardedTransition.getEntityName() + "\" evaluated to false. The transition is not taken.");
-    		return false;
-    	} else {
-    		return this.handleExecutionResult(executionResult);
-    	}
-    	
+
+    protected boolean handleExecutionResultForGuardedTransition(GuardedTransition guardedTransition,
+            ExecutionDiagnostic executionResult) {
+        if (executionResult.getCode() == ExecutionDiagnostic.FATAL_ASSERTION) {
+            LOGGER.info("Guard Condition of \"" + guardedTransition.getEntityName()
+                    + "\" evaluated to false. The transition is not taken.");
+            return false;
+        } else {
+            return this.handleExecutionResult(executionResult);
+        }
+
     }
 
     @Override
     protected ModelExtent[] setupModelExtents(QvtoModelTransformation transformation) {
         this.currentPureOutParams.clear();
         ModelExtent[] result = super.setupModelExtents(transformation);
-        transformation.getPureOutParameters().stream().mapToInt(TransformationParameterInformation::getParameterIndex)
-                .mapToObj(index -> result[index]).forEach(this.currentPureOutParams::add);
+        transformation.getPureOutParameters()
+            .stream()
+            .mapToInt(TransformationParameterInformation::getParameterIndex)
+            .mapToObj(index -> result[index])
+            .forEach(this.currentPureOutParams::add);
         return result;
     }
 }

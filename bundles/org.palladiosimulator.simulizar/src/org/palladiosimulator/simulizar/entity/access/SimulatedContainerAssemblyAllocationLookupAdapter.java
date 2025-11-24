@@ -3,11 +3,11 @@ package org.palladiosimulator.simulizar.entity.access;
 import javax.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 
-import de.uka.ipd.sdq.simucomframework.resources.AbstractSimulatedResourceContainer;
-import de.uka.ipd.sdq.simucomframework.resources.IAssemblyAllocationLookup;
-import de.uka.ipd.sdq.simucomframework.resources.ISimulatedModelEntityAccess;
+import de.uka.ipd.sdq.simucomframework.core.resources.AbstractSimulatedResourceContainer;
+import de.uka.ipd.sdq.simucomframework.core.resources.IAssemblyAllocationLookup;
+import de.uka.ipd.sdq.simucomframework.core.resources.ISimulatedModelEntityAccess;
 
 /**
  * This adapter provides a lookup of the simulated resource container to which a given assembly is allocated to.

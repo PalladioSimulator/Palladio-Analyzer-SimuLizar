@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.test.commons.models
 
 import java.util.function.Supplier
 import org.eclipse.emf.common.util.URI
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition
 import org.palladiosimulator.pcm.allocation.AllocationFactory
 import org.palladiosimulator.pcm.core.CoreFactory
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentFactory

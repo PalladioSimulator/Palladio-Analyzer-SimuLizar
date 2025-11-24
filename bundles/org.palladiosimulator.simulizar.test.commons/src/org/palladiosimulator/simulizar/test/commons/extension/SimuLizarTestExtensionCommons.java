@@ -11,7 +11,7 @@ import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ParameterContext;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.test.commons.annotation.PredicateFactory;
 
 import com.google.common.collect.Streams;

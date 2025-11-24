@@ -6,10 +6,10 @@ import javax.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.UsageEvolverFacade;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 import org.scaledl.usageevolution.Usage;
 import org.scaledl.usageevolution.UsageEvolution;
 import org.scaledl.usageevolution.UsageevolutionPackage;

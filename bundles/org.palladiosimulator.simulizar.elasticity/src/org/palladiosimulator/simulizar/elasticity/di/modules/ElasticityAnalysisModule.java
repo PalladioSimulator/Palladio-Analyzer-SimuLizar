@@ -1,12 +1,12 @@
 package org.palladiosimulator.simulizar.elasticity.di.modules;
 
+import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;
 import org.palladiosimulator.simulizar.di.modules.component.core.SimuLizarRuntimeModule;
 import org.palladiosimulator.simulizar.elasticity.aggregator.ReconfigurationTimeAggregatorWithConfidence;
-import org.palladiosimulator.simulizar.scopes.AnalysisRootScope;
 
 import dagger.Module;
 import dagger.Provides;
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.statistics.StaticBatchAlgorithm;
 import de.uka.ipd.sdq.statistics.estimation.SampleMeanEstimator;
 

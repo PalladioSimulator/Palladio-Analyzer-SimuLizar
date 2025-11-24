@@ -21,8 +21,8 @@ import org.eclipse.emf.ecore.resource.URIConverter;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.palladiosimulator.analyzer.workflow.ConstantsContainer;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.ConstantsContainer;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryFactory;
@@ -49,10 +49,10 @@ import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementFactory;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurator;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.QVTOReconfigurationLoader;
 import org.palladiosimulator.simulizar.reconfigurationrule.ModelTransformation;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import com.google.common.collect.Streams;
 

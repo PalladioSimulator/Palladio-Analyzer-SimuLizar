@@ -4,7 +4,7 @@ import static org.junit.platform.commons.support.AnnotationSupport.findAnnotatio
 
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.test.commons.annotation.Identified;
 import org.palladiosimulator.simulizar.test.commons.annotation.MockSimulation;
 import org.palladiosimulator.simulizar.test.commons.annotation.Named;

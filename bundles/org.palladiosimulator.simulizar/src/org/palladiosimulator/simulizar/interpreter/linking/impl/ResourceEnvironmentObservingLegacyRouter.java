@@ -13,16 +13,16 @@ import javax.inject.Inject;
 
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceEnvironment;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceenvironmentPackage;
-import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.interpreter.linking.ILinkingResourceRouter;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 /**
  * This class implements the routing behavior of SimuCom for SimuLizar. It checks for every

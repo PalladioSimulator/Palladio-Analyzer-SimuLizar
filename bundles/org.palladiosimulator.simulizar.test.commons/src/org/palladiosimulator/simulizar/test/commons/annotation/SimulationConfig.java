@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 import org.palladiosimulator.simulizar.test.commons.util.SimuLizarWorkflowConfigurationProvider;
 
-import de.uka.ipd.sdq.simulation.AbstractSimulationConfig;
+import de.uka.ipd.sdq.simulation.core.AbstractSimulationConfig;
 
 @Retention(RUNTIME)
 @Target({ METHOD, ANNOTATION_TYPE })

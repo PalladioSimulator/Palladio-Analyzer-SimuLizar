@@ -5,25 +5,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.metricspec.constants.MetricDescriptionConstants;
 import org.palladiosimulator.monitorrepository.MeasurementSpecification;
 import org.palladiosimulator.monitorrepository.MonitorRepository;
 import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.pcm.core.composition.AssemblyContext;
 import org.palladiosimulator.pcm.repository.PassiveResource;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.legacy.CalculatorFactoryFacade;
 import org.palladiosimulator.simulizar.utils.MonitorRepositoryUtil;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
 import de.uka.ipd.sdq.scheduler.IPassiveResource;
 import de.uka.ipd.sdq.scheduler.ISchedulableProcess;
 import de.uka.ipd.sdq.scheduler.processes.IWaitingProcess;
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simucomframework.resources.SimSimpleFairPassiveResource;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.resources.SimSimpleFairPassiveResource;
 import de.uka.ipd.sdq.simucomframework.variables.StackContext;
 
 public class SimulatedBasicComponentInstance extends SimulatedComponentInstance {

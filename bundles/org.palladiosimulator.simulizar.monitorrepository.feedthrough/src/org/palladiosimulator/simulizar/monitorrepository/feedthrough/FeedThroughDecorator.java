@@ -13,10 +13,10 @@ import org.palladiosimulator.monitorrepository.MonitorRepositoryPackage;
 import org.palladiosimulator.probeframework.calculator.IObservableCalculatorRegistry;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementModel;
 import org.palladiosimulator.runtimemeasurement.RuntimeMeasurementPackage;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractProbeFrameworkListener;
 import org.palladiosimulator.simulizar.interpreter.listener.AbstractRecordingProbeFrameworkListenerDecorator;
 import org.palladiosimulator.simulizar.interpreter.listener.DeferredMeasurementInitialization;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 /**
  * Registers PRM recorders that directly update measurements in the RuntimeMeasurement model with

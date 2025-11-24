@@ -2,21 +2,24 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: QVT-o Reconfiguration Engine
 Bundle-SymbolicName: org.palladiosimulator.simulizar.reconfiguration.qvto;singleton:=true
-Bundle-Version: 5.2.0.qualifier
+Bundle-Version: 5.2.2
 Bundle-Activator: org.palladiosimulator.simulizar.reconfiguration.qvto.Activator
 Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar,
  org.apache.log4j,
- org.eclipse.m2m.qvt.oml;bundle-version=3.4.0,
+ org.eclipse.m2m.qvt.oml;bundle-version="3.4.0",
  org.palladiosimulator.simulizar.runtimemeasurement,
- org.palladiosimulator.analyzer.workflow,
- de.uka.ipd.sdq.workflow.mdsd,
+ org.palladiosimulator.analyzer.workflow.core;bundle-version="5.2.2",
+ de.uka.ipd.sdq.workflow.mdsd.core;bundle-version="5.2.2",
  org.scaledl.usageevolution,
  org.palladiosimulator.commons;bundle-version="1.0.0",
- de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
+ de.uka.ipd.sdq.simucomframework.core;bundle-version="5.2.2",
  org.palladiosimulator.simulizar.reconfigurationrule,
- org.apache.commons.collections15
+ org.apache.commons.collections15,
+ javax.inject;bundle-version="1.0.0",
+ de.uka.ipd.sdq.workflow.mdsd.blackboard;bundle-version="5.2.2",
+ de.uka.ipd.sdq.scheduler;bundle-version="5.2.2"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,

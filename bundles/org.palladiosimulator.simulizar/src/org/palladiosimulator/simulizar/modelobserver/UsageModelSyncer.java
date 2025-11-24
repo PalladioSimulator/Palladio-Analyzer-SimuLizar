@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.core.CorePackage;
 import org.palladiosimulator.pcm.parameter.ParameterPackage;
 import org.palladiosimulator.pcm.usagemodel.ClosedWorkload;
@@ -13,11 +13,11 @@ import org.palladiosimulator.pcm.usagemodel.OpenWorkload;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
 import org.palladiosimulator.pcm.usagemodel.UsagemodelPackage;
 import org.palladiosimulator.pcm.usagemodel.Workload;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.usagemodel.SimulatedUsageModels;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
-import de.uka.ipd.sdq.simucomframework.usage.IWorkloadDriver;
+import de.uka.ipd.sdq.simucomframework.core.usage.IWorkloadDriver;
 import de.uka.ipd.sdq.stoex.StoexPackage;
 
 @SimulationRuntimeScope

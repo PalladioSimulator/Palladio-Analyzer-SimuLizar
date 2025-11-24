@@ -2,9 +2,9 @@ package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.stream.Stream;
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageModel;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 
 public abstract class AbstractUsageModelObserver extends AbstractModelObserver<UsageModel> {
 

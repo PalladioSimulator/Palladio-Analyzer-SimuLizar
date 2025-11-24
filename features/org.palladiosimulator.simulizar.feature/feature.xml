@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.feature"
       label="Palladio Component Model - Analyzer: SimuLizar"
-      version="5.2.0.qualifier"
+      version="5.2.2"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -17,19 +17,19 @@
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.henshin.feature"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          name="Henshin Reconfiguration Engine"
          optional="true"/>
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          name="QVT Operational Reconfiguration Engine"
          optional="true"/>
 
    <includes
          id="org.palladiosimulator.simulizar.reconfiguration.storydiagram.feature"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          name="Story Diagram Reconfiguration Engine"
          optional="true"/>
 
@@ -113,21 +113,21 @@
          id="org.palladiosimulator.simulizar.runtimemeasurement"
          download-size="0"
          install-size="0"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.runtimemeasurement.edit"
          download-size="0"
          install-size="0"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.ui"
          download-size="0"
          install-size="0"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
@@ -162,14 +162,14 @@
          id="org.palladiosimulator.simulizar.measuringpoint"
          download-size="0"
          install-size="0"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
          id="org.palladiosimulator.simulizar.measuringpoint.create"
          download-size="0"
          install-size="0"
-         version="5.2.0.qualifier"
+         version="5.2.2"
          unpack="false"/>
 
    <plugin
@@ -195,6 +195,27 @@
 
    <plugin
          id="org.palladiosimulator.simulizar.action.repository"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.di.base"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.di"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -258,6 +279,13 @@
 
    <plugin
          id="org.palladiosimulator.simulizar.events"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.palladiosimulator.simulizar.reliability"
          download-size="0"
          install-size="0"
          version="0.0.0"

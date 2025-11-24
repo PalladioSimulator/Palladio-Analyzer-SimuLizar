@@ -1,10 +1,10 @@
 package org.palladiosimulator.simulizar.usagemodel;
 
 import org.apache.log4j.Logger;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
 
 import dagger.assisted.Assisted;
 import dagger.assisted.AssistedInject;
@@ -22,7 +22,7 @@ import tools.descartes.dlim.generator.ModelEvaluator;
 public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
 
     static final Logger LOGGER = Logger.getLogger(LoopingUsageEvolver.class);
-    
+
     private final double simulationTimeOffset;
 
     /**
@@ -36,17 +36,16 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      *            The interval in which the evolver should evolve the load.
      * @param evolvedScenario
      *            The evolved scenario.
-     * @param simulationTimeOffset 
+     * @param simulationTimeOffset
      */
     @AssistedInject
     public LoopingUsageEvolver(@Assisted final double firstOccurrence, @Assisted final double delay,
-            @Assisted double simulationTimeOffset, 
-            @Assisted final EntityReference<UsageScenario> evolvedScenario,
-            @Global PCMResourceSetPartition pcmPartition, 
-            ISimEventFactory simEventFactory,
+            @Assisted double simulationTimeOffset, @Assisted final EntityReference<UsageScenario> evolvedScenario,
+            @Global PCMResourceSetPartition pcmPartition, ISimEventFactory simEventFactory,
             ISimulationTimeProvider timeProvider) {
         super(firstOccurrence, delay, evolvedScenario, pcmPartition, simEventFactory, timeProvider);
-        if (!this.getCorrespondingUsage().isRepeatingPattern()) {
+        if (!this.getCorrespondingUsage()
+            .isRepeatingPattern()) {
             throw new IllegalArgumentException("The corresponding usage model must contain a repeating pattern.");
         }
         this.simulationTimeOffset = simulationTimeOffset;
@@ -54,7 +53,8 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
 
     @Override
     protected double getNewRate(final ModelEvaluator evaluator) {
-        return evaluator.getArrivalRateAtTime(floorMod(this.getCurrentTime() - this.simulationTimeOffset, this.getDLIMFinalDuration()));
+        return evaluator.getArrivalRateAtTime(
+                floorMod(this.getCurrentTime() - this.simulationTimeOffset, this.getDLIMFinalDuration()));
     }
 
     /**

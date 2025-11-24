@@ -1,5 +1,8 @@
 package org.palladiosimulator.simulizar.di.modules.scoped.runtime;
 
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.interpreter.EventDispatcher;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext.MainContext;
@@ -10,9 +13,6 @@ import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultHandl
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.impl.BasicInterpreterResultMerger;
 import org.palladiosimulator.simulizar.interpreter.result.impl.NoIssuesHandler;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager;
 
 import dagger.Binds;
 import dagger.Module;

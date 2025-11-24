@@ -1,7 +1,7 @@
 package org.palladiosimulator.simulizar.interpreter;
 
 import org.eclipse.emf.ecore.EObject;
-import org.palladiosimulator.simulizar.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
 import org.palladiosimulator.simulizar.interpreter.result.InterpreterResult;
 
 /**

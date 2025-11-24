@@ -19,16 +19,16 @@ import org.junit.jupiter.api.io.TempDir;
 import org.palladiosimulator.edp2.impl.RepositoryManager;
 import org.palladiosimulator.edp2.models.Repository.Repository;
 import org.palladiosimulator.edp2.repository.local.LocalDirectoryRepositoryHelper;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.dependency.SimEngineComponent.Factory;
 import org.palladiosimulator.simulizar.di.modules.component.extensions.ExtensionComponentsModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.core.RootComponentFactoriesModule;
 import org.palladiosimulator.simulizar.di.modules.stateless.mdsd.MDSDBlackboardProvidingModule;
 import org.palladiosimulator.simulizar.launcher.SimulizarConstants;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimEngineComponent;
 import org.palladiosimulator.simulizar.test.commons.di.components.DaggerTestSimuLizarRootComponent;
 
-import de.uka.ipd.sdq.simucomframework.SimuComConfig;
+import de.uka.ipd.sdq.simucomframework.core.SimuComConfig;
 import de.uka.ipd.sdq.workflow.jobs.IJob;
 import tools.mdsd.junit5utils.annotations.InitializationTaskProvider;
 import tools.mdsd.junit5utils.annotations.PluginTestOnly;

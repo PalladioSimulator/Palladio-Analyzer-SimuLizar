@@ -6,10 +6,10 @@ import org.palladiosimulator.simulizar.action.jobs.AdaptationBehaviorModelContri
 import org.palladiosimulator.simulizar.action.jobs.AdaptationBehaviorPartitionContribution;
 import org.palladiosimulator.simulizar.action.jobs.config.LoadAdaptationBehaviorRepositoryIntoBlackboardJobConfig;
 import org.palladiosimulator.simulizar.action.ui.configuration.AdaptationBehaviorRepositoryFileInputConfigBuilder;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.scopes.RootExtensionScope;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
-import org.palladiosimulator.simulizar.scopes.RootExtensionScope;
 
 import dagger.Component;
 import dagger.Provides;

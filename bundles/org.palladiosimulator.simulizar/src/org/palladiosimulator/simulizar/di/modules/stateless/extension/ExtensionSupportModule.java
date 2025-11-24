@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.di.modules.stateless.extension;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.palladiosimulator.simulizar.di.extension.ExtensionComponent;
+import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
 import org.palladiosimulator.simulizar.di.extension.ExtensionComponentDependencyResolution;
 import org.palladiosimulator.simulizar.di.extension.GenericExtensionComponent;
 import org.palladiosimulator.simulizar.di.extension.RegisteredComponent;

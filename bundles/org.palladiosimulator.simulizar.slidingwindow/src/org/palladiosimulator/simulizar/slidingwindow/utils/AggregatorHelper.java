@@ -18,7 +18,7 @@ import org.palladiosimulator.simulizar.slidingwindow.aggregators.SlidingWindowSt
 import org.palladiosimulator.simulizar.slidingwindow.impl.SimulizarSlidingWindow;
 import org.palladiosimulator.simulizar.slidingwindow.runtimemeasurement.SlidingWindowRuntimeMeasurementsRecorder;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
 
 public final class AggregatorHelper {
 

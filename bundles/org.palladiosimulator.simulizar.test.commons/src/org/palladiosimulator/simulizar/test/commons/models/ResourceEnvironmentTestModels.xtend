@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.test.commons.models
 
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition
 import java.util.function.Supplier
 import org.palladiosimulator.pcm.resourcetype.ProcessingResourceType
 import org.palladiosimulator.pcm.resourcetype.CommunicationLinkResourceType

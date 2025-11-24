@@ -13,8 +13,8 @@ import org.palladiosimulator.experimentanalysis.windowaggregators.SlidingWindowA
 import org.palladiosimulator.metricspec.MetricDescription;
 import org.palladiosimulator.simulizar.simulationevents.PeriodicallyTriggeredSimulationEntity;
 
-import de.uka.ipd.sdq.simucomframework.model.SimuComModel;
-import de.uka.ipd.sdq.simulation.ISimulationListener;
+import de.uka.ipd.sdq.simucomframework.core.model.SimuComModel;
+import de.uka.ipd.sdq.simulation.core.ISimulationListener;
 
 /**
  * This class is a {@link SlidingWindow} subclass that is governed by and advances during simulation

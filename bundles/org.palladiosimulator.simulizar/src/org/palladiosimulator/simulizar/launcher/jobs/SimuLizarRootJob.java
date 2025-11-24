@@ -6,8 +6,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.palladiosimulator.analyzer.workflow.jobs.ValidatePCMModelsJob;
+import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.component.interfaces.AnalysisRuntimeComponent;
-import org.palladiosimulator.simulizar.runconfig.SimuLizarWorkflowConfiguration;
 
 import de.uka.ipd.sdq.workflow.jobs.BlackboardAwareJobProxy;
 import de.uka.ipd.sdq.workflow.jobs.IBlackboardInteractingJob;

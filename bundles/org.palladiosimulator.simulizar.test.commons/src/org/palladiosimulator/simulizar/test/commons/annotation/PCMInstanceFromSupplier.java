@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 import java.util.function.Supplier;
 
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.test.commons.extension.LoadModelFromSupplierExtension;
 import org.palladiosimulator.simulizar.test.commons.extension.SimuLizarTestParameterProvider;
 

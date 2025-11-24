@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.reconfiguration.qvto;
 
 import java.util.List;
+import java.util.Map;
 
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.ModelTransformationCache;
 import org.palladiosimulator.simulizar.reconfiguration.qvto.util.QVToModelCache;
@@ -26,15 +27,16 @@ public class QVTOExecutor extends AbstractQVTOExecutor {
      *            A {@link QVToModelCache} that contains all models that can serve as a
      *            transformation parameter.
      */
-	public QVTOExecutor(ModelTransformationCache knownTransformations, QVToModelCache knownModels) {
+    public QVTOExecutor(ModelTransformationCache knownTransformations, QVToModelCache knownModels) {
         super(knownTransformations, knownModels);
     }
-    
-    public boolean executeTransformations(List<QvtoModelTransformation> transformations, IResourceTableManager resourceTableManager){
-		boolean result = true;
-    	for(QvtoModelTransformation transformation : transformations){
-			result &= executeTransformation(transformation, resourceTableManager);
-		}
-    	return result;
-	}
+
+    public boolean executeTransformations(List<QvtoModelTransformation> transformations,
+            IResourceTableManager resourceTableManager, Map<String, Object> configParams) {
+        boolean result = true;
+        for (QvtoModelTransformation transformation : transformations) {
+            result &= executeTransformation(transformation, resourceTableManager, configParams);
+        }
+        return result;
+    }
 }

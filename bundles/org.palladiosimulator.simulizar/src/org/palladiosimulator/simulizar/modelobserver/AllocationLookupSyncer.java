@@ -17,7 +17,7 @@ import org.jgrapht.Graph;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.allocation.Allocation;
 import org.palladiosimulator.pcm.allocation.AllocationContext;
 import org.palladiosimulator.pcm.allocation.AllocationPackage;
@@ -27,12 +27,12 @@ import org.palladiosimulator.pcm.core.entity.Entity;
 import org.palladiosimulator.pcm.repository.CompositeComponent;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.system.System;
-import org.palladiosimulator.simulizar.entity.EntityReference;
-import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.entity.EntityReference;
+import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager.Global;
+import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;
 import org.palladiosimulator.simulizar.runtimestate.AssemblyAllocationManager;
 import org.palladiosimulator.simulizar.runtimestate.FQComponentID;
-import org.palladiosimulator.simulizar.scopes.SimulationRuntimeScope;
-import org.palladiosimulator.simulizar.utils.PCMPartitionManager.Global;
 
 /**
  * The Allocation Lookup Syncer updates the cache for the mapping of

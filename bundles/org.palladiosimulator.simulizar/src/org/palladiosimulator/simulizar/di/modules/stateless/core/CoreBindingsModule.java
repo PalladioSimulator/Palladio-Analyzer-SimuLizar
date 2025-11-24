@@ -3,8 +3,8 @@ package org.palladiosimulator.simulizar.di.modules.stateless.core;
 import org.palladiosimulator.pcm.resourceenvironment.LinkingResource;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
-import org.palladiosimulator.simulizar.entity.EntityReferenceFactory;
-import org.palladiosimulator.simulizar.entity.SimuLizarEntityReferenceFactories;
+import org.palladiosimulator.simulizar.core.entity.EntityReferenceFactory;
+import org.palladiosimulator.simulizar.core.entity.SimuLizarEntityReferenceFactories;
 
 import dagger.Binds;
 import dagger.Module;

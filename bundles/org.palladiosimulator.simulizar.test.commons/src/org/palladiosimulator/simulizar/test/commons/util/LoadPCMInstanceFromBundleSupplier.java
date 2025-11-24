@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.junit.jupiter.api.extension.ExtensionContext;
-import org.palladiosimulator.analyzer.workflow.blackboard.PCMResourceSetPartition;
+import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.simulizar.test.commons.annotation.LoadPCMInstanceFromBundle;
 
 public class LoadPCMInstanceFromBundleSupplier implements Supplier<PCMResourceSetPartition> {
