@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.simulizar.core
 Bundle-SymbolicName: org.palladiosimulator.simulizar.core
 Automatic-Module-Name: org.palladiosimulator.simulizar.core
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 5.2.2
 Export-Package: org.palladiosimulator.simulizar.core.entity,
  org.palladiosimulator.simulizar.core.launcher.jobs,
  org.palladiosimulator.simulizar.core.reconfiguration,

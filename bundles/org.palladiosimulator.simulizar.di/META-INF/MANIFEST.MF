@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.simulizar.di
 Bundle-SymbolicName: org.palladiosimulator.simulizar.di
 Automatic-Module-Name: org.palladiosimulator.simulizar.di
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 5.2.2
 Export-Package: org.palladiosimulator.simulizar.di.component.dependency,
  org.palladiosimulator.simulizar.di.modules.component.core,
  org.palladiosimulator.simulizar.di.modules.component.eclipse,

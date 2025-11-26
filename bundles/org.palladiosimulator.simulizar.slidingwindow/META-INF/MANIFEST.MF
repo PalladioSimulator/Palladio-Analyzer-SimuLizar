@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Simulizar Sliding Window Implementation
 Bundle-SymbolicName: org.palladiosimulator.simulizar.slidingwindow;singleton:=true
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 5.2.2
 Bundle-Activator: org.palladiosimulator.simulizar.slidingwindow.Activator
 Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.core.runtime,

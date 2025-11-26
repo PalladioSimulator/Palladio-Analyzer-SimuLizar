@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Simulizar Monitor Repository Map Tests
 Bundle-SymbolicName: org.palladiosimulator.simulizar.monitorrepository.map.tests
-Bundle-Version: 6.0.0.qualifier
+Bundle-Version: 5.2.2
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: org.palladiosimulator.simulizar.monitorrepository.map;bundle-version="5.2.2",
  org.junit,
