@@ -118,9 +118,11 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
     protected void add(final Notification notification) {
         ResourceenvironmentPackage resourceenvironmentPackage = ResourceenvironmentPackage.eINSTANCE;
         Object changedFeature = notification.getFeature();
-
+        
         if (changedFeature == resourceenvironmentPackage
             .getResourceEnvironment_ResourceContainer_ResourceEnvironment()) {
+            this.createSimulatedResourceContainer((ResourceContainer) notification.getNewValue());
+        } else if (changedFeature == resourceenvironmentPackage.getResourceContainer_NestedResourceContainers__ResourceContainer()) {
             this.createSimulatedResourceContainer((ResourceContainer) notification.getNewValue());
         } else if (changedFeature == resourceenvironmentPackage
             .getResourceContainer_ActiveResourceSpecifications_ResourceContainer()) {
@@ -128,6 +130,8 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
         } else if (changedFeature == resourceenvironmentPackage
             .getResourceEnvironment_LinkingResources__ResourceEnvironment()) {
             this.createSimulatedLinkingResource((LinkingResource) notification.getNewValue());
+        } else if (changedFeature == resourceenvironmentPackage.getLinkingResource_ConnectedResourceContainers_LinkingResource()) {
+            this.createSimulatedResourceContainer((ResourceContainer) notification.getNewValue());
         } else {
             this.logDebugInfo(notification);
         }
@@ -225,7 +229,7 @@ public class ResourceEnvironmentSyncer extends AbstractResourceEnvironmentObserv
                 simulatedResourceContainer.addNestedResourceContainer(c.getId());
             });
 
-            // create active resources
+            // create active resources       
             resourceContainer.getActiveResourceSpecifications_ResourceContainer()
                 .forEach(this::createSimulatedActiveResource);
 
