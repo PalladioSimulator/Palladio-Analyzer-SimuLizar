@@ -1,0 +1,71 @@
+/*
+ * This QVTO transformation represents the adaptation step to scale a Deplyoment.
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PCM_K8S_CONCEPTS uses 'org.palladiosimulator.kubernetesModel.k8sconcepts';
+modeltype PCM_K8S_SYSTEM uses 'org.palladiosimulator.kubernetes.kubernetesModel.system';
+modeltype PCM_K8S_REPO uses 'org.palladiosimulator.kubernetesModel.repository';
+modeltype PCM_K8S_RES_ENV uses 'org.palladiosimulator.kubernetesModel.resourceenvironment';
+modeltype PCM_SUBSYS uses 'http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.2';
+
+transformation allocateMissingPods (
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE,
+							inout pcmK8sConcepts : PCM_K8S_CONCEPTS
+							) {
+
+	property kubernetesConceptsRoleTypeId : String = '_eicWdK2yEe6SC5wF5QVjMg';
+	property scaleTimeRoleTypeId : String = '_DWIgtK2zEe6SC5wF5QVjMg';
+	property deploymentToScaleRoleTypeId : String = '_J_G_1K2zEe6SC5wF5QVjMg';
+	property newReplicasRoleTypeId : String = '_OmYF5K2zEe6SC5wF5QVjMg';
+							
+	/**
+	 * Enact Adaptation Step Transformation to scale a Deployment.
+	 * The number of replicas is adjusted to the new Value.
+	 */
+	main() {
+		
+		log("SCALE DEPLOYMENT ADAPTATIONSTEP");
+		
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		log("RoleSet: " + roleSet.id);
+		var roles = roleSet.roles;
+		
+		var deploymentToScaleRole : instance::Role := roles->select(role | role.roleType.id = deploymentToScaleRoleTypeId)->any(true);
+		var deploymentToScale : Deployment := deploymentToScaleRole.value.oclAsType(Deployment);
+		
+		var newReplicasRole : instance::Role := roles->select(role | role.roleType.id = newReplicasRoleTypeId)->any(true);
+		var newReplicas : Integer := newReplicasRole.value.oclAsType(IntLiteral).value;
+		
+		deploymentToScale.map scaleDeployment(newReplicas);
+		
+	}
+	
+	mapping inout Deployment::scaleDeployment(newReplicas : Integer) {
+		log("Old Value Replicas: " + self.replicas.toString());
+		self.replicas := newReplicas;
+		log("New Value Replicas: " + self.replicas.toString());
+	}
+	
+}

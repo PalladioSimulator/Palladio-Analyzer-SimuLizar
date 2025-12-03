@@ -104,6 +104,19 @@
       </steps_Behaviour>
     </serviceEffectSpecifications__BasicComponent>
   </components__Repository>
+  <components__Repository xsi:type="repository:BasicComponent" id="_eyN5-SpWEe2wiYzkm4StTQ" entityName="Scaler">
+    <providedRoles_InterfaceProvidingEntity xsi:type="repository:OperationProvidedRole" id="_jXKr0SpWEe2wiYzkm4StTQ" entityName="Provided_IScale_Scaler" providedInterface__OperationProvidedRole="_W_SJJypWEe2wiYzkm4StTQ"/>
+    <serviceEffectSpecifications__BasicComponent xsi:type="seff:ResourceDemandingSEFF" id="_qCrhlypWEe2wiYzkm4StTQ" describedService__SEFF="_a8oIcCpWEe2wiYzkm4StTQ">
+      <steps_Behaviour xsi:type="seff:StartAction" id="_rg-EgipWEe2wiYzkm4StTQ" successor_AbstractAction="_vKZCTCpWEe2wiYzkm4StTQ"/>
+      <steps_Behaviour xsi:type="seff:StopAction" id="_sqfRUCpWEe2wiYzkm4StTQ" predecessor_AbstractAction="_vKZCTCpWEe2wiYzkm4StTQ"/>
+      <steps_Behaviour xsi:type="seff:InternalAction" id="_vKZCTCpWEe2wiYzkm4StTQ" entityName="executeScaling" predecessor_AbstractAction="_rg-EgipWEe2wiYzkm4StTQ" successor_AbstractAction="_sqfRUCpWEe2wiYzkm4StTQ">
+        <resourceDemand_Action>
+          <specification_ParametericResourceDemand specification="50000000"/>
+          <requiredResource_ParametricResourceDemand href="pathmap://PCM_MODELS/Palladio.resourcetype#_oro4gG3fEdy4YaaT-RYrLQ"/>
+        </resourceDemand_Action>
+      </steps_Behaviour>
+    </serviceEffectSpecifications__BasicComponent>
+  </components__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_wMjRkOp_EeS1xrjFer2CUg" entityName="IComponentMigration">
     <signatures__OperationInterface id="_zm-xEOp_EeS1xrjFer2CUg" entityName="migrate">
       <parameters__OperationSignature parameterName="input" modifier__Parameter="in">
@@ -132,5 +145,8 @@
   </interfaces__Repository>
   <interfaces__Repository xsi:type="repository:OperationInterface" id="_b60foNHIEeaNAIlD4-dfHg" entityName="IDelay">
     <signatures__OperationInterface id="_etpMkNHIEeaNAIlD4-dfHg" entityName="execute"/>
+  </interfaces__Repository>
+  <interfaces__Repository xsi:type="repository:OperationInterface" id="_W_SJJypWEe2wiYzkm4StTQ" entityName="IScale">
+    <signatures__OperationInterface id="_a8oIcCpWEe2wiYzkm4StTQ" entityName="scale"/>
   </interfaces__Repository>
 </repository:Repository>

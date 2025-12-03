@@ -1,0 +1,892 @@
+/*
+ * This QVTO transformation represents the adaptation step to allocate missing Pods.
+ */
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses resourceenvironment('http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2');
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PCM_K8S_CONCEPTS uses 'org.palladiosimulator.kubernetesModel.k8sconcepts';
+modeltype PCM_K8S_SYSTEM uses 'org.palladiosimulator.kubernetes.kubernetesModel.system';
+modeltype PCM_K8S_REPO uses 'org.palladiosimulator.kubernetesModel.repository';
+modeltype PCM_K8S_RES_ENV uses 'org.palladiosimulator.kubernetesModel.resourceenvironment';
+modeltype PCM_SUBSYS uses 'http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.2';
+modeltype ECORE uses ecore('http://www.eclipse.org/emf/2002/Ecore');
+
+transformation allocateMissingPods (
+							inout pcmSystem : PCM_SYS,
+							inout pcmRepo : PCM_REP,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE,
+							in pcmAllocation : PCM_ALLOC,
+							in pcmResEnv : PCM_RES_ENV,
+							in pcmResTypes : PCM_RES_TYPE
+							) {
+
+	property repositoryRoleTypeId : String = '_aq-tVEKhEe6bbaxJhGJDeg';
+	property systemRoleTypeId : String = '_QQOr9ClWEe6PU9pzUer3wQ';
+	property structureDefiningSystemRoleTypeId: String = '_DX79REUVEe6p3-CgWw70fA';
+	property allocationRoleTypeId : String = '_LcOrtHv7Ee6HGpSCNiRx3Q';
+	property resourceEnvironmentRoleTypeId : String = '_6nM-NI9UEe6GdvGaqAAt2g';
+	
+	property latencyBetweenContainersInSamePodRoleTypeId : String = '_uBeXhLaKEe6ruvA7qGJ6_Q';
+	property throughputBetweenContainersInSamePodRoleTypeId : String = '_2MNkVLaKEe6ruvA7qGJ6_Q';
+	property failureProbabilityBetweenContainersInSamePodRoleTypeId : String = '_831HxLaKEe6ruvA7qGJ6_Q';
+	property latencyBetweenPodsOnSameNodeRoleTypeId : String = '_zKe4tLaKEe6ruvA7qGJ6_Q';
+	property throughputBetweenPodsOnSameNodeRoleTypeId : String = '_5ouuhLaKEe6ruvA7qGJ6_Q';
+	property failureProbabilityPodsOnSameNodeRoleTypeId : String = '_DJBZBLaLEe6ruvA7qGJ6_Q';
+	
+	property allocationStrategyRoleTypeId : String = '_em2clLaKEe6ruvA7qGJ6_Q';
+	property mosaicSchedulerCGroupId : String = 'org.palladiosimulator.mosaic.scheduler.cgroup';
+	property mosaicSchedulerVirtual : String = 'org.palladiosimulator.mosaic.scheduler.virtual';
+	
+	property latencyBetweenContainersInSamePod : String;
+	property throughputBetweenContainersInSamePod : String;
+	property failureProbabilityBetweenContainersInSamePod : Real;
+	
+	property latencyBetweenPodsOnSameNode : String;
+	property throughputBetweenPodsOnSameNode : String;
+	property failureProbabilityPodsOnSameNode : Real;
+	
+	property allocationStrategy : Integer;
+							
+	/**
+	 * Enact Adaptation Step Transformation to allocate missing Pods.
+	 * At this point at least one Pod which is assembled in the System model is not allocated.
+	 * This adaptation tries to allocate the Pod.
+	 * If a valid allocation for the missing Pods can be found, the Pod is allocated.
+	 * If there is no possibility to allocate all missing Pods, the system model is scaled down again,
+	 * meaning, that the respecting AssemblyContext is removed as well as it's connectors and the registration
+	 * in the Loadbalancing SEFF of it's service.
+	 * The downscaling of the System is executed to ensure that every AssemblyContext is allocated during the simulation.
+	 */
+	 /**
+	 * Steps to perform:
+	 * 1. Get List of AssemblyContexts with Pods
+	 * 2. Get List of Allocated AssemblyContexts with Pods
+	 * 3. Find assembledContexts that are not allocated
+	 * 4. Find valid Allocation for the Pod.
+	 * 5. If Allocation was found:
+	 * 5.1  -> Create ResourceContainer as NestedResourceContainer on K8sNode for Pod //TODO change when Nested Scheduler is added
+	 * 5.2  -> Set ProcessingRate (CPU) to aggregated Ressource Requests and Limits from contained Containers
+	 * 5.3  -> Create LinkinResource to Connect Nested- and OuterResourceContainer (NodeToContainedPodsLinkingResource)
+	 * 5.4  -> Create AllocationContext for PodAssemblyContext
+	 * 5.5  -> Create ResourceContainer for each Container in the Pod
+	 * 5.6  -> Create ProcessingRate and set it to the Container's Ressource Requests / Limit
+	 * 5.7  -> Create LinkinResource to connect the Pod with it's Containers
+	 * 5.8  -> Create AllocationContext for the Container on it's NestedResourceContainer 
+	 * 6. If Allocation was not found:
+	 * 6.1  -> Deassemble the Pod from the System Model as in Scaling Down the System.
+	 */
+	main() {
+		
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		log("RoleSet: " + roleSet.id);
+		var roles = roleSet.roles;
+		
+		var systemRole : instance::Role := roles->select(role | role.roleType.id = systemRoleTypeId)->any(true);
+		var system : System := systemRole.value.oclAsType(System);
+		log("System: " + system.id);
+		
+		var repoRole : instance::Role := roles->select(role | role.roleType.id = repositoryRoleTypeId)->any(true);
+		var repository : Repository:= repoRole.value.oclAsType(Repository);
+		log("RepsitoryID: " + repository.id);
+		
+		var structureDefiningSystemRole : instance::Role := roles->select(role | role.roleType.id = structureDefiningSystemRoleTypeId)->any(true);
+		var structureDefiningSystem : System := structureDefiningSystemRole.value.oclAsType(System);
+		log("StructureDefiningsSystemRoleID: " + structureDefiningSystem.id);
+		
+		var allocationRole : instance::Role := roles->select(role | role.roleType.id = allocationRoleTypeId)->any(true);
+		var allocation : Allocation := allocationRole.value.oclAsType(Allocation);
+		log("Allocation Model ID: " + allocation.id);
+		
+		var resourceEnvironmentRole : instance::Role := roles->select(role | role.roleType.id = resourceEnvironmentRoleTypeId)->any(true);
+		var resourceEnvironment : ResourceEnvironment := resourceEnvironmentRole.value.oclAsType(ResourceEnvironment);
+		log("ResourceEnvironment Name: " + resourceEnvironment.entityName);
+		
+		var latencyBetweenContainersInSamePodRole : instance::Role := roles->select(role | role.roleType.id = latencyBetweenContainersInSamePodRoleTypeId)->any(true);
+		latencyBetweenContainersInSamePod := latencyBetweenContainersInSamePodRole.value.oclAsType(StringLiteral).value;
+		
+		var latencyBetweenPodsOnSameNodeRole : instance::Role := roles->select(role | role.roleType.id = latencyBetweenPodsOnSameNodeRoleTypeId)->any(true);
+		latencyBetweenPodsOnSameNode := latencyBetweenPodsOnSameNodeRole.value.oclAsType(StringLiteral).value;
+		
+		var throughputBetweenContainersInSamePodRole : instance::Role := roles->select(role | role.roleType.id = throughputBetweenContainersInSamePodRoleTypeId)->any(true);
+		throughputBetweenContainersInSamePod := throughputBetweenContainersInSamePodRole.value.oclAsType(StringLiteral).value;
+		
+		var throughputBetweenPodsOnSameNodeRole : instance::Role := roles->select(role | role.roleType.id = throughputBetweenPodsOnSameNodeRoleTypeId)->any(true);
+		throughputBetweenPodsOnSameNode := throughputBetweenPodsOnSameNodeRole.value.oclAsType(StringLiteral).value;
+		
+		var failureProbabilityBetweenContainersInSamePodRole : instance::Role := roles->select(role | role.roleType.id = failureProbabilityBetweenContainersInSamePodRoleTypeId)->any(true);
+		failureProbabilityBetweenContainersInSamePod := failureProbabilityBetweenContainersInSamePodRole.value.oclAsType(DoubleLiteral).value;
+		
+		var failureProbabilityPodsOnSameNodeRole : instance::Role := roles->select(role | role.roleType.id = failureProbabilityPodsOnSameNodeRoleTypeId)->any(true);
+		failureProbabilityPodsOnSameNode := failureProbabilityPodsOnSameNodeRole.value.oclAsType(DoubleLiteral).value;
+		
+		var allocationStrategyRole : instance::Role := roles->select(role | role.roleType.id = allocationStrategyRoleTypeId)->any(true);
+		allocationStrategy := allocationStrategyRole.value.oclAsType(IntLiteral).value;
+		
+		var listOfNonAllocatedPodAssemblies : Bag(AssemblyContext) := getListOfNonAllocatedAssemblyContexts(system, allocation);
+		var listOfNotAllocatableAssemblyContexts : Bag(AssemblyContext);
+		log("ListOfNonAllocatedPodAssemblies Size: " + listOfNonAllocatedPodAssemblies->size().toString());
+		listOfNonAllocatedPodAssemblies->forEach(assemblyContext) {
+			if (allocation.isPodAllocatable(assemblyContext.encapsulatedComponent__AssemblyContext.oclAsType(Pod))) {
+				var resourceContainer : ResourceContainer := allocation.findAllocationForPod(assemblyContext.encapsulatedComponent__AssemblyContext.oclAsType(Pod), allocationStrategy);
+				resourceEnvironment.map createNestedResourceContainersWithAllocationForPod(
+					assemblyContext.encapsulatedComponent__AssemblyContext.oclAsType(Pod), resourceContainer, allocation, assemblyContext);				
+			} else {
+				listOfNotAllocatableAssemblyContexts := listOfNotAllocatableAssemblyContexts->including(assemblyContext);
+			};
+		};
+		listOfNotAllocatableAssemblyContexts->forEach(ctx) {
+			removePodAssemblyContext(system, repository, ctx);
+		};
+//		log("allocateMissingPods End ResourceEnv first Layer RCs. : " + resourceEnvironment.resourceContainer_ResourceEnvironment->size().toString());
+//		resourceEnvironment.resourceContainer_ResourceEnvironment->forEach(rc) {
+//			var newResourceContainer: ResourceContainer = object  ResourceContainer {
+//				//activeResourceSpecifications_ResourceContainer := activeResourceSpecification;
+//				parentResourceContainer__ResourceContainer := rc;
+//				//resourceEnvironment_ResourceContainer := resourceEnvironment;
+//			};
+//			//newResourceContainer.toEObject().
+//			//var type := ResourceContainer.oclAsType(ecore::EClass).eStructuralFeatures->any(name = "resourceEnvironment_ResourceContainer");
+//			newResourceContainer.toEObject().eUnset(ResourceContainer.oclAsType(ecore::EClass).eStructuralFeatures->any(name = "resourceEnvironment_ResourceContainer"));
+//			rc.nestedResourceContainers__ResourceContainer += newResourceContainer;
+//			//.eUnset(resourceenvironment::ResourceContainer.oclAsType(ecore::EClass).eStructuralFeatures->any(name = "resourceEnvironment_ResourceContainer"));
+			//rc.map addResourceContainerAsNestedResourceContainer(newResourceContainer);
+//			log ("ResourceContainerID: " + rc.id  + "--->  ParentResourceContainerID: " + rc.parentResourceContainer__ResourceContainer.id);
+//			rc.nestedResourceContainers__ResourceContainer->forEach(nestedRC) {
+//				log ("ResourceContainerID: " + nestedRC.id  + "--->  ParentResourceContainerID: " + nestedRC.parentResourceContainer__ResourceContainer.id);
+//				nestedRC.nestedResourceContainers__ResourceContainer->forEach(nestedNestedRC) {
+//						log ("ResourceContainerID: " + nestedNestedRC.id  + "--->  ParentResourceContainerID: " + nestedNestedRC.parentResourceContainer__ResourceContainer.id);
+//				}
+//			};
+//		};
+		
+	}
+	
+	query OclAny::toEObject() : ecore::EObject { return self.oclAsType(ecore::EObject); }
+	
+	/*
+		Situation: Pod muss allokiert werden und Allokation ist m�glich 
+		=> ResourceContainer auf dem Allokiert werden soll steht fest.
+		Pod hat Liste von Containern
+		Container haben Ressourcenspezifikationen
+		Node hat Millicores, CPU-Cores * 1000
+		ProcessingResource der Node hat eine festgelegte ProcessingRate => Kommt aus der Auswahl der vCores im Cluster
+		Erstelle ResourceContainer mit:
+			Pod's ResourceContainer erh�lt jetzt RoundedUp{ SumOf{container.cpuRequest} / 1000 } Replicas
+			Pod's ResourceContainer's Processing Rate gleich wie Node
+		F�ge Pod zu NodeToPodLinkingResource_[NodeID] hinzu.
+		Erstelle PodToContainerLinkingResource_[PodID].
+		Erstelle AllocationContext f�r den Pod
+		
+		Erstelle f�r jeden Container:
+			ResourceContainer mit:
+				Container's ResourceContainer erh�lt jetzt RoundedUp{ container.cpuRequest / 1000 } Replicas
+				Container's ResourceContainer's Processing Rate gleich wie Node
+			F�ge Container zur PodToContainerLinkingResource_[PodID] hinzu.
+			Erstelle AllocationContext f�r den Container
+		
+		Situation: Pod muss allokiert werden aber keine Allokation wird gefunden:
+		=> ResourceEnvironment �ndert sich nicht
+		=> System Model hat AssemblyContext der nicht allokiert werden kann
+		=> AssemblyContext muss aus SystemModel entfernt werden genauso wie wenn von den Replicas ausgehend runterskaliert wird.
+		Code wie im SystemModelAdaptation
+		
+		Situation: Pod muss deallokiert werden:
+		Entferne PodToContainerLinkingResource_[PodID]
+		For Each Container : Pod {
+			Entferne AllocationContext
+			Entferne ResourceContainer des Containers
+		Entferne Pod aus NodeToPodLinkingResource_[NodeID]
+		Entferne Pod AllocationContext
+		Entferne Pod ResourceContainer
+		
+		!! In diesem Fall ist ein Pod zu viel allokiert, weswegen das System Model schon den korrekten Zustand hat.
+	*/
+	
+	
+	/*
+	*This mapping creates the NestedResourceContainers for the Pod and it's contained Containers in the Pods Resource Container.
+	* 	@param pod :The Pod where the NestedResourceContainer for the Pod has to be created as well as it's contained Containers.
+	*	@param clusterNode : KubernetesNode is the Node/ResourceContainer where the Pod is allocated on.
+	* 	@param allocation : Allocation is the ALlocation model to create the AllocationContexts.
+	*	@param podsAssemblyContext : AssemblyContext is the pod's AssemblyContext in the system model.
+	*/
+	mapping inout ResourceEnvironment::createNestedResourceContainersWithAllocationForPod(
+		pod : Pod, clusterNode : ResourceContainer, allocation : Allocation, podsAssemblyContext : AssemblyContext) {
+		log("Pod ID: " + pod.id);
+		log("SpecName: " + clusterNode.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.entityName);
+		log("SpecName: " + clusterNode.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.id);
+		// New number of replicas = 1 for every pod, cpu-share calculation based on processingRate
+		var cpuResourceSpec : ProcessingResourceSpecification := clusterNode.getResourceContainersCPUProcessingResource()
+			.createCopyOfProcessingResourceSpecification(1);
+		var podProcessingRate : PCMRandomVariable := pod.getCPUProcessingRate();
+		cpuResourceSpec.processingRate_ProcessingResourceSpecification := podProcessingRate;
+		log("cpuResourceSpec ProcessingRate: " + cpuResourceSpec.processingRate_ProcessingResourceSpecification.specification);
+		var podResourceContainer : ResourceContainer := createPodResourceContainer(self, cpuResourceSpec, clusterNode);
+		
+		log("PodResourceContainer NestedRCs Size: " + clusterNode.nestedResourceContainers__ResourceContainer->size().toString());
+		clusterNode.map addResourceContainerAsNestedResourceContainer(podResourceContainer);
+		log("PodResourceContainer NestedRCs Size: " + clusterNode.nestedResourceContainers__ResourceContainer->size().toString());
+		
+		allocation.map createAllocation(podResourceContainer, podsAssemblyContext);
+		self.map addPodToNodeToPodsLinkingResource(clusterNode, podResourceContainer);
+		self.map createPodToContainersLinkingResource(podResourceContainer);
+		var containerAssemblyContexts : Set(AssemblyContext) := pod.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Container));
+		containerAssemblyContexts->forEach(containerActx) {
+			var container : Container := containerActx.encapsulatedComponent__AssemblyContext.oclAsType(Container);
+			var containerCPUResourceSpec : ProcessingResourceSpecification := podResourceContainer.getResourceContainersCPUProcessingResource()
+				.createCopyOfProcessingResourceSpecification(container.getCPUReplicas());
+			var containerResourceContainer : ResourceContainer := createResourceContainerWithoutActiveResourceSpec(self, podResourceContainer);
+			//log("big Creation Mapping - ResourceContainer inside Pod: " + containerResourceContainer.id);
+			//log("big Creation Mapping - ResourceContainer inside Pod: " + containerResourceContainer.parentResourceContainer__ResourceContainer.id);
+			podResourceContainer.map addResourceContainerAsNestedResourceContainer(containerResourceContainer);
+			log("PodResourceContainer NestedRCs Size: " + podResourceContainer.nestedResourceContainers__ResourceContainer->size().toString());
+			//log("big Creation Mapping - ResourceContainer inside Pod: " + containerResourceContainer.parentResourceContainer__ResourceContainer.id);
+			allocation.map createContainerAllocation(containerResourceContainer, containerActx, podsAssemblyContext);
+			self.map addContainerToPodToContainersLinkingResource(podResourceContainer, containerResourceContainer);
+//			log("Pod's NestedResourceContainer: " + containerResourceContainer.id);
+//			log("Pod's NestedResourceContainer ParentResourceContainer: " + containerResourceContainer.parentResourceContainer__ResourceContainer.id);
+//			log("Pod's NestedResourceContainer activeResourceTypeName: " + 
+//				containerResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.entityName);
+//			log("Pod's NestedResourceContainer activeResourceTypeId: " + 
+//				containerResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.id);
+		};
+//		log ("clusterNodes NestedResourceContainer Size: " + clusterNode.nestedResourceContainers__ResourceContainer->size().toString());
+//		clusterNode.nestedResourceContainers__ResourceContainer->forEach(nestedResourceContainer) {
+//			log("NestedResourceContainer: " + nestedResourceContainer.id);
+//			log("NestedResourceContainer ParentResourceContainer: " + nestedResourceContainer.parentResourceContainer__ResourceContainer.id);
+//			log("NestedResourceContainer activeResourceTypeName: " + 
+//				nestedResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.entityName);
+//			log("NestedResourceContainer activeResourceTypeId: " + 
+//				nestedResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.id);
+//			nestedResourceContainer.nestedResourceContainers__ResourceContainer->forEach(nestedNestedResourceContainer) {
+//				log("NestedNestedResourceContainer: " + nestedNestedResourceContainer.id);
+//				log("NestedNestedResourceContainer ParentResourceContainer: " + nestedNestedResourceContainer.parentResourceContainer__ResourceContainer.id);
+//				log("NestedNestedResourceContainer activeResourceTypeName: " + 
+//					nestedNestedResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.entityName);
+//				log("NestedNestedResourceContainer activeResourceTypeId: " + 
+//					nestedNestedResourceContainer.getResourceContainersCPUProcessingResource().activeResourceType_ActiveResourceSpecification.id);
+//			}
+//		};
+		//self.resourceContainer_ResourceEnvironment := clusterNode->asSet();
+	}
+	
+	mapping inout ResourceContainer::addResourceContainerAsNestedResourceContainer(resourceContainerToAdd : ResourceContainer) {
+		self.nestedResourceContainers__ResourceContainer += resourceContainerToAdd;
+	}
+	
+	/*
+		Assumes, that these special LinkingResources are named as following:
+		NodeToPodsLinkingResource_[NodeID]
+		e.g. NodeToPodsLinkingResource_x67dsjhkfasd78yjxajkhs
+	*/
+	mapping inout ResourceEnvironment::addPodToNodeToPodsLinkingResource(node : ResourceContainer, pod : ResourceContainer) {
+		var linkingResourceName : String = "NodeToPodsLinkingResource_" + node.id;
+		log("Node ID: " + node.id);
+		log("Pod ID: " + pod.id);
+		self.linkingResources__ResourceEnvironment->forEach(lr) {
+			log("lr Name: " + lr.entityName);
+		};
+		assert fatal(self.linkingResources__ResourceEnvironment->select(lr | lr.entityName = linkingResourceName)->notEmpty())
+			with log("No LinkingResource with name: " + linkingResourceName + " found!");
+		var nodeToPodsLinkingResource : LinkingResource := self.linkingResources__ResourceEnvironment->any(lr | lr.entityName = linkingResourceName);
+		log("NodeToPodsLinkingResource resourceContainers Size (Before): " + nodeToPodsLinkingResource.connectedResourceContainers_LinkingResource->size().toString());
+		nodeToPodsLinkingResource.connectedResourceContainers_LinkingResource += pod;
+		log("NodeToPodsLinkingResource resourceContainers Size (After): " + nodeToPodsLinkingResource.connectedResourceContainers_LinkingResource->size().toString());
+	}
+	
+	/*
+		Assumes, that these special LinkingResources are named as following:
+		PodToContainersLinkingResource_[PodID]
+		e.g. PodToContainersLinkingResource_x67dsjhkfasd78yjxajkhs
+	*/
+	mapping inout ResourceEnvironment::addContainerToPodToContainersLinkingResource(pod : ResourceContainer, container : ResourceContainer) {
+		var linkingResourceName : String = "PodToContainersLinkingResource_" + pod.id;
+		log("CONTAINERTOPOD");
+		assert fatal(self.linkingResources__ResourceEnvironment->select(lr | lr.entityName = linkingResourceName)->notEmpty())
+			with log("No LinkingResource with name: " + linkingResourceName + " found!");
+		var podToContainersLinkingResource : LinkingResource := self.linkingResources__ResourceEnvironment->any(lr | lr.entityName = linkingResourceName);
+		podToContainersLinkingResource.connectedResourceContainers_LinkingResource += container;
+	}
+	
+	mapping inout ResourceEnvironment::createPodToContainersLinkingResource(pod : ResourceContainer) {
+		var connectedResourceContainers : Bag(ResourceContainer);
+		connectedResourceContainers += pod;
+		var name : String := "PodToContainersLinkingResource_" + pod.id;
+		var newLinkingResource : LinkingResource := object LinkingResource {
+			communicationLinkResourceSpecifications_LinkingResource := createCommunicationLinkResourceSpecification();
+			connectedResourceContainers_LinkingResource := connectedResourceContainers;
+			entityName := name;
+		};
+		self.linkingResources__ResourceEnvironment += newLinkingResource;
+	}
+	
+	helper createCommunicationLinkResourceSpecification() : CommunicationLinkResourceSpecification {
+		log("failureProbabilityBetweenContainersInSamePod: " + failureProbabilityBetweenContainersInSamePod.toString());
+		log("latencyBetweenContainersInSamePod" + latencyBetweenContainersInSamePod.toString());
+		log("throughputBetweenContainersInSamePod" + throughputBetweenContainersInSamePod.toString());
+		return object CommunicationLinkResourceSpecification {
+			communicationLinkResourceType_CommunicationLinkResourceSpecification := getLANCommunicationLinkResourceType();
+			failureProbability := failureProbabilityBetweenContainersInSamePod;
+			latency_CommunicationLinkResourceSpecification := createNewPCMRandomVariable(latencyBetweenContainersInSamePod);
+			throughput_CommunicationLinkResourceSpecification := createNewPCMRandomVariable(throughputBetweenContainersInSamePod);
+		};
+	}
+	
+	helper createNewPCMRandomVariable(specificationValue : String) : PCMRandomVariable {
+		return object PCMRandomVariable {
+			specification := specificationValue;
+		};
+	}
+	
+	/*
+		This mapping creates a new allocation.
+	*/
+	mapping inout Allocation::createAllocation(resourceContainer: ResourceContainer, assemblyContext : AssemblyContext) {
+		var newAlloc: AllocationContext = object  AllocationContext {
+			assemblyContext_AllocationContext := assemblyContext;
+			resourceContainer_AllocationContext := resourceContainer;
+		};
+		self.allocationContexts_Allocation += newAlloc;
+	}
+	
+	/*
+		This mapping creates a new allocation for a Pods' container naming
+		the allocationContext properly to identify a Pods' Containers in possible
+		deallocations.
+	*/
+	mapping inout Allocation::createContainerAllocation(resourceContainer: ResourceContainer, assemblyContext : AssemblyContext, podAssemblyContext : AssemblyContext) {
+		var newAlloc: AllocationContext = object  AllocationContext {
+			assemblyContext_AllocationContext := assemblyContext;
+			resourceContainer_AllocationContext := resourceContainer;
+			entityName := "Container_Alloc_Of_PodAssemblyCtx_" + podAssemblyContext.id;
+		};
+		log("NewContainerAllocation EnityName: " + newAlloc.entityName);
+		self.allocationContexts_Allocation += newAlloc;
+	}
+	
+	helper ResourceContainer::getResourceContainersCPUProcessingResource() : ProcessingResourceSpecification {
+		var activeResourceSpecifications : Set(ProcessingResourceSpecification) := self.activeResourceSpecifications_ResourceContainer;
+		//log("ResourceSpec Size: " + activeResourceSpecifications->size().toString());
+		return activeResourceSpecifications->any(spec | spec.activeResourceType_ActiveResourceSpecification.entityName = "CPU");
+	}
+	
+	helper ProcessingResourceSpecification::createCopyOfProcessingResourceSpecification(newNumberOfReplicas : Integer) : ProcessingResourceSpecification {
+		var procRate : PCMRandomVariable := createNewPCMRandomVariable("1000 * 1000");
+		var newSpec : ProcessingResourceSpecification := object ProcessingResourceSpecification {
+			activeResourceType_ActiveResourceSpecification := self.activeResourceType_ActiveResourceSpecification;
+			MTTF := self.MTTF;
+			MTTR := self.MTTR;
+			numberOfReplicas := newNumberOfReplicas;
+			processingRate_ProcessingResourceSpecification := procRate;
+			requiredByContainer := self.requiredByContainer;
+			schedulingPolicy := self.schedulingPolicy;
+		};
+		return newSpec;
+	}
+	
+	/*
+		This method calculates from the aggregated CPU Requests the number of Replicas the NestedResoureContainer
+		receives.
+		This is a workaround until the cgroup scheduler is integrated into the simulation.
+	*/
+	helper Pod::getCPUReplicas() : Integer {
+		var aggregatedRequest : Integer := 0;
+		self.containers->forEach(container) {
+			aggregatedRequest := aggregatedRequest + container.standardRequest.cpu;
+		};
+		log("AggregatedRequest: " + aggregatedRequest.toString());
+		log("AggregatedRequest / 1000: " + (aggregatedRequest / 1000).toString());
+		log("AggregatedRequest / 1000 floored:" + (aggregatedRequest / 1000).floor().toString());
+		if ((aggregatedRequest / 1000) > (aggregatedRequest / 1000).floor()) {
+			return (aggregatedRequest / 1000).floor() + 1;
+		};
+		return (aggregatedRequest / 1000).floor();
+	}
+	
+	/*
+		This method calculates from the aggregated CPU Requests the processing rate the NestedResoureContainer
+		receives.
+		This method is used when the mosaic cgroup-scheduler is used for CPU-Scheduling.
+		Background information on nested-resourceContainer CPU-Demand scheduling:
+		Master Node has actual "hardware" replicas=cores and processingRate.
+		This processing rate is distributed between the cgroups (e.g. containers and pods)
+		Limitation: cgroup scheduler currently only supports depth of 1 => pod granularity for cgroups.
+		The cgroup scheduler calculates cpu-shares based on the processing-rate * replicas of the nested resourceCotnainers.
+		e.g. Pod1 (replicas = 1, processingRate = 500) Pod2 (replicas = 1, processingRate = 1000)
+		=> Pod1 gets 1/3 of the possible "hardware" processing resources, whereas Pod2 receives 2/3
+		As long as all Pods' ResourceContainer's processingResource is set in the same order of magnitude,
+		each cgroups fair share is calculated correctly.
+		Therefore for each NestedResourceContainer (Pod) replicas = 1, processingRate = IntLiteral(AggregatedRequest)
+		where the only requirement is, that request of the Pods' containers is set in the unit (int) (e.g. millicores)
+	*/
+	helper Pod::getCPUProcessingRate() : PCMRandomVariable {
+		var aggregatedRequest : Integer := 0;
+		self.containers->forEach(container) {
+			aggregatedRequest := aggregatedRequest + container.standardRequest.cpu;
+		};
+		var processingRate : PCMRandomVariable := createNewPCMRandomVariable(aggregatedRequest.toString());
+		return processingRate;
+	}
+	
+	helper Container::getCPUReplicas() : Integer {
+		var cpuRequest : Integer := self.standardRequest.cpu;
+		if ((cpuRequest / 1000) > (cpuRequest / 1000).floor()) {
+			return (cpuRequest / 1000).floor() +1;
+		};
+		return (cpuRequest / 1000).floor();
+	}
+	
+	helper getCPUProcessingResourceType() : ProcessingResourceType {
+		var resourceRepository : ResourceRepository := pcmResTypes.rootObjects()[ResourceRepository]->any(true);
+		assert fatal(resourceRepository.availableResourceTypes_ResourceRepository->select(resourceType | resourceType.entityName = "CPU")->notEmpty())
+			with log("No ProcessingResource with name CPU exists in the ResourceType Repository.");
+		return resourceRepository.availableResourceTypes_ResourceRepository->any(resourceType | resourceType.entityName = "CPU").oclAsType(ProcessingResourceType);
+	}
+	
+	helper getLANCommunicationLinkResourceType() : CommunicationLinkResourceType {
+		var resourceRepository : ResourceRepository := pcmResTypes.rootObjects()[ResourceRepository]->any(true);
+		assert fatal(resourceRepository.availableResourceTypes_ResourceRepository->select(resourceType | resourceType.entityName = "LAN")->notEmpty())
+			with log("No CommunicationLinkResourceType with name LAN exists in the ResourceType Repository.");
+		return resourceRepository.availableResourceTypes_ResourceRepository->any(resourceType | resourceType.entityName = "LAN").oclAsType(CommunicationLinkResourceType);
+	}
+	
+	helper createResourceContainer(resourceEnvironment : ResourceEnvironment, activeResourceSpecification : ProcessingResourceSpecification, parentResourceContainer : ResourceContainer) : ResourceContainer {
+		var newResourceContainer: ResourceContainer = object  ResourceContainer {
+				activeResourceSpecifications_ResourceContainer := activeResourceSpecification;
+				//parentResourceContainer__ResourceContainer := parentResourceContainer;
+				//resourceEnvironment_ResourceContainer := resourceEnvironment;
+				};
+		return newResourceContainer;
+	}
+	
+	helper createPodResourceContainer(resourceEnvironment : ResourceEnvironment, activeResourceSpecification : ProcessingResourceSpecification, parentResourceContainer : ResourceContainer) : ResourceContainer {
+		var schedulingPolicyToUse : SchedulingPolicy := activeResourceSpecification.schedulingPolicy;	
+		if (schedulingPolicyToUse.id = mosaicSchedulerCGroupId) {
+			var schedulingPoliciesRepository : ResourceRepository := schedulingPolicyToUse.resourceRepository__SchedulingPolicy;
+			schedulingPolicyToUse := schedulingPoliciesRepository.schedulingPolicies__ResourceRepository->select(policy | policy.id = mosaicSchedulerVirtual)->any(true);
+		};
+		log("Scheduling Policy To Use: " + schedulingPolicyToUse.id);
+		
+		activeResourceSpecification.map setSchedulingPolicy(schedulingPolicyToUse);
+		
+		var newResourceContainer: ResourceContainer = object  ResourceContainer {
+				activeResourceSpecifications_ResourceContainer := activeResourceSpecification;
+				parentResourceContainer__ResourceContainer := parentResourceContainer;
+				//resourceEnvironment_ResourceContainer := resourceEnvironment;
+				};
+		return newResourceContainer;
+	}
+	
+	mapping inout ProcessingResourceSpecification::setSchedulingPolicy(schedulingPolicyToUse : SchedulingPolicy) {
+		self.schedulingPolicy := schedulingPolicyToUse;
+	}
+	
+	
+	// cgroup Scheduler doesn't support two levels of nested ResourceContainers
+	// PodResourceContainer has aggregated Resources of internal Container requests.
+	helper createResourceContainerWithoutActiveResourceSpec(resourceEnvironment : ResourceEnvironment, parentResourceContainer : ResourceContainer) : ResourceContainer {
+		var newResourceContainer: ResourceContainer = object  ResourceContainer {
+				parentResourceContainer__ResourceContainer := parentResourceContainer;
+				//resourceEnvironment_ResourceContainer := resourceEnvironment;
+				};
+		log ("createResourceContainerWithoutActiveResourceSpec: ");
+		log(" parent ResourceContainer (Should be Pod RC): " + parentResourceContainer.id);
+		return newResourceContainer;
+	}
+	
+	
+	helper getListOfNonAllocatedAssemblyContexts(system : System, allocationModel : Allocation) : Bag(AssemblyContext){
+		var allocations : Set(AllocationContext) = allocationModel.allocationContexts_Allocation;
+		var podAllocationsAssemblyContexts : Bag(AssemblyContext) = allocations->collect(a | a.assemblyContext_AllocationContext)
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod));
+		var assembledPodsAssemblyContexts : Bag(AssemblyContext) = system.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod))->asBag();
+		var missingAllocationAssemblyContexts : Bag(AssemblyContext);
+    	assembledPodsAssemblyContexts->forEach(context) {
+    		// Check if for every assemblyContext an allocation exists in the allocationModel
+    		if (not podAllocationsAssemblyContexts->includes(context)) {
+    			missingAllocationAssemblyContexts := missingAllocationAssemblyContexts->including(context);
+    		};
+    	};
+    	return missingAllocationAssemblyContexts;
+	}
+	
+	mapping inout Allocation::allocatePodAssemblyContextRandomly(assemblyContext : AssemblyContext) {
+		log("Assembly Context allocatePodAssembly: " + assemblyContext.id);
+		
+		var newAlloc: AllocationContext = object  AllocationContext {
+				allocation_AllocationContext := self;
+				assemblyContext_AllocationContext := assemblyContext;
+				resourceContainer_AllocationContext := findAllocationForPod(assemblyContext.encapsulatedComponent__AssemblyContext.oclAsType(Pod), allocationStrategy);
+			};
+		self.allocationContexts_Allocation += newAlloc;
+	}
+	
+	/*
+	* 	Returns wether the cluster has enough resources available for the Pod on any Node.
+	*/
+	helper Allocation::isPodAllocatable(pod : Pod) : Boolean {
+		var podMemoryRequest : Integer := pod.getPodsMemoryRequest();
+		var podCPURequest : Integer := pod.getPodsCPURequest();
+		
+		var resEnv : ResourceEnvironment := self.targetResourceEnvironment_Allocation;
+		var nodes : Set(KubernetesNode) := resEnv.resourceContainer_ResourceEnvironment->selectByKind(KubernetesNode);
+		
+		// Filter Nodes
+		nodes->forEach(node) {
+			var freeMemory : Integer := node.memory - node.getRequestedMemory(self);
+			var freeCPU : Integer := node.millicores - node.getRequestedCPU(self);
+			
+			if ((freeMemory < podMemoryRequest) or (freeCPU < podCPURequest)) {
+				nodes := nodes->excluding(node);
+			};
+		};
+		if (not nodes->isEmpty()) {
+			return true;
+		};
+		return false;
+	}
+	
+	/*
+	*	strategy 1 = leastAllocated
+	* 	strategy 2 = mostAllocated
+	*/
+	helper Allocation::findAllocationForPod(pod : Pod, strategy : Integer) : ResourceContainer {
+		
+		if (strategy = 1) {
+			return self.findAllocationForPodLeastAllocated(pod);
+		}
+		else {
+			return self.findAllocationForPodMostAllocated(pod);	
+		};
+	}
+	
+	/*
+	* The least allocated scheduler allocates a Pod on the Node where the least resources least resources (cpu and ram combined)
+	* are requested.
+	* Therefore it distributes an application on the existing nodes.
+	*/
+	helper Allocation::findAllocationForPodLeastAllocated(pod : Pod) : ResourceContainer {
+		var podMemoryRequest : Integer := pod.getPodsMemoryRequest();
+		var podCPURequest : Integer := pod.getPodsCPURequest();
+		
+		var resEnv : ResourceEnvironment := self.targetResourceEnvironment_Allocation;
+		var nodes : Set(KubernetesNode) := resEnv.resourceContainer_ResourceEnvironment->selectByKind(KubernetesNode);
+		
+		// Filter Nodes
+		nodes->forEach(node) {
+			var freeMemory : Integer := node.memory - node.getRequestedMemory(self);
+			var freeCPU : Integer := node.millicores - node.getRequestedCPU(self);
+			
+			if ((freeMemory < podMemoryRequest) or (freeCPU < podCPURequest)) {
+				nodes := nodes->excluding(node);
+			};
+		};
+		
+		// Score feasible nodes.
+		
+		var bestNodes : Sequence(KubernetesNode);
+		var bestNodeScore : Real;
+		nodes->forEach(node) {
+			var memScore : Real := 1 - (node.getRequestedMemory(self) / node.memory);
+			var cpuScore : Real := 1 - (node.getRequestedCPU(self) / node.millicores);
+			if ((memScore + cpuScore) > bestNodeScore) {
+				var newBestNodes : Sequence(KubernetesNode);
+				bestNodes := newBestNodes;
+				bestNodes += node;
+			};
+			if ((memScore + cpuScore) = bestNodeScore) {
+				bestNodes += node;
+			}
+		};
+		return drawFromNodes(bestNodes).oclAsType(ResourceContainer);
+	}
+	
+	helper drawFromNodes(nodes : Sequence(KubernetesNode)) : KubernetesNode {
+		var size : Integer := nodes->size();
+		log("Nodes Size: " + size.toString());
+		log(getSimulationTime().toString());
+		var nodeToDraw : Integer := getRandomNumber(1, size);
+		var simTime : Real := getSimulationTime();
+		log ("Size: " + size.toString());
+		log("Node To Draw: " + nodeToDraw.toString());
+		var currentIndex := 1;
+		var desiredElement : KubernetesNode := null;
+		nodes->forEach(node) {
+    		if (currentIndex = nodeToDraw) {
+        		desiredElement := node;
+        	};
+        	currentIndex := currentIndex + 1;
+    	};
+    	return desiredElement;
+	}
+	
+	
+	/*
+	* The most-allocated allocation scheduler allocates a Pod on the node with the most
+	* resources already requested but enough space for the Pods' request.
+	* Therefore it tries to fill up nodes.
+	*/
+	helper Allocation::findAllocationForPodMostAllocated(pod : Pod) : ResourceContainer {
+		var podMemoryRequest : Integer := pod.getPodsMemoryRequest();
+		var podCPURequest : Integer := pod.getPodsCPURequest();
+		
+		var resEnv : ResourceEnvironment := self.targetResourceEnvironment_Allocation;
+		var nodes : Set(KubernetesNode) := resEnv.resourceContainer_ResourceEnvironment->selectByKind(KubernetesNode);
+		
+		// Filter Nodes
+		nodes->forEach(node) {
+			var freeMemory : Integer := node.memory - node.getRequestedMemory(self);
+			var freeCPU : Integer := node.millicores - node.getRequestedCPU(self);
+			
+			if ((freeMemory < podMemoryRequest) or (freeCPU < podCPURequest)) {
+				nodes := nodes->excluding(node);
+			};
+		};
+		
+		// Score feasible nodes.
+		
+		var bestNodes : Sequence(KubernetesNode);
+		var bestNodeScore : Real;
+		nodes->forEach(node) {
+			var memScore : Real := node.getRequestedMemory(self) / node.memory;
+			var cpuScore : Real := node.getRequestedCPU(self) / node.millicores;
+			if ((memScore + cpuScore) > bestNodeScore) {
+				var newBestNodes : Sequence(KubernetesNode);
+				bestNodes := newBestNodes;
+				bestNodes += node;
+			};
+			if ((memScore + cpuScore) = bestNodeScore) {
+				bestNodes += node;
+			}
+		};
+		return drawFromNodes(bestNodes).oclAsType(ResourceContainer);
+	}
+	
+	helper Pod::getPodsMemoryRequest() : Integer {
+		var encapsulatedContainersCtx : Set(AssemblyContext) = self.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Container));
+		var encapsulatedContainers : Bag(Container) = encapsulatedContainersCtx->collect(ctx | ctx.encapsulatedComponent__AssemblyContext.oclAsType(Container));
+		var memoryRequest : Integer = 0;
+		encapsulatedContainers->forEach(container) {
+			memoryRequest := memoryRequest + container.standardRequest.memory;
+		};
+		return memoryRequest;
+	}
+	
+	helper Pod::getPodsCPURequest() : Integer {
+		var encapsulatedContainersCtx : Set(AssemblyContext) = self.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Container));
+		var encapsulatedContainers : Bag(Container) = encapsulatedContainersCtx->collect(ctx | ctx.encapsulatedComponent__AssemblyContext.oclAsType(Container));
+		var cpuRequest : Integer = 0;
+		encapsulatedContainers->forEach(container) {
+			cpuRequest := cpuRequest + container.standardRequest.cpu;
+		};
+		return cpuRequest;
+	}
+	
+	helper KubernetesNode::getRequestedCPU(allocation : Allocation) : Integer {
+		var allocationContexts : Set(AllocationContext) := allocation.allocationContexts_Allocation;
+		var nodeWithNestedResourceContainers : Set(ResourceContainer) = self.nestedResourceContainers__ResourceContainer;
+		
+		// This set resembles all nested-nested ResourceContainers of the node.
+		// These ResourceContainers are for Containers with their request and limit.
+		var nodesSecondLayerContainerResourceContainers : Set(ResourceContainer);
+		
+		nodeWithNestedResourceContainers->forEach(resContainer) {
+			nodesSecondLayerContainerResourceContainers += resContainer.nestedResourceContainers__ResourceContainer;
+		};	
+		
+		
+		var allocatedContextsOnContainerResourceContainers : Bag(AllocationContext);
+		
+		nodesSecondLayerContainerResourceContainers->forEach(resContainer) {
+			var allocCtxToAdd : Bag(AllocationContext) := allocationContexts->select(ac | ac.resourceContainer_AllocationContext = resContainer)->asBag();
+			allocatedContextsOnContainerResourceContainers += allocCtxToAdd;
+		};
+		
+		// Only Containers have requests and limits
+		var containersAllocatedOnNode : Bag(Container) := allocatedContextsOnContainerResourceContainers
+			->collect(a | a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext)->selectByKind(Container);
+		
+		var requestedCPU : Integer := 0;
+		containersAllocatedOnNode->forEach(container) {
+			requestedCPU := requestedCPU + container.standardRequest.cpu;
+		};
+		return requestedCPU;
+	}
+	
+	helper KubernetesNode::getRequestedMemory(allocation : Allocation) : Integer {
+		var allocationContexts : Set(AllocationContext) := allocation.allocationContexts_Allocation;
+		var nodeWithNestedResourceContainers : Set(ResourceContainer) = self.nestedResourceContainers__ResourceContainer;
+		
+		// This set resembles all nested-nested ResourceContainers of the node.
+		// These ResourceContainers are for Containers with their request and limit.
+		var nodesSecondLayerContainerResourceContainers : Set(ResourceContainer);
+		
+		nodeWithNestedResourceContainers->forEach(resContainer) {
+			nodesSecondLayerContainerResourceContainers += resContainer.nestedResourceContainers__ResourceContainer;
+		};	
+		
+		
+		var allocatedContextsOnContainerResourceContainers : Bag(AllocationContext);
+		
+		nodesSecondLayerContainerResourceContainers->forEach(resContainer) {
+			var allocCtxToAdd : Bag(AllocationContext) := allocationContexts->select(ac | ac.resourceContainer_AllocationContext = resContainer)->asBag();
+			allocatedContextsOnContainerResourceContainers += allocCtxToAdd;
+		};
+		
+		// Only Containers have requests and limits
+		var containersAllocatedOnNode : Bag(Container) := allocatedContextsOnContainerResourceContainers
+			->collect(a | a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext)->selectByKind(Container);
+		
+		var requestedMemory : Integer := 0;
+		containersAllocatedOnNode->forEach(container) {
+			requestedMemory := requestedMemory + container.standardRequest.memory;
+		};
+		return requestedMemory;
+	}
+	
+	/*
+		
+		Situation: Pod muss deallokiert werden:
+		Entferne PodToContainerLinkingResource_[PodID]
+		For Each Container : Pod {
+			Entferne AllocationContext
+			Entferne ResourceContainer des Containers
+		Entferne Pod aus NodeToPodLinkingResource_[NodeID]
+		Entferne Pod AllocationContext
+		Entferne Pod ResourceContainer
+		
+		!! In diesem Fall ist ein Pod zu viel allokiert, weswegen das System Model schon den korrekten Zustand hat.
+	*/
+	
+	helper removePodAssemblyContext (system : System, repository : Repository, assemblyCtxToRemove : AssemblyContext) {
+		// Prepare paaramters to remove through mapping from Repository and System
+		var podsRequiringAssemblyConnectors : List(AssemblyConnector) := assemblyCtxToRemove.getAllRequiringAssemblyConnectors(system);
+		var podsProvidingAssemblyConnectors : List(AssemblyConnector) := assemblyCtxToRemove.getAllProvidingAssemblyConnectors(system);
+		system.map removeExcessAssemblyConnectors(podsRequiringAssemblyConnectors);
+		system.map removeExcessAssemblyConnectors(podsProvidingAssemblyConnectors);
+		system.map removeExcessAssemblyContext(assemblyCtxToRemove);
+		// A Pod is only connected to Services
+		var servicesRequiringRolesToRemove : List(OperationRequiredRole) := podsProvidingAssemblyConnectors->collect(ac | ac.requiredRole_AssemblyConnector)->asList();
+		servicesRequiringRolesToRemove->forEach(roleToRemove) {
+			// Get the services' AssemblyContext where roles are removed from.
+			var serviceComponent : BasicComponent := roleToRemove.eContainer().oclAsType(BasicComponent);
+			repository.map cleanServiceComponentFromExcessPodConnection(serviceComponent, roleToRemove);
+			serviceComponent.map removeRequiredRole(roleToRemove);
+		};
+	}
+	
+	query AssemblyContext::getAllRequiringAssemblyConnectors(system : System) : List(AssemblyConnector) {
+		var allConnectors : List(AssemblyConnector) := system.connectors__ComposedStructure->selectByKind(AssemblyConnector)->asList();
+		var assemblyContextsRequiringConnectors : List(AssemblyConnector) := allConnectors->select(c | c.requiringAssemblyContext_AssemblyConnector = self)->asList();
+		return assemblyContextsRequiringConnectors;
+	}
+	
+	query AssemblyContext::getAllProvidingAssemblyConnectors(system : System) : List(AssemblyConnector) {
+		var allConnectors : List(AssemblyConnector) := system.connectors__ComposedStructure->selectByKind(AssemblyConnector)->asList();
+		var assemblyContextsProvidingConnectors : List(AssemblyConnector) := allConnectors->select(c | c.providingAssemblyContext_AssemblyConnector = self)->asList();
+		return assemblyContextsProvidingConnectors;
+	}
+	
+	mapping inout System::removeExcessAssemblyContext(ctx : AssemblyContext) {
+		self.assemblyContexts__ComposedStructure := self.assemblyContexts__ComposedStructure->excluding(ctx);
+	}
+	
+	mapping inout System::removeExcessAssemblyConnectors(connectorsToRemove : List(AssemblyConnector)) {
+		self.connectors__ComposedStructure := self.connectors__ComposedStructure->select(c | not connectorsToRemove->includes(c))->asList();
+	}
+	
+	/*
+	* This mapping removes the Registration of the Pod at the Service Component and it's loadbalancing SEFF.
+	* To properly remove this registration, the following steps are applied:
+	* - Remove the requiredRole from the Service
+	* - Remove the Branch from the Loadbalancing SEFF
+	* - Set the probability for all branches to 1 / (#oldReplicas - 1)
+	* @param serviceComponent : BasicComponent is the Service's component
+	* @param roleToRemove : OperationRequiredRole is the role that is removed
+	*/
+	mapping inout Repository::cleanServiceComponentFromExcessPodConnection(serviceComponent : BasicComponent, roleToRemove : OperationRequiredRole)  {
+		var seffs : Set(ServiceEffectSpecification) := serviceComponent.serviceEffectSpecifications__BasicComponent;
+		seffs->forEach(seff) {
+			if (seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+				seff.oclAsType(ResourceDemandingSEFF).map removeSEFFRegistration(roleToRemove);
+			}
+		};
+		log("cleanServiceComponent - Amount of RequiredRoles before: " + serviceComponent.requiredRoles_InterfaceRequiringEntity->size().toString());
+		//serviceComponent.map removeRequiredRole(roleToRemove);
+		log("cleanServiceComponent - Amount of RequiredRoles after: " + serviceComponent.requiredRoles_InterfaceRequiringEntity->size().toString());
+	}
+	
+	/*
+	* This mapping removes the BranchTransition of the @roleToRemove.
+	* It also sets the probability of each branch to 1 / # of new Branches
+	* @param roleToRemove : OperationRequiredRole is the role that defines which branch has to be removed.
+	*/
+	mapping inout ResourceDemandingSEFF::removeSEFFRegistration(roleToRemove : OperationRequiredRole) {
+		var steps : Set(AbstractAction) = self.steps_Behaviour;
+		// For Service Component, assume that there is only one BranchAction of interest
+		var branchActions : Set(BranchAction) = steps->selectByType(BranchAction);
+		var branchAction : BranchAction := branchActions->any(true);
+		var probabilisticBranches : Set(ProbabilisticBranchTransition) := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		log("Number of prob Branches: " +  probabilisticBranches->size().toString());
+		var amountOfBranches : Integer := probabilisticBranches->size();
+		// Get branch with roleToRemove
+		var branchToRemove : ProbabilisticBranchTransition;
+		branchAction.branches_Branch->forEach(branch) {
+			var branchesBehaviour : ResourceDemandingBehaviour := branch.branchBehaviour_BranchTransition;
+			log("branches Behaviour: " + branchesBehaviour.id);
+			var externalCallActions : Set(ExternalCallAction) := branchesBehaviour.steps_Behaviour->selectByKind(ExternalCallAction);
+			log("externalCallActions Size: " + externalCallActions->size().toString());
+			externalCallActions->forEach(extCall) {
+				log("ExternalCallAction ID: " + extCall.id);
+				log("ExternalCallAction RoleID: " + extCall.role_ExternalService.id);
+				log("extCall.role = roleToRemove: " + (extCall.role_ExternalService = roleToRemove).toString());
+				if (extCall.role_ExternalService = roleToRemove) {
+					branchAction.map removeBranch(branch);
+				}
+			}
+		};
+		probabilisticBranches := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		probabilisticBranches->forEach(branch) {branch->setProbabilityOfBranch(1 / (amountOfBranches - 1))};
+	}
+	
+	mapping inout BranchAction::removeBranch(branchToRemove : AbstractBranchTransition) {
+		self.branches_Branch := self.branches_Branch->excluding(branchToRemove);
+	}
+	
+	mapping inout ProbabilisticBranchTransition::setProbabilityOfBranch(probability : Real) {
+		self.branchProbability := probability;
+	}
+	
+	mapping inout RepositoryComponent::removeRequiredRole(roleToRemove : OperationRequiredRole) {
+		log("RoleToRemove: " + roleToRemove.id);
+		log("removeRequiredRole - Amount of RequiredRoles before: " + self.requiredRoles_InterfaceRequiringEntity->size().toString());
+		self.requiredRoles_InterfaceRequiringEntity := self.requiredRoles_InterfaceRequiringEntity->excluding(roleToRemove);
+		log("BasicComponent where Role is removed: " + self.id);
+		log("removeRequiredRole - Amount of RequiredRoles after: " + self.requiredRoles_InterfaceRequiringEntity->size().toString());
+	}
+	
+}

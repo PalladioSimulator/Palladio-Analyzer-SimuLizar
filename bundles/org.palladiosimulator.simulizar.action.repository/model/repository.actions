@@ -96,5 +96,128 @@
     <involvedRoles id="_Fi5x1LUoEeW-zrkZJ6KTtQ" entityName="Probability branch 2">
       <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//seff/ProbabilisticBranchTransition"/>
     </involvedRoles>
+    <transientStateProfile href="../../../plugin/org.palladiosimulator.simulizar.action.repository/transientstates/componentinstantiation.emfprofile_diagram#_X3rWMBwIEeWmcO0Zlkc2yA"/>
+  </actions>
+  <actions id="_Gs5npQlYEe2py52lapYZiQ" entityName="scalePopulationTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_SwqQwxRWEe2lSPWgm3GR-w" entityName="checkPreconditions">
+      <guardedTransitions id="_XM4kcBRWEe2lSPWgm3GR-w" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditions.qvto">
+        <nestedAdaptationBehavior id="_isHn4BRWEe2lSPWgm3GR-w" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_jRF9MRRWEe2lSPWgm3GR-w" entityName="testWithPrecondition" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_QGoXJQlYEe2py52lapYZiQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_QrpdVSpVEe2wiYzkm4StTQ" entityName="scalePopulationWithResourceDemandTest">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_XdSwQypVEe2wiYzkm4StTQ" entityName="checkPreconditions">
+      <guardedTransitions id="_kRolcCpVEe2wiYzkm4StTQ" entityName="checkPreconditions" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditionsWithResourceDemand.qvto">
+        <nestedAdaptationBehavior id="_ryWk4CpVEe2wiYzkm4StTQ" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:ResourceDemandingStep" id="_zrz0cipVEe2wiYzkm4StTQ" entityName="scaleOverhead" controllerCompletionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/controllercompletions/scalePopulationCompletion.qvto">
+            <controllerCalls id="_LnWAgCpWEe2wiYzkm4StTQ" entityName="scalePopulation">
+              <component href="controller.repository#_eyN5-SpWEe2wiYzkm4StTQ"/>
+              <calledSignature href="controller.repository#_a8oIcCpWEe2wiYzkm4StTQ"/>
+            </controllerCalls>
+          </adaptationSteps>
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_uhH4QSpVEe2wiYzkm4StTQ" entityName="scale" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulationWithResourceDemand.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_YWdz9CpVEe2wiYzkm4StTQ" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_TRyIFVBzEe2zE4tlzpyIWw" entityName="scalePopulationTestDebug">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_WPf2Y1BzEe2zE4tlzpyIWw" entityName="checkPreconditions">
+      <guardedTransitions id="_YpxgcFBzEe2zE4tlzpyIWw" entityName="checkPreconditions" conditionURI="platform:/resource/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemandDebug/org.palladiosimulator.simulizar.action.repository/preconditions/scalePopulationconditionsDebug.qvto">
+        <nestedAdaptationBehavior id="_sHak4FBzEe2zE4tlzpyIWw" entityName="scaleUpPopulation">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_v8rmQVBzEe2zE4tlzpyIWw" entityName="testWithPrecondition" adaptationStepURI="platform:/resource/org.palladiosimulator.simulizar.tests/testmodels/actionTestWithoutResourceDemandDebug/org.palladiosimulator.simulizar.action.repository/adaptations/scalePopulationDebug.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_HaQOhVB1Ee2DRd0JTzf1hw" entityName="UsageScenario">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//usagemodel/UsageScenario"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_adxTdSlVEe6PU9pzUer3wQ" entityName="ContainerOrchestrationControlLoop">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_tR5CUylsEe6PU9pzUer3wQ" entityName="Deployment's Replicas matches # of Instantiated Pod Instances">
+      <guardedTransitions id="_8-WUIClsEe6PU9pzUer3wQ" entityName="check Deployment Replicas matches # of instantiated Pods" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/instantiateSystemModelState_DeploymentAssemblies_Preconditions.qvto">
+        <nestedAdaptationBehavior id="_B_mYgEJ8Ee6bbaxJhGJDeg" entityName="instantiateSystemModelState">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_FOxqQUJ8Ee6bbaxJhGJDeg" entityName="instantiateSystemModelState" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/instantiateSystemModelState_DeploymentAssemblies_Adaptations.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_8XFns6mQEe6Kj4bwP6-SIQ" entityName="Allocation contains only assembled Pods">
+      <guardedTransitions id="_5Eo64KyCEe6sMawuNCq_4w" entityName="Deallocation required" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/checkAllocationModelState_DeallocationRequired_Precondition.qvto">
+        <nestedAdaptationBehavior id="_UC6fMKyDEe6sMawuNCq_4w" entityName="Deallocate Pods">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_dhNloayDEe6sMawuNCq_4w" entityName="Deallocate Pods" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/deallocatePods_Adaptations.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_GHpCFHv6Ee6ZRtvkAK7iKw" entityName="Allocation matches System Model state">
+      <guardedTransitions id="_OcqMQHv6Ee6ZRtvkAK7iKw" entityName="check Allocation state matches System model" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/checkAllocationModelState_Preconditions.qvto">
+        <nestedAdaptationBehavior id="_gaY8UHwqEe6HGpSCNiRx3Q" entityName="allocateMissingPods">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_ke0bEXwqEe6HGpSCNiRx3Q" entityName="allocateMissingPods" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/allocateMissingPods_Adaptations.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_QQOr9ClWEe6PU9pzUer3wQ" entityName="System">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//system/System"/>
+    </involvedRoles>
+    <involvedRoles id="_aq-tVEKhEe6bbaxJhGJDeg" entityName="Repository">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//repository/Repository"/>
+    </involvedRoles>
+    <involvedRoles id="_DX79REUVEe6p3-CgWw70fA" entityName="StructureDefiningSystemModel">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//system/System"/>
+    </involvedRoles>
+    <involvedRoles id="_LcOrtHv7Ee6HGpSCNiRx3Q" entityName="Allocation">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//allocation/Allocation"/>
+    </involvedRoles>
+    <involvedRoles id="_6nM-NI9UEe6GdvGaqAAt2g" entityName="ResourceEnvironment">
+      <type href="../../../plugin/org.palladiosimulator.pcm/model/pcm.ecore#//resourceenvironment/ResourceEnvironment"/>
+    </involvedRoles>
+    <involvedRoles id="_em2clLaKEe6ruvA7qGJ6_Q" entityName="allocationStrategy">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IntLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_uBeXhLaKEe6ruvA7qGJ6_Q" entityName="latencyBetweenContainersInSamePod">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_zKe4tLaKEe6ruvA7qGJ6_Q" entityName="latencyBetweenPodsOnSameNode">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_2MNkVLaKEe6ruvA7qGJ6_Q" entityName="throughputBetweenContainersInSamePod">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_5ouuhLaKEe6ruvA7qGJ6_Q" entityName="throughputBetweenPodsOnSameNode">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//StringLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_831HxLaKEe6ruvA7qGJ6_Q" entityName="failureProbabilityBetweenContainersInSamePod">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//DoubleLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_DJBZBLaLEe6ruvA7qGJ6_Q" entityName="failureProbabilityBetweenPodsOnSameNode">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//DoubleLiteral"/>
+    </involvedRoles>
+  </actions>
+  <actions id="_MHO2RSlWEe6PU9pzUer3wQ" entityName="scaleDeploymentAtGivenTime">
+    <adaptationSteps xsi:type="org.palladiosimulator.action:GuardedStep" id="_IrPZo62yEe6SC5wF5QVjMg" entityName="checkTimeConstraint">
+      <guardedTransitions id="_OtuggK2yEe6SC5wF5QVjMg" entityName="timeConstraint" conditionURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/preconditions/scaleDeployment_timeConstraint_Precondition.qvto">
+        <nestedAdaptationBehavior id="_w_STUK4BEe6Ba_fpLZqw8w" entityName="scaleTheDeployment">
+          <adaptationSteps xsi:type="org.palladiosimulator.action:EnactAdaptationStep" id="_y6pMwa4BEe6Ba_fpLZqw8w" entityName="scaleDeploymentAdaptation" adaptationStepURI="platform:/plugin/org.palladiosimulator.simulizar.action.repository/adaptations/scaleDeploymentAdaptation.qvto"/>
+        </nestedAdaptationBehavior>
+      </guardedTransitions>
+    </adaptationSteps>
+    <involvedRoles id="_eicWdK2yEe6SC5wF5QVjMg" entityName="KubernetesConcepts">
+      <type href="file:/C:/Users/natha/Documents/Palladio%20Projects/palladio_kubernetes/org.palladiosimulator.kubernetes/model/BA_Model_K8s.ecore#//k8sconcepts/K8sArtifacts"/>
+    </involvedRoles>
+    <involvedRoles id="_DWIgtK2zEe6SC5wF5QVjMg" entityName="scaleTime">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//DoubleLiteral"/>
+    </involvedRoles>
+    <involvedRoles id="_J_G_1K2zEe6SC5wF5QVjMg" entityName="deploymentToScaleID">
+      <type href="file:/C:/Users/natha/Documents/Palladio%20Projects/palladio_kubernetes/org.palladiosimulator.kubernetes/model/BA_Model_K8s.ecore#//k8sconcepts/Deployment"/>
+    </involvedRoles>
+    <involvedRoles id="_OmYF5K2zEe6SC5wF5QVjMg" entityName="newReplicas">
+      <type href="../../../plugin/de.uka.ipd.sdq.stoex/model/stoex.ecore#//IntLiteral"/>
+    </involvedRoles>
   </actions>
 </org.palladiosimulator.action:AdaptationBehaviorRepository>

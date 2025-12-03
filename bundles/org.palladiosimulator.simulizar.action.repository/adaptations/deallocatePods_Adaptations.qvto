@@ -1,0 +1,210 @@
+/*
+ * This QVTO transformation represents the adaptation step to deallocate excess Pods.
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PCM_K8S_CONCEPTS uses 'org.palladiosimulator.kubernetesModel.k8sconcepts';
+modeltype PCM_K8S_SYSTEM uses 'org.palladiosimulator.kubernetes.kubernetesModel.system';
+modeltype PCM_K8S_REPO uses 'org.palladiosimulator.kubernetesModel.repository';
+modeltype PCM_K8S_RES_ENV uses 'org.palladiosimulator.kubernetesModel.resourceenvironment';
+modeltype PCM_SUBSYS uses 'http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.2';
+
+transformation allocateMissingPods (
+							inout pcmSystem : PCM_SYS,
+							inout pcmRepo : PCM_REP,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE,
+							in pcmAllocation : PCM_ALLOC,
+							in pcmResEnv : PCM_RES_ENV,
+							in pcmResTypes : PCM_RES_TYPE
+							) {
+
+	property repositoryRoleTypeId : String = '_aq-tVEKhEe6bbaxJhGJDeg';
+	property systemRoleTypeId : String = '_QQOr9ClWEe6PU9pzUer3wQ';
+	property structureDefiningSystemRoleTypeId: String = '_DX79REUVEe6p3-CgWw70fA';
+	property allocationRoleTypeId : String = '_LcOrtHv7Ee6HGpSCNiRx3Q';
+	property resourceEnvironmentRoleTypeId : String = '_6nM-NI9UEe6GdvGaqAAt2g';
+	
+	property latencyBetweenContainersInSamePod : String = '0';
+	property throughputBetweenContainersInSamePod : String = '10000000';
+	property failureProbabilityBetweenContainersInSamePod : Real = 0.0;
+	
+	property latencyBetweenPodsOnSameNode : String = '0';
+	property throughputBetweenPodsOnSameNode : String = '10000000';
+	property failureProbabilityPodsOnSameNode : Real = 0.0;
+							
+	/**
+	 * Enact Adaptation Step Transformation to deallocate excess Pods.
+	 * At this point at least one Pod which is allocated in the Allocation model is not assembled in the System model.
+	 * This adaptation deallocates the Pod with all it's associated resources.
+	 */
+	main() {
+		
+		log("START DEALLOCATION ADAPTATION");
+		
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		log("RoleSet: " + roleSet.id);
+		var roles = roleSet.roles;
+		
+		var systemRole : instance::Role := roles->select(role | role.roleType.id = systemRoleTypeId)->any(true);
+		var system : System := systemRole.value.oclAsType(System);
+		log("System: " + system.id);
+		
+		var repoRole : instance::Role := roles->select(role | role.roleType.id = repositoryRoleTypeId)->any(true);
+		var repository : Repository:= repoRole.value.oclAsType(Repository);
+		log("RepsitoryID: " + repository.id);
+		
+		var structureDefiningSystemRole : instance::Role := roles->select(role | role.roleType.id = structureDefiningSystemRoleTypeId)->any(true);
+		var structureDefiningSystem : System := structureDefiningSystemRole.value.oclAsType(System);
+		log("StructureDefiningsSystemRoleID: " + structureDefiningSystem.id);
+		
+		var allocationRole : instance::Role := roles->select(role | role.roleType.id = allocationRoleTypeId)->any(true);
+		var allocation : Allocation := allocationRole.value.oclAsType(Allocation);
+		log("Allocation Model ID: " + allocation.id);
+		
+		var resourceEnvironmentRole : instance::Role := roles->select(role | role.roleType.id = resourceEnvironmentRoleTypeId)->any(true);
+		var resourceEnvironment : ResourceEnvironment := resourceEnvironmentRole.value.oclAsType(ResourceEnvironment);
+		log("ResourceEnvironment Name: " + resourceEnvironment.entityName);
+		
+		var podsToDeallocate : Bag(AllocationContext) := getPodsToDeallocate(system, allocation);
+		assert fatal (not podsToDeallocate->isEmpty())
+			with log("podsToDeallocate shouldn't be empty in the adaptation step.");
+		
+		podsToDeallocate->forEach(podAllocationCtx) {
+			allocation.map removeNestedPodAllocation(podAllocationCtx, resourceEnvironment);
+		};
+		log("Deallocation Adapation - allocations size after: " + allocation.allocationContexts_Allocation->size().toString());
+		log("DEALLOCATION FINISHED");
+	}
+	
+	query getPodsToDeallocate(system : System, allocation : Allocation) : Bag(AllocationContext) {
+		var allocations : Set(AllocationContext) := allocation.allocationContexts_Allocation;
+		log("Deallocation Adaptation - allocations size: " + allocations->size().toString());
+			
+		var podAllocations : Set(AllocationContext) = allocations->select(
+			a | a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod));
+			
+		var systemModelAssemblyContexts : Bag(AssemblyContext) = system.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod))->asBag();
+		
+		var podsToDeallocate : Bag(AllocationContext);
+			
+		podAllocations->forEach(podAllocation) {
+			if (not systemModelAssemblyContexts->includes(podAllocation.assemblyContext_AllocationContext)) {
+				podsToDeallocate := podsToDeallocate->including(podAllocation);
+			};
+		};
+		log("Pods to Deallocate: " + podsToDeallocate->size().toString());
+		return podsToDeallocate;
+	}
+	
+	/*
+	* This mapping deallocates a Pod from the Allocation Model and removes the associated
+	* NestedResourceContainers as well as the LinkingResources.
+	* Steps:
+	* 1 - Remove "PodToContainersLinkingResource_[PodResourceContainerID]
+	* 2 - ForEach NestedResourceContainer in PodResourceContainer do:
+	* 	2.1 - Remove all AllocationContexts on NestedResourceContainer
+	* 	2.2 - Remove the NestedResourceContainer (Containers ResourceContainer)
+	* 3 - Remove "NodeToPodsLinkingResource_[NodeResourceContainerID]"
+	* 4 - Remove the Pods' AllocationContext
+	* 4 - Remove the Pods' ResourceContainer
+	*
+	* @param podAllocationContext : AllocationContext is the AllocationContext of the Pod that is to be removed.
+	* @param resourceEnvironment : ResourceEnvironment is the ResourceEnvironment that is changed.
+	*/
+	mapping Allocation::removeNestedPodAllocation(podAllocationContext : AllocationContext, resourceEnvironment : ResourceEnvironment) {
+		log("removeNestedPodAllocation selfID: " + self.id.toString());
+		var podResourceContainer : ResourceContainer := podAllocationContext.resourceContainer_AllocationContext;
+		
+		resourceEnvironment.map removeLinkingResource("PodToContainersLinkingResource_" + podResourceContainer.id);
+		
+		//Remove the Pods' Containers' AllocationContexts and the NestedResourceContainer.
+		var podsNestedResourceContainer : Set(ResourceContainer) := podResourceContainer.nestedResourceContainers__ResourceContainer;
+		podsNestedResourceContainer->forEach(container) {
+			log("container ID: " + container.id);
+			log("removeContainerRC - AllocationContexts Size Before: " + self.allocationContexts_Allocation->size().toString());
+			self.map removeAllAllocationContextsOnResourceContainer(container);
+			log("removeContainerRC - AllocationContexts Size After: " + self.allocationContexts_Allocation->size().toString());
+			log("removeContainerRC - ResourceContainer Size Before: " + resourceEnvironment.resourceContainer_ResourceEnvironment->size().toString());
+			resourceEnvironment.map removeResourceContainer(container);
+			log("removeContainerRC - ResourceContainer Size After: " + resourceEnvironment.resourceContainer_ResourceEnvironment->size().toString());
+		};
+		
+		//Remove the Pods' ResourceContainer from the "NodeToPodLinkingResource_[NodeResourceContainerID]"
+		//PodResourceContainer is always a NestedResourceContainer on a Node => PodResourceContainer.eContainer
+		// will return the NodeResourceContainer.
+		var podsNode : ResourceContainer := podResourceContainer.eContainer().oclAsType(ResourceContainer);
+		var nodeToPodsLinkingResource : LinkingResource := resourceEnvironment.getLinkingResource("NodeToPodsLinkingResource_" + podsNode.id);
+		nodeToPodsLinkingResource.map removeResourceContainerFromLinkingResource(podResourceContainer);
+		log("removePodRC - AllocationContexts Size Before: " + self.allocationContexts_Allocation->size().toString());
+		self.map removeAllAllocationContextsOnResourceContainer(podResourceContainer);
+		log("removePodRC - AllocationContexts Size After: " + self.allocationContexts_Allocation->size().toString());
+		log("removeContainerRC - ResourceContainer Size Before: " + resourceEnvironment.resourceContainer_ResourceEnvironment->size().toString());		
+		resourceEnvironment.map removeResourceContainer(podResourceContainer);
+		log("removeContainerRC - ResourceContainer Size After: " + resourceEnvironment.resourceContainer_ResourceEnvironment->size().toString());
+	}
+	
+	query ResourceEnvironment::getLinkingResource(linkingResourceName : String) : LinkingResource {
+		var linkingResources : Set(LinkingResource) := self.linkingResources__ResourceEnvironment;
+		var linkingResource : LinkingResource := linkingResources->selectOne(lr | lr.entityName = linkingResourceName);
+		log("LinkingResource to remove: " + linkingResource.id);
+		return linkingResource;
+	}
+	
+	mapping inout LinkingResource::removeResourceContainerFromLinkingResource(resourceContainer : ResourceContainer) {
+		log("LinkingResource Before ResourceContainer Removal: " + self.connectedResourceContainers_LinkingResource->size().toString());
+		self.connectedResourceContainers_LinkingResource := self.connectedResourceContainers_LinkingResource->excluding(resourceContainer);
+		log("LinkingResource After ResourceContainer Removal: " + self.connectedResourceContainers_LinkingResource->size().toString());
+	}
+	
+	mapping inout ResourceEnvironment::removeResourceContainer(resourceContainer : ResourceContainer) {
+		log("ResourceEnvironment ResourceContainers Before ResourceContainer Removal: " + self.resourceContainer_ResourceEnvironment->size().toString());
+		self.resourceContainer_ResourceEnvironment := self.resourceContainer_ResourceEnvironment->excluding(resourceContainer);
+		log("ResourceEnvironment ResourceContainers After ResourceContainer Removal: " + self.resourceContainer_ResourceEnvironment->size().toString());
+	}
+	
+	mapping inout Allocation::removeAllAllocationContextsOnResourceContainer(resourceContainer : ResourceContainer) {
+		var allocationContexts : Set(AllocationContext) := self.allocationContexts_Allocation;
+		log("allocationContexts Size Deallocate : " + allocationContexts->size().toString());
+		var allocationContextsToRemove : Set(AllocationContext) := allocationContexts->select(
+			ctx | ctx.resourceContainer_AllocationContext = resourceContainer);
+		allocationContextsToRemove->forEach(ctx) {
+			self.allocationContexts_Allocation->excluding(ctx);
+		};
+//		log("allocationContextsToRemoveSize: " + allocationContextsToRemove->size().toString());
+//		var newAllocationContexts_Allocation := self.allocationContexts_Allocation - allocationContextsToRemove;
+//		log("newAllocationContexts_Allocation Size: " + newAllocationContexts_Allocation->size().toString());
+//		
+//		self.allocationContexts_Allocation := newAllocationContexts_Allocation;
+		log("allocationContexts Size Deallocate After: " + self.allocationContexts_Allocation->size().toString());
+	}
+	
+	mapping inout ResourceEnvironment::removeLinkingResource(linkingResourceName : String) {
+		var linkingResources : Set(LinkingResource) := self.linkingResources__ResourceEnvironment;
+		var linkingResourceToRemove : LinkingResource := linkingResources->select(lr | lr.entityName = linkingResourceName)->any(true);
+		var newSetOfLinkingResources : Set(LinkingResource) := self.linkingResources__ResourceEnvironment->excluding(linkingResourceToRemove);
+		self.linkingResources__ResourceEnvironment := newSetOfLinkingResources;
+	}
+	
+}

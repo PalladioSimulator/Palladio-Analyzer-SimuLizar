@@ -1,0 +1,61 @@
+/*
+ * This QVTO transformation represents the precoditions to scale a Deployment.
+ *
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+
+transformation scalePopulationActionConditions(
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+							
+property timeConstraintRoleId : String = "_DWIgtK2zEe6SC5wF5QVjMg";
+
+	/**
+	 * The main transformation to check the precondition whether the action should be executed.
+	 */
+	main() {
+		log("Check Deployment Scaling Condition Time Constraint!");
+		
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		log("RoleSet: " + roleSet.id);
+		var roles = roleSet.roles;
+		log ("Preconditions roles size: " + roles->size().toString());
+		
+		var timeRole : instance::Role := roles->select(role | role.roleType.id = timeConstraintRoleId)->any(true);
+		var timeToScaleLiteral : DoubleLiteral := timeRole.value.oclAsType(DoubleLiteral);
+		var timeToScale : Real := timeToScaleLiteral.value;
+		log("TimeToScale: " + timeToScale.toString());
+		log("Current Simulation Time: " + getSimulationTime().toString());
+		
+		assert fatal(getSimulationTime() >= timeToScale and getSimulationTime() < (timeToScale + 5.1))
+			with log("Precondition to scale deployment is not met.");
+		log("Conditions passed");
+	}
+	
+	
+}

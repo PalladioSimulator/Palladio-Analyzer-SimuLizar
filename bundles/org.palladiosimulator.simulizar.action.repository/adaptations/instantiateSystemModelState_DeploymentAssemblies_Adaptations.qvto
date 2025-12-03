@@ -1,0 +1,642 @@
+/*
+ * This QVTO transformation represents the adaptation step to establish the defined system model state.
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PCM_K8S_CONCEPTS uses 'org.palladiosimulator.kubernetesModel.k8sconcepts';
+modeltype PCM_K8S_SYSTEM uses 'org.palladiosimulator.kubernetes.kubernetesModel.system';
+modeltype PCM_K8S_REPO uses 'org.palladiosimulator.kubernetesModel.repository';
+modeltype PCM_K8S_RES_ENV uses 'org.palladiosimulator.kubernetesModel.resourceenvironment';
+modeltype PCM_SUBSYS uses 'http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.2';
+
+transformation scaleUpSystemModelToDesiredState(
+							inout pcmSystem : PCM_SYS,
+							inout pcmRepo : PCM_REP,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+
+	property repositoryRoleTypeId : String = '_aq-tVEKhEe6bbaxJhGJDeg';
+	property systemRoleTypeId : String = '_QQOr9ClWEe6PU9pzUer3wQ';
+	property structureDefiningSystemRoleTypeId: String = '_DX79REUVEe6p3-CgWw70fA';
+							
+	/**
+	 * Enact Adaptation Step Transformation to establish desired System Model state.
+	 * The desired state is defined through the assembled Deployments and their desired Replicas.
+	 * At this point, there exists at least one Deployment-Assembly where the number of replicas differs from
+	 * the actually instantiated number of Pods.
+	 * This adaptation calculates the difference and creates the desired state in the system model as defined in
+	 * the Deployment-Assemblies.
+	 */
+	 /**
+	 * Steps to perform:
+	 * 1. Get List of all Deployment-Assemblies
+	 * 2. For each Deployment Assembly:
+	 * 	2.1 Get Deployment-Assembly's Load-Balancing-Service
+	 * 	2.2 Get Deployment-Assembly's Component in the Repository Model
+	 * 	2.3 Compare Number of Components Required Roles of each type with Number of Replicas from Deployment Assembly
+	 * 	2.4 If different => Reduce or Increase the number of RequiredRoles. (Increase done)
+	 *	2.5 Get the Service-Components SEFF
+	 * 	2.6 Get the SEFF's Branching Action
+	 * 	2.7 Compare amount of Branches with Amount of Required Roles
+	 *	2.8 Increase (done) or Decrease (TODO) the number of Branches, set one Required Role for each Branch.
+	 *	2.9 Set the Probability for each branch to 1/n with n = number of branches
+	 * 	=============================================================================
+	 * 	Repository Model is finished
+	 * 3. For each Deployment Assembly:
+	 * 	3.1 Get Deployment-Assembly's Replicas
+	 * 	3.2 Get Pods belonging to this Deployment-Assembly
+	 *	3.3 Compare the number of instantiated Pods with Replicas
+	 *	3.4 Instantiate or remove Assembly Contexts together with their Connectors from/to the model 
+	 * ==============================================================================
+	 * The System Model defines the actual desired state declaratively defined by deployments
+	 * In the next step of the action, the action will try to allocate the desired state.
+	 * If it fails, the not-allocated Assembly Contexts will be removed together with their Loadbalancer Registration and
+	 * the Required Roles the Load-Balancing Service created for this Assembly Context.
+	 * This has to be done to ensure that every Request is delegated correctly to an actually existing instance.
+	 */
+	main() {
+		log("Start Adaptation Step to instantiate missing Pods.");
+		
+		// Obtain relevant models from action roles / input parameters.
+		
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var roles = roleSet.roles;
+		
+		var systemRole : instance::Role := roles->select(role | role.roleType.id = systemRoleTypeId)->any(true);
+		var system : System := systemRole.value.oclAsType(System);
+		
+		var repoRole : instance::Role := roles->select(role | role.roleType.id = repositoryRoleTypeId)->any(true);
+		var repository : Repository:= repoRole.value.oclAsType(Repository);
+		
+		var structureDefiningSystemRole : instance::Role := roles->select(role | role.roleType.id = structureDefiningSystemRoleTypeId)->any(true);
+		var structureDefiningSystem : System := structureDefiningSystemRole.value.oclAsType(System);
+
+		var deploymentAssembliesContext : Set(AssemblyContext) = system.assemblyContexts__ComposedStructure
+			->select(context | context.oclIsKindOf(DeploymentAssembly));
+
+		var deploymentAssemblies : Set(DeploymentAssembly) = deploymentAssembliesContext
+    		->select(context | context.oclIsKindOf(DeploymentAssembly))
+    		->collect(context | context.oclAsType(DeploymentAssembly))->asSet();
+
+		// Determine Deployments / DeploymentAssemblies with missing Pods (Replicas > assembled Pods)
+		var missingPodsDeploymentAssemblies : Set(DeploymentAssembly) = deploymentAssemblies
+			->select(da | da.arePodsMissing());
+
+		log("MissingDeploymentAssemblies Size: " + missingPodsDeploymentAssemblies->size().toString());
+		repository.map enactRepositoryAdaptationPodsMissing(missingPodsDeploymentAssemblies);
+		system->enactSystemAdaptationPodsMissing(missingPodsDeploymentAssemblies, structureDefiningSystem);
+		
+		// Determine Deployments / DeploymentAssemblies with too many Pods (Replicas < assembled Pods)
+		var tooManyPodsDeploymentAssemblies : Set(DeploymentAssembly) = deploymentAssemblies
+			->select(da | da.tooManyPodsInstantiated());
+		log("TooManyPodsDeploymentsAssemblies Size: " + tooManyPodsDeploymentAssemblies->size().toString());
+			
+		// Call Helper that removes for each of the tooManyPodsDeploymentAssemblies their:
+		// AssemblyContext, AssemblyConnectors, RequiredRoles of the Loadbalancer, Loadbalancer SEFF Branch
+		// and sets the Branch probability for each Branch to the appropriate probability until the replicas match desired state.
+		log("System Assembly Contexts Size: " + system.assemblyContexts__ComposedStructure->size().toString());
+		tooManyPodsDeploymentAssemblies->forEach(assembly) {
+			assembly.removeExcessPodAssemblies(system, repository);
+		};
+ 		log("System Assembly Contexts Size: " + system.assemblyContexts__ComposedStructure->size().toString());
+		log("Desired System Model state established!");
+	}
+	
+	helper DeploymentAssembly::removeExcessPodAssemblies (system : System, repository : Repository) {
+		while (self.tooManyPodsInstantiated()) {
+			var assemblyCtxToRemove : AssemblyContext := self.getPodAssemblyContext();
+			assert fatal(not assemblyCtxToRemove.oclIsUndefined())
+				with log ("It was not possible to find an AssemblyContext for a Deployment with Excess Pods.");
+			// Prepare paaramters to remove through mapping from Repository and System
+			var podsRequiringAssemblyConnectors : List(AssemblyConnector) := assemblyCtxToRemove.getAllRequiringAssemblyConnectors(system);
+			var podsProvidingAssemblyConnectors : List(AssemblyConnector) := assemblyCtxToRemove.getAllProvidingAssemblyConnectors(system);
+			system.map removeExcessAssemblyConnectors(podsRequiringAssemblyConnectors);
+			system.map removeExcessAssemblyConnectors(podsProvidingAssemblyConnectors);
+			system.map removeExcessAssemblyContext(assemblyCtxToRemove);
+			var servicesRequiringRolesToRemove : List(OperationRequiredRole) := podsProvidingAssemblyConnectors->collect(ac | ac.requiredRole_AssemblyConnector)->asList();
+			servicesRequiringRolesToRemove->forEach(roleToRemove) {
+				repository.map cleanServiceComponentFromExcessPodConnection(self.encapsulatedComponent__AssemblyContext.oclAsType(BasicComponent), roleToRemove);
+				self.encapsulatedComponent__AssemblyContext.map removeRequiredRole(roleToRemove);
+			};
+		}	
+	}
+	
+	mapping inout System::removeExcessAssemblyContext(ctx : AssemblyContext) {
+		self.assemblyContexts__ComposedStructure := self.assemblyContexts__ComposedStructure->excluding(ctx);
+	}
+	
+	mapping inout System::removeExcessAssemblyConnectors(connectorsToRemove : List(AssemblyConnector)) {
+		self.connectors__ComposedStructure := self.connectors__ComposedStructure->select(c | not connectorsToRemove->includes(c))->asList();
+	}
+	
+	/*
+	* This mapping removes the Registration of the Pod at the Service Component and it's loadbalancing SEFF.
+	* To properly remove this registration, the following steps are applied:
+	* - Remove the requiredRole from the Service
+	* - Remove the Branch from the Loadbalancing SEFF
+	* - Set the probability for all branches to 1 / (#oldReplicas - 1)
+	* @param serviceComponent : BasicComponent is the Service's component
+	* @param roleToRemove : OperationRequiredRole is the role that is removed
+	*/
+	mapping inout Repository::cleanServiceComponentFromExcessPodConnection(serviceComponent : BasicComponent, roleToRemove : OperationRequiredRole)  {
+		var seffs : Set(ServiceEffectSpecification) := serviceComponent.serviceEffectSpecifications__BasicComponent;
+		seffs->forEach(seff) {
+			if (seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+				seff.oclAsType(ResourceDemandingSEFF).map removeSEFFRegistration(roleToRemove);
+			}
+		};
+	}
+	
+	mapping inout RepositoryComponent::removeRequiredRole(roleToRemove : OperationRequiredRole) {
+		log("RoleToRemove: " + roleToRemove.id);
+		log("Amount of RequiredRoles before: " + self.requiredRoles_InterfaceRequiringEntity->size().toString());
+		self.requiredRoles_InterfaceRequiringEntity := self.requiredRoles_InterfaceRequiringEntity->excluding(roleToRemove);
+		log("BasicComponent where Role is removed: " + self.id);
+		log("Amount of RequiredRoles after: " + self.requiredRoles_InterfaceRequiringEntity->size().toString());
+	}
+	
+	/*
+	* This mapping removes the BranchTransition of the @roleToRemove.
+	* It also sets the probability of each branch to 1 / # of new Branches
+	* @param roleToRemove : OperationRequiredRole is the role that defines which branch has to be removed.
+	*/
+	mapping inout ResourceDemandingSEFF::removeSEFFRegistration(roleToRemove : OperationRequiredRole) {
+		var steps : Set(AbstractAction) = self.steps_Behaviour;
+		// For Service Component, assume that there is only one BranchAction of interest
+		var branchActions : Set(BranchAction) = steps->selectByType(BranchAction);
+		var branchAction : BranchAction := branchActions->any(true);
+		var probabilisticBranches : Set(ProbabilisticBranchTransition) := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		log("Number of prob Branches: " +  probabilisticBranches->size().toString());
+		var amountOfBranches : Integer := probabilisticBranches->size();
+		// Get branch with roleToRemove
+		var branchToRemove : ProbabilisticBranchTransition;
+		branchAction.branches_Branch->forEach(branch) {
+			var branchesBehaviour : ResourceDemandingBehaviour := branch.branchBehaviour_BranchTransition;
+			log("branches Behaviour: " + branchesBehaviour.id);
+			var externalCallActions : Set(ExternalCallAction) := branchesBehaviour.steps_Behaviour->selectByKind(ExternalCallAction);
+			log("externalCallActions Size: " + externalCallActions->size().toString());
+			externalCallActions->forEach(extCall) {
+				log("ExternalCallAction ID: " + extCall.id);
+				log("ExternalCallAction RoleID: " + extCall.role_ExternalService.id);
+				log("extCall.role = roleToRemove: " + (extCall.role_ExternalService = roleToRemove).toString());
+				if (extCall.role_ExternalService = roleToRemove) {
+					branchAction.map removeBranch(branch);
+				}
+			}
+		};
+		log("Probabilistic Branches Size: " + probabilisticBranches->size().toString());
+		probabilisticBranches := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		probabilisticBranches->forEach(branch) {branch->setProbabilityOfBranch(1 / (amountOfBranches - 1))};
+	}
+	
+	mapping inout BranchAction::removeBranch(branchToRemove : AbstractBranchTransition) {
+		self.branches_Branch := self.branches_Branch->excluding(branchToRemove);
+	}
+	
+	
+	/*
+	* Returns an AssemblyContext with a Pod belonging to the DeploymentAssembly (self) or null
+	*/
+	query DeploymentAssembly::getPodAssemblyContext() : AssemblyContext {
+		var pod : SubSystem = self.deployment.podReference;
+		var parent : ComposedStructure = self.parentStructure__AssemblyContext;
+		var instantiatedPodCounter = 0;
+		
+		parent.assemblyContexts__ComposedStructure->forEach(context) {
+			if (context.encapsulatedComponent__AssemblyContext = pod) {
+				return context;
+			}
+		};
+		log("No AssemblyContext from this Deployment found.");
+		return null;
+	}
+	
+	query AssemblyContext::getAllRequiringAssemblyConnectors(system : System) : List(AssemblyConnector) {
+		var allConnectors : List(AssemblyConnector) := system.connectors__ComposedStructure->selectByKind(AssemblyConnector)->asList();
+		var assemblyContextsRequiringConnectors : List(AssemblyConnector) := allConnectors->select(c | c.requiringAssemblyContext_AssemblyConnector = self)->asList();
+		return assemblyContextsRequiringConnectors;
+	}
+	
+	query AssemblyContext::getAllProvidingAssemblyConnectors(system : System) : List(AssemblyConnector) {
+		var allConnectors : List(AssemblyConnector) := system.connectors__ComposedStructure->selectByKind(AssemblyConnector)->asList();
+		var assemblyContextsProvidingConnectors : List(AssemblyConnector) := allConnectors->select(c | c.providingAssemblyContext_AssemblyConnector = self)->asList();
+		return assemblyContextsProvidingConnectors;
+	}
+	
+	/*
+	This mapping is the entry point to the System Model adaptations.
+	It receives the DeploymentAssemblies where Pods are missing.
+	Before that, the Repository already got adapted, so the DeploymentAssemblie's inner Component
+	has enough RequiredRoles and furthermore unused RequiredRoles for the new Instances.
+	Now new AssemblyContexts will be added, one for each missing Pod-Instance and registered at the
+	Service.
+	Based on the StructureDefiningSystem each Pods RequiredRoles, meaning requiredServices will be connected
+	to the defined Providing Service.
+	After this mapping, the System Model's state matches the desired state described by the Deployments
+	and Replicas.
+	The next step is to find an allocation and to allocate the non-allocated pods.
+	If no allocation can be found, the System Model has to be scaled down again based on the actual allocation
+	to execute the next simulation step.
+	*/
+	mapping inout System::enactSystemAdaptationPodsMissing (deploymentAssemblies : Set(DeploymentAssembly), structureDefiningSystem : System) {
+		deploymentAssemblies->forEach(deploymentAssembly) {
+			var numberOfMissingPods : Integer := self.getNumberOfMissingInstances(deploymentAssembly);
+			log("Number of Missing Pods: " + numberOfMissingPods.toString());
+			var counter = Sequence{1..numberOfMissingPods};
+			counter->forEach(c) {
+				log("DeploymentAssembly" + deploymentAssembly.id);
+				log("structureDefiningSystem" + structureDefiningSystem.id);
+				log("self.System: " + self.id);
+				self->createPodAssemblyContext(deploymentAssembly, structureDefiningSystem, c);
+				log("Counter: " + c.toString());
+			};
+		};
+	}
+
+	mapping inout System::enactSystemAdaptationPodExcess (deploymentAssemblies : Set(DeploymentAssembly), structureDefiningSystem : System) {
+		deploymentAssemblies->forEach(deploymentAssembly) {
+			// TODO implementation missing
+			var numberOfMissingPods : Integer := self.getNumberOfMissingInstances(deploymentAssembly);
+			log("Number of Missing Pods: " + numberOfMissingPods.toString());
+			var counter = Sequence{1..numberOfMissingPods};
+			counter->forEach(c) {
+				log("DeploymentAssembly" + deploymentAssembly.id);
+				log("structureDefiningSystem" + structureDefiningSystem.id);
+				log("self.System: " + self.id);
+				self->createPodAssemblyContext(deploymentAssembly, structureDefiningSystem, c);
+				log("Counter: " + c.toString());
+			};
+		};
+	}
+	
+	
+	mapping inout System::createPodAssemblyContext(deploymentAssembly : DeploymentAssembly, structureDefiningSystem : System, counter : Integer) : AssemblyContext {
+		log("Beginn create PodAssemblyContext: ");
+		var encapsulatedComponent : RepositoryComponent := deploymentAssembly.deployment.podReference;
+		log("encapsulatedComponent: " + encapsulatedComponent.id);
+		var newAssemblyContext : AssemblyContext := object AssemblyContext {
+			encapsulatedComponent__AssemblyContext := encapsulatedComponent;
+			parentStructure__AssemblyContext := self;
+		};
+		log("CREATEASSEMBLYCONTEXT ENCAPSULATEDCOMP: " + newAssemblyContext.encapsulatedComponent__AssemblyContext.id);
+		log("newAssemblyContext id: " + newAssemblyContext.id);
+		log("assemblyContexts Size: " + self.assemblyContexts__ComposedStructure->size().toString());
+		self.assemblyContexts__ComposedStructure += newAssemblyContext;
+		self->connectPodAssemblyContextProvidedRolesToService(deploymentAssembly, newAssemblyContext);
+		self->connectPodAssemblyContextRequiredRolesToProvidingServices(newAssemblyContext, structureDefiningSystem);
+		log("createPodAssemblyContext system.assemblyContexts Size: " + self.assemblyContexts__ComposedStructure->size().toString());
+	}
+	
+	mapping inout System::connectPodAssemblyContextProvidedRolesToService(deploymentAssembly : DeploymentAssembly, podAssemblyContext : AssemblyContext) {
+		var encapsulatedComponent : RepositoryComponent := podAssemblyContext.encapsulatedComponent__AssemblyContext;
+		// Provided Roles are the interfaces offered by this Pod and are only connected to it's service, meaning the
+		// deploymentAssembly.
+		// Earlier the ServiceComponent and it's SEFF for each Operation got adjustet to the number of Replicas.
+		// This means, that for each Replica, there is one free RequiredRole at the service to connect-to.
+		log("System Connectors Size Bevor: " + self.connectors__ComposedStructure->size().toString());
+		var newAssemblyConnectors : Set(AssemblyConnector);
+		var providedRoles : Set(OperationProvidedRole) := encapsulatedComponent.providedRoles_InterfaceProvidingEntity->selectByKind(OperationProvidedRole);
+		providedRoles->forEach(provRole) {
+			newAssemblyConnectors += object AssemblyConnector {
+				providedRole_AssemblyConnector := provRole;
+				providingAssemblyContext_AssemblyConnector := podAssemblyContext;
+				requiredRole_AssemblyConnector := findServicesRequiredRoleWithoutAssemblyConnectorForProvidedRole(deploymentAssembly, podAssemblyContext, provRole, self);
+				requiringAssemblyContext_AssemblyConnector := deploymentAssembly;
+			};
+		};
+		self.connectors__ComposedStructure += newAssemblyConnectors;
+		log("System Connectors Size Nach: " + self.connectors__ComposedStructure->size().toString());
+	}
+	
+	helper findServicesRequiredRoleWithoutAssemblyConnectorForProvidedRole
+		(requiringAssemblyContext : DeploymentAssembly, providingAssemblyContext : AssemblyContext, providedRole : OperationProvidedRole,
+			system : System) : OperationRequiredRole{
+		 var requiringRoles : Set(OperationRequiredRole) := requiringAssemblyContext.encapsulatedComponent__AssemblyContext.requiredRoles_InterfaceRequiringEntity
+		 ->selectByKind(OperationRequiredRole);
+		 var assemblyConnectors : Set(AssemblyConnector) := system.connectors__ComposedStructure->selectByKind(AssemblyConnector)->asSet();
+		 var requiringAssemblyContextAssemblyConnectors := assemblyConnectors->select(c | c.requiringAssemblyContext_AssemblyConnector = requiringAssemblyContext)->asSet();
+		 var requiringRolesWithoutAssemblyConnector : Set(OperationRequiredRole);
+		 requiringRoles->forEach(role) {
+		 	var roleHasNoConnector : Boolean := requiringAssemblyContextAssemblyConnectors->select(c | c.requiredRole_AssemblyConnector = role)->isEmpty();
+		 	if (roleHasNoConnector) {requiringRolesWithoutAssemblyConnector += role};
+		 };
+		 if (requiringRolesWithoutAssemblyConnector->isEmpty()) {
+		 	log ("There exists no requiredRole without Connector anymore. Cannot connect new Pod Instance to Service.");
+		 	return null;
+		 };
+		 var requiringRolesWithoutAssemblyConnectorAndCorrectOperationInterface : Set(OperationRequiredRole) := requiringRolesWithoutAssemblyConnector
+		 	->select(r | r.requiredInterface__OperationRequiredRole = providedRole.providedInterface__OperationProvidedRole)->asSet();
+		 log("Requiring Roles Without Assembly Connector and correct Operation Interface Size: " + 
+		 	requiringRolesWithoutAssemblyConnectorAndCorrectOperationInterface->size().toString());
+		 return requiringRolesWithoutAssemblyConnectorAndCorrectOperationInterface->any(true);
+	}
+	
+	/*
+	* This mapping connects the newly instatiated Pod's (-Assembly) Required Roles to the providing Services or Components
+	* as sepcified in the @structureDefiningSystem.
+	* @param podAssemblyContext : AssemblyContext is the AssemblyContext for the newly created missing Pod.
+	* @param structureDefiningSystem : System is a System defining on a higher level, which Services are connected with which other interfaces.
+	*/
+	mapping inout System::connectPodAssemblyContextRequiredRolesToProvidingServices(podAssemblyContext : AssemblyContext, structureDefiningSystem : System) {
+		var encapsulatedComponent : RepositoryComponent := podAssemblyContext.encapsulatedComponent__AssemblyContext;
+		var requiredRoles : Set(OperationRequiredRole) := encapsulatedComponent.requiredRoles_InterfaceRequiringEntity->selectByKind(OperationRequiredRole);
+		var newAssemblyConnectors : Set(AssemblyConnector);
+		requiredRoles->forEach(requRole) {
+			newAssemblyConnectors += podAssemblyContext.createAssemblyConnectorConnectingPodWithRequiredService(requRole, self, structureDefiningSystem);
+		};
+		self.connectors__ComposedStructure += newAssemblyConnectors;
+	}
+	
+	/*
+	* This helper creates an AssemblyConnector to connect a newly created Pod's required Roles with
+	* the Providing Services as specified in the structureDefiningSystem.
+	* @param requiredRole : OperationRequiredRole is the requiredRole, that needs to be connected.
+	* @param structureDefiningSystem : System is the System model that defines, which Pods are connected to which other services.
+	* @param system : System is the System simulation relevant system model
+	* @returns : AssemblyConnector is the newly created AssemblyConnector, connecting the Pod with the required Service (or other Component)
+	*/
+	helper AssemblyContext::createAssemblyConnectorConnectingPodWithRequiredService(requiredRole : OperationRequiredRole, system : System, structureDefiningSystem : System) : AssemblyConnector {
+		var structureDefiningSystemAssemblyConnectors : Set(AssemblyConnector) := structureDefiningSystem.connectors__ComposedStructure->selectByKind(AssemblyConnector);
+		// The structureDefiningSystem should contain every Pod only once.
+		// Therefore the following filter should return a one Element set with exactly the structureDefiningAssemblyContext.
+		var structureDefiningAssemblyConnector : AssemblyConnector := structureDefiningSystemAssemblyConnectors->select(c | c.requiredRole_AssemblyConnector = requiredRole 
+			and c.requiringAssemblyContext_AssemblyConnector.encapsulatedComponent__AssemblyContext = self.encapsulatedComponent__AssemblyContext)->any(true);
+		// There are two possibilities:
+		// 1. Connect Pod to another Service => look for Service with assemblyConnectors providing encapsulated Component and connect them.
+		// 2. Connect Pod to infrastructure or component without Service => No DeploymentAssembly with Pod Reference.
+		// Second case is more complicated as now we have to scan all the components that are not Pods and try to find one to connect to.
+		// Assumption: If there are more than one replicas of the non Pod Component, a Service should be used to loadbalance between them and
+		// therefore just an DeploymentAssembly for simplicity reasons.
+		var systemAssemblyContexts : Set(AssemblyContext) := system.assemblyContexts__ComposedStructure;
+		var servicesDeploymentAssembly : DeploymentAssembly := systemAssemblyContexts->selectByKind(DeploymentAssembly)
+			->select(da | da.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity
+			->includes(structureDefiningAssemblyConnector.providedRole_AssemblyConnector))->any(true);
+		if (servicesDeploymentAssembly) {
+			return object AssemblyConnector {
+			providedRole_AssemblyConnector := structureDefiningAssemblyConnector.providedRole_AssemblyConnector;
+			providingAssemblyContext_AssemblyConnector := servicesDeploymentAssembly;
+			requiredRole_AssemblyConnector := requiredRole;
+			requiringAssemblyContext_AssemblyConnector := self;
+			}
+		};
+		// There was no deploymentAssembly, resembling a service found to connect the Pod to.
+		// This means, there must be another component to connect to.
+		var componentsAssemblyContextToConnectTo : AssemblyContext := systemAssemblyContexts
+			->select(ac| ac.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity
+			->includes(structureDefiningAssemblyConnector.providedRole_AssemblyConnector))->any(true);
+		if (servicesDeploymentAssembly) {
+			return object AssemblyConnector {
+			providedRole_AssemblyConnector := structureDefiningAssemblyConnector.providedRole_AssemblyConnector;
+			providingAssemblyContext_AssemblyConnector := componentsAssemblyContextToConnectTo;
+			requiredRole_AssemblyConnector := requiredRole;
+			requiringAssemblyContext_AssemblyConnector := self;
+			}
+		};
+		log("Error: Nothing to connect the Pods requiredRole to found in the system / structureDefiningSystem.");
+		return null;
+	}
+	
+	helper System::getNumberOfMissingInstances(deploymentAssembly : DeploymentAssembly) : Integer {
+		var replicas := deploymentAssembly.deployment.replicas;
+		var pod : SubSystem = deploymentAssembly.deployment.podReference;
+		var instantiatedPodCounter = 0;
+		self.assemblyContexts__ComposedStructure->forEach(context) {
+			if (context.encapsulatedComponent__AssemblyContext = pod) {
+				instantiatedPodCounter := instantiatedPodCounter + 1;
+			}
+		};
+		return replicas - instantiatedPodCounter;
+	}
+	
+	helper System::getNumberOfExcessInstances(deploymentAssembly : DeploymentAssembly) : Integer {
+		var replicas := deploymentAssembly.deployment.replicas;
+		var pod : SubSystem = deploymentAssembly.deployment.podReference;
+		var instantiatedPodCounter = 0;
+		self.assemblyContexts__ComposedStructure->forEach(context) {
+			if (context.encapsulatedComponent__AssemblyContext = pod) {
+				instantiatedPodCounter := instantiatedPodCounter + 1;
+			}
+		};
+		return instantiatedPodCounter - replicas;
+	}
+	
+	helper DeploymentAssembly::arePodsMissing() :Boolean {
+		var replicas = self.deployment.replicas;
+		var pod : SubSystem = self.deployment.podReference;
+		var parent : ComposedStructure = self.parentStructure__AssemblyContext;
+		var instantiatedPodCounter = 0;
+		
+		parent.assemblyContexts__ComposedStructure->forEach(context) {
+			if (context.encapsulatedComponent__AssemblyContext = pod) {
+				instantiatedPodCounter := instantiatedPodCounter + 1;
+			}
+		};
+		var podsMissing := replicas > instantiatedPodCounter;
+		return podsMissing;
+	}
+	
+	helper DeploymentAssembly::tooManyPodsInstantiated() :Boolean {
+		var replicas = self.deployment.replicas;
+		log(self.id);
+		var pod : SubSystem = self.deployment.podReference;
+		var parent : ComposedStructure = self.parentStructure__AssemblyContext;
+		var instantiatedPodCounter = 0;
+		
+		parent.assemblyContexts__ComposedStructure->forEach(context) {
+			if (context.encapsulatedComponent__AssemblyContext = pod) {
+				instantiatedPodCounter := instantiatedPodCounter + 1;
+			}
+		};
+		var tooManyPods := replicas < instantiatedPodCounter;
+		log ("TooManyPods? replicas / instantiated: " + replicas.toString() + " / " + instantiatedPodCounter.toString());
+		return tooManyPods;
+	}
+		
+	/*
+	This method adjusts the DeploymentAssembly's RepositoryComponent model state.
+	It increases the number of RequiredRoles of each Interface of the Service to the number of replicas
+	It adjusts the components LoadBalancing SEFF to use the new RequiredRoles with the weight of 1/replicas
+	*/
+	helper DeploymentAssembly::ensureCorrectServiceComponentModelState(repository : Repository) {
+		var serviceComponent : RepositoryComponent := self.encapsulatedComponent__AssemblyContext;
+		var replicas := self.deployment.replicas;
+	}
+	
+	mapping inout Repository::enactRepositoryAdaptationPodsMissing (deploymentAssemblies : Set(DeploymentAssembly)) {
+		// No Transformation on repository level => Call next level
+		log("Start Repository Mapping");
+		self.components__Repository->forEach(component) {
+			component.map adjustComponentsRoles(deploymentAssemblies);
+		}
+	}
+	
+	mapping inout RepositoryComponent::adjustComponentsRoles(deploymentAssemblies : Set(DeploymentAssembly)) {
+		// No transformation for RepositoryComponents
+		log("RepositoryComponents's roles do not to be changed. Services are BasicComponents.")
+	}
+	/*
+	deploymentAssemblies : Set(DeploymentAssembly) contains only deploymentAssemblies, where the number of replicas
+	doesn't match the number of instantiated Pods => most likely doesn't match the number of requiredRoles 
+	of each Interface.
+	*/
+	mapping inout BasicComponent::adjustComponentsRoles(deploymentAssemblies : Set(DeploymentAssembly)) {
+		// Service Components are BasicComponents => Adjust number of Replicas and SEFF if required
+		deploymentAssemblies->forEach(da) {
+			var encapsulatedComponent : RepositoryComponent = da.encapsulatedComponent__AssemblyContext;
+			var replicas = da.deployment.replicas;
+			if (self.id = encapsulatedComponent.id) {
+				// Increase number of RequiredRoles to number of replicas for each type of RequiredRole / Interface
+				var newRequiredRoles = self.getNewRequiredRoles(replicas);
+				self.requiredRoles_InterfaceRequiringEntity := newRequiredRoles;
+				// Number of Roles = Replicas for each interfaceType
+				// Now adjust SEFFs to loadbalance between the replicas
+				var seffs : Set(ServiceEffectSpecification) := self.serviceEffectSpecifications__BasicComponent;
+				seffs->forEach(seff) {
+					if (seff.oclIsTypeOf(ResourceDemandingSEFF)) {
+						seff.oclAsType(ResourceDemandingSEFF).adjustLoadbalancingSEFF(self.requiredRoles_InterfaceRequiringEntity);
+					}
+				}
+			}
+		};
+	}
+	
+	helper BasicComponent::getNewRequiredRoles(numberOfRoles : Integer) : Set(RequiredRole) {
+		// Get list of different required Interface types
+		// ForEach Type: Increase requiredRoles to numberOfRoles
+		log("Beginning of helper getNewRequiredRoles");
+		var oldRequiredRoles := self.requiredRoles_InterfaceRequiringEntity;
+		log("oldRequiredRoles: " + oldRequiredRoles->size().toString());
+		var interfaceTypes : Set(OperationInterface) = self.requiredRoles_InterfaceRequiringEntity->select(r | r.oclIsTypeOf(OperationRequiredRole))
+			->collect(r | r.oclAsType(OperationRequiredRole).requiredInterface__OperationRequiredRole)->asSet();
+		log("interfaceTypes: " + interfaceTypes->size().toString());
+		interfaceTypes->forEach(interfaceType) {
+			var currentCount = self.requiredRoles_InterfaceRequiringEntity->select(r | r.oclAsType(OperationRequiredRole).requiredInterface__OperationRequiredRole = interfaceType)->size();
+			log("currentCount of" + interfaceType.toString() + " " + currentCount.toString());
+			while (currentCount < numberOfRoles) {
+				log("currentCount < numberOfRoles");
+				var newRequiredRole : RequiredRole = object OperationRequiredRole {
+					requiredInterface__OperationRequiredRole := interfaceType;
+				};
+				oldRequiredRoles += newRequiredRole;
+				currentCount := oldRequiredRoles->size();
+			} // ToDo Evtl hier oder in eigener Transformation für currentCount > numberOfRoles machen
+		};
+		log("End of helper getNewRequiredRoles");
+		return oldRequiredRoles;
+	}
+	
+	/*
+	requiredRoles : Set(RequiredRole) are the RDSEFF component's RequiredRoles.
+	This method compares this Set with the RequiredRoles already used in ExternalCallActions.
+	Then it creates (TODO or removes) RequiredRoles if needed and ensures, that each RequiredRole
+	is resembled in one ExternalCallAction of this operation.
+	After adjusting the ExternalCallAction of the BranchTransition to the number of RequiredRoles, the
+	Branche's probability is set to 1 / numberOfRequiredRoles
+	*/
+	helper ResourceDemandingSEFF::adjustLoadbalancingSEFF(requiredRoles : Set(RequiredRole)) {
+		log("AdjustLoadbalancingSEFF for " + self.toString());
+		var signature : Signature := self.describedService__SEFF;
+		var operationSignature : OperationSignature = signature.oclAsType(OperationSignature); 
+		//Filter Component's RequiredRoles for signature
+		var requiredRolesWithSeffsSignature : Set(RequiredRole) := requiredRoles->select(rr | 
+			rr.oclIsKindOf(OperationRequiredRole) and 
+			rr.oclAsType(OperationRequiredRole).requiredInterface__OperationRequiredRole.signatures__OperationInterface->includes(signature));
+		var steps : Set(AbstractAction) = self.steps_Behaviour;
+		// For Service Component, assume that there is only one BranchAction of interest
+		var branchActions : Set(BranchAction) = steps->selectByType(BranchAction);
+		if (branchActions->isEmpty()) {
+			log("No BranchAction in this ResourceDemanding SEFF: " + self.id);
+			return;
+		};
+		var branchAction : BranchAction := branchActions->any(true);
+		var probabilisticBranches : Set(ProbabilisticBranchTransition) := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		var alreadyUsedRequiredRoles : Set(OperationRequiredRole);
+		if (probabilisticBranches->notEmpty()) {
+			probabilisticBranches->forEach(branch) {
+				var branchesBehaviour : ResourceDemandingBehaviour := branch.branchBehaviour_BranchTransition;
+				var behaviourActions : Set(AbstractAction) := branchesBehaviour.steps_Behaviour;
+				//Assumes that role_ExternalService is set, which could not be the case in the first iteration when the model is defined manually.
+				alreadyUsedRequiredRoles += behaviourActions->selectByKind(ExternalCallAction).role_ExternalService;
+			}
+		};
+		log("Already Used RequiredRoles Size: " + alreadyUsedRequiredRoles->size().toString());
+		var requiredRolesToAdd : Set(RequiredRole) := requiredRoles - alreadyUsedRequiredRoles;
+		var operationRequiredRolesToAdd : Set(OperationRequiredRole) := requiredRolesToAdd->select(oclIsKindOf(OperationRequiredRole))->collect(oclAsType(OperationRequiredRole))->asSet();
+		log("RequiredRoles to add Size: " + requiredRolesToAdd->size().toString());
+		log("OperationRequiredRoles to add Size: " + operationRequiredRolesToAdd->size().toString());
+		operationRequiredRolesToAdd->forEach(role) {
+			log("----for Each Operation Required Role add Branch: ");
+			var probability : Real := 1 / (requiredRolesToAdd->size() + alreadyUsedRequiredRoles->size());
+			log("Probability: " + probability.toString());
+			branchAction->addBranchForRequiredRole(role, operationSignature, probability);
+		};
+		// Branches may have been added (TODO or removed). Now set all branches probability to correct value
+		probabilisticBranches := branchAction.branches_Branch->selectByKind(ProbabilisticBranchTransition);
+		probabilisticBranches->forEach(branch) {branch->setProbabilityOfBranch(1 / (requiredRolesToAdd->size() + alreadyUsedRequiredRoles->size()))};
+		log("adjustLoadbalancingSEFF end with ");
+		log("Branches ausseres Mapping size: " + branchAction.branches_Branch->size().toString())
+	}
+	
+	mapping inout ProbabilisticBranchTransition::setProbabilityOfBranch(probability : Real) {
+		self.branchProbability := probability;
+	}
+	
+	/*
+	This helper adds a new Branch to the BranchAction using the requiredRole as role_ExternalService and the
+	operationSignature as the ExternalResourceCall's operationSignature and the probability for the new branche's probability.
+	*/
+	mapping inout BranchAction::addBranchForRequiredRole(requiredRole : OperationRequiredRole, signature : OperationSignature, probability : Real) {
+		var newProbabilisticBranchTransition : ProbabilisticBranchTransition = object ProbabilisticBranchTransition {
+					branchProbability := probability;
+					branchAction_AbstractBranchTransition := self;
+					branchBehaviour_BranchTransition := createRDBehaviour(requiredRole, signature);
+				};
+		self.branches_Branch += newProbabilisticBranchTransition;
+		log("Branches size: " + self.branches_Branch->size().toString())
+	}
+	
+	/*
+	This helper creates a simple ResourceDemandingBehaviour with the requiredRole, containing
+	only Start, Stop, and one ExternalCallAction for the RequiredRole.
+	*/
+	helper createRDBehaviour(requiredRole : OperationRequiredRole, signature : OperationSignature) : ResourceDemandingBehaviour {
+		var startAction : StartAction := object StartAction {};
+		var extCallAction : ExternalCallAction := object ExternalCallAction {
+			predecessor_AbstractAction := startAction;
+			role_ExternalService := requiredRole;
+			calledService_ExternalService := signature;
+		};
+		var stopAction : StopAction := object StopAction {
+			predecessor_AbstractAction := extCallAction;
+		};
+		startAction.successor_AbstractAction := extCallAction;
+		extCallAction.successor_AbstractAction := stopAction;
+		var steps : Set(AbstractAction) := Set{startAction, stopAction, extCallAction};
+		var resourceDemandingBehaviour : ResourceDemandingBehaviour := object ResourceDemandingBehaviour {
+			steps_Behaviour := steps;
+		};
+		return resourceDemandingBehaviour;
+	}
+	
+}

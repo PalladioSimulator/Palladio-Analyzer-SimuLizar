@@ -1,0 +1,113 @@
+/*
+ * This QVTO transformation represents the precodition that must be matched, that requires changes
+ * in the Allocation Model.
+ * The desired state which doesn't require reconfigurations is:
+ * For each Allocation: 
+ * The Allocations' AssemblyContext is assembled in the System Model.
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+import org.palladiosimulator.simulizar.action.repository.black.SimulationStateLibrary;
+
+
+
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+modeltype PCM_K8S_CONCEPTS uses 'org.palladiosimulator.kubernetesModel.k8sconcepts';
+modeltype PCM_K8S_SYSTEM uses 'org.palladiosimulator.kubernetes.kubernetesModel.system';
+modeltype PCM_K8S_REPO uses 'org.palladiosimulator.kubernetesModel.repository';
+modeltype PCM_K8S_RES_ENV uses 'org.palladiosimulator.kubernetesModel.resourceenvironment';
+modeltype PCM_SUBSYS uses 'http://palladiosimulator.org/PalladioComponentModel/SubSystem/5.2';
+
+transformation checkAllocationModelState_isDeallocationRequired (
+							inout pcmSystem : PCM_SYS,
+							inout pcmAllocation : PCM_ALLOC,
+							in actionRoleSet : ACTION_INSTANCE,
+							in actionStep : ACTION_CORE
+							) {
+
+	property systemRoleTypeId : String = '_QQOr9ClWEe6PU9pzUer3wQ';
+	property repositoryRoleTypeId : String = '_aq-tVEKhEe6bbaxJhGJDeg';
+	property structureDefiningSystemRoleTypeId: String = '_DX79REUVEe6p3-CgWw70fA';
+	property allocationRoleTypeId : String = '_LcOrtHv7Ee6HGpSCNiRx3Q';
+	
+	/**
+	 * The main transformation to check the precondition whether the action should be executed.
+	 * This precondition checks, wether Allocations exist in the Allocation Model without an
+	 * associated AssemblyContext in the System Model.
+	 * If Allocations without associated AssemblyContext exist, the action is executed to remove these
+	 * unwanted Allocations.
+	 */
+	main() {
+		log("CHECK DEALLOCATION REQUIRED PRECONDITION");
+
+		var roleSet : RoleSet := actionRoleSet.rootObjects()[RoleSet]->any(true);
+		log("RoleSet: " + roleSet.id);
+		var roles = roleSet.roles;
+		log ("Preconditions roles size: " + roles->size().toString());
+		
+		var systemRole : instance::Role := roles->select(role | role.roleType.id = systemRoleTypeId)->any(true);
+		var system : System := systemRole.value.oclAsType(System);
+		log("System: " + system.id);
+		
+		var repoRole : instance::Role := roles->select(role | role.roleType.id = repositoryRoleTypeId)->any(true);
+		var repository : Repository:= repoRole.value.oclAsType(Repository);
+		log("RepsitoryID: " + repository.id);
+		
+		var structureDefiningSystemRole : instance::Role := roles->select(role | role.roleType.id = structureDefiningSystemRoleTypeId)->any(true);
+		var structureDefiningSystem : System := structureDefiningSystemRole.value.oclAsType(System);
+		log("StructureDefiningSystemID: " + structureDefiningSystem.id);
+		
+		var allocationRole : instance::Role := roles->select(role | role.roleType.id = allocationRoleTypeId)->any(true);
+		var allocation : Allocation := allocationRole.value.oclAsType(Allocation);
+		log("Allocation Model ID: " + allocation.id);
+		
+		assert fatal(not allocation.onlyAssembledPodsAllocated(system))
+			with log("All Pod-Instances assembled in the System model are allocated in the System Model. No reconfiguration required.");
+		log("Conditions passed. Pod-Instances have to be allocated or removed.");
+	}
+	
+	/*
+	This query checks wether all AssemblyContexts assembled in the system model are allocated
+	in the Allocation Model. It doesn't check, whether the Services or further components are
+	allocated or not. These components have to be added manually.
+	*/
+	query Allocation::onlyAssembledPodsAllocated(system : System): Boolean {
+		var onlyAssembledAllocated := true;
+		var allocations : Set(AllocationContext) = self.allocationContexts_Allocation;
+		
+		var podAllocations : Set(AllocationContext) = allocations->select(
+			a | a.assemblyContext_AllocationContext.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod));
+		
+		var podAllocationsAssemblyContexts : Bag(AssemblyContext) = allocations->collect(a | a.assemblyContext_AllocationContext)
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod));
+		
+		var systemModelAssemblyContexts : Bag(AssemblyContext) = system.assemblyContexts__ComposedStructure
+			->select(ac | ac.encapsulatedComponent__AssemblyContext.oclIsKindOf(Pod))->asBag();
+		
+		podAllocationsAssemblyContexts->forEach(podAllocAssemblyCtx) {
+			if (not systemModelAssemblyContexts->includes(podAllocAssemblyCtx)) {
+				onlyAssembledAllocated := false;
+				break;
+			}
+		};
+		log("Only Assembled Allocated: " + onlyAssembledAllocated.toString());
+		return onlyAssembledAllocated;
+	}
+}

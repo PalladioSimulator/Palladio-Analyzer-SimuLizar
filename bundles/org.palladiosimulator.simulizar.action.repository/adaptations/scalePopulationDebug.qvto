@@ -1,0 +1,68 @@
+/*
+ * This QVTO transformation represents the adaptation step to scale a workloard's population.
+ *
+ */
+
+
+import org.palladiosimulator.simulizar.action.repository.black.ProfilesLibrary;
+modeltype PCM_ALLOC uses 'http://palladiosimulator.org/PalladioComponentModel/Allocation/5.2';
+modeltype PCM_RES_ENV uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceEnvironment/5.2';
+modeltype PCM_COMP uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Composition/5.2';
+modeltype PCM_REPOSITORY uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype ACTION_MAPPING uses 'http://simulizar.palladiosimulator.org/Actions/Mapping/1.1';
+modeltype ACTION_INSTANCE uses 'http://simulizar.palladiosimulator.org/Actions/Instance/1.1';
+modeltype PCM_REP uses 'http://palladiosimulator.org/PalladioComponentModel/Repository/5.2';
+modeltype PCM_RES_TYPE uses 'http://palladiosimulator.org/PalladioComponentModel/ResourceType/5.2';
+modeltype PCM_CORE uses 'http://palladiosimulator.org/PalladioComponentModel/Core/5.2';
+modeltype PCM_ENTITY uses 'http://palladiosimulator.org/PalladioComponentModel/Core/Entity/5.2';
+modeltype ACTION_CORE uses 'http://simulizar.palladiosimulator.org/Actions/Core/1.1';
+modeltype PRM uses 'http://simulizar.palladiosimulator.org/RuntimeMeasurement/1.0';
+modeltype PCM_SEFF uses 'http://palladiosimulator.org/PalladioComponentModel/SEFF/5.2';
+modeltype PCM_SYS uses 'http://palladiosimulator.org/PalladioComponentModel/System/5.2';
+modeltype PCM_USAGE uses 'http://palladiosimulator.org/PalladioComponentModel/UsageModel/5.2';
+modeltype PCM_FEATURE_CONF uses 'http://sdq.ipd.uka.de/FeatureConfig/2.0';
+modeltype PCM_FEATURE_MOD uses 'http://sdq.ipd.uka.de/FeatureModel/2.0';
+modeltype PCM_PARAM uses 'http://palladiosimulator.org/PalladioComponentModel/Parameter/5.2';
+modeltype PCM_STOEX uses 'http://sdq.ipd.uka.de/StochasticExpressions/2.2';
+
+transformation scalePopulationAdaptationStep(
+							inout pcmUsage : PCM_USAGE,
+							in actionRoleSet : ACTION_INSTANCE
+							) {
+		
+property newPopulation : Integer = 2;
+property roleTypeId : String = '_HaQOhVB1Ee2DRd0JTzf1hw';
+							
+	/**
+	 * Enact Adaptation Step Transformation to scale Population.
+	 */
+	main() {
+		log("Start Adaptation Step to scale Action");
+		assert fatal(pcmUsage.rootObjects()[UsageModel]->size() > 0)
+			with log ("Usage Model is empty!");
+		var roleSet : RoleSet :=  actionRoleSet.rootObjects()[RoleSet]->any(true);
+		var roles := roleSet.roles;
+		var usageScenarioRole : instance::Role := roles->select(role | role.roleType.id = roleTypeId)->any(true);
+		var usageScenarioScale : UsageScenario := usageScenarioRole.value.oclAsType(UsageScenario);
+		usageScenarioScale.map enactScaling();
+	}
+	
+	mapping inout UsageScenario::enactScaling() {
+		self.workload_UsageScenario.map reconfigureWorkload(newPopulation);
+		// No stereotype is removed here.
+		log("Workload scaled to " + newPopulation.toString());
+	}
+	
+	mapping inout Workload::reconfigureWorkload(newPopulation : Integer)
+	{
+		assert fatal(true) with log("Test Action only transforms ClosedWorkloads.");
+	}
+	
+	mapping inout ClosedWorkload::reconfigureWorkload(newPopulation : Integer)
+	{
+		self._population := newPopulation;
+		log("Reconfigured Population!");
+	}
+	
+	
+}
