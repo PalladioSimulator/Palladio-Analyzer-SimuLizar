@@ -1,6 +1,7 @@
 package org.palladiosimulator.simulizar.action.repository.black;
 
 import java.util.Optional;
+import java.util.Random;
 
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation;
 import org.eclipse.m2m.qvt.oml.blackbox.java.Operation.Kind;
@@ -24,6 +25,23 @@ public class SimulationStateLibrary {
     public static double getSimulationTime() {
         return state.map(s -> s.getModel().getSimulationControl().getCurrentSimulationTime()).orElseThrow(
                 () -> new RuntimeException("Could not query simulation time. Maybe runtime state has not been set!"));
+    }
+    
+    /**
+     * Returns random value in range.
+     * No random number functionality in QVTO.
+     * 
+     * @param  min : int inclusive
+     * @param  max : int exclusive
+     * @return Random int in range [min, max[ where min is inclusive, max exclusive.
+     */
+    @Operation(kind = Kind.HELPER)
+    public static int getRandomNumber(int min, int max) {
+    	Random random = new Random();
+    	if (min == max) return min;
+        return random.ints(min, max)
+          .findFirst()
+          .getAsInt();
     }
 
     static void injectRuntimeStateModel(SimuLizarRuntimeState state) {
