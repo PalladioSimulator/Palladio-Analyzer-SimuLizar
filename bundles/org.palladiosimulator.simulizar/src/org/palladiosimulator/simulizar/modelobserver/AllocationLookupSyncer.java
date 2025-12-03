@@ -2,8 +2,10 @@ package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
 import org.eclipse.emf.ecore.util.EContentAdapter;
 import org.jgrapht.Graph;
+import org.jgrapht.GraphPath;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedAcyclicGraph;
@@ -171,7 +174,7 @@ public class AllocationLookupSyncer implements IModelObserver {
                     appendAssemblyContextRecursively(system, c, graph));
             var pathLookup = new AllDirectedPaths<>(graph);
             var paths = pathLookup.getAllPaths(system, ctx, false, 100);
-            if (paths.size() > 1) {
+            if ((paths.size() > 1) && !(arePathsUnique(paths))) {
                 LOGGER.error("Ambiguous assembly allocation. The following paths exist:");
                 for (var path : paths) {
                     var pathStr = path.getVertexList().stream().map(Entity::getId).collect(Collectors.joining("->"));
@@ -185,6 +188,25 @@ public class AllocationLookupSyncer implements IModelObserver {
                 return (List<AssemblyContext>) (List) vertexList.subList(1, vertexList.size());
             }
         }
+    }
+    
+    private boolean arePathsUnique(List<? extends GraphPath<Entity, ?>> paths) {
+        Set<String> uniquePaths = new HashSet<>();
+
+        for (GraphPath<Entity, ?> path : paths) {
+            String pathStr = path.getVertexList()
+                .stream()
+                .map(Entity::getId)
+                .collect(Collectors.joining("-"));
+
+            if (uniquePaths.contains(pathStr)) {
+                return false;
+            }
+
+            uniquePaths.add(pathStr);
+        }
+
+        return true;
     }
     
     protected void appendAssemblyContextRecursively(Entity container, AssemblyContext context, Graph<Entity, ?> graph) {
