@@ -12,6 +12,8 @@ import org.palladiosimulator.pcm.core.composition.Connector;
 import org.palladiosimulator.pcm.core.composition.RequiredDelegationConnector;
 import org.palladiosimulator.pcm.core.composition.RequiredInfrastructureDelegationConnector;
 import org.palladiosimulator.pcm.core.composition.util.CompositionSwitch;
+import org.palladiosimulator.pcm.core.entity.InterfaceRequiringEntity;
+import org.palladiosimulator.pcm.repository.OperationRequiredRole;
 import org.palladiosimulator.pcm.repository.RequiredRole;
 import org.palladiosimulator.pcm.repository.Signature;
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;

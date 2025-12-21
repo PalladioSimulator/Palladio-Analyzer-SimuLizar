@@ -115,7 +115,7 @@ transformation allocateMissingPods (
 		
 		var allocationRole : instance::Role := roles->select(role | role.roleType.id = allocationRoleTypeId)->any(true);
 		var allocation : Allocation := allocationRole.value.oclAsType(Allocation);
-		log("Allocation Model ID: " + allocation.id);
+		log("allocateMissingPods - Allocation Model ID: " + allocation.id);
 		
 		var resourceEnvironmentRole : instance::Role := roles->select(role | role.roleType.id = resourceEnvironmentRoleTypeId)->any(true);
 		var resourceEnvironment : ResourceEnvironment := resourceEnvironmentRole.value.oclAsType(ResourceEnvironment);
@@ -304,9 +304,9 @@ transformation allocateMissingPods (
 		var linkingResourceName : String = "NodeToPodsLinkingResource_" + node.id;
 		log("Node ID: " + node.id);
 		log("Pod ID: " + pod.id);
-		self.linkingResources__ResourceEnvironment->forEach(lr) {
-			log("lr Name: " + lr.entityName);
-		};
+//		self.linkingResources__ResourceEnvironment->forEach(lr) {
+//			log("lr Name: " + lr.entityName);
+//		};
 		assert fatal(self.linkingResources__ResourceEnvironment->select(lr | lr.entityName = linkingResourceName)->notEmpty())
 			with log("No LinkingResource with name: " + linkingResourceName + " found!");
 		var nodeToPodsLinkingResource : LinkingResource := self.linkingResources__ResourceEnvironment->any(lr | lr.entityName = linkingResourceName);
@@ -376,13 +376,37 @@ transformation allocateMissingPods (
 		deallocations.
 	*/
 	mapping inout Allocation::createContainerAllocation(resourceContainer: ResourceContainer, assemblyContext : AssemblyContext, podAssemblyContext : AssemblyContext) {
-		var newAlloc: AllocationContext = object  AllocationContext {
-			assemblyContext_AllocationContext := assemblyContext;
-			resourceContainer_AllocationContext := resourceContainer;
-			entityName := "Container_Alloc_Of_PodAssemblyCtx_" + podAssemblyContext.id;
-		};
-		log("NewContainerAllocation EnityName: " + newAlloc.entityName);
+		
+		// STATE-----
+		log("self.id: " + self.id.toString());
+		log("resourceContainer: " + resourceContainer.id.toString());
+		log("AssemblyContext: " + assemblyContext.id.toString());
+		log("podAssemblyContext: " + podAssemblyContext.id.toString());
+		
+		var newAlloc := object AllocationContext {};
+		log("After creation: " + newAlloc.assemblyContext_AllocationContext.toString());
+		
+		newAlloc.assemblyContext_AllocationContext := assemblyContext;
+		log("After setting assemblyContext: " + newAlloc.assemblyContext_AllocationContext.toString());
+		
+		newAlloc.resourceContainer_AllocationContext := resourceContainer;
+		log("After setting resourceContainer: " + newAlloc.resourceContainer_AllocationContext.toString());
+		
 		self.allocationContexts_Allocation += newAlloc;
+		log("newAlloc.eResource: " + newAlloc.eResource().toString());
+		log("assemblyContext.eResource: " + assemblyContext.eResource().toString());
+		log("After adding to model: " + newAlloc.toString());
+			
+//		var newAlloc: AllocationContext = object  AllocationContext {
+//			assemblyContext_AllocationContext := assemblyContext;
+//			resourceContainer_AllocationContext := resourceContainer;
+//			entityName := "Container_Alloc_Of_PodAssemblyCtx_" + podAssemblyContext.id;
+//		};
+//		log("NewContainerAllocation EnityName: " + newAlloc.entityName);
+//		log("NewContainerAllocation resourceContainer_AllocationContext: " + newAlloc.resourceContainer_AllocationContext.id.toString());
+//		log("NewContainerAllocation assemblyContext_AllocationContext: " + newAlloc.assemblyContext_AllocationContext.id.toString());
+//		log("self.id: " + self.id.toString());
+//		self.allocationContexts_Allocation += newAlloc;
 	}
 	
 	helper ResourceContainer::getResourceContainersCPUProcessingResource() : ProcessingResourceSpecification {

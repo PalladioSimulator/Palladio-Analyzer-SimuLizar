@@ -378,6 +378,15 @@ transformation scaleUpSystemModelToDesiredState(
 	*/
 	helper AssemblyContext::createAssemblyConnectorConnectingPodWithRequiredService(requiredRole : OperationRequiredRole, system : System, structureDefiningSystem : System) : AssemblyConnector {
 		var structureDefiningSystemAssemblyConnectors : Set(AssemblyConnector) := structureDefiningSystem.connectors__ComposedStructure->selectByKind(AssemblyConnector);
+		
+		structureDefiningSystemAssemblyConnectors->forEach(c) {
+		    log("Connector: " + c.id);
+		    log("  requiringAC: " + c.requiringAssemblyContext_AssemblyConnector.id);
+		    log("  providedRole: " + c.providedRole_AssemblyConnector.id);
+		    log("  requiredRole: " + c.requiredRole_AssemblyConnector.id);
+		    log("Required Role needed Id: " + requiredRole.id);
+		};
+		
 		// The structureDefiningSystem should contain every Pod only once.
 		// Therefore the following filter should return a one Element set with exactly the structureDefiningAssemblyContext.
 		var structureDefiningAssemblyConnector : AssemblyConnector := structureDefiningSystemAssemblyConnectors->select(c | c.requiredRole_AssemblyConnector = requiredRole 
@@ -389,9 +398,26 @@ transformation scaleUpSystemModelToDesiredState(
 		// Assumption: If there are more than one replicas of the non Pod Component, a Service should be used to loadbalance between them and
 		// therefore just an DeploymentAssembly for simplicity reasons.
 		var systemAssemblyContexts : Set(AssemblyContext) := system.assemblyContexts__ComposedStructure;
+		
+		
+		
+		
+		
 		var servicesDeploymentAssembly : DeploymentAssembly := systemAssemblyContexts->selectByKind(DeploymentAssembly)
 			->select(da | da.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity
 			->includes(structureDefiningAssemblyConnector.providedRole_AssemblyConnector))->any(true);
+		
+		var deployments : Set(DeploymentAssembly) := systemAssemblyContexts->selectByKind(DeploymentAssembly);
+		deployments->forEach(da) {
+		    var provides := da.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity
+		        ->includes(structureDefiningAssemblyConnector.providedRole_AssemblyConnector);
+		
+		    log("Checking DeploymentAssembly: " + da.id);
+		    log("  Encapsulated component: " + da.encapsulatedComponent__AssemblyContext.id);
+		    log("  provides interface? " + provides.toString());
+		};
+		
+		
 		if (servicesDeploymentAssembly) {
 			return object AssemblyConnector {
 			providedRole_AssemblyConnector := structureDefiningAssemblyConnector.providedRole_AssemblyConnector;
@@ -405,7 +431,7 @@ transformation scaleUpSystemModelToDesiredState(
 		var componentsAssemblyContextToConnectTo : AssemblyContext := systemAssemblyContexts
 			->select(ac| ac.encapsulatedComponent__AssemblyContext.providedRoles_InterfaceProvidingEntity
 			->includes(structureDefiningAssemblyConnector.providedRole_AssemblyConnector))->any(true);
-		if (servicesDeploymentAssembly) {
+		if (componentsAssemblyContextToConnectTo) {
 			return object AssemblyConnector {
 			providedRole_AssemblyConnector := structureDefiningAssemblyConnector.providedRole_AssemblyConnector;
 			providingAssemblyContext_AssemblyConnector := componentsAssemblyContextToConnectTo;
@@ -414,6 +440,11 @@ transformation scaleUpSystemModelToDesiredState(
 			}
 		};
 		log("Error: Nothing to connect the Pods requiredRole to found in the system / structureDefiningSystem.");
+		log("Error: Nothing to connect the Pods requiredRole to found in the system / structureDefiningSystem.");
+		 log("Error: Nothing to connect the Pods requiredRole to found in the system / structureDefiningSystem. " +
+		 "requiredRole=" + requiredRole.id + 
+		 ", interface=" + requiredRole.requiredInterface__OperationRequiredRole.id +
+		 ", podComponent=" + self.encapsulatedComponent__AssemblyContext.id);
 		return null;
 	}
 	
@@ -540,7 +571,7 @@ transformation scaleUpSystemModelToDesiredState(
 				};
 				oldRequiredRoles += newRequiredRole;
 				currentCount := oldRequiredRoles->size();
-			} // ToDo Evtl hier oder in eigener Transformation für currentCount > numberOfRoles machen
+			} // ToDo Evtl hier oder in eigener Transformation fï¿½r currentCount > numberOfRoles machen
 		};
 		log("End of helper getNewRequiredRoles");
 		return oldRequiredRoles;
