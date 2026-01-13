@@ -6,7 +6,12 @@ Bundle-Version: 5.2.2
 Bundle-Vendor: palladiosimulator.org
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Fragment-Host: org.palladiosimulator.simulizar
-Require-Bundle: org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.1.0",
+Require-Bundle: org.hamcrest;bundle-version="2.2.0",
+ org.mockito.mockito-merged;bundle-version="3.3.3",
+ net.bytebuddy.byte-buddy;bundle-version="1.10.9",
+ net.bytebuddy.byte-buddy-agent;bundle-version="1.10.9",
+ org.objenesis;bundle-version="2.6.0",
+ org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.1.0",
  org.palladiosimulator.edp2.repository.local;bundle-version="4.3.0",
  org.palladiosimulator.pcm.resources;bundle-version="4.3.0",
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj;bundle-version="4.3.0",
@@ -16,22 +21,13 @@ Require-Bundle: org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-vers
  tools.mdsd.junit5utils;bundle-version="0.1.0",
  org.palladiosimulator.simulizar.test.commons;bundle-version="5.1.0",
  org.palladiosimulator.simulizar.events,
- org.palladiosimulator.simulizar.monitorrepository.feedthrough;bundle-version="5.1.0"
-Import-Package: com.google.common.util.concurrent.internal;version="1.0.1",
- net.bytebuddy.dynamic.loading;version="1.6.0",
- org.hamcrest;version="2.2.0",
- org.hamcrest.collection;version="2.2.0",
- org.hamcrest.core;version="2.2.0",
- org.junit.jupiter.api;version="5.4.2",
+ org.palladiosimulator.simulizar.monitorrepository.feedthrough;bundle-version="5.1.0",
+ com.google.guava;bundle-version="30.1.0"
+Import-Package: org.junit.jupiter.api;version="5.4.2",
  org.junit.jupiter.api.extension;version="5.4.2",
  org.junit.jupiter.api.function;version="5.4.2",
  org.junit.jupiter.api.io;version="5.4.2",
  org.junit.jupiter.params;version="5.4.2",
  org.junit.jupiter.params.provider;version="5.4.2",
  org.junit.platform.commons;version="1.4.0",
- org.junit.platform.commons.support;version="1.4.0",
- org.mockito,
- org.mockito.invocation,
- org.mockito.junit.jupiter,
- org.mockito.stubbing,
- org.objenesis;version="2.6.0"
+ org.junit.platform.commons.support;version="1.4.0"
