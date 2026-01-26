@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Custom_Navigator
 Bundle-SymbolicName: org.palladiosimulator.simulizar.ui.perspective;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.ui.perspective.Activator
 Bundle-Vendor: palladiosimulator.org
 Require-Bundle: org.eclipse.ui;bundle-version="3.106.0",
@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.106.0",
  org.eclipse.core.resources;bundle-version="3.9.0",
  org.eclipse.ui.navigator;bundle-version="3.5.400",
  org.eclipse.ui.navigator.resources;bundle-version="3.4.700",
- org.palladiosimulator.edp2.ui;bundle-version="1.0.0",
+ org.palladiosimulator.edp2.ui,
  org.eclipse.ui.ide;bundle-version="3.10.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy

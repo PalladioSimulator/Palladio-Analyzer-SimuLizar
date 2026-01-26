@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: org.palladiosimulator.simulizar.events
 Bundle-SymbolicName: org.palladiosimulator.simulizar.events;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.events
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Require-Bundle: de.uka.ipd.sdq.workflow,
  de.uka.ipd.sdq.workflow.mdsd,
  org.palladiosimulator.simulizar,
  org.palladiosimulator.analyzer.workflow,
- de.uka.ipd.sdq.codegen.simucontroller;bundle-version="4.3.0"
+ de.uka.ipd.sdq.codegen.simucontroller
 Import-Package: dagger;version="2.31.0",
  dagger.internal;version="2.31.0",
  javax.inject;version="1.0.0"

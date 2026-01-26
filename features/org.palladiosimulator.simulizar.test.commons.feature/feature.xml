@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.test.commons.feature"
       label="Palladio Component Model - Analyzer: SimuLizar - Test Commons"
-      version="5.2.2"
+      version="6.0.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license.epl2"
       license-feature-version="1.0.0">
@@ -12,26 +12,26 @@
    </description>
 
    <requires>
-      <import feature="org.palladiosimulator.simulizar.feature" version="5.2.2" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.pcm" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.simulizar" version="5.0.0" match="greaterOrEqual"/>
+      <import feature="org.palladiosimulator.simulizar.feature" version="6.0.0.qualifier" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.pcm"/>
+      <import plugin="org.palladiosimulator.simulizar"/>
       <import plugin="org.palladiosimulator.analyzer.workflow"/>
       <import plugin="org.junit.jupiter.api"/>
-      <import plugin="de.uka.ipd.sdq.workflow.mdsd" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.simucomframework" version="4.3.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.workflow.mdsd"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework"/>
       <import plugin="de.uka.ipd.sdq.simulation.abstractsimengine"/>
       <import plugin="de.uka.ipd.sdq.simulation.abstractsimengine.desmoj"/>
-      <import plugin="org.palladiosimulator.recorderframework.edp2" version="4.3.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.recorderframework.edp2"/>
       <import plugin="org.palladiosimulator.edp2"/>
-      <import plugin="de.uka.ipd.sdq.codegen.simucontroller" version="4.3.0" match="greaterOrEqual"/>
+      <import plugin="de.uka.ipd.sdq.codegen.simucontroller"/>
       <import plugin="com.google.guava"/>
       <import plugin="org.eclipse.xtext.xbase.lib"/>
       <import plugin="org.eclipse.xtend.lib"/>
       <import plugin="org.eclipse.xtend.lib.macro"/>
-      <import plugin="org.palladiosimulator.edp2.util" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.simucomframework.variables" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.probeframework" version="4.3.0" match="greaterOrEqual"/>
-      <import plugin="org.palladiosimulator.recorderframework" version="4.3.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.edp2.util"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework.variables"/>
+      <import plugin="org.palladiosimulator.probeframework"/>
+      <import plugin="org.palladiosimulator.recorderframework"/>
       <import plugin="com.google.dagger" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.hamcrest" version="2.2.0" match="greaterOrEqual"/>
       <import plugin="org.junit.platform.commons"/>

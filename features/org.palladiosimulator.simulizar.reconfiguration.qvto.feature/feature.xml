@@ -2,7 +2,7 @@
 <feature
       id="org.palladiosimulator.simulizar.reconfiguration.qvto.feature"
       label="Palladio Component Model - Analyzer: SimuLizar - QVT Operational Reconfiguations"
-      version="5.2.2"
+      version="6.0.0.qualifier"
       plugin="org.palladiosimulator.branding"
       license-feature="org.palladiosimulator.license"
       license-feature-version="1.0.0">
@@ -20,8 +20,8 @@
       <import plugin="org.palladiosimulator.analyzer.workflow"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd"/>
       <import plugin="org.scaledl.usageevolution"/>
-      <import plugin="org.palladiosimulator.commons" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="de.uka.ipd.sdq.simucomframework" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.palladiosimulator.commons"/>
+      <import plugin="de.uka.ipd.sdq.simucomframework"/>
       <import plugin="org.palladiosimulator.branding"/>
    </requires>
 

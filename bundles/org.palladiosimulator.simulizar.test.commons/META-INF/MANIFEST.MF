@@ -2,29 +2,29 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SimuLizar Test Commons
 Bundle-SymbolicName: org.palladiosimulator.simulizar.test.commons
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Automatic-Module-Name: org.palladiosimulator.simulizar.test.commons
 Bundle-RequiredExecutionEnvironment: JavaSE-17
-Require-Bundle: org.palladiosimulator.pcm;bundle-version="4.3.0",
- org.palladiosimulator.simulizar;bundle-version="5.2.2",
+Require-Bundle: org.palladiosimulator.pcm,
+ org.palladiosimulator.simulizar,
  org.palladiosimulator.analyzer.workflow,
  org.junit.jupiter.api,
- de.uka.ipd.sdq.workflow.mdsd;bundle-version="4.3.0",
- de.uka.ipd.sdq.simucomframework;bundle-version="4.3.0",
+ de.uka.ipd.sdq.workflow.mdsd,
+ de.uka.ipd.sdq.simucomframework,
  de.uka.ipd.sdq.simulation.abstractsimengine,
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj,
- org.palladiosimulator.recorderframework.edp2;bundle-version="4.3.0",
+ org.palladiosimulator.recorderframework.edp2,
  org.palladiosimulator.edp2,
- de.uka.ipd.sdq.codegen.simucontroller;bundle-version="4.3.0",
+ de.uka.ipd.sdq.codegen.simucontroller,
  com.google.guava,
  org.eclipse.xtext.xbase.lib,
  org.eclipse.xtend.lib,
  org.eclipse.xtend.lib.macro,
- org.palladiosimulator.edp2.util;bundle-version="4.3.0",
- de.uka.ipd.sdq.simucomframework.variables;bundle-version="4.3.0",
- org.palladiosimulator.probeframework;bundle-version="4.3.0",
- org.palladiosimulator.recorderframework;bundle-version="4.3.0",
- org.palladiosimulator.simulizar.reconfiguration.qvto;bundle-version="5.2.2"
+ org.palladiosimulator.edp2.util,
+ de.uka.ipd.sdq.simucomframework.variables,
+ org.palladiosimulator.probeframework,
+ org.palladiosimulator.recorderframework,
+ org.palladiosimulator.simulizar.reconfiguration.qvto
 Import-Package: com.google.common.collect;version="21.0.0",
  dagger;version="2.31.0",
  dagger.internal;version="2.31.0",

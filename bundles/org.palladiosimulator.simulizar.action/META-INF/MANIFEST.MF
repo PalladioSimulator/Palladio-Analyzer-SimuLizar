@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: org.palladiosimulator.simulizar.action;singleton:=true
 Automatic-Module-Name: org.palladiosimulator.simulizar.action
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
@@ -17,20 +17,20 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.stoex;visibility:=reexport,
  de.uka.ipd.sdq.units;visibility:=reexport,
  org.eclipse.m2m.qvt.oml,
- org.palladiosimulator.simulizar;bundle-version="2.0.0",
+ org.palladiosimulator.simulizar,
  de.uka.ipd.sdq.simucomframework,
  org.palladiosimulator.probeframework,
- de.uka.ipd.sdq.simulation.abstractsimengine;bundle-version="1.0.0",
+ de.uka.ipd.sdq.simulation.abstractsimengine,
  org.jscience;bundle-version="4.1.3",
- de.uka.ipd.sdq.scheduler;bundle-version="1.0.0",
+ de.uka.ipd.sdq.scheduler,
  de.uka.ipd.sdq.workflow.mdsd,
  org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.simulizar.ui,
  org.modelversioning.emfprofile.registry,
- de.uka.ipd.sdq.workflow;bundle-version="2.1.0",
+ de.uka.ipd.sdq.workflow,
  de.uka.ipd.sdq.simucomframework.simucomstatus,
  org.palladiosimulator.simulizar.reconfigurationrule,
- de.uka.ipd.sdq.codegen.simucontroller;bundle-version="4.3.0"
+ de.uka.ipd.sdq.codegen.simucontroller
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.context.impl,

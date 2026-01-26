@@ -2,20 +2,20 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Palladio Simulizar Utilization Analysis Extension
 Bundle-SymbolicName: org.palladiosimulator.simulizar.utilization;singleton:=true
-Bundle-Version: 5.2.2
+Bundle-Version: 6.0.0.qualifier
 Bundle-Activator: org.palladiosimulator.simulizar.utilization.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.palladiosimulator.simulizar;bundle-version="2.0.0",
- org.palladiosimulator.monitorrepository;bundle-version="2.0.0",
- org.palladiosimulator.probeframework;bundle-version="2.0.0",
- org.palladiosimulator.experimentanalysis;bundle-version="1.0.0",
- org.palladiosimulator.simulizar.slidingwindow;bundle-version="5.2.2",
+ org.palladiosimulator.simulizar,
+ org.palladiosimulator.monitorrepository,
+ org.palladiosimulator.probeframework,
+ org.palladiosimulator.experimentanalysis,
+ org.palladiosimulator.simulizar.slidingwindow,
  org.jscience,
- org.palladiosimulator.recorderframework;bundle-version="2.0.1",
- de.uka.ipd.sdq.simucomframework;bundle-version="2.0.0",
- org.palladiosimulator.measurementframework;bundle-version="1.0.0",
- org.palladiosimulator.simulizar.runtimemeasurement;bundle-version="5.2.2",
- org.palladiosimulator.edp2.util;bundle-version="1.0.0",
+ org.palladiosimulator.recorderframework,
+ de.uka.ipd.sdq.simucomframework,
+ org.palladiosimulator.measurementframework,
+ org.palladiosimulator.simulizar.runtimemeasurement,
+ org.palladiosimulator.edp2.util,
  org.palladiosimulator.pcm.edp2.measuringpoint,
  org.palladiosimulator.recorderframework.edp2
 Bundle-RequiredExecutionEnvironment: JavaSE-17
