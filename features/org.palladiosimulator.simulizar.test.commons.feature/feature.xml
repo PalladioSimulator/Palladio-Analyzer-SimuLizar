@@ -12,7 +12,7 @@
    </description>
 
    <requires>
-      <import feature="org.palladiosimulator.simulizar.feature" version="6.0.0.qualifier" match="greaterOrEqual"/>
+      <import feature="org.palladiosimulator.simulizar.feature" version="6.0.0" match="greaterOrEqual"/>
       <import plugin="org.palladiosimulator.pcm"/>
       <import plugin="org.palladiosimulator.simulizar"/>
       <import plugin="org.palladiosimulator.analyzer.workflow"/>
