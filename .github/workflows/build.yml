@@ -4,7 +4,7 @@ on: [push, pull_request, workflow_dispatch]
 
 jobs:
   Palladio-Analyzer-SimuLizar:
-    uses: PalladioSimulator/Palladio-Build-ActionsPipeline/.github/workflows/build.yml@master
+    uses: PalladioSimulator/Palladio-Build-ActionsPipeline/.github/workflows/build.yml@CodeQL-Integration
     with:
       use-display-output: true
       no-caching: true
