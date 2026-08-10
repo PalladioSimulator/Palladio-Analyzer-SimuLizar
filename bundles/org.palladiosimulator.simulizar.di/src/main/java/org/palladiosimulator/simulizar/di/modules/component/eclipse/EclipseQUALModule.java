@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.component.eclipse;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.palladiosimulator.probeframework.calculator.ExtensibleCalculatorFactoryDelegatingFactory;
 import org.palladiosimulator.probeframework.calculator.IGenericCalculatorFactory;

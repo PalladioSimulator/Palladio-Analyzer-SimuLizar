@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.interpreter.impl;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.palladiosimulator.pcm.seff.ForkedBehaviour;

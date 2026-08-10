@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.events;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.analyzer.workflow.jobs.EventsTransformationJob;
 import org.palladiosimulator.simulizar.launcher.jobs.ModelCompletionJobContributor;

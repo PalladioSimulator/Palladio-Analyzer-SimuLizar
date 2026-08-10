@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.scoped.root;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;
 import org.palladiosimulator.simulizar.di.base.scopes.AnalysisRootScope;

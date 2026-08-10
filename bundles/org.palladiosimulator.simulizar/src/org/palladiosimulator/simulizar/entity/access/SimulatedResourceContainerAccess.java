@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.entity.access;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.pcm.resourceenvironment.ResourceContainer;
 

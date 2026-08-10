@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.modules.stateless.core;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRootComponent;
 import org.palladiosimulator.simulizar.di.component.core.SimuLizarRuntimeComponent;

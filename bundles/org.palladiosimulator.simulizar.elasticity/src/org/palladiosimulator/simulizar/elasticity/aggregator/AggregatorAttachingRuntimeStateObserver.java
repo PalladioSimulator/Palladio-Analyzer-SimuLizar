@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.elasticity.aggregator;
 
 import static org.palladiosimulator.metricspec.constants.MetricDescriptionConstants.RECONFIGURATION_TIME_METRIC_TUPLE;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.probeframework.calculator.Calculator;
 import org.palladiosimulator.probeframework.calculator.CalculatorRegistryListener;
