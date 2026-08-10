@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.usagemodel;
 
 import java.util.Optional;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import org.palladiosimulator.analyzer.workflow.core.blackboard.PCMResourceSetPartition;
 import org.palladiosimulator.pcm.usagemodel.UsageScenario;
@@ -42,8 +42,8 @@ public class StretchedUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      *            The scenario evolved by <code>this</code>.
      */
     @AssistedInject
-    public StretchedUsageEvolver(@Assisted final double firstOccurrence, @Assisted final double delay,
-            @Assisted final EntityReference<UsageScenario> evolvedScenario,
+    public StretchedUsageEvolver(@Assisted("firstOccurrence") final double firstOccurrence,
+            @Assisted("delay") final double delay, @Assisted final EntityReference<UsageScenario> evolvedScenario,
             @Named("maxSimTime") Optional<Double> maxSimTime, @Global PCMResourceSetPartition pcmPartition,
             ISimEventFactory simEventFactory, ISimulationTimeProvider timeProvider) {
         super(firstOccurrence, delay, evolvedScenario, pcmPartition, simEventFactory, timeProvider);
