@@ -2,8 +2,8 @@ package org.palladiosimulator.simulizar.elasticity.jobs;
 
 import java.util.function.Supplier;
 
-import javax.inject.Inject;
-import javax.inject.Provider;
+import jakarta.inject.Inject;
+import jakarta.inject.Provider;
 
 import org.apache.log4j.Logger;
 import org.eclipse.core.runtime.IProgressMonitor;

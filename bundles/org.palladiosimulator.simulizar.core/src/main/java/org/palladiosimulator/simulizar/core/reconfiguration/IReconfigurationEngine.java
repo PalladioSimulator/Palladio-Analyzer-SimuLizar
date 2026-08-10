@@ -4,7 +4,7 @@ package org.palladiosimulator.simulizar.core.reconfiguration;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.eclipse.emf.ecore.EObject;
 import org.palladiosimulator.simulizar.core.runconfig.SimuLizarWorkflowConfiguration;

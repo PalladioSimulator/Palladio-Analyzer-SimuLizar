@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.di.modules.stateless.configuration;
 
 import java.util.Optional;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;

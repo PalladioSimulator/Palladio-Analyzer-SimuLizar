@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.di.extension.sample;
 
-import javax.inject.Named;
+import jakarta.inject.Named;
 
 import dagger.Module;
 import dagger.Provides;

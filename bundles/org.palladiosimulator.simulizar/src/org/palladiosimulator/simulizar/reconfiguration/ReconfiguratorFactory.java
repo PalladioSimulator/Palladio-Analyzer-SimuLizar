@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.reconfiguration;
 
-import javax.inject.Provider;
+import jakarta.inject.Provider;
 
 public interface ReconfiguratorFactory extends Provider<Reconfigurator> {
     

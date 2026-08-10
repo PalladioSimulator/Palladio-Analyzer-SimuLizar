@@ -10,7 +10,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Adapter;

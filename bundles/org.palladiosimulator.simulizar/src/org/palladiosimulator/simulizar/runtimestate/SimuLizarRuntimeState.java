@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.runtimestate;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.core.utils.PCMPartitionManager;
 import org.palladiosimulator.simulizar.di.base.scopes.SimulationRuntimeScope;

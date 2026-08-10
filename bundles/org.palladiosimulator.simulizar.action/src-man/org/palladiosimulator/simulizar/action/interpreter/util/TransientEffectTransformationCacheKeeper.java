@@ -3,7 +3,7 @@ package org.palladiosimulator.simulizar.action.interpreter.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.di.base.scopes.RuntimeExtensionScope;
 import org.palladiosimulator.simulizar.interpreter.InterpreterDefaultContext;

@@ -1,6 +1,6 @@
 package org.palladiosimulator.simulizar.core.entity;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.palladiosimulator.simulizar.core.entity.EntityReference.AbstractEntityReferenceFactory;
 

@@ -2,7 +2,7 @@ package org.palladiosimulator.simulizar.modelobserver;
 
 import java.util.Collection;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.apache.log4j.Logger;
 import org.eclipse.emf.common.notify.Notification;
