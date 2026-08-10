@@ -39,8 +39,9 @@ public class LoopingUsageEvolver extends PeriodicallyTriggeredUsageEvolver {
      * @param simulationTimeOffset
      */
     @AssistedInject
-    public LoopingUsageEvolver(@Assisted final double firstOccurrence, @Assisted final double delay,
-            @Assisted double simulationTimeOffset, @Assisted final EntityReference<UsageScenario> evolvedScenario,
+    public LoopingUsageEvolver(@Assisted("firstOccurrence") final double firstOccurrence,
+            @Assisted("delay") final double delay, @Assisted("simulationTimeOffset") double simulationTimeOffset,
+            @Assisted final EntityReference<UsageScenario> evolvedScenario,
             @Global PCMResourceSetPartition pcmPartition, ISimEventFactory simEventFactory,
             ISimulationTimeProvider timeProvider) {
         super(firstOccurrence, delay, evolvedScenario, pcmPartition, simEventFactory, timeProvider);
