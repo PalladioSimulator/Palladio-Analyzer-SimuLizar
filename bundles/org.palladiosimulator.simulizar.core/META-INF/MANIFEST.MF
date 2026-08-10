@@ -10,11 +10,11 @@ Export-Package: org.palladiosimulator.simulizar.core.entity,
  org.palladiosimulator.simulizar.core.runconfig,
  org.palladiosimulator.simulizar.core.runtimestate,
  org.palladiosimulator.simulizar.core.utils
-Require-Bundle: javax.inject;bundle-version="1.0.0",
+Require-Bundle: jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)",
  org.eclipse.emf.ecore;bundle-version="2.33.0",
  org.apache.log4j;bundle-version="1.2.15",
  com.google.guava;bundle-version="27.1.0",
- com.google.dagger;bundle-version="2.31.0",
+ com.google.dagger;bundle-version="[2.60.0,3.0.0)",
  org.palladiosimulator.commons,
  de.uka.ipd.sdq.workflow,
  de.uka.ipd.sdq.simulation.core,
@@ -33,6 +33,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  org.palladiosimulator.probeframework,
  de.uka.ipd.sdq.simucomframework.simucomstatus,
  de.uka.ipd.sdq.simucomframework.core
+Import-Package: javax.inject;version="[1.0.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org

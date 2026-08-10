@@ -48,7 +48,8 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework,
  org.palladiosimulator.simulizar.di.base;visibility:=reexport,
  org.palladiosimulator.simulizar.core;visibility:=reexport,
  org.palladiosimulator.simulizar.di;visibility:=reexport,
- tools.descartes.dlim.generator;bundle-version="0.17.0"
+ tools.descartes.dlim.generator;bundle-version="0.17.0",
+ jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)";resolution:=optional
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org.osgi.framework",
@@ -141,9 +142,9 @@ Export-Package: org.palladiosimulator.simulizar;uses:="org.eclipse.ui.plugin,org
 Bundle-Vendor: palladiosimulator.org
 Import-Package: com.google.common.collect;version="27.1.0",
  com.google.common.graph;version="21.0.0",
- dagger;version="2.31.0",
- dagger.assisted;version="2.31.0",
- dagger.internal;version="2.31.0",
- dagger.multibindings;version="2.31.0",
- javax.inject;version="1.0.0";resolution:=optional
+ dagger;version="[2.60.0,3.0.0)",
+ dagger.assisted;version="[2.60.0,3.0.0)",
+ dagger.internal;version="[2.60.0,3.0.0)",
+ dagger.multibindings;version="[2.60.0,3.0.0)",
+ javax.inject;version="[1.0.0,2.0.0)"
 Automatic-Module-Name: org.palladiosimulator.simulizar
