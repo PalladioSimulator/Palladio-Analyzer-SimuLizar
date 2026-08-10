@@ -16,7 +16,7 @@
       <import plugin="org.palladiosimulator.pcm"/>
       <import plugin="org.palladiosimulator.simulizar"/>
       <import plugin="org.palladiosimulator.analyzer.workflow"/>
-      <import plugin="org.junit.jupiter.api"/>
+      <import plugin="junit-jupiter-api"/>
       <import plugin="de.uka.ipd.sdq.workflow.mdsd"/>
       <import plugin="de.uka.ipd.sdq.simucomframework"/>
       <import plugin="de.uka.ipd.sdq.simulation.abstractsimengine"/>
@@ -34,7 +34,7 @@
       <import plugin="org.palladiosimulator.recorderframework"/>
       <import plugin="com.google.dagger" version="2.3.1" match="greaterOrEqual"/>
       <import plugin="org.hamcrest" version="2.2.0" match="greaterOrEqual"/>
-      <import plugin="org.junit.platform.commons"/>
+      <import plugin="junit-platform-commons"/>
       <import plugin="org.mockito.mockito-merged"/>
       <import plugin="jakarta.inject.jakarta.inject-api"/>
    </requires>
