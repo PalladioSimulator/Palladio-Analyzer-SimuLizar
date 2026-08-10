@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)",
  de.uka.ipd.sdq.workflow.mdsd.blackboard,
  de.uka.ipd.sdq.scheduler
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.simulizar.reconfiguration.qvto.util

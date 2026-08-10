@@ -4,7 +4,7 @@ Bundle-Name: SimuLizar Tests
 Bundle-SymbolicName: org.palladiosimulator.simulizar.tests;singleton:=true
 Bundle-Version: 6.0.0.qualifier
 Bundle-Vendor: palladiosimulator.org
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Fragment-Host: org.palladiosimulator.simulizar
 Require-Bundle: org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.edp2.repository.local,

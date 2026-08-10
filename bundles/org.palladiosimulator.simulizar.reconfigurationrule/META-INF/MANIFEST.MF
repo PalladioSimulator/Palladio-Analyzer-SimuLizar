@@ -6,7 +6,7 @@ Bundle-Version: 6.0.0.qualifier
 Bundle-ClassPath: .
 Bundle-Vendor: %providerName
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.palladiosimulator.simulizar.reconfigurationrule,
  org.palladiosimulator.simulizar.reconfigurationrule.impl,
  org.palladiosimulator.simulizar.reconfigurationrule.util

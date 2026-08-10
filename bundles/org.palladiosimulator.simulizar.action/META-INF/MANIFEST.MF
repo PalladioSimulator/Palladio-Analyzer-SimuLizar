@@ -32,7 +32,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.palladiosimulator.simulizar.reconfigurationrule,
  de.uka.ipd.sdq.codegen.simucontroller,
  jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)"
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Export-Package: org.palladiosimulator.simulizar.action.context,
  org.palladiosimulator.simulizar.action.context.impl,
  org.palladiosimulator.simulizar.action.context.util,
