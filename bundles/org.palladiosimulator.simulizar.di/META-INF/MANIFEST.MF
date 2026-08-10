@@ -10,8 +10,8 @@ Export-Package: org.palladiosimulator.simulizar.di.component.dependency,
  org.palladiosimulator.simulizar.di.modules.scoped.dependency,
  org.palladiosimulator.simulizar.di.modules.stateless.configuration,
  org.palladiosimulator.simulizar.di.modules.stateless.mdsd
-Require-Bundle: javax.inject;bundle-version="1.0.0",
- com.google.dagger;bundle-version="2.31.0",
+Require-Bundle: jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)",
+ com.google.dagger;bundle-version="[2.60.0,3.0.0)",
  de.uka.ipd.sdq.simulation.core,
  de.uka.ipd.sdq.codegen.simucontroller.core,
  de.uka.ipd.sdq.workflow.mdsd.blackboard,
@@ -24,6 +24,7 @@ Require-Bundle: javax.inject;bundle-version="1.0.0",
  de.uka.ipd.sdq.probfunction.math,
  de.uka.ipd.sdq.scheduler,
  org.palladiosimulator.pcm
+Import-Package: javax.inject;version="[1.0.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-Vendor: palladiosimulator.org

@@ -17,12 +17,13 @@ Require-Bundle: org.eclipse.core.runtime,
  de.uka.ipd.sdq.simucomframework.core,
  org.palladiosimulator.simulizar.reconfigurationrule,
  org.apache.commons.collections15,
- javax.inject;bundle-version="1.0.0",
+ jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)",
  de.uka.ipd.sdq.workflow.mdsd.blackboard,
  de.uka.ipd.sdq.scheduler
 Bundle-RequiredExecutionEnvironment: JavaSE-17
 Bundle-ActivationPolicy: lazy
 Export-Package: org.palladiosimulator.simulizar.reconfiguration.qvto,
  org.palladiosimulator.simulizar.reconfiguration.qvto.util
-Import-Package: dagger;version="2.31.0",
- dagger.internal;version="2.31.0"
+Import-Package: dagger;version="[2.60.0,3.0.0)",
+ dagger.internal;version="[2.60.0,3.0.0)",
+ javax.inject;version="[1.0.0,2.0.0)"
