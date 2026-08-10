@@ -26,5 +26,5 @@ Require-Bundle: jakarta.inject.jakarta.inject-api;bundle-version="[2.0.0,3.0.0)"
  org.palladiosimulator.pcm
 Import-Package: javax.inject;version="[1.0.0,2.0.0)"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-17
+Bundle-RequiredExecutionEnvironment: JavaSE-21
 Bundle-Vendor: palladiosimulator.org
