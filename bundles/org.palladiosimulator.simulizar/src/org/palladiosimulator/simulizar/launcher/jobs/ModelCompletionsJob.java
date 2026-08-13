@@ -1,6 +1,5 @@
 package org.palladiosimulator.simulizar.launcher.jobs;
 
-import java.util.Comparator;
 import java.util.Set;
 
 import jakarta.inject.Inject;
@@ -21,9 +20,11 @@ import de.uka.ipd.sdq.workflow.mdsd.blackboard.MDSDBlackboard;
  * @author Sebastian Krach
  *
  */
+// Deliberately not a Comparator<IJob> itself: ICompositeJob extends List<IJob>, and since
+// Java 21 List inherits reversed() from SequencedCollection, which clashes with the
+// unrelated Comparator.reversed(). The ordering is passed as a method reference instead.
 public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSDBlackboard>
-        implements IBlackboardInteractingJob<MDSDBlackboard>, ModelCompletionJobContributor.Facade,
-        Comparator<IJob> {
+        implements IBlackboardInteractingJob<MDSDBlackboard>, ModelCompletionJobContributor.Facade {
 
     private final Provider<Set<ModelCompletionJobContributor>> modelCompletionJobs;
 
@@ -42,7 +43,7 @@ public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSD
     @Override
     public void execute(IProgressMonitor monitor) throws JobFailedException, UserCanceledException {
         modelCompletionJobs.get().forEach(contributor -> contributor.contribute(this));
-        this.myJobs.sort(this);
+        this.myJobs.sort(this::compare);
         super.execute(monitor);
     }
 
@@ -52,8 +53,7 @@ public class ModelCompletionsJob extends SequentialBlackboardInteractingJob<MDSD
     }
 
     @SuppressWarnings("unchecked")
-    @Override
-    public int compare(IJob o1, IJob o2) {
+    private int compare(IJob o1, IJob o2) {
         int o1Result = 0;
         int o2Result = 0;
         if (o1 instanceof Comparable) {
