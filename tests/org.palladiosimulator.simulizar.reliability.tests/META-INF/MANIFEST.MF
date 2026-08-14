@@ -16,5 +16,5 @@ Require-Bundle: org.palladiosimulator.simulizar.test.commons,
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj,
  de.uka.ipd.sdq.errorhandling,
  de.desmoj;bundle-version="2.3.3"
-Import-Package: org.hamcrest;version="2.2.0",
+Import-Package: org.hamcrest,
  org.junit.jupiter.api;version="5.7.0"
