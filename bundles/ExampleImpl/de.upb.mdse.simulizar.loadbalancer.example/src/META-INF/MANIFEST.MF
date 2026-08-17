@@ -23,8 +23,7 @@ Require-Bundle: de.uka.ipd.sdq.simucomframework,
  de.uka.ipd.sdq.pcm.stochasticexpressions,
  de.uka.ipd.sdq.pcm,
  de.uka.ipd.sdq.sensorframework.storage,
- de.uka.ipd.sdq.probfunction.math,
- org.apache.commons.math
+ de.uka.ipd.sdq.probfunction.math
 Eclipse-LazyStart: true
 Bundle-ClassPath: bin/,
  .
