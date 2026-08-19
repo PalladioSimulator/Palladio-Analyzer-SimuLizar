@@ -7,11 +7,15 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-import org.palladiosimulator.simulizar.di.base.extension.ExtensionComponent;
-
 @Retention(RUNTIME)
 @Target(METHOD)
 @Repeatable(SimuLizarExtensions.class)
 public @interface UseSimuLizarExtension {
-    Class<? extends ExtensionComponent> value();
+    /**
+     * The Dagger generated component class, which provides the extension through a static
+     * {@code factory()} method. Dagger generates a holder class that does not implement the
+     * component interface itself, so this cannot be bound to {@code ExtensionComponent}; the
+     * factory method is looked up reflectively instead.
+     */
+    Class<?> value();
 }

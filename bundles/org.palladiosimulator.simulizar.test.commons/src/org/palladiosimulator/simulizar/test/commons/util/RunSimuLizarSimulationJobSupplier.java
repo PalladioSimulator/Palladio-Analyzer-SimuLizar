@@ -54,8 +54,8 @@ public class RunSimuLizarSimulationJobSupplier implements Supplier<IJob> {
                 
             } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
                     | InvocationTargetException e) {
-                throw new RuntimeException(
-                        "Could not create extension factory. Make sure to reference the Dagger generated component class");
+                throw new RuntimeException("Could not create extension factory from " + extCls.getName()
+                        + ". Make sure to reference the Dagger generated component class", e);
             }
         }
         var component = DaggerTestSimuLizarRootComponent.factory()
