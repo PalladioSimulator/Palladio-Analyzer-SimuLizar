@@ -3,6 +3,7 @@ package org.palladiosimulator.simulizar.di.extension;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodHandles.Lookup;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -42,6 +43,25 @@ public class GenericExtensionComponent {
             .collect(Collectors.toSet());
     }
     
+    /**
+     * Dagger generates the component implementation as a private nested class, whose methods cannot
+     * be unreflected. The component interfaces are public and declare the same methods, so the
+     * declaration is taken from there when the implementing class is not accessible.
+     */
+    private static Method accessibleDeclarationOf(Method m) {
+        if (Modifier.isPublic(m.getDeclaringClass().getModifiers())) {
+            return m;
+        }
+        for (var iface : m.getDeclaringClass().getInterfaces()) {
+            try {
+                return iface.getMethod(m.getName(), m.getParameterTypes());
+            } catch (NoSuchMethodException e) {
+                // not declared by this interface, keep looking
+            }
+        }
+        return m;
+    }
+
     private <T> boolean isCompatibleSignature(Type type, Class<T> extensionsType) {
         if (type instanceof Class<?>) {
             return extensionsType.isAssignableFrom((Class<?>)type);
@@ -57,7 +77,7 @@ public class GenericExtensionComponent {
     
     private <T> Supplier<T> createSupplier(Method m, Lookup lookup) {
         try {
-            var handle = lookup.unreflect(m);
+            var handle = lookup.unreflect(accessibleDeclarationOf(m));
             return () -> {
                 try {
                     return (T) handle.invoke(decoratedComponent);
