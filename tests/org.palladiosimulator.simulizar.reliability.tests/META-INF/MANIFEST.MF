@@ -8,6 +8,7 @@ Automatic-Module-Name: org.palladiosimulator.simulizar.reliability.tests
 Bundle-RequiredExecutionEnvironment: JavaSE-21
 Require-Bundle: org.palladiosimulator.simulizar.test.commons,
  tools.mdsd.junit5utils;bundle-version="0.1.0",
+ junit-jupiter-api;bundle-version="[5.0.0,6.0.0)",
  de.uka.ipd.sdq.workflow,
  org.palladiosimulator.metricspec,
  org.palladiosimulator.edp2,
@@ -16,5 +17,4 @@ Require-Bundle: org.palladiosimulator.simulizar.test.commons,
  de.uka.ipd.sdq.simulation.abstractsimengine.desmoj,
  de.uka.ipd.sdq.errorhandling,
  de.desmoj;bundle-version="2.3.3"
-Import-Package: org.hamcrest,
- org.junit.jupiter.api;version="5.7.0"
+Import-Package: org.hamcrest
